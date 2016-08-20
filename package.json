@@ -1,0 +1,22 @@
+{
+  "name": "danger",
+  "version": "0.0.1",
+  "description": "Automate your culture",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danger/danger-js.git"
+  },
+  "keywords": [
+    "danger"
+  ],
+  "author": "Orta Therox",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danger/danger-js/issues"
+  },
+  "homepage": "https://github.com/danger/danger-js#readme"
+}
