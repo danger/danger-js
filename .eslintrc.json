@@ -1,0 +1,8 @@
+{
+    "extends": "standard",
+    "plugins": [
+        "standard",
+        "promise"
+    ],
+    "presets": ["es2015"]
+}
