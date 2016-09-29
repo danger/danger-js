@@ -6,8 +6,7 @@
   "scripts": {
     "test": "jest",
     "flow": "flow; test $? -eq 0 -o $? -eq 2",
-    "build": "babel source --out-dir distribution",
-    "prepublish": "npm run build"
+    "build": "babel source --out-dir distribution"
   },
   "repository": {
     "type": "git",
@@ -24,18 +23,19 @@
   },
   "homepage": "https://github.com/danger/danger-js#readme",
   "devDependencies": {
+    "babel-eslint": "^7.0.0",
     "babel-plugin-transform-flow-strip-types": "^6.8.0",
     "babel-polyfill": "^6.13.0",
     "babel-preset-es2016": "^6.11.3",
     "eslint": "^3.3.1",
     "eslint-config-standard": "^6.0.0-beta.3",
+    "eslint-plugin-flowtype": "^2.19.0",
     "eslint-plugin-promise": "^2.0.1",
     "eslint-plugin-standard": "^2.0.0",
-    "flow-bin": "^0.30.0"
-  },
-  "dependencies": {
+    "flow-bin": "^0.32.0",
     "jest-cli": "^14.1.0"
   },
+  "dependencies": {},
   "jest": {
     "automock": false
   }
