@@ -3,12 +3,16 @@
   "version": "0.0.1",
   "description": "Automate your culture",
   "main": "distribution/danger.js",
+  "bin": {
+    "danger": "distribution/runner.js"
+  },
   "scripts": {
     "test": "jest",
     "flow": "flow; test $? -eq 0 -o $? -eq 2",
     "lint": "eslint ./source ./test",
     "fixlint": "eslint ./source ./test --fix",
-    "build": "babel source --out-dir distribution"
+    "build": "babel source --out-dir distribution",
+    "lock": "npm prune; npm dedupe; npm shrinkwrap --dev"
   },
   "repository": {
     "type": "git",
@@ -25,6 +29,7 @@
   },
   "homepage": "https://github.com/danger/danger-js#readme",
   "devDependencies": {
+    "babel-cli": "^6.16.0",
     "babel-eslint": "^7.0.0",
     "babel-plugin-transform-flow-strip-types": "^6.8.0",
     "babel-polyfill": "^6.13.0",
@@ -38,5 +43,7 @@
     "flow-bin": "^0.32.0",
     "jest-cli": "^15.1.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
 }
