@@ -4,5 +4,8 @@ distribution
 [include]
 
 [libs]
+interfaces/
+flow-typed/
 
 [options]
+unsafe.enable_getters_and_setters=true

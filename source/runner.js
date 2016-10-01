@@ -1,19 +1,18 @@
 #! /usr/bin/env node
+// @flow
 
 var program = require("commander")
+import {version} from "../package.json"
 
 program
-  .version("0.0.1")
-  .option("-p, --peppers", "Add peppers")
-  .option("-P, --pineapple", "Add pineapple")
-  .option("-b, --bbq-sauce", "Add bbq sauce")
-  .option("-c, --cheese [type]", "Add the specified type of cheese [marble]", "marble")
+  .version(version)
+  .option("-h, --head [commitish]", "TODO: Set the head commitish")
+  .option("-b, --base [commitish]", "TODO: Set the base commitish")
+  .option("-f, --fail-on-errors", "TODO: Fail on errors")
   .parse(process.argv)
 
-console.log("you ordered a pizza with:")
+// if (program.head) console.log("  - peppers")
+// if (program.base) console.log("  - pineapple")
+// if (program.fail_on_errors) console.log("  - bbq")
 
-if (program.peppers) console.log("  - peppers")
-if (program.pineapple) console.log("  - pineapple")
-if (program.bbqSauce) console.log("  - bbq")
-
-console.log("  - %s cheese", program.cheese)
+// console.log("  - %s cheese", program.cheese)

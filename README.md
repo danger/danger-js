@@ -24,12 +24,18 @@ npm run flow
 
 ---
 
-You'll have a nicer experience as a developer if you use VS Code with Flow enabled, and if you install typings.
+### Dev Life
+
+You'll have a nicer experience as a developer if you use VS Code with Flow enabled, and if you install flow-typed.
 
 ``` sh
-npm install -g typings
-typings install
-```  
+npm install -g flow-typed
+flow-typed install
+```
+
+( and maybe `flow-typed install jest@14`)
+
+You can run the `danger` command globally from your dev build by running `npm link`.
 
 ### What is the TODO?
 
@@ -38,3 +44,4 @@ typings install
 * A way to do git.diff metadata see [EnvironmentManager](https://github.com/danger/danger/blob/c7880ebd870407e9effa1bb4295540d1fa6b4bbc/lib/danger/danger_core/environment_manager.rb) for setup, needs to get info from request source
 
 The aim is to be able to have this library self testing with Danger-js ASAP, then smarter abstractions can be thought about.
+

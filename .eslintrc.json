@@ -1,4 +1,8 @@
 {
+  "env": {
+    "es6": true,
+    "jest": true
+  },
   "parser": "babel-eslint",
   "extends": "standard",
   "plugins": [
@@ -7,8 +11,9 @@
     "flowtype",
     "flow-vars"
   ],
-  "presets": ["es2015", "react"],
+  "presets": ["es2015"],
   "rules": {
+    "space-before-function-paren": ["error", "never"],
     "quotes": [1, "double", "avoid-escape"],
     "flowtype/define-flow-type": 1,
     "flowtype/require-parameter-type": 1,
@@ -19,6 +24,9 @@
     "flowtype/use-flow-type": 1,
     "flowtype/valid-syntax": 1
   },
+  "ignore": [
+    "distribution"
+  ],
   "settings": {
       "flowtype": {
           "onlyFilesWithFlowAnnotation": false
