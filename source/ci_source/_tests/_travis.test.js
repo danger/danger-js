@@ -6,9 +6,44 @@ let correctEnv = {
   "TRAVIS_REPO_SLUG": "artsy/eigen"
 }
 
-describe(".validates_as_ci?", () => {
+describe(".isCI", () => {
   test("validates when all Travis environment vars are set and Josh K says so", () => {
     let travis = new Travis(correctEnv)
     expect(travis.isCI).toBeTruthy()
+  })
+  test("does not validate without josh", () => {
+    let travis = new Travis({})
+    expect(travis.isCI).toBeFalsy()
+  })
+})
+
+describe(".isPR", () => {
+  test("validates when all Travis environment vars are set and Josh K says so", () => {
+    let travis = new Travis(correctEnv)
+    expect(travis.isPR).toBeTruthy()
+  })
+
+  test("does not validate without josh", () => {
+    let travis = new Travis({})
+    expect(travis.isPR).toBeFalsy()
+  })
+
+  let envs = ["TRAVIS_PULL_REQUEST", "TRAVIS_REPO_SLUG"]
+  envs.forEach((key: string) => {
+    var env = {
+      "HAS_JOSH_K_SEAL_OF_APPROVAL": "true",
+      "TRAVIS_PULL_REQUEST": "800",
+      "TRAVIS_REPO_SLUG": "artsy/eigen"
+    }
+    env[key] = null
+
+    test(`does not validate when ${key} is missing`, () => {
+      let travis = new Travis({})
+      expect(travis.isPR).toBeFalsy()
+    })
+  })
+
+  xit("needs to have a PR number", () => {
+
   })
 })

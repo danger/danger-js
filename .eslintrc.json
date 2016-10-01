@@ -11,7 +11,7 @@
     "flowtype",
     "flow-vars"
   ],
-  "presets": ["es2015", "react"],
+  "presets": ["es2015"],
   "rules": {
     "quotes": [1, "double", "avoid-escape"],
     "flowtype/define-flow-type": 1,
@@ -24,9 +24,7 @@
     "flowtype/valid-syntax": 1
   },
   "ignore": [
-    "**/*.test.js",
-    "distribution",
-    "**/_tests/"
+    "distribution"
   ],
   "settings": {
       "flowtype": {
