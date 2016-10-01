@@ -8,11 +8,12 @@
   },
   "scripts": {
     "test": "jest",
-    "watch": "jest --watch",
+    "testwatch": "jest --watch",
     "flow": "flow; test $? -eq 0 -o $? -eq 2",
     "lint": "eslint ./source",
     "fixlint": "eslint ./source --fix",
     "build": "babel source --out-dir distribution",
+    "buildwatch": "babel source --watch --out-dir distribution",
     "lock": "npm prune; npm dedupe; npm shrinkwrap --dev"
   },
   "repository": {
