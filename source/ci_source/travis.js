@@ -8,8 +8,6 @@ export default class Travis {
   env: Env
   constructor(env: Env) { this.env = env }
 
-  supportedPlatforms: ["github"]
-
   get isCI() : boolean {
     return ensureEnvKeysExist(this.env, ["HAS_JOSH_K_SEAL_OF_APPROVAL"])
   }
@@ -22,4 +20,6 @@ export default class Travis {
 
   get pullRequestID(): string { return this.env.TRAVIS_PULL_REQUEST }
   get repoSlug(): string { return this.env.TRAVIS_REPO_SLUG }
+  get repoURL(): string { return "maybe not needed?" }
+  get supportedPlatforms() : string[] { return ["github"] }
 }
