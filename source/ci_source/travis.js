@@ -2,13 +2,14 @@
 "use strict"
 
 export default class Travis {
-  env = []
+  env: any
   constructor (env: any) { this.env = env }
 
-  isCI (env: any) : boolean {
-    return true
+  get isCI () : boolean {
+    return this.env.HAS_JOSH_K_SEAL_OF_APPROVAL != null
   }
-  isPR (env: any) : boolean {
-    return true
+
+  get isPR () : boolean {
+    return this.env.HAS_JOSH_K_SEAL_OF_APPROVAL != null
   }
 }
