@@ -2,6 +2,12 @@ language: node_js
 node_js:
   - "6.1"
 
+script:
+  - npm test
+  - npm run build
+  - npm link
+  - danger
+
 after_script:
   - npm run flow
   - npm run lint
