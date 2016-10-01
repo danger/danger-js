@@ -43,7 +43,27 @@ describe(".isPR", () => {
     })
   })
 
-  xit("needs to have a PR number", () => {
+  it("needs to have a PR number", () => {
+    var env = {
+      "HAS_JOSH_K_SEAL_OF_APPROVAL": "true",
+      "TRAVIS_PULL_REQUEST": "asdasd",
+      "TRAVIS_REPO_SLUG": "artsy/eigen"
+    }
+    let travis = new Travis(env)
+    expect(travis.isPR).toBeFalsy()
+  })
+})
 
+describe(".pullReuestID", () => {
+  it("pulls it out of the env", () => {
+    let travis = new Travis(correctEnv)
+    expect(travis.pullRequestID).toEqual("800")
+  })
+})
+
+describe(".repoSlug", () => {
+  it("pulls it out of the env", () => {
+    let travis = new Travis(correctEnv)
+    expect(travis.repoSlug).toEqual("artsy/eigen")
   })
 })

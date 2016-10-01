@@ -13,6 +13,7 @@
   ],
   "presets": ["es2015"],
   "rules": {
+    "space-before-function-paren": ["error", "never"],
     "quotes": [1, "double", "avoid-escape"],
     "flowtype/define-flow-type": 1,
     "flowtype/require-parameter-type": 1,
