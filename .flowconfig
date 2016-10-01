@@ -4,5 +4,7 @@ distribution
 [include]
 
 [libs]
+interfaces/
+flow-typed/
 
 [options]

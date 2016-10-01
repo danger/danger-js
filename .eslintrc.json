@@ -1,4 +1,8 @@
 {
+  "env": {
+    "es6": true,
+    "jest": true
+  },
   "parser": "babel-eslint",
   "extends": "standard",
   "plugins": [
@@ -19,6 +23,11 @@
     "flowtype/use-flow-type": 1,
     "flowtype/valid-syntax": 1
   },
+  "ignore": [
+    "**/*.test.js",
+    "distribution",
+    "**/_tests/"
+  ],
   "settings": {
       "flowtype": {
           "onlyFilesWithFlowAnnotation": false

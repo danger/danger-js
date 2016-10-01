@@ -9,8 +9,8 @@
   "scripts": {
     "test": "jest",
     "flow": "flow; test $? -eq 0 -o $? -eq 2",
-    "lint": "eslint ./source ./test",
-    "fixlint": "eslint ./source ./test --fix",
+    "lint": "eslint ./source",
+    "fixlint": "eslint ./source --fix",
     "build": "babel source --out-dir distribution",
     "lock": "npm prune; npm dedupe; npm shrinkwrap --dev"
   },
