@@ -237,6 +237,11 @@
         }
       }
     },
+    "babel-helper-builder-binary-assignment-operator-visitor": {
+      "version": "6.15.0",
+      "from": "babel-helper-builder-binary-assignment-operator-visitor@>=6.8.0 <7.0.0",
+      "resolved": "https://registry.npmjs.org/babel-helper-builder-binary-assignment-operator-visitor/-/babel-helper-builder-binary-assignment-operator-visitor-6.15.0.tgz"
+    },
     "babel-helper-call-delegate": {
       "version": "6.8.0",
       "from": "babel-helper-call-delegate@>=6.8.0 <7.0.0",
@@ -246,6 +251,11 @@
       "version": "6.9.0",
       "from": "babel-helper-define-map@>=6.9.0 <7.0.0",
       "resolved": "https://registry.npmjs.org/babel-helper-define-map/-/babel-helper-define-map-6.9.0.tgz"
+    },
+    "babel-helper-explode-assignable-expression": {
+      "version": "6.8.0",
+      "from": "babel-helper-explode-assignable-expression@>=6.8.0 <7.0.0",
+      "resolved": "https://registry.npmjs.org/babel-helper-explode-assignable-expression/-/babel-helper-explode-assignable-expression-6.8.0.tgz"
     },
     "babel-helper-function-name": {
       "version": "6.8.0",
@@ -271,6 +281,11 @@
       "version": "6.9.0",
       "from": "babel-helper-regex@>=6.8.0 <7.0.0",
       "resolved": "https://registry.npmjs.org/babel-helper-regex/-/babel-helper-regex-6.9.0.tgz"
+    },
+    "babel-helper-remap-async-to-generator": {
+      "version": "6.16.2",
+      "from": "babel-helper-remap-async-to-generator@>=6.16.2 <7.0.0",
+      "resolved": "https://registry.npmjs.org/babel-helper-remap-async-to-generator/-/babel-helper-remap-async-to-generator-6.16.2.tgz"
     },
     "babel-helper-replace-supers": {
       "version": "6.16.0",
@@ -307,10 +322,45 @@
       "from": "babel-plugin-jest-hoist@>=15.0.0 <16.0.0",
       "resolved": "https://registry.npmjs.org/babel-plugin-jest-hoist/-/babel-plugin-jest-hoist-15.0.0.tgz"
     },
+    "babel-plugin-syntax-async-functions": {
+      "version": "6.13.0",
+      "from": "babel-plugin-syntax-async-functions@>=6.8.0 <7.0.0",
+      "resolved": "https://registry.npmjs.org/babel-plugin-syntax-async-functions/-/babel-plugin-syntax-async-functions-6.13.0.tgz"
+    },
+    "babel-plugin-syntax-async-generators": {
+      "version": "6.13.0",
+      "from": "babel-plugin-syntax-async-generators@>=6.5.0 <7.0.0",
+      "resolved": "https://registry.npmjs.org/babel-plugin-syntax-async-generators/-/babel-plugin-syntax-async-generators-6.13.0.tgz"
+    },
+    "babel-plugin-syntax-exponentiation-operator": {
+      "version": "6.13.0",
+      "from": "babel-plugin-syntax-exponentiation-operator@>=6.8.0 <7.0.0",
+      "resolved": "https://registry.npmjs.org/babel-plugin-syntax-exponentiation-operator/-/babel-plugin-syntax-exponentiation-operator-6.13.0.tgz"
+    },
     "babel-plugin-syntax-flow": {
       "version": "6.13.0",
       "from": "babel-plugin-syntax-flow@>=6.8.0 <7.0.0",
       "resolved": "https://registry.npmjs.org/babel-plugin-syntax-flow/-/babel-plugin-syntax-flow-6.13.0.tgz"
+    },
+    "babel-plugin-syntax-object-rest-spread": {
+      "version": "6.13.0",
+      "from": "babel-plugin-syntax-object-rest-spread@>=6.8.0 <7.0.0",
+      "resolved": "https://registry.npmjs.org/babel-plugin-syntax-object-rest-spread/-/babel-plugin-syntax-object-rest-spread-6.13.0.tgz"
+    },
+    "babel-plugin-syntax-trailing-function-commas": {
+      "version": "6.13.0",
+      "from": "babel-plugin-syntax-trailing-function-commas@>=6.3.13 <7.0.0",
+      "resolved": "https://registry.npmjs.org/babel-plugin-syntax-trailing-function-commas/-/babel-plugin-syntax-trailing-function-commas-6.13.0.tgz"
+    },
+    "babel-plugin-transform-async-generator-functions": {
+      "version": "6.17.0",
+      "from": "babel-plugin-transform-async-generator-functions@>=6.17.0 <7.0.0",
+      "resolved": "https://registry.npmjs.org/babel-plugin-transform-async-generator-functions/-/babel-plugin-transform-async-generator-functions-6.17.0.tgz"
+    },
+    "babel-plugin-transform-async-to-generator": {
+      "version": "6.16.0",
+      "from": "babel-plugin-transform-async-to-generator@>=6.16.0 <7.0.0",
+      "resolved": "https://registry.npmjs.org/babel-plugin-transform-async-to-generator/-/babel-plugin-transform-async-to-generator-6.16.0.tgz"
     },
     "babel-plugin-transform-es2015-arrow-functions": {
       "version": "6.8.0",
@@ -422,10 +472,20 @@
       "from": "babel-plugin-transform-es2015-unicode-regex@>=6.3.13 <7.0.0",
       "resolved": "https://registry.npmjs.org/babel-plugin-transform-es2015-unicode-regex/-/babel-plugin-transform-es2015-unicode-regex-6.11.0.tgz"
     },
+    "babel-plugin-transform-exponentiation-operator": {
+      "version": "6.8.0",
+      "from": "babel-plugin-transform-exponentiation-operator@>=6.3.13 <7.0.0",
+      "resolved": "https://registry.npmjs.org/babel-plugin-transform-exponentiation-operator/-/babel-plugin-transform-exponentiation-operator-6.8.0.tgz"
+    },
     "babel-plugin-transform-flow-strip-types": {
       "version": "6.14.0",
       "from": "babel-plugin-transform-flow-strip-types@>=6.8.0 <7.0.0",
       "resolved": "https://registry.npmjs.org/babel-plugin-transform-flow-strip-types/-/babel-plugin-transform-flow-strip-types-6.14.0.tgz"
+    },
+    "babel-plugin-transform-object-rest-spread": {
+      "version": "6.16.0",
+      "from": "babel-plugin-transform-object-rest-spread@>=6.16.0 <7.0.0",
+      "resolved": "https://registry.npmjs.org/babel-plugin-transform-object-rest-spread/-/babel-plugin-transform-object-rest-spread-6.16.0.tgz"
     },
     "babel-plugin-transform-regenerator": {
       "version": "6.16.1",
@@ -451,6 +511,11 @@
       "version": "15.0.0",
       "from": "babel-preset-jest@>=15.0.0 <16.0.0",
       "resolved": "https://registry.npmjs.org/babel-preset-jest/-/babel-preset-jest-15.0.0.tgz"
+    },
+    "babel-preset-stage-3": {
+      "version": "6.17.0",
+      "from": "babel-preset-stage-3@latest",
+      "resolved": "https://registry.npmjs.org/babel-preset-stage-3/-/babel-preset-stage-3-6.17.0.tgz"
     },
     "babel-register": {
       "version": "6.16.0",
