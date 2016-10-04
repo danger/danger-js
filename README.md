@@ -1,6 +1,6 @@
 # danger-js
 
-Danger on Node 
+Danger on Node, wonder what's going on? see [VISION.md](VISION.md)
 
 ### Get started?
 
