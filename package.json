@@ -6,6 +6,10 @@
   "bin": {
     "danger": "distribution/commands/runner.js"
   },
+  "jest": {
+    "verbose": true,
+    "testPathIgnorePatterns": ["/node_modules/", "/distribution/"]
+  },
   "scripts": {
     "test": "jest",
     "testwatch": "jest --watch",
@@ -13,8 +17,7 @@
     "lint": "eslint ./source",
     "fixlint": "eslint ./source --fix",
     "build": "babel source --out-dir distribution",
-    "buildwatch": "babel source --watch --out-dir distribution",
-    "lock": "npm prune; npm dedupe; npm shrinkwrap --dev"
+    "buildwatch": "babel source --watch --out-dir distribution"
   },
   "repository": {
     "type": "git",
@@ -39,12 +42,11 @@
     "babel-preset-stage-3": "^6.17.0",
     "eslint": "^3.3.1",
     "eslint-config-standard": "^6.0.0-beta.3",
-    "eslint-plugin-flow-vars": "^0.5.0",
-    "eslint-plugin-flowtype": "^2.19.0",
+    "eslint-plugin-flowtype": "^2.20.0",
     "eslint-plugin-promise": "^2.0.1",
     "eslint-plugin-standard": "^2.0.0",
     "flow-bin": "^0.32.0",
-    "jest-cli": "^15.1.1"
+    "jest-cli": "^16.0.0"
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",

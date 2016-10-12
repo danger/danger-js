@@ -11,7 +11,11 @@ However,
 ``` sh
 git clone https://github.com/danger/danger-js.git
 cd danger-js
-npm install
+
+# if you don't have have yarn installed
+npm install -g yarn
+ 
+yarn install
 ```
 
 You can then verify your install by running the tests, and the linters:
