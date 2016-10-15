@@ -10,7 +10,7 @@ export default class FakeCI {
   get isCI() : boolean { return true }
   get isPR() : boolean { return true }
 
-  get pullRequestID(): string { return "350" }
+  get pullRequestID(): string { return "327" }
   get repoSlug(): string { return "artsy/emission" }
   get repoURL(): string { return "maybe not needed?" }
   get supportedPlatforms() : string[] { return ["github"] }

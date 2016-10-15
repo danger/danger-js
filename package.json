@@ -57,6 +57,7 @@
     "babel-plugin-syntax-async-functions": "^6.13.0",
     "babel-plugin-transform-regenerator": "^6.16.1",
     "commander": "^2.9.0",
-    "node-fetch": "^1.6.3"
+    "node-fetch": "^1.6.3",
+    "parse-diff": "^0.4.0"
   }
 }

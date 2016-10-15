@@ -16,7 +16,7 @@
     "quotes": [1, "double", "avoid-escape"],
     "flowtype/define-flow-type": 1,
     "flowtype/require-parameter-type": 1,
-    "flowtype/require-return-type": [ 1,"always", { "annotateUndefined": "never" } ],
+    "flowtype/require-return-type": [ 0,"always", { "annotateUndefined": "never" } ],
     "flowtype/space-after-type-colon": [ 1, "always" ],
     "flowtype/space-before-type-colon": [ 1, "never" ],
     "flowtype/type-id-match": [ 0, "^([A-Z][a-z0-9]+)+Type$" ],
