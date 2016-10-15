@@ -1,7 +1,7 @@
 // @flow
 "use strict"
 
-import type { Metadata, Comment, Platform } from "./platform"
+// import type { Metadata, Comment, Platform } from "./platform"
 import fetch from "node-fetch"
 
 export type APIToken = string;
@@ -12,12 +12,11 @@ export class GitHub {
   token: APIToken
   constructor(token: APIToken) { this.token = token }
 
-  async getInfo() {
-   console.log("starting")
-  let deets = await this.getUserInfo()
-  console.log(deets)
+  async getInfo() : void {
+    console.log("starting")
+    let deets = await this.getUserInfo()
+    console.log(deets)
   }
-
 
   async getUserInfo(): Promise<any> {
     return fetch("https://api.github.com/user", {
