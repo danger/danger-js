@@ -1,5 +1,7 @@
 // @flow
 
+import type { CISource } from "../ci_source/ci_source"
+
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any;
 
@@ -9,7 +11,9 @@ export type Comment = {
     body: string
 }
 
-// export interface Platform {
+export interface Platform {
+    ciSource: CISource
+}
 //     envVars: () => string[];
 //     optionalEnvVars: () => string[];
 
