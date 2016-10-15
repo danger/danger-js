@@ -5,6 +5,7 @@
     ],
     "plugins": [
         "transform-flow-strip-types",
+        "syntax-async-functions",
         "transform-regenerator"
-      ]
+    ]
 }

@@ -8,8 +8,7 @@
   "plugins": [
     "standard",
     "promise",
-    "flowtype",
-    "flow-vars"
+    "flowtype"
   ],
   "presets": ["es2015"],
   "rules": {

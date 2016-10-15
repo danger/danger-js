@@ -5,8 +5,8 @@ node_js:
 script:
   - npm test
   - npm run build
-  - npm link
-  - danger
+  # - npm link
+  # - danger
 
 after_script:
   - npm run flow
