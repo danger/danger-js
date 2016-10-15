@@ -22,7 +22,7 @@ program
 
 let source = getCISourceForEnv(process.env)
 let fake = new FakeCI(process.env)
-let github = new GitHub("insert here", fake)
+let github = new GitHub("OK", fake)
 github.getInfo()
 
 if (source) {
