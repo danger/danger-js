@@ -1,8 +1,10 @@
 // @flow
+import "babel-polyfill"
 
 var program = require("commander")
 
 import { getCISourceForEnv } from "../ci_source/ci_source_selector"
+import { GitHub } from "../platforms/github"
 
 program
   .option("-h, --head [commitish]", "TODO: Set the head commitish")
@@ -11,6 +13,9 @@ program
   .parse(process.argv)
 
 let source = getCISourceForEnv(process.env)
+let github = new GitHub("token")
+github.getInfo()
+
 if (source) {
   console.log("OK?")
   console.log(source.isCI)

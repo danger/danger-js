@@ -11,6 +11,7 @@ describe(".isCI", () => {
     let travis = new Travis(correctEnv)
     expect(travis.isCI).toBeTruthy()
   })
+
   test("does not validate without josh", () => {
     let travis = new Travis({})
     expect(travis.isCI).toBeFalsy()
