@@ -1,4 +1,5 @@
 // @flow
+"strict mode"
 
 /** A json object that represents the outer ENV */
 export type Env = any;
@@ -6,6 +7,9 @@ export type Env = any;
 /** The shape of an object that represents an individual CI */
 
 export interface CISource {
+    /** The name, mainly for showing errors */
+    env: string,
+
     /** The hash of environment variables */
     env: Env,
 
@@ -27,3 +31,23 @@ export interface CISource {
     /** What is the URL for the repo */
     repoURL: string,
 }
+
+import Travis from "./travis"
+import Fake from "./fake"
+
+/**
+ * Gets a CI Source form the current environment, by asking all known
+ * sources if they can be represented in this environment.
+ * @param {Env} env The environment.
+ * @returns {?CISource} a CI source if it's OK, otherwise Danger can't run.
+*/
+export function getCISourceForEnv(env: Env) : ?CISource {
+  // Fake is what I'm using during dev for the minute
+  let travis = new Travis(env)
+  if (travis.isCI) {
+    return travis
+  } else {
+    return new Fake()
+  }
+}
+

@@ -11,7 +11,16 @@
     "flowtype"
   ],
   "presets": ["es2015"],
+  
   "rules": {
+    "valid-jsdoc": 1,
+    "require-jsdoc": ["error", {
+        "require": {
+            "FunctionDeclaration": true,
+            "MethodDefinition": false,
+            "ClassDeclaration": false
+        }
+    }],
     "space-before-function-paren": ["error", "never"],
     "quotes": [1, "double", "avoid-escape"],
     "flowtype/define-flow-type": 1,

@@ -2,14 +2,14 @@
 // This file represents the module that is exposed as the danger API
 import "babel-polyfill"
 
-type DangerGit = {
+type GitDSL = {
   modified_files: string[],
   created_files: string[],
   deleted_files: string[]
 }
 
 type DangerDSL = {
-  git: DangerGit
+  git: GitDSL
 }
 
 const danger: DangerDSL = {

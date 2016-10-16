@@ -7,6 +7,8 @@ export default class Travis {
   env: Env
   constructor(env: Env) { this.env = env }
 
+  get name(): string { return "Travis CI" }
+
   get isCI() : boolean {
     return ensureEnvKeysExist(this.env, ["HAS_JOSH_K_SEAL_OF_APPROVAL"])
   }

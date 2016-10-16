@@ -6,6 +6,7 @@ import type { Env } from "./ci_source"
 export default class FakeCI {
   env: Env
   constructor(env: Env) { this.env = env }
+  get name(): string { return "Fake Testing CI" }
 
   get isCI() : boolean { return true }
   get isPR() : boolean { return true }
