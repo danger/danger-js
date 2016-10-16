@@ -1,7 +1,6 @@
 // @flow
 "use strict"
 
-// import type { Platform } from "../platforms/platform"
 import type { GitDSL } from "../dsl/Git"
 
 export default class DangerDSL {

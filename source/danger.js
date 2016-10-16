@@ -12,12 +12,14 @@ type DangerDSL = {
   git: GitDSL
 }
 
-const danger: DangerDSL = {
+/** Fails the build */
+export function fail(message: string) {
+}
+
+export const danger: DangerDSL = {
   git: {
     modified_files: ["hello world"],
     created_files: ["other file"],
     deleted_files: ["last file"]
   }
 }
-
-export default danger
