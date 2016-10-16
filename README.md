@@ -39,7 +39,7 @@ flow-typed install
 
 ( and maybe `flow-typed install jest@14`)
 
-You can run the `danger` command globally from your dev build by running `npm link`.
+You can run the `danger` command globally from your dev build by running `npm run link`.
 
 ### What is the TODO?
 
