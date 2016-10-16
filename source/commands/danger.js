@@ -1,4 +1,7 @@
 #! /usr/bin/env node
+
+console.log("OK")
+
 // @flow
 // This is needed so that other files can use async funcs
 import "babel-polyfill"
@@ -14,7 +17,4 @@ program
   .command("run", "Runs danger on your local system", {isDefault: true})
   .command("init", "Creates a new Dangerfile.js")
   .command("local", "Runs your changes against ")
-
-console.log("pre?")
-program.parse(process.argv)
-console.log("post?")
+  .parse(process.argv)
