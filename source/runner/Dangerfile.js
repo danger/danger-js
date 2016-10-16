@@ -18,7 +18,9 @@ export default class Dangerfile {
       // then user get typed data, and we fill it in
       // via the VM context
 
-      const cleaned = data.replace(/import danger from/gi, "// import danger from")
+      const cleaned = data
+        .replace(/import danger /gi, "// import danger ")
+        .replace(/import { danger/gi, "// import { danger ")
 
       const script = new vm.Script(cleaned, {
         filename: file,
@@ -28,12 +30,20 @@ export default class Dangerfile {
         timeout: 1000 // ms
       })
 
+      let failed = false
+      const fail = (message: string) => {
+        console.error(message)
+        failed = true
+      }
+
       const context: any = {
+        fail,
         console,
         danger: this.dsl
       }
 
       script.runInNewContext(context)
+      if (failed) { process.exitCode = 1 }
     })
   }
 }
