@@ -4,7 +4,7 @@ Danger on Node, wonder what's going on? see [VISION.md](VISION.md)
 
 ### Get started?
 
-This is like, really, really early.
+This is like, pretty early. If you can take a bit of heat, it's usable in production.
 
 However, 
 
