@@ -30,6 +30,9 @@ export interface CISource {
 
     /** What is the URL for the repo */
     repoURL: string,
+
+    /** What is the project name */
+    name: string
 }
 
 import Travis from "./travis"

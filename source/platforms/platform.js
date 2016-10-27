@@ -1,31 +1,45 @@
 // @flow
 
-import type { CISource } from "../ci_source/ci_source"
+import type { Env, CISource } from "../ci_source/ci_source"
+import type { GitDSL } from "../dsl/git"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any;
 
 /** A type that represents a comment */
 export type Comment = {
-    id: string,
-    body: string
+    /**
+     *  UUID for the comment
+     *
+     * @type {string}
+     */
+    id: string;
+    /**
+     * Textual representation of comment
+     *
+     * @type {string} body string
+     */
+    body: string;
+    /**
+     * Was this posted by the account Danger has access to?
+     *
+     * @type {bool} true if Danger can edit
+     */
+    ownedByDanger: bool;
 }
 
 export interface Platform {
     /** Mainly for logging and error reporting */
-    name: String,
-    ciSource: CISource,
+    name: string;
+    /** Used internally for getting PR/Repo metadata */
+    ciSource: CISource;
     /** Pulls in the Code Review Metadata for inspection */
-    getReviewInfo: () => Promise<any>,
+    getReviewInfo: () => Promise<any>;
     /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
-    fetchDiffInfo: () => Promise<GitDSL>
+    getReviewDiff: () => Promise<GitDSL>;
+    /** Creates a comment on the PR */
+    createComment: (body: string) => Promise<?Comment>;
 }
-
-//     envVars: () => string[];
-//     optionalEnvVars: () => string[];
-
-//     /** Fetch Pull Request Metadata */
-//     async fetchPR: (id: string) => Promise<Metadata>;
 
 //     /** Download all the comments in a PR */
 //     async downloadComments: (id: string) => Promise<Comment[]>;
