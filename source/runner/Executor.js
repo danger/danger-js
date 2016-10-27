@@ -1,6 +1,7 @@
 import Dangerfile from "../runner/Dangerfile"
 import DangerDSL from "../dsl/DangerDSL"
 import { Platform } from "../platforms/platform"
+import type { Violation } from "../platforms/messaging/violation"
 
 // This is still badly named, maybe it really sbhould just be runner?
 
@@ -18,6 +19,14 @@ export default class Executor {
     const pr = await this.platform.getReviewInfo()
     const dsl = new DangerDSL(pr, git)
     const dangerfile = new Dangerfile(dsl)
-    dangerfile.run("dangerfile.js")
+    const results = await dangerfile.run("dangerfile.js")
+
+    if (results.fails.length) {
+      process.exitCode = 1
+      const fails = results.fails.map((fail: Violation) => fail.message)
+      this.platform.createComment(fails.join("<br/>"))
+    } else {
+      console.log("All Good.")
+    }
   }
 }

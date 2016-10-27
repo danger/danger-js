@@ -19,7 +19,7 @@ if (!source) {
   process.exitCode = 1
 }
 
-if (source) {
+if (source && source.isPR) {
   const platform = getPlatformForEnv(process.env, source)
   if (!platform) {
     console.log(`Could not find a source code hosting platform for ${source.name}`)
