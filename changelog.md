@@ -2,6 +2,7 @@
 
 //  Add your own contribution below
 
+* Travis CI uses all active release lines against the change/ PR
 * Danger will post a comment on a GitHub PR with any Fails - orta
 
 ### 0.0.2 
