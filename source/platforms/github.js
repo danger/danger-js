@@ -68,12 +68,7 @@ export class GitHub {
    * @returns {Promise<any>} JSON response of new comment
    */
   async createComment(comment: string): Promise<any> {
-    console.log("OK?")
-    const response = await this.postPRComment(comment)
-    console.log(response)
-    const json = await response.json()
-    console.log(json)
-    return response
+    return this.postPRComment(comment)
   }
 
   /**

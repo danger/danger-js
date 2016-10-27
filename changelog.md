@@ -1,3 +1,9 @@
+### master
+
+//  Add your own contribution below
+
+* Danger will post a comment on a GitHub PR with any Fails - orta
+
 ### 0.0.2 
 
 OK, first usable for others version. Only supports GitHub and Travis CI.
