@@ -21,6 +21,9 @@
             "ClassDeclaration": false
         }
     }],
+    // Yeah, I know, but I was surprised to find that pretty clear, readable code
+    // would get caught by it.
+    "brace-style": [0],
     "prefer-const": ["error", {
         "destructuring": "any",
         "ignoreReadBeforeAssign": false
