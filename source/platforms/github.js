@@ -27,20 +27,20 @@ export class GitHub {
   name: "GitHub"
 
   async getReviewInfo() : Promise<any> {
-    let deets = await this.getPullRequestInfo()
+    const deets = await this.getPullRequestInfo()
     return await deets.json()
   }
 
   async getReviewDiff() : Promise<GitDSL> {
-    let diffReq = await this.getPullRequestDiff()
-    let diff = await diffReq.text()
+    const diffReq = await this.getPullRequestDiff()
+    const diff = await diffReq.text()
 
     // Worth trying to add a flow-typed for this as a tester?
-    let fileDiffs: [any] = parseDiff(diff)
+    const fileDiffs: [any] = parseDiff(diff)
 
-    let addedDiffs = fileDiffs.filter((diff: any) => diff["new"])
-    let removedDiffs = fileDiffs.filter((diff: any) => diff["deleted"])
-    let modifiedDiffs = fileDiffs.filter((diff: any) => !addedDiffs.includes(diff) && !removedDiffs.includes(diff))
+    const addedDiffs = fileDiffs.filter((diff: any) => diff["new"])
+    const removedDiffs = fileDiffs.filter((diff: any) => diff["deleted"])
+    const modifiedDiffs = fileDiffs.filter((diff: any) => !addedDiffs.includes(diff) && !removedDiffs.includes(diff))
 
     return {
       modified_files: modifiedDiffs.map((d: any) => d.to),

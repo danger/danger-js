@@ -13,7 +13,7 @@ program
   .option("-f, --fail-on-errors", "TODO: Fail on errors")
   .parse(process.argv)
 
-let source = getCISourceForEnv(process.env)
+const source = getCISourceForEnv(process.env)
 if (!source) {
   console.log("Could not find a CI source for this run")
   process.exitCode = 1

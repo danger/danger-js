@@ -43,7 +43,7 @@ import Fake from "./fake"
 */
 export function getCISourceForEnv(env: Env) : ?CISource {
   // Fake is what I'm using during dev for the minute
-  let travis = new Travis(env)
+  const travis = new Travis(env)
   if (travis.isCI) {
     return travis
   } else {
