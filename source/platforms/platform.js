@@ -49,7 +49,7 @@ import { GitHub } from "./github"
  * @returns {?Platform} returns a platform if it can be supported
 */
 export function getPlatformForEnv(env: Env, source: CISource) : ?Platform {
-  let github = new GitHub(env["DANGER_GITHUB_API_TOKEN"], source)
+  const github = new GitHub(env["DANGER_GITHUB_API_TOKEN"], source)
   return github
 }
 

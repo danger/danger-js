@@ -16,7 +16,7 @@ export default class Executor {
   async run() {
     const git = await this.platform.getReviewDiff()
     const pr = await this.platform.getReviewInfo()
-    let dsl = new DangerDSL(pr, git)
+    const dsl = new DangerDSL(pr, git)
     const dangerfile = new Dangerfile(dsl)
     dangerfile.run("dangerfile.js")
   }

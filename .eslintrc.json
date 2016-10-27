@@ -21,6 +21,10 @@
             "ClassDeclaration": false
         }
     }],
+    "prefer-const": ["error", {
+        "destructuring": "any",
+        "ignoreReadBeforeAssign": false
+    }],
     "space-before-function-paren": ["error", "never"],
     "quotes": [1, "double", "avoid-escape"],
     "flowtype/define-flow-type": 1,

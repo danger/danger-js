@@ -14,8 +14,8 @@ export default class Travis {
   }
 
   get isPR() : boolean {
-    let mustHave = ["HAS_JOSH_K_SEAL_OF_APPROVAL", "TRAVIS_PULL_REQUEST"]
-    let mustBeInts = ["TRAVIS_REPO_SLUG"]
+    const mustHave = ["HAS_JOSH_K_SEAL_OF_APPROVAL", "TRAVIS_PULL_REQUEST"]
+    const mustBeInts = ["TRAVIS_REPO_SLUG"]
     return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, mustBeInts)
   }
 
