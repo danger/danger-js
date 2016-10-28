@@ -30,6 +30,8 @@ npm run flow
 
 ### Dev Life
 
+We use quite a few semi-bleeding edge features of JS in Danger. Please see the [glossary for an overview](docs/js_glossary.md). Notably Flow, Interfaces, Async/Await and Typealiases. 
+
 You'll have a nicer experience as a developer if you use VS Code with Flow enabled, and if you install flow-typed.
 
 ``` sh
@@ -39,7 +41,10 @@ flow-typed install
 
 ( and maybe `flow-typed install jest@14`)
 
-You can run the `danger` command globally from your dev build by running `npm run link`.
+Tips:
+
+* You can run the `danger` command globally from your dev build by running `npm run link`.
+* If you're using VS Code, press Run to start an example run, should go through most of the process with a debugger attatched. Either use breakpoints, or add `debugger` to get a repl and context.
 
 ### What is the TODO?
 

@@ -1,6 +1,6 @@
 ## New to ES6 + Flow?
 
-I came to JS at a great point in time, a lot of the native tools that can offer so much safety in programming are now available and easy to use in JS. 
+I came to JS at a great point in time, a lot of the tools used in native code that offer so much programming safety are now available and easy to use in JS. Sometimes it feels like Ruby, but with useful editor feedback. 👍. 
 
 ### Flow
 
