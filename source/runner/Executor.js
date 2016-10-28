@@ -26,6 +26,7 @@ export default class Executor {
       const fails = results.fails.map((fail: Violation) => fail.message)
       const comment = fails.join("<br/>")
       this.platform.updateOrCreateComment(comment)
+      console.log("Failed.")
     } else {
       this.platform.deleteMainComment()
       console.log("All Good.")

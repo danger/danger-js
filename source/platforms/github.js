@@ -61,6 +61,7 @@ export class GitHub {
 
   async updateOrCreateComment(newComment: string): Promise<bool> {
     const commentID = await this.getDangerCommentID()
+    console.log(commentID)
     if (commentID) { await this.updateCommentWithID(commentID, newComment) }
     else { await this.createComment(newComment) }
     return true
@@ -109,7 +110,7 @@ export class GitHub {
 
   async getDangerCommentID(): Promise<?number> {
     const userID = await this.getUserID()
-    const allCommentsResponse = await this.getPRComments()
+    const allCommentsResponse = await this.getPullRequestComments()
     const allComments: any[] = await allCommentsResponse.json()
     const dangerComment = allComments.find((comment: any) => comment.user.id === userID)
     return dangerComment ? dangerComment.id : null
@@ -158,12 +159,6 @@ export class GitHub {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID
     return this.get(`repos/${repo}/pulls/${prID}/comments`)
-  }
-
-  getPRComments(): Promise<Response> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/pulls/${prID}`)
   }
 
   getPullRequestDiff(): Promise<Response> {
