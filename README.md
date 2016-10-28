@@ -25,12 +25,12 @@ Then add a run command to your `Package.json`
 "danger": "danger"
 ```
 
-Then add a Dangerfile.js with some rules:
+Then create a `dangerfile.js` in the project root with some rules:
 
 ```js
 import { danger, fail } from "danger"
 
-// warn on changes in Package.json and not in shrinkwrap
+// Make sure there are changelog entries
 const hasChangelog = danger.git.modified_files.includes("changelog.md")
 if (!hasChangelog) {
   fail("No Changelog changes!")
