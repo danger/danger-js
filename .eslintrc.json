@@ -31,7 +31,7 @@
     "space-before-function-paren": ["error", "never"],
     "quotes": [1, "double", "avoid-escape"],
     "flowtype/define-flow-type": 1,
-    "flowtype/require-parameter-type": 1,
+    "flowtype/require-parameter-type": [1, { "excludeArrowFunctions": true }],
     "flowtype/require-return-type": [ 0,"always", { "annotateUndefined": "never" } ],
     "flowtype/space-after-type-colon": [ 1, "always" ],
     "flowtype/space-before-type-colon": [ 1, "never" ],

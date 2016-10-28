@@ -12,8 +12,6 @@ import "babel-polyfill"
 // so, I'm willing to give it a shot here.
 
 export type APIToken = string;
-export type GraphQLQuery = string;
-export type GraphQLResponse = any;
 
 /** This represent the GitHub API, and conforming to the Platform Interface */
 
@@ -78,15 +76,6 @@ export class GitHub {
     return this.postPRComment(comment)
   }
 
-  /**
-   * Gets the list of comments on a PR
-   *
-   * @returns {Promise<Comment[]>} comments
-   */
-  // async getComments(): Promise<Comment[]> {
-  //   // this.getPRComments(comment)
-  // }
-
   // In Danger RB we support a danger_id property,
   // this should be handled at some point
 
@@ -102,11 +91,11 @@ export class GitHub {
     return commentID !== null
   }
 
-    /**
+  /**
    * Updates the main Danger comment, when Danger has run
    * more than once
    *
-   * @param {string} updated text
+   * @param {string} comment updated text
    *
    * @returns {Promise<bool>} did it work?
    */

@@ -3,7 +3,7 @@ import DangerDSL from "../dsl/DangerDSL"
 import { Platform } from "../platforms/platform"
 import type { Violation } from "../platforms/messaging/violation"
 
-// This is still badly named, maybe it really sbhould just be runner?
+// This is still badly named, maybe it really should just be runner?
 
 export default class Executor {
   ciSource: CISource
@@ -24,7 +24,8 @@ export default class Executor {
     if (results.fails.length) {
       process.exitCode = 1
       const fails = results.fails.map((fail: Violation) => fail.message)
-      this.platform.updateOrCreateComment(fails.join("<br/>"))
+      const comment = fails.join("<br/>")
+      this.platform.updateOrCreateComment(comment)
     } else {
       this.platform.deleteMainComment()
       console.log("All Good.")
