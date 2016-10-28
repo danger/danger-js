@@ -61,7 +61,6 @@ export class GitHub {
 
   async updateOrCreateComment(newComment: string): Promise<bool> {
     const commentID = await this.getDangerCommentID()
-    console.log(commentID)
     if (commentID) { await this.updateCommentWithID(commentID, newComment) }
     else { await this.createComment(newComment) }
     return true
@@ -118,16 +117,14 @@ export class GitHub {
 
   async updateCommentWithID(id: number, comment: string): Promise<Response> {
     const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/issues/${prID}/comments/${id}`, {}, {
+    return this.patch(`repos/${repo}/issues/comments/${id}`, {}, {
       body: comment
-    }, "PATCH")
+    })
   }
 
   async deleteCommentWithID(id: number): Promise<Response> {
     const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/issues/${prID}/comments/${id}`, {}, {}, "DELETE")
+    return this.get(`repos/${repo}/issues/comments/${id}`, {}, {}, "DELETE")
   }
 
   async getUserID(): Promise<number> {
@@ -158,7 +155,7 @@ export class GitHub {
   getPullRequestComments(): Promise<Response> {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/pulls/${prID}/comments`)
+    return this.get(`repos/${repo}/issues/${prID}/comments`)
   }
 
   getPullRequestDiff(): Promise<Response> {
@@ -171,15 +168,13 @@ export class GitHub {
 
   // maybe this can move into the stuff below
   post(path: string, headers: any = {}, body: any = {}, method: string = "POST"): Promise<Response> {
-    var myHeaders = new fetch.Headers()
-    myHeaders.append("Content-Type", "application/json")
-    myHeaders.append("Authorization", `token ${this.token}`)
-    myHeaders.append("Accept", "application/json")
-
     return fetch(`https://api.github.com/${path}`, {
       method: method,
       body: JSON.stringify(body),
-      headers: myHeaders
+      headers: {
+        "Authorization": `token ${this.token}`,
+        "Content-Type": "application/json",
+        ...headers }
     })
   }
 
@@ -187,7 +182,21 @@ export class GitHub {
     return fetch(`https://api.github.com/${path}`, {
       method: method,
       body: body,
-      headers: { "Authorization": `token ${this.token}`, ...headers }
+      headers: {
+        "Authorization": `token ${this.token}`,
+        "Content-Type": "application/json",
+        ...headers }
+    })
+  }
+
+  patch(path: string, headers: any = {}, body: any = {}, method: string = "PATCH"): Promise<Response> {
+    return fetch(`https://api.github.com/${path}`, {
+      method: method,
+      body: JSON.stringify(body),
+      headers: {
+        "Authorization": `token ${this.token}`,
+        "Content-Type": "application/json",
+        ...headers }
     })
   }
 }

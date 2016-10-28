@@ -13,4 +13,3 @@ if (!hasChangelog) {
 // console.log(danger)
 // console.log(danger.git)
 // console.log(danger.git.created_files)
-fail("Another message instead")
