@@ -4,9 +4,50 @@ Danger on Node, wonder what's going on? see [VISION.md](VISION.md)
 
 ### Get started?
 
-This is like, pretty early. If you can take a bit of heat, it's usable in production.
+This is like, kinda early. If you can take a bit of heat, it's usable in production as of 0.0.4.
 
-However, 
+### Early Adopters
+
+*Welcome!*
+
+So, what's the deal? Well, right now Danger JS does the MVP of the Ruby version. You can look at Git metadata, or GitHub metadata on Travis CI. 
+
+Danger can fail your build, write a comment on GitHub, edit it as your build changes and then delete it once you've passed review.
+
+To install:
+
+```sh
+npm install danger --save-dev
+```
+Then add a run command to your `Package.json`
+
+```js
+"danger": "danger"
+```
+
+Then add a Dangerfile.js with some rules:
+
+```js
+import { danger, fail } from "danger"
+
+// warn on changes in Package.json and not in shrinkwrap
+const hasChangelog = danger.git.modified_files.includes("changelog.md")
+if (!hasChangelog) {
+  fail("No Changelog changes!")
+}
+```
+
+Then you add `npm run danger` to the end of your CI run, and Danger will run. 👍
+
+Notes: 
+
+* the `Dangerfile.js` needs to be able to run on node without transpiling right now.
+* The shape of the API is [`git`](https://github.com/danger/danger-js/blob/master/source/dsl/git.js) and [`pr`](https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/github_api/pr_response.json)
+
+
+#### This thing is broken, I should help improve it
+
+Awesommmmee.
 
 ``` sh
 git clone https://github.com/danger/danger-js.git
@@ -48,9 +89,4 @@ Tips:
 
 ### What is the TODO?
 
-* a GitHub/GitLab [request source](https://github.com/danger/danger/tree/c7880ebd870407e9effa1bb4295540d1fa6b4bbc/lib/danger/request_sources) (avoid deps for these)
-* All of the [CI sources](https://github.com/danger/danger/tree/c7880ebd870407e9effa1bb4295540d1fa6b4bbc/lib/danger/ci_source) from Danger-rb  ( these will be easy )
-* A way to do git.diff metadata see [EnvironmentManager](https://github.com/danger/danger/blob/c7880ebd870407e9effa1bb4295540d1fa6b4bbc/lib/danger/danger_core/environment_manager.rb) for setup, needs to get info from request source
-
-The aim is to be able to have this library self testing with Danger-js ASAP, then smarter abstractions can be thought about.
-
+Check the issues, I try and keep my short term perspective there. Long term is in the [VISION.md](VISION.md).

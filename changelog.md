@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+### 0.0.4
+
 * Danger edit an existing post, and delete it when it's not relevant - orta
 
 ### 0.0.3
