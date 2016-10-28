@@ -39,6 +39,12 @@ export interface Platform {
     getReviewDiff: () => Promise<GitDSL>;
     /** Creates a comment on the PR */
     createComment: (body: string) => Promise<?Comment>;
+    /** Delete the main Danger comment */
+    deleteMainComment: () => Promise<bool>;
+    /** Replace the main Danger comment */
+    editMainComment: (newComment: string) => Promise<any>;
+    /** Replace the main Danger comment */
+    updateOrCreateComment: (newComment: string) => Promise<any>;
 }
 
 //     /** Download all the comments in a PR */

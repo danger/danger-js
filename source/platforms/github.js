@@ -12,8 +12,6 @@ import "babel-polyfill"
 // so, I'm willing to give it a shot here.
 
 export type APIToken = string;
-export type GraphQLQuery = string;
-export type GraphQLResponse = any;
 
 /** This represent the GitHub API, and conforming to the Platform Interface */
 
@@ -61,6 +59,13 @@ export class GitHub {
     }
   }
 
+  async updateOrCreateComment(newComment: string): Promise<bool> {
+    const commentID = await this.getDangerCommentID()
+    if (commentID) { await this.updateCommentWithID(commentID, newComment) }
+    else { await this.createComment(newComment) }
+    return true
+  }
+
   /**
    * Returns the response for the new comment
    *
@@ -71,15 +76,56 @@ export class GitHub {
     return this.postPRComment(comment)
   }
 
+  // In Danger RB we support a danger_id property,
+  // this should be handled at some point
+
   /**
-   * Gets the list of comments on a PR
+   * Deletes the main Danger comment, used when you have
+   * fixed all your failures.
    *
-   * @returns {Promise<Comment[]>} comments
+   * @returns {Promise<bool>} did it work?
    */
-  // async getComments(): Promise<Comment[]> {
-  //   // this.getPRComments(comment)
-  // }
+  async deleteMainComment(): Promise<bool> {
+    const commentID = await this.getDangerCommentID()
+    if (commentID) { await this.deleteCommentWithID(commentID) }
+    return commentID !== null
+  }
+
+  /**
+   * Updates the main Danger comment, when Danger has run
+   * more than once
+   *
+   * @param {string} comment updated text
+   *
+   * @returns {Promise<bool>} did it work?
+   */
+  async editMainComment(comment: string): Promise<bool> {
+    const commentID = await this.getDangerCommentID()
+    if (commentID) { await this.updateCommentWithID(commentID, comment) }
+    return commentID !== null
+  }
+
   // The above is the API for Platform
+
+  async getDangerCommentID(): Promise<?number> {
+    const userID = await this.getUserID()
+    const allCommentsResponse = await this.getPullRequestComments()
+    const allComments: any[] = await allCommentsResponse.json()
+    const dangerComment = allComments.find((comment: any) => comment.user.id === userID)
+    return dangerComment ? dangerComment.id : null
+  }
+
+  async updateCommentWithID(id: number, comment: string): Promise<Response> {
+    const repo = this.ciSource.repoSlug
+    return this.patch(`repos/${repo}/issues/comments/${id}`, {}, {
+      body: comment
+    })
+  }
+
+  async deleteCommentWithID(id: number): Promise<Response> {
+    const repo = this.ciSource.repoSlug
+    return this.get(`repos/${repo}/issues/comments/${id}`, {}, {}, "DELETE")
+  }
 
   async getUserID(): Promise<number> {
     const info = await this.getUserInfo()
@@ -109,13 +155,7 @@ export class GitHub {
   getPullRequestComments(): Promise<Response> {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/pulls/${prID}/comments`)
-  }
-
-  getPRComments(): Promise<Response> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/pulls/${prID}`)
+    return this.get(`repos/${repo}/issues/${prID}/comments`)
   }
 
   getPullRequestDiff(): Promise<Response> {
@@ -126,19 +166,15 @@ export class GitHub {
     })
   }
 
+  // maybe this can move into the stuff below
   post(path: string, headers: any = {}, body: any = {}, method: string = "POST"): Promise<Response> {
-    console.log("posting: ")
-    console.log(JSON.stringify(body))
-
-    var myHeaders = new fetch.Headers()
-    myHeaders.append('Content-Type', 'application/json')
-    myHeaders.append('Authorization', `token ${this.token}`)
-    myHeaders.append('Accept', 'application/json')
-
     return fetch(`https://api.github.com/${path}`, {
       method: method,
       body: JSON.stringify(body),
-      headers: myHeaders
+      headers: {
+        "Authorization": `token ${this.token}`,
+        "Content-Type": "application/json",
+        ...headers }
     })
   }
 
@@ -146,7 +182,21 @@ export class GitHub {
     return fetch(`https://api.github.com/${path}`, {
       method: method,
       body: body,
-      headers: { "Authorization": `token ${this.token}`, ...headers }
+      headers: {
+        "Authorization": `token ${this.token}`,
+        "Content-Type": "application/json",
+        ...headers }
+    })
+  }
+
+  patch(path: string, headers: any = {}, body: any = {}, method: string = "PATCH"): Promise<Response> {
+    return fetch(`https://api.github.com/${path}`, {
+      method: method,
+      body: JSON.stringify(body),
+      headers: {
+        "Authorization": `token ${this.token}`,
+        "Content-Type": "application/json",
+        ...headers }
     })
   }
 }

@@ -2,6 +2,10 @@
 
 //  Add your own contribution below
 
+* Danger edit an existing post, and delete it when it's not relevant - orta
+
+### 0.0.3
+
 * Danger will post a comment on a GitHub PR with any Fails - orta
 
 ### 0.0.2 
