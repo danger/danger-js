@@ -37,7 +37,8 @@ if (!hasChangelog) {
 }
 ```
 
-Then you add `npm run danger` to the end of your CI run, and Danger will run. 👍
+Then you add `npm run danger` to the end of your CI run, and Danger will run. Here's [an example](https://github.com/artsy/emission/pull/385). 👍
+
 
 Notes: 
 
