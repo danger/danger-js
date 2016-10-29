@@ -60,7 +60,7 @@ export interface Platform {
 //     async editComment: (comment: Comment, newBody: string) => Promise<boolean>;
 // }
 
-import { GitHub } from "./github"
+import { GitHub } from "./GitHub"
 
 /**
  * Pulls out a platform for Danger to communicate on based on the environment

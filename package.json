@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "0.0.4",
+  "version": "0.0.10",
   "description": "Automate your culture",
   "main": "distribution/danger.js",
   "bin": {
@@ -19,6 +19,7 @@
     "flow": "flow; test $? -eq 0 -o $? -eq 2",
     "lint": "eslint ./source",
     "fix": "eslint ./source --fix",
+    "prepublish": "npm run build",
     "build": "babel source --out-dir distribution --source-maps",
     "buildwatch": "babel source --watch --out-dir distribution",
     "link": "npm run build ; chmod +x distribution/commands/danger.js ; npm link"

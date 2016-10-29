@@ -50,17 +50,29 @@ export default class Dangerfile {
     const context: any = {
       fail,
       console,
+      require,
       danger: this.dsl
     }
 
-    script.runInNewContext(context)
+    console.log("Running Script")
+    try {
+      script.runInNewContext(context)
+    }
+    catch (e) {
+      console.log(e.toString())
+    }
+
     return results
   }
 
   readFile(path: String): Promise<string> {
     return new Promise((resolve: any, reject: any) => {
       fs.readFile(path, "utf8", (err: Error, data: string) => {
-        if (err) { return reject(err) }
+        if (err) {
+          console.error("Error: " + err.message)
+          process.exitCode = 1
+          return reject(err)
+        }
         resolve(data)
       })
     })
