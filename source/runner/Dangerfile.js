@@ -50,10 +50,18 @@ export default class Dangerfile {
     const context: any = {
       fail,
       console,
+      require,
       danger: this.dsl
     }
 
-    script.runInNewContext(context)
+    console.log("Running Script")
+    try {
+      script.runInNewContext(context)
+    }
+    catch (e) {
+      console.log(e.toString())
+    }
+
     return results
   }
 

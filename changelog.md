@@ -2,6 +2,10 @@
 
 //  Add your own contribution below
 
+### 0.0.5-0.0.10
+
+* Changes some files casing, added some logs, a bit of error reporting, and verifying everything works through npm - orta
+
 ### 0.0.4
 
 * Danger edit an existing post, and delete it when it's not relevant - orta

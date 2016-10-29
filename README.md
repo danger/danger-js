@@ -4,9 +4,7 @@ Danger on Node, wonder what's going on? see [VISION.md](VISION.md)
 
 ### Get started?
 
-This is like, kinda early. If you can take a bit of heat, it's usable in production as of 0.0.4.
-
-Bah, there's something wrong with the deploy. So for now, it's not working as an imported module. [See this PR](https://github.com/artsy/emission/pull/385).
+This is like, kinda early. If you can take a bit of heat, it's usable in production as of 0.0.10. Note: There is basically no error reporting ATM.
 
 ### Early Adopters
 

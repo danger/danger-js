@@ -17,9 +17,12 @@ export default class Executor {
   async run() {
     const git = await this.platform.getReviewDiff()
     const pr = await this.platform.getReviewInfo()
+    console.log("Got github deets")
+
     const dsl = new DangerDSL(pr, git)
     const dangerfile = new Dangerfile(dsl)
     const results = await dangerfile.run("dangerfile.js")
+    console.log("Got results")
 
     if (results.fails.length) {
       process.exitCode = 1
