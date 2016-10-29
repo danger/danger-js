@@ -1,4 +1,4 @@
-import Travis from "../travis.js"
+import Travis from "../Travis"
 
 const correctEnv = {
   "HAS_JOSH_K_SEAL_OF_APPROVAL": "true",
