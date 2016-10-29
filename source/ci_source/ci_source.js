@@ -35,8 +35,8 @@ export interface CISource {
     name: string
 }
 
-import Travis from "./travis"
-import Fake from "./fake"
+import Travis from "./Travis"
+import Fake from "./Fake"
 
 /**
  * Gets a CI Source form the current environment, by asking all known
