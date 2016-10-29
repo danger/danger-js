@@ -60,7 +60,11 @@ export default class Dangerfile {
   readFile(path: String): Promise<string> {
     return new Promise((resolve: any, reject: any) => {
       fs.readFile(path, "utf8", (err: Error, data: string) => {
-        if (err) { return reject(err) }
+        if (err) {
+          console.error("Error: " + err.message)
+          process.exitCode = 1
+          return reject(err)
+        }
         resolve(data)
       })
     })
