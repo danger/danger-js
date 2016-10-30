@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+* Started turning this into a real project by adding tests - orta
+
 ### 0.0.5-0.0.10
 
 * Changes some files casing, added some logs, a bit of error reporting, and verifying everything works through npm - orta
