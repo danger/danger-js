@@ -4,7 +4,14 @@
 import type { GitDSL } from "../dsl/GitDSL"
 import type { GitHubDSL } from "../dsl/GitHubDSL"
 
-export default class DangerDSL {
+export interface DangerDSLType {
+    git: GitDSL;
+    github: GitHubDSL;
+}
+
+/* END FLOWTYPE EXPORT */
+
+export class DangerDSL {
   git: GitDSL
   github: GitHubDSL
 

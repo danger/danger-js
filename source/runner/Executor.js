@@ -1,5 +1,5 @@
 import Dangerfile from "../runner/Dangerfile"
-import DangerDSL from "../dsl/DangerDSL"
+import { DangerDSL } from "../dsl/DangerDSL"
 import { Platform } from "../platforms/platform"
 import type { Violation } from "../platforms/messaging/violation"
 

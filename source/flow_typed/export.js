@@ -1,33 +1,22 @@
 
-export default class DangerDSL {
-  git: GitDSL
-  github: GitHubDSL
-
-  constructor(pr: any, git: GitDSL) {
-    this.git = git
-    this.github = {
-      pr
-    }
-  }
+interface DangerDSLType {
+    git: GitDSL;
+    github: GitHubDSL;
 }
-
-export interface GitDSL {
+interface GitDSL {
   modified_files: string[],
   created_files: string[],
   deleted_files: string[]
 }
-
-export interface GitHubDSL {
+interface GitHubDSL {
     pr: GitHubPRDSL
 }
-
-export interface GitHubUser {
+interface GitHubUser {
     id: number,
     login: string,
     type: "User" | "Organization"
 }
-
-export interface GitHubRepo {
+interface GitHubRepo {
     id: number,
     name: string,
     full_name: string,
@@ -36,15 +25,13 @@ export interface GitHubRepo {
     description: string,
     fork: false
 }
-
-export interface GitHubSHARef {
+interface GitHubSHARef {
     label: string,
     ref: string,
     sha: string,
     user: GitHubUser
 }
-
-export interface GitHubPRDSL {
+interface GitHubPRDSL {
   number: number,
   state: "closed" | "open" | "locked" | "merged",
   locked: boolean,
@@ -57,5 +44,23 @@ export interface GitHubPRDSL {
   head: GitHubSHARef,
   base: GitHubSHARef
 }
-
-declare var danger: DangerDSL
+declare module "danger" {
+  declare module.exports: {
+  /**
+   * Fails a build, outputting a specific reason for failing
+   *
+   * @param {string} message the String to output
+   */
+    declare function fail(message: string): void;
+  /** Typical console */
+    declare var console: any;
+  /** Typical require statement */
+    declare function require(id: string): any;
+  /**
+   * The Danger object to work with
+   *
+   * @type {DangerDSL}
+   */
+    declare var danger: DangerDSL
+  };
+}

@@ -1,10 +1,40 @@
+// @flow
+
 // https://nodejs.org/api/vm.html
 // https://60devs.com/executing-js-code-with-nodes-vm-module.html
 
 import fs from "fs"
 import vm from "vm"
-import DangerDSL from "../dsl/DangerDSL"
+import { DangerDSL } from "../dsl/DangerDSL"
+import type { DangerDSLType } from "../dsl/DangerDSL" // eslint-disable-line no-duplicate-imports
 import type { Violation } from "../platforms/messaging/violation"
+
+// This is used to build the Flow Typed definition, which is why it is
+// overly commented, and has weird comments.
+
+export interface DangerContext {
+/* BEGIN FLOWTYPE EXPORT */
+  /**
+   * Fails a build, outputting a specific reason for failing
+   *
+   * @param {string} message the String to output
+   */
+  fail(message: string): void;
+
+  /** Typical console */
+  console: any;
+
+  /** Typical require statement */
+  require(id: string): any;
+
+  /**
+   * The Danger object to work with
+   *
+   * @type {DangerDSLType}
+   */
+  danger: DangerDSLType
+/* END FLOWTYPE EXPORT */
+}
 
 export interface DangerResults {
   fails: Violation[]
@@ -47,7 +77,7 @@ export default class Dangerfile {
       results.fails.push({ message })
     }
 
-    const context: any = {
+    const context: Context = {
       fail,
       console,
       require,
