@@ -18,9 +18,17 @@ const mockGitHubWithGetForPath = (expectedPath): GitHub => {
   return github
 }
 
-it("sets the correct paths for pull request comments", () => {
-  const expectedPath = "repos/artsy/emission/issues/327/comments"
-  const github = mockGitHubWithGetForPath(expectedPath)
-  expect(github.getPullRequestComments())
-})
+describe("API results", () => {
+  it("sets the correct paths for pull request comments", () => {
+    const expectedPath = "repos/artsy/emission/issues/327/comments"
+    const github = mockGitHubWithGetForPath(expectedPath)
+    expect(github.getPullRequestComments())
+  })
 
+  it("sets the correct paths for getPullRequestDiff", () => {
+    const expectedPath = "repos/artsy/emission/issues/327/comments"
+    const github = mockGitHubWithGetForPath(expectedPath)
+    expect(github.getPullRequestDiff())
+  })
+
+})

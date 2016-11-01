@@ -22,7 +22,9 @@
     "prepublish": "npm run build",
     "build": "babel source --out-dir distribution --source-maps",
     "buildwatch": "babel source --watch --out-dir distribution",
-    "link": "npm run build ; chmod +x distribution/commands/danger.js ; npm link"
+    "link": "npm run build ; chmod +x distribution/commands/danger.js ; npm link",
+    "export-flowtype": "node source/flow_typed/create-export.js"
+
   },
   "repository": {
     "type": "git",

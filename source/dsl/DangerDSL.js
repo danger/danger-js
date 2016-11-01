@@ -1,14 +1,17 @@
 // @flow
 "use strict"
 
-import type { GitDSL } from "../dsl/Git"
+import type { GitDSL } from "../dsl/GitDSL"
+import type { GitHubDSL } from "../dsl/GitHubDSL"
 
 export default class DangerDSL {
   git: GitDSL
-  pr: any
+  github: GitHubDSL
 
   constructor(pr: any, git: GitDSL) {
     this.git = git
-    this.pr = pr
+    this.github = {
+      pr
+    }
   }
 }
