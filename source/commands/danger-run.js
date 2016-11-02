@@ -16,6 +16,7 @@ program
 const source = getCISourceForEnv(process.env)
 if (!source) {
   console.log("Could not find a CI source for this run")
+  // Check for ENV["CI"] and wanr they might want a local command instead?
   process.exitCode = 1
 }
 
@@ -29,6 +30,8 @@ if (source && source.isPR) {
   if (platform) {
     console.log(`OK, looks good ${source.name} on ${platform.name}`)
     const exec = new Executor(source, platform)
-    exec.run()
+    exec.setup()
+    const results = exec.run()
+    exec.handleResults(results)
   }
 }

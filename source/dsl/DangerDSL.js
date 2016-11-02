@@ -4,9 +4,22 @@
 import type { GitDSL } from "../dsl/GitDSL"
 import type { GitHubDSL } from "../dsl/GitHubDSL"
 
+/**
+ *  The Danger DSL provides the metadata for introspection
+ *  in order to create your own rules.
+ */
 export interface DangerDSLType {
-    git: GitDSL;
-    github: GitHubDSL;
+  /**
+   *  Details specific to the git changes within the code changes.
+   *  Currently, this is just the raw file paths that have been
+   *  added, removed or modified.
+   */
+  git: GitDSL;
+  /**
+   *  The GitHub metadata.
+   *  Currently, this is just the raw PR information.
+   */
+  github: GitHubDSL;
 }
 
 /* END FLOWTYPE EXPORT */
