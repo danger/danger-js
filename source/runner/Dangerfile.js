@@ -1,22 +1,49 @@
+// @flow
+
 // https://nodejs.org/api/vm.html
 // https://60devs.com/executing-js-code-with-nodes-vm-module.html
 
 import fs from "fs"
 import vm from "vm"
-import DangerDSL from "../dsl/DangerDSL"
+import type { DangerDSLType } from "../dsl/DangerDSL"
 import type { Violation } from "../platforms/messaging/violation"
+
+// This is used to build the Flow Typed definition, which is why it is
+// overly commented, and has weird comments.
+
+export interface DangerContext {
+/* BEGIN FLOWTYPE EXPORT */
+  /**
+   * Fails a build, outputting a specific reason for failing
+   *
+   * @param {string} message the String to output
+   */
+  fail(message: string): void;
+
+  /** Typical console */
+  console: any;
+
+  /** Typical require statement */
+  require(id: string): any;
+
+  /**
+   * The Danger object to work with
+   *
+   * @type {DangerDSLType}
+   */
+  danger: DangerDSLType
+/* END FLOWTYPE EXPORT */
+}
 
 export interface DangerResults {
   fails: Violation[]
 }
 
-export default class Dangerfile {
-  dsl: DangerDSL
+export class Dangerfile {
+  dsl: DangerDSLType
 
-  constructor(dsl: DangerDSL) {
+  constructor(dsl: DangerDSLType) {
     this.dsl = dsl
-    this.failed = false
-    this.fails = []
   }
 
   async run(file: string): Promise<DangerResults> {
@@ -47,7 +74,7 @@ export default class Dangerfile {
       results.fails.push({ message })
     }
 
-    const context: any = {
+    const context: DangerContext = {
       fail,
       console,
       require,
@@ -65,15 +92,23 @@ export default class Dangerfile {
     return results
   }
 
-  readFile(path: String): Promise<string> {
+  /**
+   * A dumb fs.readFile promise wrapper,
+   * converts to string
+   *
+   * @param {string} path filepath
+   * @returns {Promise<string>} probably your string
+   */
+  readFile(path: string): Promise<string> {
     return new Promise((resolve: any, reject: any) => {
-      fs.readFile(path, "utf8", (err: Error, data: string) => {
+      fs.readFile(path, (err: any, data: Buffer) => {
         if (err) {
           console.error("Error: " + err.message)
           process.exitCode = 1
-          return reject(err)
+          reject(err)
+        } else {
+          resolve(data.toString())
         }
-        resolve(data)
       })
     })
   }
