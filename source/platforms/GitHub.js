@@ -1,7 +1,7 @@
 // @flow
 "use strict"
 
-import type { GitDSL } from "../dsl/git"
+import type { GitDSL } from "../dsl/GitDSL"
 import type { CISource } from "../ci_source/ci_source"
 import parseDiff from "parse-diff"
 
@@ -31,7 +31,7 @@ export class GitHub {
    *
    * @returns {Promise<any>} JSON representation
    */
-  async getReviewInfo() : Promise<any> {
+  getReviewInfo = async function(): Promise<any> {
     const deets = await this.getPullRequestInfo()
     return await deets.json()
   }
@@ -41,7 +41,7 @@ export class GitHub {
    *
    * @returns {Promise<GitDSL>} the git DSL
    */
-  async getReviewDiff() : Promise<GitDSL> {
+  getReviewDiff = async function() : Promise<GitDSL> {
     const diffReq = await this.getPullRequestDiff()
     const diff = await diffReq.text()
 
@@ -59,20 +59,13 @@ export class GitHub {
     }
   }
 
-  async updateOrCreateComment(newComment: string): Promise<bool> {
-    const commentID = await this.getDangerCommentID()
-    if (commentID) { await this.updateCommentWithID(commentID, newComment) }
-    else { await this.createComment(newComment) }
-    return true
-  }
-
   /**
    * Returns the response for the new comment
    *
    * @param {string} comment you want to post
    * @returns {Promise<any>} JSON response of new comment
    */
-  async createComment(comment: string): Promise<any> {
+  createComment = async function(comment: string): Promise<any> {
     return this.postPRComment(comment)
   }
 
@@ -85,10 +78,25 @@ export class GitHub {
    *
    * @returns {Promise<bool>} did it work?
    */
-  async deleteMainComment(): Promise<bool> {
+  deleteMainComment = async function(): Promise<bool> {
     const commentID = await this.getDangerCommentID()
     if (commentID) { await this.deleteCommentWithID(commentID) }
     return commentID !== null
+  }
+
+  /**
+   * Either updates an existing comment, or makes a new one
+   *
+   * @param {string} newComment
+   * @returns {Promise<bool>}
+   *
+   * @memberOf GitHub
+   */
+  updateOrCreateComment = async function(newComment: string): Promise<bool> {
+    const commentID = await this.getDangerCommentID()
+    if (commentID) { await this.updateCommentWithID(commentID, newComment) }
+    else { await this.createComment(newComment) }
+    return true
   }
 
   /**
@@ -99,7 +107,7 @@ export class GitHub {
    *
    * @returns {Promise<bool>} did it work?
    */
-  async editMainComment(comment: string): Promise<bool> {
+  editMainComment = async function(comment: string): Promise<bool> {
     const commentID = await this.getDangerCommentID()
     if (commentID) { await this.updateCommentWithID(commentID, comment) }
     return commentID !== null

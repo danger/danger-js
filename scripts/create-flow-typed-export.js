@@ -22,15 +22,13 @@ fs.readdir("source/dsl", (err, files) => {
   // we need to add either `declare function` or `declare var` to the interface
   const context = moduleContext.split("\n").map((line) => {
     if ((line.length === 0) || (line.includes("*"))) { return line }
-    if (line.includes("(")) { return "    declare function " + line.trim() }
-    if (line.includes(":")) { return "    declare var " + line.trim() }
+    if (line.includes("(")) { return "  declare function " + line.trim() }
+    if (line.includes(":")) { return "  declare var " + line.trim() }
   }).join("\n")
 
   fileOutput += `
 declare module "danger" {
-  declare module.exports: {
-    ${context}
-  };
+  ${context}
 }
 `
   // Remove all JS-y bits

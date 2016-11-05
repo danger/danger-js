@@ -5,20 +5,43 @@
 
 import fs from "fs"
 import vm from "vm"
+import type { DangerResults } from "./DangerResults"
 import type { DangerDSLType } from "../dsl/DangerDSL"
-import type { Violation } from "../platforms/messaging/violation"
 
 // This is used to build the Flow Typed definition, which is why it is
 // overly commented, and has weird comments.
 
-export interface DangerContext {
+export type MarkdownString = string;
+
+interface DangerContext {
 /* BEGIN FLOWTYPE EXPORT */
   /**
    * Fails a build, outputting a specific reason for failing
    *
-   * @param {string} message the String to output
+   * @param {MarkdownString} message the String to output
    */
-  fail(message: string): void;
+  fail(message: MarkdownString): void;
+
+  /**
+   * Highlights low-priority issues, does not fail the build
+   *
+   * @param {MarkdownString} message the String to output
+   */
+  warn(message: MarkdownString): void;
+
+  /**
+   * Puts a message inside the Danger table
+   *
+   * @param {MarkdownString} message the String to output
+   */
+  message(message: MarkdownString): void;
+
+  /**
+   * Puts a message inside the Danger table
+   *
+   * @param {MarkdownString} message the String to output
+   */
+  markdown(message: MarkdownString): void;
 
   /** Typical console */
   console: any;
@@ -33,10 +56,6 @@ export interface DangerContext {
    */
   danger: DangerDSLType
 /* END FLOWTYPE EXPORT */
-}
-
-export interface DangerResults {
-  fails: Violation[]
 }
 
 export class Dangerfile {
@@ -66,22 +85,36 @@ export class Dangerfile {
       timeout: 1000 // ms
     })
 
-    const results = {
-      fails: []
+    const results: DangerResults = {
+      fails: [],
+      warnings: [],
+      messages: [],
+      markdowns: []
     }
 
-    const fail = (message: string) => {
+    const fail = (message: MarkdownString) => {
+      results.warnings.push({ message })
+    }
+    const warn = (message: MarkdownString) => {
       results.fails.push({ message })
     }
+    const message = (message: MarkdownString) => {
+      results.messages.push({ message })
+    }
 
+    const markdown = (message: MarkdownString) => {
+      results.markdowns.push(message)
+    }
     const context: DangerContext = {
       fail,
+      warn,
+      message,
+      markdown,
       console,
       require,
       danger: this.dsl
     }
 
-    console.log("Running Script")
     try {
       script.runInNewContext(context)
     }

@@ -1,7 +1,7 @@
 // @flow
 
 import type { Env, CISource } from "../ci_source/ci_source"
-import type { GitDSL } from "../dsl/git"
+import type { GitDSL } from "../dsl/GitDSL"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any;
@@ -38,7 +38,7 @@ export interface Platform {
     /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
     getReviewDiff: () => Promise<GitDSL>;
     /** Creates a comment on the PR */
-    createComment: (body: string) => Promise<?Comment>;
+    createComment: (body: string) => Promise<any>;
     /** Delete the main Danger comment */
     deleteMainComment: () => Promise<bool>;
     /** Replace the main Danger comment */

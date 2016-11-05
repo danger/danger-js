@@ -30,8 +30,6 @@ if (source && source.isPR) {
   if (platform) {
     console.log(`OK, looks good ${source.name} on ${platform.name}`)
     const exec = new Executor(source, platform)
-    exec.setup()
-    const results = exec.run()
-    exec.handleResults(results)
+    exec.runDanger()
   }
 }
