@@ -31,7 +31,7 @@ export class GitHub {
    *
    * @returns {Promise<any>} JSON representation
    */
-  getReviewInfo = async function(): Promise<any> {
+  async getReviewInfo(): Promise<any> {
     const deets = await this.getPullRequestInfo()
     return await deets.json()
   }
@@ -41,7 +41,7 @@ export class GitHub {
    *
    * @returns {Promise<GitDSL>} the git DSL
    */
-  getReviewDiff = async function() : Promise<GitDSL> {
+  async getReviewDiff() : Promise<GitDSL> {
     const diffReq = await this.getPullRequestDiff()
     const diff = await diffReq.text()
 
@@ -65,7 +65,7 @@ export class GitHub {
    * @param {string} comment you want to post
    * @returns {Promise<any>} JSON response of new comment
    */
-  createComment = async function(comment: string): Promise<any> {
+  async createComment(comment: string): Promise<any> {
     return this.postPRComment(comment)
   }
 
@@ -78,7 +78,7 @@ export class GitHub {
    *
    * @returns {Promise<bool>} did it work?
    */
-  deleteMainComment = async function(): Promise<bool> {
+  async deleteMainComment(): Promise<bool> {
     const commentID = await this.getDangerCommentID()
     if (commentID) { await this.deleteCommentWithID(commentID) }
     return commentID !== null
@@ -87,12 +87,10 @@ export class GitHub {
   /**
    * Either updates an existing comment, or makes a new one
    *
-   * @param {string} newComment
-   * @returns {Promise<bool>}
-   *
-   * @memberOf GitHub
+   * @param {string} newComment string value of comment
+   * @returns {Promise<bool>} success of posting comment
    */
-  updateOrCreateComment = async function(newComment: string): Promise<bool> {
+  async updateOrCreateComment(newComment: string): Promise<bool> {
     const commentID = await this.getDangerCommentID()
     if (commentID) { await this.updateCommentWithID(commentID, newComment) }
     else { await this.createComment(newComment) }
@@ -107,7 +105,7 @@ export class GitHub {
    *
    * @returns {Promise<bool>} did it work?
    */
-  editMainComment = async function(comment: string): Promise<bool> {
+  async editMainComment(comment: string): Promise<bool> {
     const commentID = await this.getDangerCommentID()
     if (commentID) { await this.updateCommentWithID(commentID, comment) }
     return commentID !== null
