@@ -1,7 +1,6 @@
 // @flow
 import type { Violation } from "../platforms/messaging/violation"
-
-export type MarkdownString = string;
+import type { MarkdownString } from "../dsl/Aliases"
 
 /**
  * Representation of what running a Dangerfile generates.

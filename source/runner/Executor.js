@@ -24,8 +24,11 @@ export default class Executor {
    * @returns {void} It's a promise, so a void promise
    */
   async runDanger() {
+    console.log("OK.")
     await this.setup()
+    console.log("Setup.")
     const results = await this.run()
+    console.log("ran.")
     await this.handleResults(results)
   }
 
@@ -59,7 +62,12 @@ export default class Executor {
     }
 
     // Delete the message if there's nothing to say
-    const hasMessages = results.fails.length > 0 || results.warnings.length > 0 || results.messages.length > 0
+    const hasMessages =
+      results.fails.length > 0 ||
+      results.warnings.length > 0 ||
+      results.messages.length > 0 ||
+      results.markdowns.length > 0
+
     if (!hasMessages) {
       console.log("All Good.")
       await this.platform.deleteMainComment()

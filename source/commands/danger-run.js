@@ -11,6 +11,11 @@ program
   .option("-f, --fail-on-errors", "TODO: Fail on errors")
   .parse(process.argv)
 
+process.on("unhandledRejection", function(reason: string, p: any) {
+  console.log("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason)
+    // application specific logging here
+})
+
 const source = getCISourceForEnv(process.env)
 if (!source) {
   console.log("Could not find a CI source for this run")

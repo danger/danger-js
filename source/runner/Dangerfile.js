@@ -7,11 +7,7 @@ import fs from "fs"
 import vm from "vm"
 import type { DangerResults } from "./DangerResults"
 import type { DangerDSLType } from "../dsl/DangerDSL"
-
-// This is used to build the Flow Typed definition, which is why it is
-// overly commented, and has weird comments.
-
-export type MarkdownString = string;
+import type { MarkdownString } from "../dsl/Aliases"
 
 interface DangerContext {
 /* BEGIN FLOWTYPE EXPORT */
