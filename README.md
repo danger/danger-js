@@ -1,16 +1,8 @@
-# danger-js
-
 Danger on Node, wonder what's going on? see [VISION.md](VISION.md)
-
-### Get started?
-
-This is like, kinda early. If you can take a bit of heat, it's usable in production as of 0.0.10. Note: There is basically no error reporting ATM.
-
-### Early Adopters
 
 *Welcome!*
 
-So, what's the deal? Well, right now Danger JS does the MVP of the Ruby version. You can look at Git metadata, or GitHub metadata on Travis CI. 
+So, what's the deal? Well, right now Danger JS does the MVP of [the Ruby version](http://danger.systems). You can look at [Git](https://github.com/danger/danger-js/blob/master/source/dsl/GitDSL.js) metadata, or [GitHub](https://github.com/danger/danger-js/blob/master/source/dsl/GitHubDSL.js) metadata on Travis CI. 
 
 Danger can fail your build, write a comment on GitHub, edit it as your build changes and then delete it once you've passed review.
 
@@ -29,11 +21,24 @@ Then create a `dangerfile.js` in the project root with some rules:
 
 ```js
 import { danger, fail } from "danger"
+const fs = require("fs")
 
 // Make sure there are changelog entries
 const hasChangelog = danger.git.modified_files.includes("changelog.md")
 if (!hasChangelog) {
   fail("No Changelog changes!")
+}
+
+const jsFiles = danger.git.created_files.filter(path => path.endsWith("js"))
+
+// new js files should have `@flow` at the top
+const unFlowedFiles = jsFiles.filter(filepath => {
+  const content = fs.readFileSync(filepath)
+  return !content.includes("@flow")
+})
+
+if (unFlowedFiles.length > 0) {
+  warn(`These new JS files do not have Flow enabled: ${unFlowedFiles.join(", ")}`)
 }
 ```
 
@@ -41,11 +46,11 @@ Then you add `npm run danger` to the end of your CI run, and Danger will run. ðŸ
 
 Notes: 
 
-* the `Dangerfile.js` needs to be able to run on node without transpiling right now.
+* The `Dangerfile.js` needs to be able to run on node without running through babel right now.
 * The shape of the API is [`git`](https://github.com/danger/danger-js/blob/master/source/dsl/git.js) and [`pr`](https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/github_api/pr_response.json)
 
 
-#### This thing is broken, I should help improve it
+#### This thing is broken, I should help improve it!
 
 Awesommmmee.
 
