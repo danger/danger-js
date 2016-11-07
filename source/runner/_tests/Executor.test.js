@@ -3,21 +3,7 @@
 import Executor from "../Executor"
 import Fake from "../../ci_source/Fake"
 import FakePlatform from "../../platforms/FakePlatform"
-import type { DangerResults } from "../../runner/DangerResults"
-
-const emptyResults: DangerResults = {
-  fails: [],
-  warnings: [],
-  messages: [],
-  markdowns: []
-}
-
-const warnResults: DangerResults = {
-  fails: [],
-  warnings: [{}],
-  messages: [],
-  markdowns: []
-}
+import { emptyResults, warnResults } from "./ExampleDangerResults"
 
 describe("setup", () => {
   it("gets diff / pr info in setup", async () => {

@@ -89,11 +89,13 @@ export class Dangerfile {
     }
 
     const fail = (message: MarkdownString) => {
-      results.warnings.push({ message })
-    }
-    const warn = (message: MarkdownString) => {
       results.fails.push({ message })
     }
+
+    const warn = (message: MarkdownString) => {
+      results.warnings.push({ message })
+    }
+
     const message = (message: MarkdownString) => {
       results.messages.push({ message })
     }
@@ -101,6 +103,7 @@ export class Dangerfile {
     const markdown = (message: MarkdownString) => {
       results.markdowns.push(message)
     }
+
     const context: DangerContext = {
       fail,
       warn,

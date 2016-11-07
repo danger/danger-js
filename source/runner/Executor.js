@@ -24,11 +24,8 @@ export default class Executor {
    * @returns {void} It's a promise, so a void promise
    */
   async runDanger() {
-    console.log("OK.")
     await this.setup()
-    console.log("Setup.")
     const results = await this.run()
-    console.log("ran.")
     await this.handleResults(results)
   }
 

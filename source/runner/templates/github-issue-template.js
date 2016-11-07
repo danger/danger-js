@@ -12,7 +12,7 @@ import type { Violation } from "../../platforms/messaging/violation"
  * @param {Violation[]} violations for table
  * @returns {string} HTML
  */
-function table(name: string, emoji: string, violations: Violation[]) : string {
+function table(name: string, emoji: string, violations: Violation[]): string {
   if (violations.length === 0) { return "" }
   return `
 <table>
@@ -41,7 +41,7 @@ function table(name: string, emoji: string, violations: Violation[]) : string {
  * @param {DangerResults} results Data to work with
  * @returns {string} HTML
  */
-export default function template(results: DangerResults) : string {
+export default function template(results: DangerResults): string {
   return `
 
 ${table("Fails", "no_entry_sign", results.fails)}
