@@ -141,6 +141,8 @@ If you have a special case example of a literal, you should consider using a typ
 * An `Env` type, that maps to `any`.
 * An `APIToken` type, that maps to `strings`.
 
+Note: If you think you're being clever by having a both ES6 classes, and Flow interfaces exported from the same file - don't, it's not worked well for me so far. Odd transpilation errors. 
+
 #### Tests + Types
 
 Realistically, it's a bit too early for me to be writing about that. Here as a stub for later.

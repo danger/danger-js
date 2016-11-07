@@ -7,7 +7,7 @@ export type Env = any;
 /** The shape of an object that represents an individual CI */
 export interface CISource {
     /** The name, mainly for showing errors */
-    env: string,
+    name: string,
 
     /** The hash of environment variables */
     env: Env,

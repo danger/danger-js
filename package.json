@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "0.0.10",
+  "version": "0.5.0",
   "description": "Automate your culture",
   "main": "distribution/danger.js",
   "bin": {
@@ -16,7 +16,7 @@
   "scripts": {
     "test": "jest",
     "testwatch": "jest --watch",
-    "flow": "flow; test $? -eq 0 -o $? -eq 2",
+    "flow": "flow check --ignore '.*/_tests/.*, dangerfile.js'",
     "lint": "eslint ./source",
     "fix": "eslint ./source --fix",
     "prepublish": "npm run build",
@@ -24,7 +24,6 @@
     "buildwatch": "babel source --watch --out-dir distribution",
     "link": "npm run build ; chmod +x distribution/commands/danger.js ; npm link",
     "export-flowtype": "node scripts/create-flow-typed-export.js"
-
   },
   "repository": {
     "type": "git",
@@ -53,7 +52,7 @@
     "babel-preset-stage-3": "^6.17.0",
     "eslint": "^3.3.1",
     "eslint-config-standard": "^6.0.0-beta.3",
-    "eslint-plugin-flowtype": "^2.20.0",
+    "eslint-plugin-flowtype": "^2.25.0",
     "eslint-plugin-promise": "^3.3.0",
     "eslint-plugin-standard": "^2.0.0",
     "flow-bin": "^0.32.0",

@@ -1,7 +1,7 @@
 // @flow
 "use strict"
 
-import type { GitDSL } from "../dsl/git"
+import type { GitDSL } from "../dsl/GitDSL"
 import type { CISource } from "../ci_source/ci_source"
 import parseDiff from "parse-diff"
 
@@ -31,7 +31,7 @@ export class GitHub {
    *
    * @returns {Promise<any>} JSON representation
    */
-  async getReviewInfo() : Promise<any> {
+  async getReviewInfo(): Promise<any> {
     const deets = await this.getPullRequestInfo()
     return await deets.json()
   }
@@ -59,13 +59,6 @@ export class GitHub {
     }
   }
 
-  async updateOrCreateComment(newComment: string): Promise<bool> {
-    const commentID = await this.getDangerCommentID()
-    if (commentID) { await this.updateCommentWithID(commentID, newComment) }
-    else { await this.createComment(newComment) }
-    return true
-  }
-
   /**
    * Returns the response for the new comment
    *
@@ -89,6 +82,19 @@ export class GitHub {
     const commentID = await this.getDangerCommentID()
     if (commentID) { await this.deleteCommentWithID(commentID) }
     return commentID !== null
+  }
+
+  /**
+   * Either updates an existing comment, or makes a new one
+   *
+   * @param {string} newComment string value of comment
+   * @returns {Promise<bool>} success of posting comment
+   */
+  async updateOrCreateComment(newComment: string): Promise<bool> {
+    const commentID = await this.getDangerCommentID()
+    if (commentID) { await this.updateCommentWithID(commentID, newComment) }
+    else { await this.createComment(newComment) }
+    return true
   }
 
   /**

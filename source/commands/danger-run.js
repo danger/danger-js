@@ -8,16 +8,23 @@ import { getPlatformForEnv } from "../platforms/platform"
 import Executor from "../runner/Executor"
 
 program
-  .option("-h, --head [commitish]", "TODO: Set the head commitish")
-  .option("-b, --base [commitish]", "TODO: Set the base commitish")
   .option("-f, --fail-on-errors", "TODO: Fail on errors")
   .parse(process.argv)
+
+process.on("unhandledRejection", function(reason: string, p: any) {
+  console.log("Error: ", reason)
+  process.exitCode = 1
+})
 
 const source = getCISourceForEnv(process.env)
 if (!source) {
   console.log("Could not find a CI source for this run")
   // Check for ENV["CI"] and wanr they might want a local command instead?
   process.exitCode = 1
+}
+
+if (source && !source.isPR) {
+  console.log("Skipping due to not being a PR")
 }
 
 if (source && source.isPR) {
@@ -29,9 +36,12 @@ if (source && source.isPR) {
 
   if (platform) {
     console.log(`OK, looks good ${source.name} on ${platform.name}`)
-    const exec = new Executor(source, platform)
-    exec.setup()
-    const results = exec.run()
-    exec.handleResults(results)
+    try {
+      const exec = new Executor(source, platform)
+      exec.runDanger()
+    } catch (error) {
+      console.error(error.message)
+      console.error(error)
+    }
   }
 }
