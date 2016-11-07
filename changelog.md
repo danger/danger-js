@@ -2,8 +2,13 @@
 
 //  Add your own contribution below
 
-* Started turning this into a real project by adding tests - orta
+### 0.5.0
+
 * `danger.pr` -> `danger.github.pr`, I've also created interfaces for them - orta
+* `warn`, `message`, `markdown` are all ported over to DangerJS - orta
+* Shows a HTML table for Danger message - orta
+* Now offers a Flow-typed definition file, it's not shipped to their repo yet, you can make it by `npm run export-flowtype` - orta 
+* Started turning this into a real project by adding tests - orta
 
 ### 0.0.5-0.0.10
 
