@@ -12,8 +12,8 @@ program
   .parse(process.argv)
 
 process.on("unhandledRejection", function(reason: string, p: any) {
-  console.log("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason)
-    // application specific logging here
+  console.log("Error: ", reason)
+  process.exitCode = 1
 })
 
 const source = getCISourceForEnv(process.env)

@@ -1,7 +1,7 @@
 // @flow
 
 import { danger, fail, warn } from "danger"
-import fs from "fs"
+const fs = require("fs")
 
 // warn on changes in Package.json and not in shrinkwrap
 const hasChangelog = danger.git.modified_files.includes("changelog.md")
