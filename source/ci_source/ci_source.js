@@ -35,6 +35,7 @@ export interface CISource {
 }
 
 import Travis from "./Travis"
+import Circle from "./Circle"
 import Fake from "./Fake"
 
 /**
@@ -46,8 +47,12 @@ import Fake from "./Fake"
 export function getCISourceForEnv(env: Env) : ?CISource {
   // Fake is what I'm using during dev for the minute
   const travis = new Travis(env)
+  const circle = new Circle(env)
+
   if (travis.isCI) {
     return travis
+  } else if (circle.isCI) {
+    return circle
   } else {
     return new Fake()
   }
