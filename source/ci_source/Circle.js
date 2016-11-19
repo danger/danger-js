@@ -9,11 +9,11 @@ export default class Circle {
 
   get name(): string { return "Circle CI" }
 
-  get isCI() : boolean {
+  get isCI(): boolean {
     return ensureEnvKeysExist(this.env, ["CIRCLE_BUILD_NUM"])
   }
 
-  get isPR() : boolean {
+  get isPR(): boolean {
     if (ensureEnvKeysExist(this.env, ["CI_PULL_REQUEST"])) {
       return true
     }
@@ -23,12 +23,12 @@ export default class Circle {
   }
 
   _prParseURL(): {owner?: string, reponame?: string, id?: string} {
-    const pr_url = this.env.CI_PULL_REQUEST || '';
-    const split_slug = pr_url.split('/')
-    if (split_slug.length === 7) {
-      const owner = split_slug[3]
-      const reponame = split_slug[4]
-      const id = split_slug[6]
+    const prUrl = this.env.CI_PULL_REQUEST || ""
+    const splitSlug = prUrl.split("/")
+    if (splitSlug.length === 7) {
+      const owner = splitSlug[3]
+      const reponame = splitSlug[4]
+      const id = splitSlug[6]
       return {owner, reponame, id}
     }
     return {}
@@ -39,15 +39,15 @@ export default class Circle {
       return this.env.CIRCLE_PR_NUMBER
     } else {
       const {id} = this._prParseURL()
-      return id ? id : ''
+      return id || ""
     }
   }
 
   get repoSlug(): string {
     const {owner, reponame} = this._prParseURL()
-    return (owner && reponame) ? `${owner}/${reponame}` : ''
+    return (owner && reponame) ? `${owner}/${reponame}` : ""
   }
 
   get repoURL(): string { return this.env.CIRCLE_REPOSITORY_URL }
-  get supportedPlatforms() : string[] { return ["github"] }
+  get supportedPlatforms(): string[] { return ["github"] }
 }

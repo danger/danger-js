@@ -1,9 +1,9 @@
 import Circle from "../Circle"
 
 const correctEnv = {
-  "CIRCLE_CI_API_TOKEN":"xxx",
-  "CIRCLE_PROJECT_USERNAME":"circle_org",
-  "CIRCLE_PROJECT_REPONAME":"someproject",
+  "CIRCLE_CI_API_TOKEN": "xxx",
+  "CIRCLE_PROJECT_USERNAME": "circle_org",
+  "CIRCLE_PROJECT_REPONAME": "someproject",
   "CIRCLE_BUILD_NUM": "1501",
   "CIRCLE_PR_NUMBER": "800",
   "CI_PULL_REQUEST": "https://github.com/artsy/eigen/pull/800"
@@ -35,9 +35,9 @@ describe(".isPR", () => {
   const envs = ["CIRCLE_CI_API_TOKEN", "CIRCLE_PROJECT_USERNAME", "CIRCLE_PROJECT_REPONAME", "CIRCLE_BUILD_NUM"]
   envs.forEach((key: string) => {
     var env = {
-      "CIRCLE_CI_API_TOKEN":"xxx",
-      "CIRCLE_PROJECT_USERNAME":"circle_org",
-      "CIRCLE_PROJECT_REPONAME":"someproject",
+      "CIRCLE_CI_API_TOKEN": "xxx",
+      "CIRCLE_PROJECT_USERNAME": "circle_org",
+      "CIRCLE_PROJECT_REPONAME": "someproject",
       "CIRCLE_BUILD_NUM": "1501",
       "CIRCLE_PR_NUMBER": "800",
       "CI_PULL_REQUEST": "https://github.com/artsy/eigen/pull/800"
