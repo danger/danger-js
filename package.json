@@ -16,7 +16,7 @@
   "scripts": {
     "test": "jest",
     "testwatch": "jest --watch",
-    "flow": "flow check --ignore '.*/_tests/.*, dangerfile.js'",
+    "flow": "flow check",
     "lint": "eslint ./source",
     "fix": "eslint ./source --fix",
     "prepublish": "npm run build",
@@ -55,7 +55,7 @@
     "eslint-plugin-flowtype": "^2.25.0",
     "eslint-plugin-promise": "^3.3.0",
     "eslint-plugin-standard": "^2.0.0",
-    "flow-bin": "^0.32.0",
+    "flow-bin": "^0.35.0",
     "jest-cli": "^16.0.0"
   },
   "dependencies": {

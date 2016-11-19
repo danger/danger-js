@@ -1,5 +1,7 @@
 [ignore]
 distribution
+.*/_tests/.*
+.*dangerfile.js
 
 [include]
 
