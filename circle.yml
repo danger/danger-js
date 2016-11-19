@@ -1,0 +1,12 @@
+machine:
+  node:
+    version: 6.1
+
+test:
+  override:
+    - npm run build
+    - npm run link
+    - danger
+  post:
+    - npm run flow
+    - npm run lint
