@@ -7,31 +7,31 @@ export type Env = any;
 /** The shape of an object that represents an individual CI */
 export interface CISource {
     /** The name, mainly for showing errors */
-    name: string,
+    +name: string,
 
     /** The hash of environment variables */
-    env: Env,
+    +env: Env,
 
     /** Does this validate as being on a particular CI? */
-    isCI: boolean,
+    +isCI: boolean,
 
     /** Does this validate as being on a particular PR on a CI? */
-    isPR: boolean,
+    +isPR: boolean,
 
     /** What is the reference slug for this environment? */
-    repoSlug: string,
+    +repoSlug: string,
 
     /** What platforms can this CI communicate with? */
-    supportedPlatforms: string[],
+    +supportedPlatforms: string[],
 
     /** What unique id can be found for the code review platform's PR */
-    pullRequestID: string,
+    +pullRequestID: string,
 
     /** What is the URL for the repo */
-    repoURL: string,
+    +repoURL: string,
 
     /** What is the project name */
-    name: string
+    +name: string
 }
 
 import Travis from "./Travis"

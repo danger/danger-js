@@ -34,17 +34,17 @@ export interface Platform {
     /** Used internally for getting PR/Repo metadata */
     ciSource: CISource;
     /** Pulls in the Code Review Metadata for inspection */
-    getReviewInfo: () => Promise<any>;
+    +getReviewInfo: () => Promise<any>;
     /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
-    getReviewDiff: () => Promise<GitDSL>;
+    +getReviewDiff: () => Promise<GitDSL>;
     /** Creates a comment on the PR */
-    createComment: (body: string) => Promise<any>;
+    +createComment: (body: string) => Promise<any>;
     /** Delete the main Danger comment */
-    deleteMainComment: () => Promise<bool>;
+    +deleteMainComment: () => Promise<bool>;
     /** Replace the main Danger comment */
-    editMainComment: (newComment: string) => Promise<any>;
+    +editMainComment: (newComment: string) => Promise<any>;
     /** Replace the main Danger comment */
-    updateOrCreateComment: (newComment: string) => Promise<any>;
+    +updateOrCreateComment: (newComment: string) => Promise<any>;
 }
 
 //     /** Download all the comments in a PR */

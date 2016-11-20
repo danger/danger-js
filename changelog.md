@@ -2,6 +2,10 @@
 
 //  Add your own contribution below
 
+### 0.6.1
+
+* upgrades to flow 0.35.0 and fixes associated type errors in covariant/invariant interfaces
+
 ### 0.6.0
 
 * omits flow requirement for new test files
