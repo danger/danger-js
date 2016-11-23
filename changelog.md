@@ -2,7 +2,7 @@
 
 //  Add your own contribution below
 
-### 0.6.0
+### 0.6.3
 
 * Does not break commonmark on GitHub - orta
 * upgrades to flow 0.35.0 and fixes associated type errors in covariant/invariant interfaces
