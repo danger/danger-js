@@ -9,8 +9,8 @@ import type { Env } from "./ci_source"
  * @param {[string]} keys Keys to ensure existence of
  * @returns {bool} true if they exist, false if not
 */
-export function ensureEnvKeysExist(env: Env, keys: string[]) : boolean {
-  const hasKeys = keys.map((key: string) : boolean => {
+export function ensureEnvKeysExist(env: Env, keys: string[]): boolean {
+  const hasKeys = keys.map((key: string): boolean => {
     return env.hasOwnProperty(key) && env[key].length > 0
   })
   return !hasKeys.includes(false)
@@ -22,8 +22,8 @@ export function ensureEnvKeysExist(env: Env, keys: string[]) : boolean {
  * @param {[string]} keys Keys to ensure existence and number-ness of
  * @returns {bool} true if they are all good, false if not
 */
-export function ensureEnvKeysAreInt(env: Env, keys: string[]) : boolean {
-  const hasKeys = keys.map((key: string) : boolean => {
+export function ensureEnvKeysAreInt(env: Env, keys: string[]): boolean {
+  const hasKeys = keys.map((key: string): boolean => {
     return env.hasOwnProperty(key) && !isNaN(parseInt(env.TRAVIS_PULL_REQUEST))
   })
   return !hasKeys.includes(false)

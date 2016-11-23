@@ -44,7 +44,7 @@ import Fake from "./Fake"
  * @param {Env} env The environment.
  * @returns {?CISource} a CI source if it's OK, otherwise Danger can't run.
 */
-export function getCISourceForEnv(env: Env) : ?CISource {
+export function getCISourceForEnv(env: Env): ?CISource {
   // Fake is what I'm using during dev for the minute
   const travis = new Travis(env)
   const circle = new Circle(env)

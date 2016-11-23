@@ -68,7 +68,7 @@ import { GitHub } from "./GitHub"
  * @param {CISource} source The existing source, to ensure they can run against each other
  * @returns {?Platform} returns a platform if it can be supported
 */
-export function getPlatformForEnv(env: Env, source: CISource) : ?Platform {
+export function getPlatformForEnv(env: Env, source: CISource): ?Platform {
   const github = new GitHub(env["DANGER_GITHUB_API_TOKEN"], source)
   return github
 }
