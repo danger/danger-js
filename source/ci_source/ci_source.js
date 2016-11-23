@@ -48,13 +48,14 @@ export function getCISourceForEnv(env: Env): ?CISource {
   // Fake is what I'm using during dev for the minute
   const travis = new Travis(env)
   const circle = new Circle(env)
+  const fake = new Fake(env)
 
   if (travis.isCI) {
     return travis
   } else if (circle.isCI) {
     return circle
   } else {
-    return new Fake()
+    return fake
   }
 }
 

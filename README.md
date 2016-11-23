@@ -2,7 +2,7 @@ Danger on Node, wonder what's going on? see [VISION.md](VISION.md)
 
 *Welcome!*
 
-So, what's the deal? Well, right now Danger JS does the MVP of [the Ruby version](http://danger.systems). You can look at [Git](https://github.com/danger/danger-js/blob/master/source/dsl/GitDSL.js) metadata, or [GitHub](https://github.com/danger/danger-js/blob/master/source/dsl/GitHubDSL.js) metadata on Travis CI. 
+So, what's the deal? Well, right now Danger JS does the MVP of [the Ruby version](http://danger.systems). You can look at [Git](https://github.com/danger/danger-js/blob/master/source/dsl/GitDSL.js) metadata, or [GitHub](https://github.com/danger/danger-js/blob/master/source/dsl/GitHubDSL.js) metadata on Travis CI.
 
 Danger can fail your build, write a comment on GitHub, edit it as your build changes and then delete it once you've passed review.
 
@@ -45,11 +45,30 @@ if (unFlowedFiles.length > 0) {
 Then you add `npm run danger` to the end of your CI run, and Danger will run. Here's [an example](https://github.com/artsy/emission/pull/385). 👍
 
 
-Notes: 
+Notes:
 
 * The `Dangerfile.js` needs to be able to run on node without running through babel right now.
 * The shape of the API is [`git`](https://github.com/danger/danger-js/blob/master/source/dsl/git.js) and [`pr`](https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/github_api/pr_response.json)
 
+#### Running/Testing manually against a repo
+
+If you create an [appropriately scoped temporary api token](http://danger.systems/guides/getting_started.html#setting-up-an-access-token) for your github account, this can be a good way to see if danger is suitable for you before integrating it into your CI system.
+
+You can manually trigger danger against a pull request on the command line by setting the following environmental variables:
+
+```bash
+export DANGER_GITHUB_API_TOKEN='xxxxxxxxxx'  # a github api token
+export DANGER_TEST_REPO='username/reponame'
+```
+
+Then you can run against a local branch that is attached to a pull-request, by running the following
+
+```bash
+git checkout branch-for-pr-1234
+DANGER_TEST_PR='1234' npm run danger
+```
+
+assuming that your local filesystem matches up to that branch on github, this will be a good approximation of how danger will work when you integrate it into your ci system.
 
 #### This thing is broken, I should help improve it!
 
@@ -61,7 +80,7 @@ cd danger-js
 
 # if you don't have have yarn installed
 npm install -g yarn
- 
+
 yarn install
 ```
 
@@ -71,13 +90,13 @@ You can then verify your install by running the tests, and the linters:
 npm test
 npm run lint
 npm run flow
-``` 
+```
 
 ---
 
 ### Dev Life
 
-We use quite a few semi-bleeding edge features of JS in Danger. Please see the [glossary for an overview](docs/js_glossary.md). Notably Flow, Interfaces, Async/Await and Typealiases. 
+We use quite a few semi-bleeding edge features of JS in Danger. Please see the [glossary for an overview](docs/js_glossary.md). Notably Flow, Interfaces, Async/Await and Typealiases.
 
 You'll have a nicer experience as a developer if you use VS Code with Flow enabled, and if you install flow-typed.
 

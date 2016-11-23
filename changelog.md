@@ -2,6 +2,9 @@
 
 //  Add your own contribution below
 
+### 0.6.4
+* The env vars `DANGER_TEST_REPO` and `DANGER_TEST_PR` will allow you initialize the FakeCI with a repo of your choice. See README.md for more info
+
 ### 0.6.3
 
 * Does not break commonmark on GitHub - orta
