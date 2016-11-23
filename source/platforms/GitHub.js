@@ -41,7 +41,7 @@ export class GitHub {
    *
    * @returns {Promise<GitDSL>} the git DSL
    */
-  async getReviewDiff() : Promise<GitDSL> {
+  async getReviewDiff(): Promise<GitDSL> {
     const diffReq = await this.getPullRequestDiff()
     const diff = await diffReq.text()
 

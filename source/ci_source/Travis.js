@@ -9,11 +9,11 @@ export default class Travis {
 
   get name(): string { return "Travis CI" }
 
-  get isCI() : boolean {
+  get isCI(): boolean {
     return ensureEnvKeysExist(this.env, ["HAS_JOSH_K_SEAL_OF_APPROVAL"])
   }
 
-  get isPR() : boolean {
+  get isPR(): boolean {
     const mustHave = ["HAS_JOSH_K_SEAL_OF_APPROVAL", "TRAVIS_PULL_REQUEST"]
     const mustBeInts = ["TRAVIS_REPO_SLUG"]
     return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, mustBeInts)
@@ -22,5 +22,5 @@ export default class Travis {
   get pullRequestID(): string { return this.env.TRAVIS_PULL_REQUEST }
   get repoSlug(): string { return this.env.TRAVIS_REPO_SLUG }
   get repoURL(): string { return "maybe not needed?" }
-  get supportedPlatforms() : string[] { return ["github"] }
+  get supportedPlatforms(): string[] { return ["github"] }
 }
