@@ -2,16 +2,10 @@
 
 //  Add your own contribution below
 
-### 0.6.2
-
-* Does not break commonmark on GitHub - orta
-
-### 0.6.1
-
-* upgrades to flow 0.35.0 and fixes associated type errors in covariant/invariant interfaces
-
 ### 0.6.0
 
+* Does not break commonmark on GitHub - orta
+* upgrades to flow 0.35.0 and fixes associated type errors in covariant/invariant interfaces
 * omits flow requirement for new test files
 * adds support for circleci
 * defines CISource properties in flow as read-only
