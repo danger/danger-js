@@ -22,5 +22,10 @@ describe("generating messages", () => {
     expect(issues).toContain("Warnings")
     expect(issues).not.toContain("Fails")
   })
+
+  it("does not break commonmark rules around line breaks", () => {
+    const issues = githubResultsTemplate(warnResults)
+    expect(issues).not.toMatch(/(\r?\n){2}[ \t]+</)
+  })
 })
 
