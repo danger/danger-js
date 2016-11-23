@@ -69,7 +69,12 @@ import { GitHub } from "./GitHub"
  * @returns {?Platform} returns a platform if it can be supported
 */
 export function getPlatformForEnv(env: Env, source: CISource): ?Platform {
-  const github = new GitHub(env["DANGER_GITHUB_API_TOKEN"], source)
+  const token = env["DANGER_GITHUB_API_TOKEN"]
+  if (!token) {
+    console.error("The DANGER_GITHUB_API_TOKEN environmental variable is missing")
+    console.error("Without an api token, danger will be unable to comment on a PR")
+  }
+  const github = new GitHub(token, source)
   return github
 }
 
