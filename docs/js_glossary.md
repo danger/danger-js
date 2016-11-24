@@ -2,6 +2,8 @@
 
 I came to JS at a great point in time, a lot of the tools used in native code that offer so much programming safety are now available and easy to use in JS. Sometimes it feels like Ruby, but with useful editor feedback. 👍. 
 
+A comprehensive guide to modern JS can be found at [artsy.github.io](http://artsy.github.io/blog/2016/11/14/JS-Glossary/) 
+
 ### Flow
 
 [Flow](https://flowtype.org) is a fascinating tool that infers types through-out your codebase. Flow will give you realtime feedback on the health of your code, so make sure you have it installed in whatever editor you use.
