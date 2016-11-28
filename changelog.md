@@ -2,16 +2,16 @@
 
 //  Add your own contribution below
 
-### 0.6.4
 * The env vars `DANGER_TEST_REPO` and `DANGER_TEST_PR` will allow you initialize the FakeCI with a repo of your choice. See README.md for more info
+* Improved error messaging around not including a `DANGER_GITHUB_API_TOKEN` in the ENV - nsfmc / orta
 
 ### 0.6.3
 
 * Does not break commonmark on GitHub - orta
-* upgrades to flow 0.35.0 and fixes associated type errors in covariant/invariant interfaces
-* omits flow requirement for new test files
-* adds support for circleci
-* defines CISource properties in flow as read-only
+* upgrades to flow 0.35.0 and fixes associated type errors in covariant/invariant interfaces - nsfmc 
+* omits flow requirement for new test files - nsfmc
+* adds support for circleci - nsfmc
+* defines CISource properties in flow as read-only - nsfmc
 
 ### 0.5.0
 
