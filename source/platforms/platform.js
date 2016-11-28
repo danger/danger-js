@@ -73,8 +73,9 @@ export function getPlatformForEnv(env: Env, source: CISource): ?Platform {
   if (!token) {
     console.error("The DANGER_GITHUB_API_TOKEN environmental variable is missing")
     console.error("Without an api token, danger will be unable to comment on a PR")
+    throw new Error("Cannot use authenticated API requests.")
   }
+
   const github = new GitHub(token, source)
   return github
 }
-
