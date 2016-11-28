@@ -2,13 +2,15 @@
 
 //  Add your own contribution below
 
+* Improved error messaging around not including a `DANGER_GITHUB_API_TOKEN` in the ENV - nsfmc / orta
+
 ### 0.6.3
 
 * Does not break commonmark on GitHub - orta
-* upgrades to flow 0.35.0 and fixes associated type errors in covariant/invariant interfaces
-* omits flow requirement for new test files
-* adds support for circleci
-* defines CISource properties in flow as read-only
+* upgrades to flow 0.35.0 and fixes associated type errors in covariant/invariant interfaces - nsfmc 
+* omits flow requirement for new test files - nsfmc
+* adds support for circleci - nsfmc
+* defines CISource properties in flow as read-only - nsfmc
 
 ### 0.5.0
 
