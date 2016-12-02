@@ -2,6 +2,7 @@
 
 //  Add your own contribution below
 
+* The env vars `DANGER_TEST_REPO` and `DANGER_TEST_PR` will allow you initialize the FakeCI with a repo of your choice. See README.md for more info
 * Improved error messaging around not including a `DANGER_GITHUB_API_TOKEN` in the ENV - nsfmc / orta
 
 ### 0.6.3
