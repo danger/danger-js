@@ -17,7 +17,6 @@ export interface DangerDSLType {
   git: GitDSL;
   /**
    *  The GitHub metadata.
-   *  Currently, this is just the raw PR information.
    */
   github: GitHubDSL;
 }

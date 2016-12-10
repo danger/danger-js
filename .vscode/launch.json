@@ -1,25 +1,38 @@
 {
     "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Launch",
-            "type": "node",
-            "request": "launch",
-            "program": "${workspaceRoot}/source/commands/danger-run.js",
-            "stopOnEntry": false,
-            "args": [],
-            "cwd": "${workspaceRoot}",
-            "preLaunchTask": "build",
-            "runtimeExecutable": null,
-            "runtimeArgs": [
-                "--nolazy"
-            ],
-            "env": {
-                "NODE_ENV": "development"
-            },
-            "console": "internalConsole",
-            "sourceMaps": true,
-            "outDir": "${workspaceRoot}/distribution"
-        }
-    ]
+    "configurations": [{
+        "name": "Launch",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceRoot}/source/commands/danger-run.js",
+        "stopOnEntry": false,
+        "args": [],
+        "cwd": "${workspaceRoot}",
+        "preLaunchTask": "build",
+        "runtimeExecutable": null,
+        "runtimeArgs": [
+            "--nolazy"
+        ],
+        "env": {
+            "NODE_ENV": "development"
+        },
+        "console": "internalConsole",
+        "sourceMaps": true,
+        "outDir": "${workspaceRoot}/distribution"
+    }, {
+        "name": "Run Tests With Debugger (slower, use npm run watch for normal work)",
+        "type": "node",
+        "request": "launch",
+        "port": 5858,
+        "address": "localhost",
+        "stopOnEntry": false,
+        "runtimeExecutable": null,
+        "runtimeArgs": [
+            "--debug-brk",
+            "./node_modules/.bin/jest",
+            "-i"
+        ],
+        "cwd": "${workspaceRoot}",
+        "sourceMaps": true
+    }]
 }

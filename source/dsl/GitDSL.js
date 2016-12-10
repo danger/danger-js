@@ -16,6 +16,9 @@ export interface GitDSL {
    * Removed filepaths relative to the git root
    * @type {string[]}
    */
-  deleted_files: string[]
+  deleted_files: string[],
+
+  /** Offers the diff for a specific file */
+  diffForFile(filename: string): ?string
 }
 

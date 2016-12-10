@@ -20,7 +20,8 @@ export default class FakePlatform {
     return {
       modified_files: [],
       created_files: [],
-      deleted_files: []
+      deleted_files: [],
+      diffForFile: () => ""
     }
   }
 

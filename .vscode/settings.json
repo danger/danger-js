@@ -6,10 +6,13 @@
         "**/.svn": true,
         "**/.hg": true,
         "**/.DS_Store": true,
-        "distribution/": true,
+        "distribution/": true
     },
     "search.exclude": {
         "**/node_modules": true,
-        "distribution/": true,
+        "distribution/": true
     },
+    "files.associations": {
+        "*.js": "javascriptreact"
+    }
 }
