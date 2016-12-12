@@ -8,6 +8,8 @@ import parseDiff from "parse-diff"
 import fetch from "node-fetch"
 import "babel-polyfill"
 
+import os from "os"
+
 // This pattern of re-typing specific strings has worked well for Artsy in Swift
 // so, I'm willing to give it a shot here.
 
@@ -59,7 +61,11 @@ export class GitHub {
       diffForFile: (name: string) => {
         const diff = fileDiffs.find((diff) => diff.from === name || diff.to === name)
         if (!diff) { return null }
-        return diff.chunks.reduce((chunk) => chunk.content.reduce((content) => content.join("")))
+
+        const changes = diff.chunks.map((c) => { return c.changes })
+                            .reduce((a, b) => a.concat(b), [])
+        const lines = changes.map((c) => { return c.content })
+        return lines.join(os.EOL)
       }
     }
   }

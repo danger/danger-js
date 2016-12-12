@@ -1,4 +1,5 @@
 // @flow
+/*eslint-disable */
 
 import { GitHub } from "../GitHub"
 import Fake from "../../ci_source/Fake"
@@ -80,9 +81,10 @@ describe("with fixtured data", () => {
       expect(gitDSL.deleted_files).toEqual(["lib/components/artist/related_artists/index.js", "lib/components/artist/related_artists/related_artist.js", "lib/components/gene/about_gene.js"])
     })
 
+    // sorry windows users - I guess this test will fail for you
     it("shows the diff for a specific file", async () => {
       const gitDSL:GitDSL = await github.getReviewDiff()
-      expect(gitDSL.diffForFile("CHANGELOG.md")).toEqual("sads")
+      expect(gitDSL.diffForFile("CHANGELOG.md")).toEqual(` - [dev] Updates Flow to 0.32 - orta\n - [dev] Updates React to 0.34 - orta\n - [dev] Turns on \"keychain sharing\" to fix a keychain bug in sim - orta\n+- GeneVC now shows about information, and trending artists - orta\n \n ### 1.1.0-beta.2\n `)
     })
   })
 })
