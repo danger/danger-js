@@ -1,7 +1,7 @@
 {
   "name": "danger",
-  "version": "0.6.3",
-  "description": "Automate your culture",
+  "version": "0.6.4",
+  "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "bin": {
     "danger": "distribution/commands/danger.js"
