@@ -1,0 +1,1439 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 3995cbc..918b1dc 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -4,6 +4,7 @@
+ - [dev] Updates Flow to 0.32 - orta
+ - [dev] Updates React to 0.34 - orta
+ - [dev] Turns on "keychain sharing" to fix a keychain bug in sim - orta
++- GeneVC now shows about information, and trending artists - orta
+ 
+ ### 1.1.0-beta.2
+ 
+diff --git a/data/schema.graphql b/data/schema.graphql
+index 1e52658..ecfee32 100644
+--- a/data/schema.graphql
++++ b/data/schema.graphql
+@@ -315,6 +315,8 @@ type ArtworkContextAuction {
+   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
+   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+   live_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
++  event_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
++  event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+   currency: String
+   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+   artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
+@@ -403,6 +405,8 @@ type ArtworkContextSale {
+   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
+   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+   live_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
++  event_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
++  event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+   currency: String
+   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+   artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
+@@ -721,6 +725,7 @@ type Gene {
+   cached: Int
+   href: String
+   name: String
++  description: String
+   image: Image
+   artists: [Artist]
+   trending_artists(sample: Int): [Artist]
+@@ -733,6 +738,7 @@ type GeneItem {
+   cached: Int
+   href: String
+   name: String
++  description: String
+   image: Image
+   artists: [Artist]
+   trending_artists(sample: Int): [Artist]
+@@ -868,6 +874,7 @@ type HomePageModuleContextGene {
+   cached: Int
+   href: String
+   name: String
++  description: String
+   image: Image
+   artists: [Artist]
+   trending_artists(sample: Int): [Artist]
+@@ -900,6 +907,8 @@ type HomePageModuleContextSale {
+   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
+   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+   live_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
++  event_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
++  event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+   currency: String
+   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+   artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
+@@ -1132,6 +1141,7 @@ type PartnerShow implements Node {
+ 
+ type PartnerShowCounts {
+   artworks(artist_id: String): Int
++  eligible_artworks(format: String, label: String): FormattedNumber
+ }
+ 
+ type PartnerShowEventType {
+@@ -1298,6 +1308,8 @@ type Sale {
+   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
+   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+   live_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
++  event_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
++  event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+   currency: String
+   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+   artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
+diff --git a/data/schema.json b/data/schema.json
+index 8870f49..3dc6061 100644
+--- a/data/schema.json
++++ b/data/schema.json
+@@ -6823,6 +6823,92 @@
+               "deprecationReason": null
+             },
+             {
++              "name": "event_start_at",
++              "description": null,
++              "args": [
++                {
++                  "name": "format",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "timezone",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "convert_to_utc",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "Boolean",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                }
++              ],
++              "type": {
++                "kind": "SCALAR",
++                "name": "String",
++                "ofType": null
++              },
++              "isDeprecated": false,
++              "deprecationReason": null
++            },
++            {
++              "name": "event_end_at",
++              "description": null,
++              "args": [
++                {
++                  "name": "format",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "timezone",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "convert_to_utc",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "Boolean",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                }
++              ],
++              "type": {
++                "kind": "SCALAR",
++                "name": "String",
++                "ofType": null
++              },
++              "isDeprecated": false,
++              "deprecationReason": null
++            },
++            {
+               "name": "currency",
+               "description": null,
+               "args": [],
+@@ -7824,6 +7910,92 @@
+               "deprecationReason": null
+             },
+             {
++              "name": "event_start_at",
++              "description": null,
++              "args": [
++                {
++                  "name": "format",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "timezone",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "convert_to_utc",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "Boolean",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                }
++              ],
++              "type": {
++                "kind": "SCALAR",
++                "name": "String",
++                "ofType": null
++              },
++              "isDeprecated": false,
++              "deprecationReason": null
++            },
++            {
++              "name": "event_end_at",
++              "description": null,
++              "args": [
++                {
++                  "name": "format",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "timezone",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "convert_to_utc",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "Boolean",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                }
++              ],
++              "type": {
++                "kind": "SCALAR",
++                "name": "String",
++                "ofType": null
++              },
++              "isDeprecated": false,
++              "deprecationReason": null
++            },
++            {
+               "name": "currency",
+               "description": null,
+               "args": [],
+@@ -9380,6 +9552,92 @@
+               "deprecationReason": null
+             },
+             {
++              "name": "event_start_at",
++              "description": null,
++              "args": [
++                {
++                  "name": "format",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "timezone",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "convert_to_utc",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "Boolean",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                }
++              ],
++              "type": {
++                "kind": "SCALAR",
++                "name": "String",
++                "ofType": null
++              },
++              "isDeprecated": false,
++              "deprecationReason": null
++            },
++            {
++              "name": "event_end_at",
++              "description": null,
++              "args": [
++                {
++                  "name": "format",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "timezone",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "convert_to_utc",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "Boolean",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                }
++              ],
++              "type": {
++                "kind": "SCALAR",
++                "name": "String",
++                "ofType": null
++              },
++              "isDeprecated": false,
++              "deprecationReason": null
++            },
++            {
+               "name": "currency",
+               "description": null,
+               "args": [],
+@@ -11279,6 +11537,39 @@
+               },
+               "isDeprecated": false,
+               "deprecationReason": null
++            },
++            {
++              "name": "eligible_artworks",
++              "description": null,
++              "args": [
++                {
++                  "name": "format",
++                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "label",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                }
++              ],
++              "type": {
++                "kind": "SCALAR",
++                "name": "FormattedNumber",
++                "ofType": null
++              },
++              "isDeprecated": false,
++              "deprecationReason": null
+             }
+           ],
+           "inputFields": null,
+@@ -14197,6 +14488,92 @@
+               "deprecationReason": null
+             },
+             {
++              "name": "event_start_at",
++              "description": null,
++              "args": [
++                {
++                  "name": "format",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "timezone",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "convert_to_utc",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "Boolean",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                }
++              ],
++              "type": {
++                "kind": "SCALAR",
++                "name": "String",
++                "ofType": null
++              },
++              "isDeprecated": false,
++              "deprecationReason": null
++            },
++            {
++              "name": "event_end_at",
++              "description": null,
++              "args": [
++                {
++                  "name": "format",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "timezone",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                },
++                {
++                  "name": "convert_to_utc",
++                  "description": null,
++                  "type": {
++                    "kind": "SCALAR",
++                    "name": "Boolean",
++                    "ofType": null
++                  },
++                  "defaultValue": null
++                }
++              ],
++              "type": {
++                "kind": "SCALAR",
++                "name": "String",
++                "ofType": null
++              },
++              "isDeprecated": false,
++              "deprecationReason": null
++            },
++            {
+               "name": "currency",
+               "description": null,
+               "args": [],
+@@ -14495,6 +14872,18 @@
+               "deprecationReason": null
+             },
+             {
++              "name": "description",
++              "description": null,
++              "args": [],
++              "type": {
++                "kind": "SCALAR",
++                "name": "String",
++                "ofType": null
++              },
++              "isDeprecated": false,
++              "deprecationReason": null
++            },
++            {
+               "name": "image",
+               "description": null,
+               "args": [],
+@@ -14964,6 +15353,18 @@
+               "deprecationReason": null
+             },
+             {
++              "name": "description",
++              "description": null,
++              "args": [],
++              "type": {
++                "kind": "SCALAR",
++                "name": "String",
++                "ofType": null
++              },
++              "isDeprecated": false,
++              "deprecationReason": null
++            },
++            {
+               "name": "image",
+               "description": null,
+               "args": [],
+@@ -16402,6 +16803,18 @@
+               "deprecationReason": null
+             },
+             {
++              "name": "description",
++              "description": null,
++              "args": [],
++              "type": {
++                "kind": "SCALAR",
++                "name": "String",
++                "ofType": null
++              },
++              "isDeprecated": false,
++              "deprecationReason": null
++            },
++            {
+               "name": "image",
+               "description": null,
+               "args": [],
+diff --git a/externals/metaphysics b/externals/metaphysics
+index 1541a0d..6ecc7b5 160000
+--- a/externals/metaphysics
++++ b/externals/metaphysics
+@@ -1 +1 @@
+-Subproject commit 1541a0d42480bd95aee87898200a8ad88e086a45
++Subproject commit 6ecc7b5a8bc124dd807364d102b24e52a51e5ccc
+diff --git a/lib/__mocks__/react-relay.js b/lib/__mocks__/react-relay.js
+index a0af177..2f7f98f 100644
+--- a/lib/__mocks__/react-relay.js
++++ b/lib/__mocks__/react-relay.js
+@@ -8,4 +8,4 @@ module.exports = {
+   Mutation: Relay.Mutation,
+   Route: Relay.Route,
+   createContainer: (component) => component,
+-}
+\ No newline at end of file
++}
+diff --git a/lib/components/artist/about.js b/lib/components/artist/about.js
+index be80b35..45db654 100644
+--- a/lib/components/artist/about.js
++++ b/lib/components/artist/about.js
+@@ -7,7 +7,7 @@ import { View, StyleSheet } from 'react-native'
+ 
+ import Biography from './biography'
+ import Articles from './articles'
+-import RelatedArtists from './related_artists'
++import RelatedArtists from '../related_artists'
+ import Separator from '../separator'
+ 
+ class About extends React.Component {
+diff --git a/lib/components/artist/related_artists/index.js b/lib/components/artist/related_artists/index.js
+deleted file mode 100644
+index 59e0783..0000000
+--- a/lib/components/artist/related_artists/index.js
++++ /dev/null
+@@ -1,118 +0,0 @@
+-/* @flow */
+-'use strict'
+-
+-import Relay from 'react-relay'
+-import React from 'react'
+-import { StyleSheet, View, Dimensions } from 'react-native'
+-
+-import SerifText from '../../text/serif'
+-import RelatedArtist from './related_artist'
+-
+-class RelatedArtists extends React.Component {
+-  state: {
+-    columns: number,
+-    imageSize: Object
+-  }
+-
+-  constructor(props) {
+-    super(props)
+-    this.state = this.layoutState()
+-  }
+-
+-  layoutState() : Object {
+-    const width = Dimensions.get('window').width
+-    const isPad = width > 700
+-    const isPadHorizontal = width > 1000
+-
+-    // TODO: Document what these margins are based on.
+-    let columnCount
+-    let margins
+-    if (isPad) {
+-      if (isPadHorizontal) {
+-        columnCount = 4
+-        margins = 140
+-      } else {
+-        columnCount = 3
+-        margins = 100
+-      }
+-    } else {
+-      columnCount = 2
+-      margins = 60
+-    }
+-
+-    const imageWidth = (width - margins) / columnCount
+-    const imageHeight = imageWidth / 1.5
+-
+-    return {
+-      columns: columnCount,
+-      imageSize: {
+-        width: Math.floor(imageWidth),
+-        height: Math.floor(imageHeight),
+-      },
+-    }
+-  }
+-
+-  onLayout = (e) => {
+-    const newLayoutState = this.layoutState()
+-    if (this.state.columns !== newLayoutState.columns) {
+-      this.setState(newLayoutState)
+-    }
+-  }
+-
+-  render() {
+-    return (
+-      <View style={styles.container} onLayout={this.onLayout}>
+-        <SerifText style={styles.heading}>Related Artists</SerifText>
+-        <View style={styles.artistContainer}>
+-          { this.renderArtists() }
+-        </View>
+-      </View>
+-    )
+-  }
+-
+-  renderArtists() {
+-    const artists = this.props.artists
+-    const artistViews = artists.map(artist => {
+-      return <RelatedArtist key={artist.__id} artist={artist} imageSize={this.state.imageSize} />
+-    })
+-
+-    const numberOfTrailingViews = artists.length % this.state.columns
+-    if (numberOfTrailingViews > 0) {
+-      const extraRequiredViews = this.state.columns - numberOfTrailingViews
+-      for (let i = 0; i < extraRequiredViews; i++) {
+-        artistViews.push(<View key={'related-artist-spacer-' + i} style={this.state.imageSize} />)
+-      }
+-    }
+-
+-    return artistViews
+-  }
+-}
+-
+-const styles = StyleSheet.create({
+-  container: {
+-    flexDirection: 'column',
+-  },
+-  artistContainer: {
+-    flexWrap: 'wrap',
+-    flexDirection: 'row',
+-    alignItems: 'flex-start',
+-    justifyContent: 'space-around',
+-    marginTop: 12,
+-    marginLeft: -10,
+-    marginRight: -10,
+-  },
+-  heading: {
+-    fontSize: 20,
+-  }
+-})
+-
+-export default Relay.createContainer(RelatedArtists, {
+-  fragments: {
+-    artists: () => Relay.QL`
+-      fragment on Artist @relay(plural: true) {
+-        __id
+-        ${RelatedArtist.getFragment('artist')}
+-      }
+-    `
+-  }
+-})
+diff --git a/lib/components/artist/related_artists/related_artist.js b/lib/components/artist/related_artists/related_artist.js
+deleted file mode 100644
+index 8719e97..0000000
+--- a/lib/components/artist/related_artists/related_artist.js
++++ /dev/null
+@@ -1,81 +0,0 @@
+-/* @flow */
+-'use strict'
+-
+-import Relay from 'react-relay'
+-import React from 'react'
+-import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native'
+-
+-import colors from '../../../../data/colors'
+-import ImageView from '../../opaque_image_view'
+-import SwitchBoard from '../../../native_modules/switch_board'
+-
+-class RelatedArtist extends React.Component {
+-  handleTap() {
+-    SwitchBoard.presentNavigationViewController(this, this.props.artist.href)
+-  }
+-
+-  render() {
+-    const artist = this.props.artist
+-    const imageURL = artist.image && artist.image.url
+-
+-    return (
+-      <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
+-        <View style={{ margin: 5, paddingBottom: 20, width: this.props.imageSize.width }}>
+-          <ImageView style={this.props.imageSize} imageURL={imageURL} />
+-          <Text style={styles.sansSerifText}>{artist.name.toUpperCase()}</Text>
+-          <Text style={styles.serifText}>{this.artworksString(artist.counts)}</Text>
+-        </View>
+-      </TouchableWithoutFeedback>
+-    )
+-  }
+-
+-  artworksString(counts) {
+-    if (counts.totalWorks <= 0) {
+-      return ''
+-    }
+-
+-    const totalWorks = counts.artworks ? counts.artworks + (counts.artworks > 1 ? ' works' : ' work') : null
+-    if (totalWorks && counts.for_sale_artworks === counts.artworks) {
+-      return totalWorks + ' for sale'
+-    }
+-
+-    const forSale = counts.for_sale_artworks ? counts.for_sale_artworks + ' for sale' : null
+-    if (forSale && totalWorks) {
+-      return totalWorks + ', ' + forSale
+-    }
+-    return forSale ? forSale : totalWorks
+-  }
+-}
+-
+-const styles = StyleSheet.create({
+-  sansSerifText: {
+-    fontSize: 12,
+-    textAlign: 'left',
+-    marginTop: 10,
+-    fontFamily: 'Avant Garde Gothic ITCW01Dm',
+-  },
+-  serifText: {
+-    fontFamily: 'AGaramondPro-Regular',
+-    fontSize: 16,
+-    marginTop: 5,
+-    color: colors['gray-semibold']
+-  }
+-})
+-
+-export default Relay.createContainer(RelatedArtist, {
+-  fragments: {
+-    artist: () => Relay.QL`
+-      fragment on Artist {
+-        href
+-        name
+-        counts {
+-          for_sale_artworks
+-          artworks
+-        }
+-        image {
+-          url(version: "large")
+-        }
+-      }
+-    `,
+-  }
+-})
+diff --git a/lib/components/gene/about.js b/lib/components/gene/about.js
+new file mode 100644
+index 0000000..58c4c26
+--- /dev/null
++++ b/lib/components/gene/about.js
+@@ -0,0 +1,54 @@
++/* @flow */
++'use strict'
++
++import Relay from 'react-relay'
++import React from 'react'
++import { View, StyleSheet } from 'react-native'
++
++import Biography from './biography'
++
++import RelatedArtists from '../related_artists'
++import Separator from '../separator'
++
++class About extends React.Component {
++  render() {
++    return (
++      <View>
++        { this.biography() }
++        { this.relatedArtists() }
++      </View>
++    )
++  }
++
++  biography() {
++    return (
++      <View>
++        <Biography gene={this.props.gene} />
++        <Separator style={styles.sectionSeparator} />
++      </View>
++    )
++  }
++
++  relatedArtists() {
++    return this.props.gene.trending_artists.length ? <RelatedArtists artists={this.props.gene.trending_artists}/> : null
++  }
++}
++
++const styles = StyleSheet.create({
++  sectionSeparator: {
++    marginBottom: 20,
++  }
++})
++
++export default Relay.createContainer(About, {
++  fragments: {
++    gene: () => Relay.QL`
++      fragment on Gene {
++        ${Biography.getFragment('gene')}
++        trending_artists {
++          ${RelatedArtists.getFragment('artists')}
++        }
++      }
++    `,
++  }
++})
+diff --git a/lib/components/gene/about_gene.js b/lib/components/gene/about_gene.js
+deleted file mode 100644
+index e69de29..0000000
+diff --git a/lib/components/gene/biography.js b/lib/components/gene/biography.js
+new file mode 100644
+index 0000000..855ebeb
+--- /dev/null
++++ b/lib/components/gene/biography.js
+@@ -0,0 +1,61 @@
++/* @flow */
++'use strict'
++
++import Relay from 'react-relay'
++import React from 'react'
++import { View, StyleSheet, Dimensions } from 'react-native'
++
++import removeMarkdown from 'remove-markdown'
++
++import SerifText from '../text/serif'
++
++const sideMargin = Dimensions.get('window').width > 700 ? 50 : 0
++
++class Biography extends React.Component {
++  static propTypes = {
++    gene: React.PropTypes.shape({
++      description: React.PropTypes.string,
++    }),
++  };
++
++  render() {
++    const gene = this.props.gene
++    if (!gene.description) {
++      return null
++    }
++
++    return (
++      <View style={{marginLeft: sideMargin, marginRight: sideMargin}}>
++        { this.blurb(gene) }
++      </View>
++    )
++  }
++
++  blurb(gene) {
++    return gene.description ? <SerifText style={styles.blurb} numberOfLines={0}>{removeMarkdown(gene.description)}</SerifText> : null
++  }
++
++}
++
++const styles = StyleSheet.create({
++  blurb: {
++    fontSize: 16,
++    lineHeight: 20,
++    marginBottom: 20
++  },
++  bio: {
++    fontSize: 16,
++    lineHeight: 20,
++    marginBottom: 40
++  }
++})
++
++export default Relay.createContainer(Biography, {
++  fragments: {
++    gene: () => Relay.QL`
++      fragment on Gene {
++        description
++      }
++    `,
++  }
++})
+diff --git a/lib/components/gene/header.js b/lib/components/gene/header.js
+index d376d6b..c88931e 100644
+--- a/lib/components/gene/header.js
++++ b/lib/components/gene/header.js
+@@ -17,7 +17,7 @@ class Header extends React.Component {
+     gene: React.PropTypes.shape({
+       name: React.PropTypes.string,
+     }),
+-  };
++  }
+ 
+   constructor(props) {
+     super(props)
+@@ -45,6 +45,8 @@ class Header extends React.Component {
+                             onPress={this.handleFollowChange} />
+         </View>
+       )
++    } else {
++      return (<View style={styles.followButton}/>)
+     }
+   }
+ 
+diff --git a/lib/components/related_artists/index.js b/lib/components/related_artists/index.js
+new file mode 100644
+index 0000000..4ced68d
+--- /dev/null
++++ b/lib/components/related_artists/index.js
+@@ -0,0 +1,118 @@
++/* @flow */
++'use strict'
++
++import Relay from 'react-relay'
++import React from 'react'
++import { StyleSheet, View, Dimensions } from 'react-native'
++
++import SerifText from '../text/serif'
++import RelatedArtist from './related_artist'
++
++class RelatedArtists extends React.Component {
++  state: {
++    columns: number,
++    imageSize: Object
++  }
++
++  constructor(props) {
++    super(props)
++    this.state = this.layoutState()
++  }
++
++  layoutState() : Object {
++    const width = Dimensions.get('window').width
++    const isPad = width > 700
++    const isPadHorizontal = width > 1000
++
++    // TODO: Document what these margins are based on.
++    let columnCount
++    let margins
++    if (isPad) {
++      if (isPadHorizontal) {
++        columnCount = 4
++        margins = 140
++      } else {
++        columnCount = 3
++        margins = 100
++      }
++    } else {
++      columnCount = 2
++      margins = 60
++    }
++
++    const imageWidth = (width - margins) / columnCount
++    const imageHeight = imageWidth / 1.5
++
++    return {
++      columns: columnCount,
++      imageSize: {
++        width: Math.floor(imageWidth),
++        height: Math.floor(imageHeight),
++      },
++    }
++  }
++
++  onLayout = (e) => {
++    const newLayoutState = this.layoutState()
++    if (this.state.columns !== newLayoutState.columns) {
++      this.setState(newLayoutState)
++    }
++  }
++
++  render() {
++    return (
++      <View style={styles.container} onLayout={this.onLayout}>
++        <SerifText style={styles.heading}>Related Artists</SerifText>
++        <View style={styles.artistContainer}>
++          { this.renderArtists() }
++        </View>
++      </View>
++    )
++  }
++
++  renderArtists() {
++    const artists = this.props.artists
++    const artistViews = artists.map(artist => {
++      return <RelatedArtist key={artist.__id} artist={artist} imageSize={this.state.imageSize} />
++    })
++
++    const numberOfTrailingViews = artists.length % this.state.columns
++    if (numberOfTrailingViews > 0) {
++      const extraRequiredViews = this.state.columns - numberOfTrailingViews
++      for (let i = 0; i < extraRequiredViews; i++) {
++        artistViews.push(<View key={'related-artist-spacer-' + i} style={this.state.imageSize} />)
++      }
++    }
++
++    return artistViews
++  }
++}
++
++const styles = StyleSheet.create({
++  container: {
++    flexDirection: 'column',
++  },
++  artistContainer: {
++    flexWrap: 'wrap',
++    flexDirection: 'row',
++    alignItems: 'flex-start',
++    justifyContent: 'space-around',
++    marginTop: 12,
++    marginLeft: -10,
++    marginRight: -10,
++  },
++  heading: {
++    fontSize: 20,
++  }
++})
++
++export default Relay.createContainer(RelatedArtists, {
++  fragments: {
++    artists: () => Relay.QL`
++      fragment on Artist @relay(plural: true) {
++        __id
++        ${RelatedArtist.getFragment('artist')}
++      }
++    `
++  }
++})
+diff --git a/lib/components/related_artists/related_artist.js b/lib/components/related_artists/related_artist.js
+new file mode 100644
+index 0000000..0a39a55
+--- /dev/null
++++ b/lib/components/related_artists/related_artist.js
+@@ -0,0 +1,81 @@
++/* @flow */
++'use strict'
++
++import Relay from 'react-relay'
++import React from 'react'
++import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native'
++
++import colors from '../../../data/colors'
++import ImageView from '../opaque_image_view'
++import SwitchBoard from '../../native_modules/switch_board'
++
++class RelatedArtist extends React.Component {
++  handleTap() {
++    SwitchBoard.presentNavigationViewController(this, this.props.artist.href)
++  }
++
++  render() {
++    const artist = this.props.artist
++    const imageURL = artist.image && artist.image.url
++
++    return (
++      <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
++        <View style={{ margin: 5, paddingBottom: 20, width: this.props.imageSize.width }}>
++          <ImageView style={this.props.imageSize} imageURL={imageURL} />
++          <Text style={styles.sansSerifText}>{artist.name.toUpperCase()}</Text>
++          <Text style={styles.serifText}>{this.artworksString(artist.counts)}</Text>
++        </View>
++      </TouchableWithoutFeedback>
++    )
++  }
++
++  artworksString(counts) {
++    if (counts.totalWorks <= 0) {
++      return ''
++    }
++
++    const totalWorks = counts.artworks ? counts.artworks + (counts.artworks > 1 ? ' works' : ' work') : null
++    if (totalWorks && counts.for_sale_artworks === counts.artworks) {
++      return totalWorks + ' for sale'
++    }
++
++    const forSale = counts.for_sale_artworks ? counts.for_sale_artworks + ' for sale' : null
++    if (forSale && totalWorks) {
++      return totalWorks + ', ' + forSale
++    }
++    return forSale ? forSale : totalWorks
++  }
++}
++
++const styles = StyleSheet.create({
++  sansSerifText: {
++    fontSize: 12,
++    textAlign: 'left',
++    marginTop: 10,
++    fontFamily: 'Avant Garde Gothic ITCW01Dm',
++  },
++  serifText: {
++    fontFamily: 'AGaramondPro-Regular',
++    fontSize: 16,
++    marginTop: 5,
++    color: colors['gray-semibold']
++  }
++})
++
++export default Relay.createContainer(RelatedArtist, {
++  fragments: {
++    artist: () => Relay.QL`
++      fragment on Artist {
++        href
++        name
++        counts {
++          for_sale_artworks
++          artworks
++        }
++        image {
++          url(version: "large")
++        }
++      }
++    `,
++  }
++})
+diff --git a/lib/containers/__tests__/__snapshots__/gene-tests.js.snap b/lib/containers/__tests__/__snapshots__/gene-tests.js.snap
+index b024e36..ba252a6 100644
+--- a/lib/containers/__tests__/__snapshots__/gene-tests.js.snap
++++ b/lib/containers/__tests__/__snapshots__/gene-tests.js.snap
+@@ -38,6 +38,12 @@ exports[`test looks like expected 1`] = `
+         }>
+         EXAMPLE GENE
+       </Text>
++      <View
++        style={
++          Object {
++            "height": 40
++          }
++        } />
+     </View>
+     <View>
+       <View
+@@ -62,10 +68,171 @@ exports[`test looks like expected 1`] = `
+           ]
+         } />
+       <View>
+-        <Text
+-          accessible={true}
+-          allowFontScaling={true}
+-          ellipsizeMode="tail" />
++        <View>
++          <View>
++            <View
++              style={
++                Object {
++                  "marginLeft": 0,
++                  "marginRight": 0
++                }
++              }>
++              <Text
++                accessible={true}
++                allowFontScaling={true}
++                ellipsizeMode="tail"
++                numberOfLines={0}
++                style={
++                  Array [
++                    Object {
++                      "fontSize": 17
++                    },
++                    Object {
++                      "fontSize": 16,
++                      "lineHeight": 20,
++                      "marginBottom": 20
++                    },
++                    Object {
++                      "fontFamily": "AGaramondPro-Regular"
++                    }
++                  ]
++                }>
++                Here\'s some text
++              </Text>
++            </View>
++            <View
++              style={
++                Array [
++                  Object {
++                    "backgroundColor": "#e5e5e5",
++                    "height": 1,
++                    "marginLeft": -20,
++                    "marginRight": -20
++                  },
++                  Object {
++                    "marginBottom": 20
++                  }
++                ]
++              } />
++          </View>
++          <View
++            onLayout={[Function anonymous]}
++            style={
++              Object {
++                "flexDirection": "column"
++              }
++            }>
++            <Text
++              accessible={true}
++              allowFontScaling={true}
++              ellipsizeMode="tail"
++              numberOfLines={1}
++              style={
++                Array [
++                  Object {
++                    "fontSize": 17
++                  },
++                  Object {
++                    "fontSize": 20
++                  },
++                  Object {
++                    "fontFamily": "AGaramondPro-Regular"
++                  }
++                ]
++              }>
++              Related Artists
++            </Text>
++            <View
++              style={
++                Object {
++                  "alignItems": "flex-start",
++                  "flexDirection": "row",
++                  "flexWrap": "wrap",
++                  "justifyContent": "space-around",
++                  "marginLeft": -10,
++                  "marginRight": -10,
++                  "marginTop": 12
++                }
++              }>
++              <View
++                accessibilityComponentType={undefined}
++                accessibilityLabel={undefined}
++                accessibilityTraits={undefined}
++                accessible={true}
++                hitSlop={undefined}
++                onLayout={undefined}
++                onResponderGrant={[Function bound touchableHandleResponderGrant]}
++                onResponderMove={[Function bound touchableHandleResponderMove]}
++                onResponderRelease={[Function bound touchableHandleResponderRelease]}
++                onResponderTerminate={[Function bound touchableHandleResponderTerminate]}
++                onResponderTerminationRequest={[Function bound touchableHandleResponderTerminationRequest]}
++                onStartShouldSetResponder={[Function bound touchableHandleStartShouldSetResponder]}
++                style={
++                  Object {
++                    "margin": 5,
++                    "paddingBottom": 20,
++                    "width": 157
++                  }
++                }
++                testID={undefined}>
++                <View
++                  style={
++                    Array [
++                      Object {
++                        "alignSelf": "flex-start",
++                        "borderColor": "red",
++                        "borderWidth": 1
++                      },
++                      Array [
++                        Object {
++                          "height": 105,
++                          "width": 157
++                        },
++                        Object {
++                          "backgroundColor": "#e5e5e5"
++                        }
++                      ]
++                    ]
++                  } />
++                <Text
++                  accessible={true}
++                  allowFontScaling={true}
++                  ellipsizeMode="tail"
++                  style={
++                    Object {
++                      "fontFamily": "Avant Garde Gothic ITCW01Dm",
++                      "fontSize": 12,
++                      "marginTop": 10,
++                      "textAlign": "left"
++                    }
++                  }>
++                  ARTIST NAME
++                </Text>
++                <Text
++                  accessible={true}
++                  allowFontScaling={true}
++                  ellipsizeMode="tail"
++                  style={
++                    Object {
++                      "color": "#666666",
++                      "fontFamily": "AGaramondPro-Regular",
++                      "fontSize": 16,
++                      "marginTop": 5
++                    }
++                  }>
++                  2 works, 1 for sale
++                </Text>
++              </View>
++              <View
++                style={
++                  Object {
++                    "height": 105,
++                    "width": 157
++                  }
++                } />
++            </View>
++          </View>
++        </View>
+       </View>
+     </View>
+   </View>
+diff --git a/lib/containers/__tests__/gene-tests.js b/lib/containers/__tests__/gene-tests.js
+index 50892c9..4e51d2e 100644
+--- a/lib/containers/__tests__/gene-tests.js
++++ b/lib/containers/__tests__/gene-tests.js
+@@ -17,7 +17,21 @@ it('looks like expected', () => {
+       gene: {
+         id: 'An ID',
+         _id: 'a UUID',
+-        name: 'Example Gene'
++        name: 'Example Gene',
++        description: "Here's some text",
++        trending_artists: [
++          {
++            id: 'an artist',
++            name: 'Artist name',
++            counts: {
++              for_sale_artworks: 1,
++              artworks: 2
++            },
++            image: {
++              large_version: ''
++            }
++          }
++        ]
+       }
+     }
+ 
+diff --git a/lib/containers/gene.js b/lib/containers/gene.js
+index 76aaed4..cbdf811 100644
+--- a/lib/containers/gene.js
++++ b/lib/containers/gene.js
+@@ -7,12 +7,12 @@ import { Text, ScrollView, View, Dimensions } from 'react-native'
+ 
+ import Events from '../native_modules/events'
+ 
++import About from '../components/gene/about'
+ import Header from '../components/gene/header'
+ 
+ import TabView from '../components/tab_view'
+ import type TabSelectionEvent from '../components/events'
+ 
+-
+ const TABS = {
+   WORKS: 'WORKS',
+   ABOUT: 'ABOUT',
+@@ -25,7 +25,7 @@ class Gene extends React.Component {
+   };
+ 
+   componentWillMount() {
+-    this.state = { selectedTabIndex: 0 }
++    this.state = { selectedTabIndex: 1 }
+   }
+ 
+   tabSelectionDidChange = (event: TabSelectionEvent) => {
+@@ -54,7 +54,7 @@ class Gene extends React.Component {
+     switch (this.selectedTabTitle()) {
+       // case TABS.ABOUT: return <About gene={this.props.gene} />
+       // case TABS.WORKS: return <Artworks gene={this.props.gene} />
+-      case TABS.ABOUT: return <Text/>
++      case TABS.ABOUT: return <About gene={this.props.gene} />
+       case TABS.WORKS: return <Text/>
+     }
+   }
+@@ -89,6 +89,7 @@ export default Relay.createContainer(Gene, {
+         _id
+         id
+         ${Header.getFragment('gene')}
++        ${About.getFragment('gene')}
+       }
+     `,
+   }
+diff --git a/tsconfig.json b/tsconfig.json
+index 90aabba..c7f3c3d 100644
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -5,6 +5,7 @@
+     "exclude": [
+         "node_modules",
+         "Pod/Assets",
+-        "Example/Build"
++        "Example/Build",
++        "externals/"
+     ]
+ }
