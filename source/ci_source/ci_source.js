@@ -27,16 +27,13 @@ export interface CISource {
     /** What unique id can be found for the code review platform's PR */
     +pullRequestID: string,
 
-    /** What is the URL for the repo */
-    +repoURL: string,
-
     /** What is the project name */
     +name: string
 }
 
 import Travis from "./Travis"
 import Circle from "./Circle"
-import Fake from "./Fake"
+import Semaphore from "./Semaphore"
 
 /**
  * Gets a CI Source form the current environment, by asking all known
@@ -45,17 +42,16 @@ import Fake from "./Fake"
  * @returns {?CISource} a CI source if it's OK, otherwise Danger can't run.
 */
 export function getCISourceForEnv(env: Env): ?CISource {
-  // Fake is what I'm using during dev for the minute
   const travis = new Travis(env)
   const circle = new Circle(env)
-  const fake = new Fake(env)
+  const semaphore = new Semaphore(env)
 
   if (travis.isCI) {
     return travis
   } else if (circle.isCI) {
     return circle
-  } else {
-    return fake
+  } if (semaphore.isCI) {
+    return semaphore
   }
 }
 

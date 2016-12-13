@@ -4,23 +4,23 @@
 import type { Env } from "./ci_source"
 import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "./ci_source_helpers"
 
-export default class Travis {
+export default class Semaphore {
   env: Env
   constructor(env: Env) { this.env = env }
 
   get name(): string { return "Travis CI" }
 
   get isCI(): boolean {
-    return ensureEnvKeysExist(this.env, ["HAS_JOSH_K_SEAL_OF_APPROVAL"])
+    return ensureEnvKeysExist(this.env, ["SEMAPHORE"])
   }
 
   get isPR(): boolean {
-    const mustHave = ["HAS_JOSH_K_SEAL_OF_APPROVAL", "TRAVIS_PULL_REQUEST"]
-    const mustBeInts = ["TRAVIS_REPO_SLUG"]
+    const mustHave = ["SEMAPHORE_REPO_SLUG"]
+    const mustBeInts = ["PULL_REQUEST_NUMBER"]
     return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, mustBeInts)
   }
 
-  get pullRequestID(): string { return this.env.TRAVIS_PULL_REQUEST }
-  get repoSlug(): string { return this.env.TRAVIS_REPO_SLUG }
+  get pullRequestID(): string { return this.env.PULL_REQUEST_NUMBER }
+  get repoSlug(): string { return this.env.SEMAPHORE_REPO_SLUG }
   get supportedPlatforms(): string[] { return ["github"] }
 }

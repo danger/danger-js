@@ -24,7 +24,7 @@ export function ensureEnvKeysExist(env: Env, keys: string[]): boolean {
 */
 export function ensureEnvKeysAreInt(env: Env, keys: string[]): boolean {
   const hasKeys = keys.map((key: string): boolean => {
-    return env.hasOwnProperty(key) && !isNaN(parseInt(env.TRAVIS_PULL_REQUEST))
+    return env.hasOwnProperty(key) && !isNaN(parseInt(env[key]))
   })
   return !hasKeys.includes(false)
 }
