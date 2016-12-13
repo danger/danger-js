@@ -1,4 +1,10 @@
 language: node_js
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
 matrix:
   include:
     - node_js: "node"
