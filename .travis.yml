@@ -1,13 +1,15 @@
 language: node_js
-node_js:
-  - "6.1"
-
+matrix:
+  include:
+    - node_js: "node"
+      before_script:
+        - npm run build
+        - npm run link
+        - danger
+    - node_js: "6"
+    - node_js: "7"
+ 
 script:
   - npm test
-  - npm run build
-  - npm run link
-  - danger
-
-after_script:
   - npm run flow
   - npm run lint

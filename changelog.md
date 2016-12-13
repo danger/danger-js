@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+* Adds more node instances to travis - romanki + orta
+
 ### 0.6.4
 
 * The env vars `DANGER_TEST_REPO` and `DANGER_TEST_PR` will allow you initialize the FakeCI with a repo of your choice. See README.md for more info
