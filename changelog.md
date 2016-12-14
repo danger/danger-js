@@ -2,6 +2,10 @@
 
 //  Add your own contribution below
 
+### 0.6.6
+
+* Ship flow annotations with the npm module - orta
+
 ### 0.6.5
 
 * Adds more node instances to travis - romanki + orta
