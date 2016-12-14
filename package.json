@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "bin": {
@@ -24,7 +24,7 @@
     "buildwatch": "babel source --watch --out-dir distribution",
     "link": "npm run build ; chmod +x distribution/commands/danger.js ; npm link",
     "export-flowtype": "node scripts/create-flow-typed-export.js",
-    "inline-flowtype": "cp flow-typed/npm/danger_v0.x.x.js distribution/danger.js.flow"
+    "inline-flowtype": "cp flow-typed/npm/danger_v0.x.x.js distribution/danger.js"
   },
   "repository": {
     "type": "git",
