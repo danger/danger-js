@@ -19,7 +19,7 @@
     "flow": "flow check",
     "lint": "eslint ./source",
     "fix": "eslint ./source --fix",
-    "prepublish": "npm run build; npm run export-flowtype; npm run inline-flowtype",
+    "prepublish": "in-publish && npm run build && npm run export-flowtype && npm run inline-flowtype || not-in-publish",
     "build": "babel source --out-dir distribution --source-maps",
     "buildwatch": "babel source --watch --out-dir distribution",
     "link": "npm run build ; chmod +x distribution/commands/danger.js ; npm link",
@@ -57,6 +57,7 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.0",
     "flow-bin": "^0.35.0",
+    "in-publish": "^2.0.0",
     "jest-cli": "^17.0.3"
   },
   "dependencies": {
