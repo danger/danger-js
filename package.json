@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "bin": {
