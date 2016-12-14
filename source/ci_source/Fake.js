@@ -20,6 +20,5 @@ export default class FakeCI {
 
   get pullRequestID(): string { return this.env.pr }
   get repoSlug(): string { return this.env.repo }
-  get repoURL(): string { return "maybe not needed?" }
   get supportedPlatforms(): string[] { return ["github"] }
 }

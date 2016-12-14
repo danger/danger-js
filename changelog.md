@@ -3,6 +3,7 @@
 //  Add your own contribution below
 
 * Adds more node instances to travis - romanki + orta
+* Adds support for Semaphore CI - orta
 
 ### 0.6.4
 

@@ -3,6 +3,7 @@
 
 import type { Env } from "./ci_source"
 import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "./ci_source_helpers"
+
 export default class Circle {
   env: Env
   constructor(env: Env) { this.env = env }
