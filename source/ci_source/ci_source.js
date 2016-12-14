@@ -34,6 +34,7 @@ export interface CISource {
 import Travis from "./Travis"
 import Circle from "./Circle"
 import Semaphore from "./Semaphore"
+import Fake from "./Fake"
 
 /**
  * Gets a CI Source form the current environment, by asking all known
@@ -45,13 +46,16 @@ export function getCISourceForEnv(env: Env): ?CISource {
   const travis = new Travis(env)
   const circle = new Circle(env)
   const semaphore = new Semaphore(env)
+  const fake = new Fake(env)
 
   if (travis.isCI) {
     return travis
   } else if (circle.isCI) {
     return circle
-  } if (semaphore.isCI) {
+  } else if (semaphore.isCI) {
     return semaphore
+  } else if (fake.isCI) {
+    return fake
   }
 }
 

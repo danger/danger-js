@@ -2,6 +2,7 @@
 "use strict"
 
 import type { Env } from "./ci_source"
+import { ensureEnvKeysExist } from "./ci_source_helpers"
 
 export default class FakeCI {
   env: Env
@@ -15,7 +16,7 @@ export default class FakeCI {
   }
   get name(): string { return "Fake Testing CI" }
 
-  get isCI(): boolean { return true }
+  get isCI(): boolean { return ensureEnvKeysExist(this.env, ["DANGER_FAKE_CI"]) }
   get isPR(): boolean { return true }
 
   get pullRequestID(): string { return this.env.pr }
