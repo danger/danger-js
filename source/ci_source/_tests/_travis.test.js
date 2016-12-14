@@ -55,7 +55,7 @@ describe(".isPR", () => {
   })
 })
 
-describe(".pullReuestID", () => {
+describe(".pullRequestID", () => {
   it("pulls it out of the env", () => {
     const travis = new Travis(correctEnv)
     expect(travis.pullRequestID).toEqual("800")
