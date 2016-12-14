@@ -2,6 +2,10 @@
 
 //  Add your own contribution below
 
+### 0.6.10
+
+* Brings back the ability to emulate a fake CI run locally via `danger` - orta
+
 ### 0.6.9
 
 * Makes `babel-polyfill` a direct dependency, this is because it is actually an implicit dependency in the app. I'm not sure how I feel about this, I guess if we use a part of it in the babel translation of a user's Dangerfile them I'm OK with it. - orta 

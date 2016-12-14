@@ -57,6 +57,7 @@ If you create an [appropriately scoped temporary api token](http://danger.system
 You can manually trigger danger against a pull request on the command line by setting the following environmental variables:
 
 ```bash
+export DANGER_FAKE_CI="YEP"
 export DANGER_GITHUB_API_TOKEN='xxxxxxxxxx'  # a github api token
 export DANGER_TEST_REPO='username/reponame'
 ```
