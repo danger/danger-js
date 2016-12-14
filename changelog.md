@@ -2,7 +2,7 @@
 
 //  Add your own contribution below
 
-### 0.6.6 - 0.6.7
+### 0.6.6 - 0.6.7 - 0.6.8
 
 * Ship flow annotations with the npm module - orta
 

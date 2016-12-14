@@ -26,11 +26,13 @@ fs.readdir("source/dsl", (err, files) => {
     if (line.includes(":")) { return "  declare var " + line.trim() }
   }).join("\n")
 
-  fileOutput += `
+  const exportModule = `
 declare module "danger" {
   ${context}
 }
 `
+  fileOutput += exportModule
+
   // Remove all JS-y bits
   fileOutput = fileOutput.split("\n").filter((line) => {
     return !line.startsWith("import type") &&
@@ -43,11 +45,19 @@ declare module "danger" {
   fileOutput = fileOutput.replace(/export interface/gi, "interface")
 
   // Remove any 2 line breaks
-  fileOutput = fileOutput.replace(/\n\s*\n/g, "\n")
+  const flowTyped = fileOutput.replace(/\n\s*\n/g, "\n")
 
   // This is so you can get it for this repo 👍
-  fs.writeFileSync("flow-typed/npm/danger_v0.x.x.js", fileOutput)
-
+  fs.writeFileSync("flow-typed/npm/danger_v0.x.x.js", flowTyped)
   console.log("Awesome - shipped to flow-typed/npm/danger_v0.x.x.js")
   console.log("This should get sent to the main repo.")
+
+  // We want to create another variant - specifically for inlining into the npm module
+  // This version specifically does not have the declarations, but is the original
+  const inlineFlow = flowTyped.replace('declare module "danger" {', "")
+  const inlineDefinition = inlineFlow.replace(/declare/g, "")
+  const withoutLastBrace = inlineDefinition.substring(0, inlineDefinition.lastIndexOf("}"))
+  fs.writeFileSync("distribution/danger.js.flow", withoutLastBrace)
+  console.log("Awesome - shipped to distribution/danger.js.flow")
+  console.log("This will get sent off with the npm modile.")
 })
