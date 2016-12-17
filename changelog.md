@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+* Add tests directory to .npmignore - macklinu
+
 ### 0.6.10
 
 * Brings back the ability to emulate a fake CI run locally via `danger` - orta
