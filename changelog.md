@@ -3,6 +3,7 @@
 //  Add your own contribution below
 
 * Add tests directory to .npmignore - macklinu
+* Update to Jest 18 - macklinu
 
 ### 0.6.10
 
