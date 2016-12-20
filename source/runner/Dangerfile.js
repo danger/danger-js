@@ -1,10 +1,5 @@
 // @flow
 
-// https://nodejs.org/api/vm.html
-// https://60devs.com/executing-js-code-with-nodes-vm-module.html
-
-import fs from "fs"
-import vm from "vm"
 import type { DangerResults } from "./DangerResults"
 import type { DangerDSLType } from "../dsl/DangerDSL"
 import type { MarkdownString } from "../dsl/Aliases"
@@ -57,6 +52,12 @@ interface DangerContext {
 /* END FLOWTYPE EXPORT */
 }
 
+/** Creates a Danger context, this provides all of the global functions
+ *  which are available to the Danger eval runtime.
+ *
+ * @param {DangerDSLType} dsl The DSL which is turned into `danger`
+ * @returns {DangerContext} a DangerContext-like API
+ */
 export function contextForDanger(dsl: DangerDSLType): DangerContext {
   const results: DangerResults = {
     fails: [],
@@ -91,63 +92,3 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
     danger: dsl
   }
 }
-
-export class Dangerfile {
-  dsl: DangerDSLType
-
-  constructor(dsl: DangerDSLType) {
-    this.dsl = dsl
-  }
-
-  async run(file: string): Promise<DangerResults> {
-    const contents = await this.readFile(file)
-
-    // comment out imports of 'danger'
-    // e.g `import danger from`
-    // then user get typed data, and we fill it in
-    // via the VM context
-
-    const cleaned = contents
-      .replace(/import danger /gi, "// import danger ")
-      .replace(/import { danger/gi, "// import { danger ")
-
-    const script = new vm.Script(cleaned, {
-      filename: file,
-      lineOffset: 1,
-      columnOffset: 1,
-      displayErrors: true,
-      timeout: 1000 // ms
-    })
-
-    try {
-      script.runInNewContext(context)
-    }
-    catch (e) {
-      console.log(e.toString())
-    }
-
-    return results
-  }
-
-  /**
-   * A dumb fs.readFile promise wrapper,
-   * converts to string
-   *
-   * @param {string} path filepath
-   * @returns {Promise<string>} probably your string
-   */
-  readFile(path: string): Promise<string> {
-    return new Promise((resolve: any, reject: any) => {
-      fs.readFile(path, (err: any, data: Buffer) => {
-        if (err) {
-          console.error("Error: " + err.message)
-          process.exitCode = 1
-          reject(err)
-        } else {
-          resolve(data.toString())
-        }
-      })
-    })
-  }
-}
-

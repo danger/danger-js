@@ -74,7 +74,19 @@ export interface GitHubRepo {
    * Is the repo a fork?
    * @type {bool}
    */
-  fork: false
+  fork: bool,
+
+  /**
+   * IS someone assigned to this PR?
+   * @type {GitHubUser}
+   */
+  assignee: GitHubUser,
+
+  /**
+   * Are there people assigned to this PR?
+   * @type {Array<GitHubUser>}
+   */
+  assignees: Array<GitHubUser>,
 }
 
 export interface GitHubMergeRef {

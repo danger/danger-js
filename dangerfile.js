@@ -2,7 +2,7 @@
 
 // import { danger, warn } from "danger"
 import fs from "fs"
-// const fs = require("fs")
+console.log("Hello world")
 
 // Request a CHANGELOG entry
 const hasChangelog = danger.git.modified_files.includes("changelog.md")

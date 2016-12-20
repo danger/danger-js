@@ -48,17 +48,19 @@ interface Environment {
 
 import Runtime from "jest-runtime"
 import NodeEnvironment from "jest-environment-node"
-// import {contextForDanger} from "./Dangerfile"
-import type { DangerDSLType } from "../dsl/DangerDSL"
-import type { DangerResults } from "../dsl/DangerResults"
+import os from "os"
 
 /**
- * Executes a Dangerfile
- * @param dangerfile
+ * Executes a Dangerfile at a specific path, with a context.
+ * The values inside a Danger context are applied as globals to the Dangerfiles runtime.
+ *
+ * @param {string} filename the file path for the dangerfile
+ * @param {DangerContext} dangerfileContext the gloabl danger context
+ * @returns {DangerResults} the results of the run
  */
-export async function runDangerfile(filename: string, dangerfileContext: DangerContext) {
+export async function runDangerfile(filename: string, dangerfileContext: DangerContext): Promise<DangerResults> {
   const config: ResolverConfig | HasteConfig = {
-    cacheDirectory: "danger-cache",
+    cacheDirectory: os.tmpdir(),
     setupFiles: [],
     name: "danger",
     haste: {
