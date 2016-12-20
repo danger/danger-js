@@ -7,6 +7,9 @@
 * Uses `jest-transform` and `jest-runtime` to eval and apply babel transforms.
   This does two things, makes it feasible to do [hosted-danger](https://github.com/danger/peril) and 
   makes it possible to write your Dangerfile in a way that's consistent with the rest of your JavaScript. - orta
+* Add tests directory to .npmignore - macklinu
+* Update to Jest 18 - macklinu
+
 
 ### 0.6.10
 
@@ -30,6 +33,7 @@
 * The env vars `DANGER_TEST_REPO` and `DANGER_TEST_PR` will allow you initialize the FakeCI with a repo of your choice. See README.md for more info
 * Improved error messaging around not including a `DANGER_GITHUB_API_TOKEN` in the ENV - nsfmc / orta
 * Adds support for getting the diff for a specific file from git: e.g. 
+
   ```js
 // Politely ask for their name on the entry too
 const changelogDiff = danger.git.diffForFile("changelog.md")

@@ -1,6 +1,6 @@
 // @flow
 
-import { emptyResults, warnResults, failsResults } from "../../_tests/ExampleDangerResults"
+import { emptyResults, warnResults, failsResults } from "../../_tests/fixtures/ExampleDangerResults"
 import githubResultsTemplate from "../../templates/github-issue-template"
 
 describe("generating messages", () => {
