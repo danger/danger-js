@@ -1,7 +1,8 @@
 // @flow
 
-import { danger, warn } from "danger"
-const fs = require("fs")
+// import { danger, warn } from "danger"
+import fs from "fs"
+// const fs = require("fs")
 
 // Request a CHANGELOG entry
 const hasChangelog = danger.git.modified_files.includes("changelog.md")

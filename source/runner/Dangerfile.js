@@ -42,16 +42,54 @@ interface DangerContext {
   /** Typical console */
   console: any;
 
-  /** Typical require statement */
-  require(id: string): any;
-
   /**
    * The Danger object to work with
    *
    * @type {DangerDSLType}
    */
-  danger: DangerDSLType
+  danger: DangerDSLType;
+  /**
+   * Results of a Danger run
+   *
+   * @type {DangerDSLType}
+   */
+  results: DangerResults;
 /* END FLOWTYPE EXPORT */
+}
+
+export function contextForDanger(dsl: DangerDSLType): DangerContext {
+  const results: DangerResults = {
+    fails: [],
+    warnings: [],
+    messages: [],
+    markdowns: []
+  }
+
+  const fail = (message: MarkdownString) => {
+    results.fails.push({ message })
+  }
+
+  const warn = (message: MarkdownString) => {
+    results.warnings.push({ message })
+  }
+
+  const message = (message: MarkdownString) => {
+    results.messages.push({ message })
+  }
+
+  const markdown = (message: MarkdownString) => {
+    results.markdowns.push(message)
+  }
+
+  return {
+    fail,
+    warn,
+    message,
+    markdown,
+    console,
+    results,
+    danger: dsl
+  }
 }
 
 export class Dangerfile {
@@ -80,39 +118,6 @@ export class Dangerfile {
       displayErrors: true,
       timeout: 1000 // ms
     })
-
-    const results: DangerResults = {
-      fails: [],
-      warnings: [],
-      messages: [],
-      markdowns: []
-    }
-
-    const fail = (message: MarkdownString) => {
-      results.fails.push({ message })
-    }
-
-    const warn = (message: MarkdownString) => {
-      results.warnings.push({ message })
-    }
-
-    const message = (message: MarkdownString) => {
-      results.messages.push({ message })
-    }
-
-    const markdown = (message: MarkdownString) => {
-      results.markdowns.push(message)
-    }
-
-    const context: DangerContext = {
-      fail,
-      warn,
-      message,
-      markdown,
-      console,
-      require,
-      danger: this.dsl
-    }
 
     try {
       script.runInNewContext(context)

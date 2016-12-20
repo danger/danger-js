@@ -38,3 +38,4 @@ jspm_packages
 
 distribution  
 flow-typed
+env/development.env

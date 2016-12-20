@@ -58,4 +58,3 @@ export function getCISourceForEnv(env: Env): ?CISource {
     return fake
   }
 }
-

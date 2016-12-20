@@ -106,7 +106,7 @@ npm install -g flow-typed
 flow-typed install
 ```
 
-( and maybe `flow-typed install jest@14`)
+( and maybe `flow-typed install jest`)
 
 Tips:
 

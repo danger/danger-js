@@ -2,6 +2,12 @@
 
 //  Add your own contribution below
 
+* You can build and run in vscode using your own custom `env/development.env` file. This is useful because you can use the debugger against a real PR. See `env/development.env.example` for syntax.  - orta
+
+* Uses `jest-transform` and `jest-runtime` to eval and apply babel transforms.
+  This does two things, makes it feasible to do [hosted-danger](https://github.com/danger/peril) and 
+  makes it possible to write your Dangerfile in a way that's consistent with the rest of your JavaScript. - orta
+
 ### 0.6.10
 
 * Brings back the ability to emulate a fake CI run locally via `danger` - orta
