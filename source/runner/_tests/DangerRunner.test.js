@@ -56,8 +56,13 @@ describe("with fixtures", () => {
       throw new Error("Do not get to this")
     }
     catch (e) {
-      expect(e.message === ("Do not get to this")).toBeFalsy()
+      // expect(e.message === ("Do not get to this")).toBeFalsy()
+      expect(e.message).toEqual("hello is not defined")
     }
   })
-})
 
+  it("handles relative imports correctly", async () => {
+    const context = await setupDangerfileContext()
+    await runDangerfile(`${fixtures}/__DangerfileImportRelative.js`, context)
+  })
+})

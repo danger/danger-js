@@ -4,7 +4,7 @@ import type { DangerResults } from "./DangerResults"
 import type { DangerDSLType } from "../dsl/DangerDSL"
 import type { MarkdownString } from "../dsl/Aliases"
 
-interface DangerContext {
+export interface DangerContext {
 /* BEGIN FLOWTYPE EXPORT */
   /**
    * Fails a build, outputting a specific reason for failing

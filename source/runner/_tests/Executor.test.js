@@ -34,7 +34,7 @@ describe("setup", () => {
     expect(platform.deleteMainComment).toBeCalled()
   })
 
-  it("Updates or Createss comments for warnings", async () => {
+  it("Updates or Creates comments for warnings", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new Fake({}), platform)
     platform.updateOrCreateComment = jest.fn()

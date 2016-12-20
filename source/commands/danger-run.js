@@ -36,12 +36,12 @@ if (source && source.isPR) {
 
   if (platform) {
     console.log(`OK, looks good ${source.name} on ${platform.name}`)
-    // try {
-    const exec = new Executor(source, platform)
-    exec.runDanger()
-    // } catch (error) {
-    //   console.error(error.message)
-    //   console.error(error)
-    // }
+    try {
+      const exec = new Executor(source, platform)
+      exec.runDanger()
+    } catch (error) {
+      console.error(error.message)
+      console.error(error)
+    }
   }
 }
