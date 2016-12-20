@@ -49,11 +49,15 @@ describe("with fixtures", () => {
     })
   })
 
-  it("handles a full set of  messages", async () => {
+  it("handles a failing dangerfile", async () => {
     const context = await setupDangerfileContext()
-    return runDangerfile(`${fixtures}/__DangerfileBadSyntax.js`, context).catch(e => {
-      expect(e.toString().includes("hello is not defined")).toBeTruthy()
-    })
+    try {
+      await runDangerfile(`${fixtures}/__DangerfileBadSyntax.js`, context)
+      throw new Error("Do not get to this")
+    }
+    catch (e) {
+      expect(e.message === ("Do not get to this")).toBeFalsy()
+    }
   })
 })
 
