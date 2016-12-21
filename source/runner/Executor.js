@@ -1,18 +1,18 @@
 // @flow
 
-import { Dangerfile } from "../runner/Dangerfile"
+import { contextForDanger } from "../runner/Dangerfile"
 import { DangerDSL } from "../dsl/DangerDSL"
 import type { CISource } from "../ci_source/ci_source"
 import { Platform } from "../platforms/platform"
 import type { DangerResults } from "../runner/DangerResults"
 import githubResultsTemplate from "./templates/github-issue-template"
+import { runDangerfile } from "./DangerfileRunner"
 
 // This is still badly named, maybe it really should just be runner?
 
 export default class Executor {
   ciSource: CISource
   platform: Platform
-  dangerfile: Dangerfile
 
   constructor(ciSource: CISource, platform: Platform) {
     this.ciSource = ciSource
@@ -24,27 +24,19 @@ export default class Executor {
    * @returns {void} It's a promise, so a void promise
    */
   async runDanger() {
-    await this.setup()
-    const results = await this.run()
+    const dsl = await this.dslForDanger()
+    const context = contextForDanger(dsl)
+    const results = await runDangerfile("dangerfile.js", context)
     await this.handleResults(results)
   }
 
   /** Sets up all the related objects for running the Dangerfile
   * @returns {void} It's a promise, so a void promise
   */
-  async setup() {
+  async dslForDanger(): Promise<DangerDSL> {
     const git = await this.platform.getReviewDiff()
     const pr = await this.platform.getReviewInfo()
-    const dsl = new DangerDSL(pr, git)
-    this.dangerfile = new Dangerfile(dsl)
-  }
-
-  /**
-   * Runs the current dangerfile
-   * @returns {DangerResults} Returns the results of the Danger run
-   */
-  async run(): Promise<DangerResults> {
-    return await this.dangerfile.run("dangerfile.js")
+    return new DangerDSL(pr, git)
   }
 
   /**

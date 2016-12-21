@@ -3,7 +3,7 @@
 import Executor from "../Executor"
 import Fake from "../../ci_source/Fake"
 import FakePlatform from "../../platforms/FakePlatform"
-import { emptyResults, warnResults } from "./ExampleDangerResults"
+import { emptyResults, warnResults } from "./fixtures/ExampleDangerResults"
 
 describe("setup", () => {
   it("gets diff / pr info in setup", async () => {
@@ -13,15 +13,16 @@ describe("setup", () => {
     platform.getReviewDiff = jest.fn()
     platform.getReviewInfo = jest.fn()
 
-    await exec.setup()
+    await exec.dslForDanger()
     expect(platform.getReviewDiff).toBeCalled()
     expect(platform.getReviewInfo).toBeCalled()
   })
 
   it("gets diff / pr info in setup", async () => {
     const exec = new Executor(new Fake({}), new FakePlatform())
-    await exec.setup()
-    expect(exec.dangerfile).toBeTruthy()
+    const dsl = await exec.dslForDanger()
+    expect(dsl.git).toBeTruthy()
+    expect(dsl.github).toBeTruthy()
   })
 
   it("Deletes a post when there are no messages", async () => {

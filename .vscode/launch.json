@@ -1,10 +1,31 @@
 {
     "version": "0.2.0",
     "configurations": [{
-        "name": "Launch",
+        "name": "Launch Run",
         "type": "node",
         "request": "launch",
         "program": "${workspaceRoot}/source/commands/danger-run.js",
+        "stopOnEntry": false,
+        "args": [],
+        "envFile": "${workspaceRoot}/env/development.env",
+        "cwd": "${workspaceRoot}",
+        "preLaunchTask": "build",
+        "runtimeExecutable": null,
+        "runtimeArgs": [
+            "--nolazy"
+        ],
+        "env": {
+            "NODE_ENV": "development"
+        },
+        "console": "internalConsole",
+        "sourceMaps": true,
+        "outDir": "${workspaceRoot}/distribution"
+    },
+    {
+        "name": "Launch Local",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceRoot}/source/commands/danger-local.js",
         "stopOnEntry": false,
         "args": [],
         "cwd": "${workspaceRoot}",

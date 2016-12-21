@@ -2,6 +2,7 @@
 distribution
 .*/_tests/.*
 .*dangerfile.js
+node_modules/jest*
 
 [include]
 

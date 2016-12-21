@@ -54,9 +54,9 @@
     "eslint-plugin-flowtype": "^2.25.0",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.0",
+    "jest": "^18.0.0",
     "flow-bin": "^0.35.0",
-    "in-publish": "^2.0.0",
-    "jest-cli": "^18.0.0"
+    "in-publish": "^2.0.0"
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
