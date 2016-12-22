@@ -2,6 +2,9 @@
 
 //  Add your own contribution below
 
+### 0.7.0
+
+
 * You can build and run in vscode using your own custom `env/development.env` file. This is useful because you can use the debugger against a real PR. See `env/development.env.example` for syntax.  - orta
 
 * Uses `jest-transform` and `jest-runtime` to eval and apply babel transforms.
