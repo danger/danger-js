@@ -15,12 +15,15 @@ import os from "os"
 
 export type APIToken = string;
 
+// TODO: Cache PR JSON
+
 /** This represent the GitHub API, and conforming to the Platform Interface */
 
 export class GitHub {
   token: APIToken
   ciSource: CISource
   name: string
+  additionalHeaders: any
 
   constructor(token: APIToken, ciSource: CISource) {
     this.token = token
@@ -122,6 +125,23 @@ export class GitHub {
     return commentID !== null
   }
 
+  /**
+   * Returns the contents of a file under 1MB big
+   *
+   * @returns {Promise<any>} JSON representation
+   */
+  async fileContents(path: string, ref?: string): Promise<string> {
+    // Use head of PR (current state of PR) if no ref passed
+    if (!ref) {
+      const prJSON = await this.getReviewInfo()
+      console.log(prJSON)
+      ref = prJSON.head.ref
+    }
+    const fileMetadata = await this.getFileContents(path, ref)
+    const data = await fileMetadata.json()
+    return data.content
+  }
+
   // The above is the API for Platform
 
   async getDangerCommentID(): Promise<?number> {
@@ -157,7 +177,7 @@ export class GitHub {
     })
   }
 
-  getPullRequestInfo(): Promise<Response> {
+  getPullRequestInfo(): Promise <Response> {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID
     return this.get(`repos/${repo}/pulls/${prID}`)
@@ -183,6 +203,13 @@ export class GitHub {
     })
   }
 
+  getFileContents(path: string, ref: string): Promise<Response> {
+    const repo = this.ciSource.repoSlug
+    return this.get(`repos/${repo}/contents/${path}`, {
+      ref: ref
+    })
+  }
+
   // maybe this can move into the stuff below
   post(path: string, headers: any = {}, body: any = {}, method: string = "POST"): Promise<Response> {
     return fetch(`https://api.github.com/${path}`, {
@@ -191,7 +218,9 @@ export class GitHub {
       headers: {
         "Authorization": `token ${this.token}`,
         "Content-Type": "application/json",
-        ...headers }
+        ...headers,
+        ...this.additionalHeaders
+      }
     })
   }
 
@@ -202,7 +231,9 @@ export class GitHub {
       headers: {
         "Authorization": `token ${this.token}`,
         "Content-Type": "application/json",
-        ...headers }
+        ...headers,
+        ...this.additionalHeaders
+      }
     })
   }
 
@@ -213,7 +244,9 @@ export class GitHub {
       headers: {
         "Authorization": `token ${this.token}`,
         "Content-Type": "application/json",
-        ...headers }
+        ...headers,
+        ...this.additionalHeaders
+      }
     })
   }
 }

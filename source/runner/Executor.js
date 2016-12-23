@@ -23,10 +23,10 @@ export default class Executor {
    *  Runs all of the operations for a running just Danger
    * @returns {void} It's a promise, so a void promise
    */
-  async runDanger() {
+  async runDanger(file: string) {
     const dsl = await this.dslForDanger()
     const context = contextForDanger(dsl)
-    const results = await runDangerfile("dangerfile.js", context)
+    const results = await runDangerfile(file, context)
     await this.handleResults(results)
   }
 
