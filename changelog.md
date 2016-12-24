@@ -2,14 +2,19 @@
 
 //  Add your own contribution below
 
-### 0.7.0
+* Fixes to the shipped Flow/TS definitions - orta
+* Adds more functions the the internal Danger GitHub client - orta
+* Infrastructure work to allow Peril to run a Dangerfile - orta
 
+### 0.7.0
 
 * You can build and run in vscode using your own custom `env/development.env` file. This is useful because you can use the debugger against a real PR. See `env/development.env.example` for syntax.  - orta
 
 * Uses `jest-transform` and `jest-runtime` to eval and apply babel transforms.
+
   This does two things, makes it feasible to do [hosted-danger](https://github.com/danger/peril) and 
   makes it possible to write your Dangerfile in a way that's consistent with the rest of your JavaScript. - orta
+  
 * Add tests directory to .npmignore - macklinu
 * Update to Jest 18 - macklinu
 

@@ -57,7 +57,14 @@ declare module "danger" {
   const inlineFlow = flowTyped.replace('declare module "danger" {', "")
   const inlineDefinition = inlineFlow.replace(/declare/g, "")
   const withoutLastBrace = inlineDefinition.substring(0, inlineDefinition.lastIndexOf("}"))
-  fs.writeFileSync("distribution/danger.js.flow", withoutLastBrace)
+
+  // Replace all lines with versions that fake the function `{}` bit
+  const finalFlow = withoutLastBrace.split("\n").map((line) => {
+    if (!line.includes("function")) { return line }
+    else { return line.replace(";", " {};") }
+  }).join("\n")
+
+  fs.writeFileSync("distribution/danger.js.flow", finalFlow)
   console.log("Awesome - shipped to distribution/danger.js.flow")
   console.log("This will get sent off with the npm modile.")
 })

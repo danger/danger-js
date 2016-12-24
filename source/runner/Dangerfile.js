@@ -1,6 +1,6 @@
 // @flow
 
-import type { DangerResults } from "./DangerResults"
+import type { DangerResults } from "../dsl/DangerResults"
 import type { DangerDSLType } from "../dsl/DangerDSL"
 import type { MarkdownString } from "../dsl/Aliases"
 

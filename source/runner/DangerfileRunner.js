@@ -43,7 +43,7 @@ import Runtime from "jest-runtime"
 import NodeEnvironment from "jest-environment-node"
 import os from "os"
 
-import type { DangerResults } from "../runner/DangerResults"
+import type { DangerResults } from "../dsl/DangerResults"
 import type { DangerContext } from "../runner/Dangerfile"
 
 /**

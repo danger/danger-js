@@ -4,7 +4,7 @@ import { contextForDanger } from "../runner/Dangerfile"
 import { DangerDSL } from "../dsl/DangerDSL"
 import type { CISource } from "../ci_source/ci_source"
 import { Platform } from "../platforms/platform"
-import type { DangerResults } from "../runner/DangerResults"
+import type { DangerResults } from "../dsl/DangerResults"
 import githubResultsTemplate from "./templates/github-issue-template"
 import { runDangerfile } from "./DangerfileRunner"
 

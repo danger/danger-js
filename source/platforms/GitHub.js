@@ -5,7 +5,7 @@ import type { GitDSL } from "../dsl/GitDSL"
 import type { CISource } from "../ci_source/ci_source"
 import parseDiff from "parse-diff"
 
-import fetch from "node-fetch"
+import fetch from "../api/fetch"
 import "babel-polyfill"
 
 import os from "os"
@@ -126,9 +126,12 @@ export class GitHub {
   }
 
   /**
-   * Returns the contents of a file under 1MB big
+   * Grabs the contents of an individual file on GitHub
    *
-   * @returns {Promise<any>} JSON representation
+   * @param {string} path path to the file
+   * @param {string} [ref] an optional sha
+   * @returns {Promise<string>} text contents
+   *
    */
   async fileContents(path: string, ref?: string): Promise<string> {
     // Use head of PR (current state of PR) if no ref passed
