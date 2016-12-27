@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+* Set exit code to 1 when running `danger` throws an error - macklinu
+
 ### 0.7.0
 
 

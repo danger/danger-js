@@ -40,6 +40,7 @@ if (source && source.isPR) {
       const exec = new Executor(source, platform)
       exec.runDanger()
     } catch (error) {
+      process.exitCode = 1
       console.error(error.message)
       console.error(error)
     }
