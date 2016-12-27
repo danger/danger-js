@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "bin": {
@@ -54,13 +54,14 @@
     "eslint-plugin-flowtype": "^2.25.0",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.0",
-    "jest": "^18.0.0",
     "flow-bin": "^0.35.0",
-    "in-publish": "^2.0.0"
+    "in-publish": "^2.0.0",
+    "jest": "^18.0.0"
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
     "commander": "^2.9.0",
+    "jest-runtime": "^18.0.0",
     "node-fetch": "^1.6.3",
     "parse-diff": "^0.4.0"
   }

@@ -2,12 +2,14 @@
 
 //  Add your own contribution below
 
+### 0.7.1
+
 * Set exit code to 1 when running `danger` throws an error - macklinu
 * Add Jenkins CI source - macklinu
 * Add .editorconfig - macklinu
+* Adds jest-runtime to the dependencies - orta
 
 ### 0.7.0
-
 
 * You can build and run in vscode using your own custom `env/development.env` file. This is useful because you can use the debugger against a real PR. See `env/development.env.example` for syntax.  - orta
 
