@@ -6,7 +6,7 @@ export type Env = any;
 
 /** The shape of an object that represents an individual CI */
 export interface CISource {
-    /** The name, mainly for showing errors */
+    /** The project name, mainly for showing errors */
     +name: string,
 
     /** The hash of environment variables */
@@ -26,14 +26,12 @@ export interface CISource {
 
     /** What unique id can be found for the code review platform's PR */
     +pullRequestID: string,
-
-    /** What is the project name */
-    +name: string
 }
 
 import Travis from "./Travis"
 import Circle from "./Circle"
 import Semaphore from "./Semaphore"
+import Jenkins from "./Jenkins"
 import Fake from "./Fake"
 
 /**
@@ -46,6 +44,7 @@ export function getCISourceForEnv(env: Env): ?CISource {
   const travis = new Travis(env)
   const circle = new Circle(env)
   const semaphore = new Semaphore(env)
+  const jenkins = new Jenkins(env)
   const fake = new Fake(env)
 
   if (travis.isCI) {
@@ -54,6 +53,8 @@ export function getCISourceForEnv(env: Env): ?CISource {
     return circle
   } else if (semaphore.isCI) {
     return semaphore
+  } else if (jenkins.isCI) {
+    return jenkins
   } else if (fake.isCI) {
     return fake
   }
