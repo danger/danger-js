@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+* Add .editorconfig - macklinu
+
 ### 0.7.0
 
 
