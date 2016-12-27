@@ -11,7 +11,7 @@ import type { Env } from "./ci_source"
 */
 export function ensureEnvKeysExist(env: Env, keys: string[]): boolean {
   const hasKeys = keys.map((key: string): boolean => {
-    return env.hasOwnProperty(key) && env[key].length > 0
+    return env.hasOwnProperty(key) && env[key] != null && env[key].length > 0
   })
   return !hasKeys.includes(false)
 }
