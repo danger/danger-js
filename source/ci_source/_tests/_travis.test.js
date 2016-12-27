@@ -39,7 +39,7 @@ describe(".isPR", () => {
     env[key] = null
 
     test(`does not validate when ${key} is missing`, () => {
-      const travis = new Travis({})
+      const travis = new Travis(env)
       expect(travis.isPR).toBeFalsy()
     })
   })
