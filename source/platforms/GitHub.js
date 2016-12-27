@@ -23,12 +23,17 @@ export class GitHub {
   token: APIToken
   ciSource: CISource
   name: string
-  additionalHeaders: any
+  // A fetch-api shaped function
+  fetch: any
 
   constructor(token: APIToken, ciSource: CISource) {
     this.token = token
     this.ciSource = ciSource
     this.name = "GitHub"
+
+    // This allows Peril to DI in a new Fetch function
+    // which can handle unique API edge-cases around integrations
+    this.fetch = fetch
   }
 
   /**
@@ -137,12 +142,12 @@ export class GitHub {
     // Use head of PR (current state of PR) if no ref passed
     if (!ref) {
       const prJSON = await this.getReviewInfo()
-      console.log(prJSON)
       ref = prJSON.head.ref
     }
     const fileMetadata = await this.getFileContents(path, ref)
     const data = await fileMetadata.json()
-    return data.content
+    const buffer = new Buffer(data.content, "base64")
+    return buffer.toString()
   }
 
   // The above is the API for Platform
@@ -208,47 +213,42 @@ export class GitHub {
 
   getFileContents(path: string, ref: string): Promise<Response> {
     const repo = this.ciSource.repoSlug
-    return this.get(`repos/${repo}/contents/${path}`, {
-      ref: ref
-    })
+    return this.get(`repos/${repo}/contents/${path}?ref=${ref}`, {})
   }
 
   // maybe this can move into the stuff below
   post(path: string, headers: any = {}, body: any = {}, method: string = "POST"): Promise<Response> {
-    return fetch(`https://api.github.com/${path}`, {
+    return this.fetch(`https://api.github.com/${path}`, {
       method: method,
       body: JSON.stringify(body),
       headers: {
         "Authorization": `token ${this.token}`,
         "Content-Type": "application/json",
-        ...headers,
-        ...this.additionalHeaders
+        ...headers
       }
     })
   }
 
   get(path: string, headers: any = {}, body: any = {}, method: string = "GET"): Promise<Response> {
-    return fetch(`https://api.github.com/${path}`, {
+    return this.fetch(`https://api.github.com/${path}`, {
       method: method,
       body: body,
       headers: {
         "Authorization": `token ${this.token}`,
         "Content-Type": "application/json",
-        ...headers,
-        ...this.additionalHeaders
+        ...headers
       }
     })
   }
 
   patch(path: string, headers: any = {}, body: any = {}, method: string = "PATCH"): Promise<Response> {
-    return fetch(`https://api.github.com/${path}`, {
+    return this.fetch(`https://api.github.com/${path}`, {
       method: method,
       body: JSON.stringify(body),
       headers: {
         "Authorization": `token ${this.token}`,
         "Content-Type": "application/json",
-        ...headers,
-        ...this.additionalHeaders
+        ...headers
       }
     })
   }

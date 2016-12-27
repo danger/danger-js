@@ -1,60 +1,21 @@
 // @flow
 
-type Path = string
-
-interface ResolverConfig {
-  browser?: boolean,
-  defaultPlatform: ?string,
-  extensions: Array<string>,
-  hasCoreModules: boolean,
-  moduleDirectories: Array<string>,
-  moduleNameMapper: ?{[key: string]: RegExp},
-  modulePaths: Array<Path>,
-  platforms?: Array<string>,
-};
-
-interface HasteConfig {
-  providesModuleNodeModules: Array<string>,
-  defaultPlatform?: ?string,
-  platforms?: Array<string>,
-};
-
-interface Environment {
-  constructor(config: any): void;
-  dispose(): void;
-  runScript(script: any): any;
-  global: any;
-  fakeTimers: {
-    clearAllTimers(): void;
-    runAllImmediates(): void;
-    runAllTicks(): void;
-    runAllTimers(): void;
-    runTimersToTime(): void;
-    runOnlyPendingTimers(): void;
-    runWithRealTimers(callback: any): void;
-    useFakeTimers(): void;
-    useRealTimers(): void;
-  };
-  testFilePath: string;
-  moduleMocker: any;
-};
-
 import Runtime from "jest-runtime"
 import NodeEnvironment from "jest-environment-node"
 import os from "os"
 
 import type { DangerResults } from "../dsl/DangerResults"
 import type { DangerContext } from "../runner/Dangerfile"
+import type { DangerfileRuntimeEnv, Environment, Path } from "./types"
 
 /**
  * Executes a Dangerfile at a specific path, with a context.
  * The values inside a Danger context are applied as globals to the Dangerfiles runtime.
  *
- * @param {string} filename the file path for the dangerfile
  * @param {DangerContext} dangerfileContext the gloabl danger context
- * @returns {DangerResults} the results of the run
+ * @returns {any} the results of the run
  */
-export async function runDangerfile(filename: string, dangerfileContext: DangerContext): Promise<DangerResults> {
+export async function createDangerfileRuntimeEnvironment(dangerfileContext: DangerContext): Promise<DangerfileRuntimeEnv> {
   const config = {
     cacheDirectory: os.tmpdir(),
     setupFiles: [],
@@ -69,7 +30,8 @@ export async function runDangerfile(filename: string, dangerfileContext: DangerC
     cache: null
   }
 
-  const environment:Environment = new NodeEnvironment(config)
+  const environment: Environment = new NodeEnvironment(config)
+
   const runnerGlobal = environment.global
   const context = dangerfileContext
 
@@ -87,9 +49,25 @@ export async function runDangerfile(filename: string, dangerfileContext: DangerC
   const resolver = Runtime.createResolver(config, hasteMap.moduleMap)
   const runtime = new Runtime(config, environment, resolver)
 
+  return {
+    context,
+    environment,
+    runtime
+  }
+}
+
+/**
+ * Executes a Dangerfile at a specific path, with a context.
+ * The values inside a Danger context are applied as globals to the Dangerfiles runtime.
+ *
+ * @param {string} filename the file path for the dangerfile
+ * @param {any} environment the results of createDangerfileRuntimeEnvironment
+ * @returns {DangerResults} the results of the run
+ */
+export async function runDangerfileEnvironment(filename: Path, environment: DangerfileRuntimeEnv): Promise<DangerResults> {
+  const runtime = environment.runtime
   // Require our dangerfile
-  // TODO: This needs to be able to support arbitrary strings for Peril
   runtime.requireModule(filename)
 
-  return context.results
+  return environment.context.results
 }

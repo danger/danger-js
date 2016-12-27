@@ -1,7 +1,7 @@
 // @flow
 
 import { contextForDanger } from "../Dangerfile"
-import {runDangerfile} from "../DangerfileRunner"
+import {createDangerfileRuntimeEnvironment, runDangerfileEnvironment} from "../DangerfileRunner"
 import Fake from "../../ci_source/Fake"
 import FakePlatform from "../../platforms/FakePlatform"
 import Executor from "../Executor"
@@ -27,7 +27,8 @@ async function setupDangerfileContext() {
 describe("with fixtures", () => {
   it("handles a blank Dangerfile", async () => {
     const context = await setupDangerfileContext()
-    const results = await runDangerfile(`${fixtures}/__DangerfileEmpty.js`, context)
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(`${fixtures}/__DangerfileEmpty.js`, runtime)
 
     expect(results).toEqual({
       fails: [],
@@ -39,7 +40,9 @@ describe("with fixtures", () => {
 
   it("handles a full set of  messages", async () => {
     const context = await setupDangerfileContext()
-    const results = await runDangerfile(`${fixtures}/__DangerfileFullMessages.js`, context)
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+
+    const results = await runDangerfileEnvironment(`${fixtures}/__DangerfileFullMessages.js`, runtime)
 
     expect(results).toEqual({
       fails: [{"message": "this is a failure"}],
@@ -51,8 +54,10 @@ describe("with fixtures", () => {
 
   it("handles a failing dangerfile", async () => {
     const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+
     try {
-      await runDangerfile(`${fixtures}/__DangerfileBadSyntax.js`, context)
+      await runDangerfileEnvironment(`${fixtures}/__DangerfileBadSyntax.js`, runtime)
       throw new Error("Do not get to this")
     }
     catch (e) {
@@ -63,6 +68,8 @@ describe("with fixtures", () => {
 
   it("handles relative imports correctly", async () => {
     const context = await setupDangerfileContext()
-    await runDangerfile(`${fixtures}/__DangerfileImportRelative.js`, context)
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+
+    await runDangerfileEnvironment(`${fixtures}/__DangerfileImportRelative.js`, runtime)
   })
 })

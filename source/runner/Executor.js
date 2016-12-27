@@ -6,7 +6,8 @@ import type { CISource } from "../ci_source/ci_source"
 import { Platform } from "../platforms/platform"
 import type { DangerResults } from "../dsl/DangerResults"
 import githubResultsTemplate from "./templates/github-issue-template"
-import { runDangerfile } from "./DangerfileRunner"
+import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment } from "./DangerfileRunner"
+import type { DangerfileRuntimeEnv } from "./types"
 
 // This is still badly named, maybe it really should just be runner?
 
@@ -19,14 +20,32 @@ export default class Executor {
     this.platform = platform
   }
 
+  /** Mainly just a dumb helper because I can't do
+   * async functions in danger-run.js
+   */
+  async setupAndRunDanger(file: string) {
+    const runtimeEnv = await this.setupDanger()
+    await this.runDanger(file, runtimeEnv)
+  }
+
   /**
    *  Runs all of the operations for a running just Danger
-   * @returns {void} It's a promise, so a void promise
+   * @returns {DangerfileRuntimeEnv} A runtime environment to run Danger in
    */
-  async runDanger(file: string) {
+  async setupDanger(): DangerfileRuntimeEnv {
     const dsl = await this.dslForDanger()
     const context = contextForDanger(dsl)
-    const results = await runDangerfile(file, context)
+    return await createDangerfileRuntimeEnvironment(context)
+  }
+
+  /**
+   *  Runs all of the operations for a running just Danger
+   * @param {string} file the filepath to the Dangerfile
+   * @returns {void} It's a promise, so a void promise
+   */
+
+  async runDanger(file: string, runtime: DangerfileRuntimeEnv) {
+    const results = await runDangerfileEnvironment(file, runtime)
     await this.handleResults(results)
   }
 
