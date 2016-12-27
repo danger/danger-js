@@ -3,6 +3,7 @@
 //  Add your own contribution below
 
 * Add Jenkins CI source - macklinu
+* Add .editorconfig - macklinu
 
 ### 0.7.0
 
