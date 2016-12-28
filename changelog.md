@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+* Upgrade outdated ESLint packages - macklinu
+
 ### 0.7.1
 
 * Set exit code to 1 when running `danger` throws an error - macklinu
