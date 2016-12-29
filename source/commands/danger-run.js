@@ -40,6 +40,7 @@ if (source && source.isPR) {
       const exec = new Executor(source, platform)
       exec.setupAndRunDanger("dangerfile.js")
     } catch (error) {
+      process.exitCode = 1
       console.error(error.message)
       console.error(error)
     }

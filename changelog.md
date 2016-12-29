@@ -5,6 +5,14 @@
 * Fixes to the shipped Flow/TS definitions - orta
 * Adds more functions the the internal Danger GitHub client - orta
 * Infrastructure work to allow Peril to run a Dangerfile - orta
+* Upgrade outdated ESLint packages - macklinu
+
+### 0.7.1
+
+* Set exit code to 1 when running `danger` throws an error - macklinu
+* Add Jenkins CI source - macklinu
+* Add .editorconfig - macklinu
+* Adds jest-runtime to the dependencies - orta
 
 ### 0.7.0
 

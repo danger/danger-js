@@ -22,6 +22,8 @@ export default class Executor {
 
   /** Mainly just a dumb helper because I can't do
    * async functions in danger-run.js
+   * @param {string} file the path to run Danger from
+   * @returns {void} It's a promise, so a void promise
    */
   async setupAndRunDanger(file: string) {
     const runtimeEnv = await this.setupDanger()
@@ -60,8 +62,8 @@ export default class Executor {
 
   /**
    * Handle the messaing aspects of running a Dangerfile
-   * @returns {void} It's a promise, so a void promise
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
+   * @returns {void} It's a promise, so a void promise
    */
   async handleResults(results: DangerResults) {
     // Ensure process fails if there are fails
