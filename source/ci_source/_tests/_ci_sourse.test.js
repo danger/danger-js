@@ -1,6 +1,6 @@
 // @flow
 
-import Fake from "../Fake"
+import Fake from "../providers/Fake"
 import { getCISourceForEnv } from "../ci_source"
 
 describe(".getCISourceForEnv", () => {

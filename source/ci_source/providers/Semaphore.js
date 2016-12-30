@@ -1,8 +1,8 @@
 // @flow
 "use strict"
 
-import type { Env } from "./ci_source"
-import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "./ci_source_helpers"
+import type { Env } from "../ci_source"
+import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
 
 export default class Semaphore {
   env: Env

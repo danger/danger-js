@@ -2,7 +2,7 @@
 /*eslint-disable */
 
 import { GitHub } from "../GitHub"
-import Fake from "../../ci_source/Fake"
+import Fake from "../../ci_source/providers/Fake"
 import { readFileSync } from "fs"
 import { resolve } from "path"
 import os from "os"
