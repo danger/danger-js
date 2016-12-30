@@ -1,0 +1,20 @@
+# Test against this version of Node.js
+environment:
+  nodejs_version: "7"
+
+# Install scripts. (runs after repo cloning)
+install:
+  # Get the latest stable version of Node
+  - ps: Install-Product node $env:nodejs_version
+  # install modules
+  - npm install
+
+build: off
+
+# Post-install test scripts.
+test_script:
+  # Output useful info for debugging.
+  - node --version
+  - npm --version
+  # run tests
+  - npm test
