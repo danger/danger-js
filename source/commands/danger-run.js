@@ -1,20 +1,24 @@
 // @flow
 import "babel-polyfill"
 
-var program = require("commander")
+var program: any = require("commander")
 
 import { getCISourceForEnv } from "../ci_source/ci_source"
 import { getPlatformForEnv } from "../platforms/platform"
 import Executor from "../runner/Executor"
 
 program
-  .option("-f, --fail-on-errors", "TODO: Fail on errors")
+  .option("-v, --verbose", "Verbose output of files")
   .parse(process.argv)
 
 process.on("unhandledRejection", function(reason: string, p: any) {
   console.log("Error: ", reason)
   process.exitCode = 1
 })
+
+if (process.env["DANGER_VERBOSE"] || program.verbose) {
+  global.verbose = true
+}
 
 const source = getCISourceForEnv(process.env)
 if (!source) {
