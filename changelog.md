@@ -3,6 +3,7 @@
 //  Add your own contribution below
 
 * Upgrade outdated ESLint packages - macklinu
+* Enhance Windows OS compatibility - kwonoj
 
 ### 0.7.1
 
@@ -16,7 +17,7 @@
 * You can build and run in vscode using your own custom `env/development.env` file. This is useful because you can use the debugger against a real PR. See `env/development.env.example` for syntax.  - orta
 
 * Uses `jest-transform` and `jest-runtime` to eval and apply babel transforms.
-  This does two things, makes it feasible to do [hosted-danger](https://github.com/danger/peril) and 
+  This does two things, makes it feasible to do [hosted-danger](https://github.com/danger/peril) and
   makes it possible to write your Dangerfile in a way that's consistent with the rest of your JavaScript. - orta
 * Add tests directory to .npmignore - macklinu
 * Update to Jest 18 - macklinu
@@ -28,7 +29,7 @@
 
 ### 0.6.9
 
-* Makes `babel-polyfill` a direct dependency, this is because it is actually an implicit dependency in the app. I'm not sure how I feel about this, I guess if we use a part of it in the babel translation of a user's Dangerfile them I'm OK with it. - orta 
+* Makes `babel-polyfill` a direct dependency, this is because it is actually an implicit dependency in the app. I'm not sure how I feel about this, I guess if we use a part of it in the babel translation of a user's Dangerfile them I'm OK with it. - orta
 
 ### 0.6.6 - 0.6.7 - 0.6.8
 
@@ -43,7 +44,7 @@
 
 * The env vars `DANGER_TEST_REPO` and `DANGER_TEST_PR` will allow you initialize the FakeCI with a repo of your choice. See README.md for more info
 * Improved error messaging around not including a `DANGER_GITHUB_API_TOKEN` in the ENV - nsfmc / orta
-* Adds support for getting the diff for a specific file from git: e.g. 
+* Adds support for getting the diff for a specific file from git: e.g.
 
   ```js
 // Politely ask for their name on the entry too
@@ -57,7 +58,7 @@ if (changelogDiff && changelogDiff.indexOf(contributorName) === -1) {
 ### 0.6.3
 
 * Does not break commonmark on GitHub - orta
-* upgrades to flow 0.35.0 and fixes associated type errors in covariant/invariant interfaces - nsfmc 
+* upgrades to flow 0.35.0 and fixes associated type errors in covariant/invariant interfaces - nsfmc
 * omits flow requirement for new test files - nsfmc
 * adds support for circleci - nsfmc
 * defines CISource properties in flow as read-only - nsfmc
