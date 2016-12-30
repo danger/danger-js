@@ -4,6 +4,10 @@
 
 ### 0.7.2
 
+* Tweak the npmignore, ship less random stuff to others - orta
+
+### 0.7.2
+
 * Fixes to the shipped Flow/TS definitions - orta
 * Adds more functions the the internal Danger GitHub client - orta
 * Infrastructure work to allow Peril to run a Dangerfile - orta

@@ -1,2 +1,11 @@
 source
 **/_tests
+flow-typed
+.vscode
+docs
+*.yml
+*.lock
+.flowconfig
+.editorconfig
+.babelrc
+scripts
