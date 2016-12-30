@@ -1,10 +1,18 @@
 // @flow
 
 import { contextForDanger } from "../Dangerfile"
-import {createDangerfileRuntimeEnvironment, runDangerfileEnvironment} from "../DangerfileRunner"
+import {
+  createDangerfileRuntimeEnvironment,
+  runDangerfileEnvironment,
+  updateDangerfile,
+  cleanDangerfile
+} from "../DangerfileRunner"
 import Fake from "../../ci_source/Fake"
 import FakePlatform from "../../platforms/FakePlatform"
 import Executor from "../Executor"
+
+import os from "os"
+import fs from "fs"
 
 import { resolve } from "path"
 const fixtures = resolve(__dirname, "fixtures")
@@ -69,5 +77,19 @@ describe("with fixtures", () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
     await runDangerfileEnvironment(resolve(fixtures, "__DangerfileImportRelative.js"), runtime)
+  })
+})
+
+describe("cleaning Dangerfiles", () => {
+  it("Supports removing the danger import", () => {
+    const path = resolve(os.tmpdir(), "fake_dangerfile_1")
+    fs.writeFileSync(path, "import { danger, warn, fail, message } from 'danger'")
+    updateDangerfile(path)
+    expect(fs.readFileSync(path).toString()).toEqual("// import { danger, warn, fail, message } from 'danger'")
+  })
+
+  it("also handles typescript style imports", () => {
+    const before = "import danger from 'danger'"
+    expect(cleanDangerfile(before)).toEqual("// import danger from 'danger'")
   })
 })
