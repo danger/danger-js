@@ -14,8 +14,11 @@ matrix:
         - danger
     - node_js: "6"
     - node_js: "7"
- 
+
 script:
-  - npm test
+  - npm test -- --coverage
   - npm run flow
   - npm run lint
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
