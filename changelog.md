@@ -2,7 +2,7 @@
 
 //  Add your own contribution below
 
-### 0.7.2
+### 0.7.3
 
 * Tweak the npmignore, ship less random stuff to others - orta
 

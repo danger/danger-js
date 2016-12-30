@@ -9,3 +9,7 @@ docs
 .editorconfig
 .babelrc
 scripts
+dangerfile.js
+env
+.eslintrc.json
+jsconfig.json
