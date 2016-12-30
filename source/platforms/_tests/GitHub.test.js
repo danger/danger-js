@@ -83,7 +83,6 @@ describe("with fixtured data", () => {
       expect(gitDSL.deleted_files).toEqual(["lib/components/artist/related_artists/index.js", "lib/components/artist/related_artists/related_artist.js", "lib/components/gene/about_gene.js"])
     })
 
-    // sorry windows users - I guess this test will fail for you
     it("shows the diff for a specific file", async () => {
       const expected = ` - [dev] Updates Flow to 0.32 - orta${EOL} - [dev] Updates React to 0.34 - orta${EOL} - [dev] Turns on \"keychain sharing\" to fix a keychain bug in sim - orta${EOL}+- GeneVC now shows about information, and trending artists - orta${EOL} ${EOL} ### 1.1.0-beta.2${EOL} `;
       const gitDSL:GitDSL = await github.getReviewDiff()

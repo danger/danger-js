@@ -27,7 +27,7 @@ async function setupDangerfileContext() {
 describe("with fixtures", () => {
   it("handles a blank Dangerfile", async () => {
     const context = await setupDangerfileContext()
-    const results = await runDangerfile(`${fixtures}/__DangerfileEmpty.js`, context)
+    const results = await runDangerfile(resolve(fixtures, "__DangerfileEmpty.js"), context)
 
     expect(results).toEqual({
       fails: [],
@@ -37,9 +37,9 @@ describe("with fixtures", () => {
     })
   })
 
-  it("handles a full set of  messages", async () => {
+  it("handles a full set of messages", async () => {
     const context = await setupDangerfileContext()
-    const results = await runDangerfile(`${fixtures}/__DangerfileFullMessages.js`, context)
+    const results = await runDangerfile(resolve(fixtures, "__DangerfileFullMessages.js"), context)
 
     expect(results).toEqual({
       fails: [{"message": "this is a failure"}],
@@ -52,7 +52,7 @@ describe("with fixtures", () => {
   it("handles a failing dangerfile", async () => {
     const context = await setupDangerfileContext()
     try {
-      await runDangerfile(`${fixtures}/__DangerfileBadSyntax.js`, context)
+      await runDangerfile(resolve(fixtures, "__DangerfileBadSyntax.js"), context)
       throw new Error("Do not get to this")
     }
     catch (e) {
@@ -63,6 +63,6 @@ describe("with fixtures", () => {
 
   it("handles relative imports correctly", async () => {
     const context = await setupDangerfileContext()
-    await runDangerfile(`${fixtures}/__DangerfileImportRelative.js`, context)
+    await runDangerfile(resolve(fixtures, "__DangerfileImportRelative.js"), context)
   })
 })
