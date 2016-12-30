@@ -187,6 +187,60 @@ export interface GitHubPRDSL {
    * The User who submitted the PR
    * @type {GitHubUser}
    */
-  user: GitHubUser
+  user: GitHubUser,
+
+  /**
+   * The User who is assigned the PR
+   * @type {GitHubUser}
+   */
+  assignee: GitHubUser,
+
+  /**
+   * The Users who are assigned to the PR
+   * @type {GitHubUser}
+   */
+  assignees: GitHubUser[],
+
+  /**
+   * Has the PR been merged yet
+   * @type {boolean}
+   */
+  merged: boolean,
+
+   /**
+   * The nuber of comments on the PR
+   * @type {number}
+   */
+  comments: number,
+
+  /**
+   * The nuber of review-specific comments on the PR
+   * @type {number}
+   */
+  review_comments: number,
+
+  /**
+   * The number of commits in the PR
+   * @type {number}
+   */
+  commits: number,
+
+  /**
+   * The number of additional lines in the PR
+   * @type {number}
+   */
+  additions: number,
+
+  /**
+   * The number of deleted lines in the PR
+   * @type {number}
+   */
+  deletions: number,
+
+  /**
+   * The number of changed files in the PR
+   * @type {number}
+   */
+  changed_files: number,
 }
 

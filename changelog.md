@@ -2,7 +2,11 @@
 
 //  Add your own contribution below
 
-### 0.7.2
+### 0.7.4
+
+* Fix Dangerfile parsing which broke due to Peril related changes - orta
+
+### 0.7.3
 
 * Tweak the npmignore, ship less random stuff to others - orta
 
