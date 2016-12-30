@@ -66,7 +66,9 @@ export async function runDangerfile(filename: string, dangerfileContext: DangerC
     moduleFileExtensions: ["js"],
     transform: [["js$", "babel-jest"]],
     transformIgnorePatterns: [],
-    cache: null
+    cache: null,
+    testRegex: "",
+    testPathDirs: [process.cwd()]
   }
 
   const environment:Environment = new NodeEnvironment(config)
