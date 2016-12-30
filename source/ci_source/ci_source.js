@@ -28,11 +28,7 @@ export interface CISource {
     +pullRequestID: string,
 }
 
-import Travis from "./Travis"
-import Circle from "./Circle"
-import Semaphore from "./Semaphore"
-import Jenkins from "./Jenkins"
-import Fake from "./Fake"
+import providers from "./providers"
 
 /**
  * Gets a CI Source form the current environment, by asking all known
@@ -41,21 +37,7 @@ import Fake from "./Fake"
  * @returns {?CISource} a CI source if it's OK, otherwise Danger can't run.
 */
 export function getCISourceForEnv(env: Env): ?CISource {
-  const travis = new Travis(env)
-  const circle = new Circle(env)
-  const semaphore = new Semaphore(env)
-  const jenkins = new Jenkins(env)
-  const fake = new Fake(env)
-
-  if (travis.isCI) {
-    return travis
-  } else if (circle.isCI) {
-    return circle
-  } else if (semaphore.isCI) {
-    return semaphore
-  } else if (jenkins.isCI) {
-    return jenkins
-  } else if (fake.isCI) {
-    return fake
-  }
+  const availableProviders = [...providers].map(Provider => new Provider(env)).filter(x => x.isCI)
+  return (availableProviders && availableProviders.length > 0) ? availableProviders[0] : undefined
 }
+
