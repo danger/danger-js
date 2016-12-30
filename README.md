@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=master)](https://travis-ci.org/danger/danger-js)
+
 Danger on Node, wonder what's going on? see [VISION.md](VISION.md)
 
 *Welcome!*
