@@ -5,7 +5,7 @@ import type { GitDSL } from "../dsl/GitDSL"
 import type { CISource } from "../ci_source/ci_source"
 import parseDiff from "parse-diff"
 
-import fetch from "node-fetch"
+import fetch from "../api/fetch"
 import "babel-polyfill"
 
 import os from "os"
@@ -15,17 +15,25 @@ import os from "os"
 
 export type APIToken = string;
 
+// TODO: Cache PR JSON
+
 /** This represent the GitHub API, and conforming to the Platform Interface */
 
 export class GitHub {
   token: APIToken
   ciSource: CISource
   name: string
+  // A fetch-api shaped function
+  fetch: any
 
   constructor(token: APIToken, ciSource: CISource) {
     this.token = token
     this.ciSource = ciSource
     this.name = "GitHub"
+
+    // This allows Peril to DI in a new Fetch function
+    // which can handle unique API edge-cases around integrations
+    this.fetch = fetch
   }
 
   /**
@@ -122,6 +130,26 @@ export class GitHub {
     return commentID !== null
   }
 
+  /**
+   * Grabs the contents of an individual file on GitHub
+   *
+   * @param {string} path path to the file
+   * @param {string} [ref] an optional sha
+   * @returns {Promise<string>} text contents
+   *
+   */
+  async fileContents(path: string, ref?: string): Promise<string> {
+    // Use head of PR (current state of PR) if no ref passed
+    if (!ref) {
+      const prJSON = await this.getReviewInfo()
+      ref = prJSON.head.ref
+    }
+    const fileMetadata = await this.getFileContents(path, ref)
+    const data = await fileMetadata.json()
+    const buffer = new Buffer(data.content, "base64")
+    return buffer.toString()
+  }
+
   // The above is the API for Platform
 
   async getDangerCommentID(): Promise<?number> {
@@ -157,7 +185,7 @@ export class GitHub {
     })
   }
 
-  getPullRequestInfo(): Promise<Response> {
+  getPullRequestInfo(): Promise <Response> {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID
     return this.get(`repos/${repo}/pulls/${prID}`)
@@ -183,37 +211,45 @@ export class GitHub {
     })
   }
 
+  getFileContents(path: string, ref: string): Promise<Response> {
+    const repo = this.ciSource.repoSlug
+    return this.get(`repos/${repo}/contents/${path}?ref=${ref}`, {})
+  }
+
   // maybe this can move into the stuff below
   post(path: string, headers: any = {}, body: any = {}, method: string = "POST"): Promise<Response> {
-    return fetch(`https://api.github.com/${path}`, {
+    return this.fetch(`https://api.github.com/${path}`, {
       method: method,
       body: JSON.stringify(body),
       headers: {
         "Authorization": `token ${this.token}`,
         "Content-Type": "application/json",
-        ...headers }
+        ...headers
+      }
     })
   }
 
   get(path: string, headers: any = {}, body: any = {}, method: string = "GET"): Promise<Response> {
-    return fetch(`https://api.github.com/${path}`, {
+    return this.fetch(`https://api.github.com/${path}`, {
       method: method,
       body: body,
       headers: {
         "Authorization": `token ${this.token}`,
         "Content-Type": "application/json",
-        ...headers }
+        ...headers
+      }
     })
   }
 
   patch(path: string, headers: any = {}, body: any = {}, method: string = "PATCH"): Promise<Response> {
-    return fetch(`https://api.github.com/${path}`, {
+    return this.fetch(`https://api.github.com/${path}`, {
       method: method,
       body: JSON.stringify(body),
       headers: {
         "Authorization": `token ${this.token}`,
         "Content-Type": "application/json",
-        ...headers }
+        ...headers
+      }
     })
   }
 }

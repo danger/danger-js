@@ -1,7 +1,7 @@
 // @flow
 "use strict"
 
-import type { DangerResults } from "../DangerResults"
+import type { DangerResults } from "../../dsl/DangerResults"
 import type { Violation } from "../../platforms/messaging/violation"
 
 /**

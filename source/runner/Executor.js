@@ -4,9 +4,10 @@ import { contextForDanger } from "../runner/Dangerfile"
 import { DangerDSL } from "../dsl/DangerDSL"
 import type { CISource } from "../ci_source/ci_source"
 import { Platform } from "../platforms/platform"
-import type { DangerResults } from "../runner/DangerResults"
+import type { DangerResults } from "../dsl/DangerResults"
 import githubResultsTemplate from "./templates/github-issue-template"
-import { runDangerfile } from "./DangerfileRunner"
+import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment } from "./DangerfileRunner"
+import type { DangerfileRuntimeEnv } from "./types"
 
 // This is still badly named, maybe it really should just be runner?
 
@@ -19,14 +20,34 @@ export default class Executor {
     this.platform = platform
   }
 
-  /**
-   *  Runs all of the operations for a running just Danger
+  /** Mainly just a dumb helper because I can't do
+   * async functions in danger-run.js
+   * @param {string} file the path to run Danger from
    * @returns {void} It's a promise, so a void promise
    */
-  async runDanger() {
+  async setupAndRunDanger(file: string) {
+    const runtimeEnv = await this.setupDanger()
+    await this.runDanger(file, runtimeEnv)
+  }
+
+  /**
+   *  Runs all of the operations for a running just Danger
+   * @returns {DangerfileRuntimeEnv} A runtime environment to run Danger in
+   */
+  async setupDanger(): DangerfileRuntimeEnv {
     const dsl = await this.dslForDanger()
     const context = contextForDanger(dsl)
-    const results = await runDangerfile("dangerfile.js", context)
+    return await createDangerfileRuntimeEnvironment(context)
+  }
+
+  /**
+   *  Runs all of the operations for a running just Danger
+   * @param {string} file the filepath to the Dangerfile
+   * @returns {void} It's a promise, so a void promise
+   */
+
+  async runDanger(file: string, runtime: DangerfileRuntimeEnv) {
+    const results = await runDangerfileEnvironment(file, runtime)
     await this.handleResults(results)
   }
 
@@ -41,8 +62,8 @@ export default class Executor {
 
   /**
    * Handle the messaing aspects of running a Dangerfile
-   * @returns {void} It's a promise, so a void promise
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
+   * @returns {void} It's a promise, so a void promise
    */
   async handleResults(results: DangerResults) {
     // Ensure process fails if there are fails

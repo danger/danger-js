@@ -38,7 +38,7 @@ if (source && source.isPR) {
     console.log(`OK, looks good ${source.name} on ${platform.name}`)
     try {
       const exec = new Executor(source, platform)
-      exec.runDanger()
+      exec.setupAndRunDanger("dangerfile.js")
     } catch (error) {
       process.exitCode = 1
       console.error(error.message)

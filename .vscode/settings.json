@@ -13,6 +13,6 @@
         "distribution/": true
     },
     "files.associations": {
-        "*.js": "javascriptreact"
+        "**/*.js": "javascriptreact"
      }
 }
