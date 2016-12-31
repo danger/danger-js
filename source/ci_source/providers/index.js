@@ -1,3 +1,5 @@
+// @flow
+
 import Travis from "./Travis"
 import Circle from "./Circle"
 import Semaphore from "./Semaphore"
