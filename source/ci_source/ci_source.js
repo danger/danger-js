@@ -28,34 +28,61 @@ export interface CISource {
     +pullRequestID: string,
 }
 
-import Travis from "./Travis"
-import Circle from "./Circle"
-import Semaphore from "./Semaphore"
-import Jenkins from "./Jenkins"
-import Fake from "./Fake"
-
+import providers from "./providers"
+import fs from "fs"
+import { resolve } from "path"
 /**
- * Gets a CI Source form the current environment, by asking all known
+ * Gets a CI Source from the current environment, by asking all known
  * sources if they can be represented in this environment.
  * @param {Env} env The environment.
  * @returns {?CISource} a CI source if it's OK, otherwise Danger can't run.
 */
 export function getCISourceForEnv(env: Env): ?CISource {
-  const travis = new Travis(env)
-  const circle = new Circle(env)
-  const semaphore = new Semaphore(env)
-  const jenkins = new Jenkins(env)
-  const fake = new Fake(env)
+  const availableProviders = [...providers]
+    .map(Provider => new Provider(env))
+    .filter(x => x.isCI)
+  return (availableProviders && availableProviders.length > 0) ? availableProviders[0] : undefined
+}
 
-  if (travis.isCI) {
-    return travis
-  } else if (circle.isCI) {
-    return circle
-  } else if (semaphore.isCI) {
-    return semaphore
-  } else if (jenkins.isCI) {
-    return jenkins
-  } else if (fake.isCI) {
-    return fake
+/**
+ * Gets a CI Source from externally provided provider module.
+ * Module must implement CISource interface, and should export it as default
+ * @export
+ * @param {Env} env The environment.
+ * @param {string} modulePath relative path to CI provider
+ * @returns {?CISource} a CI source if module loaded successfully, undefined otherwise
+ */
+export function getCISourceForExternal(env: Env, modulePath: string): ?CISource {
+  const path = resolve(process.cwd(), modulePath)
+
+  try {
+    const exist = fs.statSync(path).isFile()
+
+    if (exist) {
+      // $FlowFixMe
+      const Ctor = require(path).default
+      return new Ctor()
+    }
+  } catch (e) {
+    console.error(`could not load CI provider at ${modulePath} due to ${e}`)
   }
+  return undefined
+}
+
+/**
+ * Gets a CI Source.
+ * @export
+ * @param {Env} env The environment.
+ * @param {string} modulePath relative path to CI provider
+ * @returns {?CISource} a CI source if module loaded successfully, undefined otherwise
+ */
+export function getCISource(env: Env, modulePath: string): ?CISource {
+  if (modulePath) {
+    const external = getCISourceForExternal(env, modulePath)
+    if (external) {
+      return external
+    }
+  }
+
+  return getCISourceForEnv(env)
 }

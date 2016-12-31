@@ -3,12 +3,13 @@ import "babel-polyfill"
 
 var program: any = require("commander")
 
-import { getCISourceForEnv } from "../ci_source/ci_source"
+import { getCISource } from "../ci_source/ci_source"
 import { getPlatformForEnv } from "../platforms/platform"
 import Executor from "../runner/Executor"
 
 program
   .option("-v, --verbose", "Verbose output of files")
+  .option("-c, --external-ci-provider [modulePath]", "blah")
   .parse(process.argv)
 
 process.on("unhandledRejection", function(reason: string, p: any) {
@@ -20,7 +21,8 @@ if (process.env["DANGER_VERBOSE"] || program.verbose) {
   global.verbose = true
 }
 
-const source = getCISourceForEnv(process.env)
+const source = getCISource(process.env, program.externalCiProvider || undefined)
+
 if (!source) {
   console.log("Could not find a CI source for this run")
   // Check for ENV["CI"] and wanr they might want a local command instead?

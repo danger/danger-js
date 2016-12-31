@@ -1,7 +1,7 @@
 // @flow
 
 import Executor from "../Executor"
-import Fake from "../../ci_source/Fake"
+import Fake from "../../ci_source/providers/Fake"
 import FakePlatform from "../../platforms/FakePlatform"
 import { emptyResults, warnResults } from "./fixtures/ExampleDangerResults"
 

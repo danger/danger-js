@@ -1,6 +1,7 @@
 ### master
 
 //  Add your own contribution below
+* Support `danger run -ci` to specify external CI provider -kwonoj
 
 * Adds `--verbose` to `danger`, which for now will echo out all the URLs Danger has requested - orta
 * A failing network request will raise an error - orta
@@ -33,7 +34,7 @@
 
   This does two things, makes it feasible to do [hosted-danger](https://github.com/danger/peril) and
   makes it possible to write your Dangerfile in a way that's consistent with the rest of your JavaScript. - orta
-  
+
 * Add tests directory to .npmignore - macklinu
 * Update to Jest 18 - macklinu
 
