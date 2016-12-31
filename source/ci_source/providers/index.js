@@ -6,4 +6,5 @@ import Semaphore from "./Semaphore"
 import Jenkins from "./Jenkins"
 import Fake from "./Fake"
 
-export default [Travis, Circle, Semaphore, Jenkins, Fake]
+const providers: Array<any> = [Travis, Circle, Semaphore, Jenkins, Fake]
+export default providers
