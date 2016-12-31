@@ -3,12 +3,12 @@
 //  Add your own contribution below
 * Support `danger run -ci` to specify external CI provider -kwonoj
 
-### 0.7.4
+* Adds `--verbose` to `danger`, which for now will echo out all the URLs Danger has requested - orta
+* A failing network request will raise an error - orta
+
+### 0.7.3-4
 
 * Fix Dangerfile parsing which broke due to Peril related changes - orta
-
-### 0.7.3
-
 * Tweak the npmignore, ship less random stuff to others - orta
 
 ### 0.7.2

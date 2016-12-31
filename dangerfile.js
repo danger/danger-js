@@ -2,7 +2,6 @@
 
 // import { danger, warn } from "danger"
 import fs from "fs"
-console.log("Hello world")
 
 // Request a CHANGELOG entry
 const hasChangelog = danger.git.modified_files.includes("changelog.md")
@@ -21,7 +20,7 @@ const jsFiles = danger.git.created_files.filter(path => path.endsWith("js"))
 // but exclude tests from being flow-ey
 const unFlowedFiles = jsFiles.filter(path => !path.endsWith("test.js"))
   .filter(filepath => {
-    const content = fs.readFileSync(filepath)
+    const content = fs.readFileSync(filepath).toString()
     return !content.includes("@flow")
   })
 

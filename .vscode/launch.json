@@ -4,7 +4,7 @@
         "name": "Launch Run",
         "type": "node",
         "request": "launch",
-        "program": "${workspaceRoot}/source/commands/danger-run.js",
+        "program": "${workspaceRoot}/distribution/commands/danger-run.js",
         "stopOnEntry": false,
         "args": [],
         "envFile": "${workspaceRoot}/env/development.env",
@@ -19,7 +19,9 @@
         },
         "console": "internalConsole",
         "sourceMaps": true,
-        "outDir": "${workspaceRoot}/distribution"
+        "outFiles": [
+          "${workspaceRoot}/distribution"
+        ]
     },
     {
         "name": "Launch Local",
@@ -39,7 +41,9 @@
         },
         "console": "internalConsole",
         "sourceMaps": true,
-        "outDir": "${workspaceRoot}/distribution"
+        "outFiles": [
+          "${workspaceRoot}/distribution"
+        ],
     }, {
         "name": "Run Tests With Debugger (slower, use npm run watch for normal work)",
         "type": "node",

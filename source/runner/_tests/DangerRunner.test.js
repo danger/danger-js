@@ -93,3 +93,4 @@ describe("cleaning Dangerfiles", () => {
     expect(cleanDangerfile(before)).toEqual("// import danger from 'danger'")
   })
 })
+
