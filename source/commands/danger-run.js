@@ -3,12 +3,13 @@ import "babel-polyfill"
 
 var program = require("commander")
 
-import { getCISourceForEnv } from "../ci_source/ci_source"
+import { getCISource } from "../ci_source/ci_source"
 import { getPlatformForEnv } from "../platforms/platform"
 import Executor from "../runner/Executor"
 
 program
   .option("-f, --fail-on-errors", "TODO: Fail on errors")
+  .option("-c, --external-ci-provider [modulePath]", "blah")
   .parse(process.argv)
 
 process.on("unhandledRejection", function(reason: string, p: any) {
@@ -16,7 +17,8 @@ process.on("unhandledRejection", function(reason: string, p: any) {
   process.exitCode = 1
 })
 
-const source = getCISourceForEnv(process.env)
+const source = getCISource(process.env, program.externalCiProvider || undefined)
+
 if (!source) {
   console.log("Could not find a CI source for this run")
   // Check for ENV["CI"] and wanr they might want a local command instead?
