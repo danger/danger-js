@@ -7,7 +7,7 @@ import {
   updateDangerfile,
   cleanDangerfile
 } from "../DangerfileRunner"
-import Fake from "../../ci_source/Fake"
+import Fake from "../../ci_source/providers/Fake"
 import FakePlatform from "../../platforms/FakePlatform"
 import Executor from "../Executor"
 

@@ -3,6 +3,7 @@
   "version": "0.7.3",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
+  "typings": "./index.d.ts",
   "bin": {
     "danger": "distribution/commands/danger.js"
   },

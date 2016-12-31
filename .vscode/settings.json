@@ -6,7 +6,8 @@
         "**/.svn": true,
         "**/.hg": true,
         "**/.DS_Store": true,
-        "distribution/": true
+        "distribution/": true,
+        "coverage": true
     },
     "search.exclude": {
         "**/node_modules": true,
