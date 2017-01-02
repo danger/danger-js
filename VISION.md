@@ -37,9 +37,9 @@ The website will stay devoted to the Danger gem, until this project starts to ma
 import danger from 'danger'
 import _ from 'lodash'
 
-const hasAppChanges = _.filter(danger.git.modified_files, (path) =>
+const hasAppChanges = _.filter(danger.git.modified_files, (path) => {
   return _.includes(path, 'lib/');
-}.length > 0
+}).length > 0
 
 if (hasAppChanges && _.includes(danger.git.modified_files, "CHANGELOG.md") === false) {
   fail("No CHANGELOG added.")
