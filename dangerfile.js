@@ -1,6 +1,6 @@
 // @flow
 
-// import { danger, warn } from "danger"
+import { danger, warn, markdown } from "danger"
 import fs from "fs"
 
 // Request a CHANGELOG entry
@@ -28,3 +28,17 @@ if (unFlowedFiles.length > 0) {
   warn(`These new JS files do not have Flow enabled: ${unFlowedFiles.join(", ")}`)
 }
 
+if (danger.github.pr.body.includes("verbose")) {
+  const codeblocks = (code: string, type = "json") => "``` " + type + "\n" + code + "\n```"
+  markdown(`
+### Debug Output From danger
+
+## Git
+
+${codeblocks(JSON.stringify(danger.git, null, 2))}
+
+## GitHub
+
+${codeblocks(JSON.stringify(danger.github, null, 2))}
+  `)
+}
