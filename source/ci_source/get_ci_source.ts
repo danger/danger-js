@@ -1,7 +1,7 @@
-import {providers} from './providers';
-import * as fs from 'fs';
-import { resolve } from 'path';
-import { Env, CISource } from './ci_source';
+import {providers} from "./providers"
+import * as fs from "fs"
+import { resolve } from "path"
+import { Env, CISource } from "./ci_source"
 
 /**
  * Gets a CI Source from the current environment, by asking all known
@@ -12,8 +12,8 @@ import { Env, CISource } from './ci_source';
 export function getCISourceForEnv(env: Env): CISource | undefined {
   const availableProviders = [...providers as any]
     .map(Provider => new Provider(env))
-    .filter(x => x.isCI);
-  return (availableProviders && availableProviders.length > 0) ? availableProviders[0] : undefined;
+    .filter(x => x.isCI)
+  return (availableProviders && availableProviders.length > 0) ? availableProviders[0] : undefined
 }
 
 /**
@@ -25,20 +25,20 @@ export function getCISourceForEnv(env: Env): CISource | undefined {
  * @returns {?CISource} a CI source if module loaded successfully, undefined otherwise
  */
 export function getCISourceForExternal(_env: Env, modulePath: string): CISource | undefined {
-  const path = resolve(process.cwd(), modulePath);
+  const path = resolve(process.cwd(), modulePath)
 
   try {
-    const exist = fs.statSync(path).isFile();
+    const exist = fs.statSync(path).isFile()
 
     if (exist) {
-      const externalModule = require(path); //tslint:disable-line:no-require-imports
-      const moduleConstructor = externalModule.default || externalModule;
-      return new moduleConstructor();
+      const externalModule = require(path) //tslint:disable-line:no-require-imports
+      const moduleConstructor = externalModule.default || externalModule
+      return new moduleConstructor()
     }
   } catch (e) {
-    console.error(`could not load CI provider at ${modulePath} due to ${e}`);
+    console.error(`could not load CI provider at ${modulePath} due to ${e}`)
   }
-  return undefined;
+  return undefined
 }
 
 /**
@@ -50,11 +50,11 @@ export function getCISourceForExternal(_env: Env, modulePath: string): CISource 
  */
 export function getCISource(env: Env, modulePath: string): CISource | undefined {
   if (modulePath) {
-    const external = getCISourceForExternal(env, modulePath);
+    const external = getCISourceForExternal(env, modulePath)
     if (external) {
-      return external;
+      return external
     }
   }
 
-  return getCISourceForEnv(env);
+  return getCISourceForEnv(env)
 }

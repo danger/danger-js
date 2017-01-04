@@ -1,1 +1,1 @@
-export type MarkdownString = string;
+export type MarkdownString = string

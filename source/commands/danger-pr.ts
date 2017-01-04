@@ -1,5 +1,5 @@
-import * as program from 'commander';
+import * as program from "commander"
 
-program.parse(process.argv);
+program.parse(process.argv)
 
-console.log('Not Yet implmented');
+console.log("Not Yet implmented")

@@ -1,9 +1,9 @@
-import { Env, CISource } from '../ci_source/ci_source';
-import { GitDSL } from '../dsl/GitDSL';
-import { GitHub } from './GitHub';
+import { Env, CISource } from "../ci_source/ci_source"
+import { GitDSL } from "../dsl/GitDSL"
+import { GitHub } from "./GitHub"
 
 /** A type that represents the downloaded metadata about a code review session */
-export type Metadata = any;
+export type Metadata = any
 
 /** A type that represents a comment */
 export type Comment = {
@@ -25,25 +25,25 @@ export type Comment = {
    * @type {boolean} true if Danger can edit
    */
   ownedByDanger: boolean;
-};
+}
 
 export interface Platform {
   /** Mainly for logging and error reporting */
-  readonly name: string;
+  readonly name: string
   /** Used internally for getting PR/Repo metadata */
-  readonly ciSource: CISource;
+  readonly ciSource: CISource
   /** Pulls in the Code Review Metadata for inspection */
-  getReviewInfo: () => Promise<any>;
+  getReviewInfo: () => Promise<any>
   /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
-  getReviewDiff: () => Promise<GitDSL>;
+  getReviewDiff: () => Promise<GitDSL>
   /** Creates a comment on the PR */
-  createComment: (body: string) => Promise<any>;
+  createComment: (body: string) => Promise<any>
   /** Delete the main Danger comment */
-  deleteMainComment: () => Promise<boolean>;
+  deleteMainComment: () => Promise<boolean>
   /** Replace the main Danger comment */
-  editMainComment: (newComment: string) => Promise<any>;
+  editMainComment: (newComment: string) => Promise<any>
   /** Replace the main Danger comment */
-  updateOrCreateComment: (newComment: string) => Promise<any>;
+  updateOrCreateComment: (newComment: string) => Promise<any>
 }
 
 //     /** Download all the comments in a PR */
@@ -65,13 +65,13 @@ export interface Platform {
  * @returns {Platform} returns a platform if it can be supported
 */
 export function getPlatformForEnv(env: Env, source: CISource): Platform {
-  const token = env['DANGER_GITHUB_API_TOKEN'];
+  const token = env["DANGER_GITHUB_API_TOKEN"]
   if (!token) {
-    console.error('The DANGER_GITHUB_API_TOKEN environmental variable is missing');
-    console.error('Without an api token, danger will be unable to comment on a PR');
-    throw new Error('Cannot use authenticated API requests.');
+    console.error("The DANGER_GITHUB_API_TOKEN environmental variable is missing")
+    console.error("Without an api token, danger will be unable to comment on a PR")
+    throw new Error("Cannot use authenticated API requests.")
   }
 
-  const github = new GitHub(token, source);
-  return github;
+  const github = new GitHub(token, source)
+  return github
 }

@@ -1,4 +1,4 @@
-import { Env } from './ci_source';
+import { Env } from "./ci_source"
 
 /**
  * Validates that all ENV keys exist and have a length
@@ -13,7 +13,7 @@ export function ensureEnvKeysExist(env: Env, keys: Array<string>): boolean {
   return !includes(hasKeys, false);*/
 
   return keys.map((key: string) => env.hasOwnProperty(key) && env[key] != null && env[key].length > 0)
-    .filter(x => x === false).length === 0;
+    .filter(x => x === false).length === 0
 }
 
 /**
@@ -29,5 +29,5 @@ export function ensureEnvKeysAreInt(env: Env, keys: Array<string>): boolean {
   return !includes(hasKeys, false);*/
 
   return keys.map((key: string) => env.hasOwnProperty(key) && !isNaN(parseInt(env[key])))
-    .filter(x => x === false).length === 0;
+    .filter(x => x === false).length === 0
 }

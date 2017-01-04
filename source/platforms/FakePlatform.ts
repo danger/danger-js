@@ -1,13 +1,13 @@
-import { GitDSL } from '../dsl/GitDSL';
-import { CISource } from '../ci_source/ci_source';
-import { Platform } from './platform';
+import { GitDSL } from "../dsl/GitDSL"
+import { CISource } from "../ci_source/ci_source"
+import { Platform } from "./platform"
 
 export class FakePlatform implements Platform {
-  public readonly name: string;
-  public readonly ciSource: CISource;
+  public readonly name: string
+  public readonly ciSource: CISource
 
   constructor() {
-    this.name = 'Fake';
+    this.name = "Fake"
   }
 
   async getReviewInfo(): Promise<any> {
@@ -19,23 +19,23 @@ export class FakePlatform implements Platform {
       modified_files: [],
       created_files: [],
       deleted_files: [],
-      diffForFile: () => ''
-    };
+      diffForFile: () => ""
+    }
   }
 
   async updateOrCreateComment(_newComment: string): Promise<boolean> {
-    return true;
+    return true
   }
 
   async createComment(_comment: string): Promise<any> {
-    return true;
+    return true
   }
 
   async deleteMainComment(): Promise<boolean> {
-    return true;
+    return true
   }
 
   async editMainComment(_comment: string): Promise<boolean> {
-    return true;
+    return true
   }
 }

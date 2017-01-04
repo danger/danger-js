@@ -1,11 +1,11 @@
-import { contextForDanger } from '../runner/Dangerfile';
-import { DangerDSL } from '../dsl/DangerDSL';
-import { CISource } from '../ci_source/ci_source';
-import { Platform } from '../platforms/platform';
-import { DangerResults } from '../dsl/DangerResults';
-import { template as githubResultsTemplate } from './templates/github-issue-template';
-import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment } from './DangerfileRunner';
-import { DangerfileRuntimeEnv } from './types';
+import { contextForDanger } from "../runner/Dangerfile"
+import { DangerDSL } from "../dsl/DangerDSL"
+import { CISource } from "../ci_source/ci_source"
+import { Platform } from "../platforms/platform"
+import { DangerResults } from "../dsl/DangerResults"
+import { template as githubResultsTemplate } from "./templates/github-issue-template"
+import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment } from "./DangerfileRunner"
+import { DangerfileRuntimeEnv } from "./types"
 
 // This is still badly named, maybe it really should just be runner?
 
@@ -19,8 +19,8 @@ export class Executor {
    * @returns {void} It's a promise, so a void promise
    */
   async setupAndRunDanger(file: string) {
-    const runtimeEnv = await this.setupDanger();
-    await this.runDanger(file, runtimeEnv);
+    const runtimeEnv = await this.setupDanger()
+    await this.runDanger(file, runtimeEnv)
   }
 
   /**
@@ -28,9 +28,9 @@ export class Executor {
    * @returns {DangerfileRuntimeEnv} A runtime environment to run Danger in
    */
   async setupDanger(): Promise<DangerfileRuntimeEnv> {
-    const dsl = await this.dslForDanger();
-    const context = contextForDanger(dsl);
-    return await createDangerfileRuntimeEnvironment(context);
+    const dsl = await this.dslForDanger()
+    const context = contextForDanger(dsl)
+    return await createDangerfileRuntimeEnvironment(context)
   }
 
   /**
@@ -40,17 +40,17 @@ export class Executor {
    */
 
   async runDanger(file: string, runtime: DangerfileRuntimeEnv) {
-    const results = await runDangerfileEnvironment(file, runtime);
-    await this.handleResults(results);
+    const results = await runDangerfileEnvironment(file, runtime)
+    await this.handleResults(results)
   }
 
   /** Sets up all the related objects for running the Dangerfile
   * @returns {void} It's a promise, so a void promise
   */
   async dslForDanger(): Promise<DangerDSL> {
-    const git = await this.platform.getReviewDiff();
-    const pr = await this.platform.getReviewInfo();
-    return new DangerDSL(pr, git);
+    const git = await this.platform.getReviewDiff()
+    const pr = await this.platform.getReviewInfo()
+    return new DangerDSL(pr, git)
   }
 
   /**
@@ -61,7 +61,7 @@ export class Executor {
   async handleResults(results: DangerResults) {
     // Ensure process fails if there are fails
     if (results.fails.length) {
-      process.exitCode = 1;
+      process.exitCode = 1
     }
 
     // Delete the message if there's nothing to say
@@ -69,15 +69,15 @@ export class Executor {
       results.fails.length > 0 ||
       results.warnings.length > 0 ||
       results.messages.length > 0 ||
-      results.markdowns.length > 0;
+      results.markdowns.length > 0
 
     if (!hasMessages) {
-      console.log('All Good.');
-      await this.platform.deleteMainComment();
+      console.log("All Good.")
+      await this.platform.deleteMainComment()
     } else {
-      console.log('Failed');
-      const comment = githubResultsTemplate(results);
-      await this.platform.updateOrCreateComment(comment);
+      console.log("Failed")
+      const comment = githubResultsTemplate(results)
+      await this.platform.updateOrCreateComment(comment)
     }
   }
 }

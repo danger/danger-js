@@ -20,9 +20,9 @@
       "check-whitespace",
       "check-open-brace"],
     "quotemark": [true,
-      "single",
+      "double",
       "avoid-escape"],
-    "semicolon": [true, "always"],
+    "semicolon": [true, "never"],
     "typedef-whitespace": [true, {
       "call-signature": "nospace",
       "index-signature": "nospace",

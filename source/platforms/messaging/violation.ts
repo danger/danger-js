@@ -7,5 +7,5 @@ export interface Violation {
    *
    * @type {string}
    */
-  message: string;
+  message: string
 }
