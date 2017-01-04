@@ -1,13 +1,12 @@
-// @flow
-"use strict"
+class DummyCI {
+  get name() { return "Dummy Testing CI" }
 
-export default class DummyCI {
-  get name(): string { return "Dummy Testing CI" }
+  get isCI() { return false }
+  get isPR() { return true }
 
-  get isCI(): boolean { return false }
-  get isPR(): boolean { return true }
-
-  get pullRequestID(): string { return this.env.pr }
-  get repoSlug(): string { return this.env.repo }
-  get supportedPlatforms(): string[] { return ["github"] }
+  get pullRequestID() { return this.env.pr }
+  get repoSlug() { return this.env.repo }
+  get supportedPlatforms() { return ["github"] }
 }
+
+module.exports = DummyCI
