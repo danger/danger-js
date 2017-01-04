@@ -17,7 +17,7 @@ matrix:
 
 script:
   - npm run lint
-  - npm test -- --coverage --no-cache
+  - npm test -- --coverage --no-cache && rm ./coverage/coverage-final.json
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

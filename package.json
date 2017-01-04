@@ -28,10 +28,15 @@
       "ts",
       "tsx"
     ],
+    "collectCoverageFrom": [
+      "!source/commands/danger.ts",
+      "source/**/*.{ts, tsx}",
+      "!**/*.d.ts"
+    ],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "(.test)\\.(ts|tsx)$",
-      "/build/.*\\.(ts|js)$"
+      "/distribution/.*\\.(ts|js)$"
     ]
   },
   "lint-staged": {
