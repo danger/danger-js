@@ -1,5 +1,3 @@
-// @flow
-
 // import { danger, warn } from "danger"
 import fs from "fs"
 
@@ -15,16 +13,3 @@ if (changelogDiff && changelogDiff.indexOf(contributorName) === -1) {
 }
 
 const jsFiles = danger.git.created_files.filter(path => path.endsWith("js"))
-
-// new js files should have `@flow` at the top
-// but exclude tests from being flow-ey
-const unFlowedFiles = jsFiles.filter(path => !path.endsWith("test.js"))
-  .filter(filepath => {
-    const content = fs.readFileSync(filepath).toString()
-    return !content.includes("@flow")
-  })
-
-if (unFlowedFiles.length > 0) {
-  warn(`These new JS files do not have Flow enabled: ${unFlowedFiles.join(", ")}`)
-}
-
