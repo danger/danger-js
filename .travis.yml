@@ -16,9 +16,8 @@ matrix:
     - node_js: "7"
 
 script:
-  - npm test -- --coverage
-  - npm run flow
   - npm run lint
+  - npm test -- --coverage --no-cache
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
