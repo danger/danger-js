@@ -1,11 +1,8 @@
-// @flow
-
-import type { DangerResults } from "../dsl/DangerResults"
-import type { DangerDSLType } from "../dsl/DangerDSL"
-import type { MarkdownString } from "../dsl/Aliases"
+import { DangerResults } from '../dsl/DangerResults';
+import { DangerDSLType } from '../dsl/DangerDSL';
+import { MarkdownString } from '../dsl/Aliases';
 
 export interface DangerContext {
-/* BEGIN FLOWTYPE EXPORT */
   /**
    * Fails a build, outputting a specific reason for failing
    *
@@ -35,7 +32,7 @@ export interface DangerContext {
   markdown(message: MarkdownString): void;
 
   /** Typical console */
-  console: any;
+  console: Console;
 
   /**
    * The Danger object to work with
@@ -49,7 +46,6 @@ export interface DangerContext {
    * @type {DangerDSLType}
    */
   results: DangerResults;
-/* END FLOWTYPE EXPORT */
 }
 
 /** Creates a Danger context, this provides all of the global functions
@@ -64,23 +60,12 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
     warnings: [],
     messages: [],
     markdowns: []
-  }
+  };
 
-  const fail = (message: MarkdownString) => {
-    results.fails.push({ message })
-  }
-
-  const warn = (message: MarkdownString) => {
-    results.warnings.push({ message })
-  }
-
-  const message = (message: MarkdownString) => {
-    results.messages.push({ message })
-  }
-
-  const markdown = (message: MarkdownString) => {
-    results.markdowns.push(message)
-  }
+  const fail = (message: MarkdownString) =>  results.fails.push({ message });
+  const warn = (message: MarkdownString) => results.warnings.push({ message });
+  const message = (message: MarkdownString) => results.messages.push({ message });
+  const markdown = (message: MarkdownString) => results.markdowns.push(message);
 
   return {
     fail,
@@ -90,5 +75,5 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
     console,
     results,
     danger: dsl
-  }
+  };
 }
