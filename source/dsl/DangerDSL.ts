@@ -1,8 +1,5 @@
-// @flow
-"use strict"
-
-import type { GitDSL } from "../dsl/GitDSL"
-import type { GitHubDSL } from "../dsl/GitHubDSL"
+import { GitDSL } from '../dsl/GitDSL';
+import { GitHubPRDSL, GitHubDSL } from '../dsl/GitHubDSL';
 
 /**
  *  The Danger DSL provides the metadata for introspection
@@ -14,23 +11,21 @@ export interface DangerDSLType {
    *  Currently, this is just the raw file paths that have been
    *  added, removed or modified.
    */
-  git: GitDSL;
+  readonly git: Readonly<GitDSL>;
   /**
    *  The GitHub metadata.
    */
-  github: GitHubDSL;
+  readonly github: Readonly<GitHubDSL>;
 }
 
 /* END FLOWTYPE EXPORT */
 
 export class DangerDSL {
-  git: GitDSL
-  github: GitHubDSL
+  public readonly github: Readonly<GitHubDSL>;
 
-  constructor(pr: any, git: GitDSL) {
-    this.git = git
+  constructor(pr: GitHubPRDSL, public readonly git: GitDSL) {
     this.github = {
       pr
-    }
+    };
   }
 }

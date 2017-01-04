@@ -1,6 +1,5 @@
-// @flow
-import type { Violation } from "../platforms/messaging/violation"
-import type { MarkdownString } from "../dsl/Aliases"
+import { Violation } from '../platforms/messaging/violation';
+import { MarkdownString } from '../dsl/Aliases';
 
 /**
  * Representation of what running a Dangerfile generates.
@@ -12,23 +11,23 @@ export interface DangerResults {
    * Failed messages
    * @type {Violation[]}
    */
-  fails: Violation[],
+  fails: Array<Violation>;
 
   /**
    * Messages for info
    * @type {Violation[]}
    */
-  warnings: Violation[],
+  warnings: Array<Violation>;
 
   /**
    * Markdown messages
    * @type {Violation[]}
    */
-  messages: Violation[],
+  messages: Array<Violation>;
 
   /**
    * Markdown messages at the bottom of the comment
    * @type {MarkdownString[]}
    */
-  markdowns: MarkdownString[]
+  markdowns: Array<MarkdownString>;
 }
