@@ -9,3 +9,4 @@ test:
     - danger
   post:
     - npm run lint
+    - npm test
