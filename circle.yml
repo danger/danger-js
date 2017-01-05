@@ -8,5 +8,4 @@ test:
     - npm run link
     - danger
   post:
-    - npm run flow
     - npm run lint
