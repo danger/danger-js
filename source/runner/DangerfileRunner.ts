@@ -85,6 +85,11 @@ export function updateDangerfile(filename: Path) {
   fs.writeFileSync(filename, cleanDangerfile(contents))
 }
 
+// https://regex101.com/r/dUq4yB/1
+const requirePattern = /^.* require\(('|")danger('|")\);?$/gm
+//  https://regex101.com/r/dUq4yB/2
+const es6Pattern = /^.* from ('|")danger('|");?$/gm
+
 /**
  * Updates a Dangerfile to remove the import for Danger
  * @param {string} contents the file path for the dangerfile
@@ -92,6 +97,6 @@ export function updateDangerfile(filename: Path) {
  */
 export function cleanDangerfile(contents: string): string {
   return contents
-    .replace(/import danger /gi, "// import danger ")
-    .replace(/import { danger/gi, "// import { danger")
+    .replace(es6Pattern, "// Removed import")
+    .replace(requirePattern, "// Removed require")
 }
