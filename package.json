@@ -3,28 +3,59 @@
   "version": "0.7.4",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
-  "typings": "./index.d.ts",
+  "typings": "distribution/danger.d.ts",
   "bin": {
     "danger": "distribution/commands/danger.js"
   },
   "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(.test)\\.(ts|tsx)$",
+    "testResultsProcessor": "<rootDir>/node_modules/ts-jest/coverageprocessor.js",
     "verbose": true,
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/distribution/"
+    ],
+    "coverageReporters": [
+      "json"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json",
+      "ts",
+      "tsx"
+    ],
+    "collectCoverageFrom": [
+      "!source/commands/danger.ts",
+      "source/**/*.{ts, tsx}",
+      "!**/*.d.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "(.test)\\.(ts|tsx)$",
+      "/distribution/.*\\.(ts|js)$"
+    ]
+  },
+  "lint-staged": {
+    "*.@(ts|tsx)": [
+      "tslint --fix",
+      "git add"
     ]
   },
   "scripts": {
+    "precommit": "lint-staged",
+    "prepush": "npm run build",
     "test": "jest",
-    "testwatch": "jest --watch",
-    "flow": "flow check",
-    "lint": "eslint ./source",
-    "fix": "eslint ./source --fix",
-    "prepublish": "in-publish && npm run build && npm run export-flowtype || not-in-publish",
-    "build": "babel source --out-dir distribution --source-maps",
-    "buildwatch": "babel source --watch --out-dir distribution",
-    "link": "npm run build ; chmod +x distribution/commands/danger.js ; npm link",
-    "export-flowtype": "node scripts/create-flow-typed-export.js"
+    "test:watch": "jest --watch",
+    "lint": "tslint \"source/**/*.ts\"",
+    "lint:fix": "tslint \"source/**/*.ts\" --fix",
+    "prepublish": "in-publish && npm run build || not-in-publish",
+    "build": "shx rm -rf ./distribution && tsc && madge ./distribution --circular",
+    "build:watch": "tsc -w",
+    "link": "npm run build ; chmod +x distribution/commands/danger.js ; npm link"
   },
   "repository": {
     "type": "git",
@@ -42,27 +73,32 @@
   "homepage": "https://github.com/danger/danger-js#readme",
   "devDependencies": {
     "@types/commander": "^2.3.31",
+    "@types/es6-promise": "0.0.32",
+    "@types/jest": "^16.0.3",
     "@types/node-fetch": "^1.6.6",
     "babel-cli": "^6.16.0",
-    "babel-eslint": "^7.1.1",
     "babel-plugin-syntax-async-functions": "^6.13.0",
     "babel-plugin-transform-flow-strip-types": "^6.8.0",
     "babel-plugin-transform-regenerator": "^6.16.1",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-stage-3": "^6.17.0",
-    "eslint": "^3.12.2",
-    "eslint-config-standard": "^6.0.0-beta.3",
-    "eslint-plugin-flowtype": "^2.29.1",
-    "eslint-plugin-promise": "^3.4.0",
-    "eslint-plugin-standard": "^2.0.0",
-    "flow-bin": "^0.37.4",
+    "husky": "^0.12.0",
     "in-publish": "^2.0.0",
-    "jest": "^18.0.0"
+    "jest": "^18.0.0",
+    "lint-staged": "^3.2.5",
+    "madge": "^1.4.4",
+    "shx": "^0.2.1",
+    "ts-jest": "^18.0.1",
+    "ts-node": "^2.0.0",
+    "tslint": "^4.2.0",
+    "typescript": "^2.1.4"
   },
   "dependencies": {
-    "babel-polyfill": "^6.16.0",
+    "babel-polyfill": "^6.20.0",
     "commander": "^2.9.0",
     "jest-runtime": "^18.0.0",
+    "lodash.find": "^4.6.0",
+    "lodash.includes": "^4.3.0",
     "node-fetch": "^1.6.3",
     "parse-diff": "^0.4.0"
   }

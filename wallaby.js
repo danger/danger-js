@@ -1,12 +1,12 @@
 module.exports = (wallaby) => ({
   files: [
     {pattern: "source/**/fixtures/**/*.*", instrument: false},
-    "source/**/!(*.test).js",
+    "source/**/!(*.test).ts",
     {pattern: "package.json", instrument: false}
   ],
 
   tests: [
-    "source/**/*.test.js"
+    "source/**/*.test.ts"
   ],
 
   env: {
@@ -14,7 +14,7 @@ module.exports = (wallaby) => ({
   },
 
   compilers: {
-    "**/*.js?(x)": wallaby.compilers.babel()
+    "**/*.ts?(x)": wallaby.compilers.typeScript()
   },
 
   // fixtures are not instrumented, but still need to be compiled
