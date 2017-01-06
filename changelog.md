@@ -1,8 +1,10 @@
 ### master
 
 //  Add your own contribution below
-* Support `danger run -ci` to specify external CI provider -kwonoj
 
+### 0.7.5
+
+* Support `danger run -ci` to specify external CI provider - kwonoj
 * Adds `--verbose` to `danger`, which for now will echo out all the URLs Danger has requested - orta
 * A failing network request will raise an error - orta
 * Migrate codebase into TypeScript from flow - kwonoj
