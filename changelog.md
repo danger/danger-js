@@ -2,16 +2,16 @@
 
 //  Add your own contribution below
 
-### 0.7.5
+### 0.8.0
 
 * Support `danger run -ci` to specify external CI provider - kwonoj
 * Adds `--verbose` to `danger`, which for now will echo out all the URLs Danger has requested - orta
-* A failing network request will raise an error - orta
 * Migrate codebase into TypeScript from flow - kwonoj
 * Handle removing all sorts  of import types for Danger in the Dangerfile - orta
 
-### 0.7.3-4
+### 0.7.3-4-5
 
+* A failing network request will raise an error - orta
 * Fix Dangerfile parsing which broke due to Peril related changes - orta
 * Tweak the npmignore, ship less random stuff to others - orta
 
