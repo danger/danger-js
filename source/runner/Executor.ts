@@ -65,17 +65,20 @@ export class Executor {
     }
 
     // Delete the message if there's nothing to say
-    const hasMessages =
-      results.fails.length > 0 ||
-      results.warnings.length > 0 ||
-      results.messages.length > 0 ||
-      results.markdowns.length > 0
+    const {fails, warnings, messages, markdowns} = results
 
-    if (!hasMessages) {
-      console.log("All Good.")
+    const failureCount = [...fails, ...warnings].length
+    const messageCount = [...messages, ...markdowns].length
+
+    if (failureCount + messageCount === 0) {
+      console.log("No messages are collected.")
       await this.platform.deleteMainComment()
     } else {
-      console.log("Failed")
+      if (failureCount > 0) {
+        console.log("Found some validation failure")
+      } else if (messageCount > 0) {
+        console.log("Found some message, writing it down")
+      }
       const comment = githubResultsTemplate(results)
       await this.platform.updateOrCreateComment(comment)
     }
