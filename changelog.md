@@ -1,6 +1,7 @@
 ### master
 
 //  Add your own contribution below
+* Adds surf-build ci provider - kwonoj
 
 ### 0.8.0
 
