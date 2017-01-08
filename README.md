@@ -5,14 +5,15 @@ Danger on Node, wonder what's going on? see [VISION.md](VISION.md)
 
 *Welcome!*
 
-So, what's the deal? Well, right now Danger JS does the MVP of [the Ruby version](http://danger.systems). You can look at [Git](https://github.com/danger/danger-js/blob/master/source/dsl/GitDSL.js) metadata, or [GitHub](https://github.com/danger/danger-js/blob/master/source/dsl/GitHubDSL.js) metadata on Travis CI.
+So, what's the deal? Well, right now Danger JS does a lot of the simpler parts of [the Ruby version](http://danger.systems). 
+You can look at [Git](https://github.com/danger/danger-js/blob/master/source/dsl/GitDSL.js) metadata, or [GitHub](https://github.com/danger/danger-js/blob/master/source/dsl/GitHubDSL.js) metadata on Travis CI.
 
 Danger can fail your build, write a comment on GitHub, edit it as your build changes and then delete it once you've passed review.
 
 To install:
 
 ```sh
-npm install danger --save-dev
+yarn add dev danger
 ```
 Then add a run command to your `Package.json`
 
@@ -47,6 +48,13 @@ if (unFlowedFiles.length > 0) {
 
 Then you add `npm run danger` to the end of your CI run, and Danger will run. Here's [an example](https://github.com/artsy/emission/pull/385). 👍
 
+
+Want to see some existing examples? Check out:
+
+* **Apps** - [Artsy/Emission][emiss] and [Artsy/metaphysics][meta].
+* **Libraries** - [Facebook/Jest][fbj] and [styled-components/styled-components][sc].
+
+I'd love PRs adding more.
 
 Notes:
 
@@ -100,22 +108,16 @@ npm run flow
 
 ### Dev Life
 
-We use quite a few semi-bleeding edge features of JS in Danger. Please see the [glossary for an overview](docs/js_glossary.md). Notably Flow, Interfaces, Async/Await and Typealiases.
-
-You'll have a nicer experience as a developer if you use VS Code with Flow enabled, and if you install flow-typed.
-
-``` sh
-npm install -g flow-typed
-flow-typed install
-```
-
-( and maybe `flow-typed install jest`)
-
 Tips:
 
-* You can run the `danger` command globally from your dev build by running `npm run link`.
-* If you're using VS Code, press Run to start an example run, should go through most of the process with a debugger attatched. Either use breakpoints, or add `debugger` to get a repl and context.
+* You can run the `danger` command globally from your dev build by running `yarn run link`.
+* If you're using VS Code, press Run to start an example run, should go through most of the process with a debugger attached. Either use breakpoints, or add `debugger` to get a repl and context.
 
 ### What is the TODO?
 
 Check the issues, I try and keep my short term perspective there. Long term is in the [VISION.md](VISION.md).
+
+[emiss]: https://github.com/artsy/emission/blob/master/dangerfile.js
+[meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
+[fbj]: https://github.com/facebook/jest/blob/master/dangerfile.js
+[sc]: https://github.com/styled-components/styled-components/blob/master/dangerfile.js
