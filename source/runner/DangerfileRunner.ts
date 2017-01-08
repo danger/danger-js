@@ -82,7 +82,10 @@ export async function runDangerfileEnvironment(filename: Path, environment: Dang
  */
 export function updateDangerfile(filename: Path) {
   const contents = fs.readFileSync(filename).toString()
-  fs.writeFileSync(filename, cleanDangerfile(contents))
+  const cleanedDangerFile = cleanDangerfile(contents)
+  if (contents !== cleanedDangerFile) {
+    fs.writeFileSync(filename, cleanDangerfile(contents))
+  }
 }
 
 // https://regex101.com/r/dUq4yB/1

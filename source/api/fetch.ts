@@ -50,7 +50,7 @@ export function api(url: string | any, init: any): Promise<any> {
     // Handle failing errors
     if (!response.ok) {
       process.exitCode = 1
-      console.error(`Request failed: ${response}`)
+      console.error(`Request failed: ${JSON.stringify(response, null, 2)}`)
       const msg = response.status === 0 ? "Network Error" : response.statusText
       throw new (Error as any)(response.status, msg, {response: response})
     }

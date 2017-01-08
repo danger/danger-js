@@ -80,7 +80,7 @@ git checkout branch-for-pr-1234
 DANGER_TEST_PR='1234' npm run danger
 ```
 
-assuming that your local filesystem matches up to that branch on github, this will be a good approximation of how danger will work when you integrate it into your ci system.
+assuming that your local file-system matches up to that branch on github, this will be a good approximation of how danger will work when you integrate it into your ci system.
 
 #### This thing is broken, I should help improve it!
 

@@ -1,5 +1,5 @@
 import { GitDSL } from "../dsl/GitDSL"
-import { GitHubPRDSL, GitHubDSL } from "../dsl/GitHubDSL"
+import { GitHubDSL } from "../dsl/GitHubDSL"
 
 /**
  *  The Danger DSL provides the metadata for introspection
@@ -23,9 +23,8 @@ export interface DangerDSLType {
 export class DangerDSL {
   public readonly github: Readonly<GitHubDSL>
 
-  constructor(pr: GitHubPRDSL, public readonly git: GitDSL) {
-    this.github = {
-      pr
-    }
+  constructor(platformDSL: any, public readonly git: GitDSL) {
+    // As GitLab etc support is added this will need to be changed
+    this.github = platformDSL
   }
 }

@@ -10,8 +10,8 @@ export class FakePlatform implements Platform {
     this.name = "Fake"
   }
 
-  async getReviewInfo(): Promise<any> {
-    //noop
+  async getPlatformDSLRepresentation(): Promise<any> {
+    return {}
   }
 
   async getReviewDiff(): Promise<GitDSL> {
@@ -19,7 +19,8 @@ export class FakePlatform implements Platform {
       modified_files: [],
       created_files: [],
       deleted_files: [],
-      diffForFile: () => ""
+      diffForFile: () => "",
+      commits: []
     }
   }
 
