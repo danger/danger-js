@@ -73,6 +73,7 @@
   "homepage": "https://github.com/danger/danger-js#readme",
   "devDependencies": {
     "@types/commander": "^2.3.31",
+    "@types/debug": "0.0.29",
     "@types/es6-promise": "0.0.32",
     "@types/jest": "^16.0.3",
     "@types/node-fetch": "^1.6.6",
@@ -96,6 +97,7 @@
   "dependencies": {
     "babel-polyfill": "^6.20.0",
     "commander": "^2.9.0",
+    "debug": "^2.6.0",
     "jest-runtime": "^18.0.0",
     "lodash.find": "^4.6.0",
     "lodash.includes": "^4.3.0",

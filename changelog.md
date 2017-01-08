@@ -1,8 +1,8 @@
 ### master
 
 //  Add your own contribution below
+* Allow debug dump output via `DEBUG=danger:*` environment variable - kwonoj
 * Adds surf-build ci provider - kwonoj
-
 * Forward environment variable to external module constructor - kwonoj
 
 ### 0.8.0

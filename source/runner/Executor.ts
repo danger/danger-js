@@ -6,10 +6,12 @@ import { DangerResults } from "../dsl/DangerResults"
 import { template as githubResultsTemplate } from "./templates/github-issue-template"
 import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment } from "./DangerfileRunner"
 import { DangerfileRuntimeEnv } from "./types"
-
+import * as debug from "debug"
 // This is still badly named, maybe it really should just be runner?
 
 export class Executor {
+  private readonly d = debug("danger:executor")
+
   constructor(public readonly ciSource: CISource, public readonly platform: Platform) {
   }
 
@@ -69,6 +71,8 @@ export class Executor {
 
     const failureCount = [...fails, ...warnings].length
     const messageCount = [...messages, ...markdowns].length
+
+    this.d(results)
 
     if (failureCount + messageCount === 0) {
       console.log("No messages are collected.")
