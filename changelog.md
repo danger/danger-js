@@ -3,6 +3,8 @@
 //  Add your own contribution below
 * Adds surf-build ci provider - kwonoj
 
+* Forward environment variable to external module constructor - kwonoj
+
 ### 0.8.0
 
 * Support `danger run -ci` to specify external CI provider - kwonoj

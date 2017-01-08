@@ -24,7 +24,7 @@ export function getCISourceForEnv(env: Env): CISource | undefined {
  * @param {string} modulePath relative path to CI provider
  * @returns {?CISource} a CI source if module loaded successfully, undefined otherwise
  */
-export function getCISourceForExternal(_env: Env, modulePath: string): CISource | undefined {
+export function getCISourceForExternal(env: Env, modulePath: string): CISource | undefined {
   const path = resolve(process.cwd(), modulePath)
 
   try {
@@ -33,7 +33,7 @@ export function getCISourceForExternal(_env: Env, modulePath: string): CISource 
     if (exist) {
       const externalModule = require(path) //tslint:disable-line:no-require-imports
       const moduleConstructor = externalModule.default || externalModule
-      return new moduleConstructor()
+      return new moduleConstructor(env)
     }
   } catch (e) {
     console.error(`could not load CI provider at ${modulePath} due to ${e}`)
