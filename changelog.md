@@ -1,6 +1,7 @@
 ### master
 
 //  Add your own contribution below
+* Support custom dangerfile via `-d` commandline arg - kwonoj
 * Allow debug dump output via `DEBUG=danger:*` environment variable - kwonoj
 * Adds surf-build ci provider - kwonoj
 * Forward environment variable to external module constructor - kwonoj
