@@ -84,6 +84,7 @@ export class Executor {
         console.log("Found some message, writing it down")
       }
       const comment = githubResultsTemplate(results)
+      // TODO filter out Danger items that contain file/line info
       await this.platform.updateOrCreateComment(comment)
     }
   }

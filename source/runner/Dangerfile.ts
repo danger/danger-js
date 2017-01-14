@@ -1,6 +1,6 @@
 import { DangerResults } from "../dsl/DangerResults"
 import { DangerDSLType } from "../dsl/DangerDSL"
-import { MarkdownString } from "../dsl/Aliases"
+import { MarkdownString, Filename, LineNumber } from "../dsl/Aliases"
 
 export interface DangerContext {
   /**
@@ -8,28 +8,28 @@ export interface DangerContext {
    *
    * @param {MarkdownString} message the String to output
    */
-  fail(message: MarkdownString): void
+  fail(message: MarkdownString, options?: DangerOptions): void
 
   /**
    * Highlights low-priority issues, does not fail the build
    *
    * @param {MarkdownString} message the String to output
    */
-  warn(message: MarkdownString): void
+  warn(message: MarkdownString, options?: DangerOptions): void
 
   /**
    * Puts a message inside the Danger table
    *
    * @param {MarkdownString} message the String to output
    */
-  message(message: MarkdownString): void
+  message(message: MarkdownString, options?: DangerOptions): void
 
   /**
    * Puts a message inside the Danger table
    *
    * @param {MarkdownString} message the String to output
    */
-  markdown(message: MarkdownString): void
+  markdown(message: MarkdownString, options?: DangerOptions): void
 
   /** Typical console */
   console: Console
@@ -48,6 +48,11 @@ export interface DangerContext {
   results: DangerResults
 }
 
+export interface DangerOptions {
+  file?: Filename
+  line?: LineNumber
+}
+
 /** Creates a Danger context, this provides all of the global functions
  *  which are available to the Danger eval runtime.
  *
@@ -62,10 +67,10 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
     markdowns: []
   }
 
-  const fail = (message: MarkdownString) =>  results.fails.push({ message })
-  const warn = (message: MarkdownString) => results.warnings.push({ message })
-  const message = (message: MarkdownString) => results.messages.push({ message })
-  const markdown = (message: MarkdownString) => results.markdowns.push(message)
+  const fail = (message: MarkdownString, options: DangerOptions = {}) => results.fails.push({ message, options })
+  const warn = (message: MarkdownString, options: DangerOptions = {}) => results.warnings.push({ message, options })
+  const message = (message: MarkdownString, options: DangerOptions = {}) => results.messages.push({ message, options })
+  const markdown = (message: MarkdownString, options: DangerOptions = {}) => results.markdowns.push({ message, options })
 
   return {
     fail,

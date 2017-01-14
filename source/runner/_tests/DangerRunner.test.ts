@@ -50,10 +50,10 @@ describe("with fixtures", () => {
     const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileFullMessages.js"), runtime)
 
     expect(results).toEqual({
-      fails: [{"message": "this is a failure"}],
-      markdowns: ["this is a *markdown*"],
-      messages: [{"message": "this is a message"}],
-      warnings: [{"message": "this is a warning"}]
+      fails: [{"message": "this is a failure", "options": {}}],
+      markdowns: [{"message": "this is a *markdown*", "options": {}}],
+      messages: [{"message": "this is a message", "options": {}}],
+      warnings: [{"message": "this is a warning", "options": {}}]
     })
   })
 
