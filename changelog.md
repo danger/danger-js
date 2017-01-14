@@ -1,6 +1,7 @@
 ### master
 
 //  Add your own contribution below
+* `DANGER_TIMESTAMP` will log moment of danger post update - kwonoj
 * Allow debug dump output via `DEBUG=danger:*` environment variable - kwonoj
 * Adds surf-build ci provider - kwonoj
 * Forward environment variable to external module constructor - kwonoj
