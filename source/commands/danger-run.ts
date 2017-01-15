@@ -1,13 +1,17 @@
 import * as program from "commander"
+import * as debug from "debug"
+import * as fs from "fs"
 import { getCISource } from "../ci_source/get_ci_source"
 import { getPlatformForEnv } from "../platforms/platform"
 import {Executor} from "../runner/Executor"
 
+const d = debug("danger:run")
 declare const global: any
 
 program
   .option("-v, --verbose", "Verbose output of files")
-  .option("-c, --external-ci-provider [modulePath]", "blah")
+  .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")
+  .option("-d, --dangerfile [filePath]", "Specify custom dangefile other than default dangerfile.js")
   .parse(process.argv)
 
 process.on("unhandledRejection", function(reason: string, _p: any) {
@@ -39,10 +43,21 @@ if (source && source.isPR) {
   }
 
   if (platform) {
+    const dangerFile = (program as any).dangerfile || "dangerfile.js"
+
     console.log(`OK, looks good ${source.name} on ${platform.name}`)
+
     try {
-      const exec = new Executor(source, platform)
-      exec.setupAndRunDanger("dangerfile.js")
+      const stat = fs.statSync(dangerFile)
+
+      if (!!stat && stat.isFile()) {
+        d(`executing dangerfile at ${dangerFile}`)
+        const exec = new Executor(source, platform)
+        exec.setupAndRunDanger(dangerFile)
+      } else {
+        console.log(`looks like specified ${dangerFile} is not valid path`)
+        process.exitCode = 1
+      }
     } catch (error) {
       process.exitCode = 1
       console.error(error.message)
