@@ -13,9 +13,10 @@ const merges = git.commits.filter(commit => commit.message.include("Merge Master
 if (merges.length) { fail("Please rebase your PR")}
 ```
 
+* Support custom dangerfile via `-d` commandline arg - kwonoj
 * Allow debug dump output via `DEBUG=danger:*` environment variable - kwonoj
 * Adds surf-build ci provider - kwonoj
-* Forward environment variable to external module constructor - kwonoj
+* Forward environment variables to external module constructor - kwonoj
 
 ### 0.8.0
 
