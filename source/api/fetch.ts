@@ -1,5 +1,7 @@
 import * as fetch from "node-fetch"
+import * as debug from "debug"
 
+const d = debug("danger:networking")
 declare const global: any
 
 /**
@@ -42,7 +44,7 @@ export function api(url: string | any, init: any): Promise<any> {
       output.push(url)
     }
 
-    console.log(output.join(" "))
+    d(output.join(" "))
   }
 
   return fetch(url, init)
