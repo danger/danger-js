@@ -1,3 +1,5 @@
+import { GitCommit } from "./Commit"
+
 export interface GitDSL {
   /**
    * Filepaths with changes relative to the git root
@@ -18,5 +20,8 @@ export interface GitDSL {
   readonly deleted_files: Readonly<Array<string>>
 
   /** Offers the diff for a specific file */
-  diffForFile(filename: string): string | null
+  diffForFile(filename: string): string | null,
+
+  /** The Git commit metadata */
+  readonly commits: Readonly<Array<GitCommit>>
 }

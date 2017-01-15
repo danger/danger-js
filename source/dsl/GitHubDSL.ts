@@ -1,9 +1,27 @@
+import { GitCommit } from "./Commit"
+
+/** A GitHub specific implmentation of a git commit */
+export interface GitHubCommit {
+  /** The raw commit metadata */
+  commit: GitCommit,
+  /** The SHA for the commit */
+  sha: string,
+  /** the url for the commit on GitHub */
+  url: string,
+  /** The GitHub user who wrote the code */
+  author: GitHubUser,
+  /** The GitHub user who shipped the code */
+  committer: GitHubUser,
+  /** An array of parent commit shas */
+  parents: Array<any>
+}
+
+/** The GitHub metadata for your PR */
 export interface GitHubDSL {
-  /**
-   * The PR metadata for a code review session
-   * @type {GitHubPRDSL}
-   */
-  pr: GitHubPRDSL
+  /** The PR metadata for a code review session */
+  pr: GitHubPRDSL,
+  /** The github commit metadata for a code review session */
+  commits: Array<GitHubCommit>
 }
 
 /**
@@ -204,10 +222,10 @@ export interface GitHubPRDSL {
    */
   merged: boolean
 
-   /**
-   * The nuber of comments on the PR
-   * @type {number}
-   */
+  /**
+  * The nuber of comments on the PR
+  * @type {number}
+  */
   comments: number
 
   /**
