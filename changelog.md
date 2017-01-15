@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+### 0.9.0
+
 * Adds support for `git.commits` and `github.commits` - orta
 
   Why two? Well github.commits contains a bunch of github specific metadata ( e.g. GitHub user creds, 
