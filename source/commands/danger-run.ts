@@ -8,6 +8,9 @@ import {Executor} from "../runner/Executor"
 const d = debug("danger:run")
 declare const global: any
 
+// TODO: if we get more options around the dangerfile, we should 
+//       support sharing `program` setup code with danger-pr.ts
+
 program
   .option("-v, --verbose", "Verbose output of files")
   .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")

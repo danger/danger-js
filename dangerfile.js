@@ -1,4 +1,4 @@
-// import { danger, warn } from "danger"
+// Removed import
 import fs from "fs"
 
 // Request a CHANGELOG entry if not declared #trivial
