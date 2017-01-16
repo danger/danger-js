@@ -32,8 +32,8 @@ export interface Platform {
   readonly name: string
   /** Used internally for getting PR/Repo metadata */
   readonly ciSource: CISource
-  /** Pulls in the Code Review Metadata for inspection */
-  getReviewInfo: () => Promise<any>
+  /** Pulls in the platform specific metadata for inspection */
+  getPlatformDSLRepresentation: () => Promise<any>
   /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
   getReviewDiff: () => Promise<GitDSL>
   /** Creates a comment on the PR */

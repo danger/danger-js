@@ -1,5 +1,8 @@
 import { GitDSL } from "../dsl/GitDSL"
 import { CISource } from "../ci_source/ci_source"
+import { GitCommit } from "../dsl/Commit"
+import { GitHubCommit, GitHubDSL } from "../dsl/GitHubDSL"
+
 import * as parseDiff from "parse-diff"
 import * as includes from "lodash.includes"
 import * as find from "lodash.find"
@@ -12,7 +15,8 @@ import * as os from "os"
 
 export type APIToken = string
 
-// TODO: Cache PR JSON
+// TODO: Cache PR JSON?
+// TODO: Separate out a GitHub API client?
 
 /** This represent the GitHub API, and conforming to the Platform Interface */
 
@@ -45,6 +49,9 @@ export class GitHub {
    */
   async getReviewDiff(): Promise<GitDSL> {
     const diffReq = await this.getPullRequestDiff()
+    const getCommitsResponse = await this.getPullRequestCommits()
+    const getCommits = await getCommitsResponse.json()
+
     const diff = await diffReq.text()
 
     const fileDiffs: Array<any> = parseDiff(diff)
@@ -52,7 +59,6 @@ export class GitHub {
     const addedDiffs = fileDiffs.filter((diff: any) => diff["new"])
     const removedDiffs = fileDiffs.filter((diff: any) => diff["deleted"])
     const modifiedDiffs = fileDiffs.filter((diff: any) => !includes(addedDiffs, diff) && !includes(removedDiffs, diff))
-
     return {
       modified_files: modifiedDiffs.map((d: any) => d.to),
       created_files: addedDiffs.map((d: any) => d.to),
@@ -65,7 +71,39 @@ export class GitHub {
           .reduce((a: any, b: any) => a.concat(b), [])
         const lines = changes.map((c: any) => c.content)
         return lines.join(os.EOL)
-      }
+      },
+      commits: getCommits.map(this.githubCommitToGitCommit)
+    }
+  }
+
+  /**
+   * Returns the `github` object on the Danger DSL
+   *
+   * @returns {Promise<GitHubDSL>} JSON response of the DSL
+   */
+  async getPlatformDSLRepresentation(): Promise<GitHubDSL> {
+    const pr = await this.getReviewInfo()
+    const commits = await this.getPullRequestCommits()
+    return {
+      pr,
+      commits
+    }
+  }
+
+  /**
+   * Returns the response for the new comment
+   *
+   * @param {GitHubCommit} ghCommit A GitHub based commit
+   * @returns {GitCommit} a Git commit representation without GH metadata
+   */
+  githubCommitToGitCommit(ghCommit: GitHubCommit): GitCommit {
+    return {
+      sha: ghCommit.sha,
+      parents: ghCommit.parents.map(p => p.sha),
+      author: ghCommit.commit.author,
+      committer: ghCommit.commit.committer,
+      message: ghCommit.commit.message,
+      tree: ghCommit.commit.tree
     }
   }
 
@@ -183,6 +221,12 @@ export class GitHub {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID
     return this.get(`repos/${repo}/pulls/${prID}`)
+  }
+
+   getPullRequestCommits(): Promise<any> {
+    const repo = this.ciSource.repoSlug
+    const prID = this.ciSource.pullRequestID
+    return this.get(`repos/${repo}/pulls/${prID}/commits`)
   }
 
   async getUserInfo(): Promise<any> {

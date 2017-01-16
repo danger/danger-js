@@ -1,9 +1,24 @@
 ### master
 
 //  Add your own contribution below
+
+### 0.9.0
+
+* Adds support for `git.commits` and `github.commits` - orta
+
+  Why two? Well github.commits contains a bunch of github specific metadata ( e.g. GitHub user creds, 
+  commit comment counts. ) Chances are, you're always going to use `git.commits` however if you 
+  want more rich data, the GitHub one is available too. Here's an example:
+
+```js
+const merges = git.commits.filter(commit => commit.message.include("Merge Master"))
+if (merges.length) { fail("Please rebase your PR")}
+```
+
+* Support custom dangerfile via `-d` commandline arg - kwonoj
 * Allow debug dump output via `DEBUG=danger:*` environment variable - kwonoj
 * Adds surf-build ci provider - kwonoj
-* Forward environment variable to external module constructor - kwonoj
+* Forward environment variables to external module constructor - kwonoj
 
 ### 0.8.0
 
@@ -69,14 +84,14 @@
 * Improved error messaging around not including a `DANGER_GITHUB_API_TOKEN` in the ENV - nsfmc / orta
 * Adds support for getting the diff for a specific file from git: e.g.
 
-  ```js
+```js
 // Politely ask for their name on the entry too
 const changelogDiff = danger.git.diffForFile("changelog.md")
 const contributorName = danger.github.pr.user.login
 if (changelogDiff && changelogDiff.indexOf(contributorName) === -1) {
   warn("Please add your GitHub name to the changelog entry, so we can attribute you.")
 }
-  ```
+```
 
 ### 0.6.3
 

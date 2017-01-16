@@ -51,8 +51,8 @@ export class Executor {
   */
   async dslForDanger(): Promise<DangerDSL> {
     const git = await this.platform.getReviewDiff()
-    const pr = await this.platform.getReviewInfo()
-    return new DangerDSL(pr, git)
+    const platformDSL = await this.platform.getPlatformDSLRepresentation()
+    return new DangerDSL(platformDSL, git)
   }
 
   /**

@@ -9,11 +9,11 @@ describe("setup", () => {
     const exec = new Executor(new FakeCI({}), platform)
 
     platform.getReviewDiff = jest.fn()
-    platform.getReviewInfo = jest.fn()
+    platform.getPlatformDSLRepresentation = jest.fn()
 
     await exec.dslForDanger()
     expect(platform.getReviewDiff).toBeCalled()
-    expect(platform.getReviewInfo).toBeCalled()
+    expect(platform.getPlatformDSLRepresentation).toBeCalled()
   })
 
   it("gets diff / pr info in setup", async () => {

@@ -1,4 +1,5 @@
 import { GitHub } from "../GitHub"
+import { GitCommit } from "../../dsl/Commit"
 import { FakeCI } from "../../ci_source/providers/Fake"
 import { readFileSync } from "fs"
 import { resolve } from "path"
@@ -60,20 +61,22 @@ describe("with fixtured data", () => {
     const mockSource = new FakeCI({})
     const github = new GitHub("Token", mockSource)
     github.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
+    github.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
 
     const info = await github.getReviewInfo()
     expect(info.title).toEqual("Adds support for showing the metadata and trending Artists to a Gene VC")
   })
 
   describe("the dangerfile gitDSL", async () => {
-    let github = {}
+    let github: GitHub = {} as any
     beforeEach(async () => {
-      github = new GitHub("Token", new FakeCI({}));
-      (github as any).getPullRequestDiff = await requestWithFixturedContent("github_diff.diff")
+      github = new GitHub("Token", new FakeCI({}))
+      github.getPullRequestDiff = await requestWithFixturedContent("github_diff.diff")
+      github.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
     })
 
     it("sets the modified/created/deleted", async () => {
-    const gitDSL = await (github as any).getReviewDiff()
+      const gitDSL = await github.getReviewDiff()
 
       expect(gitDSL.modified_files).toEqual(["CHANGELOG.md", "data/schema.graphql", "data/schema.json", "externals/metaphysics", "lib/__mocks__/react-relay.js", "lib/components/artist/about.js", "lib/components/gene/header.js", "lib/containers/__tests__/__snapshots__/gene-tests.js.snap", "lib/containers/__tests__/gene-tests.js", "lib/containers/gene.js", "tsconfig.json"]) //tslint:disable-line:max-line-length
 
@@ -84,9 +87,33 @@ describe("with fixtured data", () => {
 
     it("shows the diff for a specific file", async () => {
       const expected = ` - [dev] Updates Flow to 0.32 - orta${EOL} - [dev] Updates React to 0.34 - orta${EOL} - [dev] Turns on "keychain sharing" to fix a keychain bug in sim - orta${EOL}+- GeneVC now shows about information, and trending artists - orta${EOL} ${EOL} ### 1.1.0-beta.2${EOL} ` //tslint:disable-line:max-line-length
-      const gitDSL = await (github as any).getReviewDiff()
+      const gitDSL = await github.getReviewDiff()
 
       expect(gitDSL.diffForFile("CHANGELOG.md")).toEqual(expected)
+    })
+
+    it("sets up commit data correctly", async () => {
+      const exampleCommit: GitCommit = {
+        "author":  {
+          "date": "2016-09-30T13:52:14Z",
+          "email": "orta.therox@gmail.com",
+          "name": "Orta Therox",
+        },
+        "committer":  {
+          "date": "2016-09-30T13:52:14Z",
+          "email": "orta.therox@gmail.com",
+          "name": "Orta Therox",
+        },
+        "message": "WIP on Gene",
+        "parents":  ["98f3e73f5e419f3af9ab928c86312f28a3c87475"],
+        "sha": "13da2c844def1f4262ee440bd86fb2a3b021718b",
+        "tree": {
+          "sha": "d1b7448d7409093054efbb06ae12d1ffb002b956",
+          "url": "https://api.github.com/repos/artsy/emission/git/trees/d1b7448d7409093054efbb06ae12d1ffb002b956",
+        },
+      }
+      const gitDSL = await github.getReviewDiff()
+      expect(gitDSL.commits[0]).toEqual(exampleCommit)
     })
   })
 })
