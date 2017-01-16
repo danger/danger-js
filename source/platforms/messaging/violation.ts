@@ -1,4 +1,4 @@
-import { DangerOptions } from "../../runner/Dangerfile"
+import { MessagingOptions } from "../../runner/Dangerfile"
 
 /**
  * The result of user doing warn, message or fail.
@@ -11,5 +11,5 @@ export interface Violation {
    */
   message: string
 
-  options?: DangerOptions
+  options?: MessagingOptions
 }
