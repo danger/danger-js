@@ -20,3 +20,10 @@ export const failsResults: DangerResults = {
   messages: [],
   markdowns: []
 }
+
+export const summaryResults: DangerResults = {
+  fails: [{ message: "Failing message Failing message" }],
+  warnings: [{ message: "Warning message Warning message" }],
+  messages: [{ message: "message" }],
+  markdowns: ["markdown"],
+}
