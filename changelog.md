@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+* Add summary comment for danger message - kwonoj
+
 ### 0.9.0
 
 * Adds support for `git.commits` and `github.commits` - orta
