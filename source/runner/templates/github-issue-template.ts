@@ -1,5 +1,6 @@
 import { DangerResults } from "../../dsl/DangerResults"
 import { Violation } from "../../platforms/messaging/violation"
+import * as v from "voca"
 
 /**
  * Converts a set of violations into a HTML table
@@ -28,6 +29,21 @@ function table(name: string, emoji: string, violations: Array<Violation>): strin
 `
 }
 
+function getSummary(label: string, violations: Array<Violation>): string {
+  return violations.map(x => v.truncate(x.message, 20))
+    .reduce((acc, value, idx) => `${acc} ${value}${idx === violations.length - 1 ? "" : ","}`, `${violations.length} ${label}: `)
+}
+
+function buildSummaryMessage(results: DangerResults): string {
+  const {fails, warnings, messages, markdowns } = results
+  const summary =
+`  ${getSummary("failure", fails)}
+  ${getSummary("warning", warnings)}
+  ${messages.length > 0 ? `${messages.length} messages` : ""}
+  ${markdowns.length > 0 ? `${markdowns.length} markdown notices` : ""}`
+  return summary
+}
+
 /**
  * A template function for creating a GitHub issue comment from Danger Results
  * @param {DangerResults} results Data to work with
@@ -36,6 +52,9 @@ function table(name: string, emoji: string, violations: Array<Violation>): strin
 // TODO update function to support new DangerResults.markdowns type
 export function template(results: DangerResults): string {
   return `
+<!--
+${buildSummaryMessage(results)}
+-->
 ${table("Fails", "no_entry_sign", results.fails)}
 ${table("Warnings", "warning", results.warnings)}
 ${table("Messages", "book", results.messages)}

@@ -27,3 +27,10 @@ export const markdownResults: DangerResults = {
   messages: [],
   markdowns: [{ message: "Markdown message" }]
 }
+
+export const summaryResults: DangerResults = {
+  fails: [{ message: "Failing message Failing message" }],
+  warnings: [{ message: "Warning message Warning message" }],
+  messages: [{ message: "message" }],
+  markdowns: [{ message: "markdown" }],
+}

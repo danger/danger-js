@@ -102,6 +102,7 @@
     "lodash.find": "^4.6.0",
     "lodash.includes": "^4.3.0",
     "node-fetch": "^1.6.3",
-    "parse-diff": "^0.4.0"
+    "parse-diff": "^0.4.0",
+    "voca": "^1.2.0"
   }
 }

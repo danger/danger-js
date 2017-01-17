@@ -1,4 +1,4 @@
-import { emptyResults, warnResults, failsResults, markdownResults } from "../../_tests/fixtures/ExampleDangerResults"
+import { emptyResults, warnResults, failsResults, summaryResults, markdownResults } from "../../_tests/fixtures/ExampleDangerResults"
 import { template as githubResultsTemplate } from "../../templates/github-issue-template"
 
 describe("generating messages", () => {
@@ -29,5 +29,19 @@ describe("generating messages", () => {
   it("does not break commonmark rules around line breaks", () => {
     const issues = githubResultsTemplate(warnResults)
     expect(issues).not.toMatch(/(\r?\n){2}[ \t]+</)
+  })
+
+  it("Should include summary on top of message", () => {
+    const issues = githubResultsTemplate(summaryResults)
+    const expected =
+    `
+<!--
+  1 failure:  Failing message F...
+  1 warning:  Warning message W...
+  1 messages
+  1 markdown notices
+-->`
+
+    expect(issues).toContain(expected)
   })
 })
