@@ -10,24 +10,24 @@ const correctEnv = {
 }
 
 describe(".isCI", () => {
-  test("validates when all Circle environment vars are set", () => {
+  it("validates when all Circle environment vars are set", () => {
     const circle = new Circle(correctEnv)
     expect(circle.isCI).toBeTruthy()
   })
 
-  test("does not validate without josh", () => {
+  it("does not validate without josh", () => {
     const circle = new Circle({})
     expect(circle.isCI).toBeFalsy()
   })
 })
 
 describe(".isPR", () => {
-  test("validates when all circle environment vars are set", () => {
+  it("validates when all circle environment vars are set", () => {
     const circle = new Circle(correctEnv)
     expect(circle.isPR).toBeTruthy()
   })
 
-  test("does not validate outside of circle", () => {
+  it("does not validate outside of circle", () => {
     const circle = new Circle({})
     expect(circle.isPR).toBeFalsy()
   })
@@ -44,7 +44,7 @@ describe(".isPR", () => {
     }
     env[key] = null
 
-    test(`does not validate when ${key} is missing`, () => {
+    it(`does not validate when ${key} is missing`, () => {
       const circle = new Circle({})
       expect(circle.isPR).toBeFalsy()
     })
