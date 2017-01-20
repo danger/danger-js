@@ -27,26 +27,34 @@ if (program.args.length === 0) {
     console.error("Could not get a repo and a PR number from your URL, bad copy & paste?")
     process.exitCode = 1
   } else {
+    // TODO: Handle auth token
+    // TODO: Use custom `fetch` in GitHub that stores and uses local cache if PR is closed, these PRs 
+    //       shouldn't change often and there is a limit on API calls per hour.
 
-    const source = new FakeCI({
-      DANGER_TEST_REPO: pr.repo,
-      DANGER_TEST_PR: pr.pullRequestNumber
-    })
-
-    const platform = new GitHub(null, source)
-    let stat: fs.Stats | null = null
-    try {
-      stat = fs.statSync(dangerFile)
-    } catch (error) {
-      console.error("Could not get a repo and a PR number from your URL, bad copy & paste?")
-      process.exitCode = 1
-    }
-
-    if (!!stat && stat.isFile()) {
+    if (validateDangerfileExists(dangerFile)) {
       d(`executing dangerfile at ${dangerFile}`)
+      const source = new FakeCI({ DANGER_TEST_REPO: pr.repo, DANGER_TEST_PR: pr.pullRequestNumber })
+      const platform = new GitHub(null, source)
       runDanger(source, platform, dangerFile)
     }
   }
+}
+
+function validateDangerfileExists(filePath: string): boolean {
+    let stat: fs.Stats | null = null
+    try {
+      stat = fs.statSync(filePath)
+    } catch (error) {
+      console.error(`Could not find a dangerfile at ${dangerFile}, not running against your PR.`)
+      process.exitCode = 1
+    }
+
+    if (!!stat && !stat.isFile()) {
+      console.error(`The resource at ${dangerFile} appears to not be a file, not running against your PR.`)
+      process.exitCode = 1
+    }
+
+    return !!stat && !stat.isFile()
 }
 
 async function runDanger(source: FakeCI, platform: GitHub, file: string) {
