@@ -24,7 +24,7 @@ export class GitHub {
   name: string
   fetch: typeof fetch
 
-  constructor(public readonly token: APIToken | null, public readonly ciSource: CISource) {
+  constructor(public readonly token: APIToken | undefined, public readonly ciSource: CISource) {
     this.name = "GitHub"
 
     // This allows Peril to DI in a new Fetch function
@@ -256,7 +256,7 @@ export class GitHub {
 
   // maybe this can move into the stuff below
   post(path: string, headers: any = {}, body: any = {}, method: string = "POST"): Promise<any> {
-    if (this.token !== null) {
+    if (this.token !== undefined) {
       headers["Authorization"] = `token ${this.token}`
     }
 
@@ -271,7 +271,7 @@ export class GitHub {
   }
 
   get(path: string, headers: any = {}, body: any = {}, method: string = "GET"): Promise<any> {
-    if (this.token !== null) {
+    if (this.token !== undefined) {
       headers["Authorization"] = `token ${this.token}`
     }
 
@@ -286,7 +286,7 @@ export class GitHub {
   }
 
   patch(path: string, headers: any = {}, body: any = {}, method: string = "PATCH"): Promise<any> {
-    if (this.token !== null) {
+    if (this.token !== undefined) {
       headers["Authorization"] = `token ${this.token}`
     }
 
