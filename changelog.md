@@ -9,6 +9,7 @@ then edit the local `Dangerfile.js` and run `yarn run danger pr https://github.c
 
 This will post the results to your console, instead of on the PR itself.
 
+* Danger changes to your Dangerfile are not persisted after the run - orta
 * Add summary comment for danger message - kwonoj
 * Add `jest-environment-node` to the Package.json - orta
 
