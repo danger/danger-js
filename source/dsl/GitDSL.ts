@@ -1,6 +1,6 @@
 import { GitCommit } from "./Commit"
 
-// This is `danger.github`
+// This is `danger.git`
 
 /** The git specific metadata for a PR */
 export interface GitDSL {
