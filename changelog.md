@@ -3,6 +3,7 @@
 //  Add your own contribution below
 
 * Add summary comment for danger message - kwonoj
+* Add `jest-environment-node` to the Package.json - orta
 
 ### 0.9.0
 

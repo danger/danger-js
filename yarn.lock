@@ -3903,6 +3903,10 @@ vinyl@^0.5.0:
     clone-stats "^0.0.1"
     replace-ext "0.0.1"
 
+voca@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/voca/-/voca-1.2.0.tgz#5dd92133eb12cefa80c0eff8c3f8d228e453a6cd"
+
 walkdir@^0.0.11:
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/walkdir/-/walkdir-0.0.11.tgz#a16d025eb931bd03b52f308caed0f40fcebe9532"
