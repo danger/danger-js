@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+### 0.10.0
+
 * Adds support for running Danger against a PR locally - orta
 
 The workflow is that you find a PR that exhibits the behavior you'd like Danger to run against, 
