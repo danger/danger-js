@@ -1,4 +1,5 @@
-// Removed import
+import { danger, warn } from "danger"
+
 import fs from "fs"
 import includes from "lodash.includes"
 

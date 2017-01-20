@@ -1,6 +1,8 @@
 import * as program from "commander"
 import * as debug from "debug"
 import * as fs from "fs"
+import * as jsome from "jsome"
+
 import { FakeCI } from "../ci_source/providers/Fake"
 import { GitHub } from "../platforms/GitHub"
 import { Executor } from "../runner/Executor"
@@ -14,7 +16,6 @@ program
   .parse(process.argv)
 
 const dangerFile = (program as any).dangerfile || "dangerfile.js"
-const stat = fs.statSync(dangerFile)
 
 if (program.args.length === 0) {
   console.error("Please include a PR URL to run against")
@@ -33,6 +34,13 @@ if (program.args.length === 0) {
     })
 
     const platform = new GitHub(null, source)
+    let stat: fs.Stats | null = null
+    try {
+      stat = fs.statSync(dangerFile)
+    } catch (error) {
+      console.error("Could not get a repo and a PR number from your URL, bad copy & paste?")
+      process.exitCode = 1
+    }
 
     if (!!stat && stat.isFile()) {
       d(`executing dangerfile at ${dangerFile}`)
@@ -46,5 +54,5 @@ async function runDanger(source: FakeCI, platform: GitHub, file: string) {
 
   const runtimeEnv = await exec.setupDanger()
   const results = await runDangerfileEnvironment(file, runtimeEnv)
-  console.log(JSON.stringify(results))
+  jsome(results)
 }

@@ -2,6 +2,13 @@
 
 //  Add your own contribution below
 
+* Adds support for running Danger against a PR locally - orta
+
+The workflow is that you find a PR that exhibits the behavior you'd like Danger to run against, 
+then edit the local `Dangerfile.js` and run `yarn run danger pr https://github.com/facebook/jest/pull/2629`.
+
+This will post the results to your console, instead of on the PR itself.
+
 * Add summary comment for danger message - kwonoj
 
 ### 0.9.0
