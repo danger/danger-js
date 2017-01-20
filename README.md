@@ -13,9 +13,13 @@ Danger can fail your build, write a comment on GitHub, edit it as your build cha
 To install:
 
 ```sh
-yarn add dev danger
+# with yarn
+yarn add danger --dev
+
+# or with npm
+npm install --save-dev danger
 ```
-Then add a run command to your `Package.json`
+Then add a run command to your `package.json`
 
 ```js
 "danger": "danger"
@@ -56,11 +60,6 @@ Want to see some existing examples? Check out:
 
 I'd love PRs adding more.
 
-Notes:
-
-* The `Dangerfile.js` needs to be able to run on node without running through babel right now.
-* The shape of the API is [`git`](https://github.com/danger/danger-js/blob/master/source/dsl/git.js) and [`pr`](https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/github_api/pr_response.json)
-
 #### Running/Testing manually against a repo
 
 If you create an [appropriately scoped temporary api token](http://danger.systems/guides/getting_started.html#setting-up-an-access-token) for your github account, this can be a good way to see if danger is suitable for you before integrating it into your CI system.
@@ -90,7 +89,7 @@ Awesommmmee.
 git clone https://github.com/danger/danger-js.git
 cd danger-js
 
-# if you don't have have yarn installed
+# if you don't have yarn installed
 npm install -g yarn
 
 yarn install
@@ -99,9 +98,8 @@ yarn install
 You can then verify your install by running the tests, and the linters:
 
 ``` sh
-npm test
-npm run lint
-npm run flow
+yarn test
+yarn lint
 ```
 
 ---
