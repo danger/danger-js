@@ -1,20 +1,6 @@
 import { GitCommit } from "./Commit"
 
-/** A GitHub specific implmentation of a git commit */
-export interface GitHubCommit {
-  /** The raw commit metadata */
-  commit: GitCommit,
-  /** The SHA for the commit */
-  sha: string,
-  /** the url for the commit on GitHub */
-  url: string,
-  /** The GitHub user who wrote the code */
-  author: GitHubUser,
-  /** The GitHub user who shipped the code */
-  committer: GitHubUser,
-  /** An array of parent commit shas */
-  parents: Array<any>
-}
+// This is `danger.github`
 
 /** The GitHub metadata for your PR */
 export interface GitHubDSL {
@@ -24,112 +10,9 @@ export interface GitHubDSL {
   commits: Array<GitHubCommit>
 }
 
-/**
- * A GitHub user account
- */
-export interface GitHubUser {
-  /**
-   * Generic UUID
-   * @type {number}
-   */
-  id: number
-  /**
-   * The handle for the user/org
-   * @type {string}
-   */
-  login: string
-  /**
-   * Whether the user is an org, or a user
-   * @type {string}
-   */
-  type: "User" | "Organization"
-}
+// This is `danger.github.pr`
 
-/**
- * A GitHub Repo
- */
-export interface GitHubRepo {
-  /**
-   * Generic UUID
-   * @type {number}
-   */
-  id: number
-
-  /**
-   * The name of the repo, e.g. "Danger-JS"
-   * @type {string}
-   */
-  name: string
-
-  /**
-   * The full name of the owner + repo, e.g. "Danger/Danger-JS"
-   * @type {string}
-   */
-  full_name: string
-
-  /**
-   * The owner of the repo
-   * @type {GitHubUser}
-   */
-  owner: GitHubUser
-
-  /**
-   * Is the repo publicly accessible?
-   * @type {boolean}
-   */
-  private: boolean
-
-  /**
-   * The textual description of the repo
-   * @type {string}
-   */
-  description: string
-
-  /**
-   * Is the repo a fork?
-   * @type {boolean}
-   */
-  fork: boolean
-
-  /**
-   * IS someone assigned to this PR?
-   * @type {GitHubUser}
-   */
-  assignee: GitHubUser
-
-  /**
-   * Are there people assigned to this PR?
-   * @type {Array<GitHubUser>}
-   */
-  assignees: Array<GitHubUser>
-}
-
-export interface GitHubMergeRef {
-  /**
-   * The human display name for the merge reference, e.g. "artsy:master"
-   * @type {string}
-   */
-  label: string
-
-  /**
-   * The reference point for the merge, e.g. "master"
-   * @type {string}
-   */
-  ref: string
-
-  /**
-   * The reference point for the merge, e.g. "704dc55988c6996f69b6873c2424be7d1de67bbe"
-   * @type {string}
-   */
-  sha: string
-
-  /**
-   * The user that owns the merge reference e.g. "artsy"
-   * @type {string}
-   */
-  user: GitHubUser
-}
-
+/** What a PR's JSON looks like */
 export interface GitHubPRDSL {
   /**
    * The UUID for the PR
@@ -257,4 +140,128 @@ export interface GitHubPRDSL {
    * @type {number}
    */
   changed_files: number
+}
+
+// These are the individual subtypes of objects inside the larger DSL objects above.
+
+/** A GitHub specific implmentation of a git commit */
+export interface GitHubCommit {
+  /** The raw commit metadata */
+  commit: GitCommit,
+  /** The SHA for the commit */
+  sha: string,
+  /** the url for the commit on GitHub */
+  url: string,
+  /** The GitHub user who wrote the code */
+  author: GitHubUser,
+  /** The GitHub user who shipped the code */
+  committer: GitHubUser,
+  /** An array of parent commit shas */
+  parents: Array<any>
+}
+
+/**
+ * A GitHub user account
+ */
+export interface GitHubUser {
+  /**
+   * Generic UUID
+   * @type {number}
+   */
+  id: number
+  /**
+   * The handle for the user/org
+   * @type {string}
+   */
+  login: string
+  /**
+   * Whether the user is an org, or a user
+   * @type {string}
+   */
+  type: "User" | "Organization"
+}
+
+/**
+ * A GitHub Repo
+ */
+export interface GitHubRepo {
+  /**
+   * Generic UUID
+   * @type {number}
+   */
+  id: number
+
+  /**
+   * The name of the repo, e.g. "Danger-JS"
+   * @type {string}
+   */
+  name: string
+
+  /**
+   * The full name of the owner + repo, e.g. "Danger/Danger-JS"
+   * @type {string}
+   */
+  full_name: string
+
+  /**
+   * The owner of the repo
+   * @type {GitHubUser}
+   */
+  owner: GitHubUser
+
+  /**
+   * Is the repo publicly accessible?
+   * @type {boolean}
+   */
+  private: boolean
+
+  /**
+   * The textual description of the repo
+   * @type {string}
+   */
+  description: string
+
+  /**
+   * Is the repo a fork?
+   * @type {boolean}
+   */
+  fork: boolean
+
+  /**
+   * Is someone assigned to this PR?
+   * @type {GitHubUser}
+   */
+  assignee: GitHubUser
+
+  /**
+   * Are there people assigned to this PR?
+   * @type {Array<GitHubUser>}
+   */
+  assignees: Array<GitHubUser>
+}
+
+export interface GitHubMergeRef {
+  /**
+   * The human display name for the merge reference, e.g. "artsy:master"
+   * @type {string}
+   */
+  label: string
+
+  /**
+   * The reference point for the merge, e.g. "master"
+   * @type {string}
+   */
+  ref: string
+
+  /**
+   * The reference point for the merge, e.g. "704dc55988c6996f69b6873c2424be7d1de67bbe"
+   * @type {string}
+   */
+  sha: string
+
+  /**
+   * The user that owns the merge reference e.g. "artsy"
+   * @type {string}
+   */
+  user: GitHubUser
 }
