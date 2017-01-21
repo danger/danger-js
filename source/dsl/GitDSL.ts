@@ -1,5 +1,8 @@
 import { GitCommit } from "./Commit"
 
+// This is `danger.git`
+
+/** The git specific metadata for a PR */
 export interface GitDSL {
   /**
    * Filepaths with changes relative to the git root

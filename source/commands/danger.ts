@@ -13,6 +13,5 @@ d(`argv: ${process.argv}`)
 program
   .version(version)
   .command("run", "Runs danger on your local system", {isDefault: true})
-  .command("init", "Creates a new Dangerfile.js")
-  .command("local", "Runs your changes against ")
+  .command("pr", "Runs your changes against an existing PR")
   .parse(process.argv)

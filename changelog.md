@@ -2,7 +2,18 @@
 
 //  Add your own contribution below
 
+### 0.10.0
+
+* Adds support for running Danger against a PR locally - orta
+
+The workflow is that you find a PR that exhibits the behavior you'd like Danger to run against, 
+then edit the local `Dangerfile.js` and run `yarn run danger pr https://github.com/facebook/jest/pull/2629`.
+
+This will post the results to your console, instead of on the PR itself.
+
+* Danger changes to your Dangerfile are not persisted after the run - orta
 * Add summary comment for danger message - kwonoj
+* Add `jest-environment-node` to the Package.json - orta
 
 ### 0.9.0
 
