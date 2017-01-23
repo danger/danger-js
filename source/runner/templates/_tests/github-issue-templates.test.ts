@@ -21,9 +21,9 @@ describe("generating messages", () => {
     expect(issues).not.toContain("Fails")
   })
 
-  it("shows the markdown messages in a table", () => {
+  it("shows the markdown messages separately from results table", () => {
     const issues = githubResultsTemplate(markdownResults)
-    expect(issues).toContain("Markdowns")
+    expect(issues).toContain("Markdown message")
   })
 
   it("does not break commonmark rules around line breaks", () => {
