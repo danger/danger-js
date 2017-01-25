@@ -22,14 +22,16 @@
         "outFiles": [
           "${workspaceRoot}/distribution"
         ]
-    },
-    {
-        "name": "Launch Local",
+    }, {
+        "name": "Launch PR",
         "type": "node",
         "request": "launch",
-        "program": "${workspaceRoot}/source/commands/danger-local.js",
+        "program": "${workspaceRoot}/distribution/commands/danger-pr.js",
         "stopOnEntry": false,
-        "args": [],
+        "args": [
+          // pass a GitHub PR URL below for testing
+        ],
+        "envFile": "${workspaceRoot}/env/development.env",
         "cwd": "${workspaceRoot}",
         "preLaunchTask": "build",
         "runtimeExecutable": null,
@@ -42,8 +44,8 @@
         "console": "internalConsole",
         "sourceMaps": true,
         "outFiles": [
-          "${workspaceRoot}/distribution"
-        ],
+          "${workspaceRoot}/distribution/**/*.js"
+        ]
     }, {
         "name": "Run Tests With Debugger (slower, use npm run watch for normal work)",
         "type": "node",
