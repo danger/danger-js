@@ -8,7 +8,7 @@ import {Executor} from "../runner/Executor"
 const d = debug("danger:run")
 declare const global: any
 
-// TODO: if we get more options around the dangerfile, we should 
+// TODO: if we get more options around the dangerfile, we should
 //       support sharing `program` setup code with danger-pr.ts
 
 program
