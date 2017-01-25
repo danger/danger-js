@@ -27,7 +27,7 @@ if (program.args.length === 0) {
     console.error("Could not get a repo and a PR number from your URL, bad copy & paste?")
     process.exitCode = 1
   } else {
-    // TODO: Use custom `fetch` in GitHub that stores and uses local cache if PR is closed, these PRs 
+    // TODO: Use custom `fetch` in GitHub that stores and uses local cache if PR is closed, these PRs
     //       shouldn't change often and there is a limit on API calls per hour.
 
     if (validateDangerfileExists(dangerFile)) {
