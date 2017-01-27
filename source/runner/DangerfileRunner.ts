@@ -80,12 +80,12 @@ export async function runDangerfileEnvironment(filename: Path, environment: Dang
  * Passes in a dangerfile path, will remove any references to import/require `danger`
  * then runs the internal closure with a "safe" version of the Dangerfile.
  * Then it will clean itself up afterwards, and use the new version.
- * 
+ *
  * Note: We check for equality to not trigger the jest watcher for tests.
  *
  * @param {string} filename the file path for the dangerfile
  * @param {Function} closure code to run with a cleaned Dangerfile
- * @returns {void} 
+ * @returns {void}
  */
 function ensureCleanDangerfile(filename: string, closure: Function) {
   const originalContents = fs.readFileSync(filename).toString()
