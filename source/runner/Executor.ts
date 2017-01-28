@@ -66,7 +66,6 @@ export class Executor {
       process.exitCode = 1
     }
 
-    // Delete the message if there's nothing to say
     const {fails, warnings, messages, markdowns} = results
 
     const failureCount = [...fails, ...warnings].length
@@ -75,6 +74,7 @@ export class Executor {
     this.d(results)
 
     if (failureCount + messageCount === 0) {
+      // Delete the message if there's nothing to say
       console.log("No messages are collected.")
       await this.platform.deleteMainComment()
     } else {
@@ -84,6 +84,7 @@ export class Executor {
         console.log("Found some message, writing it down")
       }
       const comment = githubResultsTemplate(results)
+      // TODO filter out Danger items that contain file/line info
       await this.platform.updateOrCreateComment(comment)
     }
   }

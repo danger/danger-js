@@ -1,4 +1,4 @@
-import { emptyResults, warnResults, failsResults, summaryResults } from "../../_tests/fixtures/ExampleDangerResults"
+import { emptyResults, warnResults, failsResults, summaryResults, markdownResults } from "../../_tests/fixtures/ExampleDangerResults"
 import { template as githubResultsTemplate } from "../../templates/github-issue-template"
 
 describe("generating messages", () => {
@@ -19,6 +19,11 @@ describe("generating messages", () => {
     const issues = githubResultsTemplate(warnResults)
     expect(issues).toContain("Warnings")
     expect(issues).not.toContain("Fails")
+  })
+
+  it("shows the markdown messages separately from results table", () => {
+    const issues = githubResultsTemplate(markdownResults)
+    expect(issues).toContain("Markdown message")
   })
 
   it("does not break commonmark rules around line breaks", () => {

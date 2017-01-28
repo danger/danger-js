@@ -21,9 +21,16 @@ export const failsResults: DangerResults = {
   markdowns: []
 }
 
+export const markdownResults: DangerResults = {
+  fails: [],
+  warnings: [],
+  messages: [],
+  markdowns: [{ message: "Markdown message" }]
+}
+
 export const summaryResults: DangerResults = {
   fails: [{ message: "Failing message Failing message" }],
   warnings: [{ message: "Warning message Warning message" }],
   messages: [{ message: "message" }],
-  markdowns: ["markdown"],
+  markdowns: [{ message: "markdown" }],
 }
