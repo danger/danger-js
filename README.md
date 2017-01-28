@@ -28,7 +28,7 @@ If using NPM, add a run command to your `package.json`
 Then create a `dangerfile.js` in the project root with some rules:
 
 ```js
-import { danger, fail } from "danger"
+import { danger, fail, warn } from "danger"
 import fs from "fs"
 
 // Make sure there are changelog entries
