@@ -7,6 +7,13 @@ export const emptyResults: DangerResults = {
   markdowns: []
 }
 
+export const resultsWithoutMessages: DangerResults = {
+  fails: [{}],
+  warnings: [{}],
+  messages: [{}],
+  markdowns: [{}]
+}
+
 export const warnResults: DangerResults = {
   fails: [],
   warnings: [{ message: "Warning message" }],
