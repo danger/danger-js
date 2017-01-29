@@ -2,11 +2,13 @@
 
 //  Add your own contribution below
 
+* Builds which only use markdown now only show the markdown, and no violations table is shown - mxstbr
+
 ### 0.10.0
 
 * Adds support for running Danger against a PR locally - orta
 
-The workflow is that you find a PR that exhibits the behavior you'd like Danger to run against, 
+The workflow is that you find a PR that exhibits the behavior you'd like Danger to run against,
 then edit the local `Dangerfile.js` and run `yarn run danger pr https://github.com/facebook/jest/pull/2629`.
 
 This will post the results to your console, instead of on the PR itself.
@@ -19,8 +21,8 @@ This will post the results to your console, instead of on the PR itself.
 
 * Adds support for `git.commits` and `github.commits` - orta
 
-  Why two? Well github.commits contains a bunch of github specific metadata ( e.g. GitHub user creds, 
-  commit comment counts. ) Chances are, you're always going to use `git.commits` however if you 
+  Why two? Well github.commits contains a bunch of github specific metadata ( e.g. GitHub user creds,
+  commit comment counts. ) Chances are, you're always going to use `git.commits` however if you
   want more rich data, the GitHub one is available too. Here's an example:
 
 ```js
