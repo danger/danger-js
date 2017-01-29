@@ -2,7 +2,7 @@
 
 //  Add your own contribution below
 
-* Add support for failing the build without outputting any text - mxstbr
+* Builds which only use markdown now only show the markdown, and no violations table is shown - mxstbr
 
 ### 0.10.0
 
