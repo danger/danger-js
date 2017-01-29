@@ -1,4 +1,4 @@
-import { emptyResults, resultsWithoutMessages, warnResults, failsResults, summaryResults } from "../../_tests/fixtures/ExampleDangerResults"
+import { emptyResults, failsResultsWithoutMessages, warnResults, failsResults, summaryResults } from "../../_tests/fixtures/ExampleDangerResults"
 import { template as githubResultsTemplate } from "../../templates/github-issue-template"
 
 describe("generating messages", () => {
@@ -10,7 +10,7 @@ describe("generating messages", () => {
   })
 
   it("shows no tables for results without messages", () => {
-    const issues = githubResultsTemplate(resultsWithoutMessages)
+    const issues = githubResultsTemplate(failsResultsWithoutMessages)
     expect(issues).not.toContain("Fails")
     expect(issues).not.toContain("Warnings")
     expect(issues).not.toContain("Messages")

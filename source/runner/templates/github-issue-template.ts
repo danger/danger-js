@@ -11,7 +11,7 @@ import * as v from "voca"
  * @returns {string} HTML
  */
 function table(name: string, emoji: string, violations: Array<Violation>): string {
-  if (violations.length === 0 || (violations.length === 1 && !violations[0].message)) { return "" }
+  if (violations.length === 0 || violations.every(violation => !violation.message)) { return "" }
   return `
 <table>
   <thead>
