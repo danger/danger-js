@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+### 0.10.1
+
 * Builds which only use markdown now only show the markdown, and no violations table is shown - mxstbr
 
 ### 0.10.0
