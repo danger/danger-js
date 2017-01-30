@@ -16,9 +16,9 @@
   version "0.0.32"
   resolved "https://registry.yarnpkg.com/@types/es6-promise/-/es6-promise-0.0.32.tgz#3bcf44fb1e429f3df76188c8c6d874463ba371fd"
 
-"@types/jest@^16.0.3":
-  version "16.0.3"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-16.0.3.tgz#28a465586cd37d2638043ebcca91010ed89fc284"
+"@types/jest@^18.0.0":
+  version "18.0.0"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-18.0.0.tgz#c0cfc76c426b4ef5cdad464870cd9b4b081eea29"
 
 "@types/node-fetch@^1.6.6":
   version "1.6.7"
