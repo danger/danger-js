@@ -1,3 +1,4 @@
+[![npm](https://img.shields.io/npm/v/danger.svg)](https://www.npmjs.com/package/danger)
 [![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=master)](https://travis-ci.org/danger/danger-js)
 [![Build Status](https://ci.appveyor.com/api/projects/status/ep5hgeox3lbc5c7f?svg=true)](https://ci.appveyor.com/project/orta/danger-js/branch/master)
 
@@ -5,8 +6,8 @@ Danger on Node, wonder what's going on? see [VISION.md](VISION.md)
 
 *Welcome!*
 
-So, what's the deal? Well, right now Danger JS does a lot of the simpler parts of [the Ruby version](http://danger.systems). 
-You can look at [Git](https://github.com/danger/danger-js/blob/master/source/dsl/GitDSL.ts) metadata, or [GitHub](https://github.com/danger/danger-js/blob/master/source/dsl/GitHubDSL.ts) metadata on Travis, Circle, Semaphore or Jenkins.
+So, what's the deal? Well, right now Danger JS does a lot of the simpler parts of [the Ruby version](http://danger.systems).
+You can look at [Git](https://github.com/danger/danger-js/blob/master/source/dsl/GitDSL.ts) metadata, or [GitHub](https://github.com/danger/danger-js/blob/master/source/dsl/GitHubDSL.ts) metadata on Travis, Circle, Semaphore, Jenkins, or Docker Cloud.
 
 Danger can fail your build, write a comment on GitHub, edit it as your PR changes and then delete it once you've passed review. Perfect.
 
@@ -63,13 +64,25 @@ For now, to get set up I'd recommend looking at [the setup guide for the Ruby ve
 
 You will need to create a bot account, and set up CI to run danger.
 
+If you are using Docker Cloud, make sure to set the following blank ENV vars in your `docker-compose.test.yml` file so they are carried forward from the build environment:
+
+```yml
+sut:
+  build: .
+  environment:
+    - DANGER_GITHUB_API_TOKEN
+    - DOCKER_REPO
+    - PULL_REQUEST_URL
+    - SOURCE_REPOSITORY_URL
+```
+
 ## Running/Testing manually against a repo
 
 There are two ways to do this:
 
 #### Using `danger pr`
 
-The command `danger pr` expects an argument of a PR url, e.g. `danger pr https://github.com/danger/danger-js/pull/100`. 
+The command `danger pr` expects an argument of a PR url, e.g. `danger pr https://github.com/danger/danger-js/pull/100`.
 
 This will use your local `dangerfile.js` against the metadata of that PR. Danger will then output the results as JSON, instead of on the PR itself.
 
@@ -92,7 +105,7 @@ git checkout branch-for-pr-1234
 DANGER_TEST_PR='1234' npm run danger
 ```
 
-assuming that your local file-system matches up to that branch on github, this will be a good approximation of how danger will work when you integrate it into your CI system. 
+assuming that your local file-system matches up to that branch on github, this will be a good approximation of how danger will work when you integrate it into your CI system.
 
 Note: this will leave a comment on the PR.
 
