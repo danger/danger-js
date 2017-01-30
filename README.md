@@ -1,3 +1,4 @@
+[![npm](https://img.shields.io/npm/v/danger.svg)](https://www.npmjs.com/package/danger)
 [![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=master)](https://travis-ci.org/danger/danger-js)
 [![Build Status](https://ci.appveyor.com/api/projects/status/ep5hgeox3lbc5c7f?svg=true)](https://ci.appveyor.com/project/orta/danger-js/branch/master)
 
