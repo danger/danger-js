@@ -3,7 +3,7 @@ export type Env = any
 
 /** The shape of an object that represents an individual CI */
 export interface CISource {
-  //** The project name, mainly for showing errors */
+  /** The project name, mainly for showing errors */
   readonly name: string
 
   /** Does this validate as being on a particular CI? */
