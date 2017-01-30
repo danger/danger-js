@@ -1,10 +1,18 @@
 import {Travis} from "../Travis"
+import {getCISourceForEnv} from "../../get_ci_source"
 
 const correctEnv = {
   "HAS_JOSH_K_SEAL_OF_APPROVAL": "true",
   "TRAVIS_PULL_REQUEST": "800",
   "TRAVIS_REPO_SLUG": "artsy/eigen"
 }
+
+describe("being found when looking for CI", () => {
+  it("finds Travis with the right ENV", () => {
+    const ci = getCISourceForEnv(correctEnv)
+    expect(ci).toBeInstanceOf(Travis)
+  })
+})
 
 describe(".isCI", () => {
   test("validates when all Travis environment vars are set and Josh K says so", () => {

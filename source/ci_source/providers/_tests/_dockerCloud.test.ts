@@ -1,10 +1,18 @@
 import {DockerCloud} from "../DockerCloud"
+import {getCISourceForEnv} from "../../get_ci_source"
 
 const correctEnv = {
   "DOCKER_REPO": "someproject",
   "PULL_REQUEST_URL": "https://github.com/artsy/eigen/pull/800",
   "SOURCE_REPOSITORY_URL": "https://github.com/artsy/eigen"
 }
+
+describe("being found when looking for CI", () => {
+  it("finds DockerCloud with the right ENV", () => {
+    const ci = getCISourceForEnv(correctEnv)
+    expect(ci).toBeInstanceOf(DockerCloud)
+  })
+})
 
 describe(".isCI", () => {
   it("validates when all DockerCloud environment vars are set", () => {

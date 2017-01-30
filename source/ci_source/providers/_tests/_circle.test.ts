@@ -1,4 +1,5 @@
 import {Circle} from "../Circle"
+import {getCISourceForEnv} from "../../get_ci_source"
 
 const correctEnv = {
   "CIRCLE_CI_API_TOKEN": "xxx",
@@ -8,6 +9,13 @@ const correctEnv = {
   "CIRCLE_PR_NUMBER": "800",
   "CI_PULL_REQUEST": "https://github.com/artsy/eigen/pull/800"
 }
+
+describe("being found when looking for CI", () => {
+  it("finds Circle with the right ENV", () => {
+    const ci = getCISourceForEnv(correctEnv)
+    expect(ci).toBeInstanceOf(Circle)
+  })
+})
 
 describe(".isCI", () => {
   it("validates when all Circle environment vars are set", () => {

@@ -1,10 +1,18 @@
 import {Semaphore} from "../Semaphore"
+import {getCISourceForEnv} from "../../get_ci_source"
 
 const correctEnv = {
   "SEMAPHORE": "Yep",
   "SEMAPHORE_REPO_SLUG": "artsy/eigen",
   "PULL_REQUEST_NUMBER": "800"
 }
+
+describe("being found when looking for CI", () => {
+  it("finds Semaphore with the right ENV", () => {
+    const ci = getCISourceForEnv(correctEnv)
+    expect(ci).toBeInstanceOf(Semaphore)
+  })
+})
 
 describe(".isCI", () => {
   test("validates when all Semaphore environment vars are set", () => {
