@@ -1,5 +1,6 @@
 import { GitDSL } from "../dsl/GitDSL"
 import { GitHubDSL } from "../dsl/GitHubDSL"
+import { DangerUtilsDSL } from "./DangerUtilsDSL"
 
 /**
  *  The Danger DSL provides the metadata for introspection
@@ -16,6 +17,11 @@ export interface DangerDSLType {
    *  The GitHub metadata.
    */
   readonly github: Readonly<GitHubDSL>
+
+  /**
+   * Danger utils
+   */
+  readonly utils: Readonly<DangerUtilsDSL>
 }
 
 /* END FLOWTYPE EXPORT */
@@ -23,7 +29,7 @@ export interface DangerDSLType {
 export class DangerDSL {
   public readonly github: Readonly<GitHubDSL>
 
-  constructor(platformDSL: any, public readonly git: GitDSL) {
+  constructor(platformDSL: any, public readonly git: GitDSL, public readonly utils: DangerUtilsDSL) {
     // As GitLab etc support is added this will need to be changed
     this.github = platformDSL
   }

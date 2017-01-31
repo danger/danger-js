@@ -7,6 +7,7 @@ import { template as githubResultsTemplate } from "./templates/githubIssueTempla
 import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment } from "./DangerfileRunner"
 import { DangerfileRuntimeEnv } from "./types"
 import * as debug from "debug"
+import { sentence, href } from "./DangerUtils"
 // This is still badly named, maybe it really should just be runner?
 
 export class Executor {
@@ -53,7 +54,8 @@ export class Executor {
   async dslForDanger(): Promise<DangerDSL> {
     const git = await this.platform.getReviewDiff()
     const platformDSL = await this.platform.getPlatformDSLRepresentation()
-    return new DangerDSL(platformDSL, git)
+    const utils = { sentence, href }
+    return new DangerDSL(platformDSL, git, utils)
   }
 
   /**
