@@ -63,7 +63,7 @@ export interface Platform {
  * @param {Env} env The environment.
  * @param {CISource} source The existing source, to ensure they can run against each other
  * @returns {Platform} returns a platform if it can be supported
-*/
+ */
 export function getPlatformForEnv(env: Env, source: CISource): Platform {
   const token = env["DANGER_GITHUB_API_TOKEN"]
   if (!token) {

@@ -5,7 +5,7 @@ import { Env } from "./ci_source"
  * @param {Env} env The environment.
  * @param {[string]} keys Keys to ensure existence of
  * @returns {bool} true if they exist, false if not
-*/
+ */
 export function ensureEnvKeysExist(env: Env, keys: Array<string>): boolean {
   /*const hasKeys = keys.map((key: string): boolean => {
     return env.hasOwnProperty(key) && env[key] != null && env[key].length > 0
@@ -21,7 +21,7 @@ export function ensureEnvKeysExist(env: Env, keys: Array<string>): boolean {
  * @param {Env} env The environment.
  * @param {[string]} keys Keys to ensure existence and number-ness of
  * @returns {bool} true if they are all good, false if not
-*/
+ */
 export function ensureEnvKeysAreInt(env: Env, keys: Array<string>): boolean {
   /*const hasKeys = keys.map((key: string): boolean => {
     return env.hasOwnProperty(key) && !isNaN(parseInt(env[key]))
