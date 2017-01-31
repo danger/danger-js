@@ -5,6 +5,7 @@ import * as jsome from "jsome"
 
 import { FakeCI } from "../ci_source/providers/Fake"
 import { GitHub } from "../platforms/GitHub"
+import { GitHubAPI } from "../platforms/github/GitHubAPI"
 import { Executor } from "../runner/Executor"
 import { pullRequestParser } from "../platforms/github/pullRequestParser"
 import { runDangerfileEnvironment } from "../runner/DangerfileRunner"
@@ -33,7 +34,8 @@ if (program.args.length === 0) {
     if (validateDangerfileExists(dangerFile)) {
       d(`executing dangerfile at ${dangerFile}`)
       const source = new FakeCI({ DANGER_TEST_REPO: pr.repo, DANGER_TEST_PR: pr.pullRequestNumber })
-      const platform = new GitHub(process.env["DANGER_GITHUB_API_TOKEN"], source)
+      const api = new GitHubAPI(process.env["DANGER_GITHUB_API_TOKEN"], source)
+      const platform = new GitHub(api)
       runDanger(source, platform, dangerFile)
     }
   }

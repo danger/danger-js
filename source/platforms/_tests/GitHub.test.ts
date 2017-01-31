@@ -1,18 +1,23 @@
 import { GitHub } from "../GitHub"
+import { GitHubAPI } from "../github/GitHubAPI"
+
 import { GitCommit } from "../../dsl/Commit"
 import { FakeCI } from "../../ci_source/providers/Fake"
 import { readFileSync } from "fs"
 import { resolve } from "path"
 import * as os from "os"
+
 const fixtures = resolve(__dirname, "fixtures")
 const EOL = os.EOL
 
 // Gets a mocked out GitHub class for checking a get path
 const mockGitHubWithGetForPath = (expectedPath): GitHub => {
   const mockSource = new FakeCI({})
-  const github = new GitHub("Token", mockSource)
 
-  github.get = (path: string, headers: any = {}, body: any = {}, method: string = "GET"): Promise<any> => {
+  const api = new GitHubAPI("token", mockSource)
+  const github = new GitHub(api)
+
+  api.get = (path: string, headers: any = {}, body: any = {}, method: string = "GET"): Promise<any> => {
     return new Promise((resolve: any, reject: any) => {
       expect(path).toBe(expectedPath)
       resolve({})
@@ -23,7 +28,7 @@ const mockGitHubWithGetForPath = (expectedPath): GitHub => {
 }
 
 /** Returns JSON from the fixtured dir */
-const requestWithFixturedJSON = async (path: string): Promise<any> => {
+export const requestWithFixturedJSON = async (path: string): Promise<any> => {
   const json = JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString())
   return () => {
     return {
@@ -33,7 +38,7 @@ const requestWithFixturedJSON = async (path: string): Promise<any> => {
 }
 
 /** Returns arbitrary text value from a request */
-const requestWithFixturedContent = async (path: string): Promise<any> => {
+export const requestWithFixturedContent = async (path: string): Promise<any> => {
   const content = readFileSync(`${fixtures}/${path}`, {}).toString()
   return () => {
     return {
@@ -42,26 +47,13 @@ const requestWithFixturedContent = async (path: string): Promise<any> => {
   }
 }
 
-describe("API results", () => {
-  it("sets the correct paths for pull request comments", () => {
-    const expectedPath = "repos/artsy/emission/issues/327/comments"
-    const github = mockGitHubWithGetForPath(expectedPath)
-    expect(github.getPullRequestComments())
-  })
-
-  it("sets the correct paths for getPullRequestDiff", () => {
-    const expectedPath = "repos/artsy/emission/pulls/327"
-    const github = mockGitHubWithGetForPath(expectedPath)
-    expect(github.getPullRequestDiff())
-  })
-})
-
 describe("with fixtured data", () => {
   it("returns the correct github data", async () => {
     const mockSource = new FakeCI({})
-    const github = new GitHub("Token", mockSource)
-    github.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
-    github.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
+    const api = new GitHubAPI("token", mockSource)
+    const github = new GitHub(api)
+    api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
+    api.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
 
     const info = await github.getReviewInfo()
     expect(info.title).toEqual("Adds support for showing the metadata and trending Artists to a Gene VC")
@@ -70,9 +62,11 @@ describe("with fixtured data", () => {
   describe("the dangerfile gitDSL", async () => {
     let github: GitHub = {} as any
     beforeEach(async () => {
-      github = new GitHub("Token", new FakeCI({}))
-      github.getPullRequestDiff = await requestWithFixturedContent("github_diff.diff")
-      github.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
+      const api = new GitHubAPI("token", new FakeCI({}))
+      github = new GitHub(api)
+
+      api.getPullRequestDiff = await requestWithFixturedContent("github_diff.diff")
+      api.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
     })
 
     it("sets the modified/created/deleted", async () => {
