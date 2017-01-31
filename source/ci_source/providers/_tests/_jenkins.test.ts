@@ -1,10 +1,18 @@
 import {Jenkins} from "../Jenkins"
+import {getCISourceForEnv} from "../../get_ci_source"
 
 const correctEnv = {
   "ghprbGhRepository": "danger/danger-js",
   "ghprbPullId": "50",
   "JENKINS_URL": "https://danger.jenkins"
 }
+
+describe("being found when looking for CI", () => {
+  it("finds Jenkins with the right ENV", () => {
+    const ci = getCISourceForEnv(correctEnv)
+    expect(ci).toBeInstanceOf(Jenkins)
+  })
+})
 
 describe(".isCI", () => {
   it("validates when JENKINS_URL is present in environment", () => {

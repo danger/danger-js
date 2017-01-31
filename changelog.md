@@ -2,9 +2,9 @@
 
 //  Add your own contribution below
 
-### 0.11.0
+### 0.11.0 - 0.11.2
 
-* Add support for [Docker Cloud](https://cloud.docker.com)
+* Add support for [Docker Cloud](https://cloud.docker.com) - camacho 
 
 ### 0.10.1
 
