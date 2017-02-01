@@ -13,11 +13,13 @@ export type APIToken = string
 
 export class GitHubAPI {
   fetch: typeof fetch
+  additionalHeaders: any
 
   constructor(public readonly token: APIToken | undefined, public readonly ciSource: CISource) {
     // This allows Peril to DI in a new Fetch function
     // which can handle unique API edge-cases around integrations
     this.fetch = fetch
+    this.additionalHeaders = {}
   }
 
   /**
@@ -140,24 +142,13 @@ export class GitHubAPI {
       body: body,
       headers: {
         "Content-Type": "application/json",
-        ...headers
+        ...headers,
+        ...this.additionalHeaders
       }
     })
   }
 
   patch(path: string, headers: any = {}, body: any = {}, method: string = "PATCH"): Promise<any> {
-    if (this.token !== undefined) {
-      headers["Authorization"] = `token ${this.token}`
-    }
-
-    return this.fetch(`https://api.github.com/${path}`, {
-      method: method,
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-        ...headers
-      }
-    })
+    return this.get(path, headers, body, method)
   }
-
 }

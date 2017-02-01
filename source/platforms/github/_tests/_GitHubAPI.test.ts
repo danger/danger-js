@@ -44,3 +44,19 @@ describe("API testing", () => {
     })
   })
 })
+
+describe("Peril", () => {
+  it("Allows setting additional headers", async () => {
+    const mockSource = new FakeCI({})
+    const api = new GitHubAPI("ABCDE", mockSource)
+    api.fetch = fetch
+    api.additionalHeaders = { "CUSTOM": "HEADER" }
+
+    const request = await api.getUserInfo()
+    expect(request.headers).toEqual({
+        Authorization: "token ABCDE",
+        "CUSTOM": "HEADER",
+        "Content-Type": "application/json",
+    })
+  })
+})
