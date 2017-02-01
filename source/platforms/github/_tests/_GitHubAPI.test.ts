@@ -55,7 +55,7 @@ describe("API testing", () => {
      api.fetch = fetch
     expect(await api.updateCommentWithID(123, "Hello!")).toMatchObject({
       api: "https://api.github.com/repos/artsy/emission/issues/comments/123",
-      body: {"body": "Hello!"},
+      body: "{\"body\":\"Hello!\"}",
       headers: {
         Authorization: "token ABCDE",
         "Content-Type": "application/json",

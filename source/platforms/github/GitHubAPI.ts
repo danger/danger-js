@@ -63,7 +63,7 @@ export class GitHubAPI {
 
   async deleteCommentWithID(id: number): Promise<any> {
     const repo = this.ciSource.repoSlug
-    return this.get(`repos/${repo}/issues/comments/${id}`, {}, {}, "DELETE")
+    return this.api(`repos/${repo}/issues/comments/${id}`, {}, {}, "DELETE")
   }
 
   async getUserID(): Promise<number> {
@@ -116,23 +116,7 @@ export class GitHubAPI {
     return this.get(`repos/${repo}/contents/${path}?ref=${ref}`, {})
   }
 
-  // TODO: Merge these?
-  post(path: string, headers: any = {}, body: any = {}, method: string = "POST"): Promise<any> {
-    if (this.token !== undefined) {
-      headers["Authorization"] = `token ${this.token}`
-    }
-
-    return this.fetch(`https://api.github.com/${path}`, {
-      method: method,
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-        ...headers
-      }
-    })
-  }
-
-  private api(path: string, headers: any = {}, body: any = {}, method: string = "GET"): Promise<any> {
+  private api(path: string, headers: any = {}, body: any = {}, method: string): Promise<any> {
     if (this.token !== undefined) {
       headers["Authorization"] = `token ${this.token}`
     }
@@ -149,11 +133,15 @@ export class GitHubAPI {
   }
 
   get(path: string, headers: any = {}, body: any = {}): Promise<any> {
-        return this.api(path, headers, body, "GET")
+    return this.api(path, headers, body, "GET")
+  }
 
+  post(path: string, headers: any = {}, body: any = {}): Promise<any> {
+    return this.api(path, headers, JSON.stringify(body), "POST")
   }
 
   patch(path: string, headers: any = {}, body: any = {}): Promise<any> {
-    return this.api(path, headers, body, "PATCH")
+    return this.api(path, headers, JSON.stringify(body), "PATCH")
   }
+
 }
