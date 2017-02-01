@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+* Internal changes for usage with Peril - orta
+
 ### 0.11.0 - 0.11.2
 
 * Add support for [Docker Cloud](https://cloud.docker.com) - camacho 

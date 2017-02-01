@@ -132,7 +132,7 @@ export class GitHubAPI {
     })
   }
 
-  get(path: string, headers: any = {}, body: any = {}, method: string = "GET"): Promise<any> {
+  private api(path: string, headers: any = {}, body: any = {}, method: string = "GET"): Promise<any> {
     if (this.token !== undefined) {
       headers["Authorization"] = `token ${this.token}`
     }
@@ -148,7 +148,12 @@ export class GitHubAPI {
     })
   }
 
-  patch(path: string, headers: any = {}, body: any = {}, method: string = "PATCH"): Promise<any> {
-    return this.get(path, headers, body, method)
+  get(path: string, headers: any = {}, body: any = {}): Promise<any> {
+        return this.api(path, headers, body, "GET")
+
+  }
+
+  patch(path: string, headers: any = {}, body: any = {}): Promise<any> {
+    return this.api(path, headers, body, "PATCH")
   }
 }

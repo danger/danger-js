@@ -2,12 +2,19 @@ import { GitHubAPI } from "../GitHubAPI"
 import { FakeCI } from "../../../ci_source/providers/Fake"
 import { requestWithFixturedJSON, requestWithFixturedContent } from "../../_tests/GitHub.test"
 
-const fetch = (api, params): Promise<any> => {
+const fetchJSON = (api, params): Promise<any> => {
   return Promise.resolve({
     json: () => Promise.resolve({
       api,
       ...params
     })
+  })
+}
+
+const fetch = (api, params): Promise<any> => {
+  return Promise.resolve({
+    api,
+    ...params
   })
 }
 
@@ -30,10 +37,10 @@ describe("API testing", () => {
     const mockSource = new FakeCI({})
 
     api = new GitHubAPI("ABCDE", mockSource)
-    api.fetch = fetch
   })
 
   it("getUserInfo", async () => {
+    api.fetch = fetchJSON
     expect(await api.getUserInfo()).toMatchObject({
       api: "https://api.github.com/user",
       headers: {
@@ -43,13 +50,26 @@ describe("API testing", () => {
       method: "GET",
     })
   })
+
+  it("updateCommentWithID", async () => {
+     api.fetch = fetch
+    expect(await api.updateCommentWithID(123, "Hello!")).toMatchObject({
+      api: "https://api.github.com/repos/artsy/emission/issues/comments/123",
+      body: {"body": "Hello!"},
+      headers: {
+        Authorization: "token ABCDE",
+        "Content-Type": "application/json",
+      },
+      method: "PATCH",
+    })
+  })
 })
 
 describe("Peril", () => {
   it("Allows setting additional headers", async () => {
     const mockSource = new FakeCI({})
     const api = new GitHubAPI("ABCDE", mockSource)
-    api.fetch = fetch
+    api.fetch = fetchJSON
     api.additionalHeaders = { "CUSTOM": "HEADER" }
 
     const request = await api.getUserInfo()
