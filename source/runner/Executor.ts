@@ -46,9 +46,10 @@ export class Executor {
     await this.handleResults(results)
   }
 
-  /** Sets up all the related objects for running the Dangerfile
-  * @returns {void} It's a promise, so a void promise
-  */
+  /**
+   * Sets up all the related objects for running the Dangerfile
+   * @returns {void} It's a promise, so a void promise
+   */
   async dslForDanger(): Promise<DangerDSL> {
     const git = await this.platform.getReviewDiff()
     const platformDSL = await this.platform.getPlatformDSLRepresentation()

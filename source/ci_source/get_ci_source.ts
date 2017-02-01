@@ -8,7 +8,7 @@ import { Env, CISource } from "./ci_source"
  * sources if they can be represented in this environment.
  * @param {Env} env The environment.
  * @returns {?CISource} a CI source if it's OK, otherwise Danger can't run.
-*/
+ */
 export function getCISourceForEnv(env: Env): CISource | undefined {
   const availableProviders = [...providers as any]
     .map(Provider => new Provider(env))

@@ -5,6 +5,7 @@
     "align": [true, "parameters"],
     "class-name": true,
     "indent": [true, "spaces"],
+    "jsdoc-format": true,
     "max-line-length": [true, 150],
     "no-consecutive-blank-lines": [true],
     "no-trailing-whitespace": true,

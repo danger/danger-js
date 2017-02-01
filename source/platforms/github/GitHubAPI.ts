@@ -143,5 +143,4 @@ export class GitHubAPI {
   patch(path: string, headers: any = {}, body: any = {}): Promise<any> {
     return this.api(path, headers, JSON.stringify(body), "PATCH")
   }
-
 }

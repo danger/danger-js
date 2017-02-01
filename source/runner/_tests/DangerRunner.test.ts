@@ -18,7 +18,7 @@ const fixtures = resolve(__dirname, "fixtures")
 /**
  * Sets up an example context
  * @returns {Promise<DangerContext>} a context
-*/
+ */
 async function setupDangerfileContext() {
   const platform = new FakePlatform()
   const exec = new Executor(new FakeCI({}), platform)

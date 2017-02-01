@@ -106,13 +106,13 @@ export interface GitHubPRDSL {
   merged: boolean
 
   /**
-  * The nuber of comments on the PR
-  * @type {number}
-  */
+   * The number of comments on the PR
+   * @type {number}
+   */
   comments: number
 
   /**
-   * The nuber of review-specific comments on the PR
+   * The number of review-specific comments on the PR
    * @type {number}
    */
   review_comments: number
