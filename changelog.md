@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+* Add `danger pr --repl`, which drops into a Node.js REPL after evaluating the dangerfile - macklinu
+
 ### 0.11.0 - 0.11.2
 
 * Add support for [Docker Cloud](https://cloud.docker.com) - camacho 
