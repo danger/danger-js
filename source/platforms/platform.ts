@@ -1,6 +1,7 @@
 import { Env, CISource } from "../ci_source/ci_source"
 import { GitDSL } from "../dsl/GitDSL"
 import { GitHub } from "./GitHub"
+import { GitHubAPI } from "./github/GitHubAPI"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any
@@ -30,8 +31,6 @@ export type Comment = {
 export interface Platform {
   /** Mainly for logging and error reporting */
   readonly name: string
-  /** Used internally for getting PR/Repo metadata */
-  readonly ciSource: CISource
   /** Pulls in the platform specific metadata for inspection */
   getPlatformDSLRepresentation: () => Promise<any>
   /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
@@ -72,6 +71,7 @@ export function getPlatformForEnv(env: Env, source: CISource): Platform {
     throw new Error("Cannot use authenticated API requests.")
   }
 
-  const github = new GitHub(token, source)
+  const api = new GitHubAPI(token, source)
+  const github = new GitHub(api)
   return github
 }

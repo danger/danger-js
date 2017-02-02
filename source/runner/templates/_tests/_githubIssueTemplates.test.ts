@@ -1,5 +1,5 @@
 import { emptyResults, failsResultsWithoutMessages, warnResults, failsResults, summaryResults } from "../../_tests/fixtures/ExampleDangerResults"
-import { template as githubResultsTemplate } from "../../templates/github-issue-template"
+import { template as githubResultsTemplate } from "../../templates/githubIssueTemplate"
 
 describe("generating messages", () => {
   it("shows no tables for empty results", () => {

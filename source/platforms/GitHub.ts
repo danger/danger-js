@@ -1,35 +1,21 @@
 import { GitDSL } from "../dsl/GitDSL"
-import { CISource } from "../ci_source/ci_source"
 import { GitCommit } from "../dsl/Commit"
 import { GitHubCommit, GitHubDSL } from "../dsl/GitHubDSL"
+import { GitHubAPI } from "./github/GitHubAPI"
 
 import * as parseDiff from "parse-diff"
 import * as includes from "lodash.includes"
 import * as find from "lodash.find"
 
-import { api as fetch } from "../api/fetch"
 import * as os from "os"
 
-// This pattern of re-typing specific strings has worked well for Artsy in Swift
-// so, I'm willing to give it a shot here.
-
-export type APIToken = string
-
-// TODO: Cache PR JSON?
-// TODO: Separate out a GitHub API client?
-
-/** This represent the GitHub API, and conforming to the Platform Interface */
+/** Handles conforming to the Platform Interface for GitHub, API work is handle by GitHubAPI */
 
 export class GitHub {
   name: string
-  fetch: typeof fetch
 
-  constructor(public readonly token: APIToken | undefined, public readonly ciSource: CISource) {
+  constructor(public readonly api: GitHubAPI) {
     this.name = "GitHub"
-
-    // This allows Peril to DI in a new Fetch function
-    // which can handle unique API edge-cases around integrations
-    this.fetch = fetch
   }
 
   /**
@@ -38,7 +24,7 @@ export class GitHub {
    * @returns {Promise<any>} JSON representation
    */
   async getReviewInfo(): Promise<any> {
-    const deets = await this.getPullRequestInfo()
+    const deets = await this.api.getPullRequestInfo()
     return await deets.json()
   }
 
@@ -48,8 +34,8 @@ export class GitHub {
    * @returns {Promise<GitDSL>} the git DSL
    */
   async getReviewDiff(): Promise<GitDSL> {
-    const diffReq = await this.getPullRequestDiff()
-    const getCommitsResponse = await this.getPullRequestCommits()
+    const diffReq = await this.api.getPullRequestDiff()
+    const getCommitsResponse = await this.api.getPullRequestCommits()
     const getCommits = await getCommitsResponse.json()
 
     const diff = await diffReq.text()
@@ -83,7 +69,7 @@ export class GitHub {
    */
   async getPlatformDSLRepresentation(): Promise<GitHubDSL> {
     const pr = await this.getReviewInfo()
-    const commits = await this.getPullRequestCommits()
+    const commits = await this.api.getPullRequestCommits()
     return {
       pr,
       commits
@@ -114,7 +100,7 @@ export class GitHub {
    * @returns {Promise<any>} JSON response of new comment
    */
   async createComment(comment: string): Promise<any> {
-    return this.postPRComment(comment)
+    return this.api.postPRComment(comment)
   }
 
   // In Danger RB we support a danger_id property,
@@ -127,8 +113,8 @@ export class GitHub {
    * @returns {Promise<boolean>} did it work?
    */
   async deleteMainComment(): Promise<boolean> {
-    const commentID = await this.getDangerCommentID()
-    if (commentID) { await this.deleteCommentWithID(commentID) }
+    const commentID = await this.api.getDangerCommentID()
+    if (commentID) { await this.api.deleteCommentWithID(commentID) }
     return commentID !== null
   }
 
@@ -139,9 +125,9 @@ export class GitHub {
    * @returns {Promise<boolean>} success of posting comment
    */
   async updateOrCreateComment(newComment: string): Promise<boolean> {
-    const commentID = await this.getDangerCommentID()
+    const commentID = await this.api.getDangerCommentID()
     if (commentID) {
-      await this.updateCommentWithID(commentID, newComment)
+      await this.api.updateCommentWithID(commentID, newComment)
     } else {
       await this.createComment(newComment)
     }
@@ -157,146 +143,8 @@ export class GitHub {
    * @returns {Promise<boolean>} did it work?
    */
   async editMainComment(comment: string): Promise<boolean> {
-    const commentID = await this.getDangerCommentID()
-    if (commentID) { await this.updateCommentWithID(commentID, comment) }
+    const commentID = await this.api.getDangerCommentID()
+    if (commentID) { await this.api.updateCommentWithID(commentID, comment) }
     return commentID !== null
-  }
-
-  /**
-   * Grabs the contents of an individual file on GitHub
-   *
-   * @param {string} path path to the file
-   * @param {string} [ref] an optional sha
-   * @returns {Promise<string>} text contents
-   *
-   */
-  async fileContents(path: string, ref?: string): Promise<string> {
-    // Use head of PR (current state of PR) if no ref passed
-    if (!ref) {
-      const prJSON = await this.getReviewInfo()
-      ref = prJSON.head.ref
-    }
-    const fileMetadata = await this.getFileContents(path, ref)
-    const data = await fileMetadata.json()
-    const buffer = new Buffer(data.content, "base64")
-    return buffer.toString()
-  }
-
-  // The above is the API for Platform
-
-  async getDangerCommentID(): Promise<number | null> {
-    const userID = await this.getUserID()
-    const allCommentsResponse = await this.getPullRequestComments()
-    const allComments: any[] = await allCommentsResponse.json()
-    const dangerComment = find(allComments, (comment: any) => comment.user.id === userID)
-    return dangerComment ? dangerComment.id : null
-  }
-
-  async updateCommentWithID(id: number, comment: string): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    return this.patch(`repos/${repo}/issues/comments/${id}`, {}, {
-      body: comment
-    })
-  }
-
-  async deleteCommentWithID(id: number): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    return this.get(`repos/${repo}/issues/comments/${id}`, {}, {}, "DELETE")
-  }
-
-  async getUserID(): Promise<number> {
-    const info = await this.getUserInfo()
-    return info.id
-  }
-
-  postPRComment(comment: string): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
-    return this.post(`repos/${repo}/issues/${prID}/comments`, {}, {
-      body: comment
-    })
-  }
-
-  getPullRequestInfo(): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/pulls/${prID}`)
-  }
-
-  getPullRequestCommits(): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/pulls/${prID}/commits`)
-  }
-
-  async getUserInfo(): Promise<any> {
-    const response: any = await this.get("user")
-    return await response.json()
-  }
-
-  // TODO: This does not handle pagination
-  getPullRequestComments(): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/issues/${prID}/comments`)
-  }
-
-  getPullRequestDiff(): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/pulls/${prID}`, {
-      accept: "application/vnd.github.v3.diff"
-    })
-  }
-
-  getFileContents(path: string, ref?: string): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    return this.get(`repos/${repo}/contents/${path}?ref=${ref}`, {})
-  }
-
-  // maybe this can move into the stuff below
-  post(path: string, headers: any = {}, body: any = {}, method: string = "POST"): Promise<any> {
-    if (this.token !== undefined) {
-      headers["Authorization"] = `token ${this.token}`
-    }
-
-    return this.fetch(`https://api.github.com/${path}`, {
-      method: method,
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-        ...headers
-      }
-    })
-  }
-
-  get(path: string, headers: any = {}, body: any = {}, method: string = "GET"): Promise<any> {
-    if (this.token !== undefined) {
-      headers["Authorization"] = `token ${this.token}`
-    }
-
-    return this.fetch(`https://api.github.com/${path}`, {
-      method: method,
-      body: body,
-      headers: {
-        "Content-Type": "application/json",
-        ...headers
-      }
-    })
-  }
-
-  patch(path: string, headers: any = {}, body: any = {}, method: string = "PATCH"): Promise<any> {
-    if (this.token !== undefined) {
-      headers["Authorization"] = `token ${this.token}`
-    }
-
-    return this.fetch(`https://api.github.com/${path}`, {
-      method: method,
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-        ...headers
-      }
-    })
   }
 }

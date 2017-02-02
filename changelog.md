@@ -2,6 +2,7 @@
 
 //  Add your own contribution below
 
+* Internal changes for usage with Peril - orta
 * Add `danger pr --repl`, which drops into a Node.js REPL after evaluating the dangerfile - macklinu
 
 ### 0.11.0 - 0.11.2
