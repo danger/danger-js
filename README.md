@@ -54,7 +54,7 @@ Then you add `yarn run danger` to the end of your CI run, and Danger will run. H
 Want to see some existing examples? Check out:
 
 * **Apps** - [Artsy/Emission][emiss] and [Artsy/metaphysics][meta].
-* **Libraries** - [Facebook/Jest][fbj] and [styled-components/styled-components][sc].
+* **Libraries** - [Facebook/Jest][fbj], [styled-components/styled-components][sc] and [ReactiveX/rxjs][rxjs].
 
 I'd love PRs adding more.
 
@@ -147,4 +147,5 @@ Check the issues, I try and keep my short term perspective there. Long term is i
 [meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
 [fbj]: https://github.com/facebook/jest/blob/master/dangerfile.js
 [sc]: https://github.com/styled-components/styled-components/blob/master/dangerfile.js
+[rxjs]: https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js
 [setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
