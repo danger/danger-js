@@ -20,10 +20,15 @@ yarn add danger --dev
 # or with npm
 npm install --save-dev danger
 ```
+
 If using NPM, add a run command to your `package.json`
 
-```js
-"danger": "danger"
+```json
+{
+  "scripts": {
+    "danger": "danger"  
+  }
+}
 ```
 
 Then create a `dangerfile.js` in the project root with some rules:
