@@ -116,6 +116,15 @@ export class GitHubAPI {
     return this.get(`repos/${repo}/contents/${path}?ref=${ref}`, {})
   }
 
+  async getPullRequests(): Promise<any> {
+    const repo = this.ciSource.repoSlug
+    const res = await this.get(`repos/${repo}/pulls`)
+    if (res.ok) {
+      return res.json()
+    }
+    return []
+  }
+
   private api(path: string, headers: any = {}, body: any = {}, method: string): Promise<any> {
     if (this.token !== undefined) {
       headers["Authorization"] = `token ${this.token}`

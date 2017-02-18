@@ -1,8 +1,14 @@
 import { Env, CISource } from "../ci_source"
-import { ensureEnvKeysExist } from "../ci_source_helpers"
+import { ensureEnvKeysExist, getPullRequestIDForBranch } from "../ci_source_helpers"
 
 export class Codeship implements CISource {
+  private default = { prid: "0" }
   constructor(private readonly env: Env) {
+  }
+
+  async setup(): Promise<any> {
+    const prid = await getPullRequestIDForBranch(this, this.env, this.branchName)
+    this.default.prid = prid.toString()
   }
 
   get name(): string { return "Codeship" }
@@ -12,24 +18,23 @@ export class Codeship implements CISource {
   }
 
   get isPR(): boolean {
-    if (ensureEnvKeysExist(this.env, ["CI_PULL_REQUEST"])) {
-      // codeship doesn't actually support this yet -> will always be false
-      return this.env.CI_PULL_REQUEST
-    }
-    return false;
+    return this.pullRequestID !== "0"
   }
 
   get pullRequestID(): string {
-    // this will need to retrieve from the github server, if it retrieves at all
-    return '';
+    return this.default.prid
   }
 
   get repoSlug(): string {
     if (ensureEnvKeysExist(this.env, ["CI_REPO_NAME"])) {
       return this.env.CI_REPO_NAME
     }
-    return '';
+    return ""
   }
 
   get supportedPlatforms(): string[] { return ["github"] }
+
+  private get branchName(): string {
+    return this.env.CI_BRANCH
+  }
 }

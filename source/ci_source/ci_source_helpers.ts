@@ -1,4 +1,6 @@
-import { Env } from "./ci_source"
+import { Env, CISource } from "./ci_source"
+import { GitHubAPI } from "../platforms/github/GitHubAPI"
+import { GitHubPRDSL } from "../dsl/GitHubDSL"
 
 /**
  * Validates that all ENV keys exist and have a length
@@ -30,4 +32,25 @@ export function ensureEnvKeysAreInt(env: Env, keys: Array<string>): boolean {
 
   return keys.map((key: string) => env.hasOwnProperty(key) && !isNaN(parseInt(env[key])))
     .filter(x => x === false).length === 0
+}
+
+/**
+ * Retrieves the current pull request open for this branch from the GitHub API
+ * @param {Env} env The environment
+ * @param {string} branch The branch to find pull requests for
+ * @returns {number} The pull request ID, if any.  Otherwise 0 (Github starts from #1).
+ * If there are multiple pull requests open for a branch, returns the first.
+ */
+export async function getPullRequestIDForBranch(source: CISource, env: Env, branch: string): Promise<number> {
+  const token = env["DANGER_GITHUB_API_TOKEN"]
+  if (!token) {
+    return 0
+  }
+  const api = new GitHubAPI(token, source)
+  const prs = await api.getPullRequests()
+  const prForBranch: GitHubPRDSL = prs.find((pr: GitHubPRDSL) => pr.head.ref === branch)
+  if (prForBranch) {
+    return prForBranch.number
+  }
+  return 0
 }
