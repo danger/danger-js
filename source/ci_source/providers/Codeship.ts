@@ -2,13 +2,13 @@ import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist, getPullRequestIDForBranch } from "../ci_source_helpers"
 
 export class Codeship implements CISource {
-  private default = { prid: "0" }
+  private default = { prID: "0" }
   constructor(private readonly env: Env) {
   }
 
   async setup(): Promise<any> {
-    const prid = await getPullRequestIDForBranch(this, this.env, this.branchName)
-    this.default.prid = prid.toString()
+    const prID = await getPullRequestIDForBranch(this, this.env, this.branchName)
+    this.default.prID = prID.toString()
   }
 
   get name(): string { return "Codeship" }
@@ -22,7 +22,7 @@ export class Codeship implements CISource {
   }
 
   get pullRequestID(): string {
-    return this.default.prid
+    return this.default.prID
   }
 
   get repoSlug(): string {
