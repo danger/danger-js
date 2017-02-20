@@ -7,7 +7,7 @@ Danger on Node, wonder what's going on? see [VISION.md](VISION.md)
 *Welcome!*
 
 So, what's the deal? Well, right now Danger JS does a lot of the simpler parts of [the Ruby version](http://danger.systems).
-You can look at [Git](https://github.com/danger/danger-js/blob/master/source/dsl/GitDSL.ts) metadata, or [GitHub](https://github.com/danger/danger-js/blob/master/source/dsl/GitHubDSL.ts) metadata on Travis, Circle, Semaphore, Jenkins, or Docker Cloud.
+You can look at [Git](https://github.com/danger/danger-js/blob/master/source/dsl/GitDSL.ts) metadata, or [GitHub](https://github.com/danger/danger-js/blob/master/source/dsl/GitHubDSL.ts) metadata on Travis, Circle, Semaphore, Jenkins, Docker Cloud, or Codeship.
 
 Danger can fail your build, write a comment on GitHub, edit it as your PR changes and then delete it once you've passed review. Perfect.
 
@@ -113,6 +113,15 @@ DANGER_TEST_PR='1234' npm run danger
 assuming that your local file-system matches up to that branch on github, this will be a good approximation of how danger will work when you integrate it into your CI system.
 
 Note: this will leave a comment on the PR.
+
+## Advice
+
+* You can have Danger read build logs if you use [tee](https://en.wikipedia.org/wiki/Tee_(command)) in your CI process: `yarn run lint | tee linter_output.txt`. This can then be picked up with `readFileSync` at `linter_output.txt` in your Dangerfile later.
+
+## Known issues
+
+* We're still figuring out how to handle [async code correctly](https://github.com/danger/danger-js/issues/88) (you can use `await` with no problem though)
+* Codeship support does not support fork to fork GitHub PRs.
 
 ## This thing is broken, I should help improve it!
 
