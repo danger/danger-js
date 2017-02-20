@@ -62,6 +62,9 @@ export class Executor {
    * @returns {void} It's a promise, so a void promise
    */
   async handleResults(results: DangerResults) {
+    // run the asynchronous code first
+    console.log("handling scheduled tasks", results.scheduled)
+    await Promise.all(results.scheduled)
     // Ensure process fails if there are fails
     if (results.fails.length) {
       process.exitCode = 1

@@ -8,6 +8,11 @@ import { MarkdownString } from "../dsl/Aliases"
  */
 export interface DangerResults {
   /**
+   * Asynchronous functions to be run after parsing
+   * @type {Function[]}
+   */
+  scheduled: Array<Function>
+  /**
    * Failed messages
    * @type {Violation[]}
    */

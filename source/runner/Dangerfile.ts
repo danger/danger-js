@@ -4,6 +4,13 @@ import { MarkdownString } from "../dsl/Aliases"
 
 export interface DangerContext {
   /**
+   * Contains asynchronous code to be run after the application has booted.
+   *
+   * @param {Function} asyncFunction the function to run asynchronously
+   */
+  schedule(asyncFunction: (p: Promise<any>) => void): void
+
+  /**
    * Fails a build, outputting a specific reason for failing
    *
    * @param {MarkdownString} message the String to output
@@ -59,15 +66,21 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
     fails: [],
     warnings: [],
     messages: [],
-    markdowns: []
+    markdowns: [],
+    scheduled: []
   }
 
+  const schedule = (fn: Function) => {
+    console.log("scheduling task", fn)
+    results.scheduled.push(fn)
+  }
   const fail = (message: MarkdownString) =>  results.fails.push({ message })
   const warn = (message: MarkdownString) => results.warnings.push({ message })
   const message = (message: MarkdownString) => results.messages.push({ message })
   const markdown = (message: MarkdownString) => results.markdowns.push(message)
 
   return {
+    schedule,
     fail,
     warn,
     message,
