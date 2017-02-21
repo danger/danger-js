@@ -1,4 +1,4 @@
-import { DangerResults } from "../dsl/DangerResults"
+import { DangerRuntimeContainer } from "../dsl/DangerResults"
 import { DangerDSLType } from "../dsl/DangerDSL"
 import { MarkdownString } from "../dsl/Aliases"
 
@@ -52,7 +52,7 @@ export interface DangerContext {
    *
    * @type {DangerDSLType}
    */
-  results: DangerResults
+  results: DangerRuntimeContainer
 }
 
 /** Creates a Danger context, this provides all of the global functions
@@ -62,7 +62,7 @@ export interface DangerContext {
  * @returns {DangerContext} a DangerContext-like API
  */
 export function contextForDanger(dsl: DangerDSLType): DangerContext {
-  const results: DangerResults = {
+  const results: DangerRuntimeContainer = {
     fails: [],
     warnings: [],
     messages: [],

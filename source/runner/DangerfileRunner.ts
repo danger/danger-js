@@ -75,7 +75,12 @@ export async function runDangerfileEnvironment(filename: Path, environment: Dang
 
   const results = environment.context.results
   await Promise.all(results.scheduled)
-  return results
+  return {
+    fails: results.fails,
+    warnings: results.warnings,
+    messages: results.messages,
+    markdowns: results.markdowns,
+  }
 }
 
 /**
