@@ -73,7 +73,9 @@ export async function runDangerfileEnvironment(filename: Path, environment: Dang
     runtime.requireModule(filename)
   })
 
-  return environment.context.results
+  const results = environment.context.results
+  await Promise.all(results.scheduled)
+  return results
 }
 
 /**
