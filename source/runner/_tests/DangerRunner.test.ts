@@ -76,6 +76,19 @@ describe("with fixtures", () => {
     const runtime = await createDangerfileRuntimeEnvironment(context)
     await runDangerfileEnvironment(resolve(fixtures, "__DangerfileImportRelative.js"), runtime)
   })
+
+  it("should collect messages from async dangerfile", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsyncMessages.js"), runtime)
+
+    expect(results).toEqual({
+      fails: [{"message": "this is a failure"}],
+      markdowns: ["this is a *markdown*"],
+      messages: [{"message": "this is a message"}],
+      warnings: [{"message": "this is a warning"}]
+    })
+  })
 })
 
 describe("cleaning Dangerfiles", () => {
