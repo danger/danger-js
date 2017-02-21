@@ -100,6 +100,18 @@ describe("with fixtures", () => {
       warnings: [{ message: "Asynchronous Warning" }],
     })
   })
+
+  it("can execute async/await scheduled functions", async () => {
+    // this test takes *forever* because of babel-polyfill being required
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.js"), runtime)
+    expect(results.warnings).toEqual([{
+      message: "Async Function"
+    }, {
+      message: "After Async Function"
+    }])
+  })
 })
 
 describe("cleaning Dangerfiles", () => {

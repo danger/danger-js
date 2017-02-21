@@ -74,7 +74,12 @@ export async function runDangerfileEnvironment(filename: Path, environment: Dang
   })
 
   const results = environment.context.results
-  await Promise.all(results.scheduled)
+  await Promise.all(results.scheduled.map(fnOrPromise => {
+    if (fnOrPromise instanceof Promise) {
+      return fnOrPromise
+    }
+    return fnOrPromise()
+  }))
   return {
     fails: results.fails,
     warnings: results.warnings,
