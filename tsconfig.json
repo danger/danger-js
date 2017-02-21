@@ -15,7 +15,8 @@
     "moduleResolution": "node",
     "pretty": true,
     "target": "es5",
-    "outDir": "distribution"
+    "outDir": "distribution",
+    "lib": ["es5", "es2015.promise"]
   },
   "formatCodeOptions": {
     "indentSize": 2,
