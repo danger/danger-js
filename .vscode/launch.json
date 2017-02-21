@@ -29,9 +29,8 @@
         "program": "${workspaceRoot}/distribution/commands/danger-pr.js",
         "stopOnEntry": false,
         "args": [
-          // pass a GitHub PR URL below for testing
+          "https://github.com/danger/danger-js/pull/140"
         ],
-        "envFile": "${workspaceRoot}/env/development.env",
         "cwd": "${workspaceRoot}",
         "preLaunchTask": "build",
         "runtimeExecutable": null,

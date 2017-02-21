@@ -143,6 +143,7 @@ Tips:
 
 * You can run the `danger` command globally from your dev build by running `yarn run link`.
 * If you're using VS Code, press Run to start an example run, should go through most of the process with a debugger attached. Either use breakpoints, or add `debugger` to get a repl and context.
+* Install both `ts-node` and `typescript` globally then run `ts-node source/commands/danger-pr.ts https://github.com/danger/danger-js/pull/140` to try a command as a one off.
 
 ### What is the TODO?
 

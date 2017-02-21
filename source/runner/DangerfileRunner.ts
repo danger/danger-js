@@ -68,12 +68,25 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
 export async function runDangerfileEnvironment(filename: Path, environment: DangerfileRuntimeEnv): Promise<DangerResults> {
   const runtime = environment.runtime
   // Require our dangerfile
-
+console.log("require")
   ensureCleanDangerfile(filename, () => {
     runtime.requireModule(filename)
   })
+console.log("starting scheduler")
+    // run the asynchronous code first
+    // console.log("handling scheduled tasks", results.scheduled)
+    const results = environment.context.results
+    // console.log(results.scheduled)
 
-  return environment.context.results
+    await Promise.all(results.scheduled)
+console.log("finished scheduler")
+    // results.scheduled.forEach(async (element) => {
+    //   console.log("looking at " + element)
+    //   await element()
+    //   console.log("done with " + element)
+    // })
+    // console.log("Done all promises?")
+  return results
 }
 
 /**

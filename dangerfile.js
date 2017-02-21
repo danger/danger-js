@@ -1,4 +1,4 @@
-// Removed import
+import { warn, message, schedule } from 'danger';
 
 import fs from "fs"
 import includes from "lodash.includes"
@@ -25,3 +25,16 @@ if (packageChanged && !lockfileChanged) {
   const idea = "Perhaps you need to run `yarn install`?"
   warn(`${message} - <i>${idea}</i>`)
 }
+
+console.log("end of dangerfile")
+const doAsyncWork = new Promise((resolve: any, reject: any) => {
+  console.log("started")
+  fs.readFile("/Users/orta/Desktop/danger-js-setup.mov", () => {
+    console.log("DONE")
+      resolve({})
+  })    
+}).then(() => {
+  console.log("hrm, after then")
+})
+
+schedule(doAsyncWork);

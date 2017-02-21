@@ -71,7 +71,7 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
   }
 
   const schedule = (fn: Function) => {
-    console.log("scheduling task", fn)
+    console.log("putting task in to the scheduler")
     results.scheduled.push(fn)
   }
   const fail = (message: MarkdownString) =>  results.fails.push({ message })
