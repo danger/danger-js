@@ -78,6 +78,10 @@ export async function runDangerfileEnvironment(filename: Path, environment: Dang
     if (fnOrPromise instanceof Promise) {
       return fnOrPromise
     }
+    if (fnOrPromise.length === 1) {
+      // callback-based function
+      return new Promise(res => fnOrPromise(res))
+    }
     return fnOrPromise()
   }))
   return {

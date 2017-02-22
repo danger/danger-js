@@ -112,6 +112,15 @@ describe("with fixtures", () => {
       message: "After Async Function"
     }])
   })
+
+  it("can schedule callback-based promised", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileCallback.js"), runtime)
+    expect(results.warnings).toEqual([{
+      message: "Scheduled a callback",
+    }])
+  })
 })
 
 describe("cleaning Dangerfiles", () => {
