@@ -7,6 +7,7 @@ import { MarkdownString } from "../dsl/Aliases"
  * do not add functions, only data to this interface.
  */
 export interface DangerResults {
+
   /**
    * Failed messages
    * @type {Violation[]}
@@ -30,4 +31,12 @@ export interface DangerResults {
    * @type {MarkdownString[]}
    */
   markdowns: Array<MarkdownString>
+}
+
+export interface DangerRuntimeContainer extends DangerResults {
+  /**
+   * Asynchronous functions to be run after parsing
+   * @type {Function[]}
+   */
+  scheduled: Array<Function>
 }
