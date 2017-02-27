@@ -90,7 +90,7 @@
     "shx": "^0.2.1",
     "ts-jest": "^19.0.0",
     "ts-node": "^2.0.0",
-    "tslint": "^4.4.0",
+    "tslint": "4.4.2",
     "typescript": "^2.1.4"
   },
   "dependencies": {
