@@ -1,8 +1,15 @@
-import { DangerResults } from "../dsl/DangerResults"
+import { DangerRuntimeContainer } from "../dsl/DangerResults"
 import { DangerDSLType } from "../dsl/DangerDSL"
 import { MarkdownString } from "../dsl/Aliases"
 
 export interface DangerContext {
+  /**
+   * Contains asynchronous code to be run after the application has booted.
+   *
+   * @param {Function} asyncFunction the function to run asynchronously
+   */
+  schedule(asyncFunction: (p: Promise<any>) => void): void
+
   /**
    * Fails a build, outputting a specific reason for failing
    *
@@ -45,7 +52,7 @@ export interface DangerContext {
    *
    * @type {DangerDSLType}
    */
-  results: DangerResults
+  results: DangerRuntimeContainer
 }
 
 /** Creates a Danger context, this provides all of the global functions
@@ -55,19 +62,22 @@ export interface DangerContext {
  * @returns {DangerContext} a DangerContext-like API
  */
 export function contextForDanger(dsl: DangerDSLType): DangerContext {
-  const results: DangerResults = {
+  const results: DangerRuntimeContainer = {
     fails: [],
     warnings: [],
     messages: [],
-    markdowns: []
+    markdowns: [],
+    scheduled: []
   }
 
+  const schedule = (fn: Function) => results.scheduled.push(fn)
   const fail = (message: MarkdownString) =>  results.fails.push({ message })
   const warn = (message: MarkdownString) => results.warnings.push({ message })
   const message = (message: MarkdownString) => results.messages.push({ message })
   const markdown = (message: MarkdownString) => results.markdowns.push(message)
 
   return {
+    schedule,
     fail,
     warn,
     message,

@@ -73,7 +73,23 @@ export async function runDangerfileEnvironment(filename: Path, environment: Dang
     runtime.requireModule(filename)
   })
 
-  return environment.context.results
+  const results = environment.context.results
+  await Promise.all(results.scheduled.map(fnOrPromise => {
+    if (fnOrPromise instanceof Promise) {
+      return fnOrPromise
+    }
+    if (fnOrPromise.length === 1) {
+      // callback-based function
+      return new Promise(res => fnOrPromise(res))
+    }
+    return fnOrPromise()
+  }))
+  return {
+    fails: results.fails,
+    warnings: results.warnings,
+    messages: results.messages,
+    markdowns: results.markdowns,
+  }
 }
 
 /**

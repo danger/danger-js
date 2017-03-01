@@ -34,3 +34,10 @@ export const summaryResults: DangerResults = {
   messages: [{ message: "message" }],
   markdowns: ["markdown"],
 }
+
+export const asyncResults: DangerResults = {
+  fails: [],
+  warnings: [],
+  messages: [],
+  markdowns: [],
+}

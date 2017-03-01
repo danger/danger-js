@@ -76,6 +76,51 @@ describe("with fixtures", () => {
     const runtime = await createDangerfileRuntimeEnvironment(context)
     await runDangerfileEnvironment(resolve(fixtures, "__DangerfileImportRelative.js"), runtime)
   })
+
+  it("handles scheduled (async) code", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileScheduled.js"), runtime)
+    expect(results).toEqual({
+      fails: [],
+      messages: [],
+      markdowns: [],
+      warnings: [{ message: "Asynchronous Warning" }],
+    })
+  })
+
+  it("handles multiple scheduled statements and all message types", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileMultiScheduled.js"), runtime)
+    expect(results).toEqual({
+      fails: [{ message: "Asynchronous Failure" }],
+      messages: [{ message: "Asynchronous Message" }],
+      markdowns: ["Asynchronous Markdown"],
+      warnings: [{ message: "Asynchronous Warning" }],
+    })
+  })
+
+  it("can execute async/await scheduled functions", async () => {
+    // this test takes *forever* because of babel-polyfill being required
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.js"), runtime)
+    expect(results.warnings).toEqual([{
+      message: "Async Function"
+    }, {
+      message: "After Async Function"
+    }])
+  })
+
+  it("can schedule callback-based promised", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileCallback.js"), runtime)
+    expect(results.warnings).toEqual([{
+      message: "Scheduled a callback",
+    }])
+  })
 })
 
 describe("cleaning Dangerfiles", () => {
