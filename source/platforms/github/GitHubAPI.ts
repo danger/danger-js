@@ -125,6 +125,12 @@ export class GitHubAPI {
     return []
   }
 
+  getIssue(): Promise<any> {
+    const repo = this.ciSource.repoSlug
+    const prID = this.ciSource.pullRequestID
+    return this.get(`repos/${repo}/issues/${prID}`)
+  }
+
   private api(path: string, headers: any = {}, body: any = {}, method: string): Promise<any> {
     if (this.token !== undefined) {
       headers["Authorization"] = `token ${this.token}`

@@ -4,10 +4,60 @@ import { GitCommit } from "./Commit"
 
 /** The GitHub metadata for your PR */
 export interface GitHubDSL {
+  /** The issue metadata for a code review session */
+  issue: GitHubIssue,
   /** The PR metadata for a code review session */
   pr: GitHubPRDSL,
   /** The github commit metadata for a code review session */
   commits: Array<GitHubCommit>
+}
+
+/**
+ * This is `danger.github.issue`
+ * It refers to the issue that makes up the Pull Request
+ * GitHub treats all pull requests as a special type of issue
+ * This DSL contains only parts of the issue that are not found in the PR DSL
+ * A GitHub Issue
+ */
+export interface GitHubIssue {
+  /**
+   * The labels associated with this issue
+   * @type {Array<GitHubIssueLabel>}
+   */
+
+  labels: Array<GitHubIssueLabel>
+}
+
+// Subtypes specific to issues
+
+export interface GitHubIssueLabel {
+  /**
+   * The identifying number of this label
+   * @type {number}
+   * @memberOf GitHubIssueLabel
+   */
+  id: number,
+
+  /**
+   * The URL that links to this label
+   * @type {string}
+   * @memberOf GitHubIssueLabel
+   */
+  url: string,
+
+  /**
+   * The name of the label
+   * @type {string}
+   * @memberOf GitHubIssueLabel
+   */
+  name: string,
+
+  /**
+   * The color associated with this label
+   * @type {string}
+   * @memberOf GitHubIssueLabel
+   */
+  color: string
 }
 
 // This is `danger.github.pr`
