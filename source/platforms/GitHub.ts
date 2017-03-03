@@ -64,6 +64,9 @@ export class GitHub {
 
   async getIssue(): Promise<GitHubIssue> {
     const issue = await this.api.getIssue()
+    if (!issue) {
+      return { labels: [] }
+    }
     const labels = issue.labels.map((label: any): GitHubIssueLabel => ({
       id: label.id,
       url: label.url,

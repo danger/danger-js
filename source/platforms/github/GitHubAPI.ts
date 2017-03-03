@@ -125,10 +125,14 @@ export class GitHubAPI {
     return []
   }
 
-  getIssue(): Promise<any> {
+  async getIssue(): Promise<any> {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/issues/${prID}`)
+    const res = await this.get(`repos/${repo}/issues/${prID}`)
+    if (res.ok) {
+      return res.json()
+    }
+    return {}
   }
 
   private api(path: string, headers: any = {}, body: any = {}, method: string): Promise<any> {
