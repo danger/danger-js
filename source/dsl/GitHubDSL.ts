@@ -150,6 +150,19 @@ export interface GitHubPRDSL {
   assignees: Array<GitHubUser>
 
   /**
+   * The people requested to review this PR
+   * @type {GitHubReview}
+   */
+  requestedReviewers: Array<GitHubUser>
+
+  /**
+   * The reviews left on this pull request
+   * @type {Array<GitHubReview>}
+   * @memberOf GitHubPRDSL
+   */
+  reviews: Array<GitHubReview>
+
+  /**
    * Has the PR been merged yet
    * @type {boolean}
    */
@@ -314,4 +327,48 @@ export interface GitHubMergeRef {
    * @type {string}
    */
   user: GitHubUser
+}
+
+/**
+ * GitHubReview
+ * While a review is pending, it will only have a user.  Once a review is complete, the rest of
+ * the review attributes will be present
+ * @export
+ * @interface GitHubReview
+ */
+export interface GitHubReview {
+  /**
+   * The user requested to review, or the user who has completed the review
+   * @type {GitHubUser}
+   * @memberOf GitHubReview
+   */
+  user: GitHubUser
+  /**
+   * @type {number}
+   * @memberOf GitHubReview
+   */
+  id?: number
+
+  /**
+   * The body of the review
+   * @type {string}
+   * @memberOf GitHubReview
+   */
+  body?: string
+
+  /**
+   * The commit ID this review was made on
+   * @type {string}
+   * @memberOf GitHubReview
+   */
+  commit_id?: string
+
+  /**
+   * The state of the review
+   * APPROVED, REQUEST_CHANGES, COMMENT or PENDING
+   * @type {string}
+   * @memberOf GitHubReview
+   */
+  state?: string
+
 }

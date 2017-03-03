@@ -125,6 +125,30 @@ export class GitHubAPI {
     return []
   }
 
+  async getReviewerRequests(): Promise<any> {
+    const repo = this.ciSource.repoSlug
+    const prID = this.ciSource.pullRequestID
+    const res = await this.get(`repos/${repo}/pulls/${prID}/requested_reviewers`, {
+      accept: "application/vnd.github.black-cat-preview+json"
+    })
+    if (res.ok) {
+      return res.json()
+    }
+    return []
+  }
+
+  async getReviews(): Promise<any> {
+    const repo = this.ciSource.repoSlug
+    const prID = this.ciSource.pullRequestID
+    const res = await this.get(`repos/${repo}/pulls/${prID}/reviews`, {
+      accept: "application/vnd.github.black-cat-preview+json"
+    })
+    if (res.ok) {
+      return res.json()
+    }
+    return []
+  }
+
   async getIssue(): Promise<any> {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID

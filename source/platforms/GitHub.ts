@@ -1,6 +1,6 @@
 import { GitDSL } from "../dsl/GitDSL"
 import { GitCommit } from "../dsl/Commit"
-import { GitHubCommit, GitHubDSL, GitHubIssue, GitHubIssueLabel } from "../dsl/GitHubDSL"
+import { GitHubPRDSL, GitHubCommit, GitHubDSL, GitHubIssue, GitHubIssueLabel } from "../dsl/GitHubDSL"
 import { GitHubAPI } from "./github/GitHubAPI"
 
 import * as parseDiff from "parse-diff"
@@ -23,9 +23,14 @@ export class GitHub {
    *
    * @returns {Promise<any>} JSON representation
    */
-  async getReviewInfo(): Promise<any> {
+  async getReviewInfo(): Promise<GitHubPRDSL> {
     const deets = await this.api.getPullRequestInfo()
-    return await deets.json()
+
+    return {
+      ...await deets.json(),
+      reviews: await this.api.getReviews(),
+      requestedReviewers: await this.api.getReviewerRequests(),
+    }
   }
 
   /**
