@@ -97,7 +97,7 @@
     "babel-polyfill": "^6.20.0",
     "chalk": "^1.1.1",
     "commander": "^2.9.0",
-    "debug": "^2.6.0",
+    "debug": "2.6.1",
     "jest-environment-node": "^18.1.0",
     "jest-runtime": "^18.0.0",
     "jsome": "^2.3.25",
