@@ -1,4 +1,3 @@
-declare module "node-fetch";
 declare module "parse-diff";
 declare module "lodash.includes";
 declare module "lodash.find";

@@ -1,4 +1,4 @@
-import * as fetch from "node-fetch"
+import fetch from "node-fetch"
 import * as debug from "debug"
 
 const d = debug("danger:networking")
@@ -48,11 +48,13 @@ export function api(url: string | any, init: any): Promise<any> {
   }
 
   return fetch(url, init)
-  .then((response: any) => {
+  .then(async (response) => {
     // Handle failing errors
     if (!response.ok) {
       process.exitCode = 1
-      console.error(`Request failed: ${JSON.stringify(response, null, 2)}`)
+      const responseJSON = await response.json()
+      console.error(`Request failed [${response.status}]: ${response.url}`)
+      console.error(`Response: ${JSON.stringify(responseJSON, null, "  ")}`)
       const msg = response.status === 0 ? "Network Error" : response.statusText
       throw new (Error as any)(response.status, msg, {response: response})
     }
