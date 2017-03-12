@@ -84,7 +84,7 @@
     "babel-preset-stage-3": "^6.17.0",
     "husky": "^0.12.0",
     "in-publish": "^2.0.0",
-    "jest": "^19.0.0",
+    "jest": "^19.0.2",
     "lint-staged": "^3.2.5",
     "madge": "^1.4.4",
     "shx": "^0.2.1",
