@@ -369,6 +369,6 @@ export interface GitHubReview {
    * @type {string}
    * @memberOf GitHubReview
    */
-  state?: string
+  state?: "APPROVED" | "REQUEST_CHANGES" | "COMMENT" | "PENDING"
 
 }
