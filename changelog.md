@@ -2,6 +2,34 @@
 
 //  Add your own contribution below
 
+* Added support for handling async code in a Dangerfile - deecewan
+
+  This is still a bit of a work in progress, however, there is a new function added to the DSL: `schedule`.
+
+  A Dangerfile is evaluated as a script, and so async code has not worked out of the box. With the `schedule`
+  function you can now register a section of code to evaluate across multiple tick cycles.
+
+  `schedule` currently handles two types of arguments, either a promise or a function with a resolve arg.
+  Assuming you have a working Babel setup for this inside your project, you can run a Dangerfile like this:
+
+  ```js
+  schedule(async () => {
+    const thing = await asyncAction()
+    if (thing) { warn('After Async Function') }
+  });
+  ```
+
+  Or if you wanted something simpler, 
+
+  ```js
+  schedule((resolved) => {
+    if (failed) {
+      fail("Failed to run")
+    }
+  })
+  ```
+
+* Updated TypeScript and Jest dependencies - orta
 
 ### 0.11.3 - 0.11.5
 
