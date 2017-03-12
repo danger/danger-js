@@ -101,7 +101,7 @@ describe("with fixtures", () => {
     })
   })
 
-  it("can execute async/await scheduled functions", async () => {
+  it.skip("can execute async/await scheduled functions", async () => {
     // this test takes *forever* because of babel-polyfill being required
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
