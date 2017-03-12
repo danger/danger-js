@@ -1,12 +1,21 @@
 machine:
+  environment:
+    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
   node:
-    version: 6.1
+      version: 6.1
+
+dependencies:
+  override:
+    - yarn
+  cache_directories:
+    - ~/.cache/yarn
 
 test:
   override:
-    - npm run build
-    - npm run link
+    - yarn build
+    - npm link
     - danger
+
   post:
-    - npm run lint
-    - npm test
+    - yarn lint
+    - yarn test
