@@ -130,7 +130,7 @@ export class GitHubAPI {
       headers["Authorization"] = `token ${this.token}`
     }
     
-    const baseUrl = process.env["DANGER_GITHUB_API_HOST"] || "https://api.github.com"
+    const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || "https://api.github.com"
     
     return this.fetch(`${baseUrl}/${path}`, {
       method: method,
