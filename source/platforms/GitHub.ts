@@ -1,6 +1,6 @@
 import { GitDSL } from "../dsl/GitDSL"
 import { GitCommit } from "../dsl/Commit"
-import { GitHubCommit, GitHubDSL } from "../dsl/GitHubDSL"
+import { GitHubPRDSL, GitHubCommit, GitHubDSL, GitHubIssue, GitHubIssueLabel } from "../dsl/GitHubDSL"
 import { GitHubAPI } from "./github/GitHubAPI"
 
 import * as parseDiff from "parse-diff"
@@ -23,7 +23,7 @@ export class GitHub {
    *
    * @returns {Promise<any>} JSON representation
    */
-  async getReviewInfo(): Promise<any> {
+  async getReviewInfo(): Promise<GitHubPRDSL> {
     const deets = await this.api.getPullRequestInfo()
     return await deets.json()
   }
@@ -62,17 +62,41 @@ export class GitHub {
     }
   }
 
+  async getIssue(): Promise<GitHubIssue> {
+    const issue = await this.api.getIssue()
+    if (!issue) {
+      return { labels: [] }
+    }
+    const labels = issue.labels.map((label: any): GitHubIssueLabel => ({
+      id: label.id,
+      url: label.url,
+      name: label.name,
+      color: label.color,
+    }))
+
+    return {
+      labels,
+    }
+  }
+
   /**
    * Returns the `github` object on the Danger DSL
    *
    * @returns {Promise<GitHubDSL>} JSON response of the DSL
    */
   async getPlatformDSLRepresentation(): Promise<GitHubDSL> {
+    const issue = await this.getIssue()
     const pr = await this.getReviewInfo()
     const commits = await this.api.getPullRequestCommits()
+    const reviews = await this.api.getReviews()
+    const requestedReviewers = await this.api.getReviewerRequests()
+
     return {
+      issue,
       pr,
-      commits
+      commits,
+      reviews,
+      requestedReviewers
     }
   }
 

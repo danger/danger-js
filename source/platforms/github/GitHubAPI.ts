@@ -125,7 +125,41 @@ export class GitHubAPI {
     return []
   }
 
-  private api(path: string, headers: any = {}, body: any = {}, method: string): Promise<any> {
+  async getReviewerRequests(): Promise<any> {
+    const repo = this.ciSource.repoSlug
+    const prID = this.ciSource.pullRequestID
+    const res = await this.get(`repos/${repo}/pulls/${prID}/requested_reviewers`, {
+      accept: "application/vnd.github.black-cat-preview+json"
+    })
+    if (res.ok) {
+      return res.json()
+    }
+    return []
+  }
+
+  async getReviews(): Promise<any> {
+    const repo = this.ciSource.repoSlug
+    const prID = this.ciSource.pullRequestID
+    const res = await this.get(`repos/${repo}/pulls/${prID}/reviews`, {
+      accept: "application/vnd.github.black-cat-preview+json"
+    })
+    if (res.ok) {
+      return res.json()
+    }
+    return []
+  }
+
+  async getIssue(): Promise<any> {
+    const repo = this.ciSource.repoSlug
+    const prID = this.ciSource.pullRequestID
+    const res = await this.get(`repos/${repo}/issues/${prID}`)
+    if (res.ok) {
+      return res.json()
+    }
+    return {}
+  }
+
+  private api(path: string, headers: any = {}, body: any = {}, method: string) {
     if (this.token !== undefined) {
       headers["Authorization"] = `token ${this.token}`
     }
@@ -141,15 +175,15 @@ export class GitHubAPI {
     })
   }
 
-  get(path: string, headers: any = {}, body: any = {}): Promise<any> {
+  get(path: string, headers: any = {}, body: any = {}) {
     return this.api(path, headers, body, "GET")
   }
 
-  post(path: string, headers: any = {}, body: any = {}): Promise<any> {
+  post(path: string, headers: any = {}, body: any = {}) {
     return this.api(path, headers, JSON.stringify(body), "POST")
   }
 
-  patch(path: string, headers: any = {}, body: any = {}): Promise<any> {
+  patch(path: string, headers: any = {}, body: any = {}) {
     return this.api(path, headers, JSON.stringify(body), "PATCH")
   }
 }

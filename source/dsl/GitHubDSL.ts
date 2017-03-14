@@ -4,10 +4,64 @@ import { GitCommit } from "./Commit"
 
 /** The GitHub metadata for your PR */
 export interface GitHubDSL {
+  /** The issue metadata for a code review session */
+  issue: GitHubIssue,
   /** The PR metadata for a code review session */
   pr: GitHubPRDSL,
   /** The github commit metadata for a code review session */
   commits: Array<GitHubCommit>
+  /** The reviews left on this pull request */
+  reviews: Array<GitHubReview>
+  /** The people requested to review this PR */
+  requestedReviewers: Array<GitHubUser>
+}
+
+/**
+ * This is `danger.github.issue`
+ * It refers to the issue that makes up the Pull Request
+ * GitHub treats all pull requests as a special type of issue
+ * This DSL contains only parts of the issue that are not found in the PR DSL
+ * A GitHub Issue
+ */
+export interface GitHubIssue {
+  /**
+   * The labels associated with this issue
+   * @type {Array<GitHubIssueLabel>}
+   */
+
+  labels: Array<GitHubIssueLabel>
+}
+
+// Subtypes specific to issues
+
+export interface GitHubIssueLabel {
+  /**
+   * The identifying number of this label
+   * @type {number}
+   * @memberOf GitHubIssueLabel
+   */
+  id: number,
+
+  /**
+   * The URL that links to this label
+   * @type {string}
+   * @memberOf GitHubIssueLabel
+   */
+  url: string,
+
+  /**
+   * The name of the label
+   * @type {string}
+   * @memberOf GitHubIssueLabel
+   */
+  name: string,
+
+  /**
+   * The color associated with this label
+   * @type {string}
+   * @memberOf GitHubIssueLabel
+   */
+  color: string
 }
 
 // This is `danger.github.pr`
@@ -242,7 +296,7 @@ export interface GitHubRepo {
 
 export interface GitHubMergeRef {
   /**
-   * The human display name for the merge reference, e.g. "artsy:master"
+   * The human di 0 . 0splay name for the merge reference, e.g. "artsy:master"
    * @type {string}
    */
   label: string
@@ -264,4 +318,48 @@ export interface GitHubMergeRef {
    * @type {string}
    */
   user: GitHubUser
+}
+
+/**
+ * GitHubReview
+ * While a review is pending, it will only have a user.  Once a review is complete, the rest of
+ * the review attributes will be present
+ * @export
+ * @interface GitHubReview
+ */
+export interface GitHubReview {
+  /**
+   * The user requested to review, or the user who has completed the review
+   * @type {GitHubUser}
+   * @memberOf GitHubReview
+   */
+  user: GitHubUser
+  /**
+   * @type {number}
+   * @memberOf GitHubReview
+   */
+  id?: number
+
+  /**
+   * The body of the review
+   * @type {string}
+   * @memberOf GitHubReview
+   */
+  body?: string
+
+  /**
+   * The commit ID this review was made on
+   * @type {string}
+   * @memberOf GitHubReview
+   */
+  commit_id?: string
+
+  /**
+   * The state of the review
+   * APPROVED, REQUEST_CHANGES, COMMENT or PENDING
+   * @type {string}
+   * @memberOf GitHubReview
+   */
+  state?: "APPROVED" | "REQUEST_CHANGES" | "COMMENT" | "PENDING"
+
 }
