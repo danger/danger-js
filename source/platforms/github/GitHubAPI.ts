@@ -129,8 +129,8 @@ export class GitHubAPI {
     if (this.token !== undefined) {
       headers["Authorization"] = `token ${this.token}`
     }
-
-    return this.fetch(`https://api.github.com/${path}`, {
+    const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || "https://api.github.com"
+    return this.fetch(`${baseUrl}/${path}`, {
       method: method,
       body: body,
       headers: {

@@ -30,6 +30,7 @@
   ```
 
 * Updated TypeScript and Jest dependencies - orta
+* Add support for Github Enterprise via DANGER_GITHUB_API_BASE_URL env var - mashbourne
 
 ### 0.11.3 - 0.11.5
 
