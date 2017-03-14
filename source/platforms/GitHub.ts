@@ -25,12 +25,7 @@ export class GitHub {
    */
   async getReviewInfo(): Promise<GitHubPRDSL> {
     const deets = await this.api.getPullRequestInfo()
-
-    return {
-      ...await deets.json(),
-      reviews: await this.api.getReviews(),
-      requestedReviewers: await this.api.getReviewerRequests(),
-    }
+    return await deets.json()
   }
 
   /**
@@ -93,10 +88,15 @@ export class GitHub {
     const issue = await this.getIssue()
     const pr = await this.getReviewInfo()
     const commits = await this.api.getPullRequestCommits()
+    const reviews = await this.api.getReviews()
+    const requestedReviewers = await this.api.getReviewerRequests()
+
     return {
       issue,
       pr,
-      commits
+      commits,
+      reviews,
+      requestedReviewers
     }
   }
 

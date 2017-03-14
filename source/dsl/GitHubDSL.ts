@@ -10,6 +10,10 @@ export interface GitHubDSL {
   pr: GitHubPRDSL,
   /** The github commit metadata for a code review session */
   commits: Array<GitHubCommit>
+  /** The reviews left on this pull request */
+  reviews: Array<GitHubReview>
+  /** The people requested to review this PR */
+  requestedReviewers: Array<GitHubUser>
 }
 
 /**
@@ -148,19 +152,6 @@ export interface GitHubPRDSL {
    * @type {GitHubUser}
    */
   assignees: Array<GitHubUser>
-
-  /**
-   * The people requested to review this PR
-   * @type {GitHubReview}
-   */
-  requestedReviewers: Array<GitHubUser>
-
-  /**
-   * The reviews left on this pull request
-   * @type {Array<GitHubReview>}
-   * @memberOf GitHubPRDSL
-   */
-  reviews: Array<GitHubReview>
 
   /**
    * Has the PR been merged yet
@@ -305,7 +296,7 @@ export interface GitHubRepo {
 
 export interface GitHubMergeRef {
   /**
-   * The human display name for the merge reference, e.g. "artsy:master"
+   * The human di 0 . 0splay name for the merge reference, e.g. "artsy:master"
    * @type {string}
    */
   label: string
@@ -369,6 +360,6 @@ export interface GitHubReview {
    * @type {string}
    * @memberOf GitHubReview
    */
-  state?: string
+  state?: "APPROVED" | "REQUEST_CHANGES" | "COMMENT" | "PENDING"
 
 }
