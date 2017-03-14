@@ -13,7 +13,7 @@ export interface GitHubDSL {
   /** The reviews left on this pull request */
   reviews: Array<GitHubReview>
   /** The people requested to review this PR */
-  requestedReviewers: Array<GitHubUser>
+  requested_reviewers: Array<GitHubUser>
 }
 
 /**
@@ -296,7 +296,7 @@ export interface GitHubRepo {
 
 export interface GitHubMergeRef {
   /**
-   * The human di 0 . 0splay name for the merge reference, e.g. "artsy:master"
+   * The human display name for the merge reference, e.g. "artsy:master"
    * @type {string}
    */
   label: string

@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+### 0.12.0
+
 * Added support for handling async code in a Dangerfile - deecewan
 
   This is still a bit of a work in progress, however, there is a new function added to the DSL: `schedule`.
@@ -29,8 +31,16 @@
   })
   ```
 
+* Adds new GitHub DSL elements - deecewan
+
+ - `danger.github.issue` - As a PR is an issue in GitHub terminology, the issue contains a bit more metadata. Mainly labels, so if you want to know what labels are applied to a PR, use `danger.github.issue.labels`
+ - `danger.github.reviews` - Find out about your reviews in the new GitHub Reviewer systems,
+ - `danger.github.requested_reviewers` - Find out who has been requested to review a PR.
+
 * Updated TypeScript and Jest dependencies - orta
 * Add support for Github Enterprise via DANGER_GITHUB_API_BASE_URL env var - mashbourne
+
+
 
 ### 0.11.3 - 0.11.5
 

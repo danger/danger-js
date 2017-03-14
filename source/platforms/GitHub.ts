@@ -96,7 +96,7 @@ export class GitHub {
       pr,
       commits,
       reviews,
-      requestedReviewers
+      requested_reviewers: requestedReviewers
     }
   }
 
