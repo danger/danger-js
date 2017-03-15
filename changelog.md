@@ -1,6 +1,9 @@
 ### master
 
 //  Add your own contribution below
+
+### 0.12.1
+
 * Add support for [Drone](http://readme.drone.io) - gabro
 
 ### 0.12.0
