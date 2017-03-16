@@ -1,8 +1,6 @@
-// Removed import
-
 import fs from "fs"
 import includes from "lodash.includes"
-
+fs.f
 // Request a CHANGELOG entry if not declared #trivial
 const hasChangelog = includes(danger.git.modified_files, "changelog.md")
 const isTrivial = includes((danger.github.pr.body + danger.github.pr.title), "#trivial")
@@ -25,3 +23,6 @@ if (packageChanged && !lockfileChanged) {
   const idea = "Perhaps you need to run `yarn install`?"
   warn(`${message} - <i>${idea}</i>`)
 }
+
+// TODO: Sync process? Or use the async operators
+// Want to compare the output of `node ./scripts/create-danger-dts.js` to the current DTS

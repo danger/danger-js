@@ -2,6 +2,13 @@
 
 //  Add your own contribution below
 
+* Initial work on supporting TypeScript Dangerfiles by using Jest infrastructure - orta
+* Created a danger.d.ts for VS Code users to get auto-completion etc - orta
+* Exposed all global functions ( like `warn`, `fail`, `git`, `schedule`, ... ) on the `danger` object. - orta
+  
+  This is specifically to simplify building library code. It should not affect end-users. If you want to
+  look at making a Danger JS Plugin, I'd recommend exposing a function which takes the `danger` object and working from that.
+
 ### 0.12.1
 
 * Add support for [Drone](http://readme.drone.io) - gabro

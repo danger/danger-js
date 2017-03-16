@@ -121,6 +121,16 @@ describe("with fixtures", () => {
       message: "Scheduled a callback",
     }])
   })
+
+  it("can handle TypeScript based Dangerfiles", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileTypeScript.ts"), runtime)
+    expect(results.warnings).toEqual([{
+      message: "Honey, we got Types",
+    }])
+  })
+
 })
 
 describe("cleaning Dangerfiles", () => {

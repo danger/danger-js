@@ -18,7 +18,7 @@ export interface DangerDSLType {
   readonly github: Readonly<GitHubDSL>
 }
 
-/* END FLOWTYPE EXPORT */
+/// End of Danger DSL definition
 
 export class DangerDSL {
   public readonly github: Readonly<GitHubDSL>

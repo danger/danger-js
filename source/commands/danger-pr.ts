@@ -11,6 +11,7 @@ import { Executor } from "../runner/Executor"
 import { pullRequestParser } from "../platforms/github/pullRequestParser"
 import { runDangerfileEnvironment } from "../runner/DangerfileRunner"
 import { DangerContext } from "../runner/Dangerfile"
+import { dangerfilePath } from "./utils/file-utils"
 
 const d = debug("danger:pr")
 
@@ -19,7 +20,7 @@ program
   .option("-r, --repl", "Drop into a Node REPL after evaluating the dangerfile")
   .parse(process.argv)
 
-const dangerFile = (program as any).dangerfile || "dangerfile.js"
+const dangerFile =  dangerfilePath(program)
 
 if (program.args.length === 0) {
   console.error("Please include a PR URL to run against")
