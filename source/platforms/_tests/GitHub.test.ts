@@ -28,24 +28,14 @@ const mockGitHubWithGetForPath = (expectedPath): GitHub => {
 }
 
 /** Returns JSON from the fixtured dir */
-export const requestWithFixturedJSON = async (path: string): Promise<any> => {
-  const json = JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString())
-  return () => {
-    return {
-      json: () => Promise.resolve(json)
-    }
-  }
-}
+export const requestWithFixturedJSON = async (path: string): Promise<() => Promise<any>> => () => (
+  Promise.resolve(JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString()))
+)
 
 /** Returns arbitrary text value from a request */
-export const requestWithFixturedContent = async (path: string): Promise<any> => {
-  const content = readFileSync(`${fixtures}/${path}`, {}).toString()
-  return () => {
-    return {
-      text: () => Promise.resolve(content)
-    }
-  }
-}
+export const requestWithFixturedContent = async (path: string): Promise<() => Promise<string>> => () => (
+  Promise.resolve(readFileSync(`${fixtures}/${path}`, {}).toString())
+)
 
 describe("with fixtured data", () => {
   it("returns the correct github data", async () => {
@@ -53,7 +43,6 @@ describe("with fixtured data", () => {
     const api = new GitHubAPI(mockSource)
     const github = new GitHub(api)
     api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
-    api.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
 
     const info = await github.getReviewInfo()
     expect(info.title).toEqual("Adds support for showing the metadata and trending Artists to a Gene VC")
@@ -65,10 +54,8 @@ describe("with fixtured data", () => {
       const api = new GitHubAPI(new FakeCI({}))
       github = new GitHub(api)
 
-      const res = await requestWithFixturedContent("github_diff.diff")
-      api.getPullRequestDiff = res().text
-      const jsonFixtures = await requestWithFixturedJSON("github_commits.json")
-      api.getPullRequestCommits = jsonFixtures().json
+      api.getPullRequestDiff = await requestWithFixturedContent("github_diff.diff")
+      api.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
     })
 
     it("sets the modified/created/deleted", async () => {

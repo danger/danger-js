@@ -1,6 +1,6 @@
 import { GitHubAPI } from "../GitHubAPI"
 import { FakeCI } from "../../../ci_source/providers/Fake"
-import { requestWithFixturedJSON, requestWithFixturedContent } from "../../_tests/GitHub.test"
+import { requestWithFixturedJSON } from "../../_tests/GitHub.test"
 
 const fetchJSON = (api, params): Promise<any> => {
   return Promise.resolve({
@@ -22,10 +22,8 @@ it("fileContents expects to grab PR JSON and pull out a file API call", async ()
   const mockSource = new FakeCI({})
   const api = new GitHubAPI(mockSource, "token")
 
-  const requestFixture = await requestWithFixturedJSON("github_pr.json")
-  api.getPullRequestInfo = requestFixture().json
-  const fileContentFixture = await requestWithFixturedJSON("static_file.json")
-  api.getFileContents = fileContentFixture().json
+  api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
+  api.getFileContents = await requestWithFixturedJSON("static_file.json")
 
   const info = await api.fileContents("my_path.md")
   expect(info).toEqual("The All-Defector is a purported glitch in the Dilemma Prison that appears to prisoners as themselves. This gogol always defects, hence the name.")//tslint:disable-line:max-line-length
