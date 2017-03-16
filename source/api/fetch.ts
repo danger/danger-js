@@ -3,7 +3,7 @@ import * as debug from "debug"
 
 const d = debug("danger:networking")
 declare const global: any
-
+let isFirstRequest = true
 /**
  * Adds logging to every fetch request if a global var for `verbose` is set to true
  *
@@ -51,7 +51,11 @@ export function api(url: string | any, init: any): Promise<any> {
   .then(async (response) => {
     // Handle failing errors
     if (!response.ok) {
-      process.exitCode = 1
+      if (isFirstRequest) {
+        process.exitCode = 1
+        isFirstRequest = false
+      }
+
       const responseJSON = await response.json()
       console.warn(`Request failed [${response.status}]: ${response.url}`)
       console.warn(`Response: ${JSON.stringify(responseJSON, null, "  ")}`)
