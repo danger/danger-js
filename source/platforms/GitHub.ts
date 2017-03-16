@@ -24,8 +24,7 @@ export class GitHub {
    * @returns {Promise<any>} JSON representation
    */
   async getReviewInfo(): Promise<GitHubPRDSL> {
-    const deets = await this.api.getPullRequestInfo()
-    return await deets.json()
+    return await this.api.getPullRequestInfo()
   }
 
   /**

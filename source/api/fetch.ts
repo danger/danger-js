@@ -53,8 +53,8 @@ export function api(url: string | any, init: any): Promise<any> {
     if (!response.ok) {
       process.exitCode = 1
       const responseJSON = await response.json()
-      console.error(`Request failed [${response.status}]: ${response.url}`)
-      console.error(`Response: ${JSON.stringify(responseJSON, null, "  ")}`)
+      console.warn(`Request failed [${response.status}]: ${response.url}`)
+      console.warn(`Response: ${JSON.stringify(responseJSON, null, "  ")}`)
     }
 
     return response
