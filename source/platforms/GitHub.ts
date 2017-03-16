@@ -70,9 +70,7 @@ export class GitHub {
       color: label.color,
     }))
 
-    return {
-      labels,
-    }
+    return { labels }
   }
 
   /**

@@ -162,7 +162,7 @@ export class GitHubAPI {
     const prID = this.ciSource.pullRequestID
     const res = await this.get(`repos/${repo}/issues/${prID}`)
 
-    return res.ok ? res.json() : {}
+    return res.ok ? res.json() : { labels: [] }
   }
 
   // API Helpers
