@@ -15,7 +15,7 @@ export class GitHubAPI {
   fetch: typeof fetch
   additionalHeaders: any
 
-  constructor(public readonly token: APIToken | undefined, public readonly ciSource: CISource) {
+  constructor(public readonly ciSource: CISource, public readonly token?: APIToken) {
     // This allows Peril to DI in a new Fetch function
     // which can handle unique API edge-cases around integrations
     this.fetch = fetch
@@ -33,13 +33,11 @@ export class GitHubAPI {
   async fileContents(path: string, ref?: string): Promise<string> {
     // Use head of PR (current state of PR) if no ref passed
     if (!ref) {
-      const pr = await this.getPullRequestInfo()
-      const prJSON = await pr.json()
+      const prJSON = await this.getPullRequestInfo()
 
       ref = prJSON.head.ref
     }
-    const fileMetadata = await this.getFileContents(path, ref)
-    const data = await fileMetadata.json()
+    const data = await this.getFileContents(path, ref)
     const buffer = new Buffer(data.content, "base64")
     return buffer.toString()
   }
@@ -48,22 +46,25 @@ export class GitHubAPI {
 
   async getDangerCommentID(): Promise<number | null> {
     const userID = await this.getUserID()
-    const allCommentsResponse = await this.getPullRequestComments()
-    const allComments: any[] = await allCommentsResponse.json()
+    const allComments: any[] = await this.getPullRequestComments()
     const dangerComment = find(allComments, (comment: any) => comment.user.id === userID)
     return dangerComment ? dangerComment.id : null
   }
 
   async updateCommentWithID(id: number, comment: string): Promise<any> {
     const repo = this.ciSource.repoSlug
-    return this.patch(`repos/${repo}/issues/comments/${id}`, {}, {
+    const res = await this.patch(`repos/${repo}/issues/comments/${id}`, {}, {
       body: comment
     })
+
+    return res.json()
   }
 
   async deleteCommentWithID(id: number): Promise<any> {
     const repo = this.ciSource.repoSlug
-    return this.api(`repos/${repo}/issues/comments/${id}`, {}, {}, "DELETE")
+    const res = await this.api(`repos/${repo}/issues/comments/${id}`, {}, {}, "DELETE")
+
+    return res.json()
   }
 
   async getUserID(): Promise<number> {
@@ -71,58 +72,69 @@ export class GitHubAPI {
     return info.id
   }
 
-  postPRComment(comment: string): Promise<any> {
+  async postPRComment(comment: string): Promise<any> {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID
-    return this.post(`repos/${repo}/issues/${prID}/comments`, {}, {
+    const res = await this.post(`repos/${repo}/issues/${prID}/comments`, {}, {
       body: comment
     })
+
+    return res.json()
   }
 
-  getPullRequestInfo(): Promise<any> {
+  async getPullRequestInfo(): Promise<any> {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/pulls/${prID}`)
+    const res = await this.get(`repos/${repo}/pulls/${prID}`)
+
+    return res.ok ?  res.json() : {}
   }
 
-  getPullRequestCommits(): Promise<any> {
+  async getPullRequestCommits(): Promise<any> {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/pulls/${prID}/commits`)
+    const res = await this.get(`repos/${repo}/pulls/${prID}/commits`)
+
+    return res.ok ? res.json() : []
   }
 
   async getUserInfo(): Promise<any> {
     const response: any = await this.get("user")
-    return await response.json()
+
+    return response.json()
   }
 
   // TODO: This does not handle pagination
-  getPullRequestComments(): Promise<any> {
+  async getPullRequestComments(): Promise<any> {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/issues/${prID}/comments`)
+    const res = await this.get(`repos/${repo}/issues/${prID}/comments`)
+
+    return res.ok ? res.json() : []
   }
 
-  getPullRequestDiff(): Promise<any> {
+  async getPullRequestDiff(): Promise<string> {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID
-    return this.get(`repos/${repo}/pulls/${prID}`, {
+    const res = await this.get(`repos/${repo}/pulls/${prID}`, {
       accept: "application/vnd.github.v3.diff"
     })
+
+    return res.ok ? res.text() : ""
   }
 
-  getFileContents(path: string, ref?: string): Promise<any> {
+  async getFileContents(path: string, ref?: string): Promise<any> {
     const repo = this.ciSource.repoSlug
-    return this.get(`repos/${repo}/contents/${path}?ref=${ref}`, {})
+    const res = await this.get(`repos/${repo}/contents/${path}?ref=${ref}`)
+
+    return res.ok ? res.json() : { content: "" }
   }
 
   async getPullRequests(): Promise<any> {
     const repo = this.ciSource.repoSlug
     const res = await this.get(`repos/${repo}/pulls`)
-    if (res.ok) {
-      return res.json()
-    }
-    return []
+
+    return res.ok ? res.json : []
   }
 
   async getReviewerRequests(): Promise<any> {
@@ -131,10 +143,8 @@ export class GitHubAPI {
     const res = await this.get(`repos/${repo}/pulls/${prID}/requested_reviewers`, {
       accept: "application/vnd.github.black-cat-preview+json"
     })
-    if (res.ok) {
-      return res.json()
-    }
-    return []
+
+    return res.ok ? res.json() : []
   }
 
   async getReviews(): Promise<any> {
@@ -143,26 +153,25 @@ export class GitHubAPI {
     const res = await this.get(`repos/${repo}/pulls/${prID}/reviews`, {
       accept: "application/vnd.github.black-cat-preview+json"
     })
-    if (res.ok) {
-      return res.json()
-    }
-    return []
+
+    return res.ok ? res.json() : []
   }
 
   async getIssue(): Promise<any> {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID
     const res = await this.get(`repos/${repo}/issues/${prID}`)
-    if (res.ok) {
-      return res.json()
-    }
-    return {}
+
+    return res.ok ? res.json() : {}
   }
 
+  // API Helpers
+
   private api(path: string, headers: any = {}, body: any = {}, method: string) {
-    if (this.token !== undefined) {
+    if (this.token) {
       headers["Authorization"] = `token ${this.token}`
     }
+
     const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || "https://api.github.com"
     return this.fetch(`${baseUrl}/${path}`, {
       method: method,

@@ -55,9 +55,8 @@ export function api(url: string | any, init: any): Promise<any> {
       const responseJSON = await response.json()
       console.error(`Request failed [${response.status}]: ${response.url}`)
       console.error(`Response: ${JSON.stringify(responseJSON, null, "  ")}`)
-      const msg = response.status === 0 ? "Network Error" : response.statusText
-      throw new (Error as any)(response.status, msg, {response: response})
     }
+
     return response
   })
 }
