@@ -17,11 +17,17 @@ describe("sentence()", () => {
 })
 
 describe("href()", () => {
+  it("returns null when href and text are falsy", () => {
+    expect(href("", "")).toEqual(null)
+  })
+  it("returns just the text when the href is missing", () => {
+    expect(href("", "Some text")).toEqual("Some text")
+  })
+  it("returns <a> tag with href as text when text is missing", () => {
+    expect(href("/path/to/file", "")).toEqual(`<a href="/path/to/file">/path/to/file</a>`)
+  })
   it("returns <a> tag for supplied href and text", () => {
     expect(href("http://danger.systems", "Danger"))
       .toEqual(`<a href="http://danger.systems">Danger</a>`)
-  })
-  it("handles falsy input", () => {
-    expect(href(null, undefined)).toEqual(`<a href="#"></a>`)
   })
 })
