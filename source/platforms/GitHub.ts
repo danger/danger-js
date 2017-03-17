@@ -79,8 +79,17 @@ export class GitHub {
    * @returns {Promise<GitHubDSL>} JSON response of the DSL
    */
   async getPlatformDSLRepresentation(): Promise<GitHubDSL> {
-    const issue = await this.getIssue()
     const pr = await this.getReviewInfo()
+    if (pr === {}) {
+      process.exitCode = 1
+      throw `
+        Could not find pull request information,
+        if you are using a private repo then perhaps
+        Danger does not have permission to access that repo.
+      `
+    }
+
+    const issue = await this.getIssue()
     const commits = await this.api.getPullRequestCommits()
     const reviews = await this.api.getReviews()
     const requested_reviewers = await this.api.getReviewerRequests()
