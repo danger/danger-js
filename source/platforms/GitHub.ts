@@ -2,6 +2,7 @@ import { GitDSL } from "../dsl/GitDSL"
 import { GitCommit } from "../dsl/Commit"
 import { GitHubPRDSL, GitHubCommit, GitHubDSL, GitHubIssue, GitHubIssueLabel } from "../dsl/GitHubDSL"
 import { GitHubAPI } from "./github/GitHubAPI"
+import GitHubUtils from "./github/GitHubUtils"
 
 import * as parseDiff from "parse-diff"
 import * as includes from "lodash.includes"
@@ -99,7 +100,8 @@ export class GitHub {
       pr,
       commits,
       reviews,
-      requested_reviewers
+      requested_reviewers,
+      utils: GitHubUtils(pr)
     }
   }
 
