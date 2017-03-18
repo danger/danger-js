@@ -8,8 +8,8 @@ import { existsSync } from "fs"
  */
 export function dangerfilePath(program: any): string {
   if (program.dangerfile) { return program.dangerfile }
-  if (existsSync("dangerfile.js")) { return "dangerfile.js" }
   if (existsSync("dangerfile.ts")) { return "dangerfile.ts" }
+  if (existsSync("dangerfile.js")) { return "dangerfile.js" }
 
   throw new Error("Could not find a `dangerfile.js` or `dangerfile.ts` in the current working directory.")
 }

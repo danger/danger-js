@@ -38,6 +38,10 @@ export interface DangerDSLType {
    *  The GitHub metadata.
    */
   readonly github: Readonly<GitHubDSL>
+  /**
+   * Danger utils
+   */
+  readonly utils: Readonly<DangerUtilsDSL>
 }
 /**
  * Representation of what running a Dangerfile generates.
@@ -67,6 +71,32 @@ export interface DangerRuntimeContainer extends DangerResults {
    * Asynchronous functions to be run after parsing
    */
   scheduled: Array<Function>
+}
+/**
+ * The Danger Utils DSL contains utility functions
+ * that are specific to universal Danger use-cases.
+ */
+export interface DangerUtilsDSL {
+  /**
+   * Creates a link using HTML.
+   *
+   * If `href` and `text` are falsy, null is returned.
+   * If `href` is falsy and `text` is truthy, `text` is returned.
+   * If `href` is truthy and `text` is falsy, an <a> tag is returned with `href` as its href and text value.
+   * Otherwise, if `href` and `text` are truthy, an <a> tag is returned with the `href` and `text` inserted as expected.
+   *
+   * @param {string} href The HTML link's destination.
+   * @param {string} text The HTML link's text.
+   * @returns {string|null} The HTML <a> tag.
+   */
+  href(href: string, text: string): string | null
+  /**
+   * Converts an array of strings into a sentence.
+   *
+   * @param {Array<string>} array The array of strings.
+   * @returns {string} The sentence.
+   */
+  sentence(array: Array<string>): string
 }
 // This is `danger.git`
 /** The git specific metadata for a PR */
@@ -101,6 +131,23 @@ export interface GitHubDSL {
   reviews: Array<GitHubReview>
   /** The people requested to review this PR */
   requested_reviewers: Array<GitHubUser>
+  /** A scope for useful functions related to GitHub */
+  utils: GitHubUtilsDSL
+}
+/** Useful functions for GitHub related work */
+export interface GitHubUtilsDSL {
+  /**
+   * Creates HTML for a sentence of clickable links for an array of paths.
+   * This uses the source of the PR as the target, not the destination repo.
+   * You can manually set the target repo and branch however, to make it work how you want.
+   *
+   * @param {string} paths A list of strings representing file paths
+   * @param {string} useBasename Show either the file name, or the full path - defaults to just file name e.g. true.
+   * @param {string} repoSlug An optional override for the repo slug, ex: "orta/ORStackView"
+   * @param {string} branch An optional override for the branch, ex: "v3"
+   * @returns {string} A HTML string of <a>'s built as a sentence.
+   */
+  fileLinks(paths: string[], useBasename?: boolean, repoSlug?: string, branch?: string): string
 }
 /**
  * This is `danger.github.issue`
@@ -300,6 +347,10 @@ export interface GitHubRepo {
    * Are there people assigned to this PR?
    */
   assignees: Array<GitHubUser>
+  /**
+   * The root web URL for the repo, e.g. https://github.com/artsy/emission
+   */
+  html_url: string
 }
 export interface GitHubMergeRef {
   /**
@@ -318,6 +369,10 @@ export interface GitHubMergeRef {
    * The user that owns the merge reference e.g. "artsy"
    */
   user: GitHubUser
+  /**
+   * The repo from whch the reference comes from
+   */
+  repo: GitHubRepo
 }
 /**
  * GitHubReview
