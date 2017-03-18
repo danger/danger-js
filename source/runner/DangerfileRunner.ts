@@ -56,7 +56,7 @@ async function dangerJestConfig() {
   // so if you can make you tests run right,
   // then it's pretty likely that Danger can do it too.
   const jestConfig = await readConfig([], process.cwd())
-
+  // console.log(jestConfig)
   return {
     cacheDirectory: os.tmpdir(),
     setupFiles: [],
@@ -65,12 +65,14 @@ async function dangerJestConfig() {
       defaultPlatform: "danger-js"
     },
     moduleNameMapper: [],
+    moduleDirectories: [ "node_modules" ],
     moduleFileExtensions: ["js", ...jestConfig.moduleFileExtensions],
     transform: [["js$", "babel-jest"], ...jestConfig.transform],
-    transformIgnorePatterns: [],
+    testPathIgnorePatterns: jestConfig.testPathIgnorePatterns,
     cache: null,
     testRegex: "",
-    testPathDirs: [process.cwd()]
+    testPathDirs: [process.cwd()],
+    transformIgnorePatterns: [ "/node_modules/" ]
   }
 }
 

@@ -101,17 +101,20 @@ describe("with fixtures", () => {
     })
   })
 
-  it.skip("can execute async/await scheduled functions", async () => {
-    // this test takes *forever* because of babel-polyfill being required
-    const context = await setupDangerfileContext()
-    const runtime = await createDangerfileRuntimeEnvironment(context)
-    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.js"), runtime)
-    expect(results.warnings).toEqual([{
-      message: "Async Function"
-    }, {
-      message: "After Async Function"
-    }])
-  })
+  // This adds > 6 seconds to the tests! Only orta should be forced into that.
+  if (process.env["USER"] === "orta") {
+     it("can execute async/await scheduled functions", async () => {
+      // this test takes *forever* because of babel-polyfill being required
+      const context = await setupDangerfileContext()
+      const runtime = await createDangerfileRuntimeEnvironment(context)
+      const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.js"), runtime)
+      expect(results.warnings).toEqual([{
+        message: "Async Function"
+      }, {
+        message: "After Async Function"
+      }])
+    })
+  }
 
   it("can schedule callback-based promised", async () => {
     const context = await setupDangerfileContext()
@@ -126,7 +129,7 @@ describe("with fixtures", () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
     const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileTypeScript.ts"), runtime)
-    expect(results.warnings).toEqual([{
+    expect(results.messages).toEqual([{
       message: "Honey, we got Types",
     }])
   })

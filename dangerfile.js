@@ -1,6 +1,6 @@
 import fs from "fs"
 import includes from "lodash.includes"
-fs.f
+
 // Request a CHANGELOG entry if not declared #trivial
 const hasChangelog = includes(danger.git.modified_files, "changelog.md")
 const isTrivial = includes((danger.github.pr.body + danger.github.pr.title), "#trivial")
