@@ -1,3 +1,6 @@
+// The documentation for these are provided inline
+// inside DangerUtilsDSL.ts
+
 export function sentence(array: Array<string>): string {
   if ((array || []).length === 0) {
     return ""
@@ -8,7 +11,7 @@ export function sentence(array: Array<string>): string {
   return array.slice(0, array.length - 1).join(", ") + " and " + array.pop()
 }
 
-export function href(href: string, text: string): string | null {
+export function href(href?: string, text?: string): string | null {
   if (!href && !text) {
     return null
   }

@@ -5,7 +5,7 @@
 export interface DangerUtilsDSL {
 
   /**
-   * Creates an HTML link.
+   * Creates a link using HTML.
    *
    * If `href` and `text` are falsy, null is returned.
    * If `href` is falsy and `text` is truthy, `text` is returned.

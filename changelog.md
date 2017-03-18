@@ -9,10 +9,22 @@
   functions you use, we'd love to add them. Ideally you shouldn't need to use anything but Danger + utils
   to write your Dangerfiles.
 
-```js
-danger.utils.href("http://danger.systems", "Danger") // <a href="http://danger.systems">Danger</a>
-danger.utils.sentence(["A", "B", "C"]) // "A, B and C"
-```
+  ```js
+  danger.utils.href("http://danger.systems", "Danger") // <a href="http://danger.systems">Danger</a>
+  danger.utils.sentence(["A", "B", "C"]) // "A, B and C"
+  ```
+
+* Adds `danger.github.utils` - which currently has only one function: `fileLinks` - orta
+
+  Most of the time people are working with a list of files (e.g. modified, or created) and then
+  want to present clickable links to those. As the logic to figure the URLs is very GitHub specific, 
+  we've moved that into it's own object with space to grow.
+
+  ```js
+  const files = danger.git.modified_files // ["lib/component/a.ts", "lib/component/b.ts"]
+  const links = danger.github.utils.fileLinks(files) // "<a href='...'>a</a> and <a href='...'>b</a>"
+  warn(`These files have changes: ${links}`)
+  ```
 
 ### 0.12.1
 

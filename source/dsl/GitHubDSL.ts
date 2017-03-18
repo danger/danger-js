@@ -14,6 +14,24 @@ export interface GitHubDSL {
   reviews: Array<GitHubReview>
   /** The people requested to review this PR */
   requested_reviewers: Array<GitHubUser>
+  /** A scope for useful functions related to GitHub */
+  utils: GitHubUtilsDSL
+}
+
+/** Useful functions for GitHub related work */
+export interface GitHubUtilsDSL {
+  /**
+   * Creates HTML for a sentence of clickable links for an array of paths.
+   * This uses the source of the PR as the target, not the destination repo.
+   * You can manually set the target repo and branch however, to make it work how you want.
+   *
+   * @param {string} paths A list of strings representing file paths
+   * @param {string} useBasename Show either the file name, or the full path - defaults to just file name e.g. true.
+   * @param {string} repoSlug An optional override for the repo slug, ex: "orta/ORStackView"
+   * @param {string} branch An optional override for the branch, ex: "v3"
+   * @returns {string} A HTML string of <a>'s built as a sentence.
+   */
+  fileLinks(paths: string[], useBasename?: boolean, repoSlug?: string, branch?: string): string
 }
 
 /**
@@ -292,6 +310,11 @@ export interface GitHubRepo {
    * @type {Array<GitHubUser>}
    */
   assignees: Array<GitHubUser>
+  /**
+   * The root web URL for the repo, e.g. https://github.com/artsy/emission
+   * @type {string}
+   */
+  html_url: string
 }
 
 export interface GitHubMergeRef {
@@ -315,9 +338,12 @@ export interface GitHubMergeRef {
 
   /**
    * The user that owns the merge reference e.g. "artsy"
-   * @type {string}
    */
   user: GitHubUser
+  /**
+   * The repo from whch the reference comes from
+   */
+  repo: GitHubRepo
 }
 
 /**
