@@ -38,7 +38,7 @@ if (program.args.length === 0) {
     if (validateDangerfileExists(dangerFile)) {
       d(`executing dangerfile at ${dangerFile}`)
       const source = new FakeCI({ DANGER_TEST_REPO: pr.repo, DANGER_TEST_PR: pr.pullRequestNumber })
-      const api = new GitHubAPI(process.env["DANGER_GITHUB_API_TOKEN"], source)
+      const api = new GitHubAPI(source, process.env["DANGER_GITHUB_API_TOKEN"])
       const platform = new GitHub(api)
       runDanger(source, platform, dangerFile)
     }

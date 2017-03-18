@@ -6,8 +6,8 @@ export class FakeCI implements CISource {
 
   constructor(env: Env) {
     const defaults = {
-      repo: env.DANGER_TEST_REPO || "artsy/emission",
-      pr: env.DANGER_TEST_PR || "327"
+      repo: env.DANGER_TEST_REPO || "artsy/emission", // TODO: default to empty string ?
+      pr: env.DANGER_TEST_PR || "327" // TODO: default to empty string ?
     }
 
     this.env = {...env, ...defaults}

@@ -46,7 +46,7 @@ export async function getPullRequestIDForBranch(source: CISource, env: Env, bran
   if (!token) {
     return 0
   }
-  const api = new GitHubAPI(token, source)
+  const api = new GitHubAPI(source, token)
   const prs = await api.getPullRequests()
   const prForBranch: GitHubPRDSL = prs.find((pr: GitHubPRDSL) => pr.head.ref === branch)
   if (prForBranch) {
