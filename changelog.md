@@ -2,6 +2,8 @@
 
 //  Add your own contribution below
 
+### 0.13.0
+
 * Add `danger.utils` DSL, which includes `danger.utils.href()` and `danger.utils.sentence()` - macklinu
 
   We were finding that a lot of Dangerfiles needed similar functions, so we've added a `utils` object
