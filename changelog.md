@@ -2,6 +2,18 @@
 
 //  Add your own contribution below
 
+* Add `danger.utils` DSL, which includes `danger.utils.href()` and `danger.utils.sentence()` - macklinu
+
+  We were finding that a lot of Dangerfiles needed similar functions, so we've added a `utils` object
+  to offer functions that are going to be used across the board. If you can think of more 
+  functions you use, we'd love to add them. Ideally you shouldn't need to use anything but Danger + utils
+  to write your Dangerfiles.
+
+```js
+danger.utils.href("http://danger.systems", "Danger") // <a href="http://danger.systems">Danger</a>
+danger.utils.sentence(["A", "B", "C"]) // "A, B and C"
+```
+
 ### 0.12.1
 
 * Add support for [Drone](http://readme.drone.io) - gabro
