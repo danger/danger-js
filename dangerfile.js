@@ -24,5 +24,11 @@ if (packageChanged && !lockfileChanged) {
   warn(`${message} - <i>${idea}</i>`)
 }
 
-// TODO: Sync process? Or use the async operators
-// Want to compare the output of `node ./scripts/create-danger-dts.js` to the current DTS
+import dtsGenerator from "./scripts/danger-dts"
+const currentDTS = dtsGenerator()
+const savedDTS = fs.readFileSync("source/danger.d.ts").toString()
+if (currentDTS !== savedDTS) {
+  const message = "There are changes to the Danger DSL which are not reflected in the current danger.d.ts."
+  const idea = "Please run `node ./scripts/create-danger-dts.js` and update this PR."
+  fail(`${message} - <i>${idea}</i>`)
+}
