@@ -1,6 +1,6 @@
 import { GitHubAPI } from "../GitHubAPI"
 import { FakeCI } from "../../../ci_source/providers/Fake"
-import { requestWithFixturedJSON, requestWithFixturedContent } from "../../_tests/GitHub.test"
+import { requestWithFixturedJSON } from "../../_tests/GitHub.test"
 
 const fetchJSON = (api, params): Promise<any> => {
   return Promise.resolve({
@@ -18,13 +18,12 @@ const fetch = (api, params): Promise<any> => {
   })
 }
 
-it.skip("fileContents expects to grab PR JSON and pull out a file API call", async () => {
+it("fileContents expects to grab PR JSON and pull out a file API call", async () => {
   const mockSource = new FakeCI({})
-  const api = new GitHubAPI("token", mockSource)
-  // api.fetch = fetch
+  const api = new GitHubAPI(mockSource, "token")
 
   api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
-  api.getFileContents = await requestWithFixturedContent("static_file.md")
+  api.getFileContents = await requestWithFixturedJSON("static_file.json")
 
   const info = await api.fileContents("my_path.md")
   expect(info).toEqual("The All-Defector is a purported glitch in the Dilemma Prison that appears to prisoners as themselves. This gogol always defects, hence the name.")//tslint:disable-line:max-line-length
@@ -36,7 +35,7 @@ describe("API testing", () => {
   beforeEach(() => {
     const mockSource = new FakeCI({})
 
-    api = new GitHubAPI("ABCDE", mockSource)
+    api = new GitHubAPI(mockSource, "ABCDE")
   })
 
   it("getUserInfo", async () => {
@@ -52,23 +51,19 @@ describe("API testing", () => {
   })
 
   it("updateCommentWithID", async () => {
-     api.fetch = fetch
-    expect(await api.updateCommentWithID(123, "Hello!")).toMatchObject({
-      api: "https://api.github.com/repos/artsy/emission/issues/comments/123",
-      body: "{\"body\":\"Hello!\"}",
-      headers: {
-        Authorization: "token ABCDE",
-        "Content-Type": "application/json",
-      },
-      method: "PATCH",
-    })
+    api.fetch = fetch
+    api.patch = jest.fn(() => ({ json: jest.fn() }))
+
+    await api.updateCommentWithID(123, "Hello!")
+
+    expect(api.patch).toHaveBeenCalledWith("repos/artsy/emission/issues/comments/123", {}, {"body": "Hello!"})
   })
 })
 
 describe("Peril", () => {
   it("Allows setting additional headers", async () => {
     const mockSource = new FakeCI({})
-    const api = new GitHubAPI("ABCDE", mockSource)
+    const api = new GitHubAPI(mockSource, "ABCDE")
     api.fetch = fetchJSON
     api.additionalHeaders = { "CUSTOM": "HEADER" }
 

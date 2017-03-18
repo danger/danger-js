@@ -24,8 +24,7 @@ export class GitHub {
    * @returns {Promise<any>} JSON representation
    */
   async getReviewInfo(): Promise<GitHubPRDSL> {
-    const deets = await this.api.getPullRequestInfo()
-    return await deets.json()
+    return await this.api.getPullRequestInfo()
   }
 
   /**
@@ -34,11 +33,8 @@ export class GitHub {
    * @returns {Promise<GitDSL>} the git DSL
    */
   async getReviewDiff(): Promise<GitDSL> {
-    const diffReq = await this.api.getPullRequestDiff()
-    const getCommitsResponse = await this.api.getPullRequestCommits()
-    const getCommits = await getCommitsResponse.json()
-
-    const diff = await diffReq.text()
+    const diff = await this.api.getPullRequestDiff()
+    const getCommits = await this.api.getPullRequestCommits()
 
     const fileDiffs: Array<any> = parseDiff(diff)
 
@@ -74,9 +70,7 @@ export class GitHub {
       color: label.color,
     }))
 
-    return {
-      labels,
-    }
+    return { labels }
   }
 
   /**
@@ -85,18 +79,27 @@ export class GitHub {
    * @returns {Promise<GitHubDSL>} JSON response of the DSL
    */
   async getPlatformDSLRepresentation(): Promise<GitHubDSL> {
-    const issue = await this.getIssue()
     const pr = await this.getReviewInfo()
+    if (pr === {}) {
+      process.exitCode = 1
+      throw `
+        Could not find pull request information,
+        if you are using a private repo then perhaps
+        Danger does not have permission to access that repo.
+      `
+    }
+
+    const issue = await this.getIssue()
     const commits = await this.api.getPullRequestCommits()
     const reviews = await this.api.getReviews()
-    const requestedReviewers = await this.api.getReviewerRequests()
+    const requested_reviewers = await this.api.getReviewerRequests()
 
     return {
       issue,
       pr,
       commits,
       reviews,
-      requested_reviewers: requestedReviewers
+      requested_reviewers
     }
   }
 
@@ -138,7 +141,10 @@ export class GitHub {
    */
   async deleteMainComment(): Promise<boolean> {
     const commentID = await this.api.getDangerCommentID()
-    if (commentID) { await this.api.deleteCommentWithID(commentID) }
+    if (commentID) {
+      await this.api.deleteCommentWithID(commentID)
+    }
+
     return commentID !== null
   }
 

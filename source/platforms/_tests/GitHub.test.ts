@@ -14,7 +14,7 @@ const EOL = os.EOL
 const mockGitHubWithGetForPath = (expectedPath): GitHub => {
   const mockSource = new FakeCI({})
 
-  const api = new GitHubAPI("token", mockSource)
+  const api = new GitHubAPI(mockSource)
   const github = new GitHub(api)
 
   api.get = (path: string, headers: any = {}, body: any = {}, method: string = "GET"): Promise<any> => {
@@ -28,32 +28,21 @@ const mockGitHubWithGetForPath = (expectedPath): GitHub => {
 }
 
 /** Returns JSON from the fixtured dir */
-export const requestWithFixturedJSON = async (path: string): Promise<any> => {
-  const json = JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString())
-  return () => {
-    return {
-      json: () => Promise.resolve(json)
-    }
-  }
-}
+export const requestWithFixturedJSON = async (path: string): Promise<() => Promise<any>> => () => (
+  Promise.resolve(JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString()))
+)
 
 /** Returns arbitrary text value from a request */
-export const requestWithFixturedContent = async (path: string): Promise<any> => {
-  const content = readFileSync(`${fixtures}/${path}`, {}).toString()
-  return () => {
-    return {
-      text: () => Promise.resolve(content)
-    }
-  }
-}
+export const requestWithFixturedContent = async (path: string): Promise<() => Promise<string>> => () => (
+  Promise.resolve(readFileSync(`${fixtures}/${path}`, {}).toString())
+)
 
 describe("with fixtured data", () => {
   it("returns the correct github data", async () => {
     const mockSource = new FakeCI({})
-    const api = new GitHubAPI("token", mockSource)
+    const api = new GitHubAPI(mockSource)
     const github = new GitHub(api)
     api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
-    api.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
 
     const info = await github.getReviewInfo()
     expect(info.title).toEqual("Adds support for showing the metadata and trending Artists to a Gene VC")
@@ -62,7 +51,7 @@ describe("with fixtured data", () => {
   describe("the dangerfile gitDSL", async () => {
     let github: GitHub = {} as any
     beforeEach(async () => {
-      const api = new GitHubAPI("token", new FakeCI({}))
+      const api = new GitHubAPI(new FakeCI({}))
       github = new GitHub(api)
 
       api.getPullRequestDiff = await requestWithFixturedContent("github_diff.diff")

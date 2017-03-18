@@ -71,7 +71,7 @@ export function getPlatformForEnv(env: Env, source: CISource): Platform {
     throw new Error("Cannot use authenticated API requests.")
   }
 
-  const api = new GitHubAPI(token, source)
+  const api = new GitHubAPI(source, token)
   const github = new GitHub(api)
   return github
 }
