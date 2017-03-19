@@ -7,15 +7,10 @@ machine:
 dependencies:
   override:
     - yarn
+    - yarn add danger
   cache_directories:
     - ~/.cache/yarn
 
 test:
   override:
-    - yarn build
-    - npm link
-    - danger
-
-  post:
-    - yarn lint
-    - yarn test
+    - yarn danger -- run --dangerfile dangerfile.circle.js

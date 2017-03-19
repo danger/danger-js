@@ -15,7 +15,7 @@ declare const global: any
 program
   .option("-v, --verbose", "Verbose output of files")
   .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")
-  .option("-d, --dangerfile [filePath]", "Specify custom dangefile other than default dangerfile.js")
+  .option("-d, --dangerfile [filePath]", "Specify custom dangerfile other than default dangerfile.js")
   .parse(process.argv)
 
 process.on("unhandledRejection", function(reason: string, _p: any) {
