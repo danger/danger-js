@@ -8,10 +8,7 @@ matrix:
   include:
   - node_js: node
     before_script:
-    - yarn tsc
-    - ls
-    - chmod +x distribution/commands/danger.js
-    - npm link
+    - yarn run link
     - danger
   - node_js: '6'
   - node_js: '7'

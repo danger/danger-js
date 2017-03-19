@@ -1,10 +1,15 @@
+// Because we don't get to use the d.ts, we can pass in a subset here.
 import {DangerDSL} from "./source/dsl/DangerDSL"
 declare var danger: DangerDSL
 declare function warn(params: string): void
 declare function fail(params: string): void
 
 import * as fs from "fs"
-import includes from "lodash.includes"
+
+import * as includesOriginal from "lodash.includes"
+// For some reason we're getting type errors on this includes module?
+// Wonder if we could move to the includes function in ES2015?
+const includes = includesOriginal as Function
 
 // Request a CHANGELOG entry if not declared #trivial
 const hasChangelog = includes(danger.git.modified_files, "changelog.md")

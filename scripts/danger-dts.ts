@@ -27,11 +27,14 @@ const createDTS = () => {
   const context = moduleContext.split("\n").map((line: string) => {
     if ((line.length === 0) || (line.includes("*"))) { return line }
     if (line.includes("(")) { return "  function " + line.trim() }
-    if (line.includes(":")) { return "  var " + line.trim() }
+    if (line.includes(":")) { return "  const " + line.trim() }
     return ""
   }).join("\n")
 
-  fileOutput += context
+  fileOutput += `declare namespace danger {
+  ${context}
+}
+`// last extra line is EOF
 
   // Remove all JS-y bits
   fileOutput = fileOutput.split("\n").filter((line) => {
@@ -39,8 +42,7 @@ const createDTS = () => {
         !line.includes("* @type ")
   }).join("\n")
 
-  // Remove any 2 line breaks
-  return fileOutput.replace(/\n\s*\n/g, "\n")
+  return fileOutput.replace(/\n\s*\n\s*\n/g, "\n")
 }
 
 export default createDTS
