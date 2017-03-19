@@ -1,5 +1,10 @@
-const dts = require("./danger-dts")
-const fs = require("fs")
+import dts from "./danger-dts"
+import * as fs from "fs"
+
+// This could need to exist
+if (!fs.existsSync("distribution")) {
+  fs.mkdirSync("distribution")
+}
 
 const output = dts()
 

@@ -1,7 +1,7 @@
-var fs = require("fs")
+import * as fs from "fs"
 
 const createDTS = () => {
-  var fileOutput = ""
+  let fileOutput = ""
 
   const extras = ["source/platforms/messaging/violation.ts"]
   const dslFiles = fs.readdirSync("source/dsl").map(f => `source/dsl/${f}`)
@@ -24,10 +24,11 @@ const createDTS = () => {
   const moduleContext = allDangerfile.split("/// Start of Danger DSL definition")[1].split("/// End of Danger DSL definition")[0]
 
   // we need to add either `declare function` or `declare var` to the interface
-  const context = moduleContext.split("\n").map((line) => {
+  const context = moduleContext.split("\n").map((line: string) => {
     if ((line.length === 0) || (line.includes("*"))) { return line }
     if (line.includes("(")) { return "  function " + line.trim() }
     if (line.includes(":")) { return "  var " + line.trim() }
+    return ""
   }).join("\n")
 
   fileOutput += context
@@ -41,5 +42,5 @@ const createDTS = () => {
   // Remove any 2 line breaks
   return fileOutput.replace(/\n\s*\n/g, "\n")
 }
- 
-module.exports = createDTS
+
+export default createDTS

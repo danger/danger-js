@@ -52,10 +52,11 @@
     "test:watch": "jest --watch",
     "lint": "tslint \"source/**/*.ts\"",
     "lint:fix": "tslint \"source/**/*.ts\" --fix",
-    "prepublish": "in-publish && npm run build && node ./scripts/create-danger-dts.js || not-in-publish",
+    "prepublish": "in-publish && npm run build && yarn declarations || not-in-publish",
     "build": "shx rm -rf ./distribution && tsc && madge ./distribution --circular",
     "build:watch": "tsc -w",
-    "link": "npm run build ; chmod +x distribution/commands/danger.js ; npm link"
+    "link": "npm run build && chmod +x distribution/commands/danger.js && npm link",
+    "declarations": "ts-node ./scripts/create-danger-dts.ts"
   },
   "repository": {
     "type": "git",
@@ -89,7 +90,7 @@
     "madge": "^1.4.4",
     "shx": "^0.2.1",
     "ts-jest": "^19.0.0",
-    "ts-node": "^2.0.0",
+    "ts-node": "^2.1.0",
     "tslint": "^4.4.0",
     "typescript": "2.2.1"
   },
@@ -98,9 +99,9 @@
     "chalk": "^1.1.1",
     "commander": "^2.9.0",
     "debug": "^2.6.0",
+    "jest-config": "^18.0.0",
     "jest-environment-node": "^18.1.0",
     "jest-runtime": "^18.0.0",
-    "jest-config": "^18.0.0",
     "jsome": "^2.3.25",
     "lodash.find": "^4.6.0",
     "lodash.includes": "^4.3.0",

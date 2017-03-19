@@ -1,4 +1,9 @@
-import fs from "fs"
+import {DangerDSL} from "./source/dsl/DangerDSL"
+declare var danger: DangerDSL
+declare function warn(params: string): void
+declare function fail(params: string): void
+
+import * as fs from "fs"
 import includes from "lodash.includes"
 
 // Request a CHANGELOG entry if not declared #trivial
@@ -29,6 +34,6 @@ const currentDTS = dtsGenerator()
 const savedDTS = fs.readFileSync("source/danger.d.ts").toString()
 if (currentDTS !== savedDTS) {
   const message = "There are changes to the Danger DSL which are not reflected in the current danger.d.ts."
-  const idea = "Please run <code>node ./scripts/create-danger-dts.js</code> and update this PR."
+  const idea = "Please run <code>yarn declarations</code> and update this PR."
   fail(`${message} - <i>${idea}</i>`)
 }

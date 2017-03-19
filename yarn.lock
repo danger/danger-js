@@ -1105,13 +1105,13 @@ cryptiles@2.x.x:
   dependencies:
     boom "2.x.x"
 
-cssom@0.3.x, "cssom@>= 0.3.2 < 0.4.0":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/cssom/-/cssom-0.3.2.tgz#b8036170c79f07a90ff2f16e22284027a243848b"
-
-"cssom@>= 0.3.0 < 0.4.0":
+cssom@0.3.x, "cssom@>= 0.3.0 < 0.4.0":
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/cssom/-/cssom-0.3.1.tgz#c9e37ef2490e64f6d1baa10fda852257082c25d3"
+
+"cssom@>= 0.3.2 < 0.4.0":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/cssom/-/cssom-0.3.2.tgz#b8036170c79f07a90ff2f16e22284027a243848b"
 
 "cssstyle@>= 0.2.36 < 0.3.0", "cssstyle@>= 0.2.37 < 0.3.0":
   version "0.2.37"
@@ -3968,9 +3968,9 @@ ts-jest@^19.0.0:
     source-map-support "^0.4.4"
     yargs "^6.1.1"
 
-ts-node@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-2.0.0.tgz#16e4fecc949088238b4cbf1c39c9582526b66f74"
+ts-node@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-2.1.0.tgz#aa2bf4b2e25c5fb6a7c54701edc3666d3a9db25d"
   dependencies:
     arrify "^1.0.0"
     chalk "^1.1.1"
