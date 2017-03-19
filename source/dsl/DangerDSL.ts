@@ -24,7 +24,7 @@ export interface DangerDSLType {
   readonly utils: Readonly<DangerUtilsDSL>
 }
 
-/* END FLOWTYPE EXPORT */
+/// End of Danger DSL definition
 
 export class DangerDSL {
   public readonly github: Readonly<GitHubDSL>

@@ -1,4 +1,5 @@
 import * as Runtime from "jest-runtime"
+import { readConfig } from "jest-config"
 import * as NodeEnvironment from "jest-environment-node"
 import * as os from "os"
 import * as fs from "fs"
@@ -15,22 +16,7 @@ import { DangerfileRuntimeEnv, Environment, Path } from "./types"
  * @returns {any} the results of the run
  */
 export async function createDangerfileRuntimeEnvironment(dangerfileContext: DangerContext): Promise<DangerfileRuntimeEnv> {
-  const config = {
-    cacheDirectory: os.tmpdir(),
-    setupFiles: [],
-    name: "danger",
-    haste: {
-      defaultPlatform: "danger-js"
-    },
-    moduleNameMapper: [],
-    moduleFileExtensions: ["js"],
-    transform: [["js$", "babel-jest"]],
-    transformIgnorePatterns: [],
-    cache: null,
-    testRegex: "",
-    testPathDirs: [process.cwd()]
-  }
-
+  const config =  await dangerJestConfig()
   const environment: Environment = new NodeEnvironment(config)
 
   const runnerGlobal = environment.global
@@ -54,6 +40,39 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
     context,
     environment,
     runtime
+  }
+}
+
+/**
+ * The Jest config object for this Danger run
+ * @returns {any} the results of the run
+ */
+async function dangerJestConfig() {
+  // Note: This function is making assumptions that
+  // the Dangerfile is being ran from the CWD
+
+  // Get the original jest config, this means
+  // we can re-use things like haste transformers.
+  // so if you can make you tests run right,
+  // then it's pretty likely that Danger can do it too.
+  const jestConfig = await readConfig([], process.cwd())
+  // console.log(jestConfig)
+  return {
+    cacheDirectory: os.tmpdir(),
+    setupFiles: [],
+    name: "danger",
+    haste: {
+      defaultPlatform: "danger-js"
+    },
+    moduleNameMapper: [],
+    moduleDirectories: [ "node_modules" ],
+    moduleFileExtensions: ["js", ...jestConfig.moduleFileExtensions],
+    transform: [["js$", "babel-jest"], ...jestConfig.transform],
+    testPathIgnorePatterns: jestConfig.testPathIgnorePatterns,
+    cache: null,
+    testRegex: "",
+    testPathDirs: [process.cwd()],
+    transformIgnorePatterns: [ "/node_modules/" ]
   }
 }
 

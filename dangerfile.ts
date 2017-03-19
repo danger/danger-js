@@ -1,7 +1,15 @@
-// Removed import
+// Because we don't get to use the d.ts, we can pass in a subset here.
+import {DangerDSL} from "./source/dsl/DangerDSL"
+declare var danger: DangerDSL
+declare function warn(params: string): void
+declare function fail(params: string): void
 
-import fs from "fs"
-import includes from "lodash.includes"
+import * as fs from "fs"
+
+import * as includesOriginal from "lodash.includes"
+// For some reason we're getting type errors on this includes module?
+// Wonder if we could move to the includes function in ES2015?
+const includes = includesOriginal as Function
 
 // Request a CHANGELOG entry if not declared #trivial
 const hasChangelog = includes(danger.git.modified_files, "changelog.md")
@@ -24,4 +32,13 @@ if (packageChanged && !lockfileChanged) {
   const message = "Changes were made to package.json, but not to yarn.lock"
   const idea = "Perhaps you need to run `yarn install`?"
   warn(`${message} - <i>${idea}</i>`)
+}
+
+import dtsGenerator from "./scripts/danger-dts"
+const currentDTS = dtsGenerator()
+const savedDTS = fs.readFileSync("source/danger.d.ts").toString()
+if (currentDTS !== savedDTS) {
+  const message = "There are changes to the Danger DSL which are not reflected in the current danger.d.ts."
+  const idea = "Please run <code>yarn declarations</code> and update this PR."
+  fail(`${message} - <i>${idea}</i>`)
 }

@@ -16,13 +16,15 @@
     "pretty": true,
     "target": "es5",
     "outDir": "distribution",
-    "lib": ["es5", "es2015.promise"]
+    "lib": ["es5", "es2015"]
   },
   "formatCodeOptions": {
     "indentSize": 2,
     "tabSize": 2
   },
   "exclude": [
+    "dangerfile.ts",
+    "scripts",
     "node_modules",
     "source/**/fixtures/*",
     "source/**/_tests/*",

@@ -3,7 +3,8 @@ import * as debug from "debug"
 import * as fs from "fs"
 import { getCISource } from "../ci_source/get_ci_source"
 import { getPlatformForEnv } from "../platforms/platform"
-import {Executor} from "../runner/Executor"
+import { Executor } from "../runner/Executor"
+import { dangerfilePath } from "./utils/file-utils"
 
 const d = debug("danger:run")
 declare const global: any
@@ -14,7 +15,7 @@ declare const global: any
 program
   .option("-v, --verbose", "Verbose output of files")
   .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")
-  .option("-d, --dangerfile [filePath]", "Specify custom dangefile other than default dangerfile.js")
+  .option("-d, --dangerfile [filePath]", "Specify custom dangerfile other than default dangerfile.js")
   .parse(process.argv)
 
 process.on("unhandledRejection", function(reason: string, _p: any) {
@@ -52,7 +53,7 @@ async function run(): Promise<any> {
     }
 
     if (platform) {
-      const dangerFile = (program as any).dangerfile || "dangerfile.js"
+      const dangerFile = dangerfilePath(program)
 
       console.log(`OK, looks good ${source.name} on ${platform.name}`)
 
@@ -64,7 +65,7 @@ async function run(): Promise<any> {
           const exec = new Executor(source, platform)
           exec.setupAndRunDanger(dangerFile)
         } else {
-          console.log(`looks like specified ${dangerFile} is not valid path`)
+          console.error(`Looks like specified ${dangerFile} is not a valid path.`)
           process.exitCode = 1
         }
       } catch (error) {
