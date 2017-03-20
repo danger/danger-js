@@ -5,6 +5,9 @@ import { getCISource } from "../ci_source/get_ci_source"
 import { getPlatformForEnv } from "../platforms/platform"
 import { Executor } from "../runner/Executor"
 import { dangerfilePath } from "./utils/file-utils"
+import { providers } from "../ci_source/providers"
+import { sentence } from "../runner/DangerUtils"
+import * as chalk from "chalk"
 
 const d = debug("danger:run")
 declare const global: any
@@ -15,25 +18,35 @@ declare const global: any
 program
   .option("-v, --verbose", "Verbose output of files")
   .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")
-  .option("-d, --dangerfile [filePath]", "Specify custom dangerfile other than default dangerfile.js")
+  .option("-t, --text-only", "Provide an STDOUT only interface")
+  .option("-d, --dangerfile [filePath]", "Specify a custom dangerfile path")
   .parse(process.argv)
 
+// The dynamic nature of the program means typecasting a lot
+// use this to work with dynamic propeties
+const app = program as any
+
 process.on("unhandledRejection", function(reason: string, _p: any) {
-  console.log("Error: ", reason)
+  console.log(chalk.red("Error: "), reason)
   process.exitCode = 1
 })
 
-if (process.env["DANGER_VERBOSE"] || (program as any).verbose) {
+if (process.env["DANGER_VERBOSE"] || app.verbose) {
   global.verbose = true
 }
 
 // a dirty wrapper to allow async functionality in the setup
 async function run(): Promise<any> {
-  const source = getCISource(process.env, (program as any).externalCiProvider || undefined)
+  const source = getCISource(process.env, app.externalCiProvider || undefined)
 
   if (!source) {
-    console.log("Could not find a CI source for this run")
-    // Check for ENV["CI"] and wanr they might want a local command instead?
+    console.log("Could not find a CI source for this run. Does Danger support this CI service?")
+    console.log(`Danger supports: ${sentence(providers.map(p => p.name))}.`)
+
+    if (!process.env["CI"]) {
+      console.log("You may want to consider using `danger pr` to run Danger locally.")
+    }
+
     process.exitCode = 1
   }
   // run the sources setup function, if it exists
@@ -42,32 +55,41 @@ async function run(): Promise<any> {
   }
 
   if (source && !source.isPR) {
-    console.log("Skipping due to not being a PR")
+    // This does not set a failing exit code
+    console.log("Skipping Danger due to not this run not executing on a PR.")
   }
 
   if (source && source.isPR) {
     const platform = getPlatformForEnv(process.env, source)
     if (!platform) {
-      console.log(`Could not find a source code hosting platform for ${source.name}`)
+      console.log(chalk.red(`Could not find a source code hosting platform for ${source.name}.`))
+      console.log(`Currently DangerJS only supports GitHub, if you want other platforms, consider the Ruby version or help out.`)
       process.exitCode = 1
     }
 
     if (platform) {
+      console.log(`${chalk.bold("OK")}, everything looks good: ${source.name} on ${platform.name}`)
       const dangerFile = dangerfilePath(program)
-
-      console.log(`OK, looks good ${source.name} on ${platform.name}`)
 
       try {
         const stat = fs.statSync(dangerFile)
 
         if (!!stat && stat.isFile()) {
           d(`executing dangerfile at ${dangerFile}`)
-          const exec = new Executor(source, platform)
+
+          const config = {
+            stdoutOnly: program.textOnly,
+            verbose: program.verbose
+          }
+
+          const exec = new Executor(source, platform, config)
           exec.setupAndRunDanger(dangerFile)
         } else {
-          console.error(`Looks like specified ${dangerFile} is not a valid path.`)
+
+          console.error(chalk.red(`Looks like your path '${dangerFile}' is not a valid path for a Dangerfile.`))
           process.exitCode = 1
         }
+
       } catch (error) {
         process.exitCode = 1
         console.error(error.message)

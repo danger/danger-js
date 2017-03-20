@@ -7,4 +7,7 @@ declare module "jest-config";
 declare module "voca";
 declare module "jsome";
 
+// This must exist...
+declare module "chalk";
+
 declare module "*/package.json";

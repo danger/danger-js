@@ -6,14 +6,24 @@ import { DangerResults } from "../dsl/DangerResults"
 import { template as githubResultsTemplate } from "./templates/githubIssueTemplate"
 import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment } from "./DangerfileRunner"
 import { DangerfileRuntimeEnv } from "./types"
+
 import * as debug from "debug"
+import * as chalk from "chalk"
 import { sentence, href } from "./DangerUtils"
+
 // This is still badly named, maybe it really should just be runner?
+
+export interface ExecutorOptions {
+  /** Should we do a text-only run? E.g. skipping comments */
+  stdoutOnly: boolean,
+  /** Should Danger post as much info as possible */
+  verbose: boolean
+}
 
 export class Executor {
   private readonly d = debug("danger:executor")
 
-  constructor(public readonly ciSource: CISource, public readonly platform: Platform) {
+  constructor(public readonly ciSource: CISource, public readonly platform: Platform, public readonly options: ExecutorOptions) {
   }
 
   /** Mainly just a dumb helper because I can't do
@@ -59,16 +69,59 @@ export class Executor {
   }
 
   /**
-   * Handle the messaing aspects of running a Dangerfile
+   * Handle the message aspects of running a Dangerfile
+   *
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
-   * @returns {void} It's a promise, so a void promise
    */
   async handleResults(results: DangerResults) {
-    // Ensure process fails if there are fails
-    if (results.fails.length) {
-      process.exitCode = 1
-    }
+    const handler = this.options.stdoutOnly ? this.handleResultsPostingToSTDOUT : this.handleResultsPostingToPlatform
+    await handler(results)
+  }
+  /**
+   * Handle showing results inside the shell.
+   *
+   * @param {DangerResults} results a JSON representation of the end-state for a Danger run
+   */
+  async handleResultsPostingToSTDOUT(results: DangerResults) {
+    const {fails, warnings, messages, markdowns} = results
 
+    const table = [
+      { name: "Failures", messages: fails.map(f => f.message) },
+      { name: "Warnings", messages: warnings.map(w => w.message) },
+      { name: "Messages", messages: messages.map(m => m.message) },
+      { name: "Markdowns", messages: markdowns },
+    ]
+
+    // Consider looking at getting the terminal width, and making it 60%
+    // if over a particular size
+
+    table.forEach(row => {
+      console.log(`## ${chalk.bold(row.name)}`)
+      console.log(row.messages.join(chalk.bold("\n-\n")))
+    })
+
+    if (fails.length > 0) {
+      const s = fails.length === 1 ? "" : "s"
+      const are = fails.length === 1 ? "is" : "are"
+      const message = chalk.underline("Failing the build")
+      console.log(`${message}, there ${are} ${fails.length} fail${s}.`)
+      process.exitCode = 1
+
+    } else if (warnings.length > 0) {
+      const message = chalk.underline("not failing the build")
+      console.log(`Found only warnings, ${message}`)
+
+    } else if (messages.length > 0) {
+      console.log("Found only messages, passing those to review.")
+    }
+  }
+
+  /**
+   * Handle showing results inside a code review platform
+   *
+   * @param {DangerResults} results a JSON representation of the end-state for a Danger run
+   */
+  async handleResultsPostingToPlatform(results: DangerResults) {
     // Delete the message if there's nothing to say
     const {fails, warnings, messages, markdowns} = results
 
@@ -78,16 +131,29 @@ export class Executor {
     this.d(results)
 
     if (failureCount + messageCount === 0) {
-      console.log("No messages are collected.")
+      console.log("No issues or messages were sent. Removing any existing messages.")
       await this.platform.deleteMainComment()
+
     } else {
-      if (failureCount > 0) {
-        console.log("Found some validation failure")
+      if (fails.length > 0) {
+        const s = fails.length === 1 ? "" : "s"
+        const are = fails.length === 1 ? "is" : "are"
+        console.log(`Failing the build, there ${are} ${fails.length} fail${s}.`)
+        process.exitCode = 1
+
+      } else if (warnings.length > 0) {
+        console.log("Found only warnings, not failing the build.")
+
       } else if (messageCount > 0) {
-        console.log("Found some message, writing it down")
+        console.log("Found only messages, passing those to review.")
       }
       const comment = githubResultsTemplate(results)
       await this.platform.updateOrCreateComment(comment)
+    }
+
+    // More info, is more info.
+    if (this.options.verbose) {
+      await this.handleResultsPostingToSTDOUT(results)
     }
   }
 }
