@@ -3,8 +3,11 @@ import {DangerDSL} from "./source/dsl/DangerDSL"
 declare var danger: DangerDSL
 declare function warn(params: string): void
 declare function fail(params: string): void
+declare function markdown(params: string): void
+declare function schedule(promise: () => Promise<any | void>): void
 
 import * as fs from "fs"
+import * as child_process from "child_process"
 
 // For some reason we're getting type errors on this includes module?
 // Wonder if we could move to the includes function in ES2015?
@@ -42,3 +45,27 @@ if (currentDTS !== savedDTS) {
   const idea = "Please run <code>yarn declarations</code> and update this PR."
   fail(`${message} - <i>${idea}</i>`)
 }
+
+// Initial stab at starting a new dependency information rule
+// Just starting simple
+
+schedule(async () => {
+  const packageDiff = await danger.git.JSONDiffForFile("package.json")
+  if (packageDiff.dependencies) {
+    const newDependencies = packageDiff.dependencies.added as string[]
+    warn(`New dependencies added: ${danger.utils.sentence(newDependencies)}.`)
+
+    newDependencies.forEach(dep => {
+      const {stdout, status} = child_process.spawnSync("yarn why ${dep} --json")
+      if (status == 0) {
+        const usefulJSONContents = stdout.toString().split(`{"type":"activityEnd","data":{"id":0}}`).pop()
+        const whyJSON = JSON.parse(`[${usefulJSONContents}]`) as any[]
+        markdown(`
+### ${dep}
+
+${whyJSON.map(why => why.data).join("\n\n")}
+        `)
+      }
+    })
+  }
+})
