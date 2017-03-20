@@ -57,11 +57,33 @@ export interface GitDSL {
   /** Offers the diff for a specific file */
   diffForFile(filename: string): string | null,
 
-  /** Provides a JSON patch (rfc6902) between the two versions of a JSON file, returns null if you don't have any changes for the file in the diff. */
+  /**
+   * Provides a JSON patch (rfc6902) between the two versions of a JSON file,
+   * returns null if you don't have any changes for the file in the diff.
+   *
+   * Note that if you are looking to just see changes like: before, after, added or removed - you
+   * should use `JSONDiffForFile` instead, as this can be a bit unweildy for a Dangerfile.
+   *
+   * @param {string} filename the path to the json file
+   */
   JSONPatchForFile(filename: string): Promise<JSONPatch | null>,
 
-  /** Provides a simplified JSON diff between the two versions of a JSON file */
-  JSONDiffForFile(filename: string): Promise<Array<any>>,
+  /**
+   * Provides a simplified JSON diff between the two versions of a JSON file. This will always
+   * be an object whose keys represent what has changed inside a JSON file.
+   *
+   * Any changed values will be represented with the same path, but with a different object instead.
+   * This object will always show a `before` and `after` for the changes. If the value is an array
+   * for `before` and `after`, then there will also be `added` and `removed` inside the object.
+   *
+   * This object is represented as `JSONDiffValue` but I don't know how to make TypeScript force
+   * declare that kind of type structure.
+   *
+   * This should make it really easy to do work when specific keypaths have changed inside a JSON file.
+   *
+   * @param {string} filename the path to the json file
+   */
+  JSONDiffForFile(filename: string): Promise<any>,
 
   /** The Git commit metadata */
   readonly commits: Readonly<Array<GitCommit>>
