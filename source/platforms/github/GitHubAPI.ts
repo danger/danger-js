@@ -1,5 +1,6 @@
 import { api as fetch } from "../../api/fetch"
 import { CISource } from "../../ci_source/ci_source"
+import { GitHubPRDSL} from "../../dsl/GitHubDSL"
 import * as find from "lodash.find"
 
 // The Handle the API specific parts of the github
@@ -30,14 +31,15 @@ export class GitHubAPI {
    * @returns {Promise<string>} text contents
    *
    */
-  async fileContents(path: string, ref?: string): Promise<string> {
-    // Use head of PR (current state of PR) if no ref passed
-    if (!ref) {
+  async fileContents(path: string, repoSlug?: string, ref?: string): Promise<string> {
+    // Use the current state of PR if no repo/ref is passed
+    if (!repoSlug || !ref) {
       const prJSON = await this.getPullRequestInfo()
-
+      repoSlug = prJSON.head.repo.full_name
       ref = prJSON.head.ref
     }
-    const data = await this.getFileContents(path, ref)
+
+    const data = await this.getFileContents(path, repoSlug, ref)
     const buffer = new Buffer(data.content, "base64")
     return buffer.toString()
   }
@@ -82,7 +84,7 @@ export class GitHubAPI {
     return res.json()
   }
 
-  async getPullRequestInfo(): Promise<any> {
+  async getPullRequestInfo(): Promise<GitHubPRDSL> {
     const repo = this.ciSource.repoSlug
     const prID = this.ciSource.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}`)
@@ -123,10 +125,8 @@ export class GitHubAPI {
     return res.ok ? res.text() : ""
   }
 
-  async getFileContents(path: string, ref?: string): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    const res = await this.get(`repos/${repo}/contents/${path}?ref=${ref}`)
-
+  async getFileContents(path: string, repoSlug: string, ref: string): Promise<any> {
+    const res = await this.get(`repos/${repoSlug}/contents/${path}?ref=${ref}`)
     return res.ok ? res.json() : { content: "" }
   }
 

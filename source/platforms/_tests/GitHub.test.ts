@@ -54,6 +54,7 @@ describe("with fixtured data", () => {
       const api = new GitHubAPI(new FakeCI({}))
       github = new GitHub(api)
 
+      api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
       api.getPullRequestDiff = await requestWithFixturedContent("github_diff.diff")
       api.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
     })
@@ -97,6 +98,84 @@ describe("with fixtured data", () => {
       }
       const gitDSL = await github.getReviewDiff()
       expect(gitDSL.commits[0]).toEqual(exampleCommit)
+    })
+
+    describe("JSONPatchForFile", () => {
+      it("returns a null for files not in the modified_files", async () => {
+        const gitDSL = await github.getReviewDiff()
+        const empty = await gitDSL.JSONPatchForFile("fuhqmahgads.json")
+        expect(empty).toEqual(null)
+      })
+
+      it("handles showing a patch for two different diff files", async () => {
+        const before = {
+          a: "Hello, world",
+          b: 1,
+          c: ["one", "two", "three"]
+        }
+
+        const after = {
+          a: "o, world",
+          b: 3,
+          c: ["one", "two", "three", "four"]
+        }
+
+        github.api.fileContents = async (path, repo, ref) => {
+          const obj = (ref === "master") ? before : after
+          return JSON.stringify(obj)
+        }
+
+        const gitDSL = await github.getReviewDiff()
+        const empty = await gitDSL.JSONPatchForFile("data/schema.json")
+        expect(empty).toEqual({
+          before,
+          after,
+          diff: [{"op": "replace", "path": "/a", "value": "o, world"},
+          {"op": "replace", "path": "/b", "value": 3},
+          {"op": "add", "path": "/c/-", "value": "four"}
+        ]}
+        )
+      })
+    })
+
+    describe("JSONDiffForFile", () => {
+      it("returns an empty object for files not in the modified_files", async () => {
+        const gitDSL = await github.getReviewDiff()
+        const empty = await gitDSL.JSONDiffForFile("fuhqmahgads.json")
+        expect(empty).toEqual({})
+      })
+
+      it("handles showing a patch for two different diff files", async () => {
+        github.api.fileContents = async (path, repo, ref) => {
+          const before = {
+              a: "Hello, world",
+              b: 1,
+              c: ["one", "two", "three"], // add
+              d: ["one", "two", "three"], // remove
+              e: ["one", "two", "three"], // replace
+            }
+
+          const after = {
+            a: "o, world",
+            b: 3,
+            c: ["one", "two", "three", "four"],
+            d: ["one", "two"],
+            e: ["five", "one", "three"]
+          }
+
+          const obj = (ref === "master") ? before : after
+          return JSON.stringify(obj)
+        }
+        const gitDSL = await github.getReviewDiff()
+        const empty = await gitDSL.JSONDiffForFile("data/schema.json")
+        expect(empty).toEqual({
+          "a": {"after": "o, world", "before": "Hello, world"},
+          "b": {"after": 3, "before": 1},
+          "c": {"added": ["four"], "after": ["one", "two", "three", "four"], "before": ["one", "two", "three"], "removed": []},
+          "d": {"added": [], "after": ["one", "two"], "before": ["one", "two", "three"], "removed": ["three"]},
+          "e": {"added": ["five"], "after": ["five", "one", "three"], "before": ["one", "two", "three"], "removed": ["two"]}
+        })
+      })
     })
   })
 })

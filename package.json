@@ -103,10 +103,13 @@
     "jest-environment-node": "^18.1.0",
     "jest-runtime": "^18.0.0",
     "jsome": "^2.3.25",
+    "jsonpointer": "^4.0.1",
     "lodash.find": "^4.6.0",
     "lodash.includes": "^4.3.0",
+    "lodash.isarray": "^4.0.0",
     "node-fetch": "^1.6.3",
     "parse-diff": "^0.4.0",
+    "rfc6902": "^1.3.0",
     "voca": "^1.2.0"
   }
 }

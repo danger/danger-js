@@ -6,9 +6,9 @@ declare function fail(params: string): void
 
 import * as fs from "fs"
 
-import * as includesOriginal from "lodash.includes"
 // For some reason we're getting type errors on this includes module?
 // Wonder if we could move to the includes function in ES2015?
+import * as includesOriginal from "lodash.includes"
 const includes = includesOriginal as Function
 
 // Request a CHANGELOG entry if not declared #trivial
