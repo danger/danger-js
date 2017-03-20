@@ -23,7 +23,7 @@ async function setupDangerfileContext() {
   const platform = new FakePlatform()
   const exec = new Executor(new FakeCI({}), platform)
 
-  platform.getReviewDiff = jest.fn()
+  platform.getPlatformGitRepresentation = jest.fn()
   platform.getPlatformDSLRepresentation = jest.fn()
 
   const dsl = await exec.dslForDanger()

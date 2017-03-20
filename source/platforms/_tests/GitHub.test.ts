@@ -60,7 +60,7 @@ describe("with fixtured data", () => {
     })
 
     it("sets the modified/created/deleted", async () => {
-      const gitDSL = await github.getReviewDiff()
+      const gitDSL = await github.getPlatformGitRepresentation()
 
       expect(gitDSL.modified_files).toEqual(["CHANGELOG.md", "data/schema.graphql", "data/schema.json", "externals/metaphysics", "lib/__mocks__/react-relay.js", "lib/components/artist/about.js", "lib/components/gene/header.js", "lib/containers/__tests__/__snapshots__/gene-tests.js.snap", "lib/containers/__tests__/gene-tests.js", "lib/containers/gene.js", "tsconfig.json"]) //tslint:disable-line:max-line-length
 
@@ -71,7 +71,7 @@ describe("with fixtured data", () => {
 
     it("shows the diff for a specific file", async () => {
       const expected = ` - [dev] Updates Flow to 0.32 - orta${EOL} - [dev] Updates React to 0.34 - orta${EOL} - [dev] Turns on "keychain sharing" to fix a keychain bug in sim - orta${EOL}+- GeneVC now shows about information, and trending artists - orta${EOL} ${EOL} ### 1.1.0-beta.2${EOL} ` //tslint:disable-line:max-line-length
-      const gitDSL = await github.getReviewDiff()
+      const gitDSL = await github.getPlatformGitRepresentation()
 
       expect(gitDSL.diffForFile("CHANGELOG.md")).toEqual(expected)
     })
@@ -96,13 +96,13 @@ describe("with fixtured data", () => {
           "url": "https://api.github.com/repos/artsy/emission/git/trees/d1b7448d7409093054efbb06ae12d1ffb002b956",
         },
       }
-      const gitDSL = await github.getReviewDiff()
+      const gitDSL = await github.getPlatformGitRepresentation()
       expect(gitDSL.commits[0]).toEqual(exampleCommit)
     })
 
     describe("JSONPatchForFile", () => {
       it("returns a null for files not in the modified_files", async () => {
-        const gitDSL = await github.getReviewDiff()
+        const gitDSL = await github.getPlatformGitRepresentation()
         const empty = await gitDSL.JSONPatchForFile("fuhqmahgads.json")
         expect(empty).toEqual(null)
       })
@@ -125,7 +125,7 @@ describe("with fixtured data", () => {
           return JSON.stringify(obj)
         }
 
-        const gitDSL = await github.getReviewDiff()
+        const gitDSL = await github.getPlatformGitRepresentation()
         const empty = await gitDSL.JSONPatchForFile("data/schema.json")
         expect(empty).toEqual({
           before,
@@ -140,7 +140,7 @@ describe("with fixtured data", () => {
 
     describe("JSONDiffForFile", () => {
       it("returns an empty object for files not in the modified_files", async () => {
-        const gitDSL = await github.getReviewDiff()
+        const gitDSL = await github.getPlatformGitRepresentation()
         const empty = await gitDSL.JSONDiffForFile("fuhqmahgads.json")
         expect(empty).toEqual({})
       })
@@ -166,7 +166,7 @@ describe("with fixtured data", () => {
           const obj = (ref === "master") ? before : after
           return JSON.stringify(obj)
         }
-        const gitDSL = await github.getReviewDiff()
+        const gitDSL = await github.getPlatformGitRepresentation()
         const empty = await gitDSL.JSONDiffForFile("data/schema.json")
         expect(empty).toEqual({
           "a": {"after": "o, world", "before": "Hello, world"},

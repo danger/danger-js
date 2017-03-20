@@ -4,7 +4,7 @@
 
 * TypeScript Dangerfiles are now support in Danger - orta
 
-  We use TypeScript in Danger, and a lot of my work now uses TypeScript ([JS2017 at Artsy](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#TypeScript)), so I wanted to
+  We use TypeScript in Danger, and a lot of my work in Artsy now uses TypeScript (see: [JS2017 at Artsy](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#TypeScrip1t)), so I wanted to
   explore using TypeScript in Dangerfiles.
 
   This is built on top of Jest's custom transformers, so if you are already using Jest with TypeScript, then 
@@ -15,7 +15,7 @@
   This repo is now using both a babel Dangerfile (running on Circle CI) and a TypeScript one (running on Travis) to
   ensure that we don't accidentally break either.
 
-* Created a danger.d.ts for VS Code users to get auto-completion etc - orta
+* Created a new `danger.d.ts` for VS Code users to get auto-completion etc - orta
 * Added a two new `git` DSL functions: `git.JSONDiffForFile(filename)` and `git.JSONPatchForFile(filename)`.
 
   * `git.JSONPatchForFile`
@@ -48,7 +48,6 @@
       deps.before  // ["one", "two"]
       deps.after   // ["one", "two", "three"]
     }
-
     ```
 
 * Exposed all global functions ( like `warn`, `fail`, `git`, `schedule`, ... ) on the `danger` object. - orta
@@ -318,10 +317,10 @@ if (!hasChangelog) {
 }
 ```
 
-That should do ya. I think. This doens't support babel, and I haven't explored using other modules etc, so
+That should do ya. I think. This doesn't support babel, and I haven't explored using other modules etc, so...
 
 ./
 
 ### 0.0.1
 
-Not usable for others, only stubs of classes etc.
+Not usable for others, only stubs of classes etc. - orta
