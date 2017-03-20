@@ -7,8 +7,12 @@ import { GitHubAPI } from "../GitHub/GitHubAPI"
 import * as os from "os"
 
 import * as parseDiff from "parse-diff"
+
+// At what point should we just import lodash?
 import * as includes from "lodash.includes"
 import * as isarray from "lodash.isarray"
+import * as isobject from "lodash.isobject"
+import * as keys from "lodash.keys"
 import * as find from "lodash.find"
 
 import * as jsonDiff from "rfc6902"
@@ -116,6 +120,16 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
 
         diff.added = arrayAfter.filter(o => !includes(arrayBefore, o))
         diff.removed = arrayBefore.filter(o => !includes(arrayAfter, o))
+
+      // Do the same, but for keys inside an object if they both are objects.
+
+      } else if (isobject(diff.after) && isobject(diff.before)) {
+        const beforeKeys = keys(diff.before) as string[]
+        const afterKeys = keys(diff.after) as string[]
+        console.log("before", beforeKeys)
+        console.log("after", afterKeys)
+        diff.added = afterKeys.filter(o => !includes(beforeKeys, o))
+        diff.removed = beforeKeys.filter(o => !includes(afterKeys, o))
       }
 
       jsonpointer.set(accumulator, backAStepPath, diff)

@@ -14,6 +14,8 @@ import * as child_process from "child_process"
 import * as includesOriginal from "lodash.includes"
 const includes = includesOriginal as Function
 
+const sentence = danger.utils.sentence
+
 // Request a CHANGELOG entry if not declared #trivial
 const hasChangelog = includes(danger.git.modified_files, "changelog.md")
 const isTrivial = includes((danger.github.pr.body + danger.github.pr.title), "#trivial")
@@ -24,17 +26,8 @@ if (!hasChangelog && !isTrivial) {
   const changelogDiff = danger.git.diffForFile("changelog.md")
   const contributorName = danger.github.pr.user.login
   if (changelogDiff && !includes(changelogDiff, contributorName)) {
-    warn("Please add your GitHub name to the changelog entry, so we can attribute you.")
+    warn("Please add your GitHub name to the changelog entry, so we can attribute you correctly.")
   }
-}
-
-// Warns if there are changes to package.json without changes to yarn.lock.
-const packageChanged = includes(danger.git.modified_files, "package.json")
-const lockfileChanged = includes(danger.git.modified_files, "yarn.lock")
-if (packageChanged && !lockfileChanged) {
-  const message = "Changes were made to package.json, but not to yarn.lock"
-  const idea = "Perhaps you need to run `yarn install`?"
-  warn(`${message} - <i>${idea}</i>`)
 }
 
 import dtsGenerator from "./scripts/danger-dts"
@@ -52,20 +45,40 @@ if (currentDTS !== savedDTS) {
 schedule(async () => {
   const packageDiff = await danger.git.JSONDiffForFile("package.json")
   if (packageDiff.dependencies) {
-    const newDependencies = packageDiff.dependencies.added as string[]
-    warn(`New dependencies added: ${danger.utils.sentence(newDependencies)}.`)
+    if (packageDiff.dependencies.added.length) {
+      const newDependencies = packageDiff.dependencies.added as string[]
+      warn(`New dependencies added: ${sentence(newDependencies)}.`)
 
-    newDependencies.forEach(dep => {
-      const {stdout, status} = child_process.spawnSync("yarn why ${dep} --json")
-      if (status == 0) {
-        const usefulJSONContents = stdout.toString().split(`{"type":"activityEnd","data":{"id":0}}`).pop()
-        const whyJSON = JSON.parse(`[${usefulJSONContents}]`) as any[]
-        markdown(`
-### ${dep}
+      newDependencies.forEach(dep => {
+        const {stdout, status} = child_process.spawnSync("yarn why ${dep} --json")
+        if (status == 0) {
+          const usefulJSONContents = stdout.toString().split(`{"type":"activityEnd","data":{"id":0}}`).pop()
+          const whyJSON = JSON.parse(`[${usefulJSONContents}]`) as any[]
+          markdown(`
+  ### ${dep}
 
-${whyJSON.map(why => why.data).join("\n\n")}
-        `)
-      }
-    })
+  ${whyJSON.map(why => why.data).join("\n\n")}
+          `)
+        }
+      })
+    }
+  }
+
+  // Ensure a lockfile change if deps/devDeps changes
+  if (packageDiff.dependencies || packageDiff.devDependencies) {
+    const lockfileChanged = includes(danger.git.modified_files, "yarn.lock")
+    if (!lockfileChanged) {
+      const message = "Changes were made to package.json, but not to yarn.lock."
+      const idea = "Perhaps you need to run `yarn install`?"
+      warn(`${message} - <i>${idea}</i>`)
+    }
   }
 })
+
+// Always ensure we name all CI providers in the README
+import { providers } from "./source/ci_source/providers"
+const readme = fs.readFileSync("README.md").toString()
+const missing = providers.filter(p => readme.includes(p.name))
+if (missing.length) {
+  warn(`These providers are missing from the README: ${sentence(missing)}`)
+}
