@@ -26,15 +26,12 @@ const createDTS = () => {
   // we need to add either `declare function` or `declare var` to the interface
   const context = moduleContext.split("\n").map((line: string) => {
     if ((line.length === 0) || (line.includes("*"))) { return line }
-    if (line.includes("(")) { return "  function " + line.trim() }
-    if (line.includes(":")) { return "  const " + line.trim() }
+    if (line.includes("(")) { return "declare function " + line.trim() }
+    if (line.includes(":")) { return "declare const " + line.trim() }
     return ""
   }).join("\n")
 
-  fileOutput += `declare namespace danger {
-  ${context}
-}
-`// last extra line is EOF
+  fileOutput += context
 
   // Remove all JS-y bits
   fileOutput = fileOutput.split("\n").filter((line) => {
