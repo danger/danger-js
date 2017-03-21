@@ -85,6 +85,18 @@ const checkForLockfileDiff = (packageDiff) => {
   }
 }
 
+// Don't ship @types dependencies to consumers of Danger
+const checkForTypesInDeps = (packageDiff) => {
+  if (packageDiff.dependencies) {
+    const typesDeps = packageDiff.dependencies.added.filter((dep: string) => dep.startsWith("@types"))
+    if (typesDeps.length) {
+      const message = `@types dependencies were added to package.json, as a dependency for others.`
+      const idea = `You need to move ${sentence(typesDeps)} into "devDependencies"?`
+      fail(`${message}<br/><i>${idea}</i>`)
+    }
+  }
+}
+
 // As `JSONDiffForFile` is an async function, we want to add it to Danger's scheduler
 // then it can continue after eval has taken place.
 
@@ -93,6 +105,7 @@ schedule(async () => {
   checkForRelease(packageDiff)
   checkForNewDependencies(packageDiff)
   checkForLockfileDiff(packageDiff)
+  checkForTypesInDeps(packageDiff)
 })
 
 // Some good old-fashioned maintainance upkeep
