@@ -131,7 +131,6 @@ export class Executor {
     const failureCount = [...fails, ...warnings].length
     const messageCount = [...messages, ...markdowns].length
 
-    console.log(this)
     this.d(results)
 
     if (failureCount + messageCount === 0) {
