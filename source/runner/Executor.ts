@@ -74,8 +74,11 @@ export class Executor {
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    */
   async handleResults(results: DangerResults) {
-    const handler = this.options.stdoutOnly ? this.handleResultsPostingToSTDOUT : this.handleResultsPostingToPlatform
-    await handler(results)
+    if (this.options.stdoutOnly) {
+      this.handleResultsPostingToSTDOUT(results)
+    } else {
+      this.handleResultsPostingToPlatform(results)
+    }
   }
   /**
    * Handle showing results inside the shell.
@@ -128,6 +131,7 @@ export class Executor {
     const failureCount = [...fails, ...warnings].length
     const messageCount = [...messages, ...markdowns].length
 
+    console.log(this)
     this.d(results)
 
     if (failureCount + messageCount === 0) {

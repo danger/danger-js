@@ -16,6 +16,7 @@ import { dangerfilePath } from "./utils/file-utils"
 const d = debug("danger:pr")
 
 program
+  .option("-v, --verbose", "Output more text to the stdout than a normal run")
   .option("-d, --dangerfile [filePath]", "Specify custom dangerfile other than default dangerfile.js")
   .option("-r, --repl", "Drop into a Node REPL after evaluating the dangerfile")
   .parse(process.argv)
@@ -63,7 +64,12 @@ function validateDangerfileExists(filePath: string): boolean {
 }
 
 async function runDanger(source: FakeCI, platform: GitHub, file: string) {
-  const exec = new Executor(source, platform)
+  const config = {
+    stdoutOnly: program.textOnly,
+    verbose: program.verbose
+  }
+
+  const exec = new Executor(source, platform, config)
 
   const runtimeEnv = await exec.setupDanger()
   const results = await runDangerfileEnvironment(file, runtimeEnv)
