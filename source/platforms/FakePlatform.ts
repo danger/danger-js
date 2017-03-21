@@ -14,12 +14,14 @@ export class FakePlatform implements Platform {
     return {}
   }
 
-  async getReviewDiff(): Promise<GitDSL> {
+  async getPlatformGitRepresentation(): Promise<GitDSL> {
     return {
       modified_files: [],
       created_files: [],
       deleted_files: [],
       diffForFile: () => "",
+      JSONDiffForFile: async () => ({} as any),
+      JSONPatchForFile: async () => ({} as any),
       commits: []
     }
   }

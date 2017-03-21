@@ -95,6 +95,7 @@
     "typescript": "2.2.1"
   },
   "dependencies": {
+    "@types/chalk": "^0.4.31",
     "babel-polyfill": "^6.20.0",
     "chalk": "^1.1.1",
     "commander": "^2.9.0",
@@ -103,10 +104,15 @@
     "jest-environment-node": "^18.1.0",
     "jest-runtime": "^18.0.0",
     "jsome": "^2.3.25",
+    "jsonpointer": "^4.0.1",
     "lodash.find": "^4.6.0",
     "lodash.includes": "^4.3.0",
+    "lodash.isarray": "^4.0.0",
+    "lodash.isobject": "^2.4.1",
+    "lodash.keys": "^4.0.8",
     "node-fetch": "^1.6.3",
     "parse-diff": "^0.4.0",
+    "rfc6902": "^1.3.0",
     "voca": "^1.2.0"
   }
 }

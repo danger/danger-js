@@ -2,12 +2,63 @@
 
 //  Add your own contribution below
 
-* Initial work on supporting TypeScript Dangerfiles by using Jest infrastructure - orta
-* Created a danger.d.ts for VS Code users to get auto-completion etc - orta
+* TypeScript Dangerfiles are now support in Danger - orta
+
+  We use TypeScript in Danger, and a lot of my work in Artsy now uses TypeScript (see: [JS2017 at Artsy](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#TypeScrip1t)), so I wanted to
+  explore using TypeScript in Dangerfiles.
+
+  This is built on top of Jest's custom transformers, so if you are already using Jest with TypeScript, then 
+  you can change the `dangerfile.js` to `dangerfile.ts` and nothing should need changing ( except that you might have
+  new warnings/errors ) (_note:_ in changing this for Danger, I had to also add the `dangerfile.ts` to the `"exclude"`
+  section of the `tsconfig.json` so that it didn't change the project's root folder.)
+
+  This repo is now using both a babel Dangerfile (running on Circle CI) and a TypeScript one (running on Travis) to
+  ensure that we don't accidentally break either.
+
+* Created a new `danger.d.ts` for VS Code users to get auto-completion etc - orta
+* Added a two new `git` DSL functions: `git.JSONDiffForFile(filename)` and `git.JSONPatchForFile(filename)`.
+
+  * `git.JSONPatchForFile`
+    
+    This will generate a rfc6902 JSON patch between two files inside your repo. These patch files are useful as a standard, but are pretty tricky to work with in something like a Dangerfile, where rule terseness takes priority.
+  
+  * `git.JSONDiffForFile`
+    
+    This uses `JSONPatchForFile` to generate an object that represents all changes inside a Dangerfile as a single object, with keys for the changed paths. For example with a change like this:
+
+    ```diff
+    {
+      "dependencies": {
+        "babel-polyfill": "^6.20.0",
+     +  "chalk": "^1.1.1",
+        "commander": "^2.9.0",
+        "debug": "^2.6.0"
+      },
+    }
+    ```
+
+    You could become aware of what has changed with a Dangerfile like:
+
+    ```js
+    const packageDiff = await git.JSONDiffForFile("package.json")
+    if (packageDiff.dependencies) {
+      const deps = packageDiff.dependencies
+
+      deps.added   // ["chalk"],
+      deps.removed // []
+      deps.after   // { "babel-polyfill": "^6.20.0", "chalk": "^1.1.1", "commander": "^2.9.0", "debug": "^2.6.0" }
+      deps.before  // { "babel-polyfill": "^6.20.0", "commander": "^2.9.0", "debug": "^2.6.0" }
+    }
+    ```
+    The keys: `added` and `removed` only exist on the object if:
+    
+    * `before` and `after` are both objects - in which case `added` and `removed` are the added or removed keys
+    * `before` and `after` are both arrays - in which case `added` and `removed` are the added or removed values
+
 * Exposed all global functions ( like `warn`, `fail`, `git`, `schedule`, ... ) on the `danger` object. - orta
   
   This is specifically to simplify building library code. It should not affect end-users. If you want to
-  look at making a Danger JS Plugin, I'd recommend exposing a function which takes the `danger` object and working from that.
+  look at making a Danger JS Plugin, I'd recommend exposing a function which takes the `danger` object and working from that. If you're interested, there is an active discussion on plugin support in the DangerJS issues.
 
 * Improves messaging to the terminal - orta
 * Adds the ability to not have Danger post to GitHub via a flag: `danger run --text-only` - orta
@@ -273,10 +324,10 @@ if (!hasChangelog) {
 }
 ```
 
-That should do ya. I think. This doens't support babel, and I haven't explored using other modules etc, so
+That should do ya. I think. This doesn't support babel, and I haven't explored using other modules etc, so...
 
 ./
 
 ### 0.0.1
 
-Not usable for others, only stubs of classes etc.
+Not usable for others, only stubs of classes etc. - orta

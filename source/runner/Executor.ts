@@ -62,7 +62,7 @@ export class Executor {
    * @returns {void} It's a promise, so a void promise
    */
   async dslForDanger(): Promise<DangerDSL> {
-    const git = await this.platform.getReviewDiff()
+    const git = await this.platform.getPlatformGitRepresentation()
     const platformDSL = await this.platform.getPlatformDSLRepresentation()
     const utils = { sentence, href }
     return new DangerDSL(platformDSL, git, utils)

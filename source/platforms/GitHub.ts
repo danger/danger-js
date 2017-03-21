@@ -1,14 +1,8 @@
 import { GitDSL } from "../dsl/GitDSL"
-import { GitCommit } from "../dsl/Commit"
-import { GitHubPRDSL, GitHubCommit, GitHubDSL, GitHubIssue, GitHubIssueLabel } from "../dsl/GitHubDSL"
+import { GitHubPRDSL, GitHubDSL, GitHubIssue, GitHubIssueLabel } from "../dsl/GitHubDSL"
 import { GitHubAPI } from "./github/GitHubAPI"
 import GitHubUtils from "./github/GitHubUtils"
-
-import * as parseDiff from "parse-diff"
-import * as includes from "lodash.includes"
-import * as find from "lodash.find"
-
-import * as os from "os"
+import gitDSLForGitHub from "./github/GitHubGit"
 
 /** Handles conforming to the Platform Interface for GitHub, API work is handle by GitHubAPI */
 
@@ -33,33 +27,19 @@ export class GitHub {
    *
    * @returns {Promise<GitDSL>} the git DSL
    */
-  async getReviewDiff(): Promise<GitDSL> {
-    const diff = await this.api.getPullRequestDiff()
-    const getCommits = await this.api.getPullRequestCommits()
-
-    const fileDiffs: Array<any> = parseDiff(diff)
-
-    const addedDiffs = fileDiffs.filter((diff: any) => diff["new"])
-    const removedDiffs = fileDiffs.filter((diff: any) => diff["deleted"])
-    const modifiedDiffs = fileDiffs.filter((diff: any) => !includes(addedDiffs, diff) && !includes(removedDiffs, diff))
-    return {
-      modified_files: modifiedDiffs.map((d: any) => d.to),
-      created_files: addedDiffs.map((d: any) => d.to),
-      deleted_files: removedDiffs.map((d: any) => d.from),
-      diffForFile: (name: string) => {
-        const diff = find(fileDiffs, (diff: any) => diff.from === name || diff.to === name)
-        if (!diff) { return null }
-
-        const changes = diff.chunks.map((c: any) => c.changes)
-          .reduce((a: any, b: any) => a.concat(b), [])
-        const lines = changes.map((c: any) => c.content)
-        return lines.join(os.EOL)
-      },
-      commits: getCommits.map(this.githubCommitToGitCommit)
-    }
+  async getPlatformGitRepresentation(): Promise<GitDSL> {
+    return gitDSLForGitHub(this.api)
   }
 
-  async getIssue(): Promise<GitHubIssue> {
+  /**
+   * Gets issue specific metadata for a PR
+   *
+   * TODO: Convert from a mapped type, to one with a public interface in the DSL
+   * that shows the useful stuff, but still allows others to dig into the data structure
+   *
+   */
+
+  async getIssue(): Promise <GitHubIssue> {
     const issue = await this.api.getIssue()
     if (!issue) {
       return { labels: [] }
@@ -79,7 +59,7 @@ export class GitHub {
    *
    * @returns {Promise<GitHubDSL>} JSON response of the DSL
    */
-  async getPlatformDSLRepresentation(): Promise<GitHubDSL> {
+  async getPlatformDSLRepresentation(): Promise <GitHubDSL> {
     const pr = await this.getReviewInfo()
     if (pr === {}) {
       process.exitCode = 1
@@ -108,27 +88,10 @@ export class GitHub {
   /**
    * Returns the response for the new comment
    *
-   * @param {GitHubCommit} ghCommit A GitHub based commit
-   * @returns {GitCommit} a Git commit representation without GH metadata
-   */
-  githubCommitToGitCommit(ghCommit: GitHubCommit): GitCommit {
-    return {
-      sha: ghCommit.sha,
-      parents: ghCommit.parents.map(p => p.sha),
-      author: ghCommit.commit.author,
-      committer: ghCommit.commit.committer,
-      message: ghCommit.commit.message,
-      tree: ghCommit.commit.tree
-    }
-  }
-
-  /**
-   * Returns the response for the new comment
-   *
    * @param {string} comment you want to post
    * @returns {Promise<any>} JSON response of new comment
    */
-  async createComment(comment: string): Promise<any> {
+  async createComment(comment: string): Promise <any> {
     return this.api.postPRComment(comment)
   }
 
@@ -141,7 +104,7 @@ export class GitHub {
    *
    * @returns {Promise<boolean>} did it work?
    */
-  async deleteMainComment(): Promise<boolean> {
+  async deleteMainComment(): Promise <boolean> {
     const commentID = await this.api.getDangerCommentID()
     if (commentID) {
       await this.api.deleteCommentWithID(commentID)
@@ -156,7 +119,7 @@ export class GitHub {
    * @param {string} newComment string value of comment
    * @returns {Promise<boolean>} success of posting comment
    */
-  async updateOrCreateComment(newComment: string): Promise<boolean> {
+  async updateOrCreateComment(newComment: string): Promise <boolean> {
     const commentID = await this.api.getDangerCommentID()
     if (commentID) {
       await this.api.updateCommentWithID(commentID, newComment)
@@ -174,7 +137,7 @@ export class GitHub {
    *
    * @returns {Promise<boolean>} did it work?
    */
-  async editMainComment(comment: string): Promise<boolean> {
+  async editMainComment(comment: string): Promise <boolean> {
     const commentID = await this.api.getDangerCommentID()
     if (commentID) { await this.api.updateCommentWithID(commentID, comment) }
     return commentID !== null

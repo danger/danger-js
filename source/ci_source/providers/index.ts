@@ -8,7 +8,12 @@ import {DockerCloud} from "./DockerCloud"
 import {Codeship} from "./Codeship"
 import {Drone} from "./Drone"
 
-const providers: Array<any> = [Travis, Circle, Semaphore, Jenkins, FakeCI, Surf, DockerCloud, Codeship, Drone]
+const providers = [Travis, Circle, Semaphore, Jenkins, FakeCI, Surf, DockerCloud, Codeship, Drone]
+
+// Mainly used for Dangerfile linting
+const realProviders = [Travis, Circle, Semaphore, Jenkins, Surf, DockerCloud, Codeship, Drone]
+
 export {
-  providers
+  providers,
+  realProviders
 };
