@@ -40,11 +40,16 @@ if (currentDTS !== savedDTS) {
   fail(`${message}<br/><i>${idea}</i>`)
 }
 
+const checkForRelease = (packageDiff) => {
+  if (packageDiff.version) {
+    markdown(":tada:")
+  }
+}
+
 // Initial stab at starting a new dependency information rule
 // Just starting simple by showing `yarn why {dep}` for now
 
-schedule(async () => {
-  const packageDiff = await danger.git.JSONDiffForFile("package.json")
+const checkForNewDependencies = (packageDiff) => {
   if (packageDiff.dependencies) {
     if (packageDiff.dependencies.added.length) {
       const newDependencies = packageDiff.dependencies.added as string[]
@@ -67,8 +72,10 @@ ${messages.join("\n\n - ")}
       })
     }
   }
+}
 
-  // Ensure a lockfile change if deps/devDeps changes
+// Ensure a lockfile change if deps/devDeps changes
+const checkForLockfileDiff = (packageDiff) => {
   if (packageDiff.dependencies || packageDiff.devDependencies) {
     const lockfileChanged = includes(danger.git.modified_files, "yarn.lock")
     if (!lockfileChanged) {
@@ -77,6 +84,13 @@ ${messages.join("\n\n - ")}
       warn(`${message}<br/><i>${idea}</i>`)
     }
   }
+}
+
+schedule(async () => {
+  const packageDiff = await danger.git.JSONDiffForFile("package.json")
+  checkForRelease(packageDiff)
+  checkForNewDependencies(packageDiff)
+  checkForLockfileDiff(packageDiff)
 })
 
 // Always ensure we name all CI providers in the README
