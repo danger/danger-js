@@ -62,6 +62,7 @@
 
 * Improves messaging to the terminal - orta
 * Adds the ability to not have Danger post to GitHub via a flag: `danger run --text-only` - orta
+* Fix a crasher with `prs.find` #181 - orta
 
 ### 0.13.0
 
