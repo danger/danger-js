@@ -147,17 +147,17 @@ export interface GitDSL {
   /**
    * Filepaths with changes relative to the git root
    */
-  readonly modified_files: Readonly<Array<string>>
+  readonly modified_files: Array<string>
 
   /**
    * Newly created filepaths relative to the git root
    */
-  readonly created_files: Readonly<Array<string>>
+  readonly created_files: Array<string>
 
   /**
    * Removed filepaths relative to the git root
    */
-  readonly deleted_files: Readonly<Array<string>>
+  readonly deleted_files: Array<string>
 
   /** Offers the diff for a specific file */
   diffForFile(filename: string): string | null,
@@ -193,7 +193,7 @@ export interface GitDSL {
   JSONDiffForFile(filename: string): Promise<any>,
 
   /** The Git commit metadata */
-  readonly commits: Readonly<Array<GitCommit>>
+  readonly commits: Array<GitCommit>
 }
 // This is `danger.github`
 
@@ -548,54 +548,51 @@ export interface Violation {
    */
   message: string
 }
-
-declare namespace danger {
   /**
    * Contains asynchronous code to be run after the application has booted.
    *
    * @param {Function} asyncFunction the function to run asynchronously
    */
-  function schedule(asyncFunction: (p: Promise<any>) => void): void
+declare function schedule(asyncFunction: (p: Promise<any>) => void): void
 
   /**
    * Fails a build, outputting a specific reason for failing
    *
    * @param {MarkdownString} message the String to output
    */
-  function fail(message: MarkdownString): void
+declare function fail(message: MarkdownString): void
 
   /**
    * Highlights low-priority issues, does not fail the build
    *
    * @param {MarkdownString} message the String to output
    */
-  function warn(message: MarkdownString): void
+declare function warn(message: MarkdownString): void
 
   /**
    * Puts a message inside the Danger table
    *
    * @param {MarkdownString} message the String to output
    */
-  function message(message: MarkdownString): void
+declare function message(message: MarkdownString): void
 
   /**
    * Puts a message inside the Danger table
    *
    * @param {MarkdownString} message the String to output
    */
-  function markdown(message: MarkdownString): void
+declare function markdown(message: MarkdownString): void
 
   /** Typical console */
-  const console: Console
+declare const console: Console
 
   /**
    * The Danger object to work with
    *
    */
-  const danger: DangerDSLType
+declare const danger: DangerDSLType
   /**
    * Results of a Danger run
    *
    */
-  const results: DangerRuntimeContainer
-}
+declare const results: DangerRuntimeContainer

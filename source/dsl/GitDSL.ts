@@ -40,19 +40,19 @@ export interface GitDSL {
    * Filepaths with changes relative to the git root
    * @type {string[]}
    */
-  readonly modified_files: Readonly<Array<string>>
+  readonly modified_files: Array<string>
 
   /**
    * Newly created filepaths relative to the git root
    * @type {string[]}
    */
-  readonly created_files: Readonly<Array<string>>
+  readonly created_files: Array<string>
 
   /**
    * Removed filepaths relative to the git root
    * @type {string[]}
    */
-  readonly deleted_files: Readonly<Array<string>>
+  readonly deleted_files: Array<string>
 
   /** Offers the diff for a specific file */
   diffForFile(filename: string): string | null,
@@ -88,5 +88,5 @@ export interface GitDSL {
   JSONDiffForFile(filename: string): Promise<any>,
 
   /** The Git commit metadata */
-  readonly commits: Readonly<Array<GitCommit>>
+  readonly commits: Array<GitCommit>
 }
