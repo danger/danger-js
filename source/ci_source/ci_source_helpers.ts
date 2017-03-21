@@ -1,6 +1,7 @@
 import { Env, CISource } from "./ci_source"
 import { GitHubAPI } from "../platforms/github/GitHubAPI"
 import { GitHubPRDSL } from "../dsl/GitHubDSL"
+import * as find from "lodash.find"
 
 /**
  * Validates that all ENV keys exist and have a length
@@ -48,7 +49,7 @@ export async function getPullRequestIDForBranch(source: CISource, env: Env, bran
   }
   const api = new GitHubAPI(source, token)
   const prs = await api.getPullRequests() as any[]
-  const prForBranch: GitHubPRDSL = prs.find((pr: GitHubPRDSL) => pr.head.ref === branch)
+  const prForBranch: GitHubPRDSL = find(prs, (pr: GitHubPRDSL) => pr.head.ref === branch)
   if (prForBranch) {
     return prForBranch.number
   }
