@@ -78,8 +78,8 @@ async function run(): Promise<any> {
           d(`executing dangerfile at ${dangerFile}`)
 
           const config = {
-            stdoutOnly: program.textOnly,
-            verbose: program.verbose
+            stdoutOnly: app.textOnly,
+            verbose: app.verbose
           }
 
           const exec = new Executor(source, platform, config)
