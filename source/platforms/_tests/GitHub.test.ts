@@ -17,8 +17,7 @@ export const requestWithFixturedJSON = async (path: string): Promise<() => Promi
 
 describe("with fixtured data", () => {
   it("returns the correct github data", async () => {
-    const mockSource = new FakeCI({})
-    const api = new GitHubAPI(mockSource)
+    const api = new GitHubAPI({ repoSlug: "unused/metadata", pullRequestID: "1" })
     const github = new GitHub(api)
     api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
 

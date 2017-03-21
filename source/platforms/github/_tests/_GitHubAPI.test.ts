@@ -19,8 +19,7 @@ const fetch = (api, params): Promise<any> => {
 }
 
 it("fileContents expects to grab PR JSON and pull out a file API call", async () => {
-  const mockSource = new FakeCI({})
-  const api = new GitHubAPI(mockSource, "token")
+  const api = new GitHubAPI({ repoSlug: "unused/metadata", pullRequestID: "1" }, "token")
 
   api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
   api.getFileContents = await requestWithFixturedJSON("static_file.json")
@@ -33,9 +32,7 @@ describe("API testing", () => {
   let api: GitHubAPI
 
   beforeEach(() => {
-    const mockSource = new FakeCI({})
-
-    api = new GitHubAPI(mockSource, "ABCDE")
+    api = new GitHubAPI({ repoSlug: "artsy/emission", pullRequestID: "1" }, "ABCDE")
   })
 
   it("getUserInfo", async () => {

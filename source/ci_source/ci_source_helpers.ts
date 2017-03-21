@@ -1,4 +1,4 @@
-import { Env, CISource } from "./ci_source"
+import { Env, RepoMetaData } from "./ci_source"
 import { GitHubAPI } from "../platforms/github/GitHubAPI"
 import { GitHubPRDSL } from "../dsl/GitHubDSL"
 import * as find from "lodash.find"
@@ -42,12 +42,12 @@ export function ensureEnvKeysAreInt(env: Env, keys: Array<string>): boolean {
  * @returns {number} The pull request ID, if any.  Otherwise 0 (Github starts from #1).
  * If there are multiple pull requests open for a branch, returns the first.
  */
-export async function getPullRequestIDForBranch(source: CISource, env: Env, branch: string): Promise<number> {
+export async function getPullRequestIDForBranch(metadata: RepoMetaData, env: Env, branch: string): Promise<number> {
   const token = env["DANGER_GITHUB_API_TOKEN"]
   if (!token) {
     return 0
   }
-  const api = new GitHubAPI(source, token)
+  const api = new GitHubAPI(metadata, token)
   const prs = await api.getPullRequests() as any[]
   const prForBranch: GitHubPRDSL = find(prs, (pr: GitHubPRDSL) => pr.head.ref === branch)
   if (prForBranch) {
