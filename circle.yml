@@ -13,4 +13,6 @@ dependencies:
 
 test:
   override:
-    - yarn danger -- run --dangerfile dangerfile.circle.js -t
+    - yarn danger -- run --dangerfile dangerfile.circle.js
+    # When the next release is out
+    # - yarn danger -- run --dangerfile dangerfile.circle.js --text-only 
