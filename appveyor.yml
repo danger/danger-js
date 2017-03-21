@@ -7,7 +7,7 @@ install:
   # Get the latest stable version of Node
   - ps: Install-Product node $env:nodejs_version
   # install modules
-  - npm install
+  - yarn install
 
 build: off
 
@@ -15,6 +15,6 @@ build: off
 test_script:
   # Output useful info for debugging.
   - node --version
-  - npm --version
+  - yarn --version
   # run tests
-  - npm test
+  - yarn test
