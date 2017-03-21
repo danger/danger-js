@@ -2,7 +2,7 @@ import { GitDSL, JSONPatchOperation } from "../../dsl/GitDSL"
 import { GitHubCommit } from "../../dsl/GitHubDSL"
 import { GitCommit } from "../../dsl/Commit"
 
-import { GitHubAPI } from "../GitHub/GitHubAPI"
+import { GitHubAPI } from "../github/GitHubAPI"
 
 import * as os from "os"
 
