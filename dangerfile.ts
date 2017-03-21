@@ -3,6 +3,7 @@ import {DangerDSL} from "./source/dsl/DangerDSL"
 declare var danger: DangerDSL
 declare function warn(params: string): void
 declare function fail(params: string): void
+declare function message(params: string): void
 declare function markdown(params: string): void
 declare function schedule(promise: () => Promise<any | void>): void
 
@@ -36,7 +37,7 @@ const savedDTS = fs.readFileSync("source/danger.d.ts").toString()
 if (currentDTS !== savedDTS) {
   const message = "There are changes to the Danger DSL which are not reflected in the current danger.d.ts."
   const idea = "Please run <code>yarn declarations</code> and update this PR."
-  fail(`${message} - <i>${idea}</i>`)
+  fail(`${message}<br/><i>${idea}</i>`)
 }
 
 // Initial stab at starting a new dependency information rule
@@ -50,16 +51,18 @@ schedule(async () => {
       warn(`New dependencies added: ${sentence(newDependencies)}.`)
 
       newDependencies.forEach(dep => {
-        const {stdout, status} = child_process.spawnSync("yarn why ${dep} --json")
-        if (status == 0) {
-          const usefulJSONContents = stdout.toString().split(`{"type":"activityEnd","data":{"id":0}}`).pop()
-          const whyJSON = JSON.parse(`[${usefulJSONContents}]`) as any[]
-          markdown(`
-  ### ${dep}
+        const output = child_process.execSync(`yarn why jest --json`)
 
-  ${whyJSON.map(why => why.data).join("\n\n")}
+        // Comes as a series of little JSON messages
+        const usefulJSONContents = output.toString().split(`{"type":"activityEnd","data":{"id":0}}`).pop() as string
+        const asJSON = usefulJSONContents.split("}\n{").join("},{")
+
+        const whyJSON = JSON.parse(`[${asJSON}]`) as any[]
+        markdown(`
+### ${dep}
+
+${whyJSON.map(why => why.data).join("\n\n")}
           `)
-        }
       })
     }
   }
@@ -70,15 +73,17 @@ schedule(async () => {
     if (!lockfileChanged) {
       const message = "Changes were made to package.json, but not to yarn.lock."
       const idea = "Perhaps you need to run `yarn install`?"
-      warn(`${message} - <i>${idea}</i>`)
+      warn(`${message}<br/><i>${idea}</i>`)
     }
   }
 })
 
 // Always ensure we name all CI providers in the README
-import { providers } from "./source/ci_source/providers"
+import { realProviders } from "./source/ci_source/providers"
+import Fake from "./source/ci_source/providers/Fake"
 const readme = fs.readFileSync("README.md").toString()
-const missing = providers.filter(p => readme.includes(p.name))
+const names = realProviders.map(p => new p({}).name)
+const missing = names.filter(n => !readme.includes(n))
 if (missing.length) {
   warn(`These providers are missing from the README: ${sentence(missing)}`)
 }
