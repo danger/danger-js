@@ -24,15 +24,16 @@
   
   * `git.JSONDiffForFile`
     
-    This uses `JSONPatchForFile` to generate an object that represents all changes inside a dangerfile as a single object, with keys for the changed paths. For example with a change like this:
+    This uses `JSONPatchForFile` to generate an object that represents all changes inside a Dangerfile as a single object, with keys for the changed paths. For example with a change like this:
 
     ```diff
     {
-      "dependencies" : [
-        "one",
-        "two",
-    +    "three"
-      ]
+      "dependencies": {
+        "babel-polyfill": "^6.20.0",
+     +  "chalk": "^1.1.1",
+        "commander": "^2.9.0",
+        "debug": "^2.6.0"
+      },
     }
     ```
 
@@ -43,12 +44,16 @@
     if (packageDiff.dependencies) {
       const deps = packageDiff.dependencies
 
-      deps.added   // ["three"]
+      deps.added   // ["chalk"],
       deps.removed // []
-      deps.before  // ["one", "two"]
-      deps.after   // ["one", "two", "three"]
+      deps.after   // { "babel-polyfill": "^6.20.0", "chalk": "^1.1.1", "commander": "^2.9.0", "debug": "^2.6.0" }
+      deps.before  // { "babel-polyfill": "^6.20.0", "commander": "^2.9.0", "debug": "^2.6.0" }
     }
     ```
+    The keys: `added` and `removed` only exist on the object if:
+    
+    * `before` and `after` are both objects - in which case `added` and `removed` are the added or removed keys
+    * `before` and `after` are both arrays - in which case `added` and `removed` are the added or removed values
 
 * Exposed all global functions ( like `warn`, `fail`, `git`, `schedule`, ... ) on the `danger` object. - orta
   

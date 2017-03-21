@@ -126,8 +126,6 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
       } else if (isobject(diff.after) && isobject(diff.before)) {
         const beforeKeys = keys(diff.before) as string[]
         const afterKeys = keys(diff.after) as string[]
-        console.log("before", beforeKeys)
-        console.log("after", afterKeys)
         diff.added = afterKeys.filter(o => !includes(beforeKeys, o))
         diff.removed = beforeKeys.filter(o => !includes(afterKeys, o))
       }

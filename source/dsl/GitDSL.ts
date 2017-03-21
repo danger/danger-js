@@ -73,8 +73,10 @@ export interface GitDSL {
    * be an object whose keys represent what has changed inside a JSON file.
    *
    * Any changed values will be represented with the same path, but with a different object instead.
-   * This object will always show a `before` and `after` for the changes. If the value is an array
-   * for `before` and `after`, then there will also be `added` and `removed` inside the object.
+   * This object will always show a `before` and `after` for the changes. If both values are arrays or
+   * objects the `before` and `after`, then there will also be `added` and `removed` inside the object.
+   *
+   * In the case of two objects, the `added` and `removed` will be an array of keys rather than the values.
    *
    * This object is represented as `JSONDiffValue` but I don't know how to make TypeScript force
    * declare that kind of type structure.

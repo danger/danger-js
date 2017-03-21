@@ -188,11 +188,18 @@ describe("the dangerfile gitDSL", async () => {
       const gitDSL = await github.getPlatformGitRepresentation()
       const empty = await gitDSL.JSONDiffForFile("data/schema.json")
       expect(empty).toEqual({
-        "a": { "after": "o, world", "before": "Hello, world" },
-        "b": { "after": 3, "before": 1 },
-        "c": { "added": ["four"], "after": ["one", "two", "three", "four"], "before": ["one", "two", "three"], "removed": [] },
-        "d": { "added": [], "after": ["one", "two"], "before": ["one", "two", "three"], "removed": ["three"] },
-        "e": { "added": ["five"], "after": ["five", "one", "three"], "before": ["one", "two", "three"], "removed": ["two"] }
+        "dependencies": {
+          "added": [],
+          "after": { "chalk": "^1.2.1", "commander": "^2.9.0", "debug": "^2.6.0" },
+          "before": { "babel-polyfill": "^6.20.0", "chalk": "^1.1.1", "commander": "^2.9.0", "debug": "^2.6.0" },
+          "removed": ["babel-polyfill"]
+        },
+         "devDependencies": {
+           "added": ["babel-plugin-typescript"],
+           "after": { "babel-cli": "^6.16.0", "babel-plugin-syntax-async-functions": "^6.13.0", "babel-plugin-transform-flow-strip-types": "^6.8.0", "babel-plugin-typescript": "^2.2.0" }, //tslint:disable-line:max-line-length
+           "before": { "babel-cli": "^6.16.0", "babel-plugin-syntax-async-functions": "^6.13.0", "babel-plugin-transform-flow-strip-types": "^6.8.0" },
+           "removed": []
+          }
       })
     })
   })
