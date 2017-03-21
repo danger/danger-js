@@ -5,7 +5,7 @@ export class Semaphore implements CISource {
   constructor(private readonly env: Env) {
   }
 
-  get name(): string { return "Travis CI" }
+  get name(): string { return "Semaphore" }
 
   get isCI(): boolean {
     return ensureEnvKeysExist(this.env, ["SEMAPHORE"])

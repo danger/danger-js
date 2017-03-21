@@ -41,7 +41,7 @@ if (currentDTS !== savedDTS) {
 }
 
 // Initial stab at starting a new dependency information rule
-// Just starting simple
+// Just starting simple by showing `yarn why {dep}` for now
 
 schedule(async () => {
   const packageDiff = await danger.git.JSONDiffForFile("package.json")
@@ -58,10 +58,11 @@ schedule(async () => {
         const asJSON = usefulJSONContents.split("}\n{").join("},{")
 
         const whyJSON = JSON.parse(`[${asJSON}]`) as any[]
+        const messages = whyJSON.filter(msg => typeof msg.data === "string")
         markdown(`
-### ${dep}
+## ${dep}
 
-${whyJSON.map(why => why.data).join("\n\n")}
+${messages.join("\n\n - ")}
           `)
       })
     }
