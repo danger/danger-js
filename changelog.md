@@ -60,6 +60,8 @@
   This is specifically to simplify building library code. It should not affect end-users. If you want to
   look at making a Danger JS Plugin, I'd recommend exposing a function which takes the `danger` object and working from that. If you're interested, there is an active discussion on plugin support in the DangerJS issues.
 
+* Improves messaging to the terminal - orta
+* Adds the ability to not have Danger post to GitHub via a flag: `danger run --text-only` - orta
 
 ### 0.13.0
 

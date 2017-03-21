@@ -11,4 +11,7 @@ declare module "voca";
 declare module "jsome";
 declare module "jsonpointer";
 
+// This must exist...
+declare module "chalk";
+
 declare module "*/package.json";
