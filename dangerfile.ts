@@ -1,4 +1,7 @@
 // Because we don't get to use the d.ts, we can pass in a subset here.
+// This means we can re-use the type infra from the app, without having to
+// fake the import.
+
 import {DangerDSL} from "./source/dsl/DangerDSL"
 declare var danger: DangerDSL
 declare function warn(params: string): void
@@ -31,15 +34,7 @@ if (!hasChangelog && !isTrivial) {
   }
 }
 
-import dtsGenerator from "./scripts/danger-dts"
-const currentDTS = dtsGenerator()
-const savedDTS = fs.readFileSync("source/danger.d.ts").toString()
-if (currentDTS !== savedDTS) {
-  const message = "There are changes to the Danger DSL which are not reflected in the current danger.d.ts."
-  const idea = "Please run <code>yarn declarations</code> and update this PR."
-  fail(`${message}<br/><i>${idea}</i>`)
-}
-
+// Celebrate when a new release is being shipped
 const checkForRelease = (packageDiff) => {
   if (packageDiff.version) {
     markdown(":tada:")
@@ -48,6 +43,8 @@ const checkForRelease = (packageDiff) => {
 
 // Initial stab at starting a new dependency information rule
 // Just starting simple by showing `yarn why {dep}` for now
+
+// This is a great candidate for being a Danger plugin.
 
 const checkForNewDependencies = (packageDiff) => {
   if (packageDiff.dependencies) {
@@ -74,7 +71,9 @@ ${messages.join("\n\n - ")}
   }
 }
 
-// Ensure a lockfile change if deps/devDeps changes
+// Ensure a lockfile change if deps/devDeps changes, in case
+// someone has only used `npm install` instead of `yarn.
+
 const checkForLockfileDiff = (packageDiff) => {
   if (packageDiff.dependencies || packageDiff.devDependencies) {
     const lockfileChanged = includes(danger.git.modified_files, "yarn.lock")
@@ -86,6 +85,9 @@ const checkForLockfileDiff = (packageDiff) => {
   }
 }
 
+// As `JSONDiffForFile` is an async function, we want to add it to Danger's scheduler
+// then it can continue after eval has taken place.
+
 schedule(async () => {
   const packageDiff = await danger.git.JSONDiffForFile("package.json")
   checkForRelease(packageDiff)
@@ -93,7 +95,24 @@ schedule(async () => {
   checkForLockfileDiff(packageDiff)
 })
 
-// Always ensure we name all CI providers in the README
+// Some good old-fashioned maintainance upkeep
+
+// Ensure the danger.d.ts is always up to date inside this repo.
+// This also serves as a way of being able to understand changes to the DSL
+// in a way that doesn't require running Danger.
+
+import dtsGenerator from "./scripts/danger-dts"
+const currentDTS = dtsGenerator()
+const savedDTS = fs.readFileSync("source/danger.d.ts").toString()
+if (currentDTS !== savedDTS) {
+  const message = "There are changes to the Danger DSL which are not reflected in the current danger.d.ts."
+  const idea = "Please run <code>yarn declarations</code> and update this PR."
+  fail(`${message}<br/><i>${idea}</i>`)
+}
+
+// Always ensure we name all CI providers in the README. These
+// regularly get forgotten on a PR adding a new one.
+
 import { realProviders } from "./source/ci_source/providers"
 import Fake from "./source/ci_source/providers/Fake"
 const readme = fs.readFileSync("README.md").toString()
