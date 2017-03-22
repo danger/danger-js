@@ -73,6 +73,7 @@
   },
   "homepage": "https://github.com/danger/danger-js#readme",
   "devDependencies": {
+    "@types/chalk": "^0.4.31",
     "@types/commander": "^2.3.31",
     "@types/debug": "0.0.29",
     "@types/jest": "^19.2.1",
@@ -95,7 +96,6 @@
     "typescript": "2.2.1"
   },
   "dependencies": {
-    "@types/chalk": "^0.4.31",
     "babel-polyfill": "^6.20.0",
     "chalk": "^1.1.1",
     "commander": "^2.9.0",

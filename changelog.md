@@ -2,7 +2,16 @@
 
 //  Add your own contribution below
 
-### 0.14.0 - 0.14.1
+### 0.14.2
+
+* Moved `@types/chalk` from dependencies to devDependencies - orta
+
+### 0.14.1
+
+* Killed some stray console logs - orta
+* Updated the danger.d.ts - orta
+
+### 0.14.0
 
 * TypeScript Dangerfiles are now support in Danger - orta
 
