@@ -23,6 +23,19 @@ export interface EnvironmentConstructor {
   new (config: any): Environment
 }
 
+export interface InternalModuleOptions {
+  isInternalModule: boolean,
+}
+
+export interface JestRuntime {
+  requireModule(
+    from: Path,
+    moduleName?: string,
+    options?: InternalModuleOptions,
+  ): any
+
+}
+
 export interface Environment extends EnvironmentConstructor {
   dispose(): void
   runScript(script: any): any
