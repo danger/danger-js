@@ -29,11 +29,11 @@ export class Executor {
   /** Mainly just a dumb helper because I can't do
    * async functions in danger-run.js
    * @param {string} file the path to run Danger from
-   * @returns {void} It's a promise, so a void promise
+   * @returns {Promise<DangerResults>} The results of the Danger run
    */
   async setupAndRunDanger(file: string) {
     const runtimeEnv = await this.setupDanger()
-    await this.runDanger(file, runtimeEnv)
+    return await this.runDanger(file, runtimeEnv)
   }
 
   /**
@@ -49,12 +49,13 @@ export class Executor {
   /**
    *  Runs all of the operations for a running just Danger
    * @param {string} file the filepath to the Dangerfile
-   * @returns {void} It's a promise, so a void promise
+   * @returns {Promise<DangerResults>} The results of the Danger run
    */
 
   async runDanger(file: string, runtime: DangerfileRuntimeEnv) {
     const results = await runDangerfileEnvironment(file, runtime)
     await this.handleResults(results)
+    return results
   }
 
   /**
