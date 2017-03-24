@@ -54,12 +54,55 @@ if (unFlowedFiles.length > 0) {
 }
 ```
 
+You can also write your Dangerfile in TypeScript. Create `dangerfile.ts` in the project root with some rules:
+
+```ts
+import { danger, warn } from "danger"
+import * as _ from "lodash"
+
+// Request a CHANGELOG entry if not declared #trivial
+const hasChangelog = _.includes(danger.git.modified_files, "changelog.md")
+const isTrivial = _.includes((danger.github.pr.body + danger.github.pr.title), "#trivial")
+if (!hasChangelog && !isTrivial) {
+  warn("Please add a changelog entry for your changes.")
+
+  // Politely ask for their name on the entry too
+  const changelogDiff = danger.git.diffForFile("changelog.md")
+  const contributorName = danger.github.pr.user.login
+  if (changelogDiff && _.includes(changelogDiff, contributorName)) {
+    warn("Please add your GitHub name to the changelog entry, so we can attribute you correctly.")
+  }
+}
+```
+
+Using [Jest][jest] and TypeScript for testing? You're all set - Danger should be able to use your `jest` config in `package.json` to process and evaulate your `dangerfile.ts`.
+
+Not using Jest on your TypeScript project? You'll need to take the following steps for danger to evaluate your `dangerfile.ts`:
+
+* Install the `ts-jest` package - `yarn add ts-jest --dev`
+* Add the following `jest` section to your `package.json`
+
+```json
+{
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    }
+  }
+}
+```
+
 Then you add `yarn run danger` to the end of your CI run, and Danger will run. Here's [an example](https://github.com/artsy/emission/pull/385). 👍
 
-Want to see some existing examples? Check out:
+Want to see some existing JavaScript examples? Check out:
 
-* **Apps** - [Artsy/Emission][emiss] and [Artsy/metaphysics][meta].
+* **Apps** - [Artsy/metaphysics][meta].
 * **Libraries** - [Facebook/Jest][fbj], [styled-components/styled-components][sc] and [ReactiveX/rxjs][rxjs].
+
+Some TypeScript examples:
+
+* **Apps** - [Artsy/Emission][emiss]
+* **Libraries** [danger/danger-js][danger-js]
 
 I'd love PRs adding more.
 
@@ -157,9 +200,11 @@ Tips:
 
 Check the issues, I try and keep my short term perspective there. Long term is in the [VISION.md](VISION.md).
 
-[emiss]: https://github.com/artsy/emission/blob/master/dangerfile.js
+[emiss]: https://github.com/artsy/emission/blob/master/dangerfile.ts
+[danger-js]: https://github.com/danger/danger-js/blob/master/dangerfile.ts
 [meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
 [fbj]: https://github.com/facebook/jest/blob/master/dangerfile.js
 [sc]: https://github.com/styled-components/styled-components/blob/master/dangerfile.js
 [rxjs]: https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js
 [setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
+[jest]: https://github.com/facebook/jest
