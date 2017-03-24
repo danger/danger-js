@@ -65,10 +65,12 @@ describe("Peril", () => {
     api.additionalHeaders = { "CUSTOM": "HEADER" }
 
     const request = await api.get("user")
-    expect(request.headers).toEqual({
-        Authorization: "token ABCDE",
+    expect(api.fetch).toHaveBeenCalledWith("https://api.github.com/user",
+      {"body": {}, "headers": {
+        "Authorization": "token ABCDE",
         "CUSTOM": "HEADER",
-        "Content-Type": "application/json",
-    })
+        "Content-Type": "application/json"
+      }, "method": "GET"}
+    )
   })
 })
