@@ -1,6 +1,6 @@
 export type MarkdownString = string
 
-/** A platform agnostic refernce to a Git commit */
+/** A platform agnostic reference to a Git commit */
 export interface GitCommit {
   /** The SHA for the commit */
   sha: string,

@@ -118,10 +118,6 @@ import dtsGenerator from "./scripts/danger-dts"
 const currentDTS = dtsGenerator()
 const savedDTS = fs.readFileSync("source/danger.d.ts").toString()
 if (currentDTS !== savedDTS) {
-  console.log("Current:")
-  console.log(currentDTS)
-  console.log("New:")
-  console.log(savedDTS)
   const message = "There are changes to the Danger DSL which are not reflected in the current danger.d.ts."
   const idea = "Please run <code>yarn declarations</code> and update this PR."
   fail(`${message}<br/><i>${idea}</i>`)
