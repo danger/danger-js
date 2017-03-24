@@ -37,8 +37,17 @@ async function setupDangerfileContext() {
   return contextForDanger(dsl)
 }
 
+declare const jasmine: any
+
+beforeEach(() => {
+  if (process.platform === "win32") {
+    // ten seconds to allow for slow CI, sorry peeps. Use the watcher ;)
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000
+  }
+})
+
 describe("with fixtures", () => {
-  it("handles a blank Dangerfile", async () => {
+  it.only("handles a blank Dangerfile", async () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
     const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileEmpty.js"), runtime)
