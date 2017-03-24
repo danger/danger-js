@@ -32,6 +32,11 @@ export interface JSONDiffValue {
   removed?: any[]
 }
 
+/** A map of string keys to JSONDiffValue */
+export interface JSONDiff {
+  [name: string]: JSONDiffValue
+}
+
 // This is `danger.git`
 
 /** The git specific metadata for a PR */
@@ -85,7 +90,7 @@ export interface GitDSL {
    *
    * @param {string} filename the path to the json file
    */
-  JSONDiffForFile(filename: string): Promise<any>,
+  JSONDiffForFile(filename: string): Promise<JSONDiff>,
 
   /** The Git commit metadata */
   readonly commits: Array<GitCommit>

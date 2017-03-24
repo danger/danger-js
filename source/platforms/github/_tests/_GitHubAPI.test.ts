@@ -61,10 +61,10 @@ describe("Peril", () => {
   it("Allows setting additional headers", async () => {
     const mockSource = new FakeCI({})
     const api = new GitHubAPI(mockSource, "ABCDE")
-    api.fetch = fetchJSON
+    api.fetch = jest.fn()
     api.additionalHeaders = { "CUSTOM": "HEADER" }
 
-    const request = await api.getUserInfo()
+    const request = await api.get("user")
     expect(request.headers).toEqual({
         Authorization: "token ABCDE",
         "CUSTOM": "HEADER",

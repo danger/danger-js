@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`creates a working jest config 1`] = `
+Object {
+  "cache": null,
+  "cacheDirectory": "/var/folders/xk/xbld2_2511b3xc5_8fsfddx40000gn/T",
+  "haste": Object {
+    "defaultPlatform": "danger-js",
+  },
+  "moduleDirectories": Array [
+    "node_modules",
+  ],
+  "moduleFileExtensions": Array [
+    "js",
+    "js",
+    "jsx",
+    "json",
+    "ts",
+    "tsx",
+  ],
+  "moduleNameMapper": Array [],
+  "name": "danger",
+  "setupFiles": Array [],
+  "testPathDirs": Array [
+    "/Users/orta/dev/projects/danger/danger-js",
+  ],
+  "testPathIgnorePatterns": Array [
+    "/node_modules/",
+    "/distribution/",
+  ],
+  "testRegex": "",
+  "transform": Array [
+    Array [
+      "js$",
+      "babel-jest",
+    ],
+    Array [
+      ".(ts|tsx)",
+      "/Users/orta/dev/projects/danger/danger-js/node_modules/ts-jest/preprocessor.js",
+    ],
+  ],
+  "transformIgnorePatterns": Array [
+    "/node_modules/",
+  ],
+}
+`;

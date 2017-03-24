@@ -3,8 +3,10 @@ import {
   createDangerfileRuntimeEnvironment,
   runDangerfileEnvironment,
   updateDangerfile,
-  cleanDangerfile
+  cleanDangerfile,
+  dangerJestConfig
 } from "../DangerfileRunner"
+
 import {FakeCI} from "../../ci_source/providers/Fake"
 import {FakePlatform} from "../../platforms/FakePlatform"
 import {Executor} from "../Executor"
@@ -21,7 +23,12 @@ const fixtures = resolve(__dirname, "fixtures")
  */
 async function setupDangerfileContext() {
   const platform = new FakePlatform()
-  const exec = new Executor(new FakeCI({}), platform)
+  const config = {
+    stdoutOnly: false,
+    verbose: false
+  }
+
+  const exec = new Executor(new FakeCI({}), platform, config)
 
   platform.getPlatformGitRepresentation = jest.fn()
   platform.getPlatformDSLRepresentation = jest.fn()
@@ -177,4 +184,8 @@ let { danger, warn, fail, message } = require('danger');
 `
     expect(cleanDangerfile(before)).toEqual(after)
   })
+})
+
+it("creates a working jest config", async () => {
+  expect(await dangerJestConfig()).toMatchSnapshot()
 })
