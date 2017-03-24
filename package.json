@@ -90,7 +90,7 @@
     "lint-staged": "^3.2.5",
     "madge": "^1.4.4",
     "shx": "^0.2.1",
-    "ts-jest": "^19.0.0",
+    "ts-jest": "19.0.2",
     "ts-node": "^3.0.0",
     "tslint": "^4.4.0",
     "typescript": "2.2.1"
