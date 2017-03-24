@@ -1,6 +1,9 @@
 ### master
 
-//  Add your own contribution below
+//  Add your own contribution below, ideally with a consumer's perspective in mind.
+
+* Updated jest-* dependencies to 19.x - orta
+* Added type shapings to `JSONPatchForFile` - orta
 
 ### 0.14.2
 
