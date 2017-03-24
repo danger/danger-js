@@ -187,5 +187,18 @@ let { danger, warn, fail, message } = require('danger');
 })
 
 it("creates a working jest config", async () => {
-  expect(await dangerJestConfig()).toMatchSnapshot()
+  const config = await dangerJestConfig()
+  // OK, this is almost perfect, but well, everyone has different paths.
+  // So we'll amend the ones that should be different per developer/CI
+  config.cacheDirectory = "[cache]"
+  config.testPathDirs = ["[testPathDirs]"]
+  config.testPathIgnorePatterns = ["[testPathIgnorePatterns]"]
+
+  const cwd = process.cwd()
+  config.transform = config.transform.map(([files, transformer]) => {
+    const trans = transformer.includes("ts-jest")  ? "[ts-jest-transformer]" : transformer
+    return [files, trans]
+  })
+
+  expect(config).toMatchSnapshot()
 })

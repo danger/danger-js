@@ -3,7 +3,7 @@
 exports[`creates a working jest config 1`] = `
 Object {
   "cache": null,
-  "cacheDirectory": "/var/folders/xk/xbld2_2511b3xc5_8fsfddx40000gn/T",
+  "cacheDirectory": "[cache]",
   "haste": Object {
     "defaultPlatform": "danger-js",
   },
@@ -22,11 +22,10 @@ Object {
   "name": "danger",
   "setupFiles": Array [],
   "testPathDirs": Array [
-    "/Users/orta/dev/projects/danger/danger-js",
+    "[testPathDirs]",
   ],
   "testPathIgnorePatterns": Array [
-    "/node_modules/",
-    "/distribution/",
+    "[testPathIgnorePatterns]",
   ],
   "testRegex": "",
   "transform": Array [
@@ -36,7 +35,7 @@ Object {
     ],
     Array [
       ".(ts|tsx)",
-      "/Users/orta/dev/projects/danger/danger-js/node_modules/ts-jest/preprocessor.js",
+      "[ts-jest-transformer]",
     ],
   ],
   "transformIgnorePatterns": Array [
