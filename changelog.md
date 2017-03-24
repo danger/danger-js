@@ -3,6 +3,10 @@
 //  Add your own contribution below, ideally with a consumer's perspective in mind.
 
 * Updated jest-* dependencies to 19.x - orta
+  
+  Updating the jest-* dependencies seems to be exhibiting strange behavior in tests for windows if you update, and 
+  use windows, can you please confirm that everything is 👍
+
 * Added type shapings to `JSONPatchForFile` - orta
 
 ### 0.14.2

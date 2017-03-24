@@ -60,6 +60,7 @@ export async function dangerJestConfig() {
     cacheDirectory: os.tmpdir(),
     setupFiles: [],
     name: "danger",
+    testEnvironment: "node",
     haste: {
       defaultPlatform: "danger-js"
     },

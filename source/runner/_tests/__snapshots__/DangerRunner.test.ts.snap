@@ -21,6 +21,7 @@ Object {
   "moduleNameMapper": Array [],
   "name": "danger",
   "setupFiles": Array [],
+  "testEnvironment": "node",
   "testPathDirs": Array [
     "[testPathDirs]",
   ],
