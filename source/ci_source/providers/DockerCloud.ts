@@ -28,7 +28,7 @@ export class DockerCloud implements CISource {
       const reponame = splitSlug[4]
       const id = splitSlug[6]
       return {owner, reponame, id}
-    };
+    }
     return {}
   }
 

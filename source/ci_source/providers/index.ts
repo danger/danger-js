@@ -16,4 +16,4 @@ const realProviders = [Travis, Circle, Semaphore, Jenkins, Surf, DockerCloud, Co
 export {
   providers,
   realProviders
-};
+}
