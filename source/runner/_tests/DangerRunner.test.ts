@@ -143,64 +143,64 @@ if (process.platform !== "win32") {
     })
 
   })
+}
 
-  describe("cleaning Dangerfiles", () => {
-    it("Supports removing the danger import", () => {
-      const path = resolve(os.tmpdir(), "fake_dangerfile_1")
-      fs.writeFileSync(path, "import { danger, warn, fail, message } from 'danger'")
-      updateDangerfile(path)
-      expect(fs.readFileSync(path).toString()).toEqual("// Removed import")
-    })
+describe("cleaning Dangerfiles", () => {
+  it("Supports removing the danger import", () => {
+    const path = resolve(os.tmpdir(), "fake_dangerfile_1")
+    fs.writeFileSync(path, "import { danger, warn, fail, message } from 'danger'")
+    updateDangerfile(path)
+    expect(fs.readFileSync(path).toString()).toEqual("// Removed import")
+  })
 
-    it("also handles typescript style imports", () => {
-      const before = `
+  it("also handles typescript style imports", () => {
+    const before = `
 import { danger, warn, fail, message } from 'danger'
 import { danger, warn, fail, message } from "danger"
 import { danger, warn, fail, message } from "danger";
 import danger from "danger"
 import danger from 'danger'
 import danger from 'danger';
-  `
-      const after = `
+`
+    const after = `
 // Removed import
 // Removed import
 // Removed import
 // Removed import
 // Removed import
 // Removed import
-  `
-      expect(cleanDangerfile(before)).toEqual(after)
-    })
+`
+    expect(cleanDangerfile(before)).toEqual(after)
+  })
 
-    it("also handles require style imports", () => {
-          const before = `
+  it("also handles require style imports", () => {
+        const before = `
 const { danger, warn, fail, message } = require('danger')
 var { danger, warn, fail, message } = require("danger")
 let { danger, warn, fail, message } = require('danger');
-  `
-      const after = `
+`
+    const after = `
 // Removed require
 // Removed require
 // Removed require
-  `
-      expect(cleanDangerfile(before)).toEqual(after)
-    })
+`
+    expect(cleanDangerfile(before)).toEqual(after)
+  })
+})
+
+it("creates a working jest config", async () => {
+  const config = await dangerJestConfig()
+  // OK, this is almost perfect, but well, everyone has different paths.
+  // So we'll amend the ones that should be different per developer/CI
+  config.cacheDirectory = "[cache]"
+  config.testPathDirs = ["[testPathDirs]"]
+  config.testPathIgnorePatterns = ["[testPathIgnorePatterns]"]
+
+  const cwd = process.cwd()
+  config.transform = config.transform.map(([files, transformer]) => {
+    const trans = transformer.includes("ts-jest")  ? "[ts-jest-transformer]" : transformer
+    return [files, trans]
   })
 
-  it("creates a working jest config", async () => {
-    const config = await dangerJestConfig()
-    // OK, this is almost perfect, but well, everyone has different paths.
-    // So we'll amend the ones that should be different per developer/CI
-    config.cacheDirectory = "[cache]"
-    config.testPathDirs = ["[testPathDirs]"]
-    config.testPathIgnorePatterns = ["[testPathIgnorePatterns]"]
-
-    const cwd = process.cwd()
-    config.transform = config.transform.map(([files, transformer]) => {
-      const trans = transformer.includes("ts-jest")  ? "[ts-jest-transformer]" : transformer
-      return [files, trans]
-    })
-
-    expect(config).toMatchSnapshot()
-  })
-)
+  expect(config).toMatchSnapshot()
+})
