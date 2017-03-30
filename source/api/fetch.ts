@@ -1,5 +1,5 @@
-import fetch from "node-fetch"
 import * as debug from "debug"
+import * as node_fetch from "node-fetch"
 
 const d = debug("danger:networking")
 declare const global: any
@@ -10,7 +10,7 @@ declare const global: any
  * @param {fetch.RequestInit} [init] the usual options
  * @returns {Promise<fetch.Response>} network-y promise
  */
-export function api(url: string | any, init: any): Promise<any> {
+export function api(url: string | node_fetch.Request, init: node_fetch.RequestInit): Promise<node_fetch.Response> {
   if (global.verbose && global.verbose === true) {
     const output = ["curl", "-i"]
 
@@ -45,9 +45,9 @@ export function api(url: string | any, init: any): Promise<any> {
 
     d(output.join(" "))
   }
-
-  return fetch(url, init)
-  .then(async (response) => {
+  const originalFetch: any = node_fetch
+  return originalFetch(url, init)
+  .then(async (response: node_fetch.Response) => {
     // Handle failing errors
     if (!response.ok) {
       const responseJSON = await response.json()
