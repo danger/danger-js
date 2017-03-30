@@ -1,6 +1,6 @@
 import { api as fetch } from "../../api/fetch"
-import { CISource } from "../../ci_source/ci_source"
-import { GitHubPRDSL} from "../../dsl/GitHubDSL"
+import { RepoMetaData } from "../../ci_source/ci_source"
+import { GitHubPRDSL, GitHubUser} from "../../dsl/GitHubDSL"
 import * as find from "lodash.find"
 
 // The Handle the API specific parts of the github
@@ -16,7 +16,7 @@ export class GitHubAPI {
   fetch: typeof fetch
   additionalHeaders: any
 
-  constructor(public readonly ciSource: CISource, public readonly token?: APIToken) {
+  constructor(public readonly repoMetadata: RepoMetaData, public readonly token?: APIToken) {
     // This allows Peril to DI in a new Fetch function
     // which can handle unique API edge-cases around integrations
     this.fetch = fetch
@@ -54,7 +54,7 @@ export class GitHubAPI {
   }
 
   async updateCommentWithID(id: number, comment: string): Promise<any> {
-    const repo = this.ciSource.repoSlug
+    const repo = this.repoMetadata.repoSlug
     const res = await this.patch(`repos/${repo}/issues/comments/${id}`, {}, {
       body: comment
     })
@@ -63,7 +63,7 @@ export class GitHubAPI {
   }
 
   async deleteCommentWithID(id: number): Promise<any> {
-    const repo = this.ciSource.repoSlug
+    const repo = this.repoMetadata.repoSlug
     const res = await this.api(`repos/${repo}/issues/comments/${id}`, {}, {}, "DELETE")
 
     return res.json()
@@ -75,8 +75,8 @@ export class GitHubAPI {
   }
 
   async postPRComment(comment: string): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
     const res = await this.post(`repos/${repo}/issues/${prID}/comments`, {}, {
       body: comment
     })
@@ -85,22 +85,22 @@ export class GitHubAPI {
   }
 
   async getPullRequestInfo(): Promise<GitHubPRDSL> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}`)
 
     return res.ok ?  res.json() : {}
   }
 
   async getPullRequestCommits(): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}/commits`)
 
     return res.ok ? res.json() : []
   }
 
-  async getUserInfo(): Promise<any> {
+  async getUserInfo(): Promise<GitHubUser> {
     const response: any = await this.get("user")
 
     return response.json()
@@ -108,16 +108,16 @@ export class GitHubAPI {
 
   // TODO: This does not handle pagination
   async getPullRequestComments(): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/issues/${prID}/comments`)
 
     return res.ok ? res.json() : []
   }
 
   async getPullRequestDiff(): Promise<string> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}`, {
       accept: "application/vnd.github.v3.diff"
     })
@@ -131,15 +131,15 @@ export class GitHubAPI {
   }
 
   async getPullRequests(): Promise<any> {
-    const repo = this.ciSource.repoSlug
+    const repo = this.repoMetadata.repoSlug
     const res = await this.get(`repos/${repo}/pulls`)
 
     return res.ok ? res.json : []
   }
 
   async getReviewerRequests(): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}/requested_reviewers`, {
       accept: "application/vnd.github.black-cat-preview+json"
     })
@@ -148,8 +148,8 @@ export class GitHubAPI {
   }
 
   async getReviews(): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}/reviews`, {
       accept: "application/vnd.github.black-cat-preview+json"
     })
@@ -158,8 +158,8 @@ export class GitHubAPI {
   }
 
   async getIssue(): Promise<any> {
-    const repo = this.ciSource.repoSlug
-    const prID = this.ciSource.pullRequestID
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/issues/${prID}`)
 
     return res.ok ? res.json() : { labels: [] }

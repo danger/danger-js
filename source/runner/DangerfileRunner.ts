@@ -47,7 +47,7 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
  * The Jest config object for this Danger run
  * @returns {any} the results of the run
  */
-async function dangerJestConfig() {
+export async function dangerJestConfig() {
   // Note: This function is making assumptions that
   // the Dangerfile is being ran from the CWD
 
@@ -55,20 +55,20 @@ async function dangerJestConfig() {
   // we can re-use things like haste transformers.
   // so if you can make you tests run right,
   // then it's pretty likely that Danger can do it too.
-  const jestConfig = await readConfig([], process.cwd())
-  // console.log(jestConfig)
+  const jestConfig =  await readConfig([], process.cwd())
   return {
     cacheDirectory: os.tmpdir(),
     setupFiles: [],
     name: "danger",
+    testEnvironment: "node",
     haste: {
       defaultPlatform: "danger-js"
     },
     moduleNameMapper: [],
     moduleDirectories: [ "node_modules" ],
-    moduleFileExtensions: ["js", ...jestConfig.moduleFileExtensions],
-    transform: [["js$", "babel-jest"], ...jestConfig.transform],
-    testPathIgnorePatterns: jestConfig.testPathIgnorePatterns,
+    moduleFileExtensions: ["js", ...jestConfig.config.moduleFileExtensions],
+    transform: [["js$", "babel-jest"], ...jestConfig.config.transform],
+    testPathIgnorePatterns: jestConfig.config.testPathIgnorePatterns,
     cache: null,
     testRegex: "",
     testPathDirs: [process.cwd()],
