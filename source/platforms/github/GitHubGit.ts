@@ -10,7 +10,6 @@ import * as parseDiff from "parse-diff"
 
 // At what point should we just import lodash?
 import * as includes from "lodash.includes"
-import * as isarray from "lodash.isarray"
 import * as isobject from "lodash.isobject"
 import * as keys from "lodash.keys"
 import * as find from "lodash.find"
@@ -114,7 +113,7 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
       // added or removed. This makes it really easy to act on specific
       // changes to JSON DSLs
 
-      if (isarray(diff.after) && isarray(diff.before)) {
+      if (Array.isArray(diff.after) && Array.isArray(diff.before)) {
         const arrayBefore = diff.before as any[]
         const arrayAfter = diff.after as any[]
 
