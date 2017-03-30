@@ -1,6 +1,10 @@
-### master
+//  Please add your own contribution below inside the Master section, ideally with a consumer's perspective in mind.
 
-//  Add your own contribution below, ideally with a consumer's perspective in mind.
+### Master
+
+
+
+### 0.14.2
 
 * Updated jest-* dependencies to 19.x - orta
   
@@ -9,7 +13,6 @@
 
 * Added type shapings to `JSONPatchForFile` - orta
 
-### 0.14.2
 
 * Replaced deprecated `lodash.isarray` package with `Array.isArray` - damassi
 
