@@ -13,7 +13,6 @@
     "no-var-keyword": true,
     "no-empty": true,
     "no-unused-expression": true,
-    "no-use-before-declare": true,
     "no-var-requires": true,
     "no-require-imports": true,
     "one-line": [true,
