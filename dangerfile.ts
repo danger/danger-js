@@ -53,7 +53,7 @@ const checkForNewDependencies = (packageDiff) => {
       warn(`New dependencies added: ${sentence(newDependencies)}.`)
 
       newDependencies.forEach(dep => {
-        const output = child_process.execSync(`yarn why jest --json`)
+        const output = child_process.execSync(`yarn why ${dep} --json`)
 
         // Comes as a series of little JSON messages
         const usefulJSONContents = output.toString().split(`{"type":"activityEnd","data":{"id":0}}`).pop() as string

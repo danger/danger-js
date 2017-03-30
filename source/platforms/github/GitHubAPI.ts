@@ -3,6 +3,8 @@ import { RepoMetaData } from "../../ci_source/ci_source"
 import { GitHubPRDSL, GitHubUser} from "../../dsl/GitHubDSL"
 import * as find from "lodash.find"
 
+import * as node_fetch from "node-fetch"
+
 // The Handle the API specific parts of the github
 
 export type APIToken = string
@@ -89,7 +91,7 @@ export class GitHubAPI {
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}`)
 
-    return res.ok ?  res.json() : {}
+    return res.ok ?  res.json() as Promise<GitHubPRDSL> : {} as GitHubPRDSL
   }
 
   async getPullRequestCommits(): Promise<any> {
@@ -184,15 +186,15 @@ export class GitHubAPI {
     })
   }
 
-  get(path: string, headers: any = {}, body: any = {}) {
+  get(path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> {
     return this.api(path, headers, body, "GET")
   }
 
-  post(path: string, headers: any = {}, body: any = {}) {
+  post(path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> {
     return this.api(path, headers, JSON.stringify(body), "POST")
   }
 
-  patch(path: string, headers: any = {}, body: any = {}) {
+  patch(path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> {
     return this.api(path, headers, JSON.stringify(body), "PATCH")
   }
 }
