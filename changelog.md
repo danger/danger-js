@@ -11,10 +11,11 @@
 
 ### 0.14.2
 
-* Moved `@types/chalk` from dependencies to devDependencies - orta
+* Replaced deprecated `lodash.isarray` package with `Array.isArray` - damassi
 
 ### 0.14.1
 
+* Moved `@types/chalk` from dependencies to devDependencies - orta
 * Killed some stray console logs - orta
 * Updated the danger.d.ts - orta
 
@@ -25,7 +26,7 @@
   We use TypeScript in Danger, and a lot of my work in Artsy now uses TypeScript (see: [JS2017 at Artsy](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#TypeScrip1t)), so I wanted to
   explore using TypeScript in Dangerfiles.
 
-  This is built on top of Jest's custom transformers, so if you are already using Jest with TypeScript, then 
+  This is built on top of Jest's custom transformers, so if you are already using Jest with TypeScript, then
   you can change the `dangerfile.js` to `dangerfile.ts` and nothing should need changing ( except that you might have
   new warnings/errors ) (_note:_ in changing this for Danger, I had to also add the `dangerfile.ts` to the `"exclude"`
   section of the `tsconfig.json` so that it didn't change the project's root folder.)
@@ -37,11 +38,11 @@
 * Added a two new `git` DSL functions: `git.JSONDiffForFile(filename)` and `git.JSONPatchForFile(filename)`.
 
   * `git.JSONPatchForFile`
-    
+
     This will generate a rfc6902 JSON patch between two files inside your repo. These patch files are useful as a standard, but are pretty tricky to work with in something like a Dangerfile, where rule terseness takes priority.
-  
+
   * `git.JSONDiffForFile`
-    
+
     This uses `JSONPatchForFile` to generate an object that represents all changes inside a Dangerfile as a single object, with keys for the changed paths. For example with a change like this:
 
     ```diff
@@ -69,12 +70,12 @@
     }
     ```
     The keys: `added` and `removed` only exist on the object if:
-    
+
     * `before` and `after` are both objects - in which case `added` and `removed` are the added or removed keys
     * `before` and `after` are both arrays - in which case `added` and `removed` are the added or removed values
 
 * Exposed all global functions ( like `warn`, `fail`, `git`, `schedule`, ... ) on the `danger` object. - orta
-  
+
   This is specifically to simplify building library code. It should not affect end-users. If you want to
   look at making a Danger JS Plugin, I'd recommend exposing a function which takes the `danger` object and working from that. If you're interested, there is an active discussion on plugin support in the DangerJS issues.
 
@@ -87,7 +88,7 @@
 * Add `danger.utils` DSL, which includes `danger.utils.href()` and `danger.utils.sentence()` - macklinu
 
   We were finding that a lot of Dangerfiles needed similar functions, so we've added a `utils` object
-  to offer functions that are going to be used across the board. If you can think of more 
+  to offer functions that are going to be used across the board. If you can think of more
   functions you use, we'd love to add them. Ideally you shouldn't need to use anything but Danger + utils
   to write your Dangerfiles.
 
@@ -99,7 +100,7 @@
 * Adds `danger.github.utils` - which currently has only one function: `fileLinks` - orta
 
   Most of the time people are working with a list of files (e.g. modified, or created) and then
-  want to present clickable links to those. As the logic to figure the URLs is very GitHub specific, 
+  want to present clickable links to those. As the logic to figure the URLs is very GitHub specific,
   we've moved that into it's own object with space to grow.
 
   ```js
@@ -131,7 +132,7 @@
   });
   ```
 
-  Or if you wanted something simpler, 
+  Or if you wanted something simpler,
 
   ```js
   schedule((resolved) => {
@@ -161,7 +162,7 @@
 
 ### 0.11.0 - 0.11.2
 
-* Add support for [Docker Cloud](https://cloud.docker.com) - camacho 
+* Add support for [Docker Cloud](https://cloud.docker.com) - camacho
 
 ### 0.10.1
 
