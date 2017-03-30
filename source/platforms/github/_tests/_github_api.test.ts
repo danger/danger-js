@@ -1,6 +1,6 @@
 import { GitHubAPI } from "../GitHubAPI"
 import { FakeCI } from "../../../ci_source/providers/Fake"
-import { requestWithFixturedJSON } from "../../_tests/GitHub.test"
+import { requestWithFixturedJSON } from "../../_tests/_github.test"
 
 const fetchJSON = (api, params): Promise<any> => {
   return Promise.resolve({
