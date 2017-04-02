@@ -82,7 +82,7 @@ async function run(): Promise<any> {
             verbose: app.verbose
           }
 
-          const exec = new Executor(source, platform, config)
+          const exec = new Executor(platform, config)
           exec.setupAndRunDanger(dangerFile)
         } else {
 

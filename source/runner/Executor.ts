@@ -1,6 +1,5 @@
 import { contextForDanger } from "../runner/Dangerfile"
 import { DangerDSL } from "../dsl/DangerDSL"
-import { CISource } from "../ci_source/ci_source"
 import { Platform } from "../platforms/platform"
 import { DangerResults } from "../dsl/DangerResults"
 import { template as githubResultsTemplate } from "./templates/githubIssueTemplate"
@@ -23,7 +22,7 @@ export interface ExecutorOptions {
 export class Executor {
   private readonly d = debug("danger:executor")
 
-  constructor(public readonly ciSource: CISource, public readonly platform: Platform, public readonly options: ExecutorOptions) {
+  constructor(public readonly platform: Platform, public readonly options: ExecutorOptions) {
   }
 
   /** Mainly just a dumb helper because I can't do

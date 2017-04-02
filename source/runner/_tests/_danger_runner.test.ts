@@ -28,7 +28,7 @@ async function setupDangerfileContext() {
     verbose: false
   }
 
-  const exec = new Executor(new FakeCI({}), platform, config)
+  const exec = new Executor(platform, config)
 
   platform.getPlatformGitRepresentation = jest.fn()
   platform.getPlatformDSLRepresentation = jest.fn()
