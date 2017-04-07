@@ -1,5 +1,5 @@
 import {basename} from "path"
-import {sentence, href} from "../../runner/DangerUtils"
+import {sentence, href} from "../../runner/utils/link_lists"
 import {GitHubPRDSL, GitHubUtilsDSL} from "./../../dsl/GitHubDSL"
 
 // We need to curry in access to the GitHub PR metadata

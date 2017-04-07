@@ -91,7 +91,7 @@ export class GitHubAPI {
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}`)
 
-    return res.ok ?  res.json() as Promise<GitHubPRDSL> : {} as GitHubPRDSL
+    return res.ok ? res.json() as Promise<GitHubPRDSL> : {} as GitHubPRDSL
   }
 
   async getPullRequestCommits(): Promise<any> {

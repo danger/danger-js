@@ -8,7 +8,7 @@ import { DangerfileRuntimeEnv } from "./types"
 
 import * as debug from "debug"
 import * as chalk from "chalk"
-import { sentence, href } from "./DangerUtils"
+import utilsDSL from "./utils"
 
 // This is still badly named, maybe it really should just be runner?
 
@@ -64,8 +64,7 @@ export class Executor {
   async dslForDanger(): Promise<DangerDSL> {
     const git = await this.platform.getPlatformGitRepresentation()
     const platformDSL = await this.platform.getPlatformDSLRepresentation()
-    const utils = { sentence, href }
-    return new DangerDSL(platformDSL, git, utils)
+    return new DangerDSL(platformDSL, git, utilsDSL)
   }
 
   /**
