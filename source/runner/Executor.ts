@@ -6,6 +6,7 @@ import { DangerResults } from "../dsl/DangerResults"
 import { template as githubResultsTemplate } from "./templates/githubIssueTemplate"
 import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment } from "./DangerfileRunner"
 import { DangerfileRuntimeEnv } from "./types"
+import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
 import * as debug from "debug"
 import * as chalk from "chalk"
@@ -53,7 +54,16 @@ export class Executor {
    */
 
   async runDanger(file: string, runtime: DangerfileRuntimeEnv) {
-    const results = await runDangerfileEnvironment(file, runtime)
+    let results = {} as DangerResults
+
+    // If an eval of the Dangerfile fails, we should generate a
+    // message that can go back to the CI
+    try {
+      results = await runDangerfileEnvironment(file, runtime)
+    } catch (error) {
+      results = this.resultsForError(error)
+    }
+
     await this.handleResults(results)
     return results
   }
@@ -87,7 +97,7 @@ export class Executor {
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    */
   async handleResultsPostingToSTDOUT(results: DangerResults) {
-    const {fails, warnings, messages, markdowns} = results
+    const { fails, warnings, messages, markdowns } = results
 
     const table = [
       { name: "Failures", messages: fails.map(f => f.message) },
@@ -127,7 +137,7 @@ export class Executor {
    */
   async handleResultsPostingToPlatform(results: DangerResults) {
     // Delete the message if there's nothing to say
-    const {fails, warnings, messages, markdowns} = results
+    const { fails, warnings, messages, markdowns } = results
 
     const failureCount = [...fails, ...warnings].length
     const messageCount = [...messages, ...markdowns].length
@@ -158,6 +168,22 @@ export class Executor {
     // More info, is more info.
     if (this.options.verbose) {
       await this.handleResultsPostingToSTDOUT(results)
+    }
+  }
+
+  /**
+   * Takes an error (maybe a bad eval) and provides a DangerResults compatible object
+   * @param error Any JS error
+   */
+  resultsForError(error: Error) {
+    // Need a failing error, otherwise it won't fail CI.
+    console.error(chalk.red("Danger has errored"))
+    console.error(error)
+    return {
+      fails: [{ message: "Running your Dangerfile has Failed" }],
+      warnings: [],
+      messages: [],
+      markdowns: [exceptionRaisedTemplate(error)]
     }
   }
 }

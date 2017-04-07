@@ -15,5 +15,22 @@
     },
     "files.associations": {
         "**/*.js": "javascriptreact"
-     }
+    },
+    "spellchecker.language": "en_US",
+    "spellchecker.ignoreWordsList": [
+        "GitHub",
+        "repo",
+        "Awesommmmee",
+        "linters",
+        "TODO",
+        "repl"
+    ],
+    "spellchecker.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext"
+    ],
+    "spellchecker.ignoreRegExp": [],
+    "spellchecker.ignoreFileExtensions": [],
+    "spellchecker.checkInterval": 5000
 }

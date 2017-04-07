@@ -2,7 +2,7 @@
 
 ### Master
 
-
+* When a Dangerfile fails to eval, send a message to the PR - orta
 
 ### 0.14.2
 
