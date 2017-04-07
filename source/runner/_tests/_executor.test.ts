@@ -21,11 +21,31 @@ describe("setup", () => {
     expect(platform.getPlatformDSLRepresentation).toBeCalled()
   })
 
-  it("gets diff / pr info in setup", async () => {
+  it("gets diff / pr info / utils in setup", async () => {
     const exec = new Executor(new FakeCI({}), new FakePlatform(), defaultConfig)
     const dsl = await exec.dslForDanger()
     expect(dsl.git).toBeTruthy()
     expect(dsl.github).toBeTruthy()
+    expect(dsl.utils).toBeTruthy()
+  })
+
+  it("Creates a DangerResults for a raising dangerfile", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, defaultConfig)
+
+    // This is a real error occuring when Danger modifies the Dangerfile
+    // as it is given a path of ""
+    const error = {
+      name: "Error",
+      message: "ENOENT: no such file or directory",
+    }
+
+    const results = await exec.runDanger("", {} as any)
+    expect(results.fails.length).toBeGreaterThan(0)
+
+    const markdown = results.markdowns[0]
+    expect(markdown).toMatch(error.name)
+    expect(markdown).toMatch(error.message)
   })
 
   it("Deletes a post when there are no messages", async () => {
