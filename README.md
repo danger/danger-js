@@ -163,7 +163,6 @@ Note: this will leave a comment on the PR.
 
 ## Known issues
 
-* We're still figuring out how to handle [async code correctly](https://github.com/danger/danger-js/issues/88) (you can use `await` with no problem though)
 * Codeship support does not support fork to fork GitHub PRs.
 
 ## This thing is broken, I should help improve it!
@@ -199,6 +198,16 @@ Tips:
 ### What is the TODO?
 
 Check the issues, I try and keep my short term perspective there. Long term is in the [VISION.md](VISION.md).
+
+## License, Contributor's Guidelines and Code of Conduct
+
+We try to keep as much discussion as possible in GitHub issues, but also have a pretty inactive Slack --- if you'd like an invite, ping [@Orta](https://twitter.com/orta/) a DM on Twitter with your email. It's mostly interesting if you want to stay on top of Danger without all the emails from GitHub.
+
+> This project is open source under the MIT license, which means you have full access to the source code and can modify it to fit your own needs.
+
+> This project subscribes to the [Moya Contributors Guidelines](https://github.com/Moya/contributors) which TLDR: means we give out push access easily and often.
+
+> Contributors subscribe to the [Contributor Code of Conduct](http://contributor-covenant.org/version/1/3/0/) based on the [Contributor Covenant](http://contributor-covenant.org) version 1.3.0.
 
 [emiss]: https://github.com/artsy/emission/blob/master/dangerfile.ts
 [danger-js]: https://github.com/danger/danger-js/blob/master/dangerfile.ts

@@ -2,7 +2,7 @@
 // This means we can re-use the type infra from the app, without having to
 // fake the import.
 
-import {DangerDSL} from "./source/dsl/DangerDSL"
+import { DangerDSL } from "./source/dsl/DangerDSL"
 declare var danger: DangerDSL
 declare function warn(params: string): void
 declare function fail(params: string): void
@@ -111,8 +111,8 @@ schedule(async () => {
 // Some good old-fashioned maintainance upkeep
 
 // Ensure the danger.d.ts is always up to date inside this repo.
-// This also serves as a way of being able to understand changes to the DSL
-// in a way that doesn't require running Danger.
+// This also serves as the "one true DSL" for a Danger run against a PR
+// which tools can then work against.
 
 import dtsGenerator from "./scripts/danger-dts"
 const currentDTS = dtsGenerator()
