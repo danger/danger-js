@@ -56,7 +56,8 @@
     "build": "shx rm -rf ./distribution && tsc && madge ./distribution --circular",
     "build:watch": "tsc -w",
     "link": "npm run build && chmod +x distribution/commands/danger.js && npm link",
-    "declarations": "ts-node ./scripts/create-danger-dts.ts"
+    "declarations": "ts-node ./scripts/create-danger-dts.ts",
+    "docs": "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; typedoc -- --json docs/js_ref_dsl_docs.json --includeDeclarations --excludeExternals "
   },
   "repository": {
     "type": "git",
@@ -93,6 +94,7 @@
     "ts-jest": "^19.0.2",
     "ts-node": "^3.0.0",
     "tslint": "^5.0.0",
+    "typedoc": "orta/typedoc#0.5.10-no-types",
     "typescript": "2.2.1"
   },
   "dependencies": {

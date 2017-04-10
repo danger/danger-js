@@ -39,3 +39,6 @@ jspm_packages
 distribution  
 flow-typed
 env/development.env
+
+docs/doc_generate/
+docs/js_ref_dsl_docs.json

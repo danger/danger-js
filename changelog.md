@@ -14,8 +14,6 @@
   use windows, can you please confirm that everything is 👍
 
 * Added type shapings to `JSONPatchForFile` - orta
-
-
 * Replaced deprecated `lodash.isarray` package with `Array.isArray` - damassi
 
 ### 0.14.1
@@ -61,7 +59,7 @@
     }
     ```
 
-    You could become aware of what has changed with a Dangerfile like:
+    You could become aware of what has changed with a Dangerfile in a `schedule`'d function like:
 
     ```js
     const packageDiff = await git.JSONDiffForFile("package.json")
