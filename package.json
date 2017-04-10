@@ -57,7 +57,7 @@
     "build:watch": "tsc -w",
     "link": "npm run build && chmod +x distribution/commands/danger.js && npm link",
     "declarations": "ts-node ./scripts/create-danger-dts.ts",
-    "docs": "typedoc -- --json docs/js_ref_dsl_docs.json --includeDeclarations --excludeExternals"
+    "docs": "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; typedoc -- --json docs/js_ref_dsl_docs.json --includeDeclarations --excludeExternals "
   },
   "repository": {
     "type": "git",
