@@ -59,7 +59,12 @@ export interface GitDSL {
    */
   readonly deleted_files: Array<string>
 
-  /** Offers the diff for a specific file */
+  /** Offers the diff for a specific file
+   *
+   * @param {string} filename the path to the json file
+   * @param {string[]} diffTypes An array containing: "add", "del" or "normal" - then you can only get these changes
+   */
+
   diffForFile(filename: string, diffTypes?: string[]): string | null,
 
   /**
