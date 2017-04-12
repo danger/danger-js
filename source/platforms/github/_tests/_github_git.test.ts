@@ -48,6 +48,13 @@ describe("the dangerfile gitDSL", async () => {
     expect(gitDSL.diffForFile("CHANGELOG.md")).toEqual(expected)
   })
 
+  it("should show only diff of specified type", async () => {
+    const expected = "+- GeneVC now shows about information, and trending artists - orta"
+    const gitDSL = await github.getPlatformGitRepresentation()
+
+    expect(gitDSL.diffForFile("CHANGELOG.md", ["add"])).toEqual(expected)
+  })
+
   it("sets up commit data correctly", async () => {
     const exampleCommit: GitCommit = {
       "author": {

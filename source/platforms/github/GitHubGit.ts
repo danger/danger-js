@@ -139,12 +139,18 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
  *
  * @param name File path for the diff
  */
-  const diffForFile = (name: string) => {
+  const diffForFile = (name: string, diffTypes?: string[]) => {
     const diff = find(fileDiffs, (diff: any) => diff.from === name || diff.to === name)
     if (!diff) { return null }
 
-    const changes = diff.chunks.map((c: any) => c.changes)
-                               .reduce((a: any, b: any) => a.concat(b), [])
+    let changes = diff.chunks.map((c: any) => c.changes)
+                             .reduce((a: any, b: any) => a.concat(b), [])
+
+    // Filter the diffs by type
+    if (diffTypes && diffTypes.length > 0) {
+      changes = changes.filter((c: any) => diffTypes.indexOf(c.type) !== -1)
+    }
+
     const lines = changes.map((c: any) => c.content)
     return lines.join(os.EOL)
   }

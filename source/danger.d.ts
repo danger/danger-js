@@ -165,7 +165,7 @@ export interface GitDSL {
   readonly deleted_files: Array<string>
 
   /** Offers the diff for a specific file */
-  diffForFile(filename: string): string | null,
+  diffForFile(filename: string, diffTypes?: string[]): string | null,
 
   /**
    * Provides a JSON patch (rfc6902) between the two versions of a JSON file,
