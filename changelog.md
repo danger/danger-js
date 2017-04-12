@@ -2,6 +2,8 @@
 
 ### Master
 
+* Adds a `diffTypes` option to `diffForFile` - alex3165
+
 ### 0.15.0
 
 * When a Dangerfile fails to eval, send a message to the PR - orta
