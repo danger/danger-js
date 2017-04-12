@@ -1,35 +1,57 @@
-import { GitHub } from "../GitHub"
-import { GitHubAPI } from "../github/GitHubAPI"
-
-import { GitCommit } from "../../dsl/Commit"
-import { FakeCI } from "../../ci_source/providers/Fake"
-import { readFileSync } from "fs"
 import { resolve } from "path"
-import * as os from "os"
+import { readFileSync } from "fs"
 
 const fixtures = resolve(__dirname, "fixtures")
-const EOL = os.EOL
 
 /** Returns JSON from the fixtured dir */
 export const requestWithFixturedJSON = async (path: string): Promise<() => Promise<any>> => () => (
   Promise.resolve(JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString()))
 )
 
-describe("with fixtured data", () => {
-  it("returns the correct github data", async () => {
-    const api = new GitHubAPI({ repoSlug: "unused/metadata", pullRequestID: "1" })
-    const github = new GitHub(api)
-    api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
+// Mock GitHubAPI class
+jest.mock("../github/GitHubAPI", () => {
+  class GitHubAPI {
+    async getPullRequestInfo() {
+      const fixtures = await requestWithFixturedJSON("github_pr.json")
+      return await fixtures()
+    }
+    async getIssue() {
+      const fixtures = await requestWithFixturedJSON("github_issue.json")
+      return await fixtures()
+    }
+  }
 
+  return { GitHubAPI }
+})
+
+import { GitHub } from "../GitHub"
+import { GitHubAPI } from "../github/GitHubAPI"
+
+import { GitCommit } from "../../dsl/Commit"
+import { FakeCI } from "../../ci_source/providers/Fake"
+import * as os from "os"
+
+const EOL = os.EOL
+
+describe("getPlatformDSLRepresentation", () => {
+  let github
+
+  beforeEach(() => {
+    github = new GitHub(new GitHubAPI({} as any))
+  })
+
+  it("should return the correct review title from getReviewInfo", async () => {
     const info = await github.getReviewInfo()
     expect(info.title).toEqual("Adds support for showing the metadata and trending Artists to a Gene VC")
   })
-})
 
-describe("getPlatformDSLRepresentation", () => {
+  it("should get the issue label", async() => {
+    const issue = await github.getIssue()
+    console.log(issue)
+    expect(issue.labels[0].name).toEqual("bug")
+  })
+
   // need to cover:
-  // - getReviewInfo
-  // - getIssue
   // - getPullRequestCommits
   // - getReviews
   // - getReviewerRequests
