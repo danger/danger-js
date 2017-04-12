@@ -47,7 +47,6 @@ describe("getPlatformDSLRepresentation", () => {
 
   it("should get the issue label", async() => {
     const issue = await github.getIssue()
-    console.log(issue)
     expect(issue.labels[0].name).toEqual("bug")
   })
 
