@@ -44,6 +44,7 @@ export class GitHub {
     if (!issue) {
       return { labels: [] }
     }
+
     const labels = issue.labels.map((label: any): GitHubIssueLabel => ({
       id: label.id,
       url: label.url,
