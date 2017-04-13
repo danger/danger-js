@@ -102,6 +102,8 @@ Danger is built to run as a part of this process, so you will need to have this 
 
 You should be able to verify that you have successfully integrated Danger by either re-building your CI or pushing your new commits.
 
+
+
 [jest-config]: SBJDSKDJBSDKJBG
 [github_bots]: https://twitter.com/sebastiangrail/status/750844399563608065
 [github_token]: https://github.com/settings/tokens/new
