@@ -138,22 +138,33 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
 /**
  * Gets the git-style diff for a single file.
  *
- * @param name File path for the diff
+ * @param filename File path for the diff
  */
-  const diffForFile = (name: string, diffTypes?: string[]) => {
-    const diff = find(fileDiffs, (diff: any) => diff.from === name || diff.to === name)
-    if (!diff) { return null }
+  const diffForFile = async (filename: string, diffTypes?: string[]) => {
+    const structuredDiff = find(fileDiffs, (diff: any) => diff.from === filename || diff.to === filename)
+    if (!structuredDiff) { return null }
 
-    let changes = diff.chunks.map((c: any) => c.changes)
-                             .reduce((a: any, b: any) => a.concat(b), [])
+    let changes = structuredDiff.chunks.map((c: any) => c.changes)
+                                .reduce((a: any, b: any) => a.concat(b), [])
 
     // Filter the diffs by type
     if (diffTypes && diffTypes.length > 0) {
       changes = changes.filter((c: any) => diffTypes.indexOf(c.type) !== -1)
     }
 
+    const baseFile = await api.fileContents(filename, pr.base.repo.full_name, pr.base.sha)
+    const headFile = await api.fileContents(filename, pr.head.repo.full_name, pr.head.sha)
+
     const lines = changes.map((c: any) => c.content)
-    return lines.join(os.EOL)
+
+    return {
+      before: baseFile,
+      after: headFile,
+      added: changes.filter(({type}: {type: string}) => type === "add"),
+      removed: changes.filter(({type}: {type: string}) => type === "del"),
+      normal: changes.filter(({type}: {type: string}) => type === "normal"),
+      diff: lines.join(os.EOL)
+    }
   }
 
   return {

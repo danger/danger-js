@@ -1,0 +1,18 @@
+{
+  "name": "CHANGELOG.md",
+  "path": "CHANGELOG.md",
+  "sha": "918b1dcad6f57ea498c572eccf7993ec59ac6183",
+  "size": 1219,
+  "url": "https://api.github.com/repos/artsy/emission/contents/CHANGELOG.md?ref=cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
+  "html_url": "https://github.com/artsy/emission/blob/cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75/CHANGELOG.md",
+  "git_url": "https://api.github.com/repos/artsy/emission/git/blobs/918b1dcad6f57ea498c572eccf7993ec59ac6183",
+  "download_url": "https://raw.githubusercontent.com/artsy/emission/cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75/CHANGELOG.md",
+  "type": "file",
+  "content": "IyMjIDEuMS4wLWJldGEuMwoKLSBGaXggbWlzc2luZyBpbWFnZSBhc3NldCBp\nc3N1ZSAtIGFsbG95Ci0gW2Rldl0gVXBkYXRlcyBGbG93IHRvIDAuMzIgLSBv\ncnRhCi0gW2Rldl0gVXBkYXRlcyBSZWFjdCB0byAwLjM0IC0gb3J0YQotIFtk\nZXZdIFR1cm5zIG9uICJrZXljaGFpbiBzaGFyaW5nIiB0byBmaXggYSBrZXlj\naGFpbiBidWcgaW4gc2ltIC0gb3J0YQotIEdlbmVWQyBub3cgc2hvd3MgYWJv\ndXQgaW5mb3JtYXRpb24sIGFuZCB0cmVuZGluZyBhcnRpc3RzIC0gb3J0YQoK\nIyMjIDEuMS4wLWJldGEuMgoKLSBBZGRzIGFuIGluaXRpYWwgR2VuZSB2aWV3\nIC0gb3J0YQotIEFuaW1hdGUgaW52ZXJ0ZWQgYnV0dG9uIHN0YXRlIGNoYW5n\nZSAtIGFsbG95Ci0gRG8gbm90IHNob3cgZm9sbG93IGJ1dHRvbiBvbiBhcnRp\nc3QgdmlldyB1bnRpbCBjdXJyZW50IHN0YXR1cyBpcyByZXRyaWV2ZWQgLSBh\nbGxveQotIE9wdGltaXN0aWNhbGx5IGNoYW5nZSBzdGF0ZSBvZiBmb2xsb3cg\nYnV0dG9uIG9uIGFydGlzdCB2aWV3IC0gYWxsb3kKLSBCdW5kbGUgYXNzZXRz\nIGludG8gYSBkaXIgdGhhdCBjYW4gYmUgaW5jbHVkZWQgaW4gcmVsZWFzZSBi\ndWlsZHMgLSBhbGxveQotIFJlbW92ZSB0eXBpbmdzIGZyb20gdGhlIG5wbSBg\ncGFja2FnZS5qc29uYCBhcyB0aGUgcmVjb21tZW5kYXRpb24gaXMgYSBnbG9i\nYWwgaW5zdGFsbCAtIG9ydGEKLSBNYWtlIGZvbGxvdyBhcnRpc3QgYnV0dG9u\nIGluIGFydGlzdCByYWlsIHdvcmsgYW5kIHJlcGxhY2Ugd2l0aCBhIG5ldyBz\ndWdnZXN0aW9uIGJhc2VkIG9uIHRoYXQgYXJ0aXN0IC0gYWxsb3kKLSBIb21l\nIG5vdyBhc2tzIGZvciBtYXhpbXVtIG9mIDk5IGFydHdvcmsgcmFpbHMgLSBz\nYXJhaAotIEFkZGVkIHB1bGwtdG8tcmVmcmVzaCBmdW5jdGlvbmFsaXR5IHRv\nIGhvbWUgdmlldyAtIHNhcmFoCi0gQWRkZWQgYSBkZWZhdWx0IG1pbmltdW0g\naGVpZ2h0IGZvciBhbGwgcmFpbHMgLSBtYXhpbQotIEFkZGVkIGEgcHJldHR5\nIGxvYWQgZmFpbHVyZSB2aWV3IGFuZCBhbGxvdyBmb3IgcmV0cnlpbmcgLSBh\nbGxveQotIEFkZGVkIGEgc2VjdGlvbiBoZWFkZXIgZm9yIGFsbCBIb21lIHJh\naWxzIC0gc2FyYWgKLSBBZGRlZCBhbiBBcnR3b3JrcyByYWlsIHRvIEhvbWUg\ndmlldyAtIHNhcmFoCi0gQWRkZWQgRGFuZ2VyLCBhIENIQU5HRUxPRyBhbmQg\nc29tZSB0ZXN0cyAtIG9ydGEKCiMjIyAxLjAuMwoKW09yaWdpbmFsIHJlbGVh\nc2VdCg==\n",
+  "encoding": "base64",
+  "_links": {
+    "self": "https://api.github.com/repos/artsy/emission/contents/CHANGELOG.md?ref=cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
+    "git": "https://api.github.com/repos/artsy/emission/git/blobs/918b1dcad6f57ea498c572eccf7993ec59ac6183",
+    "html": "https://github.com/artsy/emission/blob/cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75/CHANGELOG.md"
+  }
+}

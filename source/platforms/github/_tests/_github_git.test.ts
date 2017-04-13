@@ -29,6 +29,8 @@ describe("the dangerfile gitDSL", async () => {
     api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
     api.getPullRequestDiff = await requestWithFixturedContent("github_diff.diff")
     api.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
+    api.getFileContents = async (path, repoSlug, ref) => (await requestWithFixturedJSON(`static_file:${ref}.json`))()
+
   })
 
   it("sets the modified/created/deleted", async () => {
@@ -44,15 +46,17 @@ describe("the dangerfile gitDSL", async () => {
   it("shows the diff for a specific file", async () => {
     const expected = ` - [dev] Updates Flow to 0.32 - orta${EOL} - [dev] Updates React to 0.34 - orta${EOL} - [dev] Turns on "keychain sharing" to fix a keychain bug in sim - orta${EOL}+- GeneVC now shows about information, and trending artists - orta${EOL} ${EOL} ### 1.1.0-beta.2${EOL} ` //tslint:disable-line:max-line-length
     const gitDSL = await github.getPlatformGitRepresentation()
+    const {diff} = await gitDSL.diffForFile("CHANGELOG.md")
 
-    expect(gitDSL.diffForFile("CHANGELOG.md")).toEqual(expected)
+    expect(diff).toEqual(expected)
   })
 
   it("should show only diff of specified type", async () => {
     const expected = "+- GeneVC now shows about information, and trending artists - orta"
     const gitDSL = await github.getPlatformGitRepresentation()
+    const {diff} = await gitDSL.diffForFile("CHANGELOG.md", ["add"])
 
-    expect(gitDSL.diffForFile("CHANGELOG.md", ["add"])).toEqual(expected)
+    expect(diff).toEqual(expected)
   })
 
   it("sets up commit data correctly", async () => {
