@@ -2,6 +2,8 @@
 
 ### Master
 
+### 0.16.0
+
 * Adds a `diffTypes` option to `diffForFile` - alex3165
 * Add Buildkite CI source - jacobwgillespie
 
