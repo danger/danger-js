@@ -8,65 +8,201 @@ exports[`the dangerfile gitDSL should include \`added\` text content of the file
 `;
 
 exports[`the dangerfile gitDSL should include \`after\` text content of the file 1`] = `
-"### 1.1.0-beta.3
+"/* @flow */
+'use strict'
 
-- Fix missing image asset issue - alloy
-- [dev] Updates Flow to 0.32 - orta
-- [dev] Updates React to 0.34 - orta
-- [dev] Turns on \\"keychain sharing\\" to fix a keychain bug in sim - orta
-- GeneVC now shows about information, and trending artists - orta
+import Relay from 'react-relay'
+import React from 'react'
+import { Text, ScrollView, View, Dimensions } from 'react-native'
 
-### 1.1.0-beta.2
+import Events from '../native_modules/events'
 
-- Adds an initial Gene view - orta
-- Animate inverted button state change - alloy
-- Do not show follow button on artist view until current status is retrieved - alloy
-- Optimistically change state of follow button on artist view - alloy
-- Bundle assets into a dir that can be included in release builds - alloy
-- Remove typings from the npm \`package.json\` as the recommendation is a global install - orta
-- Make follow artist button in artist rail work and replace with a new suggestion based on that artist - alloy
-- Home now asks for maximum of 99 artwork rails - sarah
-- Added pull-to-refresh functionality to home view - sarah
-- Added a default minimum height for all rails - maxim
-- Added a pretty load failure view and allow for retrying - alloy
-- Added a section header for all Home rails - sarah
-- Added an Artworks rail to Home view - sarah
-- Added Danger, a CHANGELOG and some tests - orta
+import About from '../components/gene/about'
+import Header from '../components/gene/header'
 
-### 1.0.3
+import TabView from '../components/tab_view'
+import type TabSelectionEvent from '../components/events'
 
-[Original release]
+const TABS = {
+  WORKS: 'WORKS',
+  ABOUT: 'ABOUT',
+}
+
+class Gene extends React.Component {
+
+  state: {
+    selectedTabIndex: number,
+  };
+
+  componentWillMount() {
+    this.state = { selectedTabIndex: 1 }
+  }
+
+  tabSelectionDidChange = (event: TabSelectionEvent) => {
+    this.setState({ selectedTabIndex: event.nativeEvent.selectedIndex })
+  }
+
+  availableTabs = () => {
+    return [TABS.WORKS, TABS.ABOUT]
+  }
+
+  selectedTabTitle = () => {
+    return this.availableTabs()[this.state.selectedTabIndex]
+  }
+
+  // This is *not* called on the initial render, thus it will only post events for when the user actually taps a tab.
+  componentDidUpdate(previousProps, previousState) {
+    Events.postEvent(this, {
+      name: 'Tapped gene view tab',
+      tab: this.selectedTabTitle().toLowerCase(),
+      gene_id: this.props.gene._id,
+      gene_slug: this.props.gene.id,
+    })
+  }
+
+  renderSelectedTab = () => {
+    switch (this.selectedTabTitle()) {
+      // case TABS.ABOUT: return <About gene={this.props.gene} />
+      // case TABS.WORKS: return <Artworks gene={this.props.gene} />
+      case TABS.ABOUT: return <About gene={this.props.gene} />
+      case TABS.WORKS: return <Text/>
+    }
+  }
+
+  renderTabView() {
+    return (
+      <TabView titles={this.availableTabs()} selectedIndex={this.state.selectedTabIndex} onSelectionChange={this.tabSelectionDidChange}>
+        { this.renderSelectedTab() }
+      </TabView>
+    )
+  }
+
+  render() {
+    const windowDimensions = Dimensions.get('window')
+    const commonPadding = windowDimensions.width > 700 ? 40 : 20
+
+    return (
+      <ScrollView scrollsToTop={true}>
+        <View style={{ paddingLeft: commonPadding, paddingRight: commonPadding }}>
+          <Header gene={this.props.gene} />
+          { this.renderTabView() }
+        </View>
+      </ScrollView>
+    )
+  }
+}
+
+export default Relay.createContainer(Gene, {
+  fragments: {
+    gene: () => Relay.QL\`
+      fragment on Gene {
+        _id
+        id
+        \${Header.getFragment('gene')}
+        \${About.getFragment('gene')}
+      }
+    \`,
+  }
+})
 "
 `;
 
 exports[`the dangerfile gitDSL should include \`before\` text content of the file 1`] = `
-"### 1.1.0-beta.3
+"/* @flow */
+'use strict'
 
-- Fix missing image asset issue - alloy
-- [dev] Updates Flow to 0.32 - orta
-- [dev] Updates React to 0.34 - orta
-- [dev] Turns on \\"keychain sharing\\" to fix a keychain bug in sim - orta
+import Relay from 'react-relay'
+import React from 'react'
+import { Text, ScrollView, View, Dimensions } from 'react-native'
 
-### 1.1.0-beta.2
+import Events from '../native_modules/events'
 
-- Adds an initial Gene view - orta
-- Animate inverted button state change - alloy
-- Do not show follow button on artist view until current status is retrieved - alloy
-- Optimistically change state of follow button on artist view - alloy
-- Bundle assets into a dir that can be included in release builds - alloy
-- Remove typings from the npm \`package.json\` as the recommendation is a global install - orta
-- Make follow artist button in artist rail work and replace with a new suggestion based on that artist - alloy
-- Home now asks for maximum of 99 artwork rails - sarah
-- Added pull-to-refresh functionality to home view - sarah
-- Added a default minimum height for all rails - maxim
-- Added a pretty load failure view and allow for retrying - alloy
-- Added a section header for all Home rails - sarah
-- Added an Artworks rail to Home view - sarah
-- Added Danger, a CHANGELOG and some tests - orta
+import Header from '../components/gene/header'
 
-### 1.0.3
+import TabView from '../components/tab_view'
+import type TabSelectionEvent from '../components/events'
 
-[Original release]
+
+const TABS = {
+  WORKS: 'WORKS',
+  ABOUT: 'ABOUT',
+}
+
+class Gene extends React.Component {
+
+  state: {
+    selectedTabIndex: number,
+  };
+
+  componentWillMount() {
+    this.state = { selectedTabIndex: 0 }
+  }
+
+  tabSelectionDidChange = (event: TabSelectionEvent) => {
+    this.setState({ selectedTabIndex: event.nativeEvent.selectedIndex })
+  }
+
+  availableTabs = () => {
+    return [TABS.WORKS, TABS.ABOUT]
+  }
+
+  selectedTabTitle = () => {
+    return this.availableTabs()[this.state.selectedTabIndex]
+  }
+
+  // This is *not* called on the initial render, thus it will only post events for when the user actually taps a tab.
+  componentDidUpdate(previousProps, previousState) {
+    Events.postEvent(this, {
+      name: 'Tapped gene view tab',
+      tab: this.selectedTabTitle().toLowerCase(),
+      gene_id: this.props.gene._id,
+      gene_slug: this.props.gene.id,
+    })
+  }
+
+  renderSelectedTab = () => {
+    switch (this.selectedTabTitle()) {
+      // case TABS.ABOUT: return <About gene={this.props.gene} />
+      // case TABS.WORKS: return <Artworks gene={this.props.gene} />
+      case TABS.ABOUT: return <Text/>
+      case TABS.WORKS: return <Text/>
+    }
+  }
+
+  renderTabView() {
+    return (
+      <TabView titles={this.availableTabs()} selectedIndex={this.state.selectedTabIndex} onSelectionChange={this.tabSelectionDidChange}>
+        { this.renderSelectedTab() }
+      </TabView>
+    )
+  }
+
+  render() {
+    const windowDimensions = Dimensions.get('window')
+    const commonPadding = windowDimensions.width > 700 ? 40 : 20
+
+    return (
+      <ScrollView scrollsToTop={true}>
+        <View style={{ paddingLeft: commonPadding, paddingRight: commonPadding }}>
+          <Header gene={this.props.gene} />
+          { this.renderTabView() }
+        </View>
+      </ScrollView>
+    )
+  }
+}
+
+export default Relay.createContainer(Gene, {
+  fragments: {
+    gene: () => Relay.QL\`
+      fragment on Gene {
+        _id
+        id
+        \${Header.getFragment('gene')}
+      }
+    \`,
+  }
+})
 "
 `;
 
