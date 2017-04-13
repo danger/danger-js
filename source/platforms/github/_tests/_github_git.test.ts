@@ -46,37 +46,36 @@ describe("the dangerfile gitDSL", async () => {
   })
 
   it("shows the diff for a specific file", async () => {
-    const expected = ` - [dev] Updates Flow to 0.32 - orta${EOL} - [dev] Updates React to 0.34 - orta${EOL} - [dev] Turns on "keychain sharing" to fix a keychain bug in sim - orta${EOL}+- GeneVC now shows about information, and trending artists - orta${EOL} ${EOL} ### 1.1.0-beta.2${EOL} ` //tslint:disable-line:max-line-length
     const gitDSL = await github.getPlatformGitRepresentation()
-    const {diff} = await gitDSL.diffForFile("CHANGELOG.md")
+    const {diff} = await gitDSL.diffForFile("lib/containers/gene.js")
 
-    expect(diff).toEqual(expected)
+    expect(diff).toMatchSnapshot()
   })
 
   it("should include `before` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
-    const {before} = await gitDSL.diffForFile("CHANGELOG.md")
+    const {before} = await gitDSL.diffForFile("lib/containers/gene.js")
 
     expect(before).toMatchSnapshot()
   })
 
   it("should include `after` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
-    const {after} = await gitDSL.diffForFile("CHANGELOG.md")
+    const {after} = await gitDSL.diffForFile("lib/containers/gene.js")
 
     expect(after).toMatchSnapshot()
   })
 
   it("should include `added` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
-    const {added} = await gitDSL.diffForFile("CHANGELOG.md")
+    const {added} = await gitDSL.diffForFile("lib/containers/gene.js")
 
     expect(added).toMatchSnapshot()
   })
 
   it("should include `removed` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
-    const {removed} = await gitDSL.diffForFile("CHANGELOG.md")
+    const {removed} = await gitDSL.diffForFile("lib/containers/gene.js")
 
     expect(removed).toMatchSnapshot()
   })
