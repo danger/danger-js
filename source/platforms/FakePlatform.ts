@@ -19,7 +19,7 @@ export class FakePlatform implements Platform {
       modified_files: [],
       created_files: [],
       deleted_files: [],
-      diffForFile: () => "",
+      diffForFile: async () => ({before: "", after: "", added: [], removed: [], normal: [], diff: ""}),
       JSONDiffForFile: async () => ({} as any),
       JSONPatchForFile: async () => ({} as any),
       commits: []
