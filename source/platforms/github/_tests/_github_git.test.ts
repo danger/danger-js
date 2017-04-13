@@ -30,7 +30,6 @@ describe("the dangerfile gitDSL", async () => {
     api.getPullRequestDiff = await requestWithFixturedContent("github_diff.diff")
     api.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
     api.getFileContents = async (path, repoSlug, ref) => (await requestWithFixturedJSON(`static_file:${ref}.json`))()
-
   })
 
   it("sets the modified/created/deleted", async () => {
@@ -57,6 +56,20 @@ describe("the dangerfile gitDSL", async () => {
     const {diff} = await gitDSL.diffForFile("CHANGELOG.md", ["add"])
 
     expect(diff).toEqual(expected)
+  })
+
+  it("should include `before` text content of the file", async () => {
+    const gitDSL = await github.getPlatformGitRepresentation()
+    const {before} = await gitDSL.diffForFile("CHANGELOG.md")
+
+    expect(before).toMatchSnapshot()
+  })
+
+  it("should include `after` text content of the file", async () => {
+    const gitDSL = await github.getPlatformGitRepresentation()
+    const {after} = await gitDSL.diffForFile("CHANGELOG.md")
+
+    expect(after).toMatchSnapshot()
   })
 
   it("sets up commit data correctly", async () => {
