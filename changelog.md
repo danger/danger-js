@@ -3,6 +3,7 @@
 ### Master
 
 * Adds a `diffTypes` option to `diffForFile` - alex3165
+* Add Buildkite CI source - jacobwgillespie
 
 ### 0.15.0
 
@@ -11,8 +12,8 @@
 ### 0.14.2
 
 * Updated jest-* dependencies to 19.x - orta
-  
-  Updating the jest-* dependencies seems to be exhibiting strange behavior in tests for windows if you update, and 
+
+  Updating the jest-* dependencies seems to be exhibiting strange behavior in tests for windows if you update, and
   use windows, can you please confirm that everything is 👍
 
 * Added type shapings to `JSONPatchForFile` - orta
