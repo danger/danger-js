@@ -14,6 +14,8 @@ export interface GitCommit {
   tree: any,
   /** SHAs for the commit's parents */
   parents?: string[],
+  /** Link to the commit */
+  url: string
 }
 
 /** An author of a commit */

@@ -30,7 +30,8 @@ function githubCommitToGitCommit(ghCommit: GitHubCommit): GitCommit {
     author: ghCommit.commit.author,
     committer: ghCommit.commit.committer,
     message: ghCommit.commit.message,
-    tree: ghCommit.commit.tree
+    tree: ghCommit.commit.tree,
+    url: ghCommit.url
   }
 }
 

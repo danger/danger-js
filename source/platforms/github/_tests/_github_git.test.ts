@@ -74,6 +74,7 @@ describe("the dangerfile gitDSL", async () => {
         "sha": "d1b7448d7409093054efbb06ae12d1ffb002b956",
         "url": "https://api.github.com/repos/artsy/emission/git/trees/d1b7448d7409093054efbb06ae12d1ffb002b956",
       },
+      "url": "https://api.github.com/repos/artsy/emission/commits/13da2c844def1f4262ee440bd86fb2a3b021718b"
     }
     const gitDSL = await github.getPlatformGitRepresentation()
     expect(gitDSL.commits[0]).toEqual(exampleCommit)
