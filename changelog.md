@@ -2,6 +2,8 @@
 
 ### Master
 
+* Update internal test fixture generation docs
+
 ### 0.16.0
 
 * Adds a `diffTypes` option to `diffForFile` - alex3165
