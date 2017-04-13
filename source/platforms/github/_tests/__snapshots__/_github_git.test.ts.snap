@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`the dangerfile gitDSL should include \`added\` text content of the file 1`] = `"+- GeneVC now shows about information, and trending artists - orta"`;
+
 exports[`the dangerfile gitDSL should include \`after\` text content of the file 1`] = `
 "### 1.1.0-beta.3
 
@@ -62,3 +64,5 @@ exports[`the dangerfile gitDSL should include \`before\` text content of the fil
 [Original release]
 "
 `;
+
+exports[`the dangerfile gitDSL should include \`removed\` text content of the file 1`] = `""`;

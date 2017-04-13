@@ -6,10 +6,12 @@ export interface TextDiff {
   before: string
   /** The value after the PR's applied changes */
   after: string,
-  added: string[],
-  removed: string[],
-  normal: string[],
+  /** A string containing the full set of changes */
   diff: string,
+  /** A string containing just the added lines */
+  added: string,
+  /** A string containing just the removed lines */
+  removed: string
 }
 
 /** The results of running a JSON patch */
@@ -74,9 +76,8 @@ export interface GitDSL {
   /** Offers the diff for a specific file
    *
    * @param {string} filename the path to the json file
-   * @param {string[]} diffTypes An array containing: "add", "del" or "normal" - then you can only get these changes
    */
-  diffForFile(filename: string, diffTypes?: string[]): Promise<TextDiff | null>,
+  diffForFile(filename: string): Promise<TextDiff | null>,
 
   /**
    * Provides a JSON patch (rfc6902) between the two versions of a JSON file,

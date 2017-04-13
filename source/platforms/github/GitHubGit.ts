@@ -64,8 +64,8 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
     if (!modified) { return null }
 
     // Grab the two files contents.
-    const baseFile = await api.fileContents(filename, pr.base.repo.full_name, pr.base.ref)
-    const headFile = await api.fileContents(filename, pr.head.repo.full_name, pr.head.ref)
+    const baseFile = await api.fileContents(filename, pr.base.repo.full_name, pr.base.sha)
+    const headFile = await api.fileContents(filename, pr.head.repo.full_name, pr.head.sha)
 
     if (baseFile && headFile) {
       // Parse JSON
@@ -135,35 +135,30 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
     }, Object.create(null))
   }
 
-/**
- * Gets the git-style diff for a single file.
- *
- * @param filename File path for the diff
- */
-  const diffForFile = async (filename: string, diffTypes?: string[]) => {
+  const byType = (t: string) => ({type}: {type: string}) => type === t
+  const getContent = ({content}: {content: string}) => content
+
+  /**
+   * Gets the git-style diff for a single file.
+   *
+   * @param filename File path for the diff
+   */
+  const diffForFile = async (filename: string) => {
     const structuredDiff = find(fileDiffs, (diff: any) => diff.from === filename || diff.to === filename)
-    if (!structuredDiff) { return null }
-
-    let changes = structuredDiff.chunks.map((c: any) => c.changes)
-                                .reduce((a: any, b: any) => a.concat(b), [])
-
-    // Filter the diffs by type
-    if (diffTypes && diffTypes.length > 0) {
-      changes = changes.filter((c: any) => diffTypes.indexOf(c.type) !== -1)
+    if (!structuredDiff) {
+      return null
     }
 
-    const baseFile = await api.fileContents(filename, pr.base.repo.full_name, pr.base.sha)
-    const headFile = await api.fileContents(filename, pr.head.repo.full_name, pr.head.sha)
-
-    const lines = changes.map((c: any) => c.content)
+    const allLines = structuredDiff.chunks
+      .map((c: {changes: Array<{type: string}>}) => c.changes)
+      .reduce((a: Array<{type: string}>, b: Array<{type: string}>) => a.concat(b), [])
 
     return {
-      before: baseFile,
-      after: headFile,
-      added: changes.filter(({type}: {type: string}) => type === "add"),
-      removed: changes.filter(({type}: {type: string}) => type === "del"),
-      normal: changes.filter(({type}: {type: string}) => type === "normal"),
-      diff: lines.join(os.EOL)
+      before: await api.fileContents(filename, pr.base.repo.full_name, pr.base.sha),
+      after: await api.fileContents(filename, pr.head.repo.full_name, pr.head.sha),
+      diff: allLines.map(getContent).join(os.EOL),
+      added: allLines.filter(byType("add")).map(getContent).join(os.EOL),
+      removed: allLines.filter(byType("del")).map(getContent).join(os.EOL)
     }
   }
 

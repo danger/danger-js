@@ -20,13 +20,16 @@ export const requestWithFixturedContent = async (path: string): Promise<() => Pr
   Promise.resolve(readFileSync(`${fixtures}/${path}`, {}).toString())
 )
 
+const pullRequestInfoFilename = "github_pr.json"
+const masterSHA = JSON.parse(readFileSync(`${fixtures}/${pullRequestInfoFilename}`, {}).toString()).base.sha
+
 describe("the dangerfile gitDSL", async () => {
   let github: GitHub = {} as any
   beforeEach(async () => {
     const api = new GitHubAPI(new FakeCI({}))
     github = new GitHub(api)
 
-    api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
+    api.getPullRequestInfo = await requestWithFixturedJSON(pullRequestInfoFilename)
     api.getPullRequestDiff = await requestWithFixturedContent("github_diff.diff")
     api.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
     api.getFileContents = async (path, repoSlug, ref) => (await requestWithFixturedJSON(`static_file:${ref}.json`))()
@@ -50,14 +53,6 @@ describe("the dangerfile gitDSL", async () => {
     expect(diff).toEqual(expected)
   })
 
-  it("should show only diff of specified type", async () => {
-    const expected = "+- GeneVC now shows about information, and trending artists - orta"
-    const gitDSL = await github.getPlatformGitRepresentation()
-    const {diff} = await gitDSL.diffForFile("CHANGELOG.md", ["add"])
-
-    expect(diff).toEqual(expected)
-  })
-
   it("should include `before` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
     const {before} = await gitDSL.diffForFile("CHANGELOG.md")
@@ -70,6 +65,20 @@ describe("the dangerfile gitDSL", async () => {
     const {after} = await gitDSL.diffForFile("CHANGELOG.md")
 
     expect(after).toMatchSnapshot()
+  })
+
+  it("should include `added` text content of the file", async () => {
+    const gitDSL = await github.getPlatformGitRepresentation()
+    const {added} = await gitDSL.diffForFile("CHANGELOG.md")
+
+    expect(added).toMatchSnapshot()
+  })
+
+  it("should include `removed` text content of the file", async () => {
+    const gitDSL = await github.getPlatformGitRepresentation()
+    const {removed} = await gitDSL.diffForFile("CHANGELOG.md")
+
+    expect(removed).toMatchSnapshot()
   })
 
   it("sets up commit data correctly", async () => {
@@ -118,7 +127,7 @@ describe("the dangerfile gitDSL", async () => {
       }
 
       github.api.fileContents = async (path, repo, ref) => {
-        const obj = (ref === "master") ? before : after
+        const obj = (ref === masterSHA) ? before : after
         return JSON.stringify(obj)
       }
 
@@ -162,7 +171,7 @@ describe("the dangerfile gitDSL", async () => {
           e: ["five", "one", "three"]
         }
 
-        const obj = (ref === "master") ? before : after
+        const obj = (ref === masterSHA) ? before : after
         return JSON.stringify(obj)
       }
       const gitDSL = await github.getPlatformGitRepresentation()
@@ -207,7 +216,7 @@ describe("the dangerfile gitDSL", async () => {
           }
         }
 
-        const obj = (ref === "master") ? before : after
+        const obj = (ref === masterSHA) ? before : after
         return JSON.stringify(obj)
       }
       const gitDSL = await github.getPlatformGitRepresentation()
