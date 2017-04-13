@@ -97,7 +97,7 @@ import fs from "fs"
 import contains from "lodash-contains"
 
 const blacklist = "spaced-between"
-const lockfile = fs.readFileSync("yarn.lock")
+const lockfile = fs.readFileSync("yarn.lock").toString()
 
 if (contains(lockfile, blacklist)) {
   const message = `${blacklist} was added to our dependencies, see CVE #23`

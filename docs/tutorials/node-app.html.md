@@ -37,17 +37,52 @@ if (!danger.pr.body.length < 10) {
 }
 ```
 
-The rules help establish your cultural baselines. 
+This can be expanded to all sorts of checks for example:
 
+* Making sure every PR references an issue, or JIRA ticket.
+* Skipping particular rules based on what someone says inside the message. E.g. "This is a trivial PR."
 
+## Results of CI Processes
 
-* Checking test changes for new files
-* Reference a GitHub Issue
-* Warn about large PRs
-* Warn on commit rules
+Let's assume you're using CI for running tests or linters.
+
+```yaml
+script:
+  - yarn lint
+  - yarn test
+  - yarn danger
+```
+
+If your tool does not have an extra log file output option, you can look at using [`tee`][tee] to copy the text output into a file for later reading ( so you'd change `- yarn lint` to `yarn lint | tee 'linter.log'` )
+
+And here's a really simple check that it contains the word "Failed" and to post the logs into the PR.
+
+```js
+import { danger, markdown } from "danger"
+
+import contains from "lodash-contains"
+import fs from "fs"
+
+const testFile = "tests-output.log"
+const linterOutput = fs.readFileSync(testFile).toString()
+
+if (contains(linterOutput, "Failed")) {
+  const code = "```"
+  markdown(`These changes failed to pass the linter:
+
+${code}
+${linterOutput}
+${code}
+  `)
+}
+```
+
+More mature tools may have a JSON output reporter, so you can parse that file and create your own markdown table. 
+
 
 
 [started]: /js/guides/asdasdasdas
 [Artsy]: http://artsy.github.io
 [no-slacking]: https://github.com/alloy/no-slacking-on-pull-requests-bot
 [pr]: https://developer.github.com/v3/pulls/#get-a-single-pull-request
+[tee]: http://linux.101hacks.com/unix/tee-command-examples/
