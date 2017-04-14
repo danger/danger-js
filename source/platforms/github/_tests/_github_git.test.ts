@@ -4,24 +4,23 @@ import { GitHubAPI } from "../GitHubAPI"
 import { GitCommit } from "../../../dsl/Commit"
 import { FakeCI } from "../../../ci_source/providers/Fake"
 import { readFileSync } from "fs"
-import { resolve } from "path"
-import * as os from "os"
+import { resolve, join as pathJoin } from "path"
+import { EOL } from "os"
 
 const fixtures = resolve(__dirname, "..", "..", "_tests", "fixtures")
-const EOL = os.EOL
 
 /** Returns JSON from the fixtured dir */
 export const requestWithFixturedJSON = async (path: string): Promise<() => Promise<any>> => () => (
-  Promise.resolve(JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString()))
+  Promise.resolve(JSON.parse(readFileSync(pathJoin(fixtures, path), {}).toString()))
 )
 
 /** Returns arbitrary text value from a request */
 export const requestWithFixturedContent = async (path: string): Promise<() => Promise<string>> => () => (
-  Promise.resolve(readFileSync(`${fixtures}/${path}`, {}).toString())
+  Promise.resolve(readFileSync(pathJoin(fixtures, path), {}).toString())
 )
 
 const pullRequestInfoFilename = "github_pr.json"
-const masterSHA = JSON.parse(readFileSync(`${fixtures}/${pullRequestInfoFilename}`, {}).toString()).base.sha
+const masterSHA = JSON.parse(readFileSync(pathJoin(fixtures, pullRequestInfoFilename), {}).toString()).base.sha
 
 describe("the dangerfile gitDSL", async () => {
   let github: GitHub = {} as any
@@ -78,6 +77,13 @@ describe("the dangerfile gitDSL", async () => {
     const {removed} = await gitDSL.diffForFile("lib/containers/gene.js")
 
     expect(removed).toMatchSnapshot()
+  })
+
+  it("resolves to `null` for files not in modified_files", async () => {
+    const gitDSL = await github.getPlatformGitRepresentation()
+    const result = await gitDSL.diffForFile("fuhqmahgads.json")
+
+    expect(result).toBeNull()
   })
 
   it("sets up commit data correctly", async () => {

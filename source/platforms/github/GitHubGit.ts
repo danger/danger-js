@@ -12,7 +12,6 @@ import * as parseDiff from "parse-diff"
 import * as includes from "lodash.includes"
 import * as isobject from "lodash.isobject"
 import * as keys from "lodash.keys"
-import * as find from "lodash.find"
 
 import * as jsonDiff from "rfc6902"
 import * as jsonpointer from "jsonpointer"
@@ -138,20 +137,21 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
   const byType = (t: string) => ({type}: {type: string}) => type === t
   const getContent = ({content}: {content: string}) => content
 
+  type Changes = Array<{type: string, content: string}>
   /**
    * Gets the git-style diff for a single file.
    *
    * @param filename File path for the diff
    */
   const diffForFile = async (filename: string) => {
-    const structuredDiff = find(fileDiffs, (diff: any) => diff.from === filename || diff.to === filename)
-    if (!structuredDiff) {
-      return null
-    }
+    // We already have access to the diff, so see if the file is in there
+    // if it's not return an empty diff
+    const structuredDiff = modifiedDiffs.find((diff: any) => diff.from === filename || diff.to === filename)
+    if (!structuredDiff) { return null }
 
     const allLines = structuredDiff.chunks
-      .map((c: {changes: Array<{type: string}>}) => c.changes)
-      .reduce((a: Array<{type: string}>, b: Array<{type: string}>) => a.concat(b), [])
+      .map((c: {changes: Changes}) => c.changes)
+      .reduce((a: Changes, b: Changes) => a.concat(b), [])
 
     return {
       before: await api.fileContents(filename, pr.base.repo.full_name, pr.base.sha),
