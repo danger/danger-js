@@ -1,18 +1,18 @@
 {
-  "name": "gene.js",
-  "path": "lib/containers/gene.js",
-  "sha": "76aaed443aa6e4fce932f4a54a79f536e3cc6c14",
-  "size": 2346,
-  "url": "https://api.github.com/repos/artsy/emission/contents/lib/containers/gene.js?ref=98f3e73f5e419f3af9ab928c86312f28a3c87475",
-  "html_url": "https://github.com/artsy/emission/blob/98f3e73f5e419f3af9ab928c86312f28a3c87475/lib/containers/gene.js",
-  "git_url": "https://api.github.com/repos/artsy/emission/git/blobs/76aaed443aa6e4fce932f4a54a79f536e3cc6c14",
-  "download_url": "https://raw.githubusercontent.com/artsy/emission/98f3e73f5e419f3af9ab928c86312f28a3c87475/lib/containers/gene.js",
+  "name": "tsconfig.json",
+  "path": "tsconfig.json",
+  "sha": "90aabbabf81ac4fbc81ef1e8f40de99972b7e2ac",
+  "size": 153,
+  "url": "https://api.github.com/repos/artsy/emission/contents/tsconfig.json?ref=98f3e73f5e419f3af9ab928c86312f28a3c87475",
+  "html_url": "https://github.com/artsy/emission/blob/98f3e73f5e419f3af9ab928c86312f28a3c87475/tsconfig.json",
+  "git_url": "https://api.github.com/repos/artsy/emission/git/blobs/90aabbabf81ac4fbc81ef1e8f40de99972b7e2ac",
+  "download_url": "https://raw.githubusercontent.com/artsy/emission/98f3e73f5e419f3af9ab928c86312f28a3c87475/tsconfig.json",
   "type": "file",
-  "content": "LyogQGZsb3cgKi8KJ3VzZSBzdHJpY3QnCgppbXBvcnQgUmVsYXkgZnJvbSAn\ncmVhY3QtcmVsYXknCmltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCcKaW1wb3J0\nIHsgVGV4dCwgU2Nyb2xsVmlldywgVmlldywgRGltZW5zaW9ucyB9IGZyb20g\nJ3JlYWN0LW5hdGl2ZScKCmltcG9ydCBFdmVudHMgZnJvbSAnLi4vbmF0aXZl\nX21vZHVsZXMvZXZlbnRzJwoKaW1wb3J0IEhlYWRlciBmcm9tICcuLi9jb21w\nb25lbnRzL2dlbmUvaGVhZGVyJwoKaW1wb3J0IFRhYlZpZXcgZnJvbSAnLi4v\nY29tcG9uZW50cy90YWJfdmlldycKaW1wb3J0IHR5cGUgVGFiU2VsZWN0aW9u\nRXZlbnQgZnJvbSAnLi4vY29tcG9uZW50cy9ldmVudHMnCgoKY29uc3QgVEFC\nUyA9IHsKICBXT1JLUzogJ1dPUktTJywKICBBQk9VVDogJ0FCT1VUJywKfQoK\nY2xhc3MgR2VuZSBleHRlbmRzIFJlYWN0LkNvbXBvbmVudCB7CgogIHN0YXRl\nOiB7CiAgICBzZWxlY3RlZFRhYkluZGV4OiBudW1iZXIsCiAgfTsKCiAgY29t\ncG9uZW50V2lsbE1vdW50KCkgewogICAgdGhpcy5zdGF0ZSA9IHsgc2VsZWN0\nZWRUYWJJbmRleDogMCB9CiAgfQoKICB0YWJTZWxlY3Rpb25EaWRDaGFuZ2Ug\nPSAoZXZlbnQ6IFRhYlNlbGVjdGlvbkV2ZW50KSA9PiB7CiAgICB0aGlzLnNl\ndFN0YXRlKHsgc2VsZWN0ZWRUYWJJbmRleDogZXZlbnQubmF0aXZlRXZlbnQu\nc2VsZWN0ZWRJbmRleCB9KQogIH0KCiAgYXZhaWxhYmxlVGFicyA9ICgpID0+\nIHsKICAgIHJldHVybiBbVEFCUy5XT1JLUywgVEFCUy5BQk9VVF0KICB9Cgog\nIHNlbGVjdGVkVGFiVGl0bGUgPSAoKSA9PiB7CiAgICByZXR1cm4gdGhpcy5h\ndmFpbGFibGVUYWJzKClbdGhpcy5zdGF0ZS5zZWxlY3RlZFRhYkluZGV4XQog\nIH0KCiAgLy8gVGhpcyBpcyAqbm90KiBjYWxsZWQgb24gdGhlIGluaXRpYWwg\ncmVuZGVyLCB0aHVzIGl0IHdpbGwgb25seSBwb3N0IGV2ZW50cyBmb3Igd2hl\nbiB0aGUgdXNlciBhY3R1YWxseSB0YXBzIGEgdGFiLgogIGNvbXBvbmVudERp\nZFVwZGF0ZShwcmV2aW91c1Byb3BzLCBwcmV2aW91c1N0YXRlKSB7CiAgICBF\ndmVudHMucG9zdEV2ZW50KHRoaXMsIHsKICAgICAgbmFtZTogJ1RhcHBlZCBn\nZW5lIHZpZXcgdGFiJywKICAgICAgdGFiOiB0aGlzLnNlbGVjdGVkVGFiVGl0\nbGUoKS50b0xvd2VyQ2FzZSgpLAogICAgICBnZW5lX2lkOiB0aGlzLnByb3Bz\nLmdlbmUuX2lkLAogICAgICBnZW5lX3NsdWc6IHRoaXMucHJvcHMuZ2VuZS5p\nZCwKICAgIH0pCiAgfQoKICByZW5kZXJTZWxlY3RlZFRhYiA9ICgpID0+IHsK\nICAgIHN3aXRjaCAodGhpcy5zZWxlY3RlZFRhYlRpdGxlKCkpIHsKICAgICAg\nLy8gY2FzZSBUQUJTLkFCT1VUOiByZXR1cm4gPEFib3V0IGdlbmU9e3RoaXMu\ncHJvcHMuZ2VuZX0gLz4KICAgICAgLy8gY2FzZSBUQUJTLldPUktTOiByZXR1\ncm4gPEFydHdvcmtzIGdlbmU9e3RoaXMucHJvcHMuZ2VuZX0gLz4KICAgICAg\nY2FzZSBUQUJTLkFCT1VUOiByZXR1cm4gPFRleHQvPgogICAgICBjYXNlIFRB\nQlMuV09SS1M6IHJldHVybiA8VGV4dC8+CiAgICB9CiAgfQoKICByZW5kZXJU\nYWJWaWV3KCkgewogICAgcmV0dXJuICgKICAgICAgPFRhYlZpZXcgdGl0bGVz\nPXt0aGlzLmF2YWlsYWJsZVRhYnMoKX0gc2VsZWN0ZWRJbmRleD17dGhpcy5z\ndGF0ZS5zZWxlY3RlZFRhYkluZGV4fSBvblNlbGVjdGlvbkNoYW5nZT17dGhp\ncy50YWJTZWxlY3Rpb25EaWRDaGFuZ2V9PgogICAgICAgIHsgdGhpcy5yZW5k\nZXJTZWxlY3RlZFRhYigpIH0KICAgICAgPC9UYWJWaWV3PgogICAgKQogIH0K\nCiAgcmVuZGVyKCkgewogICAgY29uc3Qgd2luZG93RGltZW5zaW9ucyA9IERp\nbWVuc2lvbnMuZ2V0KCd3aW5kb3cnKQogICAgY29uc3QgY29tbW9uUGFkZGlu\nZyA9IHdpbmRvd0RpbWVuc2lvbnMud2lkdGggPiA3MDAgPyA0MCA6IDIwCgog\nICAgcmV0dXJuICgKICAgICAgPFNjcm9sbFZpZXcgc2Nyb2xsc1RvVG9wPXt0\ncnVlfT4KICAgICAgICA8VmlldyBzdHlsZT17eyBwYWRkaW5nTGVmdDogY29t\nbW9uUGFkZGluZywgcGFkZGluZ1JpZ2h0OiBjb21tb25QYWRkaW5nIH19Pgog\nICAgICAgICAgPEhlYWRlciBnZW5lPXt0aGlzLnByb3BzLmdlbmV9IC8+CiAg\nICAgICAgICB7IHRoaXMucmVuZGVyVGFiVmlldygpIH0KICAgICAgICA8L1Zp\nZXc+CiAgICAgIDwvU2Nyb2xsVmlldz4KICAgICkKICB9Cn0KCmV4cG9ydCBk\nZWZhdWx0IFJlbGF5LmNyZWF0ZUNvbnRhaW5lcihHZW5lLCB7CiAgZnJhZ21l\nbnRzOiB7CiAgICBnZW5lOiAoKSA9PiBSZWxheS5RTGAKICAgICAgZnJhZ21l\nbnQgb24gR2VuZSB7CiAgICAgICAgX2lkCiAgICAgICAgaWQKICAgICAgICAk\ne0hlYWRlci5nZXRGcmFnbWVudCgnZ2VuZScpfQogICAgICB9CiAgICBgLAog\nIH0KfSkK\n",
+  "content": "ewogICAgImNvbXBpbGVyT3B0aW9ucyI6IHsKICAgICAgICAiYWxsb3dKcyI6\nIHRydWUKICAgIH0sCiAgICAiZXhjbHVkZSI6IFsKICAgICAgICAibm9kZV9t\nb2R1bGVzIiwKICAgICAgICAiUG9kL0Fzc2V0cyIsCiAgICAgICAgIkV4YW1w\nbGUvQnVpbGQiCiAgICBdCn0K\n",
   "encoding": "base64",
   "_links": {
-    "self": "https://api.github.com/repos/artsy/emission/contents/lib/containers/gene.js?ref=98f3e73f5e419f3af9ab928c86312f28a3c87475",
-    "git": "https://api.github.com/repos/artsy/emission/git/blobs/76aaed443aa6e4fce932f4a54a79f536e3cc6c14",
-    "html": "https://github.com/artsy/emission/blob/98f3e73f5e419f3af9ab928c86312f28a3c87475/lib/containers/gene.js"
+    "self": "https://api.github.com/repos/artsy/emission/contents/tsconfig.json?ref=98f3e73f5e419f3af9ab928c86312f28a3c87475",
+    "git": "https://api.github.com/repos/artsy/emission/git/blobs/90aabbabf81ac4fbc81ef1e8f40de99972b7e2ac",
+    "html": "https://github.com/artsy/emission/blob/98f3e73f5e419f3af9ab928c86312f28a3c87475/tsconfig.json"
   }
 }

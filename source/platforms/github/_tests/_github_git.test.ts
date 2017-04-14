@@ -46,35 +46,35 @@ describe("the dangerfile gitDSL", async () => {
 
   it("shows the diff for a specific file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
-    const {diff} = await gitDSL.diffForFile("lib/containers/gene.js")
+    const {diff} = await gitDSL.diffForFile("tsconfig.json")
 
     expect(diff).toMatchSnapshot()
   })
 
   it("should include `before` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
-    const {before} = await gitDSL.diffForFile("lib/containers/gene.js")
+    const {before} = await gitDSL.diffForFile("tsconfig.json")
 
     expect(before).toMatchSnapshot()
   })
 
   it("should include `after` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
-    const {after} = await gitDSL.diffForFile("lib/containers/gene.js")
+    const {after} = await gitDSL.diffForFile("tsconfig.json")
 
     expect(after).toMatchSnapshot()
   })
 
   it("should include `added` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
-    const {added} = await gitDSL.diffForFile("lib/containers/gene.js")
+    const {added} = await gitDSL.diffForFile("tsconfig.json")
 
     expect(added).toMatchSnapshot()
   })
 
   it("should include `removed` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
-    const {removed} = await gitDSL.diffForFile("lib/containers/gene.js")
+    const {removed} = await gitDSL.diffForFile("tsconfig.json")
 
     expect(removed).toMatchSnapshot()
   })
