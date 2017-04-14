@@ -19,6 +19,15 @@ export const requestWithFixturedContent = async (path: string): Promise<() => Pr
   Promise.resolve(readFileSync(pathJoin(fixtures, path), {}).toString())
 )
 
+/**
+ * HACKish: Jest on Windows seems to include some additional
+ * whitespace that differs from non-Windows snapshot output,
+ * so we strip these until we can better-address the issue.
+ */
+const stripWhitespaceForSnapshot = (str: string) => {
+  return str.replace(/\s/g, "")
+}
+
 const pullRequestInfoFilename = "github_pr.json"
 const masterSHA = JSON.parse(readFileSync(pathJoin(fixtures, pullRequestInfoFilename), {}).toString()).base.sha
 
@@ -48,35 +57,35 @@ describe("the dangerfile gitDSL", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
     const {diff} = await gitDSL.diffForFile("tsconfig.json")
 
-    expect(diff.replace(/\s/g, "")).toMatchSnapshot()
+    expect(stripWhitespaceForSnapshot(diff)).toMatchSnapshot()
   })
 
   it("should include `before` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
     const {before} = await gitDSL.diffForFile("tsconfig.json")
 
-    expect(before.replace(/\s/g, "")).toMatchSnapshot()
+    expect(stripWhitespaceForSnapshot(before)).toMatchSnapshot()
   })
 
   it("should include `after` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
     const {after} = await gitDSL.diffForFile("tsconfig.json")
 
-    expect(after.replace(/\s/g, "")).toMatchSnapshot()
+    expect(stripWhitespaceForSnapshot(after)).toMatchSnapshot()
   })
 
   it("should include `added` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
     const {added} = await gitDSL.diffForFile("tsconfig.json")
 
-    expect(added.replace(/\s/g, "")).toMatchSnapshot()
+    expect(stripWhitespaceForSnapshot(added)).toMatchSnapshot()
   })
 
   it("should include `removed` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
     const {removed} = await gitDSL.diffForFile("tsconfig.json")
 
-    expect(removed.replace(/\s/g, "")).toMatchSnapshot()
+    expect(stripWhitespaceForSnapshot(removed)).toMatchSnapshot()
   })
 
   it("resolves to `null` for files not in modified_files", async () => {
