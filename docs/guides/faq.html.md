@@ -5,11 +5,9 @@ layout: guide
 order: 0
 ---
 
-This ensures that Danger only runs when you have the environment variables set up to run.
-
 ### Can Danger comment inside a file on an PR?
 
-Not yet, but there is a lot of discussion on [danger-js#77][77]
+Not yet, but there is a lot of discussion on [danger-js#77][77].
 
 ### I want to help influence Danger's direction
 

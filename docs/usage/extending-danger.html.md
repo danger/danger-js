@@ -5,3 +5,4 @@ layout: guide_js
 order: 0
 ---
 
+Plugin infrastructure similar to how 
