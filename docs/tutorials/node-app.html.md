@@ -11,7 +11,7 @@ This guide continues after "[Getting Started][started]" - so you should have see
 
 ## "Node App"
 
-A node app could cover anything from an API, to a website, to a native app or hardware project. The rules on these projects tend to come from your larger dev team culture. In [Artsy][]] a lot of our rules for applications come from trying to have a similar culture between all projects.
+A node app could cover anything from an API, to a website, a native app or a hardware project. The rules on these projects tend to come from your larger dev team culture. In [Artsy][]] a lot of our rules for applications come from trying to have a similar culture between all projects.
 
 ## Assignees
 
@@ -29,7 +29,7 @@ The `danger.pr` object is the JSON provided by GitHub to [represent a pull reque
 
 ## PR Messages
 
-On a similar vein, we also want to encourage pull requests as a form of documentation. We can help push people in this direction by not allowing the body of a pull request to be a few characters long.
+In a similar vein, we also want to encourage pull requests as a form of documentation. We can help push people in this direction by not allowing the body of a pull request to be less than a few characters long.
 
 ```js
 if (!danger.pr.body.length < 10) {
@@ -77,7 +77,7 @@ ${code}
 }
 ```
 
-More mature tools may have a JSON output reporter, so you can parse that file and create your own markdown table. 
+More mature tools may have a JSON output reporter, so you can parse that file and create your own markdown table.
 
 
 

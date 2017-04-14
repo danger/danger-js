@@ -7,7 +7,7 @@ order: 0
 
 This ensures that Danger only runs when you have the environment variables set up to run.
 
-### Can Danger comment inline on an PR?
+### Can Danger comment inside a file on an PR?
 
 Not yet, but there is a lot of discussion on [danger-js#77][77]
 
@@ -19,10 +19,10 @@ We'd recommend first becoming acquainted with the [VISION.md][] inside Danger, t
  
  * Well defined work items like features or fixes are marked as [You Can Do This][you-can-do-this].
 
-We keep comments in the public domain, there is a Slack, but it's very rarely used. If you're interested in joining, you can DM [@orta][].
+We keep comments in the public domain, there is a Slack, but it's very rarely used. If you're interested in joining, you can DM [orta][].
 
 [77]: https://github.com/danger/danger-js/issues/77
-[VISION.md]: 
+[VISION.md]: https://github.com/danger/danger-js/blob/master/VISION.md
 [open]: https://github.com/danger/danger-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22Open+for+Discussion%22
 [you-can-do-this]: https://github.com/danger/danger-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22You+Can+Do+This%22
-[@orta]: https://twitter.com/orta/
+[orta]: https://twitter.com/orta/

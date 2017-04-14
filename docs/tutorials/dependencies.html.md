@@ -13,7 +13,7 @@ This guide continues after "[Getting Started][started]" - so you should have see
 
 Building pretty-much anything in the node ecosystem involves using using external dependencies. In an ideal situation you want to use as few dependencies as possible, and get the most use out of them. Remember that you are shipping your dependencies too, so you are responsible for them to your end-users.
 
-The numerical scale of dependencies can make it tough to feel like you own your entire stack. So let's try use Danger to give us more insight into changes related to our dependencies.
+The numerical scale of dependencies can make it tough to feel like you own your entire stack. So let's try and use Danger to give us more insight into changes related to our dependencies.
 
 ## Lockfiles
 
@@ -30,7 +30,7 @@ if (hasPackageChanges && !hasLockfileChanges) {
 }
 ```
 
-This uses `lodash`'s include function to see if `danger.git.modified_files` includes the package, but not the lockfile.
+This uses `lodash`'s `_.includes()` function to see if `danger.git.modified_files` includes the package, but not the lockfile.
 
 ### Vetting New Dependencies
 
@@ -110,7 +110,7 @@ Note the use of `readFileSync`, as Danger is running as a script you'll find it 
 
 ### Building from here
 
-This should give you an idea on how to understand changes to your `node_modules`, from here you can create any rules you want using a mix of `JSONDiffForFile`, `fs.readFileSync` and `child_process.execSync`. Here's a few idea to get you started:
+This should give you an idea on how to understand changes to your `node_modules`, from here you can create any rules you want using a mix of `JSONDiffForFile`, `fs.readFileSync` and `child_process.execSync`. Here are a few ideas to get you started:
 
 * Convert the check for the package and lockfile to use `JSONDiffForFile` so that it only warns on `dependencies` or `devDependencies`.
 * Ensure you never add `@types/[module]` to `dependencies` but only into `devDependencies`.
