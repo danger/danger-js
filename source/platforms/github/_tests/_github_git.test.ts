@@ -48,35 +48,35 @@ describe("the dangerfile gitDSL", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
     const {diff} = await gitDSL.diffForFile("tsconfig.json")
 
-    expect(diff).toMatchSnapshot()
+    expect(diff.replace(/\s/g, "")).toMatchSnapshot()
   })
 
   it("should include `before` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
     const {before} = await gitDSL.diffForFile("tsconfig.json")
 
-    expect(before).toMatchSnapshot()
+    expect(before.replace(/\s/g, "")).toMatchSnapshot()
   })
 
   it("should include `after` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
     const {after} = await gitDSL.diffForFile("tsconfig.json")
 
-    expect(after).toMatchSnapshot()
+    expect(after.replace(/\s/g, "")).toMatchSnapshot()
   })
 
   it("should include `added` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
     const {added} = await gitDSL.diffForFile("tsconfig.json")
 
-    expect(added).toMatchSnapshot()
+    expect(added.replace(/\s/g, "")).toMatchSnapshot()
   })
 
   it("should include `removed` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
     const {removed} = await gitDSL.diffForFile("tsconfig.json")
 
-    expect(removed).toMatchSnapshot()
+    expect(removed.replace(/\s/g, "")).toMatchSnapshot()
   })
 
   it("resolves to `null` for files not in modified_files", async () => {
