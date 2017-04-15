@@ -4,21 +4,32 @@ import { GitHubAPI } from "../GitHubAPI"
 import { GitCommit } from "../../../dsl/Commit"
 import { FakeCI } from "../../../ci_source/providers/Fake"
 import { readFileSync } from "fs"
-import { resolve } from "path"
-import * as os from "os"
+import { resolve, join as pathJoin } from "path"
+import { EOL } from "os"
 
 const fixtures = resolve(__dirname, "..", "..", "_tests", "fixtures")
-const EOL = os.EOL
 
 /** Returns JSON from the fixtured dir */
 export const requestWithFixturedJSON = async (path: string): Promise<() => Promise<any>> => () => (
-  Promise.resolve(JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString()))
+  Promise.resolve(JSON.parse(readFileSync(pathJoin(fixtures, path), {}).toString()))
 )
 
 /** Returns arbitrary text value from a request */
 export const requestWithFixturedContent = async (path: string): Promise<() => Promise<string>> => () => (
-  Promise.resolve(readFileSync(`${fixtures}/${path}`, {}).toString())
+  Promise.resolve(readFileSync(pathJoin(fixtures, path), {}).toString())
 )
+
+/**
+ * HACKish: Jest on Windows seems to include some additional
+ * whitespace that differs from non-Windows snapshot output,
+ * so we strip these until we can better-address the issue.
+ */
+const stripWhitespaceForSnapshot = (str: string) => {
+  return str.replace(/\s/g, "")
+}
+
+const pullRequestInfoFilename = "github_pr.json"
+const masterSHA = JSON.parse(readFileSync(pathJoin(fixtures, pullRequestInfoFilename), {}).toString()).base.sha
 
 describe("the dangerfile gitDSL", async () => {
   let github: GitHub = {} as any
@@ -26,9 +37,10 @@ describe("the dangerfile gitDSL", async () => {
     const api = new GitHubAPI(new FakeCI({}))
     github = new GitHub(api)
 
-    api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
+    api.getPullRequestInfo = await requestWithFixturedJSON(pullRequestInfoFilename)
     api.getPullRequestDiff = await requestWithFixturedContent("github_diff.diff")
     api.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
+    api.getFileContents = async (path, repoSlug, ref) => (await requestWithFixturedJSON(`static_file:${ref}.json`))()
   })
 
   it("sets the modified/created/deleted", async () => {
@@ -42,17 +54,45 @@ describe("the dangerfile gitDSL", async () => {
   })
 
   it("shows the diff for a specific file", async () => {
-    const expected = ` - [dev] Updates Flow to 0.32 - orta${EOL} - [dev] Updates React to 0.34 - orta${EOL} - [dev] Turns on "keychain sharing" to fix a keychain bug in sim - orta${EOL}+- GeneVC now shows about information, and trending artists - orta${EOL} ${EOL} ### 1.1.0-beta.2${EOL} ` //tslint:disable-line:max-line-length
     const gitDSL = await github.getPlatformGitRepresentation()
+    const {diff} = await gitDSL.diffForFile("tsconfig.json")
 
-    expect(gitDSL.diffForFile("CHANGELOG.md")).toEqual(expected)
+    expect(stripWhitespaceForSnapshot(diff)).toMatchSnapshot()
   })
 
-  it("should show only diff of specified type", async () => {
-    const expected = "+- GeneVC now shows about information, and trending artists - orta"
+  it("should include `before` text content of the file", async () => {
     const gitDSL = await github.getPlatformGitRepresentation()
+    const {before} = await gitDSL.diffForFile("tsconfig.json")
 
-    expect(gitDSL.diffForFile("CHANGELOG.md", ["add"])).toEqual(expected)
+    expect(stripWhitespaceForSnapshot(before)).toMatchSnapshot()
+  })
+
+  it("should include `after` text content of the file", async () => {
+    const gitDSL = await github.getPlatformGitRepresentation()
+    const {after} = await gitDSL.diffForFile("tsconfig.json")
+
+    expect(stripWhitespaceForSnapshot(after)).toMatchSnapshot()
+  })
+
+  it("should include `added` text content of the file", async () => {
+    const gitDSL = await github.getPlatformGitRepresentation()
+    const {added} = await gitDSL.diffForFile("tsconfig.json")
+
+    expect(stripWhitespaceForSnapshot(added)).toMatchSnapshot()
+  })
+
+  it("should include `removed` text content of the file", async () => {
+    const gitDSL = await github.getPlatformGitRepresentation()
+    const {removed} = await gitDSL.diffForFile("tsconfig.json")
+
+    expect(stripWhitespaceForSnapshot(removed)).toMatchSnapshot()
+  })
+
+  it("resolves to `null` for files not in modified_files", async () => {
+    const gitDSL = await github.getPlatformGitRepresentation()
+    const result = await gitDSL.diffForFile("fuhqmahgads.json")
+
+    expect(result).toBeNull()
   })
 
   it("sets up commit data correctly", async () => {
@@ -101,7 +141,7 @@ describe("the dangerfile gitDSL", async () => {
       }
 
       github.api.fileContents = async (path, repo, ref) => {
-        const obj = (ref === "master") ? before : after
+        const obj = (ref === masterSHA) ? before : after
         return JSON.stringify(obj)
       }
 
@@ -145,7 +185,7 @@ describe("the dangerfile gitDSL", async () => {
           e: ["five", "one", "three"]
         }
 
-        const obj = (ref === "master") ? before : after
+        const obj = (ref === masterSHA) ? before : after
         return JSON.stringify(obj)
       }
       const gitDSL = await github.getPlatformGitRepresentation()
@@ -190,7 +230,7 @@ describe("the dangerfile gitDSL", async () => {
           }
         }
 
-        const obj = (ref === "master") ? before : after
+        const obj = (ref === masterSHA) ? before : after
         return JSON.stringify(obj)
       }
       const gitDSL = await github.getPlatformGitRepresentation()

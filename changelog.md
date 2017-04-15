@@ -2,7 +2,30 @@
 
 ### Master
 
-* Update internal test fixture generation docs
+* [Enhancements to `danger.git.diffForFile()`](https://github.com/danger/danger-js/pull/223) - @namuol
+
+  * Removed `diffTypes` second argument in favor of `result.added` and `result.removed`
+  * Added `result.before` and `result.after` for easy access to full contents of the original & updated file
+  * `danger.git.diffForFile` is now an `async` function
+
+  #### TL;DR:
+
+    ```js
+    // In danger 0.16.0:
+    const fullDiff = danger.git.diffForFile('foo.js')
+    const addedLines = danger.git.diffForFile('foo.js', ['add'])
+    const removedLines = danger.git.diffForFile('foo.js', ['del'])
+
+    // In the latest version:
+    const diff = await danger.git.diffForFile('foo.js')
+    const fullDiff = diff.diff
+    const addedLines = diff.added
+    const removedLines = diff.removed
+    const beforeFileContents = diff.before
+    const afterFileContents = diff.after
+    ```
+
+* Update internal test fixture generation docs - namuol
 
 ### 0.16.0
 

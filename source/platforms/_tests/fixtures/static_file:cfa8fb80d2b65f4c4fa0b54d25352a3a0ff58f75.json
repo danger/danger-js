@@ -1,0 +1,18 @@
+{
+  "name": "tsconfig.json",
+  "path": "tsconfig.json",
+  "sha": "c7f3c3d35c0a051b874c043b5ee8d072f3c1434b",
+  "size": 175,
+  "url": "https://api.github.com/repos/artsy/emission/contents/tsconfig.json?ref=cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
+  "html_url": "https://github.com/artsy/emission/blob/cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75/tsconfig.json",
+  "git_url": "https://api.github.com/repos/artsy/emission/git/blobs/c7f3c3d35c0a051b874c043b5ee8d072f3c1434b",
+  "download_url": "https://raw.githubusercontent.com/artsy/emission/cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75/tsconfig.json",
+  "type": "file",
+  "content": "ewogICAgImNvbXBpbGVyT3B0aW9ucyI6IHsKICAgICAgICAiYWxsb3dKcyI6\nIHRydWUKICAgIH0sCiAgICAiZXhjbHVkZSI6IFsKICAgICAgICAibm9kZV9t\nb2R1bGVzIiwKICAgICAgICAiUG9kL0Fzc2V0cyIsCiAgICAgICAgIkV4YW1w\nbGUvQnVpbGQiLAogICAgICAgICJleHRlcm5hbHMvIgogICAgXQp9Cg==\n",
+  "encoding": "base64",
+  "_links": {
+    "self": "https://api.github.com/repos/artsy/emission/contents/tsconfig.json?ref=cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
+    "git": "https://api.github.com/repos/artsy/emission/git/blobs/c7f3c3d35c0a051b874c043b5ee8d072f3c1434b",
+    "html": "https://github.com/artsy/emission/blob/cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75/tsconfig.json"
+  }
+}

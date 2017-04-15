@@ -12,7 +12,6 @@ import * as parseDiff from "parse-diff"
 import * as includes from "lodash.includes"
 import * as isobject from "lodash.isobject"
 import * as keys from "lodash.keys"
-import * as find from "lodash.find"
 
 import * as jsonDiff from "rfc6902"
 import * as jsonpointer from "jsonpointer"
@@ -64,8 +63,8 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
     if (!modified) { return null }
 
     // Grab the two files contents.
-    const baseFile = await api.fileContents(filename, pr.base.repo.full_name, pr.base.ref)
-    const headFile = await api.fileContents(filename, pr.head.repo.full_name, pr.head.ref)
+    const baseFile = await api.fileContents(filename, pr.base.repo.full_name, pr.base.sha)
+    const headFile = await api.fileContents(filename, pr.head.repo.full_name, pr.head.sha)
 
     if (baseFile && headFile) {
       // Parse JSON
@@ -135,25 +134,32 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
     }, Object.create(null))
   }
 
-/**
- * Gets the git-style diff for a single file.
- *
- * @param name File path for the diff
- */
-  const diffForFile = (name: string, diffTypes?: string[]) => {
-    const diff = find(fileDiffs, (diff: any) => diff.from === name || diff.to === name)
-    if (!diff) { return null }
+  const byType = (t: string) => ({type}: {type: string}) => type === t
+  const getContent = ({content}: {content: string}) => content
 
-    let changes = diff.chunks.map((c: any) => c.changes)
-                             .reduce((a: any, b: any) => a.concat(b), [])
+  type Changes = Array<{type: string, content: string}>
+  /**
+   * Gets the git-style diff for a single file.
+   *
+   * @param filename File path for the diff
+   */
+  const diffForFile = async (filename: string) => {
+    // We already have access to the diff, so see if the file is in there
+    // if it's not return an empty diff
+    const structuredDiff = modifiedDiffs.find((diff: any) => diff.from === filename || diff.to === filename)
+    if (!structuredDiff) { return null }
 
-    // Filter the diffs by type
-    if (diffTypes && diffTypes.length > 0) {
-      changes = changes.filter((c: any) => diffTypes.indexOf(c.type) !== -1)
+    const allLines = structuredDiff.chunks
+      .map((c: {changes: Changes}) => c.changes)
+      .reduce((a: Changes, b: Changes) => a.concat(b), [])
+
+    return {
+      before: await api.fileContents(filename, pr.base.repo.full_name, pr.base.sha),
+      after: await api.fileContents(filename, pr.head.repo.full_name, pr.head.sha),
+      diff: allLines.map(getContent).join(os.EOL),
+      added: allLines.filter(byType("add")).map(getContent).join(os.EOL),
+      removed: allLines.filter(byType("del")).map(getContent).join(os.EOL)
     }
-
-    const lines = changes.map((c: any) => c.content)
-    return lines.join(os.EOL)
   }
 
   return {
