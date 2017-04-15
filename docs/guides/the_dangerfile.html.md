@@ -21,7 +21,7 @@ These both rely on using the GitHub API locally, so you may hit the GitHub API r
 export DANGER_GITHUB_API_TOKEN='xxxxxxxxxx'
 ```
 
-Then the danger CLI will use these authenticated api calls.
+Then the danger CLI will use these authenticated API calls.
 
 #### Using `danger pr`
 

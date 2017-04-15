@@ -7,8 +7,8 @@ order: 0
 
 ### TypeScript
 
-Danger is built in TypeScript, so we have great support keeping everything typed. 
-
+Danger is built in TypeScript, so we have great editor support as a consumer. If you are using Jest for testing, 
+then the only thing you need to do is change your Dangerfile to be `dangerfile.ts` and Danger will pick it up.
 
 ### TypeScript without Jest
 
