@@ -79,7 +79,7 @@ You can work with GitHub Enterprise by setting 2 environment variables:
 
 For example:
 
-```hs
+```sh
 DANGER_GITHUB_HOST=git.corp.evilcorp.com
 DANGER_GITHUB_API_BASE_URL=https://git.corp.evilcorp.com/api/v3
 ```

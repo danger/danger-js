@@ -9,9 +9,19 @@ order: 1
 
 The Danger JS DSL is fully typed via TypeScript (and eventually Flow again.)  These definitions are shipped with the Danger module. If your text editor supports working with type definitions you will get inline-documentation and auto-completion. Visual Studios Code will do this by default for you.
 
+If you are using Babel in your project, your Dangerfile will use the same transpilation settings. If you're using TypeScript + Jest it will work out of the box too, however, if you don't, you should head over to the [TypeScript guide][ts_guide]
+
 ## Working on your Dangerfile
 
-There are two ways to work and test out your Dangerfile, outside of runnig it on your CI. These both rely on 
+There are two ways to work and test out your Dangerfile, outside of running it on your CI and checking the results. 
+
+These both rely on using the GitHub API locally, so you may hit the GitHub API rate-limit or need to have authenticated request for private repos. In which case you can use an access token to do authenticated requests by exposing a token to Danger.
+
+```sh
+export DANGER_GITHUB_API_TOKEN='xxxxxxxxxx'
+```
+
+Then the danger CLI will use these authenticated api calls.
 
 #### Using `danger pr`
 
@@ -121,3 +131,4 @@ Some TypeScript examples:
 [setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
 [jest]: https://github.com/facebook/jest
 [ShellJS]: http://github.com/shelljs/shelljs
+[ts_guide]: DFSDGSDFDgdsgdfgd

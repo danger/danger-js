@@ -5,7 +5,6 @@ layout: guide
 order: 0
 ---
 
-
 ### I only want to run Danger for internal contributors
 
 Let's say you run Danger on the same CI service that deploys your code. If that's open source, you don't want to be letting anyone pull out your private env vars. The work around for this is to not simply call Danger on every test run:
