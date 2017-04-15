@@ -1,6 +1,18 @@
 import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
 
+/**
+ *  ### CI Setup
+ *
+ *  For Semaphor you will want to go to the settings page of the project. Inside "Build Settings"
+ *  you should add `yarn danger` to the Setup thread. Note that Semaphore only provides
+ *  the build environment variables necessary for Danger on PRs across forks.
+ *
+ *  ### Token Setup
+ *
+ *  You can add your `DANGER_GITHUB_API_TOKEN` inside the "Environment Variables" section in the settings.
+ *
+ */
 export class Semaphore implements CISource {
   constructor(private readonly env: Env) {
   }

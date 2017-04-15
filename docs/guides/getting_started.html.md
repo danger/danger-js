@@ -33,7 +33,7 @@ To get yourself started, try this as your Dangerfile:
 
 ```js
 import { message, danger } from "danger"
-message("OK, this worked @" + danger.github.pr.user.login)
+message(":tada:, this worked @" + danger.github.pr.user.login)
 ```
 
 Which, once you have your authentication set up, will have danger post a message to your PR with your name.
@@ -79,7 +79,7 @@ You can work with GitHub Enterprise by setting 2 environment variables:
 
 For example:
 
-```hs
+```sh
 DANGER_GITHUB_HOST=git.corp.evilcorp.com
 DANGER_GITHUB_API_BASE_URL=https://git.corp.evilcorp.com/api/v3
 ```
@@ -102,7 +102,8 @@ Danger is built to run as a part of this process, so you will need to have this 
 
 You should be able to verify that you have successfully integrated Danger by either re-building your CI or pushing your new commits.
 
-[jest-config]: SBJDSKDJBSDKJBG
+
+[jest-config]: https://facebook.github.io/jest/docs/configuration.html
 [github_bots]: https://twitter.com/sebastiangrail/status/750844399563608065
 [github_token]: https://github.com/settings/tokens/new
 [Yarn]: https://yarnpkg.com

@@ -1,6 +1,9 @@
 import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist, getPullRequestIDForBranch } from "../ci_source_helpers"
 
+/**
+ * Docs: TODO
+ */
 export class Codeship implements CISource {
   private default = { prID: "0" }
   constructor(private readonly env: Env) {
