@@ -60,11 +60,11 @@ const checkForNewDependencies = (packageDiff) => {
         const asJSON = usefulJSONContents.split("}\n{").join("},{")
 
         const whyJSON = JSON.parse(`[${asJSON}]`) as any[]
-        const messages = whyJSON.filter(msg => typeof msg.data === "string")
+        const messages = whyJSON.filter(msg => typeof msg.data === "string").map(m => m.data)
         markdown(`
 ## ${dep}
 
-${messages.join("\n\n - ")}
+ - ${messages.join("\n\n - ")}
           `)
       })
     }
