@@ -3,6 +3,9 @@
 ### Master
 
 * Adds `github.api` more to come - @orta
+
+### 0.17.0
+
 * [Enhancements to `danger.git.diffForFile()`](https://github.com/danger/danger-js/pull/223) - @namuol
 
   * Removed `diffTypes` second argument in favor of `result.added` and `result.removed`
