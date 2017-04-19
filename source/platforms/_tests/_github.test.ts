@@ -34,6 +34,10 @@ jest.mock("../github/GitHubAPI", () => {
       const fixtures = await requestWithFixturedJSON("requested_reviewers.json")
       return await fixtures()
     }
+
+    getExternalAPI() {
+      return {}
+    }
   }
 
   return { GitHubAPI }
