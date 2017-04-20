@@ -1,9 +1,12 @@
 import { GitCommit } from "./Commit"
+import * as GitHub from "github"
 
 // This is `danger.github`
 
 /** The GitHub metadata for your PR */
 export interface GitHubDSL {
+  /** An authenticated API so you can extend danger's behavior. An instance of the "github" npm module. */
+  api: GitHub,
   /** The issue metadata for a code review session */
   issue: GitHubIssue,
   /** The PR metadata for a code review session */

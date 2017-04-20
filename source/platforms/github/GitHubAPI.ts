@@ -4,6 +4,7 @@ import { GitHubPRDSL, GitHubUser} from "../../dsl/GitHubDSL"
 import * as find from "lodash.find"
 
 import * as node_fetch from "node-fetch"
+import * as GitHubNodeAPI from "github"
 
 // The Handle the API specific parts of the github
 
@@ -23,6 +24,26 @@ export class GitHubAPI {
     // which can handle unique API edge-cases around integrations
     this.fetch = fetch
     this.additionalHeaders = {}
+  }
+
+  /**
+   * Bit weird, yes, but we want something that can be exposed to an end-user.
+   * I wouldn't have a problem with moving this to use this API under the hood
+   * but for now that's just a refactor someone can try.
+   */
+  getExternalAPI(): GitHubNodeAPI {
+    const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || null
+    const api = new GitHubNodeAPI({
+      host: baseUrl,
+      headers: {
+        ...this.additionalHeaders
+      }
+    })
+
+    if (this.token) {
+      api.authenticate({ type: "token", token: this.token })
+    }
+    return api
   }
 
   /**
@@ -166,7 +187,6 @@ export class GitHubAPI {
 
     return res.ok ? res.json() : { labels: [] }
   }
-
   // API Helpers
 
   private api(path: string, headers: any = {}, body: any = {}, method: string) {

@@ -75,8 +75,10 @@ export class GitHub {
     const commits = await this.api.getPullRequestCommits()
     const reviews = await this.api.getReviews()
     const requested_reviewers = await this.api.getReviewerRequests()
+    const externalAPI = this.api.getExternalAPI()
 
     return {
+      api: externalAPI,
       issue,
       pr,
       commits,

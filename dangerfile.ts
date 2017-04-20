@@ -12,6 +12,8 @@ declare function schedule(promise: () => Promise<any | void>): void
 
 import * as fs from "fs"
 import * as child_process from "child_process"
+import fetch from "node-fetch"
+import { distanceInWords } from "date-fns"
 
 // For some reason we're getting type errors on this includes module?
 // Wonder if we could move to the includes function in ES2015?
@@ -46,13 +48,13 @@ const checkForRelease = (packageDiff) => {
 
 // This is a great candidate for being a Danger plugin.
 
-const checkForNewDependencies = (packageDiff) => {
+const checkForNewDependencies = async (packageDiff) => {
   if (packageDiff.dependencies) {
     if (packageDiff.dependencies.added.length) {
       const newDependencies = packageDiff.dependencies.added as string[]
       warn(`New dependencies added: ${sentence(newDependencies)}.`)
 
-      newDependencies.forEach(dep => {
+      for (const dep of newDependencies) {
         const output = child_process.execSync(`yarn why ${dep} --json`)
 
         // Comes as a series of little JSON messages
@@ -60,13 +62,91 @@ const checkForNewDependencies = (packageDiff) => {
         const asJSON = usefulJSONContents.split("}\n{").join("},{")
 
         const whyJSON = JSON.parse(`[${asJSON}]`) as any[]
-        const messages = whyJSON.filter(msg => typeof msg.data === "string")
-        markdown(`
-## ${dep}
+        const messages = whyJSON.filter(msg => typeof msg.data === "string").map(m => m.data)
+        const yarnDetails = `
+<details>
+  <summary><code>yarn why ${dep}</code> output</summary>
+   <p><code><ul><li>${messages.join("</li><li>")}
+   </li></ul></code></p>
+</details>
+`
+        // Grab the NPM metadata
+        let npmMetadata = ""
+        const npmResponse = await fetch(`https://registry.npmjs.org/${dep}`)
+        if (npmResponse.ok) {
+          const tableDeets = [] as [{ name: string, message: string}]
+          const npm = await npmResponse.json()
 
-${messages.join("\n\n - ")}
-          `)
-      })
+          if (npm.time && npm.time.created) {
+            const distance = distanceInWords(new Date(npm.time.created), new Date)
+            tableDeets.push ({ name: "Created", message: `${distance} ago`  })
+          }
+
+          if (npm.time && npm.time.modified) {
+            const distance = distanceInWords(new Date(npm.time.modified), new Date)
+            tableDeets.push ({ name: "Last Updated", message: `${distance} ago` })
+          }
+
+          if (npm.license) {
+            tableDeets.push({ name: "License", message: npm.license })
+          } else {
+            tableDeets.push({ name: "License", message: "<b>NO LICENSE FOUND</b>" })
+          }
+
+          if (npm.maintainers) {
+            tableDeets.push({ name: "Maintainers", message: npm.maintainers.length })
+          }
+
+          if (npm["dist-tags"] && npm["dist-tags"]["latest"]) {
+            const currentTag = npm["dist-tags"]["latest"]
+            const tag = npm.versions[currentTag]
+            tableDeets.push ({ name: "Releases", message: String(Object.keys(npm.versions).length) })
+            if (tag.dependencies) {
+              const deps = Object.keys(tag.dependencies)
+              const depLinks = deps.map(d => `<a href='http: //npmjs.com/package/${d}'>${d}</a>`)
+              tableDeets.push ({ name: "Direct Dependencies", message: sentence(depLinks) })
+            }
+          }
+
+          if (npm.keywords && npm.keywords.length) {
+            tableDeets.push({ name: "Keywords", message: sentence(npm.keywords) })
+          }
+
+          let readme = "This README is too long to show."
+          if (npm.readme && npm.readme.length < 10000) {
+            readme = `
+<details>
+<summary><code>README</code></summary>
+
+${npm.readme}
+
+</details>
+`
+          }
+
+          const homepage = npm.homepage ? npm.homepage : `http: //npmjs.com/package/${dep}`
+
+          npmMetadata = `
+<h2><a href="${homepage}">${dep}</a></h2>
+
+Author: ${npm.author && npm.author.name ? npm.author.name : "Unknown"}
+Description: ${npm.description}
+Repo: ${homepage}
+
+<table>
+  <thead><tr><th></th><th width="100%"></th></tr></thead>
+  ${tableDeets.map(deet => `<tr><td>${deet.name}</td><td>${deet.message}</td></tr>`).join("")}
+</table>
+
+${readme}
+`
+        } else {
+          const errorMessage = await npmResponse.text()
+          npmMetadata = `Error getting NPM details: ${errorMessage}`
+        }
+
+        markdown(`${npmMetadata} ${yarnDetails}`)
+      }
     }
   }
 }
@@ -103,7 +183,7 @@ const checkForTypesInDeps = (packageDiff) => {
 schedule(async () => {
   const packageDiff = await danger.git.JSONDiffForFile("package.json")
   checkForRelease(packageDiff)
-  checkForNewDependencies(packageDiff)
+  await checkForNewDependencies(packageDiff)
   checkForLockfileDiff(packageDiff)
   checkForTypesInDeps(packageDiff)
 })
