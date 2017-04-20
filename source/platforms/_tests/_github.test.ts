@@ -38,6 +38,10 @@ jest.mock("../github/GitHubAPI", () => {
     getExternalAPI() {
       return {}
     }
+
+    APIMetadataForPR() {
+      return {}
+    }
   }
 
   return { GitHubAPI }

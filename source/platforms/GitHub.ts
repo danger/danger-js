@@ -1,5 +1,5 @@
 import { GitDSL } from "../dsl/GitDSL"
-import { GitHubPRDSL, GitHubDSL, GitHubIssue, GitHubIssueLabel } from "../dsl/GitHubDSL"
+import { GitHubPRDSL, GitHubDSL, GitHubIssue, GitHubAPIPR } from "../dsl/GitHubDSL"
 import { GitHubAPI } from "./github/GitHubAPI"
 import GitHubUtils from "./github/GitHubUtils"
 import gitDSLForGitHub from "./github/GitHubGit"
@@ -33,26 +33,11 @@ export class GitHub {
 
   /**
    * Gets issue specific metadata for a PR
-   *
-   * TODO: Convert from a mapped type, to one with a public interface in the DSL
-   * that shows the useful stuff, but still allows others to dig into the data structure
-   *
    */
 
   async getIssue(): Promise <GitHubIssue> {
     const issue = await this.api.getIssue()
-    if (!issue) {
-      return { labels: [] }
-    }
-
-    const labels = issue.labels.map((label: any): GitHubIssueLabel => ({
-      id: label.id,
-      url: label.url,
-      name: label.name,
-      color: label.color,
-    }))
-
-    return { labels }
+    return issue || { labels: [] }
   }
 
   /**
@@ -75,8 +60,9 @@ export class GitHub {
     const commits = await this.api.getPullRequestCommits()
     const reviews = await this.api.getReviews()
     const requested_reviewers = await this.api.getReviewerRequests()
-    const externalAPI = this.api.getExternalAPI()
 
+    const externalAPI = this.api.getExternalAPI()
+    const thisPR = this.APIMetadataForPR(pr)
     return {
       api: externalAPI,
       issue,
@@ -84,6 +70,7 @@ export class GitHub {
       commits,
       reviews,
       requested_reviewers,
+      thisPR,
       utils: GitHubUtils(pr)
     }
   }
@@ -144,5 +131,16 @@ export class GitHub {
     const commentID = await this.api.getDangerCommentID()
     if (commentID) { await this.api.updateCommentWithID(commentID, comment) }
     return commentID !== null
+  }
+
+  /**
+   * Converts the PR JSON into something easily used by the Github API client
+   */
+  APIMetadataForPR(pr: GitHubPRDSL): GitHubAPIPR {
+    return {
+      number: pr.number,
+      repo: pr.base.repo.name,
+      owner: pr.base.repo.owner.login
+    }
   }
 }

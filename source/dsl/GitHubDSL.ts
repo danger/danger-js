@@ -11,6 +11,8 @@ export interface GitHubDSL {
   issue: GitHubIssue,
   /** The PR metadata for a code review session */
   pr: GitHubPRDSL,
+  /** The PR metadata specifically formatted for using with the GitHub API client */
+  thisPR: GitHubAPIPR,
   /** The github commit metadata for a code review session */
   commits: Array<GitHubCommit>
   /** The reviews left on this pull request */
@@ -38,10 +40,10 @@ export interface GitHubUtilsDSL {
 }
 
 /**
- * This is `danger.github.issue`
- * It refers to the issue that makes up the Pull Request
- * GitHub treats all pull requests as a special type of issue
- * This DSL contains only parts of the issue that are not found in the PR DSL
+ * This is `danger.github.issue` It refers to the issue that makes up the Pull Request.
+ * GitHub treats all pull requests as a special type of issue. This DSL contains only parts of the issue that are
+ * not found in the PR DSL, however it does contain the full JSON structure.
+ *
  * A GitHub Issue
  */
 export interface GitHubIssue {
@@ -56,32 +58,16 @@ export interface GitHubIssue {
 // Subtypes specific to issues
 
 export interface GitHubIssueLabel {
-  /**
-   * The identifying number of this label
-   * @type {number}
-   * @memberOf GitHubIssueLabel
-   */
+  /** The identifying number of this label */
   id: number,
 
-  /**
-   * The URL that links to this label
-   * @type {string}
-   * @memberOf GitHubIssueLabel
-   */
+  /** The URL that links to this label */
   url: string,
 
-  /**
-   * The name of the label
-   * @type {string}
-   * @memberOf GitHubIssueLabel
-   */
+  /** The name of the label */
   name: string,
 
-  /**
-   * The color associated with this label
-   * @type {string}
-   * @memberOf GitHubIssueLabel
-   */
+  /** The color associated with this label */
   color: string
 }
 
@@ -91,13 +77,11 @@ export interface GitHubIssueLabel {
 export interface GitHubPRDSL {
   /**
    * The UUID for the PR
-   * @type {number}
    */
   number: number
 
   /**
    * The state for the PR
-   * @type {string}
    */
   state: "closed" | "open" | "locked" | "merged"
 
@@ -109,68 +93,57 @@ export interface GitHubPRDSL {
 
   /**
    * The title of the PR
-   * @type {string}
    */
   title: string
 
   /**
    * The markdown body message of the PR
-   * @type {string}
    */
   body: string
 
   /**
    * ISO6801 Date string for when PR was created
-   * @type {string}
    */
   created_at: string
 
   /**
    * ISO6801 Date string for when PR was updated
-   * @type {string}
    */
   updated_at: string
 
   /**
    * optional ISO6801 Date string for when PR was closed
-   * @type {string}
    */
   closed_at: string | null
 
   /**
    * Optional ISO6801 Date string for when PR was merged.
    * Danger probably shouldn't be running in this state.
-   * @type {string}
    */
   merged_at: string | null
 
   /**
    * Merge reference for the _other_ repo.
-   * @type {GitHubMergeRef}
    */
   head: GitHubMergeRef
 
   /**
    * Merge reference for _this_ repo.
-   * @type {GitHubMergeRef}
    */
   base: GitHubMergeRef
 
   /**
    * The User who submitted the PR
-   * @type {GitHubUser}
    */
   user: GitHubUser
 
   /**
    * The User who is assigned the PR
-   * @type {GitHubUser}
    */
   assignee: GitHubUser
 
   /**
    * The Users who are assigned to the PR
-   * @type {GitHubUser}
    */
   assignees: Array<GitHubUser>
 
@@ -182,37 +155,31 @@ export interface GitHubPRDSL {
 
   /**
    * The number of comments on the PR
-   * @type {number}
    */
   comments: number
 
   /**
    * The number of review-specific comments on the PR
-   * @type {number}
    */
   review_comments: number
 
   /**
    * The number of commits in the PR
-   * @type {number}
    */
   commits: number
 
   /**
    * The number of additional lines in the PR
-   * @type {number}
    */
   additions: number
 
   /**
    * The number of deleted lines in the PR
-   * @type {number}
    */
   deletions: number
 
   /**
    * The number of changed files in the PR
-   * @type {number}
    */
   changed_files: number
 }
@@ -241,17 +208,14 @@ export interface GitHubCommit {
 export interface GitHubUser {
   /**
    * Generic UUID
-   * @type {number}
    */
   id: number
   /**
    * The handle for the user/org
-   * @type {string}
    */
   login: string
   /**
    * Whether the user is an org, or a user
-   * @type {string}
    */
   type: "User" | "Organization"
 }
@@ -262,25 +226,21 @@ export interface GitHubUser {
 export interface GitHubRepo {
   /**
    * Generic UUID
-   * @type {number}
    */
   id: number
 
   /**
    * The name of the repo, e.g. "Danger-JS"
-   * @type {string}
    */
   name: string
 
   /**
    * The full name of the owner + repo, e.g. "Danger/Danger-JS"
-   * @type {string}
    */
   full_name: string
 
   /**
    * The owner of the repo
-   * @type {GitHubUser}
    */
   owner: GitHubUser
 
@@ -292,7 +252,6 @@ export interface GitHubRepo {
 
   /**
    * The textual description of the repo
-   * @type {string}
    */
   description: string
 
@@ -304,7 +263,6 @@ export interface GitHubRepo {
 
   /**
    * Is someone assigned to this PR?
-   * @type {GitHubUser}
    */
   assignee: GitHubUser
 
@@ -315,7 +273,6 @@ export interface GitHubRepo {
   assignees: Array<GitHubUser>
   /**
    * The root web URL for the repo, e.g. https://github.com/artsy/emission
-   * @type {string}
    */
   html_url: string
 }
@@ -323,19 +280,16 @@ export interface GitHubRepo {
 export interface GitHubMergeRef {
   /**
    * The human display name for the merge reference, e.g. "artsy:master"
-   * @type {string}
    */
   label: string
 
   /**
    * The reference point for the merge, e.g. "master"
-   * @type {string}
    */
   ref: string
 
   /**
    * The reference point for the merge, e.g. "704dc55988c6996f69b6873c2424be7d1de67bbe"
-   * @type {string}
    */
   sha: string
 
@@ -359,36 +313,36 @@ export interface GitHubMergeRef {
 export interface GitHubReview {
   /**
    * The user requested to review, or the user who has completed the review
-   * @type {GitHubUser}
-   * @memberOf GitHubReview
    */
   user: GitHubUser
   /**
-   * @type {number}
-   * @memberOf GitHubReview
+   * If there is a review, this provides the ID for it
    */
   id?: number
 
   /**
-   * The body of the review
-   * @type {string}
-   * @memberOf GitHubReview
+   * If there is a review, the body of the review
    */
   body?: string
 
   /**
-   * The commit ID this review was made on
-   * @type {string}
-   * @memberOf GitHubReview
+   * If there is a review, the commit ID this review was made on
    */
   commit_id?: string
 
   /**
    * The state of the review
    * APPROVED, REQUEST_CHANGES, COMMENT or PENDING
-   * @type {string}
-   * @memberOf GitHubReview
    */
   state?: "APPROVED" | "REQUEST_CHANGES" | "COMMENT" | "PENDING"
+}
 
+/** Provides the current PR in an easily used way for params in `github.api` calls  */
+export interface GitHubAPIPR {
+  /** The repo owner */
+  owner: string,
+  /** The repo name */
+  repo: string,
+  /** The PR number */
+  number: number,
 }

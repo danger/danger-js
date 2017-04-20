@@ -2,7 +2,32 @@
 
 ### Master
 
-* Adds `github.api` more to come - @orta
+### 0.18.0
+
+* Adds `github.api`. This is a fully authenticated client from the [github](https://www.npmjs.com/package/github)
+  npm module. - @orta
+
+  An easy example of it's usage would be using Danger to add a label to your PR. Note that Danger will have the 
+  permissions for your account, so for OSS repos - this won't work.
+
+  ```js
+  danger.github.api.issues.addLabels({ owner: "danger", repo: "danger-js", number: danger.github.pr.number, labels: ["Danger Passed"] })
+  ```
+
+  Yeah, that's a bit verbose, I agree. So, there's also `github.thisPR` which should simplify that. It aims to provide a
+  lot of the values for the current PR to use with the API.
+
+  ```js
+  const github = danger.github
+  github.api.issues.addLabels({ ...github.thisPR, labels: ["Danger Passed"] })
+  ```
+
+  You could use this API for a bunch of things, here's some quick ideas:
+
+  * Request specific reviewers when specific files change (`api.pullRequests.createReviewRequest`)
+  * Add a label for when something passes or fails (`api.issues.addLabels`)
+  * Verifying if someone is in your org? (`api.orgs.checkMembership`)
+  * Updating Project tickets to show they have a PR (`api.projects.updateProject`)
 
 ### 0.17.0
 

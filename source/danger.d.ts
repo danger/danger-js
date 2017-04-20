@@ -229,6 +229,8 @@ export interface GitHubDSL {
   issue: GitHubIssue,
   /** The PR metadata for a code review session */
   pr: GitHubPRDSL,
+  /** The PR metadata specifically formatted for using with the GitHub API client */
+  thisPR: GitHubAPIPR,
   /** The github commit metadata for a code review session */
   commits: Array<GitHubCommit>
   /** The reviews left on this pull request */
@@ -256,10 +258,10 @@ export interface GitHubUtilsDSL {
 }
 
 /**
- * This is `danger.github.issue`
- * It refers to the issue that makes up the Pull Request
- * GitHub treats all pull requests as a special type of issue
- * This DSL contains only parts of the issue that are not found in the PR DSL
+ * This is `danger.github.issue` It refers to the issue that makes up the Pull Request.
+ * GitHub treats all pull requests as a special type of issue. This DSL contains only parts of the issue that are
+ * not found in the PR DSL, however it does contain the full JSON structure.
+ *
  * A GitHub Issue
  */
 export interface GitHubIssue {
@@ -273,28 +275,16 @@ export interface GitHubIssue {
 // Subtypes specific to issues
 
 export interface GitHubIssueLabel {
-  /**
-   * The identifying number of this label
-   * @memberOf GitHubIssueLabel
-   */
+  /** The identifying number of this label */
   id: number,
 
-  /**
-   * The URL that links to this label
-   * @memberOf GitHubIssueLabel
-   */
+  /** The URL that links to this label */
   url: string,
 
-  /**
-   * The name of the label
-   * @memberOf GitHubIssueLabel
-   */
+  /** The name of the label */
   name: string,
 
-  /**
-   * The color associated with this label
-   * @memberOf GitHubIssueLabel
-   */
+  /** The color associated with this label */
   color: string
 }
 
@@ -535,33 +525,38 @@ export interface GitHubMergeRef {
 export interface GitHubReview {
   /**
    * The user requested to review, or the user who has completed the review
-   * @memberOf GitHubReview
    */
   user: GitHubUser
   /**
-   * @memberOf GitHubReview
+   * If there is a review, this provides the ID for it
    */
   id?: number
 
   /**
-   * The body of the review
-   * @memberOf GitHubReview
+   * If there is a review, the body of the review
    */
   body?: string
 
   /**
-   * The commit ID this review was made on
-   * @memberOf GitHubReview
+   * If there is a review, the commit ID this review was made on
    */
   commit_id?: string
 
   /**
    * The state of the review
    * APPROVED, REQUEST_CHANGES, COMMENT or PENDING
-   * @memberOf GitHubReview
    */
   state?: "APPROVED" | "REQUEST_CHANGES" | "COMMENT" | "PENDING"
+}
 
+/** Provides the current PR in an easily used way for params in `github.api` calls  */
+export interface GitHubAPIPR {
+  /** The repo owner */
+  owner: string,
+  /** The repo name */
+  repo: string,
+  /** The PR number */
+  number: number,
 }
 
 /**
