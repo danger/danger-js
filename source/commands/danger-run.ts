@@ -18,7 +18,7 @@ declare const global: any
 program
   .option("-v, --verbose", "Verbose output of files")
   .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")
-  .option("-t, --text-only", "Provide an STDOUT only interface")
+  .option("-t, --text-only", "Provide an STDOUT only interface, Danger will not post to your PR")
   .option("-d, --dangerfile [filePath]", "Specify a custom dangerfile path")
   .parse(process.argv)
 
