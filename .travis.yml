@@ -16,6 +16,7 @@ matrix:
 script:
 - yarn lint
 - yarn test -- --coverage --no-cache && rm ./coverage/coverage-final.json
+- yarn docs
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
