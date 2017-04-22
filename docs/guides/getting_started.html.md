@@ -15,11 +15,11 @@ There are 5 steps involved in getting Danger running:
 * Setting up [an access token for Danger](#setting-up-an-access-token) with that account.
 * Setting up [Danger to run on your CI](#setting-up-danger-to-run-on-your-ci).
 
-### Including Danger
+## Including Danger
 
 We recommend you install Danger via [Yarn][]. Though you can use the npm CLI.
 
-##### Installation
+### Installation
 
 Adding the Danger module by `yarn run danger --dev`. This will add Danger as a `devDependency` and make the command `danger` available by running `yarn danger`.
 
@@ -50,27 +50,27 @@ In order to get the most out of Danger, we recommend giving her the ability to p
 
 To get started, open [https://github.com](https://github.com) in a private browser session.
 
-##### OSS Projects
+### OSS Projects
 
 Do not add the bot to your repo or to your organization.
 
-##### Closed Source Projects
+### Closed Source Projects
 
 Add the bot to your repo or to your organization. The bot requires permission level "Write" to be able to set a PR's status. Note that you _should not_ re-use this bot for OSS projects.
 
-### Setting up an Access Token
+## Setting up an Access Token
 
 [Here's the link][github_token], you should open this in the private session where you just created the new GitHub account. Again, the rights that you give to the token depend on the openness of your projects. You'll want to save this token for later, when you add a `DANGER_GITHUB_API_TOKEN` to your CI.
 
-##### Tokens for OSS Projects
+### Tokens for OSS Projects
 
 We recommend giving the token the smallest scope possible. This means just `public_repo`, this scopes limits Danger's abilities to just writing comments on OSS projects. Because the token can be quite easily be extracted from the CI environment, this minimizes the chance for bad actors to cause chaos with it.
 
-##### Tokens for Closed Source Projects
+### Tokens for Closed Source Projects
 
 We recommend giving access to the whole `repo` scope, and its children.
 
-### Enterprise GitHub
+## Enterprise GitHub
 
 You can work with GitHub Enterprise by setting 2 environment variables:
 
@@ -84,7 +84,7 @@ DANGER_GITHUB_HOST=git.corp.evilcorp.com
 DANGER_GITHUB_API_BASE_URL=https://git.corp.evilcorp.com/api/v3
 ```
 
-### Continuous Integration
+## Continuous Integration
 
 Continuous Integration is the process of regularly running tests and generating metrics for a project. It is where you can ensure that the code you are submitting for review is passing on all of the tests. You commonly see this as green or red dots next to commits.
 
@@ -98,7 +98,7 @@ Danger is built to run as a part of this process, so you will need to have this 
 / https://github.com/danger/danger/tree/master/lib/danger/ci_source
 / inline documentation, rather than from inside this page.
 
-### Verify Installation
+## Verify Installation
 
 You should be able to verify that you have successfully integrated Danger by either re-building your CI or pushing your new commits.
 
