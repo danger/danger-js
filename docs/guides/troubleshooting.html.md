@@ -1,7 +1,7 @@
 ---
 title: Troubleshooting
 subtitle: Plugin creation
-layout: guide
+layout: guide_js
 order: 0
 ---
 
