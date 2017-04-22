@@ -6,22 +6,22 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *  ### CI Setup
  *  Ah Jenkins, so many memories. So, if you're using Jenkins, you're hosting your own  environment.
  *
- *  #### GitHub
+ *  ### GitHub
  *  You will want to be using the
  *  [GitHub pull request builder plugin](https://wiki.jenkins-ci.org/display/JENKINS/GitHub+pull+request+builder+plugin)
  *  in order to ensure that you have the build environment set up for PR integration.
  *
  *  With that set up, you can edit your job to add `yarn danger` at the build action.
  *
- *  ##### Pipeline
+ *  ### Pipeline
  * If you're using [pipelines](https://jenkins.io/solutions/pipeline/) you should be using the
  * [GitHub branch source plugin](https://wiki.jenkins-ci.org/display/JENKINS/GitHub+Branch+Source+Plugin) for easy setup and handling of PRs.
  *
  *  After you've set up the plugin, add a `sh 'yarn danger'` line in your pipeline  script and make sure that build PRs is enabled.
  *
- *  ### Token Setup
+ *  ## Token Setup
  *
- *  #### GitHub
+ *  ### GitHub
  *  As you own the machine, it's up to you to add the environment variable for the  `DANGER_GITHUB_API_TOKEN`.
  */
 export class Jenkins implements CISource {

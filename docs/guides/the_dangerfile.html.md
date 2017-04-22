@@ -108,7 +108,7 @@ As the JavaScript library API is relatively limited, the Danger module includes 
 
 The CHANGELOG for Danger is kept entirely end-user focused, so if there is an aspect of the Dangerfule that you do not know, or looks confusing and there is nothing in the document - check the CHANGELOG. This is where we write-up why a change happened, and how it can affect Danger users.
 
-###Examples
+### Examples
 
 If you'd like to work with some reference material, here are some examples in the wild. 
 
