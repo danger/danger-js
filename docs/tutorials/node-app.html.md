@@ -1,6 +1,6 @@
 ---
 title: Danger in a Node App
-subtitle: Plugin creation
+subtitle: Danger + Node
 layout: guide_js
 order: 0
 ---

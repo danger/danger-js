@@ -1,6 +1,6 @@
 ---
 title: Getting Started with Danger JS
-subtitle: Plugin creation
+subtitle: Getting Started with Danger JS
 layout: guide_js
 order: 0
 ---
