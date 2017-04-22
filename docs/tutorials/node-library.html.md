@@ -1,8 +1,8 @@
 ---
 title: Danger + Node Library
-subtitle: Plugin creation
+subtitle: Danger + Node Library
 layout: guide_js
-order: 0
+order: 1
 ---
 
 ## Before we get started

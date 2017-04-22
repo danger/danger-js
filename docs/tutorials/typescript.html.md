@@ -1,8 +1,8 @@
 ---
-title: TypeScript + Danger JS
-subtitle: Plugin creation
+title: Danger + TypeScript
+subtitle: Danger + TypeScript
 layout: guide_js
-order: 0
+order: 3
 ---
 
 ### TypeScript

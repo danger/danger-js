@@ -1,19 +1,19 @@
 ---
 title: FAQ
-subtitle: Plugin creation
-layout: guide
-order: 0
+subtitle: Frequently Asked Questions
+layout: guide_js
+order: 3
 ---
 
-### Can Danger comment inside a file on an PR?
+## Can Danger comment inside a file on an PR?
 
 Not yet, but there is a lot of discussion on [danger-js#77][77].
 
-### Can I use the same Dangerfile across many repos?
+## Can I use the same Dangerfile across many repos?
 
 Ish, it's currently quite complex to set up, but work is on-going on [Danger/Peril][peril]. This is a hosted version of Danger which does not need to run on CI. Using Peril you can use Dangerfiles to reply to basically any github webhook type.
 
-### I want to help influence Danger's direction
+## I want to help influence Danger's direction
 
 We'd recommend first becoming acquainted with the [VISION.md][] inside Danger, this is the long-term plan. Then there are two ways to start contributing today:
 

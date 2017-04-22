@@ -1,6 +1,6 @@
 ---
 title: About the Dangerfile
-subtitle: Plugin creation
+subtitle: The Dangerfile
 layout: guide_js
 order: 1
 ---

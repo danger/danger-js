@@ -1,8 +1,8 @@
 ---
 title: Danger + Dependencies
-subtitle: Plugin creation
+subtitle: Danger + Dependencies
 layout: guide_js
-order: 0
+order: 2
 ---
 
 ## Before we get started
@@ -41,7 +41,7 @@ There are two aspects that you consider:
 * Keeping track of changes to `dependencies` (for noted dependencies)
 * Reading the lockfile for the dependency (for transitive dependencies)
 
-### Keeping track of changes to `dependencies`
+### Keeping track of changes to dependencies
 
 We can use `danger.git.JSONDiffForFile` to understand the changes to a JSON file during code review. Note: it returns a promise, so we'll need to use `schedule` to make sure it runs async code correctly.
 

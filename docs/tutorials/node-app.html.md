@@ -1,6 +1,6 @@
 ---
 title: Danger in a Node App
-subtitle: Plugin creation
+subtitle: Danger + Node
 layout: guide_js
 order: 0
 ---
@@ -11,7 +11,7 @@ This guide continues after "[Getting Started][started]" - so you should have see
 
 ## "Node App"
 
-A node app could cover anything from an API, to a website, a native app or a hardware project. The rules on these projects tend to come from your larger dev team culture. In [Artsy][]] a lot of our rules for applications come from trying to have a similar culture between all projects.
+A node app could cover anything from an API, to a website, a native app or a hardware project. The rules on these projects tend to come from your larger dev team culture. In [Artsy][] a lot of our rules for applications come from trying to have a similar culture between all projects.
 
 ## Assignees
 

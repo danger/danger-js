@@ -1,6 +1,6 @@
 ---
 title: Getting Started with Danger JS
-subtitle: Plugin creation
+subtitle: Getting Started with Danger JS
 layout: guide_js
 order: 0
 ---
@@ -102,8 +102,24 @@ Danger is built to run as a part of this process, so you will need to have this 
 
 You should be able to verify that you have successfully integrated Danger by either re-building your CI or pushing your new commits.
 
+## What now?
+
+There are a few of places you can go from here. We'd recommending opening tabs on all these articles:
+
+* [The Dangerfile][dangerfile].
+* [Cultural Changes of Danger][culture].
+* [The Dangerfile API reference][api].
+
+Then depending on the type of project you are working on, checking out either [Danger + Node App][app], or [Danger + Node Library][lib]. These should give you good overview of what is possible from here, then it's really up to you to find how you can codify some aspects of your team's culture.
+
+Good luck!
 
 [jest-config]: https://facebook.github.io/jest/docs/configuration.html
 [github_bots]: https://twitter.com/sebastiangrail/status/750844399563608065
 [github_token]: https://github.com/settings/tokens/new
 [Yarn]: https://yarnpkg.com
+[api]: /js/reference.html
+[dangerfile]: /js/guides/the_dangerfile.html
+[culture]: /js/guides/culture.html
+[app]: /js/tutorials/node-app.html
+[lib]: /js/tutorials/node-library.html
