@@ -84,7 +84,7 @@ DANGER_GITHUB_HOST=git.corp.evilcorp.com
 DANGER_GITHUB_API_BASE_URL=https://git.corp.evilcorp.com/api/v3
 ```
 
-## Continuous Integration
+### Continuous Integration
 
 Continuous Integration is the process of regularly running tests and generating metrics for a project. It is where you can ensure that the code you are submitting for review is passing on all of the tests. You commonly see this as green or red dots next to commits.
 
@@ -98,7 +98,7 @@ Danger is built to run as a part of this process, so you will need to have this 
 / https://github.com/danger/danger/tree/master/lib/danger/ci_source
 / inline documentation, rather than from inside this page.
 
-## Verify Installation
+### Verify Installation
 
 You should be able to verify that you have successfully integrated Danger by either re-building your CI or pushing your new commits.
 
