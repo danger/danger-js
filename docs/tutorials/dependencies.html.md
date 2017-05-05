@@ -118,7 +118,7 @@ This should give you an idea on how to understand changes to your `node_modules`
 * [Parse][yarn-parse] the `yarn.lock` file, to say how many transitive dependencies are added on every new dependency.
 * When a dependency is removed, and no other dependencies are added, do a thumbs up 👍.
 
-[started]: /js/guides/asdasdasdas
+[started]: /js/guides/getting_started.html
 [lockfile]: https://yarnpkg.com/lang/en/docs/yarn-lock/
 [shrinkwrap]:  https://docs.npmjs.com/cli/shrinkwrap
 [danger-why]: https://github.com/danger/danger-js/blob/8fba6e7c301ac3459c2b0b93264bff7256efd8da/dangerfile.ts#L49
