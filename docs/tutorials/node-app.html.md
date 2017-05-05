@@ -27,6 +27,19 @@ if (!danger.pr.assignee) {
 
 The `danger.pr` object is the JSON provided by GitHub to [represent a pull request][pr]. So here we're pulling out the `assignee` key and validating that anything is inside it.
 
+We can make a small improvement to this rule, by allowing someone to declare that a PR is a work in progress Danger can allow the build to pass, but will provide feedback that there is no assignee.
+
+```js
+import { danger, fail, warn } from "danger"
+
+if (!danger.pr.assignee) {
+  const method = pr.title.includes("WIP") ? warn : fail
+  method("This pull request needs an assignee, and optionally include any reviewers.")
+}
+```
+
+Using a function as a variable we can determine whether to fail, or warn based on whether the title includes the string `"WIP"`.
+
 ## PR Messages
 
 In a similar vein, we also want to encourage pull requests as a form of documentation. We can help push people in this direction by not allowing the body of a pull request to be less than a few characters long.
@@ -79,11 +92,12 @@ ${code}
 
 More mature tools may have a JSON output reporter, so you can parse that file and create your own markdown table.
 
+If you build something that is a generic wrapper around a specific linting tool, this is a great place to convert that code [into a plugin][plugin] so that anyone can use it. In this case, Danger effectively is a way of moving these messages into the code review session.
 
 
-
-[started]: /js/guides/asdasdasdas
+[started]: /js/guides/getting_started.html
 [Artsy]: http://artsy.github.io
 [no-slacking]: https://github.com/alloy/no-slacking-on-pull-requests-bot
 [pr]: https://developer.github.com/v3/pulls/#get-a-single-pull-request
 [tee]: http://linux.101hacks.com/unix/tee-command-examples/
+[plugin]: /js/usage/extending-danger.html
