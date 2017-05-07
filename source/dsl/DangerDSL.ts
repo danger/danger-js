@@ -12,22 +12,22 @@ export interface DangerDSLType {
    *  Currently, this is just the raw file paths that have been
    *  added, removed or modified.
    */
-  readonly git: Readonly<GitDSL>
+  readonly git: GitDSL
   /**
    *  The GitHub metadata.
    */
-  readonly github: Readonly<GitHubDSL>
+  readonly github: GitHubDSL
 
   /**
    * Danger utils
    */
-  readonly utils: Readonly<DangerUtilsDSL>
+  readonly utils: DangerUtilsDSL
 }
 
 /// End of Danger DSL definition
 
 export class DangerDSL {
-  public readonly github: Readonly<GitHubDSL>
+  public readonly github: GitHubDSL
 
   constructor(platformDSL: any, public readonly git: GitDSL, public readonly utils: DangerUtilsDSL) {
     // As GitLab etc support is added this will need to be changed

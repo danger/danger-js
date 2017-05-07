@@ -47,7 +47,6 @@ export interface GitHubUtilsDSL {
  * A GitHub Issue
  */
 export interface GitHubIssue {
-
   /**
    * The labels associated with this issue
    */
@@ -58,13 +57,13 @@ export interface GitHubIssue {
 
 export interface GitHubIssueLabel {
   /** The identifying number of this label */
-  id: number,
+  id: number
 
   /** The URL that links to this label */
-  url: string,
+  url: string
 
   /** The name of the label */
-  name: string,
+  name: string
 
   /** The color associated with this label */
   color: string

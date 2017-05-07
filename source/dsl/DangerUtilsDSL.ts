@@ -3,7 +3,6 @@
  * that are specific to universal Danger use-cases.
  */
 export interface DangerUtilsDSL {
-
   /**
    * Creates a link using HTML.
    *
