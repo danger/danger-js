@@ -9,7 +9,7 @@ const createDTS = () => {
 
 import * as GitHub from "github"
 
-declare module 'danger' {
+declare module "danger" {
 `
   const footer = `}
 `

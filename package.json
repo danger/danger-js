@@ -88,7 +88,6 @@
     "babel-preset-es2015": "^6.24.0",
     "babel-preset-stage-3": "^6.22.0",
     "date-fns": "^1.28.3",
-    "dtslint": "^0.1.2",
     "husky": "^0.13.3",
     "in-publish": "^2.0.0",
     "jest": "^20.0.0",
@@ -120,5 +119,8 @@
     "parse-diff": "^0.4.0",
     "rfc6902": "^1.3.0",
     "voca": "^1.2.0"
+  },
+  "optionalDependencies": {
+    "dtslint": "^0.1.2"
   }
 }

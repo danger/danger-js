@@ -17,7 +17,7 @@ script:
 - yarn lint
 - yarn test -- --coverage --no-cache && rm ./coverage/coverage-final.json
 - yarn docs
-- yarn dts-lint
+- if [[ $TRAVIS_NODE_VERSION == "7" ]]; then yarn add dtslint; yarn dts-lint; fi
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
