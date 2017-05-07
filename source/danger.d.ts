@@ -10,17 +10,17 @@ declare module "danger" {
   /** A platform agnostic reference to a Git commit */
   interface GitCommit {
     /** The SHA for the commit */
-    sha: string,
+    sha: string
     /** Who wrote the commit */
-    author: GitCommitAuthor,
+    author: GitCommitAuthor
     /** Who deployed the commit */
-    committer: GitCommitAuthor,
+    committer: GitCommitAuthor
     /** The commit message */
-    message: string,
+    message: string
     /** Potential parent commits, and other assorted metadata */
-    tree: any,
+    tree: any
     /** SHAs for the commit's parents */
-    parents?: string[],
+    parents?: string[]
     /** Link to the commit */
     url: string
   }
@@ -28,9 +28,9 @@ declare module "danger" {
   /** An author of a commit */
   interface GitCommitAuthor {
     /** The display name for the author */
-    name: string,
+    name: string
     /** The authors email */
-    email: string,
+    email: string
     /** ISO6801 date string */
     date: string
   }

@@ -15,7 +15,8 @@
     "verbose": true,
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "/distribution/"
+      "/distribution/",
+      "/types/"
     ],
     "coverageReporters": [
       "json"
