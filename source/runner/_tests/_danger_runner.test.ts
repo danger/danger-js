@@ -7,9 +7,9 @@ import {
   dangerJestConfig
 } from "../DangerfileRunner"
 
-import {FakeCI} from "../../ci_source/providers/Fake"
-import {FakePlatform} from "../../platforms/FakePlatform"
-import {Executor} from "../Executor"
+import { FakeCI } from "../../ci_source/providers/Fake"
+import { FakePlatform } from "../../platforms/FakePlatform"
+import { Executor } from "../Executor"
 
 import * as os from "os"
 import * as fs from "fs"
@@ -37,113 +37,113 @@ async function setupDangerfileContext() {
   return contextForDanger(dsl)
 }
 
-if (process.platform !== "win32") {
-  describe("with fixtures", () => {
-    it("handles a blank Dangerfile", async () => {
-      const context = await setupDangerfileContext()
-      const runtime = await createDangerfileRuntimeEnvironment(context)
-      const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileEmpty.js"), runtime)
-
-      expect(results).toEqual({
-        fails: [],
-        markdowns: [],
-        messages: [],
-        warnings: []
-      })
+describe("with fixtures", () => {
+  it("handles a blank Dangerfile", async () => {
+    console.log(8)
+    const context = await setupDangerfileContext()
+    console.log(9)
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    console.log(10)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileEmpty.js"), runtime)
+    console.log(11)
+    expect(results).toEqual({
+      fails: [],
+      markdowns: [],
+      messages: [],
+      warnings: []
     })
-
-    it("handles a full set of messages", async () => {
-      const context = await setupDangerfileContext()
-      const runtime = await createDangerfileRuntimeEnvironment(context)
-      const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileFullMessages.js"), runtime)
-
-      expect(results).toEqual({
-        fails: [{"message": "this is a failure"}],
-        markdowns: ["this is a *markdown*"],
-        messages: [{"message": "this is a message"}],
-        warnings: [{"message": "this is a warning"}]
-      })
-    })
-
-    it("handles a failing dangerfile", async () => {
-      const context = await setupDangerfileContext()
-      const runtime = await createDangerfileRuntimeEnvironment(context)
-
-      try {
-        await runDangerfileEnvironment(resolve(fixtures, "__DangerfileBadSyntax.js"), runtime)
-        throw new Error("Do not get to this")
-      }
-      catch (e) {
-        // expect(e.message === ("Do not get to this")).toBeFalsy()
-        expect(e.message).toEqual("hello is not defined")
-      }
-    })
-
-    it("handles relative imports correctly", async () => {
-      const context = await setupDangerfileContext()
-      const runtime = await createDangerfileRuntimeEnvironment(context)
-      await runDangerfileEnvironment(resolve(fixtures, "__DangerfileImportRelative.js"), runtime)
-    })
-
-    it("handles scheduled (async) code", async () => {
-      const context = await setupDangerfileContext()
-      const runtime = await createDangerfileRuntimeEnvironment(context)
-      const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileScheduled.js"), runtime)
-      expect(results).toEqual({
-        fails: [],
-        messages: [],
-        markdowns: [],
-        warnings: [{ message: "Asynchronous Warning" }],
-      })
-    })
-
-    it("handles multiple scheduled statements and all message types", async () => {
-      const context = await setupDangerfileContext()
-      const runtime = await createDangerfileRuntimeEnvironment(context)
-      const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileMultiScheduled.js"), runtime)
-      expect(results).toEqual({
-        fails: [{ message: "Asynchronous Failure" }],
-        messages: [{ message: "Asynchronous Message" }],
-        markdowns: ["Asynchronous Markdown"],
-        warnings: [{ message: "Asynchronous Warning" }],
-      })
-    })
-
-    // This adds > 6 seconds to the tests! Only orta should be forced into that.
-    if (process.env["USER"] === "orta") {
-      it("can execute async/await scheduled functions", async () => {
-        // this test takes *forever* because of babel-polyfill being required
-        const context = await setupDangerfileContext()
-        const runtime = await createDangerfileRuntimeEnvironment(context)
-        const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.js"), runtime)
-        expect(results.warnings).toEqual([{
-          message: "Async Function"
-        }, {
-          message: "After Async Function"
-        }])
-      })
-    }
-
-    it("can schedule callback-based promised", async () => {
-      const context = await setupDangerfileContext()
-      const runtime = await createDangerfileRuntimeEnvironment(context)
-      const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileCallback.js"), runtime)
-      expect(results.warnings).toEqual([{
-        message: "Scheduled a callback",
-      }])
-    })
-
-    it("can handle TypeScript based Dangerfiles", async () => {
-      const context = await setupDangerfileContext()
-      const runtime = await createDangerfileRuntimeEnvironment(context)
-      const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileTypeScript.ts"), runtime)
-      expect(results.messages).toEqual([{
-        message: "Honey, we got Types",
-      }])
-    })
-
   })
-}
+
+  it("handles a full set of messages", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileFullMessages.js"), runtime)
+
+    expect(results).toEqual({
+      fails: [{ "message": "this is a failure" }],
+      markdowns: ["this is a *markdown*"],
+      messages: [{ "message": "this is a message" }],
+      warnings: [{ "message": "this is a warning" }]
+    })
+  })
+
+  it("handles a failing dangerfile", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+
+    try {
+      await runDangerfileEnvironment(resolve(fixtures, "__DangerfileBadSyntax.js"), runtime)
+      throw new Error("Do not get to this")
+    }
+    catch (e) {
+      // expect(e.message === ("Do not get to this")).toBeFalsy()
+      expect(e.message).toEqual("hello is not defined")
+    }
+  })
+
+  it("handles relative imports correctly", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    await runDangerfileEnvironment(resolve(fixtures, "__DangerfileImportRelative.js"), runtime)
+  })
+
+  it("handles scheduled (async) code", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileScheduled.js"), runtime)
+    expect(results).toEqual({
+      fails: [],
+      messages: [],
+      markdowns: [],
+      warnings: [{ message: "Asynchronous Warning" }],
+    })
+  })
+
+  it("handles multiple scheduled statements and all message types", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileMultiScheduled.js"), runtime)
+    expect(results).toEqual({
+      fails: [{ message: "Asynchronous Failure" }],
+      messages: [{ message: "Asynchronous Message" }],
+      markdowns: ["Asynchronous Markdown"],
+      warnings: [{ message: "Asynchronous Warning" }],
+    })
+  })
+
+  // This adds > 6 seconds to the tests! Only orta should be forced into that.
+  if (process.env["USER"] === "orta") {
+    it("can execute async/await scheduled functions", async () => {
+      // this test takes *forever* because of babel-polyfill being required
+      const context = await setupDangerfileContext()
+      const runtime = await createDangerfileRuntimeEnvironment(context)
+      const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.js"), runtime)
+      expect(results.warnings).toEqual([{
+        message: "Async Function"
+      }, {
+        message: "After Async Function"
+      }])
+    })
+  }
+
+  it("can schedule callback-based promised", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileCallback.js"), runtime)
+    expect(results.warnings).toEqual([{
+      message: "Scheduled a callback",
+    }])
+  })
+
+  it("can handle TypeScript based Dangerfiles", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileTypeScript.ts"), runtime)
+    expect(results.messages).toEqual([{
+      message: "Honey, we got Types",
+    }])
+  })
+})
 
 describe("cleaning Dangerfiles", () => {
   it("Supports removing the danger import", () => {
@@ -174,7 +174,7 @@ import danger from 'danger';
   })
 
   it("also handles require style imports", () => {
-        const before = `
+    const before = `
 const { danger, warn, fail, message } = require('danger')
 var { danger, warn, fail, message } = require("danger")
 let { danger, warn, fail, message } = require('danger');
@@ -198,7 +198,7 @@ it("creates a working jest config", async () => {
 
   const cwd = process.cwd()
   config.transform = config.transform.map(([files, transformer]) => {
-    const trans = transformer.includes("ts-jest")  ? "[ts-jest-transformer]" : transformer
+    const trans = transformer.includes("ts-jest") ? "[ts-jest-transformer]" : transformer
     return [files, trans]
   })
 
