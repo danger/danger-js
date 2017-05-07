@@ -3,6 +3,7 @@
 ### Master
 
 * Update to Jest 20 - macklinu
+* Change the danger.d.ts to use module exports instead of globals - orta
 
 ### 0.18.0
 

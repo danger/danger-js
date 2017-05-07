@@ -50,7 +50,7 @@ export class Jenkins implements CISource {
     return this.env.ghprbGhRepository
   }
 
-  get supportedPlatforms(): Array<string> {
+  get supportedPlatforms(): string[] {
     return ["github"]
   }
 }

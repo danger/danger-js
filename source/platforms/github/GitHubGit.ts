@@ -44,7 +44,7 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
   const diff = await api.getPullRequestDiff()
   const getCommits = await api.getPullRequestCommits()
 
-  const fileDiffs: Array<any> = parseDiff(diff)
+  const fileDiffs: any[] = parseDiff(diff)
 
   const addedDiffs = fileDiffs.filter((diff: any) => diff["new"])
   const removedDiffs = fileDiffs.filter((diff: any) => diff["deleted"])
@@ -137,7 +137,7 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
   const byType = (t: string) => ({type}: {type: string}) => type === t
   const getContent = ({content}: {content: string}) => content
 
-  type Changes = Array<{type: string, content: string}>
+  type Changes = {type: string, content: string}[]
   /**
    * Gets the git-style diff for a single file.
    *

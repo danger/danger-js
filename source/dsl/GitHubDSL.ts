@@ -14,11 +14,11 @@ export interface GitHubDSL {
   /** The PR metadata specifically formatted for using with the GitHub API client */
   thisPR: GitHubAPIPR,
   /** The github commit metadata for a code review session */
-  commits: Array<GitHubCommit>
+  commits: GitHubCommit[]
   /** The reviews left on this pull request */
-  reviews: Array<GitHubReview>
+  reviews: GitHubReview[]
   /** The people requested to review this PR */
-  requested_reviewers: Array<GitHubUser>
+  requested_reviewers: GitHubUser[]
   /** A scope for useful functions related to GitHub */
   utils: GitHubUtilsDSL
 }
@@ -49,23 +49,21 @@ export interface GitHubUtilsDSL {
 export interface GitHubIssue {
   /**
    * The labels associated with this issue
-   * @type {Array<GitHubIssueLabel>}
    */
-
-  labels: Array<GitHubIssueLabel>
+  labels: GitHubIssueLabel[]
 }
 
 // Subtypes specific to issues
 
 export interface GitHubIssueLabel {
   /** The identifying number of this label */
-  id: number,
+  id: number
 
   /** The URL that links to this label */
-  url: string,
+  url: string
 
   /** The name of the label */
-  name: string,
+  name: string
 
   /** The color associated with this label */
   color: string
@@ -145,7 +143,7 @@ export interface GitHubPRDSL {
   /**
    * The Users who are assigned to the PR
    */
-  assignees: Array<GitHubUser>
+  assignees: GitHubUser[]
 
   /**
    * Has the PR been merged yet
@@ -199,7 +197,7 @@ export interface GitHubCommit {
   /** The GitHub user who shipped the code */
   committer: GitHubUser,
   /** An array of parent commit shas */
-  parents: Array<any>
+  parents: any[]
 }
 
 /**
@@ -257,7 +255,6 @@ export interface GitHubRepo {
 
   /**
    * Is the repo a fork?
-   * @type {boolean}
    */
   fork: boolean
 
@@ -268,9 +265,8 @@ export interface GitHubRepo {
 
   /**
    * Are there people assigned to this PR?
-   * @type {Array<GitHubUser>}
    */
-  assignees: Array<GitHubUser>
+  assignees: GitHubUser[]
   /**
    * The root web URL for the repo, e.g. https://github.com/artsy/emission
    */

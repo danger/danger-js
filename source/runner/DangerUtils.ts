@@ -1,7 +1,7 @@
 // The documentation for these are provided inline
 // inside DangerUtilsDSL.ts
 
-export function sentence(array: Array<string>): string {
+export function sentence(array: string[]): string {
   if ((array || []).length === 0) {
     return ""
   }

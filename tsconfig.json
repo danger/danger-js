@@ -28,6 +28,7 @@
     "node_modules",
     "source/**/fixtures/*",
     "source/**/_tests/*",
-    "distribution"
+    "distribution",
+    "types"
   ]
 }

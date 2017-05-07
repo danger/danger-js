@@ -3,7 +3,6 @@
  * that are specific to universal Danger use-cases.
  */
 export interface DangerUtilsDSL {
-
   /**
    * Creates a link using HTML.
    *
@@ -21,8 +20,8 @@ export interface DangerUtilsDSL {
   /**
    * Converts an array of strings into a sentence.
    *
-   * @param {Array<string>} array The array of strings.
+   * @param {string[]} array The array of strings.
    * @returns {string} The sentence.
    */
-  sentence(array: Array<string>): string
+  sentence(array: string[]): string
 }

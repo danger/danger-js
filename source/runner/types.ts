@@ -5,18 +5,18 @@ export type Path = string
 export interface ResolverConfig {
   browser?: boolean
   defaultPlatform: string | null
-  extensions: Array<string>
+  extensions: string[]
   hasCoreModules: boolean
-  moduleDirectories: Array<string>
+  moduleDirectories: string[]
   moduleNameMapper: { [key: string]: RegExp } | null
-  modulePaths: Array<Path>
-  platforms?: Array<string>
+  modulePaths: Path[]
+  platforms?: string[]
 }
 
 export interface HasteConfig {
-  providesModuleNodeModules: Array<string>
+  providesModuleNodeModules: string[]
   defaultPlatform?: string | null
-  platforms?: Array<string>
+  platforms?: string[]
 }
 
 export interface EnvironmentConstructor {

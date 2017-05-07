@@ -5,11 +5,11 @@ export interface TextDiff {
   /** The value before the PR's applied changes */
   before: string
   /** The value after the PR's applied changes */
-  after: string,
+  after: string
   /** A string containing the full set of changes */
-  diff: string,
+  diff: string
   /** A string containing just the added lines */
-  added: string,
+  added: string
   /** A string containing just the removed lines */
   removed: string
 }
@@ -21,7 +21,7 @@ export interface JSONPatch {
   /** The JSON in a file from the PR submitter */
   after: any,
   /** The set of operations to go from one JSON to another JSON */
-  diff: Array<JSONPatchOperation>
+  diff: JSONPatchOperation[]
 }
 
 /** An individual operation inside an rfc6902 JSON Patch */
@@ -41,7 +41,7 @@ export interface JSONDiffValue {
   /** The value after the PR's applied changes */
   after: any
   /** If both before & after are arrays, then you optionally get what is added. Emprty is no additional objects. */
-  added?: any[],
+  added?: any[]
   /** If both before & after are arrays, then you optionally get what is removed. Emprty is no removed objects. */
   removed?: any[]
 }
@@ -59,25 +59,25 @@ export interface GitDSL {
    * Filepaths with changes relative to the git root
    * @type {string[]}
    */
-  readonly modified_files: Array<string>
+  readonly modified_files: string[]
 
   /**
    * Newly created filepaths relative to the git root
    * @type {string[]}
    */
-  readonly created_files: Array<string>
+  readonly created_files: string[]
 
   /**
    * Removed filepaths relative to the git root
    * @type {string[]}
    */
-  readonly deleted_files: Array<string>
+  readonly deleted_files: string[]
 
   /** Offers the diff for a specific file
    *
    * @param {string} filename the path to the json file
    */
-  diffForFile(filename: string): Promise<TextDiff | null>,
+  diffForFile(filename: string): Promise<TextDiff | null>
 
   /**
    * Provides a JSON patch (rfc6902) between the two versions of a JSON file,
@@ -88,7 +88,7 @@ export interface GitDSL {
    *
    * @param {string} filename the path to the json file
    */
-  JSONPatchForFile(filename: string): Promise<JSONPatch | null>,
+  JSONPatchForFile(filename: string): Promise<JSONPatch | null>
 
   /**
    * Provides a simplified JSON diff between the two versions of a JSON file. This will always
@@ -107,8 +107,8 @@ export interface GitDSL {
    *
    * @param {string} filename the path to the json file
    */
-  JSONDiffForFile(filename: string): Promise<JSONDiff>,
+  JSONDiffForFile(filename: string): Promise<JSONDiff>
 
   /** The Git commit metadata */
-  readonly commits: Array<GitCommit>
+  readonly commits: GitCommit[]
 }

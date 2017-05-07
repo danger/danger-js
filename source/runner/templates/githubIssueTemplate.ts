@@ -10,7 +10,7 @@ import * as v from "voca"
  * @param {Violation[]} violations for table
  * @returns {string} HTML
  */
-function table(name: string, emoji: string, violations: Array<Violation>): string {
+function table(name: string, emoji: string, violations: Violation[]): string {
   if (violations.length === 0 || violations.every(violation => !violation.message)) { return "" }
   return `
 <table>
@@ -29,7 +29,7 @@ function table(name: string, emoji: string, violations: Array<Violation>): strin
 `
 }
 
-function getSummary(label: string, violations: Array<Violation>): string {
+function getSummary(label: string, violations: Violation[]): string {
   return violations.map(x => v.truncate(x.message, 20))
     .reduce((acc, value, idx) => `${acc} ${value}${idx === violations.length - 1 ? "" : ","}`, `${violations.length} ${label}: `)
 }
