@@ -25,7 +25,7 @@ export interface CISource {
   readonly repoSlug: string
 
   /** What platforms can this CI communicate with? */
-  readonly supportedPlatforms: Array<string>
+  readonly supportedPlatforms: string[]
 
   /** What unique id can be found for the code review platform's PR */
   readonly pullRequestID: string

@@ -63,30 +63,31 @@ export interface DangerResults {
   /**
    * Failed messages
    */
-  fails: Array<Violation>
+  fails: Violation[]
 
   /**
    * Messages for info
    */
-  warnings: Array<Violation>
+  warnings: Violation[]
 
   /**
    * Markdown messages
    */
-  messages: Array<Violation>
+  messages: Violation[]
 
   /**
    * Markdown messages at the bottom of the comment
    */
-  markdowns: Array<MarkdownString>
+  markdowns: MarkdownString[]
 }
 
 export interface DangerRuntimeContainer extends DangerResults {
   /**
    * Asynchronous functions to be run after parsing
    */
-  scheduled: Array<Function>
+  scheduled: Function[]
 }
+
 /**
  * The Danger Utils DSL contains utility functions
  * that are specific to universal Danger use-cases.
@@ -110,10 +111,10 @@ export interface DangerUtilsDSL {
   /**
    * Converts an array of strings into a sentence.
    *
-   * @param {Array<string>} array The array of strings.
+   * @param {string[]} array The array of strings.
    * @returns {string} The sentence.
    */
-  sentence(array: Array<string>): string
+  sentence(array: string[]): string
 }
 /** All Text diff values will be this shape */
 export interface TextDiff {
@@ -136,7 +137,7 @@ export interface JSONPatch {
   /** The JSON in a file from the PR submitter */
   after: any,
   /** The set of operations to go from one JSON to another JSON */
-  diff: Array<JSONPatchOperation>
+  diff: JSONPatchOperation[]
 }
 
 /** An individual operation inside an rfc6902 JSON Patch */
@@ -173,17 +174,17 @@ export interface GitDSL {
   /**
    * Filepaths with changes relative to the git root
    */
-  readonly modified_files: Array<string>
+  readonly modified_files: string[]
 
   /**
    * Newly created filepaths relative to the git root
    */
-  readonly created_files: Array<string>
+  readonly created_files: string[]
 
   /**
    * Removed filepaths relative to the git root
    */
-  readonly deleted_files: Array<string>
+  readonly deleted_files: string[]
 
   /** Offers the diff for a specific file
    *
@@ -222,7 +223,7 @@ export interface GitDSL {
   JSONDiffForFile(filename: string): Promise<JSONDiff>,
 
   /** The Git commit metadata */
-  readonly commits: Array<GitCommit>
+  readonly commits: GitCommit[]
 }
 // This is `danger.github`
 
@@ -237,11 +238,11 @@ export interface GitHubDSL {
   /** The PR metadata specifically formatted for using with the GitHub API client */
   thisPR: GitHubAPIPR,
   /** The github commit metadata for a code review session */
-  commits: Array<GitHubCommit>
+  commits: GitHubCommit[]
   /** The reviews left on this pull request */
-  reviews: Array<GitHubReview>
+  reviews: GitHubReview[]
   /** The people requested to review this PR */
-  requested_reviewers: Array<GitHubUser>
+  requested_reviewers: GitHubUser[]
   /** A scope for useful functions related to GitHub */
   utils: GitHubUtilsDSL
 }
@@ -270,11 +271,11 @@ export interface GitHubUtilsDSL {
  * A GitHub Issue
  */
 export interface GitHubIssue {
+
   /**
    * The labels associated with this issue
    */
-
-  labels: Array<GitHubIssueLabel>
+  labels: GitHubIssueLabel[]
 }
 
 // Subtypes specific to issues
@@ -366,7 +367,7 @@ export interface GitHubPRDSL {
   /**
    * The Users who are assigned to the PR
    */
-  assignees: Array<GitHubUser>
+  assignees: GitHubUser[]
 
   /**
    * Has the PR been merged yet
@@ -419,7 +420,7 @@ export interface GitHubCommit {
   /** The GitHub user who shipped the code */
   committer: GitHubUser,
   /** An array of parent commit shas */
-  parents: Array<any>
+  parents: any[]
 }
 
 /**
@@ -487,7 +488,7 @@ export interface GitHubRepo {
   /**
    * Are there people assigned to this PR?
    */
-  assignees: Array<GitHubUser>
+  assignees: GitHubUser[]
   /**
    * The root web URL for the repo, e.g. https://github.com/artsy/emission
    */

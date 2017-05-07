@@ -12,25 +12,25 @@ export interface DangerResults {
    * Failed messages
    * @type {Violation[]}
    */
-  fails: Array<Violation>
+  fails: Violation[]
 
   /**
    * Messages for info
    * @type {Violation[]}
    */
-  warnings: Array<Violation>
+  warnings: Violation[]
 
   /**
    * Markdown messages
    * @type {Violation[]}
    */
-  messages: Array<Violation>
+  messages: Violation[]
 
   /**
    * Markdown messages at the bottom of the comment
    * @type {MarkdownString[]}
    */
-  markdowns: Array<MarkdownString>
+  markdowns: MarkdownString[]
 }
 
 export interface DangerRuntimeContainer extends DangerResults {
@@ -38,5 +38,5 @@ export interface DangerRuntimeContainer extends DangerResults {
    * Asynchronous functions to be run after parsing
    * @type {Function[]}
    */
-  scheduled: Array<Function>
+  scheduled: Function[]
 }

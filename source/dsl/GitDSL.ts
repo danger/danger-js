@@ -21,7 +21,7 @@ export interface JSONPatch {
   /** The JSON in a file from the PR submitter */
   after: any,
   /** The set of operations to go from one JSON to another JSON */
-  diff: Array<JSONPatchOperation>
+  diff: JSONPatchOperation[]
 }
 
 /** An individual operation inside an rfc6902 JSON Patch */
@@ -59,19 +59,19 @@ export interface GitDSL {
    * Filepaths with changes relative to the git root
    * @type {string[]}
    */
-  readonly modified_files: Array<string>
+  readonly modified_files: string[]
 
   /**
    * Newly created filepaths relative to the git root
    * @type {string[]}
    */
-  readonly created_files: Array<string>
+  readonly created_files: string[]
 
   /**
    * Removed filepaths relative to the git root
    * @type {string[]}
    */
-  readonly deleted_files: Array<string>
+  readonly deleted_files: string[]
 
   /** Offers the diff for a specific file
    *
@@ -110,5 +110,5 @@ export interface GitDSL {
   JSONDiffForFile(filename: string): Promise<JSONDiff>,
 
   /** The Git commit metadata */
-  readonly commits: Array<GitCommit>
+  readonly commits: GitCommit[]
 }
