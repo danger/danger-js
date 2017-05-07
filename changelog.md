@@ -2,6 +2,8 @@
 
 ### Master
 
+* Update to Jest 20 - macklinu
+
 ### 0.18.0
 
 * Adds `github.api`. This is a fully authenticated client from the [github](https://www.npmjs.com/package/github)
