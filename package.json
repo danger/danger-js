@@ -108,7 +108,7 @@
     "github": "^9.2.0",
     "jest-config": "^20.0.0",
     "jest-environment-node": "^20.0.0",
-    "jest-runtime": "^20.0.0",
+    "jest-runtime": "20.0.1",
     "jsome": "^2.3.25",
     "jsonpointer": "^4.0.1",
     "lodash.find": "^4.6.0",
