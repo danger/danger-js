@@ -91,7 +91,7 @@
     "husky": "^0.13.3",
     "in-publish": "^2.0.0",
     "jest": "^20.0.0",
-    "lint-staged": "^3.2.5",
+    "lint-staged": "3.4.1",
     "madge": "^1.4.4",
     "shx": "^0.2.1",
     "ts-jest": "^20.0.0",
