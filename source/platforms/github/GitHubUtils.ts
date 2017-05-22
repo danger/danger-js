@@ -4,7 +4,7 @@ import {GitHubPRDSL, GitHubUtilsDSL} from "./../../dsl/GitHubDSL"
 
 // We need to curry in access to the GitHub PR metadata
 
-const utils =  (pr: GitHubPRDSL) : GitHubUtilsDSL => {
+const utils =  (pr: GitHubPRDSL): GitHubUtilsDSL => {
 
   const fileLinks = (paths: string[], useBasename: boolean = true, repoSlug?: string, branch?: string): string => {
     // To support enterprise github, we need to handle custom github domains
