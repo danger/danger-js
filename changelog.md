@@ -2,6 +2,8 @@
 
 ### Master
 
+### 0.19.0
+
 * Update to Jest 20 - macklinu
 * Change the danger.d.ts to use module exports instead of globals - orta
 * Render markdown inside `message()`, `warn()`, and `fail()` messages. - macklinu

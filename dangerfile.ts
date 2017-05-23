@@ -25,7 +25,9 @@ const sentence = danger.utils.sentence
 // Request a CHANGELOG entry if not declared #trivial
 const hasChangelog = includes(danger.git.modified_files, "changelog.md")
 const isTrivial = includes((danger.github.pr.body + danger.github.pr.title), "#trivial")
-if (!hasChangelog && !isTrivial) {
+const isGreenkeeper = danger.github.pr.user.login === "greenkeeper"
+
+if (!hasChangelog && !isTrivial && !isGreenkeeper) {
   warn("Please add a changelog entry for your changes.")
 
   // Politely ask for their name on the entry too
