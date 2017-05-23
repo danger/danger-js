@@ -22,7 +22,10 @@ function table(name: string, emoji: string, violations: Violation[]): string {
   </thead>
   <tbody>${violations.map((v: Violation) => { return `<tr>
       <td>:${emoji}:</td>
-      <td>${v.message}</td>
+      <td>
+
+  ${v.message}
+  </td>
     </tr>
   ` }).join("\n")}</tbody>
 </table>
