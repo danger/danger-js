@@ -46,4 +46,15 @@ describe("generating messages", () => {
 
     expect(issues).toContain(expected)
   })
+
+  it("leaves space between <td>s to allow GitHub to render message content as markdown", () => {
+    const issues = githubResultsTemplate({
+      fails: [{ message: "**Failure:** Something failed!" }],
+      warnings: [{ message: "_Maybe you meant to run `yarn install`?_" }],
+      messages: [{ message: "```ts\nfunction add(a: number, b: number): number {\n  return a + b\n}\n```" }],
+      markdowns: ["List of things:\n\n* one\n* two\n* three\n"],
+    })
+
+    expect(issues).toMatchSnapshot()
+  })
 })

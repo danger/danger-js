@@ -4,6 +4,43 @@
 
 * Update to Jest 20 - macklinu
 * Change the danger.d.ts to use module exports instead of globals - orta
+* Render markdown inside `message()`, `warn()`, and `fail()` messages. - macklinu
+
+An example:
+
+```js
+fail(`Missing Test Files:
+
+- \`src/lib/components/artist/artworks/__tests__/index-tests.tsx\`
+- \`src/lib/components/artwork_grids/__tests__/infinite_scroll_grid-tests.tsx\`
+- \`src/lib/containers/__tests__/works_for_you-tests.tsx\`
+
+If these files are supposed to not exist, please update your PR body to include "Skip New Tests".`)
+```
+
+Will result in:
+
+<table>
+  <thead>
+    <tr>
+      <th width="50"></th>
+      <th width="100%" data-danger-table="true">Fails</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+      <td>:no_entry_sign:</td>
+      <td>Missing Test Files:
+
+- `src/lib/components/artist/artworks/__tests__/index-tests.tsx`
+- `src/lib/components/artwork_grids/__tests__/infinite_scroll_grid-tests.tsx`
+- `src/lib/containers/__tests__/works_for_you-tests.tsx`
+
+If these files are supposed to not exist, please update your PR body to include "Skip New Tests".
+</td>
+    </tr>
+  </tbody>
+</table>
 
 ### 0.18.0
 
