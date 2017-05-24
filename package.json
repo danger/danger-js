@@ -106,7 +106,7 @@
     "commander": "^2.9.0",
     "debug": "^2.6.0",
     "github": "^9.2.0",
-    "jest-config": "^20.0.0",
+    "jest-config": "20.0.3",
     "jest-environment-node": "^20.0.0",
     "jest-runtime": "^20.0.0",
     "jsome": "^2.3.25",
