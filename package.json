@@ -98,7 +98,7 @@
     "ts-node": "^3.0.0",
     "tslint": "^5.3.0",
     "typedoc": "orta/typedoc#0.5.10-no-types",
-    "typescript": "2.3.3"
+    "typescript": "2.3.4"
   },
   "dependencies": {
     "babel-polyfill": "^6.20.0",
