@@ -21,7 +21,7 @@ We recommend you install Danger via [Yarn][]. Though you can use the npm CLI.
 
 ### Installation
 
-Adding the Danger module by `yarn run danger --dev`. This will add Danger as a `devDependency` and make the command `danger` available by running `yarn danger`.
+Adding the Danger module by `yarn add danger --dev`. This will add Danger as a `devDependency` and make the command `danger` available by running `yarn danger`.
 
 ### Creating a Dangerfile
 
@@ -114,6 +114,7 @@ Then depending on the type of project you are working on, checking out either [D
 
 Good luck!
 
+[jest]: https://facebook.github.io/jest/
 [jest-config]: https://facebook.github.io/jest/docs/configuration.html
 [github_bots]: https://twitter.com/sebastiangrail/status/750844399563608065
 [github_token]: https://github.com/settings/tokens/new
