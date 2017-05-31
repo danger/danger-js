@@ -2,6 +2,9 @@
 
 ### Master
 
+* Fix link to `jest` in getting started docs - palleas
+* Fix yarn install instruction in getting started docs - palleas
+
 ### 0.19.0
 
 * Update to Jest 20 - macklinu
@@ -49,7 +52,7 @@ If these files are supposed to not exist, please update your PR body to include 
 * Adds `github.api`. This is a fully authenticated client from the [github](https://www.npmjs.com/package/github)
   npm module. - @orta
 
-  An easy example of it's usage would be using Danger to add a label to your PR. Note that Danger will have the 
+  An easy example of it's usage would be using Danger to add a label to your PR. Note that Danger will have the
   permissions for your account, so for OSS repos - this won't work.
 
   ```js
