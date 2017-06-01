@@ -38,7 +38,7 @@ message(":tada:, this worked @" + danger.github.pr.user.login)
 
 Which, once you have your authentication set up, will have danger post a message to your PR with your name.
 
-For a deeper understanding of using a Dangerfile, see the guide [dangerfile][]
+For a deeper understanding of using a Dangerfile, see the guide [The Dangerfile][dangerfile]
 
 ### Creating a bot account for Danger to use
 
