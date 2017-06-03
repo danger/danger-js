@@ -115,7 +115,7 @@
     "lodash.includes": "^4.3.0",
     "lodash.isobject": "^2.4.1",
     "lodash.keys": "^4.0.8",
-    "node-fetch": "^1.6.3",
+    "node-fetch": "1.7.0",
     "parse-diff": "^0.4.0",
     "rfc6902": "^1.3.0",
     "voca": "^1.2.0"
