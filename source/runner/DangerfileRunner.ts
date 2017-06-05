@@ -31,14 +31,19 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
   }
 
   // Setup a runtime environment
-  const hasteConfig = { maxWorkers: 4, resetCache: false, watch: false, watchman: false }
-  console.log(0)
-  const hasteMap = await Runtime.createHasteMap(config, hasteConfig).build()
-  console.log(1)
-  const resolver = Runtime.createResolver(config, hasteMap.moduleMap)
-  console.log(2)
-  const runtime = new Runtime(config, environment, resolver)
-  console.log(3)
+  // const hasteConfig = { maxWorkers: 4, resetCache: false, watch: false, watchman: false }
+  // console.log(0)
+  // const hasteMap = await Runtime.createHasteMap(config, hasteConfig).build()
+  // console.log(1)
+  // const resolver = Runtime.createResolver(config, hasteMap.moduleMap)
+  // console.log(2)
+  // const runtime = new Runtime(config, environment, resolver)
+  // console.log(3)
+  const hasteMap = await Runtime.createContext(config, {
+    maxWorkers: os.cpus().length - 1,
+  })
+  const runtime = new Runtime(config, environment, hasteMap.resolver)
+
   return {
     context,
     environment,

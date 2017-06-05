@@ -2,8 +2,10 @@
 
 exports[`creates a working jest config 1`] = `
 Object {
+  "automock": false,
   "cache": null,
   "cacheDirectory": "[cache]",
+  "expand": false,
   "haste": Object {
     "defaultPlatform": "danger-js",
   },
@@ -42,5 +44,7 @@ Object {
   "transformIgnorePatterns": Array [
     "/node_modules/",
   ],
+  "watch": false,
+  "watchman": false,
 }
 `;
