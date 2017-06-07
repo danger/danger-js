@@ -2,9 +2,11 @@ import { api as fetch } from "../../api/fetch"
 import { RepoMetaData } from "../../ci_source/ci_source"
 import { GitHubPRDSL, GitHubUser} from "../../dsl/GitHubDSL"
 import * as find from "lodash.find"
+import * as v from "voca"
 
 import * as node_fetch from "node-fetch"
 import * as GitHubNodeAPI from "github"
+import { dangerSignaturePostfix } from "../../runner/templates/githubIssueTemplate"
 
 // The Handle the API specific parts of the github
 
@@ -72,7 +74,8 @@ export class GitHubAPI {
   async getDangerCommentID(): Promise<number | null> {
     const userID = await this.getUserID()
     const allComments: any[] = await this.getPullRequestComments()
-    const dangerComment = find(allComments, (comment: any) => comment.user.id === userID)
+    const dangerComment = find(allComments, (comment: any) =>
+      comment.user.id === userID && v.includes(comment.body, dangerSignaturePostfix))
     return dangerComment ? dangerComment.id : null
   }
 
@@ -85,11 +88,12 @@ export class GitHubAPI {
     return res.json()
   }
 
-  async deleteCommentWithID(id: number): Promise<any> {
+  async deleteCommentWithID(id: number): Promise<boolean> {
     const repo = this.repoMetadata.repoSlug
     const res = await this.api(`repos/${repo}/issues/comments/${id}`, {}, {}, "DELETE")
 
-    return res.json()
+    //https://developer.github.com/v3/issues/comments/#response-5
+    return Promise.resolve(res.status === 204)
   }
 
   async getUserID(): Promise<number> {
@@ -112,7 +116,7 @@ export class GitHubAPI {
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}`)
 
-    return res.ok ?  res.json() as Promise<GitHubPRDSL> : {} as GitHubPRDSL
+    return res.ok ? res.json() as Promise<GitHubPRDSL> : {} as GitHubPRDSL
   }
 
   async getPullRequestCommits(): Promise<any> {
