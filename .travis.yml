@@ -15,6 +15,7 @@ matrix:
 
 script:
 - yarn lint
+- yarn add jest
 - yarn test -- --coverage --no-cache && rm ./coverage/coverage-final.json
 - yarn docs
 - if [[ $TRAVIS_NODE_VERSION == "7" ]]; then yarn add dtslint; yarn dts-lint; fi
