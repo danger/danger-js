@@ -97,7 +97,7 @@ export class GitHub {
   async deleteMainComment(): Promise <boolean> {
     const commentID = await this.api.getDangerCommentID()
     if (commentID) {
-      await this.api.deleteCommentWithID(commentID)
+      return await this.api.deleteCommentWithID(commentID)
     }
 
     return commentID !== null
