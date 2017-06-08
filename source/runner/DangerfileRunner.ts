@@ -31,10 +31,18 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
   }
 
   // Setup a runtime environment
-  const hasteConfig = { automock: false, maxWorkers: 1, resetCache: false }
-  const hasteMap = await Runtime.createHasteMap(config, hasteConfig).build()
-  const resolver = Runtime.createResolver(config, hasteMap.moduleMap)
-  const runtime = new Runtime(config, environment, resolver)
+  // const hasteConfig = { maxWorkers: 4, resetCache: false, watch: false, watchman: false }
+  // console.log(0)
+  // const hasteMap = await Runtime.createHasteMap(config, hasteConfig).build()
+  // console.log(1)
+  // const resolver = Runtime.createResolver(config, hasteMap.moduleMap)
+  // console.log(2)
+  // const runtime = new Runtime(config, environment, resolver)
+  // console.log(3)
+  const hasteMap = await Runtime.createContext(config, {
+    maxWorkers: os.cpus().length - 1,
+  })
+  const runtime = new Runtime(config, environment, hasteMap.resolver)
 
   return {
     context,
@@ -57,9 +65,11 @@ export async function dangerJestConfig() {
   // then it's pretty likely that Danger can do it too.
   const jestConfig =  await readConfig([], process.cwd())
   return {
+    automock: false,
     cacheDirectory: os.tmpdir(),
     setupFiles: [],
     name: "danger",
+    expand: false,
     testEnvironment: "node",
     haste: {
       defaultPlatform: "danger-js"
@@ -72,7 +82,9 @@ export async function dangerJestConfig() {
     cache: null,
     testRegex: "",
     testPathDirs: [process.cwd()],
-    transformIgnorePatterns: [ "/node_modules/" ]
+    transformIgnorePatterns: [ "/node_modules/" ],
+    watchman: false,
+    watch: false
   }
 }
 
@@ -88,8 +100,11 @@ export async function runDangerfileEnvironment(filename: Path, environment: Dang
   const runtime = environment.runtime
   // Require our dangerfile
 
+  console.log(4)
   ensureCleanDangerfile(filename, () => {
+    console.log(5)
     runtime.requireModule(filename)
+    console.log(6)
   })
 
   const results = environment.context.results
