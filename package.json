@@ -102,6 +102,7 @@
     "ts-jest": "^20.0.0",
     "ts-node": "^3.0.0",
     "tslint": "^5.3.0",
+    "tslint-config-prettier": "^1.0.0",
     "typedoc": "orta/typedoc#0.5.10-no-types",
     "typescript": "2.3.4"
   },
