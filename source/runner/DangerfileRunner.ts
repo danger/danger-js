@@ -1,4 +1,5 @@
 import * as Runtime from "jest-runtime"
+import { ModuleMap } from "jest-haste-map"
 import { readConfig } from "jest-config"
 import * as NodeEnvironment from "jest-environment-node"
 import * as os from "os"
@@ -31,9 +32,7 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
   }
 
   // Setup a runtime environment
-  const hasteConfig = { automock: false, maxWorkers: 1, resetCache: false }
-  const hasteMap = await Runtime.createHasteMap(config, hasteConfig).build()
-  const resolver = Runtime.createResolver(config, hasteMap.moduleMap)
+  const resolver = Runtime.createResolver(config, new ModuleMap({}, {}))
   const runtime = new Runtime(config, environment, resolver)
 
   return {

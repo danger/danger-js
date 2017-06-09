@@ -2,6 +2,7 @@
 
 ### Master
 
+* Fix `danger pr` commands are not running on windows - kwonoj
 * Fix broken link in getting started docs - frozegnome
 * Do not delete comment written from user have same userid for danger - kwonoj
 * Fix link to `jest` in getting started docs - palleas
