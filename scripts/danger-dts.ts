@@ -41,13 +41,18 @@ declare module "danger" {
   // we need to add either `declare function` or `declare var` to the interface
   const context = mapLines(moduleContext, (line: string) => {
     if (line.length === 0 || line.includes("*")) {
-      return line
+      const newLine = line.trim()
+      // Make sure TSLint passes
+      if (newLine.startsWith("*")) {
+        return " " + newLine
+      }
+      return newLine
     }
     if (line.includes("(")) {
-      return "  function " + line.trim()
+      return "function " + line.trim()
     }
     if (line.includes(":")) {
-      return "  const " + line.trim()
+      return "const " + line.trim()
     }
     return ""
   })
