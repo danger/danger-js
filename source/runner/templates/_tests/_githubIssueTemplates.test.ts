@@ -1,4 +1,10 @@
-import { emptyResults, failsResultsWithoutMessages, warnResults, failsResults, summaryResults } from "../../_tests/fixtures/ExampleDangerResults"
+import {
+  emptyResults,
+  failsResultsWithoutMessages,
+  warnResults,
+  failsResults,
+  summaryResults,
+} from "../../_tests/fixtures/ExampleDangerResults"
 import { template as githubResultsTemplate } from "../../templates/githubIssueTemplate"
 
 describe("generating messages", () => {
@@ -35,8 +41,7 @@ describe("generating messages", () => {
 
   it("Should include summary on top of message", () => {
     const issues = githubResultsTemplate(summaryResults)
-    const expected =
-    `
+    const expected = `
 <!--
   1 failure:  Failing message F...
   1 warning:  Warning message W...

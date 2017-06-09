@@ -1,12 +1,13 @@
 let mockDangerfilePath = ""
-jest.mock("fs", () => { return { existsSync: (p) => p === mockDangerfilePath } })
+jest.mock("fs", () => {
+  return { existsSync: p => p === mockDangerfilePath }
+})
 
 import { dangerfilePath } from "../file-utils"
 
 describe("dangerfilePath", () => {
-
   it("should return anything passed into the program's dangerfile", () => {
-    expect(dangerfilePath({ dangerfile: "123"})).toEqual("123")
+    expect(dangerfilePath({ dangerfile: "123" })).toEqual("123")
   })
 
   it("should find a dangerfile.js if there is no program, and the .js file exists", () => {
@@ -21,6 +22,6 @@ describe("dangerfilePath", () => {
 
   it("should raise if nothing exists", () => {
     mockDangerfilePath = "dangerfile.tsjs"
-    expect(() => dangerfilePath({}) ).toThrow()
+    expect(() => dangerfilePath({})).toThrow()
   })
 })

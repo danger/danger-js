@@ -23,10 +23,11 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  */
 
 export class Drone implements CISource {
-  constructor(private readonly env: Env) {
-  }
+  constructor(private readonly env: Env) {}
 
-  get name(): string { return "Drone" }
+  get name(): string {
+    return "Drone"
+  }
 
   get isCI(): boolean {
     return ensureEnvKeysExist(this.env, ["DRONE"])
@@ -38,7 +39,13 @@ export class Drone implements CISource {
     return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, mustBeInts)
   }
 
-  get pullRequestID(): string { return this.env.DRONE_PULL_REQUEST }
-  get repoSlug(): string { return this.env.DRONE_REPO }
-  get supportedPlatforms(): string[] { return ["github"] }
+  get pullRequestID(): string {
+    return this.env.DRONE_PULL_REQUEST
+  }
+  get repoSlug(): string {
+    return this.env.DRONE_REPO
+  }
+  get supportedPlatforms(): string[] {
+    return ["github"]
+  }
 }

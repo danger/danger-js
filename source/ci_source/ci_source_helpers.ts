@@ -15,8 +15,11 @@ export function ensureEnvKeysExist(env: Env, keys: string[]): boolean {
   });
   return !includes(hasKeys, false);*/
 
-  return keys.map((key: string) => env.hasOwnProperty(key) && env[key] != null && env[key].length > 0)
-    .filter(x => x === false).length === 0
+  return (
+    keys
+      .map((key: string) => env.hasOwnProperty(key) && env[key] != null && env[key].length > 0)
+      .filter(x => x === false).length === 0
+  )
 }
 
 /**
@@ -31,8 +34,10 @@ export function ensureEnvKeysAreInt(env: Env, keys: string[]): boolean {
   })
   return !includes(hasKeys, false);*/
 
-  return keys.map((key: string) => env.hasOwnProperty(key) && !isNaN(parseInt(env[key])))
-    .filter(x => x === false).length === 0
+  return (
+    keys.map((key: string) => env.hasOwnProperty(key) && !isNaN(parseInt(env[key]))).filter(x => x === false).length ===
+    0
+  )
 }
 
 /**
@@ -48,7 +53,7 @@ export async function getPullRequestIDForBranch(metadata: RepoMetaData, env: Env
     return 0
   }
   const api = new GitHubAPI(metadata, token)
-  const prs = await api.getPullRequests() as any[]
+  const prs = (await api.getPullRequests()) as any[]
   const prForBranch: GitHubPRDSL = find(prs, (pr: GitHubPRDSL) => pr.head.ref === branch)
   if (prForBranch) {
     return prForBranch.number

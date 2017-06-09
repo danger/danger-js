@@ -1,4 +1,4 @@
-import {providers} from "./providers"
+import { providers } from "./providers"
 import * as fs from "fs"
 import { resolve } from "path"
 import { Env, CISource } from "./ci_source"
@@ -10,10 +10,8 @@ import { Env, CISource } from "./ci_source"
  * @returns {?CISource} a CI source if it's OK, otherwise Danger can't run.
  */
 export function getCISourceForEnv(env: Env): CISource | undefined {
-  const availableProviders = [...providers as any]
-    .map(Provider => new Provider(env))
-    .filter(x => x.isCI)
-  return (availableProviders && availableProviders.length > 0) ? availableProviders[0] : undefined
+  const availableProviders = [...(providers as any)].map(Provider => new Provider(env)).filter(x => x.isCI)
+  return availableProviders && availableProviders.length > 0 ? availableProviders[0] : undefined
 }
 
 /**

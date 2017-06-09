@@ -2,6 +2,8 @@
 
 ### Master
 
+* Adds prettier to the codebase - orta
+
 ### 0.20.0
 
 * Fix `danger pr` commands are not running on windows - kwonoj

@@ -25,8 +25,7 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *  As you own the machine, it's up to you to add the environment variable for the  `DANGER_GITHUB_API_TOKEN`.
  */
 export class Jenkins implements CISource {
-  constructor(private readonly env: Env) {
-  }
+  constructor(private readonly env: Env) {}
 
   get name(): string {
     return "Jenkins"

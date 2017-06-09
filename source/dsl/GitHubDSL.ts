@@ -6,13 +6,13 @@ import * as GitHub from "github"
 /** The GitHub metadata for your PR */
 export interface GitHubDSL {
   /** An authenticated API so you can extend danger's behavior. An instance of the "github" npm module. */
-  api: GitHub,
+  api: GitHub
   /** The issue metadata for a code review session */
-  issue: GitHubIssue,
+  issue: GitHubIssue
   /** The PR metadata for a code review session */
-  pr: GitHubPRDSL,
+  pr: GitHubPRDSL
   /** The PR metadata specifically formatted for using with the GitHub API client */
-  thisPR: GitHubAPIPR,
+  thisPR: GitHubAPIPR
   /** The github commit metadata for a code review session */
   commits: GitHubCommit[]
   /** The reviews left on this pull request */
@@ -187,15 +187,15 @@ export interface GitHubPRDSL {
 /** A GitHub specific implmentation of a git commit */
 export interface GitHubCommit {
   /** The raw commit metadata */
-  commit: GitCommit,
+  commit: GitCommit
   /** The SHA for the commit */
-  sha: string,
+  sha: string
   /** the url for the commit on GitHub */
-  url: string,
+  url: string
   /** The GitHub user who wrote the code */
-  author: GitHubUser,
+  author: GitHubUser
   /** The GitHub user who shipped the code */
-  committer: GitHubUser,
+  committer: GitHubUser
   /** An array of parent commit shas */
   parents: any[]
 }
@@ -336,9 +336,9 @@ export interface GitHubReview {
 /** Provides the current PR in an easily used way for params in `github.api` calls  */
 export interface GitHubAPIPR {
   /** The repo owner */
-  owner: string,
+  owner: string
   /** The repo name */
-  repo: string,
+  repo: string
   /** The PR number */
-  number: number,
+  number: number
 }

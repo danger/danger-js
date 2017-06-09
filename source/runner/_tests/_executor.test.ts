@@ -5,7 +5,7 @@ import { emptyResults, warnResults } from "./fixtures/ExampleDangerResults"
 
 const defaultConfig = {
   stdoutOnly: false,
-  verbose: false
+  verbose: false,
 }
 
 describe("setup", () => {

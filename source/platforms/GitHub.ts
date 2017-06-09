@@ -35,7 +35,7 @@ export class GitHub {
    * Gets issue specific metadata for a PR
    */
 
-  async getIssue(): Promise <GitHubIssue> {
+  async getIssue(): Promise<GitHubIssue> {
     const issue = await this.api.getIssue()
     return issue || { labels: [] }
   }
@@ -45,7 +45,7 @@ export class GitHub {
    *
    * @returns {Promise<GitHubDSL>} JSON response of the DSL
    */
-  async getPlatformDSLRepresentation(): Promise <GitHubDSL> {
+  async getPlatformDSLRepresentation(): Promise<GitHubDSL> {
     const pr = await this.getReviewInfo()
     if (pr === {}) {
       process.exitCode = 1
@@ -71,7 +71,7 @@ export class GitHub {
       reviews,
       requested_reviewers,
       thisPR,
-      utils: GitHubUtils(pr)
+      utils: GitHubUtils(pr),
     }
   }
 
@@ -81,7 +81,7 @@ export class GitHub {
    * @param {string} comment you want to post
    * @returns {Promise<any>} JSON response of new comment
    */
-  async createComment(comment: string): Promise <any> {
+  async createComment(comment: string): Promise<any> {
     return this.api.postPRComment(comment)
   }
 
@@ -94,7 +94,7 @@ export class GitHub {
    *
    * @returns {Promise<boolean>} did it work?
    */
-  async deleteMainComment(): Promise <boolean> {
+  async deleteMainComment(): Promise<boolean> {
     const commentID = await this.api.getDangerCommentID()
     if (commentID) {
       return await this.api.deleteCommentWithID(commentID)
@@ -109,7 +109,7 @@ export class GitHub {
    * @param {string} newComment string value of comment
    * @returns {Promise<boolean>} success of posting comment
    */
-  async updateOrCreateComment(newComment: string): Promise <boolean> {
+  async updateOrCreateComment(newComment: string): Promise<boolean> {
     const commentID = await this.api.getDangerCommentID()
     if (commentID) {
       await this.api.updateCommentWithID(commentID, newComment)
@@ -127,9 +127,11 @@ export class GitHub {
    *
    * @returns {Promise<boolean>} did it work?
    */
-  async editMainComment(comment: string): Promise <boolean> {
+  async editMainComment(comment: string): Promise<boolean> {
     const commentID = await this.api.getDangerCommentID()
-    if (commentID) { await this.api.updateCommentWithID(commentID, comment) }
+    if (commentID) {
+      await this.api.updateCommentWithID(commentID, comment)
+    }
     return commentID !== null
   }
 
@@ -140,7 +142,7 @@ export class GitHub {
     return {
       number: pr.number,
       repo: pr.base.repo.name,
-      owner: pr.base.repo.owner.login
+      owner: pr.base.repo.owner.login,
     }
   }
 }

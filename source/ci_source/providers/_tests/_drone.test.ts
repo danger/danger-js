@@ -1,10 +1,10 @@
-import {Drone} from "../Drone"
-import {getCISourceForEnv} from "../../get_ci_source"
+import { Drone } from "../Drone"
+import { getCISourceForEnv } from "../../get_ci_source"
 
 const correctEnv = {
-  "DRONE": "true",
-  "DRONE_PULL_REQUEST": "800",
-  "DRONE_REPO": "artsy/eigen"
+  DRONE: "true",
+  DRONE_PULL_REQUEST: "800",
+  DRONE_REPO: "artsy/eigen",
 }
 
 describe("being found when looking for CI", () => {
@@ -40,9 +40,9 @@ describe(".isPR", () => {
   const envs = ["DRONE_PULL_REQUEST", "DRONE_REPO"]
   envs.forEach((key: string) => {
     let env = {
-      "DRONE": "true",
-      "DRONE_PULL_REQUEST": "800",
-      "DRONE_REPO": "artsy/eigen"
+      DRONE: "true",
+      DRONE_PULL_REQUEST: "800",
+      DRONE_REPO: "artsy/eigen",
     }
     env[key] = null
 
@@ -54,9 +54,9 @@ describe(".isPR", () => {
 
   it("needs to have a PR number", () => {
     let env = {
-      "DRONE": "true",
-      "DRONE_PULL_REQUEST": "asdasd",
-      "DRONE_REPO": "artsy/eigen"
+      DRONE: "true",
+      DRONE_PULL_REQUEST: "asdasd",
+      DRONE_REPO: "artsy/eigen",
     }
     const drone = new Drone(env)
     expect(drone.isPR).toBeFalsy()

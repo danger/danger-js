@@ -16,8 +16,10 @@ import { DangerfileRuntimeEnv, Environment, Path } from "./types"
  * @param {DangerContext} dangerfileContext the global danger context
  * @returns {any} the results of the run
  */
-export async function createDangerfileRuntimeEnvironment(dangerfileContext: DangerContext): Promise<DangerfileRuntimeEnv> {
-  const config =  await dangerJestConfig()
+export async function createDangerfileRuntimeEnvironment(
+  dangerfileContext: DangerContext
+): Promise<DangerfileRuntimeEnv> {
+  const config = await dangerJestConfig()
   const environment: Environment = new NodeEnvironment(config)
 
   const runnerGlobal = environment.global
@@ -38,7 +40,7 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
   return {
     context,
     environment,
-    runtime
+    runtime,
   }
 }
 
@@ -54,24 +56,24 @@ export async function dangerJestConfig() {
   // we can re-use things like haste transformers.
   // so if you can make you tests run right,
   // then it's pretty likely that Danger can do it too.
-  const jestConfig =  await readConfig([], process.cwd())
+  const jestConfig = await readConfig([], process.cwd())
   return {
     cacheDirectory: os.tmpdir(),
     setupFiles: [],
     name: "danger",
     testEnvironment: "node",
     haste: {
-      defaultPlatform: "danger-js"
+      defaultPlatform: "danger-js",
     },
     moduleNameMapper: [],
-    moduleDirectories: [ "node_modules" ],
+    moduleDirectories: ["node_modules"],
     moduleFileExtensions: ["js", ...jestConfig.config.moduleFileExtensions],
     transform: [["js$", "babel-jest"], ...jestConfig.config.transform],
     testPathIgnorePatterns: jestConfig.config.testPathIgnorePatterns,
     cache: null,
     testRegex: "",
     testPathDirs: [process.cwd()],
-    transformIgnorePatterns: [ "/node_modules/" ]
+    transformIgnorePatterns: ["/node_modules/"],
   }
 }
 
@@ -83,7 +85,10 @@ export async function dangerJestConfig() {
  * @param {any} environment the results of createDangerfileRuntimeEnvironment
  * @returns {DangerResults} the results of the run
  */
-export async function runDangerfileEnvironment(filename: Path, environment: DangerfileRuntimeEnv): Promise<DangerResults> {
+export async function runDangerfileEnvironment(
+  filename: Path,
+  environment: DangerfileRuntimeEnv
+): Promise<DangerResults> {
   const runtime = environment.runtime
   // Require our dangerfile
 
@@ -92,16 +97,18 @@ export async function runDangerfileEnvironment(filename: Path, environment: Dang
   })
 
   const results = environment.context.results
-  await Promise.all(results.scheduled.map(fnOrPromise => {
-    if (fnOrPromise instanceof Promise) {
-      return fnOrPromise
-    }
-    if (fnOrPromise.length === 1) {
-      // callback-based function
-      return new Promise(res => fnOrPromise(res))
-    }
-    return fnOrPromise()
-  }))
+  await Promise.all(
+    results.scheduled.map(fnOrPromise => {
+      if (fnOrPromise instanceof Promise) {
+        return fnOrPromise
+      }
+      if (fnOrPromise.length === 1) {
+        // callback-based function
+        return new Promise(res => fnOrPromise(res))
+      }
+      return fnOrPromise()
+    })
+  )
   return {
     fails: results.fails,
     warnings: results.warnings,
@@ -156,7 +163,5 @@ const es6Pattern = /^.* from ('|")danger('|");?$/gm
  * @returns {string} the revised Dangerfile
  */
 export function cleanDangerfile(contents: string): string {
-  return contents
-    .replace(es6Pattern, "// Removed import")
-    .replace(requirePattern, "// Removed require")
+  return contents.replace(es6Pattern, "// Removed import").replace(requirePattern, "// Removed require")
 }

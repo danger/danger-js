@@ -1,10 +1,10 @@
-import {Jenkins} from "../Jenkins"
-import {getCISourceForEnv} from "../../get_ci_source"
+import { Jenkins } from "../Jenkins"
+import { getCISourceForEnv } from "../../get_ci_source"
 
 const correctEnv = {
-  "ghprbGhRepository": "danger/danger-js",
-  "ghprbPullId": "50",
-  "JENKINS_URL": "https://danger.jenkins"
+  ghprbGhRepository: "danger/danger-js",
+  ghprbPullId: "50",
+  JENKINS_URL: "https://danger.jenkins",
 }
 
 describe("being found when looking for CI", () => {
@@ -41,7 +41,7 @@ describe(".isPR", () => {
   envs.forEach((key: string) => {
     const env = {
       ...correctEnv,
-      [key]: null
+      [key]: null,
     }
 
     it(`does not validate when ${key} is missing`, () => {
@@ -53,7 +53,7 @@ describe(".isPR", () => {
   it("needs to have a PR number", () => {
     const env = {
       ...correctEnv,
-      "ghprbPullId": "not a number"
+      ghprbPullId: "not a number",
     }
     const jenkins = new Jenkins(env)
     expect(jenkins.isPR).toBeFalsy()

@@ -1,6 +1,6 @@
 import { api as fetch } from "../../api/fetch"
 import { RepoMetaData } from "../../ci_source/ci_source"
-import { GitHubPRDSL, GitHubUser} from "../../dsl/GitHubDSL"
+import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
 import * as find from "lodash.find"
 import * as v from "voca"
 
@@ -38,8 +38,8 @@ export class GitHubAPI {
     const api = new GitHubNodeAPI({
       host: baseUrl,
       headers: {
-        ...this.additionalHeaders
-      }
+        ...this.additionalHeaders,
+      },
     })
 
     if (this.token) {
@@ -74,16 +74,22 @@ export class GitHubAPI {
   async getDangerCommentID(): Promise<number | null> {
     const userID = await this.getUserID()
     const allComments: any[] = await this.getPullRequestComments()
-    const dangerComment = find(allComments, (comment: any) =>
-      comment.user.id === userID && v.includes(comment.body, dangerSignaturePostfix))
+    const dangerComment = find(
+      allComments,
+      (comment: any) => comment.user.id === userID && v.includes(comment.body, dangerSignaturePostfix)
+    )
     return dangerComment ? dangerComment.id : null
   }
 
   async updateCommentWithID(id: number, comment: string): Promise<any> {
     const repo = this.repoMetadata.repoSlug
-    const res = await this.patch(`repos/${repo}/issues/comments/${id}`, {}, {
-      body: comment
-    })
+    const res = await this.patch(
+      `repos/${repo}/issues/comments/${id}`,
+      {},
+      {
+        body: comment,
+      }
+    )
 
     return res.json()
   }
@@ -104,9 +110,13 @@ export class GitHubAPI {
   async postPRComment(comment: string): Promise<any> {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
-    const res = await this.post(`repos/${repo}/issues/${prID}/comments`, {}, {
-      body: comment
-    })
+    const res = await this.post(
+      `repos/${repo}/issues/${prID}/comments`,
+      {},
+      {
+        body: comment,
+      }
+    )
 
     return res.json()
   }
@@ -146,7 +156,7 @@ export class GitHubAPI {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}`, {
-      accept: "application/vnd.github.v3.diff"
+      accept: "application/vnd.github.v3.diff",
     })
 
     return res.ok ? res.text() : ""
@@ -168,7 +178,7 @@ export class GitHubAPI {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}/requested_reviewers`, {
-      accept: "application/vnd.github.black-cat-preview+json"
+      accept: "application/vnd.github.black-cat-preview+json",
     })
 
     return res.ok ? res.json() : []
@@ -178,7 +188,7 @@ export class GitHubAPI {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}/reviews`, {
-      accept: "application/vnd.github.black-cat-preview+json"
+      accept: "application/vnd.github.black-cat-preview+json",
     })
 
     return res.ok ? res.json() : []
@@ -205,8 +215,8 @@ export class GitHubAPI {
       headers: {
         "Content-Type": "application/json",
         ...headers,
-        ...this.additionalHeaders
-      }
+        ...this.additionalHeaders,
+      },
     })
   }
 

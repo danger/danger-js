@@ -24,16 +24,11 @@ export interface EnvironmentConstructor {
 }
 
 export interface InternalModuleOptions {
-  isInternalModule: boolean,
+  isInternalModule: boolean
 }
 
 export interface JestRuntime {
-  requireModule(
-    from: Path,
-    moduleName?: string,
-    options?: InternalModuleOptions,
-  ): any
-
+  requireModule(from: Path, moduleName?: string, options?: InternalModuleOptions): any
 }
 
 export interface Environment extends EnvironmentConstructor {
@@ -41,15 +36,15 @@ export interface Environment extends EnvironmentConstructor {
   runScript(script: any): any
   global: any
   fakeTimers: {
-    clearAllTimers(): void;
-    runAllImmediates(): void;
-    runAllTicks(): void;
-    runAllTimers(): void;
-    runTimersToTime(): void;
-    runOnlyPendingTimers(): void;
-    runWithRealTimers(callback: any): void;
-    useFakeTimers(): void;
-    useRealTimers(): void;
+    clearAllTimers(): void
+    runAllImmediates(): void
+    runAllTicks(): void
+    runAllTimers(): void
+    runTimersToTime(): void
+    runOnlyPendingTimers(): void
+    runWithRealTimers(callback: any): void
+    useFakeTimers(): void
+    useRealTimers(): void
   }
   testFilePath: string
   moduleMocker: any

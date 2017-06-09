@@ -16,7 +16,7 @@ import { sentence, href } from "./DangerUtils"
 
 export interface ExecutorOptions {
   /** Should we do a text-only run? E.g. skipping comments */
-  stdoutOnly: boolean,
+  stdoutOnly: boolean
   /** Should Danger post as much info as possible */
   verbose: boolean
 }
@@ -24,8 +24,11 @@ export interface ExecutorOptions {
 export class Executor {
   private readonly d = debug("danger:executor")
 
-  constructor(public readonly ciSource: CISource, public readonly platform: Platform, public readonly options: ExecutorOptions) {
-  }
+  constructor(
+    public readonly ciSource: CISource,
+    public readonly platform: Platform,
+    public readonly options: ExecutorOptions
+  ) {}
 
   /** Mainly just a dumb helper because I can't do
    * async functions in danger-run.js
@@ -120,11 +123,9 @@ export class Executor {
       const message = chalk.underline("Failing the build")
       console.log(`${message}, there ${are} ${fails.length} fail${s}.`)
       process.exitCode = 1
-
     } else if (warnings.length > 0) {
       const message = chalk.underline("not failing the build")
       console.log(`Found only warnings, ${message}`)
-
     } else if (messages.length > 0) {
       console.log("Found only messages, passing those to review.")
     }
@@ -147,17 +148,14 @@ export class Executor {
     if (failureCount + messageCount === 0) {
       console.log("No issues or messages were sent. Removing any existing messages.")
       await this.platform.deleteMainComment()
-
     } else {
       if (fails.length > 0) {
         const s = fails.length === 1 ? "" : "s"
         const are = fails.length === 1 ? "is" : "are"
         console.log(`Failing the build, there ${are} ${fails.length} fail${s}.`)
         process.exitCode = 1
-
       } else if (warnings.length > 0) {
         console.log("Found only warnings, not failing the build.")
-
       } else if (messageCount > 0) {
         console.log("Found only messages, passing those to review.")
       }
@@ -183,7 +181,7 @@ export class Executor {
       fails: [{ message: "Running your Dangerfile has Failed" }],
       warnings: [],
       messages: [],
-      markdowns: [exceptionRaisedTemplate(error)]
+      markdowns: [exceptionRaisedTemplate(error)],
     }
   }
 }

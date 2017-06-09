@@ -30,7 +30,7 @@ function githubCommitToGitCommit(ghCommit: GitHubCommit): GitCommit {
     committer: ghCommit.commit.committer,
     message: ghCommit.commit.message,
     tree: ghCommit.commit.tree,
-    url: ghCommit.url
+    url: ghCommit.url,
   }
 }
 
@@ -59,8 +59,10 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
   const JSONPatchForFile = async (filename: string) => {
     // We already have access to the diff, so see if the file is in there
     // if it's not return an empty diff
-    const modified = modifiedDiffs.find((diff) => diff.to === filename)
-    if (!modified) { return null }
+    const modified = modifiedDiffs.find(diff => diff.to === filename)
+    if (!modified) {
+      return null
+    }
 
     // Grab the two files contents.
     const baseFile = await api.fileContents(filename, pr.base.repo.full_name, pr.base.sha)
@@ -77,7 +79,7 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
       return {
         before: baseJSON,
         after: headJSON,
-        diff: jsonDiff.createPatch(baseJSON, headJSON) as JSONPatchOperation[]
+        diff: jsonDiff.createPatch(baseJSON, headJSON) as JSONPatchOperation[],
       }
     }
     return null
@@ -91,14 +93,15 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
    */
   const JSONDiffForFile = async (filename: string) => {
     const patchObject = await JSONPatchForFile(filename)
-    if (!patchObject) { return {} }
+    if (!patchObject) {
+      return {}
+    }
 
     // Thanks to @wtgtybhertgeghgtwtg for getting this started in #175
     // The idea is to loop through all the JSON patches, then pull out the before and after from those changes.
 
     const { diff, before, after } = patchObject
     return diff.reduce((accumulator, { path }) => {
-
       // We don't want to show the last root object, as these tend to just go directly
       // to a single value in the patch. This is fine, but not useful when showing a before/after
       const pathSteps = path.split("/")
@@ -120,8 +123,7 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
         diff.added = arrayAfter.filter(o => !includes(arrayBefore, o))
         diff.removed = arrayBefore.filter(o => !includes(arrayAfter, o))
 
-      // Do the same, but for keys inside an object if they both are objects.
-
+        // Do the same, but for keys inside an object if they both are objects.
       } else if (isobject(diff.after) && isobject(diff.before)) {
         const beforeKeys = keys(diff.before) as string[]
         const afterKeys = keys(diff.after) as string[]
@@ -134,10 +136,10 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
     }, Object.create(null))
   }
 
-  const byType = (t: string) => ({type}: {type: string}) => type === t
-  const getContent = ({content}: {content: string}) => content
+  const byType = (t: string) => ({ type }: { type: string }) => type === t
+  const getContent = ({ content }: { content: string }) => content
 
-  type Changes = {type: string, content: string}[]
+  type Changes = { type: string; content: string }[]
   /**
    * Gets the git-style diff for a single file.
    *
@@ -147,10 +149,12 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
     // We already have access to the diff, so see if the file is in there
     // if it's not return an empty diff
     const structuredDiff = modifiedDiffs.find((diff: any) => diff.from === filename || diff.to === filename)
-    if (!structuredDiff) { return null }
+    if (!structuredDiff) {
+      return null
+    }
 
     const allLines = structuredDiff.chunks
-      .map((c: {changes: Changes}) => c.changes)
+      .map((c: { changes: Changes }) => c.changes)
       .reduce((a: Changes, b: Changes) => a.concat(b), [])
 
     return {
@@ -158,7 +162,7 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
       after: await api.fileContents(filename, pr.head.repo.full_name, pr.head.sha),
       diff: allLines.map(getContent).join(os.EOL),
       added: allLines.filter(byType("add")).map(getContent).join(os.EOL),
-      removed: allLines.filter(byType("del")).map(getContent).join(os.EOL)
+      removed: allLines.filter(byType("del")).map(getContent).join(os.EOL),
     }
   }
 
@@ -169,6 +173,6 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
     diffForFile,
     commits: getCommits.map(githubCommitToGitCommit),
     JSONPatchForFile,
-    JSONDiffForFile
+    JSONDiffForFile,
   }
 }

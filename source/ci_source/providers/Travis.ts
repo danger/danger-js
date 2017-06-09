@@ -23,10 +23,11 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *  If you have an open source project, you should ensure "Display value in build log" enabled, so that PRs from forks work.
  */
 export class Travis implements CISource {
-  constructor(private readonly env: Env) {
-  }
+  constructor(private readonly env: Env) {}
 
-  get name(): string { return "Travis CI" }
+  get name(): string {
+    return "Travis CI"
+  }
 
   get isCI(): boolean {
     return ensureEnvKeysExist(this.env, ["HAS_JOSH_K_SEAL_OF_APPROVAL"])
@@ -38,7 +39,13 @@ export class Travis implements CISource {
     return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, mustBeInts)
   }
 
-  get pullRequestID(): string { return this.env.TRAVIS_PULL_REQUEST }
-  get repoSlug(): string { return this.env.TRAVIS_REPO_SLUG }
-  get supportedPlatforms(): string[] { return ["github"] }
+  get pullRequestID(): string {
+    return this.env.TRAVIS_PULL_REQUEST
+  }
+  get repoSlug(): string {
+    return this.env.TRAVIS_REPO_SLUG
+  }
+  get supportedPlatforms(): string[] {
+    return ["github"]
+  }
 }

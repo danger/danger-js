@@ -11,7 +11,9 @@ import * as v from "voca"
  * @returns {string} HTML
  */
 function table(name: string, emoji: string, violations: Violation[]): string {
-  if (violations.length === 0 || violations.every(violation => !violation.message)) { return "" }
+  if (violations.length === 0 || violations.every(violation => !violation.message)) {
+    return ""
+  }
   return `
 <table>
   <thead>
@@ -20,27 +22,34 @@ function table(name: string, emoji: string, violations: Violation[]): string {
       <th width="100%" data-danger-table="true">${name}</th>
     </tr>
   </thead>
-  <tbody>${violations.map((v: Violation) => { return `<tr>
+  <tbody>${violations
+    .map((v: Violation) => {
+      return `<tr>
       <td>:${emoji}:</td>
       <td>
 
   ${v.message}
   </td>
     </tr>
-  ` }).join("\n")}</tbody>
+  `
+    })
+    .join("\n")}</tbody>
 </table>
 `
 }
 
 function getSummary(label: string, violations: Violation[]): string {
-  return violations.map(x => v.truncate(x.message, 20))
-    .reduce((acc, value, idx) => `${acc} ${value}${idx === violations.length - 1 ? "" : ","}`, `${violations.length} ${label}: `)
+  return violations
+    .map(x => v.truncate(x.message, 20))
+    .reduce(
+      (acc, value, idx) => `${acc} ${value}${idx === violations.length - 1 ? "" : ","}`,
+      `${violations.length} ${label}: `
+    )
 }
 
 function buildSummaryMessage(results: DangerResults): string {
-  const {fails, warnings, messages, markdowns } = results
-  const summary =
-`  ${getSummary("failure", fails)}
+  const { fails, warnings, messages, markdowns } = results
+  const summary = `  ${getSummary("failure", fails)}
   ${getSummary("warning", warnings)}
   ${messages.length > 0 ? `${messages.length} messages` : ""}
   ${markdowns.length > 0 ? `${markdowns.length} markdown notices` : ""}`

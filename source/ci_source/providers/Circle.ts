@@ -30,10 +30,11 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *
  */
 export class Circle implements CISource {
-  constructor(private readonly env: Env) {
-  }
+  constructor(private readonly env: Env) {}
 
-  get name(): string { return "Circle CI" }
+  get name(): string {
+    return "Circle CI"
+  }
 
   get isCI(): boolean {
     return ensureEnvKeysExist(this.env, ["CIRCLE_BUILD_NUM"])
@@ -48,14 +49,14 @@ export class Circle implements CISource {
     return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, ["CIRCLE_PR_NUMBER"])
   }
 
-  private _prParseURL(): {owner?: string, reponame?: string, id?: string} {
+  private _prParseURL(): { owner?: string; reponame?: string; id?: string } {
     const prUrl = this.env.CI_PULL_REQUEST || ""
     const splitSlug = prUrl.split("/")
     if (splitSlug.length === 7) {
       const owner = splitSlug[3]
       const reponame = splitSlug[4]
       const id = splitSlug[6]
-      return {owner, reponame, id}
+      return { owner, reponame, id }
     }
     return {}
   }
@@ -64,16 +65,20 @@ export class Circle implements CISource {
     if (this.env.CIRCLE_PR_NUMBER) {
       return this.env.CIRCLE_PR_NUMBER
     } else {
-      const {id} = this._prParseURL()
+      const { id } = this._prParseURL()
       return id || ""
     }
   }
 
   get repoSlug(): string {
-    const {owner, reponame} = this._prParseURL()
-    return (owner && reponame) ? `${owner}/${reponame}` : ""
+    const { owner, reponame } = this._prParseURL()
+    return owner && reponame ? `${owner}/${reponame}` : ""
   }
 
-  get repoURL(): string { return this.env.CIRCLE_REPOSITORY_URL }
-  get supportedPlatforms(): string[] { return ["github"] }
+  get repoURL(): string {
+    return this.env.CIRCLE_REPOSITORY_URL
+  }
+  get supportedPlatforms(): string[] {
+    return ["github"]
+  }
 }

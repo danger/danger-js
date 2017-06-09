@@ -1,10 +1,10 @@
-import {DockerCloud} from "../DockerCloud"
-import {getCISourceForEnv} from "../../get_ci_source"
+import { DockerCloud } from "../DockerCloud"
+import { getCISourceForEnv } from "../../get_ci_source"
 
 const correctEnv = {
-  "DOCKER_REPO": "someproject",
-  "PULL_REQUEST_URL": "https://github.com/artsy/eigen/pull/800",
-  "SOURCE_REPOSITORY_URL": "https://github.com/artsy/eigen"
+  DOCKER_REPO: "someproject",
+  PULL_REQUEST_URL: "https://github.com/artsy/eigen/pull/800",
+  SOURCE_REPOSITORY_URL: "https://github.com/artsy/eigen",
 }
 
 describe("being found when looking for CI", () => {
@@ -40,9 +40,9 @@ describe(".isPR", () => {
   const envs = ["PULL_REQUEST_URL", "SOURCE_REPOSITORY_URL", "DOCKER_REPO"]
   envs.forEach((key: string) => {
     let env = {
-      "DOCKER_REPO": "someproject",
-      "PULL_REQUEST_URL": "https://github.com/artsy/eigen/pull/800",
-      "SOURCE_REPOSITORY_URL": "https://github.com/artsy/eigen"
+      DOCKER_REPO: "someproject",
+      PULL_REQUEST_URL: "https://github.com/artsy/eigen/pull/800",
+      SOURCE_REPOSITORY_URL: "https://github.com/artsy/eigen",
     }
     env[key] = null
 
@@ -56,7 +56,7 @@ describe(".isPR", () => {
 describe(".pullRequestID", () => {
   it("pulls it out of the env", () => {
     const dockerCloud = new DockerCloud({
-      "PULL_REQUEST_URL": "https://github.com/artsy/eigen/pull/800"
+      PULL_REQUEST_URL: "https://github.com/artsy/eigen/pull/800",
     })
     expect(dockerCloud.pullRequestID).toEqual("800")
   })

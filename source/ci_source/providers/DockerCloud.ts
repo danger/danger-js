@@ -5,10 +5,11 @@ import { ensureEnvKeysExist } from "../ci_source_helpers"
  * Docs: TODO
  */
 export class DockerCloud implements CISource {
-  constructor(private readonly env: Env) {
-  }
+  constructor(private readonly env: Env) {}
 
-  get name(): string { return "Docker Cloud" }
+  get name(): string {
+    return "Docker Cloud"
+  }
 
   get isCI(): boolean {
     return ensureEnvKeysExist(this.env, ["DOCKER_REPO"])
@@ -23,28 +24,32 @@ export class DockerCloud implements CISource {
     return ensureEnvKeysExist(this.env, mustHave)
   }
 
-  private _prParseURL(): {owner?: string, reponame?: string, id?: string} {
+  private _prParseURL(): { owner?: string; reponame?: string; id?: string } {
     const prUrl = this.env.PULL_REQUEST_URL || ""
     const splitSlug = prUrl.split("/")
     if (splitSlug.length === 7) {
       const owner = splitSlug[3]
       const reponame = splitSlug[4]
       const id = splitSlug[6]
-      return {owner, reponame, id}
+      return { owner, reponame, id }
     }
     return {}
   }
 
   get pullRequestID(): string {
-    const {id} = this._prParseURL()
+    const { id } = this._prParseURL()
     return id || ""
   }
 
   get repoSlug(): string {
-    const {owner, reponame} = this._prParseURL()
-    return (owner && reponame) ? `${owner}/${reponame}` : ""
+    const { owner, reponame } = this._prParseURL()
+    return owner && reponame ? `${owner}/${reponame}` : ""
   }
 
-  get repoURL(): string { return this.env.SOURCE_REPOSITORY_URL }
-  get supportedPlatforms(): string[] { return ["github"] }
+  get repoURL(): string {
+    return this.env.SOURCE_REPOSITORY_URL
+  }
+  get supportedPlatforms(): string[] {
+    return ["github"]
+  }
 }

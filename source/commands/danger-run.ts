@@ -63,7 +63,9 @@ async function run(): Promise<any> {
     const platform = getPlatformForEnv(process.env, source)
     if (!platform) {
       console.log(chalk.red(`Could not find a source code hosting platform for ${source.name}.`))
-      console.log(`Currently DangerJS only supports GitHub, if you want other platforms, consider the Ruby version or help out.`)
+      console.log(
+        `Currently DangerJS only supports GitHub, if you want other platforms, consider the Ruby version or help out.`
+      )
       process.exitCode = 1
     }
 
@@ -79,17 +81,15 @@ async function run(): Promise<any> {
 
           const config = {
             stdoutOnly: app.textOnly,
-            verbose: app.verbose
+            verbose: app.verbose,
           }
 
           const exec = new Executor(source, platform, config)
           exec.setupAndRunDanger(dangerFile)
         } else {
-
           console.error(chalk.red(`Looks like your path '${dangerFile}' is not a valid path for a Dangerfile.`))
           process.exitCode = 1
         }
-
       } catch (error) {
         process.exitCode = 1
         console.error(error.message)

@@ -1,7 +1,6 @@
-import {pullRequestParser} from "../pullRequestParser"
+import { pullRequestParser } from "../pullRequestParser"
 
 describe("parsing urls", () => {
-
   it("handles bad data", () => {
     expect(pullRequestParser("kjsdbfdsjkbfks")).toBeFalsy()
   })
@@ -9,7 +8,7 @@ describe("parsing urls", () => {
   it("pulls out the repo / pr ID", () => {
     expect(pullRequestParser("https://github.com/facebook/jest/pull/2555")).toEqual({
       pullRequestNumber: "2555",
-      repo: "facebook/jest"
+      repo: "facebook/jest",
     })
   })
 
@@ -17,7 +16,7 @@ describe("parsing urls", () => {
     const longPR = "https://github.com/artsy/emission/pull/406#pullrequestreview-10994863"
     expect(pullRequestParser(longPR)).toEqual({
       pullRequestNumber: "406",
-      repo: "artsy/emission"
+      repo: "artsy/emission",
     })
   })
 })

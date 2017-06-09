@@ -71,11 +71,11 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
     warnings: [],
     messages: [],
     markdowns: [],
-    scheduled: []
+    scheduled: [],
   }
 
   const schedule = (fn: Function) => results.scheduled.push(fn)
-  const fail = (message: MarkdownString) =>  results.fails.push({ message })
+  const fail = (message: MarkdownString) => results.fails.push({ message })
   const warn = (message: MarkdownString) => results.warnings.push({ message })
   const message = (message: MarkdownString) => results.messages.push({ message })
   const markdown = (message: MarkdownString) => results.markdowns.push(message)
@@ -88,7 +88,7 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
     message,
     markdown,
     console,
-    results
+    results,
   }
 
   // OK, so this is a bit weird, but hear me out.
@@ -111,7 +111,7 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
     ...globals,
     danger: {
       ...dsl,
-      ...globals
-    }
+      ...globals,
+    },
   }
 }

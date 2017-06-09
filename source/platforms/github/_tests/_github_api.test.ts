@@ -4,17 +4,18 @@ import { requestWithFixturedJSON } from "../../_tests/_github.test"
 
 const fetchJSON = (api, params): Promise<any> => {
   return Promise.resolve({
-    json: () => Promise.resolve({
-      api,
-      ...params
-    })
+    json: () =>
+      Promise.resolve({
+        api,
+        ...params,
+      }),
   })
 }
 
 const fetch = (api, params): Promise<any> => {
   return Promise.resolve({
     api,
-    ...params
+    ...params,
   })
 }
 
@@ -25,7 +26,9 @@ it("fileContents expects to grab PR JSON and pull out a file API call", async ()
   api.getFileContents = await requestWithFixturedJSON("static_file.json")
 
   const info = await api.fileContents("my_path.md")
-  expect(info).toEqual("The All-Defector is a purported glitch in the Dilemma Prison that appears to prisoners as themselves. This gogol always defects, hence the name.")//tslint:disable-line:max-line-length
+  expect(info).toEqual(
+    "The All-Defector is a purported glitch in the Dilemma Prison that appears to prisoners as themselves. This gogol always defects, hence the name."
+  ) //tslint:disable-line:max-line-length
 })
 
 describe("API testing", () => {
@@ -53,7 +56,7 @@ describe("API testing", () => {
 
     await api.updateCommentWithID(123, "Hello!")
 
-    expect(api.patch).toHaveBeenCalledWith("repos/artsy/emission/issues/comments/123", {}, {"body": "Hello!"})
+    expect(api.patch).toHaveBeenCalledWith("repos/artsy/emission/issues/comments/123", {}, { body: "Hello!" })
   })
 })
 
@@ -62,15 +65,17 @@ describe("Peril", () => {
     const mockSource = new FakeCI({})
     const api = new GitHubAPI(mockSource, "ABCDE")
     api.fetch = jest.fn()
-    api.additionalHeaders = { "CUSTOM": "HEADER" }
+    api.additionalHeaders = { CUSTOM: "HEADER" }
 
     const request = await api.get("user")
-    expect(api.fetch).toHaveBeenCalledWith("https://api.github.com/user",
-      {"body": {}, "headers": {
-        "Authorization": "token ABCDE",
-        "CUSTOM": "HEADER",
-        "Content-Type": "application/json"
-      }, "method": "GET"}
-    )
+    expect(api.fetch).toHaveBeenCalledWith("https://api.github.com/user", {
+      body: {},
+      headers: {
+        Authorization: "token ABCDE",
+        CUSTOM: "HEADER",
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    })
   })
 })
