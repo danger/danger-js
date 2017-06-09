@@ -4,9 +4,8 @@ import { readFileSync } from "fs"
 const fixtures = resolve(__dirname, "fixtures")
 
 /** Returns JSON from the fixtured dir */
-export const requestWithFixturedJSON = async (path: string): Promise<() => Promise<any>> => () => (
+export const requestWithFixturedJSON = async (path: string): Promise<() => Promise<any>> => () =>
   Promise.resolve(JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString()))
-)
 
 // Mock GitHubAPI class
 jest.mock("../github/GitHubAPI", () => {
@@ -69,18 +68,18 @@ describe("getPlatformDSLRepresentation", () => {
     expect(info.title).toEqual("Adds support for showing the metadata and trending Artists to a Gene VC")
   })
 
-  it("should get the issue label", async() => {
+  it("should get the issue label", async () => {
     const issue = await github.getIssue()
     expect(issue.labels[0].name).toEqual("bug")
   })
 
-  it("should get the commits of the pull request", async() => {
+  it("should get the commits of the pull request", async () => {
     const expected = "https://api.github.com/repos/artsy/emission/git/commits/13da2c844def1f4262ee440bd86fb2a3b021718b"
     const { commits } = await github.getPlatformDSLRepresentation()
     expect(commits[0].commit.url).toEqual(expected)
   })
 
-  it("should get the reviews", async() => {
+  it("should get the reviews", async () => {
     const { reviews } = await github.getPlatformDSLRepresentation()
     expect(reviews[0].id).toEqual(2332973)
   })

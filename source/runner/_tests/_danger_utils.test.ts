@@ -11,8 +11,7 @@ describe("sentence()", () => {
     expect(sentence(["Hello"])).toEqual("Hello")
   })
   it("handles array with multiple items", () => {
-    expect(sentence(["This", "that", "the other thing"]))
-      .toEqual("This, that and the other thing")
+    expect(sentence(["This", "that", "the other thing"])).toEqual("This, that and the other thing")
   })
 })
 
@@ -27,7 +26,6 @@ describe("href()", () => {
     expect(href("/path/to/file", "")).toEqual(`<a href="/path/to/file">/path/to/file</a>`)
   })
   it("returns <a> tag for supplied href and text", () => {
-    expect(href("http://danger.systems", "Danger"))
-      .toEqual(`<a href="http://danger.systems">Danger</a>`)
+    expect(href("http://danger.systems", "Danger")).toEqual(`<a href="http://danger.systems">Danger</a>`)
   })
 })

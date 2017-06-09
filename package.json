@@ -42,6 +42,7 @@
   "lint-staged": {
     "*.@(ts|tsx)": [
       "tslint --fix",
+      "npm run prettier-write --",
       "git add"
     ]
   },
@@ -52,6 +53,9 @@
     "test:watch": "jest --watch",
     "lint": "tslint \"source/**/*.ts\"",
     "lint:fix": "tslint \"source/**/*.ts\" --fix",
+    "prettier": "prettier",
+    "prettier-write": "npm run prettier -- --parser typescript --no-semi --trailing-comma es5 --write --print-width 120",
+    "prettier-project": "npm run prettier-write -- 'source/**/*.{ts,tsx}'",
     "prepublish": "in-publish && npm run build && yarn declarations || not-in-publish",
     "build": "shx rm -rf ./distribution && tsc && madge ./distribution --circular",
     "build:watch": "tsc -w",
@@ -93,6 +97,7 @@
     "jest": "^20.0.0",
     "lint-staged": "^3.2.5",
     "madge": "^1.4.4",
+    "prettier": "^1.4.4",
     "shx": "^0.2.1",
     "ts-jest": "^20.0.0",
     "ts-node": "^3.0.0",

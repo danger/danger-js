@@ -13,19 +13,19 @@ export type Comment = {
    *
    * @type {string}
    */
-  id: string;
+  id: string
   /**
    * Textual representation of comment
    *
    * @type {string} body string
    */
-  body: string;
+  body: string
   /**
    * Was this posted by the account Danger has access to?
    *
    * @type {boolean} true if Danger can edit
    */
-  ownedByDanger: boolean;
+  ownedByDanger: boolean
 }
 
 export interface Platform {

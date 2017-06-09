@@ -14,10 +14,11 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *
  */
 export class Semaphore implements CISource {
-  constructor(private readonly env: Env) {
-  }
+  constructor(private readonly env: Env) {}
 
-  get name(): string { return "Semaphore" }
+  get name(): string {
+    return "Semaphore"
+  }
 
   get isCI(): boolean {
     return ensureEnvKeysExist(this.env, ["SEMAPHORE"])
@@ -29,7 +30,13 @@ export class Semaphore implements CISource {
     return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, mustBeInts)
   }
 
-  get pullRequestID(): string { return this.env.PULL_REQUEST_NUMBER }
-  get repoSlug(): string { return this.env.SEMAPHORE_REPO_SLUG }
-  get supportedPlatforms(): string[] { return ["github"] }
+  get pullRequestID(): string {
+    return this.env.PULL_REQUEST_NUMBER
+  }
+  get repoSlug(): string {
+    return this.env.SEMAPHORE_REPO_SLUG
+  }
+  get supportedPlatforms(): string[] {
+    return ["github"]
+  }
 }

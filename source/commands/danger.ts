@@ -12,6 +12,6 @@ d(`argv: ${process.argv}`)
 // Provides the root node to the command-line architecture
 program
   .version(version)
-  .command("run", "Runs danger on your local system", {isDefault: true})
+  .command("run", "Runs danger on your local system", { isDefault: true })
   .command("pr", "Runs your changes against an existing PR")
   .parse(process.argv)

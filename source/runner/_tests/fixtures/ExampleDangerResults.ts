@@ -4,28 +4,28 @@ export const emptyResults: DangerResults = {
   fails: [],
   warnings: [],
   messages: [],
-  markdowns: []
+  markdowns: [],
 }
 
 export const failsResultsWithoutMessages: DangerResults = {
   fails: [{}, {}],
   warnings: [],
   messages: [],
-  markdowns: []
+  markdowns: [],
 }
 
 export const warnResults: DangerResults = {
   fails: [],
   warnings: [{ message: "Warning message" }],
   messages: [],
-  markdowns: []
+  markdowns: [],
 }
 
 export const failsResults: DangerResults = {
   fails: [{ message: "Failing message" }],
   warnings: [],
   messages: [],
-  markdowns: []
+  markdowns: [],
 }
 
 export const summaryResults: DangerResults = {

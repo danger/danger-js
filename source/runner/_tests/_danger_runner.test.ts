@@ -4,12 +4,12 @@ import {
   runDangerfileEnvironment,
   updateDangerfile,
   cleanDangerfile,
-  dangerJestConfig
+  dangerJestConfig,
 } from "../DangerfileRunner"
 
-import {FakeCI} from "../../ci_source/providers/Fake"
-import {FakePlatform} from "../../platforms/FakePlatform"
-import {Executor} from "../Executor"
+import { FakeCI } from "../../ci_source/providers/Fake"
+import { FakePlatform } from "../../platforms/FakePlatform"
+import { Executor } from "../Executor"
 
 import * as os from "os"
 import * as fs from "fs"
@@ -25,7 +25,7 @@ async function setupDangerfileContext() {
   const platform = new FakePlatform()
   const config = {
     stdoutOnly: false,
-    verbose: false
+    verbose: false,
   }
 
   const exec = new Executor(new FakeCI({}), platform, config)
@@ -47,7 +47,7 @@ describe("with fixtures", () => {
       fails: [],
       markdowns: [],
       messages: [],
-      warnings: []
+      warnings: [],
     })
   })
 
@@ -57,10 +57,10 @@ describe("with fixtures", () => {
     const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileFullMessages.js"), runtime)
 
     expect(results).toEqual({
-      fails: [{"message": "this is a failure"}],
+      fails: [{ message: "this is a failure" }],
       markdowns: ["this is a *markdown*"],
-      messages: [{"message": "this is a message"}],
-      warnings: [{"message": "this is a warning"}]
+      messages: [{ message: "this is a message" }],
+      warnings: [{ message: "this is a warning" }],
     })
   })
 
@@ -71,8 +71,7 @@ describe("with fixtures", () => {
     try {
       await runDangerfileEnvironment(resolve(fixtures, "__DangerfileBadSyntax.js"), runtime)
       throw new Error("Do not get to this")
-    }
-    catch (e) {
+    } catch (e) {
       // expect(e.message === ("Do not get to this")).toBeFalsy()
       expect(e.message).toEqual("hello is not defined")
     }
@@ -115,11 +114,14 @@ describe("with fixtures", () => {
       const context = await setupDangerfileContext()
       const runtime = await createDangerfileRuntimeEnvironment(context)
       const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.js"), runtime)
-      expect(results.warnings).toEqual([{
-        message: "Async Function"
-      }, {
-        message: "After Async Function"
-      }])
+      expect(results.warnings).toEqual([
+        {
+          message: "Async Function",
+        },
+        {
+          message: "After Async Function",
+        },
+      ])
     })
   }
 
@@ -127,20 +129,23 @@ describe("with fixtures", () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
     const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileCallback.js"), runtime)
-    expect(results.warnings).toEqual([{
-      message: "Scheduled a callback",
-    }])
+    expect(results.warnings).toEqual([
+      {
+        message: "Scheduled a callback",
+      },
+    ])
   })
 
   it("can handle TypeScript based Dangerfiles", async () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
     const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileTypeScript.ts"), runtime)
-    expect(results.messages).toEqual([{
-      message: "Honey, we got Types",
-    }])
+    expect(results.messages).toEqual([
+      {
+        message: "Honey, we got Types",
+      },
+    ])
   })
-
 })
 
 describe("cleaning Dangerfiles", () => {
@@ -172,7 +177,7 @@ import danger from 'danger';
   })
 
   it("also handles require style imports", () => {
-        const before = `
+    const before = `
 const { danger, warn, fail, message } = require('danger')
 var { danger, warn, fail, message } = require("danger")
 let { danger, warn, fail, message } = require('danger');
@@ -196,7 +201,7 @@ it("creates a working jest config", async () => {
 
   const cwd = process.cwd()
   config.transform = config.transform.map(([files, transformer]) => {
-    const trans = transformer.includes("ts-jest")  ? "[ts-jest-transformer]" : transformer
+    const trans = transformer.includes("ts-jest") ? "[ts-jest-transformer]" : transformer
     return [files, trans]
   })
 

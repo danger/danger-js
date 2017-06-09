@@ -21,7 +21,7 @@ program
   .option("-r, --repl", "Drop into a Node REPL after evaluating the dangerfile")
   .parse(process.argv)
 
-const dangerFile =  dangerfilePath(program)
+const dangerFile = dangerfilePath(program)
 
 if (program.args.length === 0) {
   console.error("Please include a PR URL to run against")
@@ -47,26 +47,26 @@ if (program.args.length === 0) {
 }
 
 function validateDangerfileExists(filePath: string): boolean {
-    let stat: fs.Stats | null = null
-    try {
-      stat = fs.statSync(filePath)
-    } catch (error) {
-      console.error(`Could not find a dangerfile at ${filePath}, not running against your PR.`)
-      process.exitCode = 1
-    }
+  let stat: fs.Stats | null = null
+  try {
+    stat = fs.statSync(filePath)
+  } catch (error) {
+    console.error(`Could not find a dangerfile at ${filePath}, not running against your PR.`)
+    process.exitCode = 1
+  }
 
-    if (!!stat && !stat.isFile()) {
-      console.error(`The resource at ${filePath} appears to not be a file, not running against your PR.`)
-      process.exitCode = 1
-    }
+  if (!!stat && !stat.isFile()) {
+    console.error(`The resource at ${filePath} appears to not be a file, not running against your PR.`)
+    process.exitCode = 1
+  }
 
-    return !!stat && stat.isFile()
+  return !!stat && stat.isFile()
 }
 
 async function runDanger(source: FakeCI, platform: GitHub, file: string) {
   const config = {
     stdoutOnly: program.textOnly,
-    verbose: program.verbose
+    verbose: program.verbose,
   }
 
   const exec = new Executor(source, platform, config)
@@ -92,7 +92,7 @@ function openRepl(dangerContext: DangerContext): void {
     Object.defineProperty(repl["context"], name, {
       configurable: false,
       enumerable: true,
-      value
+      value,
     })
   }
 

@@ -17,9 +17,9 @@ export interface TextDiff {
 /** The results of running a JSON patch */
 export interface JSONPatch {
   /** The JSON in a file at the PR merge base */
-  before: any,
+  before: any
   /** The JSON in a file from the PR submitter */
-  after: any,
+  after: any
   /** The set of operations to go from one JSON to another JSON */
   diff: JSONPatchOperation[]
 }

@@ -46,8 +46,7 @@ export function api(url: string | node_fetch.Request, init: node_fetch.RequestIn
     d(output.join(" "))
   }
   const originalFetch: any = node_fetch
-  return originalFetch(url, init)
-  .then(async (response: node_fetch.Response) => {
+  return originalFetch(url, init).then(async (response: node_fetch.Response) => {
     // Handle failing errors
     if (!response.ok) {
       const responseJSON = await response.json()

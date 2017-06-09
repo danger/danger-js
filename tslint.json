@@ -60,5 +60,8 @@
       "check-type"
     ]
   },
-  "array-type": [true, "array-simple"]
+  "array-type": [
+    true,
+    "array-simple"
+  ]
 }

@@ -1,10 +1,10 @@
-import {Travis} from "../Travis"
-import {getCISourceForEnv} from "../../get_ci_source"
+import { Travis } from "../Travis"
+import { getCISourceForEnv } from "../../get_ci_source"
 
 const correctEnv = {
-  "HAS_JOSH_K_SEAL_OF_APPROVAL": "true",
-  "TRAVIS_PULL_REQUEST": "800",
-  "TRAVIS_REPO_SLUG": "artsy/eigen"
+  HAS_JOSH_K_SEAL_OF_APPROVAL: "true",
+  TRAVIS_PULL_REQUEST: "800",
+  TRAVIS_REPO_SLUG: "artsy/eigen",
 }
 
 describe("being found when looking for CI", () => {
@@ -40,9 +40,9 @@ describe(".isPR", () => {
   const envs = ["TRAVIS_PULL_REQUEST", "TRAVIS_REPO_SLUG"]
   envs.forEach((key: string) => {
     let env = {
-      "HAS_JOSH_K_SEAL_OF_APPROVAL": "true",
-      "TRAVIS_PULL_REQUEST": "800",
-      "TRAVIS_REPO_SLUG": "artsy/eigen"
+      HAS_JOSH_K_SEAL_OF_APPROVAL: "true",
+      TRAVIS_PULL_REQUEST: "800",
+      TRAVIS_REPO_SLUG: "artsy/eigen",
     }
     env[key] = null
 
@@ -54,9 +54,9 @@ describe(".isPR", () => {
 
   it("needs to have a PR number", () => {
     let env = {
-      "HAS_JOSH_K_SEAL_OF_APPROVAL": "true",
-      "TRAVIS_PULL_REQUEST": "asdasd",
-      "TRAVIS_REPO_SLUG": "artsy/eigen"
+      HAS_JOSH_K_SEAL_OF_APPROVAL: "true",
+      TRAVIS_PULL_REQUEST: "asdasd",
+      TRAVIS_REPO_SLUG: "artsy/eigen",
     }
     const travis = new Travis(env)
     expect(travis.isPR).toBeFalsy()

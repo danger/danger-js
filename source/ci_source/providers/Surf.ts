@@ -13,8 +13,7 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *  is to pass in the token as a prefix to the command `DANGER_GITHUB_API_TOKEN="123" yarn danger`.
  */
 export class Surf implements CISource {
-  constructor(private readonly env: Env) {
-  }
+  constructor(private readonly env: Env) {}
 
   get name(): string {
     return "surf-build"

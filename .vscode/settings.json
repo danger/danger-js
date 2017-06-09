@@ -32,5 +32,14 @@
     ],
     "spellchecker.ignoreRegExp": [],
     "spellchecker.ignoreFileExtensions": [],
-    "spellchecker.checkInterval": 5000
+    "spellchecker.checkInterval": 5000,
+    "editor.formatOnSave": true,
+    "prettier.singleQuote": false,
+    "prettier.trailingComma": "es5",
+    "prettier.typescriptEnable": [
+        "typescript",
+        "typescriptreact"
+    ],
+    "prettier.semi": false,
+    "prettier.printWidth": 120
 }
