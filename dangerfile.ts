@@ -24,7 +24,7 @@ const sentence = danger.utils.sentence
 
 // Request a CHANGELOG entry if not declared #trivial
 const hasChangelog = includes(danger.git.modified_files, "changelog.md")
-const isTrivial = includes((danger.github.pr.body + danger.github.pr.title), "#trivial")
+const isTrivial = includes(danger.github.pr.body + danger.github.pr.title, "#trivial")
 const isGreenkeeper = danger.github.pr.user.login === "greenkeeper"
 
 if (!hasChangelog && !isTrivial && !isGreenkeeper) {
@@ -39,7 +39,7 @@ if (!hasChangelog && !isTrivial && !isGreenkeeper) {
 }
 
 // Celebrate when a new release is being shipped
-const checkForRelease = (packageDiff) => {
+const checkForRelease = packageDiff => {
   if (packageDiff.version) {
     markdown(":tada:")
   }
@@ -50,7 +50,7 @@ const checkForRelease = (packageDiff) => {
 
 // This is a great candidate for being a Danger plugin.
 
-const checkForNewDependencies = async (packageDiff) => {
+const checkForNewDependencies = async packageDiff => {
   if (packageDiff.dependencies) {
     if (packageDiff.dependencies.added.length) {
       const newDependencies = packageDiff.dependencies.added as string[]
@@ -76,17 +76,17 @@ const checkForNewDependencies = async (packageDiff) => {
         let npmMetadata = ""
         const npmResponse = await fetch(`https://registry.npmjs.org/${dep}`)
         if (npmResponse.ok) {
-          const tableDeets = [] as [{ name: string, message: string}]
+          const tableDeets = [] as [{ name: string; message: string }]
           const npm = await npmResponse.json()
 
           if (npm.time && npm.time.created) {
-            const distance = distanceInWords(new Date(npm.time.created), new Date)
-            tableDeets.push ({ name: "Created", message: `${distance} ago`  })
+            const distance = distanceInWords(new Date(npm.time.created), new Date())
+            tableDeets.push({ name: "Created", message: `${distance} ago` })
           }
 
           if (npm.time && npm.time.modified) {
-            const distance = distanceInWords(new Date(npm.time.modified), new Date)
-            tableDeets.push ({ name: "Last Updated", message: `${distance} ago` })
+            const distance = distanceInWords(new Date(npm.time.modified), new Date())
+            tableDeets.push({ name: "Last Updated", message: `${distance} ago` })
           }
 
           if (npm.license) {
@@ -102,11 +102,11 @@ const checkForNewDependencies = async (packageDiff) => {
           if (npm["dist-tags"] && npm["dist-tags"]["latest"]) {
             const currentTag = npm["dist-tags"]["latest"]
             const tag = npm.versions[currentTag]
-            tableDeets.push ({ name: "Releases", message: String(Object.keys(npm.versions).length) })
+            tableDeets.push({ name: "Releases", message: String(Object.keys(npm.versions).length) })
             if (tag.dependencies) {
               const deps = Object.keys(tag.dependencies)
               const depLinks = deps.map(d => `<a href='http: //npmjs.com/package/${d}'>${d}</a>`)
-              tableDeets.push ({ name: "Direct Dependencies", message: sentence(depLinks) })
+              tableDeets.push({ name: "Direct Dependencies", message: sentence(depLinks) })
             }
           }
 
@@ -156,7 +156,7 @@ ${readme}
 // Ensure a lockfile change if deps/devDeps changes, in case
 // someone has only used `npm install` instead of `yarn.
 
-const checkForLockfileDiff = (packageDiff) => {
+const checkForLockfileDiff = packageDiff => {
   if (packageDiff.dependencies || packageDiff.devDependencies) {
     const lockfileChanged = includes(danger.git.modified_files, "yarn.lock")
     if (!lockfileChanged) {
@@ -168,7 +168,7 @@ const checkForLockfileDiff = (packageDiff) => {
 }
 
 // Don't ship @types dependencies to consumers of Danger
-const checkForTypesInDeps = (packageDiff) => {
+const checkForTypesInDeps = packageDiff => {
   if (packageDiff.dependencies) {
     const typesDeps = packageDiff.dependencies.added.filter((dep: string) => dep.startsWith("@types"))
     if (typesDeps.length) {
@@ -216,3 +216,8 @@ const missing = names.filter(n => !readme.includes(n))
 if (missing.length) {
   warn(`These providers are missing from the README: ${sentence(missing)}`)
 }
+
+// dangerfile.js
+import yarn from "danger-plugin-yarn"
+
+yarn()
