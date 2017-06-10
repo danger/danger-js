@@ -218,6 +218,15 @@ if (missing.length) {
 }
 
 // dangerfile.js
-import yarn from "danger-plugin-yarn"
+// import yarn from "danger-plugin-yarn"
 
-yarn()
+// yarn()
+
+// dangerfile.js
+import jiraIssue from "danger-plugin-jira-issue"
+
+jiraIssue({
+  key: "JIRA",
+  url: "https://myjira.atlassian.net/browse",
+  emoji: ":paperclip:",
+})
