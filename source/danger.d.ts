@@ -156,9 +156,9 @@ declare module "danger" {
     before: any
     /** The value after the PR's applied changes */
     after: any
-    /** If both before & after are arrays, then you optionally get what is added. Emprty is no additional objects. */
+    /** If both before & after are arrays, then you optionally get what is added. Empty if no additional objects. */
     added?: any[]
-    /** If both before & after are arrays, then you optionally get what is removed. Emprty is no removed objects. */
+    /** If both before & after are arrays, then you optionally get what is removed. Empty ig no removed objects. */
     removed?: any[]
   }
 

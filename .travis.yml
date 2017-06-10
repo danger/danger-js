@@ -12,7 +12,7 @@ matrix:
     before_script:
     - greenkeeper-lockfile-update
     - yarn run link
-    - danger
+    - danger run --verbose
     after_script:
     - greenkeeper-lockfile-upload
   - node_js: '6'

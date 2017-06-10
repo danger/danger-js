@@ -4,7 +4,7 @@
 
 Danger on Node, wonder what's going on? see [VISION.md](VISION.md)
 
-*Welcome!*
+_Welcome!_
 
 So, what's the deal? Well, right now Danger JS does a lot of the simpler parts of [the Ruby version](http://danger.systems).
 You can look at [Git](https://github.com/danger/danger-js/blob/master/source/dsl/GitDSL.ts) metadata, or [GitHub](https://github.com/danger/danger-js/blob/master/source/dsl/GitHubDSL.ts) metadata on Travis CI, Circle CI, Semaphore, Jenkins, Docker Cloud, surf-build, Codeship, Drone, or Buildkite.
@@ -75,12 +75,12 @@ if (!hasChangelog && !isTrivial) {
 }
 ```
 
-Using [Jest][jest] and TypeScript for testing? You're all set - Danger should be able to use your `jest` config in `package.json` to process and evaulate your `dangerfile.ts`.
+Using [Jest][jest] and TypeScript for testing? You're all set - Danger should be able to use your `jest` config in `package.json` to process and evaluate your `dangerfile.ts`.
 
 Not using Jest on your TypeScript project? You'll need to take the following steps for danger to evaluate your `dangerfile.ts`:
 
-* Install the `ts-jest` package - `yarn add ts-jest --dev`
-* Add the following `jest` section to your `package.json`
+-   Install the `ts-jest` package - `yarn add ts-jest --dev`
+-   Add the following `jest` section to your `package.json`
 
 ```json
 {
@@ -96,13 +96,13 @@ Then you add `yarn run danger` to the end of your CI run, and Danger will run. H
 
 Want to see some existing JavaScript examples? Check out:
 
-* **Apps** - [Artsy/metaphysics][meta].
-* **Libraries** - [Facebook/Jest][fbj], [styled-components/styled-components][sc] and [ReactiveX/rxjs][rxjs].
+-   **Apps** - [Artsy/metaphysics][meta].
+-   **Libraries** - [Facebook/Jest][fbj], [styled-components/styled-components][sc] and [ReactiveX/rxjs][rxjs].
 
 Some TypeScript examples:
 
-* **Apps** - [Artsy/Emission][emiss]
-* **Libraries** [danger/danger-js][danger-js]
+-   **Apps** - [Artsy/Emission][emiss]
+-   **Libraries** [danger/danger-js][danger-js]
 
 I'd love PRs adding more.
 
@@ -159,17 +159,17 @@ Note: this will leave a comment on the PR.
 
 ## Advice
 
-* You can have Danger read build logs if you use [tee](https://en.wikipedia.org/wiki/Tee_(command)) in your CI process: `yarn run lint | tee linter_output.txt`. This can then be picked up with `readFileSync` at `linter_output.txt` in your Dangerfile later.
+-   You can have Danger read build logs if you use [tee](https://en.wikipedia.org/wiki/Tee_(command)) in your CI process: `yarn run lint | tee linter_output.txt`. This can then be picked up with `readFileSync` at `linter_output.txt` in your Dangerfile later.
 
 ## Known issues
 
-* Codeship support does not support fork to fork GitHub PRs.
+-   Codeship support does not support fork to fork GitHub PRs.
 
 ## This thing is broken, I should help improve it!
 
 Awesommmmee.
 
-``` sh
+```sh
 git clone https://github.com/danger/danger-js.git
 cd danger-js
 
@@ -181,19 +181,19 @@ yarn install
 
 You can then verify your install by running the tests, and the linters:
 
-``` sh
+```sh
 yarn test
 yarn lint
 ```
 
----
+* * *
 
 ### Dev Life
 
 Tips:
 
-* You can run the `danger` command globally from your dev build by running `yarn run link`.
-* If you're using VS Code, press Run to start an example run, should go through most of the process with a debugger attached. Either use breakpoints, or add `debugger` to get a repl and context.
+-   You can run the `danger` command globally from your dev build by running `yarn run link`.
+-   If you're using VS Code, press Run to start an example run, should go through most of the process with a debugger attached. Either use breakpoints, or add `debugger` to get a repl and context.
 
 ### What is the TODO?
 
@@ -204,16 +204,23 @@ Check the issues, I try and keep my short term perspective there. Long term is i
 We try to keep as much discussion as possible in GitHub issues, but also have a pretty inactive Slack --- if you'd like an invite, ping [@Orta](https://twitter.com/orta/) a DM on Twitter with your email. It's mostly interesting if you want to stay on top of Danger without all the emails from GitHub.
 
 > This project is open source under the MIT license, which means you have full access to the source code and can modify it to fit your own needs.
-
+>
 > This project subscribes to the [Moya Contributors Guidelines](https://github.com/Moya/contributors) which TLDR: means we give out push access easily and often.
-
+>
 > Contributors subscribe to the [Contributor Code of Conduct](http://contributor-covenant.org/version/1/3/0/) based on the [Contributor Covenant](http://contributor-covenant.org) version 1.3.0.
 
 [emiss]: https://github.com/artsy/emission/blob/master/dangerfile.ts
+
 [danger-js]: https://github.com/danger/danger-js/blob/master/dangerfile.ts
+
 [meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
+
 [fbj]: https://github.com/facebook/jest/blob/master/dangerfile.js
+
 [sc]: https://github.com/styled-components/styled-components/blob/master/dangerfile.js
+
 [rxjs]: https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js
+
 [setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
+
 [jest]: https://github.com/facebook/jest

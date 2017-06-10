@@ -4,15 +4,16 @@
 
 import { DangerDSL } from "./source/dsl/DangerDSL"
 declare var danger: DangerDSL
+declare var results: any
 declare function warn(params: string): void
 declare function fail(params: string): void
 declare function message(params: string): void
 declare function markdown(params: string): void
 declare function schedule(promise: () => Promise<any | void>): void
+declare function schedule(callback: (resolve) => void): void
 
 import * as fs from "fs"
 import * as child_process from "child_process"
-import fetch from "node-fetch"
 import { distanceInWords } from "date-fns"
 
 // For some reason we're getting type errors on this includes module?

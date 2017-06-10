@@ -147,19 +147,16 @@ describe("with fixtures", () => {
     ])
   })
 
-  it.only("can handle a plugin (which is already used in Danger)", async () => {
+  it("can handle a plugin (which is already used in Danger)", async () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
-    // const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfilePlugin.js"), runtime)
-    // expect(results.errors).toEqual([
-    //   {
-    //     message: "Plugged in",
-    //   },
-    // ])
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfilePlugin.js"), runtime)
+
+    expect(results.fails[0].message).toContain("@types dependencies were added to package.json")
   })
 })
 
-describe.skip("cleaning Dangerfiles", () => {
+describe("cleaning Dangerfiles", () => {
   it("Supports removing the danger import", () => {
     const path = resolve(os.tmpdir(), "fake_dangerfile_1")
     fs.writeFileSync(path, "import { danger, warn, fail, message } from 'danger'")
