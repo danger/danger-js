@@ -207,21 +207,18 @@ export class GitHubAPI {
 
     const prJSON = await this.getPullRequestInfo()
     const ref = prJSON.head.sha
-    try {
-      const res = await this.post(
-        `repos/${repo}/statuses/${ref}`,
-        {},
-        {
-          state: passed ? "success" : "failure",
-          context: "Danger",
-          target_url: "https://danger.systems/js",
-          description: message,
-        }
-      )
-      return res.ok
-    } catch (error) {
-      return false
-    }
+    const res = await this.post(
+      `repos/${repo}/statuses/${ref}`,
+      {},
+      {
+        state: passed ? "success" : "failure",
+        context: "Danger",
+        target_url: "https://danger.systems/js",
+        description: message,
+      }
+    )
+
+    return res.ok
   }
 
   // API Helpers
