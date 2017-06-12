@@ -1,0 +1,10 @@
+language: node_js
+cache:
+  yarn: true
+  directories:
+  - node_modules
+
+node_js: node
+script:
+- yarn run link
+- danger run --verbose

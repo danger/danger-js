@@ -91,6 +91,7 @@
     "babel-plugin-transform-regenerator": "^6.22.0",
     "babel-preset-es2015": "^6.24.0",
     "babel-preset-stage-3": "^6.22.0",
+    "danger-plugin-yarn": "^0.2.9",
     "date-fns": "^1.28.3",
     "husky": "^0.13.3",
     "in-publish": "^2.0.0",

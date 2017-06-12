@@ -146,6 +146,14 @@ describe("with fixtures", () => {
       },
     ])
   })
+
+  it("can handle a plugin (which is already used in Danger)", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfilePlugin.js"), runtime)
+
+    expect(results.fails[0].message).toContain("@types dependencies were added to package.json")
+  })
 })
 
 describe("cleaning Dangerfiles", () => {
