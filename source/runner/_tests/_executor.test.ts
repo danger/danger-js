@@ -15,6 +15,7 @@ describe("setup", () => {
 
     platform.getPlatformGitRepresentation = jest.fn()
     platform.getPlatformDSLRepresentation = jest.fn()
+    platform.updateStatus = jest.fn()
 
     await exec.dslForDanger()
     expect(platform.getPlatformGitRepresentation).toBeCalled()

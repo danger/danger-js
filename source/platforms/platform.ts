@@ -43,19 +43,9 @@ export interface Platform {
   editMainComment: (newComment: string) => Promise<any>
   /** Replace the main Danger comment */
   updateOrCreateComment: (newComment: string) => Promise<any>
+  /** Sets the current PR's status */
+  updateStatus: (passed: boolean, message: string) => Promise<boolean>
 }
-
-//     /** Download all the comments in a PR */
-//     async downloadComments: (id: string) => Promise<Comment[]>;
-
-//     /** Create a comment on a PR */
-//     async  createComment: (body: string) => Promise<?Comment>;
-
-//     /** Delete comments on a PR */
-//     async deleteComment: (env: any) => Promise<booleanean>;
-
-//     /** Edit an existing comment */
-//     async editComment: (comment: Comment, newBody: string) => Promise<booleanean>;
 
 /**
  * Pulls out a platform for Danger to communicate on based on the environment

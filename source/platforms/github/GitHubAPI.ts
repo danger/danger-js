@@ -201,6 +201,29 @@ export class GitHubAPI {
 
     return res.ok ? res.json() : { labels: [] }
   }
+
+  async updateStatus(passed: boolean, message: string): Promise<any> {
+    const repo = this.repoMetadata.repoSlug
+
+    const prJSON = await this.getPullRequestInfo()
+    const ref = prJSON.head.sha
+    try {
+      const res = await this.post(
+        `repos/${repo}/statuses/${ref}`,
+        {},
+        {
+          state: passed ? "success" : "failure",
+          context: "Danger",
+          target_url: "https://danger.systems/js",
+          description: message,
+        }
+      )
+      return res.ok
+    } catch (error) {
+      return false
+    }
+  }
+
   // API Helpers
 
   private api(path: string, headers: any = {}, body: any = {}, method: string) {
