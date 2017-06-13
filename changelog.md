@@ -2,6 +2,8 @@
 
 ### Master
 
+### 0.21.0
+
 -   Posts status reports for passing/failing builds, if the account for danger has access - orta
 -   Adds prettier to the codebase - orta
 -   Converts a bunch of Danger's dangerfile into a plugin - [danger-plugin-yarn](https://github.com/orta/danger-plugin-yarn) - orta
