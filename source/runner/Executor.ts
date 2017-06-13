@@ -145,6 +145,9 @@ export class Executor {
 
     this.d(results)
 
+    const failed = fails.length > 0
+    const successPosting = await this.platform.updateStatus(!failed, messageForResults(results))
+
     if (failureCount + messageCount === 0) {
       console.log("No issues or messages were sent. Removing any existing messages.")
       await this.platform.deleteMainComment()
@@ -153,7 +156,9 @@ export class Executor {
         const s = fails.length === 1 ? "" : "s"
         const are = fails.length === 1 ? "is" : "are"
         console.log(`Failing the build, there ${are} ${fails.length} fail${s}.`)
-        process.exitCode = 1
+        if (!successPosting) {
+          process.exitCode = 1
+        }
       } else if (warnings.length > 0) {
         console.log("Found only warnings, not failing the build.")
       } else if (messageCount > 0) {
@@ -183,5 +188,18 @@ export class Executor {
       messages: [],
       markdowns: [exceptionRaisedTemplate(error)],
     }
+  }
+}
+
+const compliment = () => {
+  const compliments = ["Well done.", "Congrats.", "Woo!", "Yay.", "Jolly good show.", "Good on 'ya.", "Nice work."]
+  return compliments[Math.floor(Math.random() * compliments.length)]
+}
+
+const messageForResults = (results: DangerResults) => {
+  if (!results.fails.length && !results.warnings.length) {
+    return `All green. ${compliment()}`
+  } else {
+    return "⚠️ Danger found some issues. Don't worry, everything is fixable."
   }
 }

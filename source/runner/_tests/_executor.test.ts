@@ -1,7 +1,7 @@
 import { Executor } from "../Executor"
 import { FakeCI } from "../../ci_source/providers/Fake"
 import { FakePlatform } from "../../platforms/FakePlatform"
-import { emptyResults, warnResults } from "./fixtures/ExampleDangerResults"
+import { emptyResults, warnResults, failsResults } from "./fixtures/ExampleDangerResults"
 
 const defaultConfig = {
   stdoutOnly: false,
@@ -64,5 +64,40 @@ describe("setup", () => {
 
     await exec.handleResults(warnResults)
     expect(platform.updateOrCreateComment).toBeCalled()
+  })
+
+  it("Updates or Creates comments for warnings", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, defaultConfig)
+    platform.updateOrCreateComment = jest.fn()
+
+    await exec.handleResults(warnResults)
+    expect(platform.updateOrCreateComment).toBeCalled()
+  })
+
+  it("Updates the status with success for a passed results", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, defaultConfig)
+    platform.updateOrCreateComment = jest.fn()
+    platform.updateStatus = jest.fn()
+
+    await exec.handleResults(warnResults)
+    expect(platform.updateStatus).toBeCalledWith(
+      true,
+      "⚠️ Danger found some issues. Don't worry, everything is fixable."
+    )
+  })
+
+  it("Updates the status with success for a passed results", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, defaultConfig)
+    platform.updateOrCreateComment = jest.fn()
+    platform.updateStatus = jest.fn()
+
+    await exec.handleResults(failsResults)
+    expect(platform.updateStatus).toBeCalledWith(
+      false,
+      "⚠️ Danger found some issues. Don't worry, everything is fixable."
+    )
   })
 })

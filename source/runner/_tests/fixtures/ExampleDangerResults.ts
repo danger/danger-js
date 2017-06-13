@@ -8,7 +8,7 @@ export const emptyResults: DangerResults = {
 }
 
 export const failsResultsWithoutMessages: DangerResults = {
-  fails: [{}, {}],
+  fails: [{} as any, {} as any],
   warnings: [],
   messages: [],
   markdowns: [],

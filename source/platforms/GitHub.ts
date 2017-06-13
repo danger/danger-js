@@ -41,6 +41,15 @@ export class GitHub {
   }
 
   /**
+   * Fails the current build, if status setting succeeds
+   * then return true.
+   */
+
+  async updateStatus(passed: boolean, message: string): Promise<boolean> {
+    return await this.api.updateStatus(passed, message)
+  }
+
+  /**
    * Returns the `github` object on the Danger DSL
    *
    * @returns {Promise<GitHubDSL>} JSON response of the DSL
