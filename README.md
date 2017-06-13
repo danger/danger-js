@@ -199,6 +199,19 @@ Tips:
 
 Check the issues, I try and keep my short term perspective there. Long term is in the [VISION.md](VISION.md).
 
+### Releasing a new version of Danger
+
+Following [this commit](https://github.com/danger/danger-js/commit/a26ac3b3bd4f002acd37f6a363c8e74c9d5039ab) as a model:
+
+* Checkout the `master` branch. Ensure your working tree is clean, and make sure you have the latest changes by running `git pull`.
+* Update `package.json` with the new version - for the sake of this example, the new version is **0.21.0**.
+* Modify `changelog.md`, adding a new `### 0.21.0` heading under the `### Master` heading at the top of the file.
+* Commit both changes with the commit message **Version bump**.
+* Tag this commit - `git tag 0.21.0`.
+* Push the commit and tag to master - `git push origin master --follow-tags`. Travis CI will build the tagged commit and publish that tagged version to NPM.
+
+:ship:
+
 ## License, Contributor's Guidelines and Code of Conduct
 
 We try to keep as much discussion as possible in GitHub issues, but also have a pretty inactive Slack --- if you'd like an invite, ping [@Orta](https://twitter.com/orta/) a DM on Twitter with your email. It's mostly interesting if you want to stay on top of Danger without all the emails from GitHub.
