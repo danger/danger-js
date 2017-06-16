@@ -3,6 +3,7 @@
 ### Master
 
 -   Use HTTP for the GitHub status check target URL - macklinu
+-   Correct some examples in node-app - clintam
 
 ### 0.21.0
 
