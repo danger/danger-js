@@ -2,6 +2,8 @@
 
 ### Master
 
+-   Use HTTP for the GitHub status check target URL - macklinu
+
 ### 0.21.0
 
 -   Posts status reports for passing/failing builds, if the account for danger has access - orta
