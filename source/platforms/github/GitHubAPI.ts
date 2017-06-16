@@ -76,7 +76,7 @@ export class GitHubAPI {
     const allComments: any[] = await this.getPullRequestComments()
     const dangerComment = find(
       allComments,
-      (comment: any) => comment.user.id === userID && v.includes(comment.body, dangerSignaturePostfix)
+      (comment: any) => (!userID || comment.user.id === userID) && v.includes(comment.body, dangerSignaturePostfix)
     )
     return dangerComment ? dangerComment.id : null
   }
@@ -102,7 +102,10 @@ export class GitHubAPI {
     return Promise.resolve(res.status === 204)
   }
 
-  async getUserID(): Promise<number> {
+  async getUserID(): Promise<number | undefined> {
+    if (process.env["DANGER_GITHUB_APP"]) {
+      return
+    }
     const info = await this.getUserInfo()
     return info.id
   }

@@ -61,12 +61,16 @@ describe("API testing", () => {
 })
 
 describe("Peril", () => {
-  it("Allows setting additional headers", async () => {
+  let api: GitHubAPI
+
+  beforeEach(() => {
     const mockSource = new FakeCI({})
-    const api = new GitHubAPI(mockSource, "ABCDE")
+    api = new GitHubAPI(mockSource, "ABCDE")
     api.fetch = jest.fn()
     api.additionalHeaders = { CUSTOM: "HEADER" }
+  })
 
+  it("Allows setting additional headers", async () => {
     const request = await api.get("user")
     expect(api.fetch).toHaveBeenCalledWith("https://api.github.com/user", {
       body: {},
@@ -76,6 +80,20 @@ describe("Peril", () => {
         "Content-Type": "application/json",
       },
       method: "GET",
+    })
+  })
+
+  describe("Allows setting DANGER_GITHUB_APP env variable", () => {
+    beforeEach(() => {
+      process.env.DANGER_GITHUB_APP = "1"
+    })
+
+    afterEach(() => {
+      delete process.env.DANGER_GITHUB_APP
+    })
+
+    it("Makes getUserId return undefined", async () => {
+      expect(await api.getUserID()).toBeUndefined()
     })
   })
 })
