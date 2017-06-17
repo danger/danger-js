@@ -20,7 +20,7 @@ We use [a slack bot][no-slacking] to let people know when they've been assigned 
 ```js
 import { danger, fail, warn } from "danger"
 
-if (!danger.pr.assignee) {
+if (!danger.github.pr.assignee) {
   fail("This pull request needs an assignee, and optionally include any reviewers.")
 }
 ```
@@ -32,7 +32,7 @@ We can make a small improvement to this rule, by allowing someone to declare tha
 ```js
 import { danger, fail, warn } from "danger"
 
-if (!danger.pr.assignee) {
+if (!danger.github.pr.assignee) {
   const method = pr.title.includes("WIP") ? warn : fail
   method("This pull request needs an assignee, and optionally include any reviewers.")
 }
@@ -45,7 +45,7 @@ Using a function as a variable we can determine whether to fail, or warn based o
 In a similar vein, we also want to encourage pull requests as a form of documentation. We can help push people in this direction by not allowing the body of a pull request to be less than a few characters long.
 
 ```js
-if (!danger.pr.body.length < 10) {
+if (danger.github.pr.body.length < 10) {
   fail("This pull request needs an description.")
 }
 ```
