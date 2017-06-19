@@ -71,7 +71,12 @@ export interface GitHubIssueLabel {
 
 // This is `danger.github.pr`
 
-/** What a PR's JSON looks like */
+/**
+ * An exact copy of the PR's reference JSON. This interface has type'd the majority
+ * of it for tooling's sake, but any extra metadata which GitHub send will still be
+ * inside the JS object.
+ */
+
 export interface GitHubPRDSL {
   /**
    * The UUID for the PR
@@ -85,7 +90,6 @@ export interface GitHubPRDSL {
 
   /**
    * Has the PR been locked to contributors only?
-   * @type {boolean}
    */
   locked: boolean
 
@@ -146,8 +150,7 @@ export interface GitHubPRDSL {
   assignees: GitHubUser[]
 
   /**
-   * Has the PR been merged yet
-   * @type {boolean}
+   * Has the PR been merged yet?
    */
   merged: boolean
 
@@ -184,7 +187,7 @@ export interface GitHubPRDSL {
 
 // These are the individual subtypes of objects inside the larger DSL objects above.
 
-/** A GitHub specific implmentation of a git commit */
+/** A GitHub specific implmentation of a git commit, it has GitHub user names instead of an email. */
 export interface GitHubCommit {
   /** The raw commit metadata */
   commit: GitCommit
@@ -201,7 +204,7 @@ export interface GitHubCommit {
 }
 
 /**
- * A GitHub user account
+ * A GitHub user account.
  */
 export interface GitHubUser {
   /**

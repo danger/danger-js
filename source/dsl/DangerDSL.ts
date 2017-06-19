@@ -14,12 +14,20 @@ export interface DangerDSLType {
    */
   readonly git: GitDSL
   /**
-   *  The GitHub metadata.
+   *  The GitHub metadata. This covers things like PR info,
+   *  comments and reviews on the PR, label metadata, commits with
+   *  GitHub user identities and some useful utility functions
+   *  for displaying links to files.
+   *
+   *  Also provides an authenticated API so you can work directly
+   *  with the GitHub API. That is an instance of the "github" npm module.
    */
   readonly github: GitHubDSL
 
   /**
-   * Danger utils
+   * Functions which are gloablly useful in most Dangerfiles. Right
+   * now, these functions are around making sentences of arrays, or
+   * for making hrefs easily.
    */
   readonly utils: DangerUtilsDSL
 }

@@ -9,11 +9,11 @@ So, you're ready to get set up.
 
 There are 5 steps involved in getting Danger running:
 
-* [Include the Danger module](#including-danger).
-* [Creating a Dangerfile](#creating-a-dangerfile) and add a few simple rules.
-* [Creating an account for Danger to use](#creating-a-bot-account-for-danger-to-use).
-* Setting up [an access token for Danger](#setting-up-an-access-token) with that account.
-* Setting up [Danger to run on your CI](#setting-up-danger-to-run-on-your-ci).
+-   [Include the Danger module](#including-danger).
+-   [Creating a Dangerfile](#creating-a-dangerfile) and add a few simple rules.
+-   [Creating an account for Danger to use](#creating-a-bot-account-for-danger-to-use).
+-   Setting up [an access token for Danger](#setting-up-an-access-token) with that account.
+-   Setting up [Danger to run on your CI](#setting-up-danger-to-run-on-your-ci).
 
 ## Including Danger
 
@@ -48,7 +48,7 @@ This is optional. Pragmatically, you want to do this though. Currently Danger JS
 
 In order to get the most out of Danger, we recommend giving her the ability to post comments in your Pull Requests. This is a regular GitHub account, but depending on whether you are working on a private or public project, you will want to give different levels of access to this bot. You are allowed to have [one bot per GitHub account][github_bots].
 
-To get started, open [https://github.com](https://github.com) in a private browser session.
+To get started, open <https://github.com> in a private browser session.
 
 ### OSS Projects
 
@@ -74,8 +74,8 @@ We recommend giving access to the whole `repo` scope, and its children.
 
 You can work with GitHub Enterprise by setting 2 environment variables:
 
-* `DANGER_GITHUB_HOST` to the host that GitHub is running on.
-* `DANGER_GITHUB_API_BASE_URL` to the host that the GitHub Enterprise API is reachable on.
+-   `DANGER_GITHUB_HOST` to the host that GitHub is running on.
+-   `DANGER_GITHUB_API_BASE_URL` to the host that the GitHub Enterprise API is reachable on.
 
 For example:
 
@@ -95,7 +95,7 @@ Danger is built to run as a part of this process, so you will need to have this 
 (should we do this for DangerJS too?)
 
 / These docs all come from
-/ https://github.com/danger/danger/tree/master/lib/danger/ci_source
+/ <https://github.com/danger/danger/tree/master/lib/danger/ci_source>
 / inline documentation, rather than from inside this page.
 
 ### Verify Installation
@@ -106,21 +106,30 @@ You should be able to verify that you have successfully integrated Danger by eit
 
 There are a few of places you can go from here. We'd recommending opening tabs on all these articles:
 
-* [The Dangerfile][dangerfile].
-* [Cultural Changes of Danger][culture].
-* [The Dangerfile API reference][api].
+-   [The Dangerfile][dangerfile].
+-   [Cultural Changes of Danger][culture].
+-   [The Dangerfile API reference][api].
 
 Then depending on the type of project you are working on, checking out either [Danger + Node App][app], or [Danger + Node Library][lib]. These should give you good overview of what is possible from here, then it's really up to you to find how you can codify some aspects of your team's culture.
 
 Good luck!
 
 [jest]: https://facebook.github.io/jest/
+
 [jest-config]: https://facebook.github.io/jest/docs/configuration.html
+
 [github_bots]: https://twitter.com/sebastiangrail/status/750844399563608065
+
 [github_token]: https://github.com/settings/tokens/new
-[Yarn]: https://yarnpkg.com
+
+[yarn]: https://yarnpkg.com
+
 [api]: /js/reference.html
+
 [dangerfile]: /js/guides/the_dangerfile.html
-[culture]: /js/guides/culture.html
+
+[culture]: /js/usage/culture.html
+
 [app]: /js/tutorials/node-app.html
+
 [lib]: /js/tutorials/node-library.html

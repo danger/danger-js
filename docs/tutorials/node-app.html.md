@@ -52,8 +52,8 @@ if (!danger.pr.body.length < 10) {
 
 This can be expanded to all sorts of checks for example:
 
-* Making sure every PR references an issue, or JIRA ticket.
-* Skipping particular rules based on what someone says inside the message. E.g. "This is a trivial PR."
+-   Making sure every PR references an issue, or JIRA ticket.
+-   Skipping particular rules based on what someone says inside the message. E.g. "This is a trivial PR."
 
 ## Results of CI Processes
 
@@ -70,34 +70,38 @@ If your tool does not have an extra log file output option, you can look at usin
 
 And here's a really simple check that it contains the word "Failed" and to post the logs into the PR.
 
-```js
-import { danger, markdown } from "danger"
+````js
+            import { danger, markdown } from "danger"
 
-import contains from "lodash-contains"
-import fs from "fs"
+            import contains from "lodash-contains"
+            import fs from "fs"
 
-const testFile = "tests-output.log"
-const linterOutput = fs.readFileSync(testFile).toString()
+            const testFile = "tests-output.log"
+            const linterOutput = fs.readFileSync(testFile).toString()
 
-if (contains(linterOutput, "Failed")) {
-  const code = "```"
-  markdown(`These changes failed to pass the linter:
+            if (contains(linterOutput, "Failed")) {
+              const code = "```"
+              markdown(`These changes failed to pass the linter:
 
-${code}
-${linterOutput}
-${code}
-  `)
-}
-```
+            ${code}
+            ${linterOutput}
+            ${code}
+              `)
+            }
+````
 
-More mature tools may have a JSON output reporter, so you can parse that file and create your own markdown table.
+More mature tools may have a JSON output reporter, so you can parse that file and create your own report for danger to post.
 
 If you build something that is a generic wrapper around a specific linting tool, this is a great place to convert that code [into a plugin][plugin] so that anyone can use it. In this case, Danger effectively is a way of moving these messages into the code review session.
 
-
 [started]: /js/guides/getting_started.html
-[Artsy]: http://artsy.github.io
+
+[artsy]: http://artsy.github.io
+
 [no-slacking]: https://github.com/alloy/no-slacking-on-pull-requests-bot
+
 [pr]: https://developer.github.com/v3/pulls/#get-a-single-pull-request
+
 [tee]: http://linux.101hacks.com/unix/tee-command-examples/
+
 [plugin]: /js/usage/extending-danger.html
