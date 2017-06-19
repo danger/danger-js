@@ -7,7 +7,7 @@ Danger on Node, wonder what's going on? see [VISION.md](VISION.md)
 _Welcome!_
 
 So, what's the deal? Well, right now Danger JS does a lot of the simpler parts of [the Ruby version](http://danger.systems).
-You can look at [Git](https://github.com/danger/danger-js/blob/master/source/dsl/GitDSL.ts) metadata, or [GitHub](https://github.com/danger/danger-js/blob/master/source/dsl/GitHubDSL.ts) metadata on Travis CI, Circle CI, Semaphore, Jenkins, Docker Cloud, surf-build, Codeship, Drone, or Buildkite.
+You can look at [Git](https://github.com/danger/danger-js/blob/master/source/dsl/GitDSL.ts) metadata, or [GitHub](https://github.com/danger/danger-js/blob/master/source/dsl/GitHubDSL.ts) metadata on Travis CI, Circle CI, Semaphore, Jenkins, Docker Cloud, surf-build, Codeship, Drone, Buildkite, or buddybuild.
 
 Danger can fail your build, write a comment on GitHub, edit it as your PR changes and then delete it once you've passed review. Perfect.
 
