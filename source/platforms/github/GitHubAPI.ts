@@ -213,7 +213,7 @@ export class GitHubAPI {
       {
         state: passed ? "success" : "failure",
         context: "Danger",
-        target_url: "https://danger.systems/js",
+        target_url: "http://danger.systems/js",
         description: message,
       }
     )
