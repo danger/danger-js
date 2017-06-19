@@ -5,6 +5,12 @@ import { GitHubPRDSL, GitHubUtilsDSL } from "./../../dsl/GitHubDSL"
 // We need to curry in access to the GitHub PR metadata
 
 const utils = (pr: GitHubPRDSL): GitHubUtilsDSL => {
+  /**
+   * Converts a set of filepaths into a sentence'd set of hrefs for the
+   * current PR. Can be configured to just show the name (instead of full filepath), to
+   * change the github repo or branch.
+   *
+   */
   const fileLinks = (paths: string[], useBasename: boolean = true, repoSlug?: string, branch?: string): string => {
     // To support enterprise github, we need to handle custom github domains
     // this can be pulled out of the repo url metadata
