@@ -5,6 +5,7 @@
 -   Use HTTP for the GitHub status check target URL - macklinu
 -   Correct some examples in node-app - clintam
 -   Add support for buddybuild CI - benkraus/clintam
+-   Add support for GithHub Apps API (no GET /user) - clintam
 
 ### 0.21.0
 
