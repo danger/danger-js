@@ -7,15 +7,13 @@ order: 1
 
 ## Writing your Dangerfile
 
-The Danger JS DSL is fully typed via TypeScript (and eventually Flow again.)  These definitions are shipped with the Danger module. If your text editor supports working with type definitions you will get inline-documentation and auto-completion. Visual Studios Code will do this by default for you.
+The Danger JS DSL is fully typed via TypeScript. These definitions are shipped with the Danger module. If your text editor supports working with type definitions you will get inline-documentation and auto-completion after you import danger in your Dangerfile. Visual Studios Code will do this by default for you.
 
 If you are using Babel in your project, your Dangerfile will use the same transpilation settings. If you're using TypeScript + Jest it will work out of the box too, however, if you don't, you should head over to the [TypeScript guide][ts_guide]
 
 ## Working on your Dangerfile
 
-There are two ways to work and test out your Dangerfile, outside of running it on your CI and checking the results. 
-
-These both rely on using the GitHub API locally, so you may hit the GitHub API rate-limit or need to have authenticated request for private repos. In which case you can use an access token to do authenticated requests by exposing a token to Danger.
+There are two ways to locally work on your Dangerfile.  These both rely on using the GitHub API locally, so you may hit the GitHub API rate-limit or need to have authenticated request for private repos. In which case you can use an access token to do authenticated requests by exposing a token to Danger.
 
 ```sh
 export DANGER_GITHUB_API_TOKEN='xxxxxxxxxx'
@@ -23,13 +21,13 @@ export DANGER_GITHUB_API_TOKEN='xxxxxxxxxx'
 
 Then the danger CLI will use these authenticated API calls.
 
-#### Using `danger pr`
+### Using `danger pr`
 
 The command `danger pr` expects an argument of a PR url, e.g. `yarn danger pr https://github.com/danger/danger-js/pull/100`.
 
-This will use your local Dangerfile against the metadata of the linked PR. Danger will then output the results into your terminal, instead of on the PR itself.
+This will use your local Dangerfile against the metadata of the linked PR. Danger will then output the results into your terminal, instead of inside the PR itself.
 
-#### Using `danger` and Faking being on a CI
+### Using `danger` and Faking being on a CI
 
 If you create an [appropriately scoped temporary api token](http://danger.systems/guides/getting_started.html#setting-up-an-access-token) for your github account, this can be a good way to see if danger is suitable for you before integrating it into your CI system.
 
@@ -54,9 +52,9 @@ Assuming that your local file-system matches up to that branch on GitHub, this w
 
 We've not found the perfect pattern for handling different patterns of asynchronous behavior inside a Dangerfile. Here are some patterns for handling them.
 
-* **Ignore Async.** - A Dangerfile is a script, the non-blocking aspect of the node API can be ignored. E.g. use `fs.readFileSync` instead of `fs.readFile`. Danger works really well with [ShellJS][]
+-   **Ignore Async.** - A Dangerfile is a script, the non-blocking aspect of the node API can be ignored. E.g. use `fs.readFileSync` instead of `fs.readFile`. Danger works really well with [ShellJS][]
 
-* **Scheduling** - The Dangerfile DSL includes a function called `schedule`, this can handle either a promise or a function with a callback arg. For example using `async/await`:
+-   **Scheduling** - The Dangerfile DSL includes a function called `schedule`, this can handle either a promise or a function with a callback arg. For example using `async/await`:
 
 ```js
 import { schedule, danger } from "danger"
@@ -102,11 +100,11 @@ const touchedComponents = touchedFiles.filter(p => includes(p, "src/lib/componen
 
 ## Utils
 
-As the JavaScript library API is relatively limited, the Danger module includes utility functions for work which is common to most Dangerfiles. There can be found in both `utils`, and `github.utils` for GitHub specific functions. We're interested at growing this slowly.
+As the JavaScript library API is relatively limited, the Danger module includes utility functions for work which is common to most Dangerfiles. These functions can be found in both `utils`, and `github.utils` for GitHub specific functions. We're interested at growing this carefully.
 
-## Nuance
+## Finding more info
 
-The CHANGELOG for Danger is kept entirely end-user focused, so if there is an aspect of the Dangerfule that you do not know, or looks confusing and there is nothing in the document - check the CHANGELOG. This is where we write-up why a change happened, and how it can affect Danger users.
+The CHANGELOG for Danger is kept entirely end-user focused, so if there is an aspect of the Dangerfile that you do not know, or looks confusing and there is nothing in the documentation - check the CHANGELOG. This is where we write-up why a change happened, and how it can affect Danger users.
 
 ### Examples
 
@@ -114,21 +112,30 @@ If you'd like to work with some reference material, here are some examples in th
 
 JavaScript:
 
-* **Apps** - [Artsy/metaphysics][meta].
-* **Libraries** - [Facebook/Jest][fbj], [styled-components/styled-components][sc] and [ReactiveX/rxjs][rxjs].
+-   **Apps** - [Artsy/metaphysics][meta].
+-   **Libraries** - [Facebook/Jest][fbj], [styled-components/styled-components][sc] and [ReactiveX/rxjs][rxjs].
 
 Some TypeScript examples:
 
-* **Apps** - [Artsy/Emission][emiss]
-* **Libraries** [danger/danger-js][danger-js]
+-   **Apps** - [Artsy/Emission][emiss]
+-   **Libraries** [danger/danger-js][danger-js]
 
 [emiss]: https://github.com/artsy/emission/blob/master/dangerfile.ts
+
 [danger-js]: https://github.com/danger/danger-js/blob/master/dangerfile.ts
+
 [meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
+
 [fbj]: https://github.com/facebook/jest/blob/master/dangerfile.js
+
 [sc]: https://github.com/styled-components/styled-components/blob/master/dangerfile.js
+
 [rxjs]: https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js
+
 [setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
+
 [jest]: https://github.com/facebook/jest
-[ShellJS]: http://github.com/shelljs/shelljs
-[ts_guide]: DFSDGSDFDgdsgdfgd
+
+[shelljs]: http://github.com/shelljs/shelljs
+
+[ts_guide]: /js/tutorials/typescript.html

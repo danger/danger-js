@@ -1,10 +1,10 @@
-import {BuddyBuild} from "../BuddyBuild"
-import {getCISourceForEnv} from "../../get_ci_source"
+import { BuddyBuild } from "../BuddyBuild"
+import { getCISourceForEnv } from "../../get_ci_source"
 
 const correctEnv = {
-  "BUDDYBUILD_BUILD_ID": "xxx",
-  "BUDDYBUILD_REPO_SLUG": "someone/something",
-  "BUDDYBUILD_PULL_REQUEST": "999"
+  BUDDYBUILD_BUILD_ID: "xxx",
+  BUDDYBUILD_REPO_SLUG: "someone/something",
+  BUDDYBUILD_PULL_REQUEST: "999",
 }
 
 describe("being found when looking for CI", () => {
@@ -40,8 +40,8 @@ describe(".isPR", () => {
   const envs = ["BUDDYBUILD_REPO_SLUG", "BUDDYBUILD_PULL_REQUEST"]
   envs.forEach((key: string) => {
     let env = {
-      "BUDDYBUILD_REPO_SLUG": "someone/something",
-      "BUDDYBUILD_PULL_REQUEST": "999"
+      BUDDYBUILD_REPO_SLUG: "someone/something",
+      BUDDYBUILD_PULL_REQUEST: "999",
     }
     env[key] = null
 
@@ -52,8 +52,8 @@ describe(".isPR", () => {
 
     it("needs to have a PR number", () => {
       let env = {
-        "BUDDYBUILD_REPO_SLUG": "someone/something",
-        "BUDDYBUILD_PULL_REQUEST": "asdf"
+        BUDDYBUILD_REPO_SLUG: "someone/something",
+        BUDDYBUILD_PULL_REQUEST: "asdf",
       }
       const buddyBuild = new BuddyBuild(env)
       expect(buddyBuild.isPR).toBeFalsy()
@@ -63,14 +63,14 @@ describe(".isPR", () => {
 
 describe(".pullRequestID", () => {
   it("pulls it out of the env", () => {
-    const buddyBuild = new BuddyBuild({BUDDYBUILD_PULL_REQUEST: "999"})
+    const buddyBuild = new BuddyBuild({ BUDDYBUILD_PULL_REQUEST: "999" })
     expect(buddyBuild.pullRequestID).toEqual("999")
   })
 })
 
 describe(".repoSlug", () => {
   it("pulls it out of the env", () => {
-    const buddyBuild = new BuddyBuild({BUDDYBUILD_REPO_SLUG: "someone/something"})
+    const buddyBuild = new BuddyBuild({ BUDDYBUILD_REPO_SLUG: "someone/something" })
     expect(buddyBuild.repoSlug).toEqual("someone/something")
   })
 })

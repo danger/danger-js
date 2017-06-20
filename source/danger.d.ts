@@ -46,17 +46,26 @@ declare module "danger" {
      */
     readonly git: GitDSL
     /**
-     *  The GitHub metadata.
+     *  The GitHub metadata. This covers things like PR info,
+     *  comments and reviews on the PR, label metadata, commits with
+     *  GitHub user identities and some useful utility functions
+     *  for displaying links to files.
+     *
+     *  Also provides an authenticated API so you can work directly
+     *  with the GitHub API. That is an instance of the "github" npm module.
      */
     readonly github: GitHubDSL
 
     /**
-     * Danger utils
+     * Functions which are gloablly useful in most Dangerfiles. Right
+     * now, these functions are around making sentences of arrays, or
+     * for making hrefs easily.
      */
     readonly utils: DangerUtilsDSL
   }
   /**
-   * Representation of what running a Dangerfile generates.
+   * The representation of what running a Dangerfile generates.
+   *
    * In the future I'd like this to be cross process, so please
    * do not add functions, only data to this interface.
    */
@@ -72,12 +81,12 @@ declare module "danger" {
     warnings: Violation[]
 
     /**
-     * Markdown messages
+     * A set of messages to show inline
      */
     messages: Violation[]
 
     /**
-     * Markdown messages at the bottom of the comment
+     * Markdown messages to attach at the bottom of the comment
      */
     markdowns: MarkdownString[]
   }
@@ -295,7 +304,12 @@ declare module "danger" {
 
   // This is `danger.github.pr`
 
-  /** What a PR's JSON looks like */
+  /**
+   * An exact copy of the PR's reference JSON. This interface has type'd the majority
+   * of it for tooling's sake, but any extra metadata which GitHub send will still be
+   * inside the JS object.
+   */
+
   interface GitHubPRDSL {
     /**
      * The UUID for the PR
@@ -369,7 +383,7 @@ declare module "danger" {
     assignees: GitHubUser[]
 
     /**
-     * Has the PR been merged yet
+     * Has the PR been merged yet?
      */
     merged: boolean
 
@@ -406,7 +420,7 @@ declare module "danger" {
 
   // These are the individual subtypes of objects inside the larger DSL objects above.
 
-  /** A GitHub specific implmentation of a git commit */
+  /** A GitHub specific implmentation of a git commit, it has GitHub user names instead of an email. */
   interface GitHubCommit {
     /** The raw commit metadata */
     commit: GitCommit
@@ -423,7 +437,7 @@ declare module "danger" {
   }
 
   /**
-   * A GitHub user account
+   * A GitHub user account.
    */
   interface GitHubUser {
     /**
@@ -575,28 +589,33 @@ declare module "danger" {
     message: string
   }
   /**
-   * Contains asynchronous code to be run after the application has booted.
+   * A Dangerfile is evaluated as a script, and so async code does not work
+   * out of the box. By using the `schedule` function you can now register a
+   * section of code to evaluate across multiple tick cycles.
+   *
+   * `schedule` currently handles two types of arguments, either a promise or a function with a resolve arg.
    *
    * @param {Function} asyncFunction the function to run asynchronously
    */
   function schedule(asyncFunction: (p: Promise<any>) => void): void
 
   /**
-   * Fails a build, outputting a specific reason for failing
+   * Fails a build, outputting a specific reason for failing.
    *
    * @param {MarkdownString} message the String to output
    */
   function fail(message: MarkdownString): void
 
   /**
-   * Highlights low-priority issues, does not fail the build
+   * Highlights low-priority issues, but does not fail the build.
    *
    * @param {MarkdownString} message the String to output
    */
   function warn(message: MarkdownString): void
 
   /**
-   * Puts a message inside the Danger table
+   * Adds a message to the Danger table, the only difference between this
+   * and warn is the emoji which shows in the table.
    *
    * @param {MarkdownString} message the String to output
    */
@@ -613,13 +632,13 @@ declare module "danger" {
   const console: Console
 
   /**
-   * The Danger object to work with
-   *
+   * The root Danger object. This contains all of the metadata you
+   * will be looking for in order to generate useful rules.
    */
   const danger: DangerDSLType
   /**
-   * Results of a Danger run
-   *
+   * The current results of a Danger run, this can be useful if you
+   * are wanting to introspect on whether a build has already failed.
    */
   const results: DangerRuntimeContainer
 }

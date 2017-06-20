@@ -16,6 +16,8 @@
 This is my first non-trivial plugin, based on infrastructure from @macklinu.
 Plugins are looking great, you can get some info at <https://github.com/macklinu/generator-danger-plugin>.
 
+-   Docs updates for the website - orta
+
 ### 0.20.0
 
 -   Fix `danger pr` commands are not running on windows - kwonoj
