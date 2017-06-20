@@ -2,6 +2,8 @@
 
 ### Master
 
+### 0.21.1
+
 -   Use HTTP for the GitHub status check target URL - macklinu
 -   Correct some examples in node-app - clintam
 -   Add support for buddybuild CI - benkraus/clintam
