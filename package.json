@@ -93,7 +93,7 @@
     "babel-preset-stage-3": "^6.22.0",
     "danger-plugin-yarn": "^0.2.9",
     "date-fns": "^1.28.3",
-    "husky": "^0.13.3",
+    "husky": "^0.14.0",
     "in-publish": "^2.0.0",
     "jest": "^20.0.0",
     "lint-staged": "^4.0.0",
