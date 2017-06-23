@@ -2,6 +2,8 @@
 
 ### Master
 
+-   Use an absolute url for the jest-resolver config moduleDirs option so that Peril can run dangerfiles out of process - orta
+
 ### 0.21.1
 
 -   Use HTTP for the GitHub status check target URL - macklinu
