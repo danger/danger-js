@@ -3,6 +3,7 @@ title: Danger + Dependencies
 subtitle: Danger + Dependencies
 layout: guide_js
 order: 2
+blurb: An example of how can you use Danger to keep your dependencies in check.
 ---
 
 ## Before we get started
@@ -38,8 +39,8 @@ This works, and for a while, this is enough. Time passes and you hear about a no
 
 There are two aspects that you consider:
 
-* Keeping track of changes to `dependencies` (for noted dependencies)
-* Reading the lockfile for the dependency (for transitive dependencies)
+-   Keeping track of changes to `dependencies` (for noted dependencies)
+-   Reading the lockfile for the dependency (for transitive dependencies)
 
 ### Keeping track of changes to dependencies
 
@@ -112,15 +113,20 @@ Note the use of `readFileSync`, as Danger is running as a script you'll find it 
 
 This should give you an idea on how to understand changes to your `node_modules`, from here you can create any rules you want using a mix of `JSONDiffForFile`, `fs.readFileSync` and `child_process.execSync`. Here are a few ideas to get you started:
 
-* Convert the check for the package and lockfile to use `JSONDiffForFile` so that it only warns on `dependencies` or `devDependencies`.
-* Ensure you never add `@types/[module]` to `dependencies` but only into `devDependencies`.
-* When a new dependency is added, use a web-service like [libraries.io][libs] to describe the module inline.
-* [Parse][yarn-parse] the `yarn.lock` file, to say how many transitive dependencies are added on every new dependency.
-* When a dependency is removed, and no other dependencies are added, do a thumbs up 👍.
+-   Convert the check for the package and lockfile to use `JSONDiffForFile` so that it only warns on `dependencies` or `devDependencies`.
+-   Ensure you never add `@types/[module]` to `dependencies` but only into `devDependencies`.
+-   When a new dependency is added, use a web-service like [libraries.io][libs] to describe the module inline.
+-   [Parse][yarn-parse] the `yarn.lock` file, to say how many transitive dependencies are added on every new dependency.
+-   When a dependency is removed, and no other dependencies are added, do a thumbs up 👍.
 
 [started]: /js/guides/getting_started.html
+
 [lockfile]: https://yarnpkg.com/lang/en/docs/yarn-lock/
-[shrinkwrap]:  https://docs.npmjs.com/cli/shrinkwrap
+
+[shrinkwrap]: https://docs.npmjs.com/cli/shrinkwrap
+
 [danger-why]: https://github.com/danger/danger-js/blob/8fba6e7c301ac3459c2b0b93264bff7256efd8da/dangerfile.ts#L49
+
 [libs]: https://libraries.io
+
 [yarn-parse]: https://www.npmjs.com/package/parse-yarn-lock

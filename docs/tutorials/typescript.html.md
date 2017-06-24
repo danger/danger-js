@@ -3,6 +3,7 @@ title: Danger + TypeScript
 subtitle: Danger + TypeScript
 layout: guide_js
 order: 3
+blurb: Specifics on using Danger with TypeScript.
 ---
 
 ### TypeScript
@@ -14,8 +15,8 @@ then the only thing you need to do is change your Dangerfile to be `dangerfile.t
 
 You'll need to take the following steps for danger to evaluate your `dangerfile.ts`:
 
-* Install the `ts-jest` package - `yarn add ts-jest --dev`
-* Add the following `jest` section to your `package.json`
+-   Install the `ts-jest` package - `yarn add ts-jest --dev`
+-   Add the following `jest` section to your `package.json`
 
 ```json
 {

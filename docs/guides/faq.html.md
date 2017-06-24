@@ -3,17 +3,26 @@ title: FAQ
 subtitle: Frequently Asked Questions
 layout: guide_js
 order: 3
+blurb: Common questions that come up in our GitHub issues.
 ---
 
 ## Can Danger comment inside a file on an PR?
 
 Not yet, but there is a lot of discussion on [danger-js#77][77].
 
-## My
-
 ## Can I use the same Dangerfile across many repos?
 
 Ish, it's currently quite complex to set up, but work is on-going on [Danger/Peril][peril]. This is a hosted version of Danger which does not need to run on CI. Using Peril you can use Dangerfiles to reply to basically any GitHub webhook type.
+
+## I only want to run Danger for internal contributors
+
+Let's say you run Danger on the same CI service that deploys your code. If that's open source, you don't want to be letting anyone pull out your private env vars. The work around for this is to not simply call Danger on every test run:
+
+```sh
+'[ ! -z $DANGER_GITHUB_API_TOKEN ] && yarn danger || echo "Skipping Danger for External Contributor"'
+```
+
+This ensures that Danger only runs when you have the environment variables set up to run. This is how Danger works for a lot of the open source mobile projects in Artsy.
 
 ## I want to help influence Danger's direction
 
