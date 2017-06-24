@@ -3,6 +3,7 @@ title: Getting Started with Danger JS
 subtitle: Getting Started with Danger JS
 layout: guide_js
 order: 0
+blurb: Step one on using Danger in your application. Start here.
 ---
 
 So, you're ready to get set up. 

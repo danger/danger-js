@@ -3,6 +3,7 @@ title: Danger + Node Library
 subtitle: Danger + Node Library
 layout: guide_js
 order: 1
+blurb: An example where you work on an OSS node library, so you're trying to improve overall contributions from light contributors.
 ---
 
 ## Before we get started
@@ -49,7 +50,7 @@ Any dependencies that you use are passed on to all of your library consumers, so
 
 An example from Danger itself, is that we want to ensure the README always shows what CI providers will work by default with Danger. As both the app, and Danger use JavaScript, we can import code from the app and use that to create a new rule.
 
-``` js
+```js
 import { danger, fail, warn } from "danger"
 import contains from "lodash.contains"
 
@@ -66,8 +67,6 @@ if (missing.length) {
 
 Danger also uses a similar check to create our type definition files, if any of the public DSL changes then Danger checks that the type definitions have been updated, and recommends how to do so if not.
 
-### 
+[deps]: /js/tutorials/dependencies.html
 
-* Release PRs
-
-[deps]: AasASDASDASDA
+[started]: /js/guides/getting_started.html

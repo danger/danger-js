@@ -3,6 +3,7 @@ title: Extending Danger
 subtitle: Plugin creation
 layout: guide_js
 order: 0
+blurb: How to take your rules, and make them accessible to more people by writing a Danger plugin.
 ---
 
 You've built a few rules now, and you think you've wrote something that's useful in a more general sense. So, rather than copy & paste between all your Dangerfiles, it's time to move that code into a plugin.

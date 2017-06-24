@@ -3,6 +3,7 @@ title: Danger in a Node App
 subtitle: Danger + Node
 layout: guide_js
 order: 0
+blurb: An example where you work in a team on a node app, and some of the common Danger rules for working together.
 ---
 
 ## Before we get started
@@ -71,23 +72,23 @@ If your tool does not have an extra log file output option, you can look at usin
 And here's a really simple check that it contains the word "Failed" and to post the logs into the PR.
 
 ````js
-            import { danger, markdown } from "danger"
+                    import { danger, markdown } from "danger"
 
-            import contains from "lodash-contains"
-            import fs from "fs"
+                    import contains from "lodash-contains"
+                    import fs from "fs"
 
-            const testFile = "tests-output.log"
-            const linterOutput = fs.readFileSync(testFile).toString()
+                    const testFile = "tests-output.log"
+                    const linterOutput = fs.readFileSync(testFile).toString()
 
-            if (contains(linterOutput, "Failed")) {
-              const code = "```"
-              markdown(`These changes failed to pass the linter:
+                    if (contains(linterOutput, "Failed")) {
+                      const code = "```"
+                      markdown(`These changes failed to pass the linter:
 
-            ${code}
-            ${linterOutput}
-            ${code}
-              `)
-            }
+                    ${code}
+                    ${linterOutput}
+                    ${code}
+                      `)
+                    }
 ````
 
 More mature tools may have a JSON output reporter, so you can parse that file and create your own report for danger to post.

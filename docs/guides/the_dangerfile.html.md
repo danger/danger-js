@@ -3,6 +3,7 @@ title: About the Dangerfile
 subtitle: The Dangerfile
 layout: guide_js
 order: 1
+blurb: Step two on using Danger in your app, how to work with it locally and nuances around async code and working with files.
 ---
 
 ## Writing your Dangerfile

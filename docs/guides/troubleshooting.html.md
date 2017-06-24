@@ -3,19 +3,10 @@ title: Troubleshooting
 subtitle: Troubleshooting
 layout: guide_js
 order: 4
+blurb: Answers to common bugs.
 ---
 
-## I only want to run Danger for internal contributors
-
-Let's say you run Danger on the same CI service that deploys your code. If that's open source, you don't want to be letting anyone pull out your private env vars. The work around for this is to not simply call Danger on every test run:
-
-```sh
-'[ ! -z $DANGER_GITHUB_API_TOKEN ] && yarn danger || echo "Skipping Danger for External Contributor"'
-```
-
-This ensures that Danger only runs when you have the environment variables set up to run. This is how Danger works for a lot of the open source mobile projects in Artsy.
-
-## I'm seeing a lot of Cannot read property 'bind' in my tests
+## I'm seeing a lot of "Cannot read property 'bind'" in my tests
 
 This causes all of your tests to fail.
 
