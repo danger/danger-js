@@ -1,39 +1,29 @@
-### Danger for JS
+# Danger for JS
 
-A year in, [Danger](https://github.com/danger/danger) is doing just fine. See the [original vision file](https://github.com/danger/danger/blob/master/VISION.md). This document assumes you have read it. 
+Two years in, and [Danger](https://github.com/danger/danger) Ruby is doing just fine. See the [original vision file](https://github.com/danger/danger/blob/master/VISION.md). This document assumes you have read it. 
 
-The amount of issues we get in comparison to the number of downloads on Rubygems makes me feel pretty confident about her state of production quality and maturity. I wanted to start thinking about the larger patterns in software. At Artsy, we are starting to use JavaScript in many, many places.
+The amount of issues we get in comparison to the number of downloads on Rubygems makes me feel pretty confident about her state of production quality and maturity. I wanted to start thinking about the larger patterns in software, because at Artsy, we are starting to use JavaScript in [for many teams](http://artsy.github.io/blog/2016/08/15/React-Native-at-Artsy/).
 
-I've explored [running JavaScript](https://github.com/danger/danger/pull/423) from the ruby Danger, ([example](https://github.com/artsy/emission/blob/d58b3d57bf41100e3cce3c2c1b1c4d6c19581a68/Dangerfile.js)) but this pattern isn't going to work on the larger scale: You cannot use npm modules, nor work with babel to transpile your `Dangerfile.js` and the requirements on the project to [include are too high](https://github.com/artsy/emission/pull/233). That isn't going to work.
+I've explored [running JavaScript](https://github.com/danger/danger/pull/423) from the ruby Danger, ([example](https://github.com/artsy/emission/blob/d58b3d57bf41100e3cce3c2c1b1c4d6c19581a68/Dangerfile.js) from production) but this pattern isn't going to work on the larger scale: You cannot use npm modules, nor work with babel/tsc to transpile your `Dangerfile.js` and the requirements on the integrating project to [feel weird](https://github.com/artsy/emission/pull/233). Running JS in Ruby isn't going to work for me.
 
-This comes at the same time as thinking about a hosted version of Danger. With the NPM version we can limit the exposed API to only something that can be obtained over the API on a hosted server. By doing this, a hosted Danger does not need to clone and run the associated projects. This is essential for my sanity. I cannot run multiple [servers like CocoaDocs](http://cocoadocs.org). So far, I'm calling this Peril. 
+This realization came at the same time as serious thinking on a hosted version of Danger. With a JavaScript versions we can limit the exposed Danger DSL to only something that can be obtained over the API remotely. By doing this, a hosted Danger does not need to clone and run the associated projects. This is essential for my sanity. I cannot run multiple [servers like CocoaDocs](http://cocoadocs.org). So far, I'm calling this Peril. You can consult the [vision file for Peril](https://github.com/danger/peril/blob/master/VISION.md) if you'd like.
 
-I _do not_ know how to deal with babel-y compilation stuff, or danger plugins to work in Peril. Figure I'll know more about the systems as I get there.  
+# Where is Danger JS going?
 
-One technique for doing this is to lazy load information required, e.g. by default only get the PR metadata, and file changed. I think memoized get functions in ES6 will be useful there. 
+You can see the roadmap for features for Danger JS by looking at things the Ruby version supports.
 
-### So, initial vision?
+-   Inline comments in PRs
+-   GitLab / BitBucket support
+-   Bigger plugin ecosystem
 
-* As few dependencies as possible
-* Feel native to JS
-* Provide Flow/TypeScript types for Danger API
-* Be platform API agnostic from day one
-* If an exposed end-user API can't be done via the platform APIs, it can't be done for that platform
-  E.g. if GitLab had an API not available on GitHub, then for GitHub we cannot do that same thing. Platform APIs dictates the end-user experience.
-* Re-use abstractions from the Gem when possible, it took a long time to get those
-* Re-use CI source detection from Ruby Danger
+However because of the addition of Peril, Danger JS should also look at:
 
-### Plugins?
+-   Module or function whitelisting
+-   Callback based Danger runs
 
-I can't see what that looks like yet. It could just be npm modules, and it's expected that you would import them like normal. JS naturally can give you the DSL structure that I had to make in Ruby.
+### Example of a Dangerfile.js
 
-### Documentation?
-
-The website will stay devoted to the Danger gem, until this project starts to mature. We can link to it, It took 9 months for the gem before it was stable enough to think of large scale documentation.
-
-### Example
-
-``` js
+```js
 import danger from 'danger'
 import _ from 'lodash'
 
