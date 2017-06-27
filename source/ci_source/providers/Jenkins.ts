@@ -1,8 +1,9 @@
 import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
+
+//  https://jenkins-ci.org
+
 /**
- *  https://jenkins-ci.org
- *
  *  ### CI Setup
  *  Ah Jenkins, so many memories. So, if you're using Jenkins, you're hosting your own  environment.
  *
