@@ -4,7 +4,7 @@ import { ensureEnvKeysExist, getPullRequestIDForBranch } from "../ci_source_help
 /**
  * ### CI Setup
  *
- * To make Danger run, add a new steo to the `codeship-steps.yml` file:
+ * To make Danger run, add a new step to the `codeship-steps.yml` file:
  *
  * ```
  * - type: parallel:
@@ -13,6 +13,8 @@ import { ensureEnvKeysExist, getPullRequestIDForBranch } from "../ci_source_help
  *      service: web
  *      command: yarn danger
  * ```
+ *
+ * If you're using Codeship Classic, add `yarn danger` to your 'Test Commands'
  *
  * ### Token Setup
  *
@@ -25,6 +27,9 @@ import { ensureEnvKeysExist, getPullRequestIDForBranch } from "../ci_source_help
  *   environment:
  *     - DANGER_GITHUB_API_TOKEN=[my_token]
  * ```
+ *
+ * If you're using Codeship Classic, add `DANGER_GITHUB_API_TOKEN` to your
+ * 'Environment' settings.
  */
 
 export class Codeship implements CISource {
