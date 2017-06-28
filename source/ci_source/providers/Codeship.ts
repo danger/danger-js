@@ -2,8 +2,36 @@ import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist, getPullRequestIDForBranch } from "../ci_source_helpers"
 
 /**
- * Docs: TODO
+ * ### CI Setup
+ *
+ * To make Danger run, add a new step to the `codeship-steps.yml` file:
+ *
+ * ```
+ * - type: parallel:
+ *   ...
+ *    - name: danger
+ *      service: web
+ *      command: yarn danger
+ * ```
+ *
+ * If you're using Codeship Classic, add `yarn danger` to your 'Test Commands'
+ *
+ * ### Token Setup
+ *
+ * You'll want to edit your `codeship-services.yml` file to include a reference
+ * to the Danger authentication token: `DANGER_GITHUB_API_TOKEN`.
+ *
+ * ```
+ * project_name:
+ *   ...
+ *   environment:
+ *     - DANGER_GITHUB_API_TOKEN=[my_token]
+ * ```
+ *
+ * If you're using Codeship Classic, add `DANGER_GITHUB_API_TOKEN` to your
+ * 'Environment' settings.
  */
+
 export class Codeship implements CISource {
   private default = { prID: "0" }
   constructor(private readonly env: Env) {}

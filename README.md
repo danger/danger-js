@@ -1,15 +1,11 @@
-# Danger JS :no_entry_sign:
-
-[![npm](https://img.shields.io/npm/v/danger.svg)](https://www.npmjs.com/package/danger)
-[![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=master)](https://travis-ci.org/danger/danger-js)
-[![Build Status](https://ci.appveyor.com/api/projects/status/ep5hgeox3lbc5c7f?svg=true)](https://ci.appveyor.com/project/orta/danger-js/branch/master)
+# Danger JS :no_entry_sign: [![npm](https://img.shields.io/npm/v/danger.svg)](https://www.npmjs.com/package/danger) [![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=master)](https://travis-ci.org/danger/danger-js) [![Build Status](https://ci.appveyor.com/api/projects/status/ep5hgeox3lbc5c7f?svg=true)](https://ci.appveyor.com/project/orta/danger-js/branch/master)
 
 Formalize your Pull Request etiquette.
 
 <p align="center">
     <a href="#what-is-danger-js">What is Danger JS?</a> &bull;
     <a href="VISION.md">Vision</a> &bull;
-    <a href="##this-thing-is-broken-i-should-help-improve-it">Helping Out</a> &bull;
+    <a href="#this-thing-is-broken-i-should-help-improve-it">Helping Out</a> &bull;
     <a href="http://danger.systems/js/usage/extending-danger.html">Plugin Development</a>
 </p>
 
@@ -20,6 +16,8 @@ Danger runs after your CI, automating your team's conventions surrounding code r
 This provides another logical step in your process, through this Danger can help lint your rote tasks in daily code review.
 
 You can use Danger to codify your teams norms, leaving humans to think about harder problems.
+
+Danger JS currently works with GitHub and Travis CI, Circle CI, Semaphore, Jenkins, Docker Cloud, surf-build, Codeship, Drone, Buildkite, or buddybuild.
 
 ## For example?
 
@@ -38,7 +36,7 @@ Danger provides the glue to let _you_ build out the rules specific to your team'
 
 Alright. So, actually, you may be in the wrong place. From here on in, this README is going to be for people who are interested in working on and improving on Danger JS.
 
-We keep all of the end-user documentation at <http://danger.systems>.
+We keep all of the end-user documentation at <http://danger.systems/js>.
 
 Some quick links to get you started:
 
@@ -66,6 +64,9 @@ You can then verify your install by running the tests, and the linters:
 yarn test
 yarn lint
 ```
+
+The fixers for both tslint and prettier will be applied when you commit, and on a push your code will be verified
+that it compiles.
 
 ### What is the TODO?
 
