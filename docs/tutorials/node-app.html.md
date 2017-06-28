@@ -71,25 +71,21 @@ If your tool does not have an extra log file output option, you can look at usin
 
 And here's a really simple check that it contains the word "Failed" and to post the logs into the PR.
 
-````js
-                    import { danger, markdown } from "danger"
+```js
+import { danger, markdown } from "danger"
 
-                    import contains from "lodash-contains"
-                    import fs from "fs"
+import contains from "lodash-contains"
+import fs from "fs"
 
-                    const testFile = "tests-output.log"
-                    const linterOutput = fs.readFileSync(testFile).toString()
+const testFile = "tests-output.log"
+const linterOutput = fs.readFileSync(testFile).toString()
 
-                    if (contains(linterOutput, "Failed")) {
-                      const code = "```"
-                      markdown(`These changes failed to pass the linter:
-
-                    ${code}
-                    ${linterOutput}
-                    ${code}
-                      `)
-                    }
-````
+if (contains(linterOutput, "Failed")) {
+  markdown(`These changes failed to pass the linter:
+${linterOutput}
+  `)
+}
+```
 
 More mature tools may have a JSON output reporter, so you can parse that file and create your own report for danger to post.
 
