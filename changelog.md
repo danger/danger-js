@@ -2,7 +2,15 @@
 
 ### Master
 
--  Adds inline docs for all CI providers - orta
+### 1.0.0
+
+Hello readers! This represents a general stability for Danger. It is mainly a documentation release, as
+it corresponds to <http://danger.systems/js/> being generally available. I made the initial commit back in 20 Aug 2016
+and now it's 30th June 2017. It's awesome to look back through the CHANGELOG and see how things have changed.
+
+You can find out a lot more about the 1.0, and Danger's history on my [Artsy blog post on the Danger 1.0](https://artsy.github.io/blog/2017/06/30/danger-one-oh-again/).
+
+-   Adds inline docs for all CI providers - orta
 
 ### 0.21.1
 
