@@ -109,7 +109,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.20.0",
-    "chalk": "^1.1.1",
+    "chalk": "^2.0.0",
     "commander": "^2.9.0",
     "debug": "^2.6.0",
     "github": "^9.2.0",
