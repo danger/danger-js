@@ -16,14 +16,14 @@ matrix:
     after_script:
     - greenkeeper-lockfile-upload
   - node_js: '6'
-  - node_js: '7'
+  - node_js: '8'
 
 script:
 - yarn lint
 - yarn add jest
 - yarn test -- --coverage --no-cache && rm ./coverage/coverage-final.json
 - yarn docs
-- if [[ $TRAVIS_NODE_VERSION == "7" ]]; then yarn add dtslint; yarn dts-lint; fi
+- if [[ $TRAVIS_NODE_VERSION == "8" ]]; then yarn add dtslint; yarn dts-lint; fi
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
