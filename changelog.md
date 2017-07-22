@@ -2,6 +2,8 @@
 
 ### Master
 
+- Add support for running Danger against a local git repo - adam-moss
+
 ### 1.0.0
 
 Hello readers! This represents a general stability for Danger. It is mainly a documentation release, as
