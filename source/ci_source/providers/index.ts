@@ -9,6 +9,7 @@ import { Codeship } from "./Codeship"
 import { Drone } from "./Drone"
 import { Buildkite } from "./Buildkite"
 import { BuddyBuild } from "./BuddyBuild"
+import { LocalRepo } from "./local-repo"
 
 const providers = [
   Travis,
@@ -22,6 +23,7 @@ const providers = [
   Drone,
   Buildkite,
   BuddyBuild,
+  LocalRepo,
 ]
 
 // Mainly used for Dangerfile linting
