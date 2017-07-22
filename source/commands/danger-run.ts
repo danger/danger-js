@@ -80,7 +80,7 @@ async function run(): Promise<any> {
           d(`executing dangerfile at ${dangerFile}`)
 
           const config = {
-            stdoutOnly: app.textOnly,
+            stdoutOnly: source.name === "local repo" ? true : app.textOnly,
             verbose: app.verbose,
           }
 
