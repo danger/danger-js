@@ -16,10 +16,10 @@ export class LocalRepo implements CISource {
   }
 
   get isCI(): boolean {
-    return true
+    return false
   }
   get isPR(): boolean {
-    return true
+    return false
   }
 
   get pullRequestID(): string {
