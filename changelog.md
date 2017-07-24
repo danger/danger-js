@@ -1,6 +1,7 @@
 //  Please add your own contribution below inside the Master section, ideally with a consumer's perspective in mind.
 
 ### Master
+-   Support retrive paginated pull request commit list - kwonoj
 
 -  Remove the DSL duplication on the `danger` export, it wasn't needed or used. - orta
 -  Update to TypeScript 2.4.x - orta

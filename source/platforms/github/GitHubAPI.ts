@@ -3,9 +3,11 @@ import { RepoMetaData } from "../../ci_source/ci_source"
 import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
 import * as find from "lodash.find"
 import * as v from "voca"
+import * as parse from "parse-link-header"
 
 import * as node_fetch from "node-fetch"
 import * as GitHubNodeAPI from "github"
+import * as debug from "debug"
 import { dangerSignaturePostfix } from "../../runner/templates/githubIssueTemplate"
 
 // The Handle the API specific parts of the github
@@ -20,6 +22,7 @@ export type APIToken = string
 export class GitHubAPI {
   fetch: typeof fetch
   additionalHeaders: any
+  private readonly d = debug("danger:GitHubAPI")
 
   constructor(public readonly repoMetadata: RepoMetaData, public readonly token?: APIToken) {
     // This allows Peril to DI in a new Fetch function
@@ -132,12 +135,59 @@ export class GitHubAPI {
     return res.ok ? res.json() as Promise<GitHubPRDSL> : {} as GitHubPRDSL
   }
 
+  /**
+   * Get list of commits in pull requests. This'll try to iterate all available pages
+   * Until it reaches hard limit of api itself (250 commits).
+   * https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request
+   *
+   */
   async getPullRequestCommits(): Promise<any> {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
-    const res = await this.get(`repos/${repo}/pulls/${prID}/commits`)
 
-    return res.ok ? res.json() : []
+    const ret: Array<any> = []
+
+    /**
+     * Read response header and locate next page for pagination via link header.
+     * If not found, will return -1.
+     *
+     * @param response Github API response sent via node-fetch
+     */
+    const getNextPageFromLinkHeader = (response: node_fetch.Response): number => {
+      const linkHeader = response.headers.get("link")
+      if (!linkHeader) {
+        this.d(`getNextPageFromLinkHeader:: Given response does not contain link header for pagination`)
+        return -1
+      }
+
+      const parsedHeader = parse(linkHeader)
+      this.d(`getNextPageFromLinkHeader:: Link header found`, parsedHeader)
+      if (!!parsedHeader.next && !!parsedHeader.next.page) {
+        return parsedHeader.next.page
+      }
+      return -1
+    }
+
+    //iterates commit request pages until next page's not available, or response failed for some reason.
+    let page = 0
+    while (page >= 0) {
+      const requestUrl = `repos/${repo}/pulls/${prID}/commits${page > 0 ? `?page=${page}` : ""}`
+      this.d(`getPullRequestCommits:: Sending pull request commit request for ${page === 0 ? "first" : `${page}`} page`)
+      this.d(`getPullRequestCommits:: Request url generated "${requestUrl}"`)
+
+      const response = await this.get(requestUrl)
+      if (response.ok) {
+        ret.push(...(await response.json()))
+        page = getNextPageFromLinkHeader(response)
+      } else {
+        this.d(
+          `getPullRequestCommits:: Failed to get response while traverse page ${page} with ${response.status}, bailing rest of pages if exists`
+        )
+        page = -1
+      }
+    }
+
+    return ret
   }
 
   async getUserInfo(): Promise<GitHubUser> {

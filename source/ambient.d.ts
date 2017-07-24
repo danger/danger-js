@@ -10,5 +10,6 @@ declare module "jest-config"
 declare module "voca"
 declare module "jsome"
 declare module "jsonpointer"
+declare module "parse-link-header"
 
 declare module "*/package.json"
