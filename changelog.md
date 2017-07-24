@@ -3,6 +3,9 @@
 ### Master
 -   Support retrive paginated pull request commit list - kwonoj
 
+-  Remove the DSL duplication on the `danger` export, it wasn't needed or used. - orta
+-  Update to TypeScript 2.4.x - orta
+
 ### 1.0.0
 
 Hello readers! This represents a general stability for Danger. It is mainly a documentation release, as

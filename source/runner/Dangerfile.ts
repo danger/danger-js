@@ -83,8 +83,7 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
   const message = (message: MarkdownString) => results.messages.push({ message })
   const markdown = (message: MarkdownString) => results.markdowns.push(message)
 
-  // Anything _but_ danger, that is on the root-level DSL
-  const globals = {
+  return {
     schedule,
     fail,
     warn,
@@ -92,29 +91,6 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
     markdown,
     console,
     results,
-  }
-
-  // OK, so this is a bit weird, but hear me out.
-  //
-  // I am not sure if it makes sense for "danger js plugins" ( which will
-  // be normal npm modules) to work with the magic globals available in the runtime.
-  //
-  // So I'm _probably_ going to advocate that you pass in the `danger` object into
-  // functions for danger plugins. This means that they can use `danger.fail` etc. This
-  // should make it significantly easier to build and make tests for your modules.
-  //
-  // Which should mean we get more plugins overall.
-  //
-  // Which should be cool.
-  //
-  // So, I'm not going to expose these on the interfaces (and thus the public reference
-  // but it will go into a 'plugin authors guide' whatever that looks like.)
-  //
-  return {
-    ...globals,
-    danger: {
-      ...dsl,
-      ...globals,
-    },
+    danger: dsl,
   }
 }
