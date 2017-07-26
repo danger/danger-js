@@ -9,6 +9,7 @@ import { Codeship } from "./Codeship"
 import { Drone } from "./Drone"
 import { Buildkite } from "./Buildkite"
 import { BuddyBuild } from "./BuddyBuild"
+import { VSTS } from "./VSTS"
 
 const providers = [
   Travis,
@@ -22,9 +23,22 @@ const providers = [
   Drone,
   Buildkite,
   BuddyBuild,
+  VSTS,
 ]
 
 // Mainly used for Dangerfile linting
-const realProviders = [Travis, Circle, Semaphore, Jenkins, Surf, DockerCloud, Codeship, Drone, Buildkite, BuddyBuild]
+const realProviders = [
+  Travis,
+  Circle,
+  Semaphore,
+  Jenkins,
+  Surf,
+  DockerCloud,
+  Codeship,
+  Drone,
+  Buildkite,
+  BuddyBuild,
+  VSTS,
+]
 
 export { providers, realProviders }
