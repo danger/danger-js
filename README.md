@@ -17,7 +17,7 @@ This provides another logical step in your process, through this Danger can help
 
 You can use Danger to codify your teams norms, leaving humans to think about harder problems.
 
-Danger JS currently works with GitHub and Travis CI, Circle CI, Semaphore, Jenkins, Docker Cloud, surf-build, Codeship, Drone, Buildkite, buddybuild or VSTS.
+Danger JS currently works with GitHub and Travis CI, Circle CI, Semaphore, Jenkins, Docker Cloud, surf-build, Codeship, Drone, Buildkite, buddybuild or Visual Studio Team Services.
 
 ## For example?
 
