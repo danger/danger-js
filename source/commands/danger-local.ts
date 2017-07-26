@@ -1,13 +1,11 @@
 import * as program from "commander"
 import * as debug from "debug"
 import * as fs from "fs"
-import { getCISource } from "../ci_source/get_ci_source"
 import { getPlatformForEnv } from "../platforms/platform"
 import { Executor } from "../runner/Executor"
 import { dangerfilePath } from "./utils/file-utils"
-import { providers } from "../ci_source/providers"
-import { sentence } from "../runner/DangerUtils"
 import * as chalk from "chalk"
+import { LocalRepo } from "../ci_source/providers/local-repo"
 
 const d = debug("danger:run")
 declare const global: any
@@ -17,8 +15,6 @@ declare const global: any
 
 program
   .option("-v, --verbose", "Verbose output of files")
-  .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")
-  .option("-t, --text-only", "Provide an STDOUT only interface, Danger will not post to your PR")
   .option("-d, --dangerfile [filePath]", "Specify a custom dangerfile path")
   .parse(process.argv)
 
@@ -37,29 +33,15 @@ if (process.env["DANGER_VERBOSE"] || app.verbose) {
 
 // a dirty wrapper to allow async functionality in the setup
 async function run(): Promise<any> {
-  const source = getCISource(process.env, app.externalCiProvider || undefined)
+  const source = new LocalRepo(process.env)
 
-  if (!source) {
-    console.log("Could not find a CI source for this run. Does Danger support this CI service?")
-    console.log(`Danger supports: ${sentence(providers.map(p => p.name))}.`)
-
-    if (!process.env["CI"]) {
-      console.log("You may want to consider using `danger pr` to run Danger locally.")
-    }
-
-    process.exitCode = 1
-  }
   // run the sources setup function, if it exists
   if (source && source.setup) {
     await source.setup()
   }
 
-  if (source && !source.isPR) {
-    // This does not set a failing exit code
-    console.log("Skipping Danger due to not this run not executing on a PR.")
-  }
-
-  if (source && source.isPR) {
+  if (source) {
+    //}&& source.isPR) {
     const platform = getPlatformForEnv(process.env, source)
     if (!platform) {
       console.log(chalk.red(`Could not find a source code hosting platform for ${source.name}.`))
@@ -80,7 +62,7 @@ async function run(): Promise<any> {
           d(`executing dangerfile at ${dangerFile}`)
 
           const config = {
-            stdoutOnly: source.name === "local repo" ? true : app.textOnly,
+            stdoutOnly: true,
             verbose: app.verbose,
           }
 

@@ -10,6 +10,8 @@
 -  Update to TypeScript 2.4.x - orta
 -  Rename github test static_file to remove `:` from the filename to fix a checkout issue on windows - mlabrum
 
+- Add support for running Danger against a local git repo - adam-moss
+
 ### 1.0.0
 
 Hello readers! This represents a general stability for Danger. It is mainly a documentation release, as

@@ -14,4 +14,5 @@ program
   .version(version)
   .command("run", "Runs danger on your local system", { isDefault: true })
   .command("pr", "Runs your changes against an existing PR")
+  .command("local", "Runs danger standalone on a repo")
   .parse(process.argv)
