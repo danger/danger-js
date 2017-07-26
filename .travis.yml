@@ -28,6 +28,9 @@ script:
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 
+notifications:
+  slack: dangergem:9FOZou9EGBV9xO1Ol4bxRPz9
+
 deploy:
   provider: npm
   email: orta.therox+dangernpm@gmail.com
