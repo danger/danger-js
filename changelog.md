@@ -20,6 +20,8 @@ You can find out a lot more about the 1.0, and Danger's history on my [Artsy blo
 
 -   Adds inline docs for all CI providers - orta
 
+-   Use an absolute url for the jest-resolver config moduleDirs option so that Peril can run dangerfiles out of process - orta
+
 ### 0.21.1
 
 -   Use HTTP for the GitHub status check target URL - macklinu

@@ -4,6 +4,7 @@ import { readConfig } from "jest-config"
 import * as NodeEnvironment from "jest-environment-node"
 import * as os from "os"
 import * as fs from "fs"
+import * as path from "path"
 
 import { DangerResults } from "../dsl/DangerResults"
 import { DangerContext } from "../runner/Dangerfile"
@@ -66,7 +67,7 @@ export async function dangerJestConfig() {
       defaultPlatform: "danger-js",
     },
     moduleNameMapper: [],
-    moduleDirectories: ["node_modules"],
+    moduleDirectories: [path.resolve(process.cwd(), "node_modules")],
     moduleFileExtensions: ["js", ...jestConfig.config.moduleFileExtensions],
     transform: [["js$", "babel-jest"], ...jestConfig.config.transform],
     testPathIgnorePatterns: jestConfig.config.testPathIgnorePatterns,

@@ -206,6 +206,7 @@ it("creates a working jest config", async () => {
   config.cacheDirectory = "[cache]"
   config.testPathDirs = ["[testPathDirs]"]
   config.testPathIgnorePatterns = ["[testPathIgnorePatterns]"]
+  config.moduleDirectories = ["[moduleDirectories]"]
 
   const cwd = process.cwd()
   config.transform = config.transform.map(([files, transformer]) => {

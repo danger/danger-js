@@ -8,7 +8,7 @@ Object {
     "defaultPlatform": "danger-js",
   },
   "moduleDirectories": Array [
-    "node_modules",
+    "[moduleDirectories]",
   ],
   "moduleFileExtensions": Array [
     "js",
