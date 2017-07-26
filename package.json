@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -13,38 +13,14 @@
     },
     "testRegex": "(.test)\\.(ts|tsx)$",
     "verbose": true,
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/distribution/",
-      "/types/"
-    ],
-    "coverageReporters": [
-      "json"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "json",
-      "ts",
-      "tsx"
-    ],
-    "collectCoverageFrom": [
-      "!source/commands/danger.ts",
-      "source/**/*.{ts, tsx}",
-      "!**/*.d.ts"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "(.test)\\.(ts|tsx|js)$",
-      "/distribution/.*\\.(ts|js)$"
-    ]
+    "testPathIgnorePatterns": ["/node_modules/", "/distribution/", "/types/"],
+    "coverageReporters": ["json"],
+    "moduleFileExtensions": ["js", "jsx", "json", "ts", "tsx"],
+    "collectCoverageFrom": ["!source/commands/danger.ts", "source/**/*.{ts, tsx}", "!**/*.d.ts"],
+    "coveragePathIgnorePatterns": ["/node_modules/", "(.test)\\.(ts|tsx|js)$", "/distribution/.*\\.(ts|js)$"]
   },
   "lint-staged": {
-    "*.@(ts|tsx)": [
-      "tslint --fix",
-      "npm run prettier-write --",
-      "git add"
-    ]
+    "*.@(ts|tsx)": ["tslint --fix", "npm run prettier-write --", "git add"]
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -69,10 +45,7 @@
     "type": "git",
     "url": "git+https://github.com/danger/danger-js.git"
   },
-  "keywords": [
-    "danger",
-    "ci"
-  ],
+  "keywords": ["danger", "ci"],
   "author": "Orta Therox",
   "license": "MIT",
   "bugs": {
