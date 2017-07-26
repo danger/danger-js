@@ -20,6 +20,7 @@
     "coveragePathIgnorePatterns": ["/node_modules/", "(.test)\\.(ts|tsx|js)$", "/distribution/.*\\.(ts|js)$"]
   },
   "lint-staged": {
+    "*.json": ["npm run prettier-write --", "git add"],
     "*.@(ts|tsx)": ["tslint --fix", "npm run prettier-write --", "git add"]
   },
   "scripts": {
@@ -71,7 +72,7 @@
     "jest": "^20.0.0",
     "lint-staged": "^4.0.0",
     "madge": "^2.0.0",
-    "prettier": "^1.4.4",
+    "prettier": "^1.5.3",
     "shx": "^0.2.1",
     "ts-jest": "^20.0.0",
     "ts-node": "^3.2.1",
