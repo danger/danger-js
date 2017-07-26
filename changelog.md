@@ -5,6 +5,7 @@
 
 -  Remove the DSL duplication on the `danger` export, it wasn't needed or used. - orta
 -  Update to TypeScript 2.4.x - orta
+-  Add support for VSTS CI - mlabrum
 -  Rename github test static_file to remove `:` from the filename to fix a checkout issue on windows - mlabrum
 
 ### 1.0.0
