@@ -20,13 +20,9 @@ matrix:
 
 script:
 - yarn lint
-- yarn add jest
-- yarn test -- --coverage --no-cache && rm ./coverage/coverage-final.json
+- yarn test
 - yarn docs
 - if [[ $TRAVIS_NODE_VERSION == "8" ]]; then yarn add dtslint; yarn dts-lint; fi
-
-after_success:
-- bash <(curl -s https://codecov.io/bash)
 
 notifications:
   slack: dangergem:9FOZou9EGBV9xO1Ol4bxRPz9

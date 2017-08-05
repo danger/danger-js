@@ -45,3 +45,4 @@ docs/docs_generate/
 docs/js_ref_dsl_docs.json
 
 types/index.d.ts
+.jest/

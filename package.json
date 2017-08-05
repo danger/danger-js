@@ -14,10 +14,8 @@
     "testRegex": "(.test)\\.(ts|tsx)$",
     "verbose": true,
     "testPathIgnorePatterns": ["/node_modules/", "/distribution/", "/types/"],
-    "coverageReporters": ["json"],
     "moduleFileExtensions": ["js", "jsx", "json", "ts", "tsx"],
-    "collectCoverageFrom": ["!source/commands/danger.ts", "source/**/*.{ts, tsx}", "!**/*.d.ts"],
-    "coveragePathIgnorePatterns": ["/node_modules/", "(.test)\\.(ts|tsx|js)$", "/distribution/.*\\.(ts|js)$"]
+    "cacheDirectory": ".jest/cache"
   },
   "lint-staged": {
     "*.json": ["npm run prettier-write --", "git add"],
