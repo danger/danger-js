@@ -3,6 +3,7 @@ cache:
   yarn: true
   directories:
   - node_modules
+  - .jest/cache
 
 matrix:
   include:
