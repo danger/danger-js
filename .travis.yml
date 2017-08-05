@@ -21,6 +21,7 @@ matrix:
 
 script:
 - yarn lint
+- yarn add jest
 - yarn jest
 - yarn docs
 - if [[ $TRAVIS_NODE_VERSION == "8" ]]; then yarn add dtslint; yarn dts-lint; fi
