@@ -2,6 +2,8 @@
 
 ### Master
 
+### 1.2.0
+
 - Exposes an internal API for reading a file from a GitHub repo as `danger.github.utils.fileContents` - orta
 
   Ideally this is what you should be using in plugins to read files, it's what Danger uses throughout the
@@ -9,6 +11,7 @@
   when instead it could run via the GitHub API.
 
 - Update prettier - orta
+- Removes dtslint as a dependency - sapegin/orta
 
 ### 1.1.0
 
