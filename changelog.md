@@ -2,6 +2,12 @@
 
 ### Master
 
+- Exposes an internal API for reading a file from a GitHub repo as `danger.github.utils.fileContents` - orta
+
+  Ideally this is what you should be using in plugins to read files, it's what Danger uses throughout the
+  codebase internally. This means that your plugin/dangerfile doesn't need to rely on running on the CI
+  when instead it could run via the GitHub API.
+
 - Update prettier - orta
 
 ### 1.1.0

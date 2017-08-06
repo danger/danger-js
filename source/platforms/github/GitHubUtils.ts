@@ -1,10 +1,10 @@
 import { basename } from "path"
 import { sentence, href } from "../../runner/DangerUtils"
 import { GitHubPRDSL, GitHubUtilsDSL } from "./../../dsl/GitHubDSL"
-
+import { GitHubAPI } from "../github/GitHubAPI"
 // We need to curry in access to the GitHub PR metadata
 
-const utils = (pr: GitHubPRDSL): GitHubUtilsDSL => {
+const utils = (pr: GitHubPRDSL, api: GitHubAPI): GitHubUtilsDSL => {
   /**
    * Converts a set of filepaths into a sentence'd set of hrefs for the
    * current PR. Can be configured to just show the name (instead of full filepath), to
@@ -27,6 +27,7 @@ const utils = (pr: GitHubPRDSL): GitHubUtilsDSL => {
 
   return {
     fileLinks,
+    fileContents: api.fileContents,
   }
 }
 
