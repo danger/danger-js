@@ -14,10 +14,8 @@
     "testRegex": "(.test)\\.(ts|tsx)$",
     "verbose": true,
     "testPathIgnorePatterns": ["/node_modules/", "/distribution/", "/types/"],
-    "coverageReporters": ["json"],
     "moduleFileExtensions": ["js", "jsx", "json", "ts", "tsx"],
-    "collectCoverageFrom": ["!source/commands/danger.ts", "source/**/*.{ts, tsx}", "!**/*.d.ts"],
-    "coveragePathIgnorePatterns": ["/node_modules/", "(.test)\\.(ts|tsx|js)$", "/distribution/.*\\.(ts|js)$"]
+    "cacheDirectory": ".jest/cache"
   },
   "lint-staged": {
     "*.json": ["npm run prettier-write --", "git add"],
@@ -69,12 +67,12 @@
     "date-fns": "^1.28.3",
     "husky": "^0.14.0",
     "in-publish": "^2.0.0",
-    "jest": "^20.0.0",
+    "jest": "^20.0.4",
     "lint-staged": "^4.0.0",
     "madge": "^2.0.0",
     "prettier": "^1.5.3",
     "shx": "^0.2.1",
-    "ts-jest": "^20.0.0",
+    "ts-jest": "^20.0.10",
     "ts-node": "^3.2.1",
     "tslint": "^5.3.0",
     "tslint-config-prettier": "^1.0.0",

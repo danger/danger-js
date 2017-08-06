@@ -7,43 +7,43 @@ const fixtures = resolve(__dirname, "fixtures")
 export const requestWithFixturedJSON = async (path: string): Promise<() => Promise<any>> => () =>
   Promise.resolve(JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString()))
 
-// Mock GitHubAPI class
-jest.mock("../github/GitHubAPI", () => {
-  class GitHubAPI {
-    async getPullRequestInfo() {
-      const fixtures = await requestWithFixturedJSON("github_pr.json")
-      return await fixtures()
-    }
-    async getIssue() {
-      const fixtures = await requestWithFixturedJSON("github_issue.json")
-      return await fixtures()
-    }
-
-    async getPullRequestCommits() {
-      const fixtures = await requestWithFixturedJSON("github_commits.json")
-      return await fixtures()
-    }
-
-    async getReviews() {
-      const fixtures = await requestWithFixturedJSON("reviews.json")
-      return await fixtures()
-    }
-
-    async getReviewerRequests() {
-      const fixtures = await requestWithFixturedJSON("requested_reviewers.json")
-      return await fixtures()
-    }
-
-    getExternalAPI() {
-      return {}
-    }
-
-    APIMetadataForPR() {
-      return {}
-    }
+class mockGitHubAPI /*tslint:disable-line*/ {
+  async getPullRequestInfo() {
+    const fixtures = await requestWithFixturedJSON("github_pr.json")
+    return await fixtures()
+  }
+  async getIssue() {
+    const fixtures = await requestWithFixturedJSON("github_issue.json")
+    return await fixtures()
   }
 
-  return { GitHubAPI }
+  async getPullRequestCommits() {
+    const fixtures = await requestWithFixturedJSON("github_commits.json")
+    return await fixtures()
+  }
+
+  async getReviews() {
+    const fixtures = await requestWithFixturedJSON("reviews.json")
+    return await fixtures()
+  }
+
+  async getReviewerRequests() {
+    const fixtures = await requestWithFixturedJSON("requested_reviewers.json")
+    return await fixtures()
+  }
+
+  getExternalAPI() {
+    return {}
+  }
+
+  APIMetadataForPR() {
+    return {}
+  }
+}
+
+// Mock GitHubAPI class
+jest.mock("../github/GitHubAPI", () => {
+  return { GitHubAPI: mockGitHubAPI }
 })
 
 import { GitHub } from "../GitHub"

@@ -80,7 +80,7 @@ export class GitHub {
       reviews,
       requested_reviewers,
       thisPR,
-      utils: GitHubUtils(pr),
+      utils: GitHubUtils(pr, this.api),
     }
   }
 

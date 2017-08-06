@@ -16,5 +16,6 @@ test_script:
   # Output useful info for debugging.
   - node --version
   - yarn --version
+
   # run tests
   - yarn test

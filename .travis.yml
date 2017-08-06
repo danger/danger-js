@@ -3,6 +3,7 @@ cache:
   yarn: true
   directories:
   - node_modules
+  - .jest/cache
 
 matrix:
   include:
@@ -21,12 +22,11 @@ matrix:
 script:
 - yarn lint
 - yarn add jest
-- yarn test -- --coverage --no-cache && rm ./coverage/coverage-final.json
+- yarn jest
+- rm -rf node_modules/@types/babel-*
+- rm -rf node_modules/@types/babylon
 - yarn docs
 - if [[ $TRAVIS_NODE_VERSION == "8" ]]; then yarn add dtslint; yarn dts-lint; fi
-
-after_success:
-- bash <(curl -s https://codecov.io/bash)
 
 notifications:
   slack: dangergem:9FOZou9EGBV9xO1Ol4bxRPz9
