@@ -23,6 +23,8 @@ script:
 - yarn lint
 - yarn add jest
 - yarn jest
+- rm -rf node_modules/@types/babel-*
+- rm -rf node_modules/@types/babylon
 - yarn docs
 - if [[ $TRAVIS_NODE_VERSION == "8" ]]; then yarn add dtslint; yarn dts-lint; fi
 
