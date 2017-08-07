@@ -37,6 +37,7 @@ deploy:
   api_key:
     secure: MCHGI1GAiqyYsKaA9MGsmHOCAthURv8ECSeYSZJ5UpFng0FSslVBpNZ6xQSu3tETLHfqIb4y0PqS42xH+AsJh8j0z9B3Y9e4NvwCOnJBzw7qJNUm1RM0smYDkwqYDVlqRgjHoh3phi7zPOeEogpz0n+uEGHnpckNA1GpZvdIFef7oaEViRoDKxP0lZj5oV9Isdm7HLSYPXyCYqhgygr7qnHYyFBqd3h0Iw3w2/fg+IBet9Td8oCEpUAHe7WjeUmzgRF0FVKlC2d1kfJVYjx1qGKHh0F5Kmg1GE2xwM/QBwzBlq12XtnSLwi70MLjoUa+Y2m2T+A6vuoLb7OqwDsHp/plTfrfBD5Quqmnc5Hdh71MHWPz/OPtsyZkfLMdutvlM9BmM/7HR46+HrBMe7eNOCj79MsNCWRXdOWpEWrK7BLXtignfDFOUM+renDgBsuxvEaryQ8QxgbIudEqaJ0+kzGIpzHFQGnNXwAXZOz9Q38+CZds2J7mwz7RSTFipNqsyBFZbREmGdupyUgPalXLp0hjxu8y15atVPZAYxuLv2Wt2NXiuyf3HbO9uwwRWbat+nCThF+fmQmcgTrE4BlHvTiy4FIzve5nlBaEiWAOanIMFoSjs4Co9o16sZ0yZZS/1a2SgfLdCuFvYKmvUsqBcCcaypXBpqxvZMwTFA6oPQQ=
   on:
+    node: 6
     repo: danger/danger-js
     tags: true
     all_branches: true
