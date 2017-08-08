@@ -25,9 +25,14 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
   }
 
   return {
+    require: {
+      external: true,
+    },
     sandbox,
   }
 }
+
+export type TranspileType = null | "babel" | "typescript"
 
 /**
  * Executes a Dangerfile at a specific path, with a context.
@@ -37,12 +42,22 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
  * @param {any} environment the results of createDangerfileRuntimeEnvironment
  * @returns {DangerResults} the results of the run
  */
-export async function runDangerfileEnvironment(filename: Path, environment: VMOptions): Promise<DangerResults> {
+export async function runDangerfileEnvironment(
+  filename: Path,
+  environment: VMOptions,
+  transpile: TranspileType
+): Promise<DangerResults> {
   const vm = new NodeVM(environment)
 
   // Require our dangerfile
-  const originalContents = fs.readFileSync(filename).toString()
-  const content = cleanDangerfile(originalContents)
+  const originalContents = (await readDangerfile(filename)) as string
+  let content = cleanDangerfile(originalContents)
+  if (transpile === "typescript") {
+    content = typescriptify(content)
+  } else if (transpile === "babel") {
+    content = await babelify(content, filename)
+  }
+
   vm.run(content, filename)
 
   const results = environment.sandbox!.results!
@@ -79,3 +94,35 @@ const es6Pattern = /^.* from ('|")danger('|");?$/gm
 export function cleanDangerfile(contents: string): string {
   return contents.replace(es6Pattern, "// Removed import").replace(requirePattern, "// Removed require")
 }
+
+const typescriptify = (content: string): string => {
+  const ts = require("typescript") // tslint:disable-line
+  let result = ts.transpileModule(content, {})
+  return result.outputText
+}
+
+const babelify = (content: string, filename: string): Promise<string> => {
+  const babel = require("babel-core") // tslint:disable-line
+  const fileOpts = {
+    filename,
+    filenameRelative: filename,
+    sourceMap: false,
+    sourceFileName: null,
+    sourceMapTarget: null,
+  }
+
+  return new Promise(res => {
+    console.log("BABEL")
+    babel.transformFileSync(content, fileOpts, (result: any) => {
+      console.log("Done")
+      res(result.code)
+    })
+  })
+}
+
+const readDangerfile = async (filename: string) =>
+  new Promise(res => {
+    fs.readFile(filename, "utf8", (_, data) => {
+      res(data)
+    })
+  })

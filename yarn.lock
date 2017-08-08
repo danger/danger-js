@@ -4176,6 +4176,10 @@ verror@1.3.6:
   dependencies:
     extsprintf "1.0.2"
 
+vm2@^3.4.6:
+  version "3.4.6"
+  resolved "https://registry.yarnpkg.com/vm2/-/vm2-3.4.6.tgz#9f952e4083e3af8398291a40e802854fed6a7673"
+
 voca@^1.2.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/voca/-/voca-1.3.0.tgz#02751ac839bf0c92e2cfe88e49c393c94dd50ac3"
