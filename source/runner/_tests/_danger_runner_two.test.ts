@@ -74,7 +74,7 @@ describe("with fixtures", () => {
   it("handles relative imports correctly", async () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
-    await runDangerfileEnvironment(resolve(fixtures, "__DangerfileImportRelative.js"), runtime, "babel")
+    await runDangerfileEnvironment(resolve(fixtures, "__DangerfileImportRelative.js"), runtime, "typescript")
   })
 
   it("handles scheduled (async) code", async () => {
@@ -92,11 +92,7 @@ describe("with fixtures", () => {
   it("handles multiple scheduled statements and all message types", async () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
-    const results = await runDangerfileEnvironment(
-      resolve(fixtures, "__DangerfileMultiScheduled.js"),
-      runtime,
-      "typescript"
-    )
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileMultiScheduled.js"), runtime)
     expect(results).toEqual({
       fails: [{ message: "Asynchronous Failure" }],
       messages: [{ message: "Asynchronous Message" }],
@@ -107,11 +103,11 @@ describe("with fixtures", () => {
 
   // This adds > 6 seconds to the tests! Only orta should be forced into that.
   if (process.env["USER"] === "orta") {
-    it("can execute async/await scheduled functions", async () => {
+    it.only("can execute async/await scheduled functions", async () => {
       // this test takes *forever* because of babel-polyfill being required
       const context = await setupDangerfileContext()
       const runtime = await createDangerfileRuntimeEnvironment(context)
-      const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.js"), runtime, "typescript")
+      const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.js"), runtime)
       expect(results.warnings).toEqual([
         {
           message: "Async Function",
@@ -123,7 +119,7 @@ describe("with fixtures", () => {
     })
   }
 
-  it("can schedule callback-based promised", async () => {
+  it("can schedule callback-based promised ", async () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
     const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileCallback.js"), runtime, "typescript")

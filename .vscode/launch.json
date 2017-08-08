@@ -1,65 +1,15 @@
 {
-    "version": "0.2.0",
-    "configurations": [{
-        "name": "Launch Run",
-        "type": "node",
-        "request": "launch",
-        "program": "${workspaceRoot}/distribution/commands/danger-run.js",
-        "stopOnEntry": false,
-        "args": [],
-        "envFile": "${workspaceRoot}/env/development.env",
-        "cwd": "${workspaceRoot}",
-        "preLaunchTask": "build",
-        "runtimeExecutable": null,
-        "runtimeArgs": [
-            "--nolazy"
-        ],
-        "env": {
-            "NODE_ENV": "development"
-        },
-        "console": "internalConsole",
-        "sourceMaps": true,
-        "outFiles": [
-          "${workspaceRoot}/distribution"
-        ]
-    }, {
-        "name": "Launch PR",
-        "type": "node",
-        "request": "launch",
-        "program": "${workspaceRoot}/distribution/commands/danger-pr.js",
-        "stopOnEntry": false,
-        "args": [
-          // pass a GitHub PR URL below for testing
-        ],
-        "envFile": "${workspaceRoot}/env/development.env",
-        "cwd": "${workspaceRoot}",
-        "preLaunchTask": "build",
-        "runtimeExecutable": null,
-        "runtimeArgs": [
-            "--nolazy"
-        ],
-        "env": {
-            "NODE_ENV": "development"
-        },
-        "console": "internalConsole",
-        "sourceMaps": true,
-        "outFiles": [
-          "${workspaceRoot}/distribution/**/*.js"
-        ]
-    }, {
-        "name": "Run Tests With Debugger (slower, use npm run watch for normal work)",
-        "type": "node",
-        "request": "launch",
-        "port": 5858,
-        "address": "localhost",
-        "stopOnEntry": false,
-        "runtimeExecutable": null,
-        "runtimeArgs": [
-            "--debug-brk",
-            "./node_modules/.bin/jest",
-            "-i"
-        ],
-        "cwd": "${workspaceRoot}",
-        "sourceMaps": true
-    }]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Jest",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": ["./node_modules/.bin/jest", "-i", "--env", "jest-environment-node-debug"],
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector",
+      "console": "internalConsole",
+      "sourceMaps": true
+    }
+  ]
 }

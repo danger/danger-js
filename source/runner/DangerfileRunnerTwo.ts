@@ -1,10 +1,11 @@
 import * as fs from "fs"
+import * as path from "path"
 
 import { DangerResults } from "../dsl/DangerResults"
 import { DangerContext } from "../runner/Dangerfile"
 import { Path } from "./types"
 
-import { NodeVM, VMOptions } from "vm2"
+import { NodeVM, NodeVMOptions } from "vm2"
 
 /**
  * Executes a Dangerfile at a specific path, with a context.
@@ -12,23 +13,37 @@ import { NodeVM, VMOptions } from "vm2"
  *
  * @param {DangerContext} dangerfileContext the global danger context
  */
-export async function createDangerfileRuntimeEnvironment(dangerfileContext: DangerContext): Promise<VMOptions> {
-  const context = dangerfileContext
+export async function createDangerfileRuntimeEnvironment(dangerfileContext: DangerContext): Promise<NodeVMOptions> {
+  // if (transpile === "typescript") {
+  //   content = typescriptify(content)
+  // } else if (transpile === "babel") {
+  //   content = babelify(content, filename)
+  // }
 
-  const sandbox = {}
-  // Adds things like fail, warn ... to global
-  for (const prop in context) {
-    if (context.hasOwnProperty(prop)) {
-      const anyContext: any = context
-      sandbox[prop] = anyContext[prop]
-    }
+  const sandbox = {
+    ...dangerfileContext,
   }
-
   return {
     require: {
       external: true,
     },
     sandbox,
+    compiler: (code, filename) => {
+      const filetype = path.extname(filename)
+      // Add a check for TSC/babel etc
+      if (filetype.startsWith(".ts")) {
+        console.log("TSX")
+        return typescriptify(code)
+      } else if (filetype === ".js") {
+        // TODO: Check for babelrc
+        console.log("Babel")
+        const output = babelify(code, filename)
+        console.log(output)
+        return output
+      }
+
+      return code
+    },
   }
 }
 
@@ -42,21 +57,12 @@ export type TranspileType = null | "babel" | "typescript"
  * @param {any} environment the results of createDangerfileRuntimeEnvironment
  * @returns {DangerResults} the results of the run
  */
-export async function runDangerfileEnvironment(
-  filename: Path,
-  environment: VMOptions,
-  transpile: TranspileType
-): Promise<DangerResults> {
+export async function runDangerfileEnvironment(filename: Path, environment: NodeVMOptions): Promise<DangerResults> {
   const vm = new NodeVM(environment)
 
   // Require our dangerfile
   const originalContents = (await readDangerfile(filename)) as string
   let content = cleanDangerfile(originalContents)
-  if (transpile === "typescript") {
-    content = typescriptify(content)
-  } else if (transpile === "babel") {
-    content = await babelify(content, filename)
-  }
 
   vm.run(content, filename)
 
@@ -101,7 +107,7 @@ const typescriptify = (content: string): string => {
   return result.outputText
 }
 
-const babelify = (content: string, filename: string): Promise<string> => {
+const babelify = (content: string, filename: string): string => {
   const babel = require("babel-core") // tslint:disable-line
   const fileOpts = {
     filename,
@@ -111,13 +117,8 @@ const babelify = (content: string, filename: string): Promise<string> => {
     sourceMapTarget: null,
   }
 
-  return new Promise(res => {
-    console.log("BABEL")
-    babel.transformFileSync(content, fileOpts, (result: any) => {
-      console.log("Done")
-      res(result.code)
-    })
-  })
+  const result = babel.transform(content, fileOpts)
+  return result.code
 }
 
 const readDangerfile = async (filename: string) =>
