@@ -16,26 +16,40 @@ declare module "*/package.json"
 
 declare module "vm2" {
   export interface VMRequire {
-    external?: boolean
-    builtin?: any[]
-    rooty?: string
-    mock?: any
+    builtin?: string[]
     context?: "host" | "sandbox"
+    external?: boolean
     import?: string[]
+    root?: string
+    mock?: any
   }
 
+  /**
+   * A custom compiler function for all of the JS that comes
+   * into the VM
+   */
+  type CompilerFunction = (code: string, filename: string) => string
+
   export interface VMOptions {
-    timeout?: number
+    compiler?: "javascript" | "coffeescript" | CompilerFunction
     sandbox?: any
+    timeout?: number
+  }
+
+  export interface NodeVMOptions extends VMOptions {
     console?: "inherit" | "redirect"
-    compiler?: "javascript" | "coffeescript"
     require?: true | VMRequire
     nesting?: boolean
     wrapper?: "commonjs" | "none"
   }
 
   export class NodeVM {
+    constructor(options?: NodeVMOptions)
+    run(js: string, path: string): any
+  }
+
+  export class VM {
     constructor(options?: VMOptions)
-    run(js: string, path: string): NodeVM
+    run(js: string, path: string): any
   }
 }
