@@ -13,3 +13,29 @@ declare module "jsonpointer"
 declare module "parse-link-header"
 
 declare module "*/package.json"
+
+declare module "vm2" {
+  export interface VMRequire {
+    external?: boolean
+    builtin?: any[]
+    rooty?: string
+    mock?: any
+    context?: "host" | "sandbox"
+    import?: string[]
+  }
+
+  export interface VMOptions {
+    timeout?: number
+    sandbox?: any
+    console?: "inherit" | "redirect"
+    compiler?: "javascript" | "coffeescript"
+    require?: true | VMRequire
+    nesting?: boolean
+    wrapper?: "commonjs" | "none"
+  }
+
+  export class NodeVM {
+    constructor(options?: VMOptions)
+    run(js: string, path: string): NodeVM
+  }
+}

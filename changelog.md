@@ -2,6 +2,17 @@
 
 ### Master
 
+- [WIP] Support [a vm2](https://github.com/patriksimek/vm2) based Dangerfile runner as an alternative to the 
+  jest infrastructure. There are two main reasons for this:
+
+  * I haven't been able to completely understand how Jest's internals work around all of the code-eval and pre-requisite setup, which has made it hard to work on some more complex Peril features
+  * VM2 supports async code inside a Dangerfile
+
+  The massive downside to this is that Danger now has to build support for transpiling via Babel, or 
+  from TypeScript unlike before, where it was a freebie inside Jest. This means that a Dangerfile which used
+  to "just work" with no config may not. Thus, a breaking major semver.
+
+
 ### 1.2.0
 
 - Exposes an internal API for reading a file from a GitHub repo as `danger.github.utils.fileContents` - orta
