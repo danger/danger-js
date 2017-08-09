@@ -7,6 +7,18 @@ import { Path } from "./types"
 
 import { NodeVM, NodeVMOptions } from "vm2"
 
+let hasTypeScript = false
+let hasBabel = false
+
+try {
+  require.resolve("typescript")
+  hasTypeScript = true
+} catch (e) {} // tslint:disable-line
+try {
+  require.resolve("babel-core")
+  hasBabel = true
+} catch (e) {} // tslint:disable-line
+
 /**
  * Executes a Dangerfile at a specific path, with a context.
  * The values inside a Danger context are applied as globals to the Dangerfiles runtime.
@@ -26,19 +38,18 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
   return {
     require: {
       external: true,
+      context: "sandbox",
+      builtin: ["*"],
     },
     sandbox,
     compiler: (code, filename) => {
       const filetype = path.extname(filename)
-      // Add a check for TSC/babel etc
-      if (filetype.startsWith(".ts")) {
-        console.log("TSX")
+      if (filename.includes("node_modules")) {
+        return code
+      } else if (hasTypeScript && filetype.startsWith(".ts")) {
         return typescriptify(code)
-      } else if (filetype === ".js") {
-        // TODO: Check for babelrc
-        console.log("Babel")
+      } else if (hasBabel && filetype === ".js") {
         const output = babelify(code, filename)
-        console.log(output)
         return output
       }
 
