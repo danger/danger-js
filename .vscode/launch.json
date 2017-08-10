@@ -5,11 +5,12 @@
       "name": "Debug Jest",
       "type": "node",
       "request": "launch",
-      "runtimeArgs": ["./node_modules/.bin/jest", "-i", "--env", "jest-environment-node-debug"],
+      "runtimeArgs": ["./node_modules/.bin/jest", "-i"],
       "cwd": "${workspaceRoot}",
       "protocol": "inspector",
       "console": "internalConsole",
-      "sourceMaps": true
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/distribution"]
     }
   ]
 }

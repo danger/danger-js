@@ -45,9 +45,6 @@ export interface DangerContext {
    */
   markdown(message: MarkdownString): void
 
-  /** Typical console */
-  console: Console
-
   /**
    * The root Danger object. This contains all of the metadata you
    * will be looking for in order to generate useful rules.
@@ -89,7 +86,6 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
     warn,
     message,
     markdown,
-    console,
     results,
     danger: dsl,
   }

@@ -638,9 +638,6 @@ declare module "danger" {
    */
   function markdown(message: MarkdownString): void
 
-  /** Typical console */
-  const console: Console
-
   /**
    * The root Danger object. This contains all of the metadata you
    * will be looking for in order to generate useful rules.

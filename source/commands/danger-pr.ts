@@ -74,7 +74,7 @@ async function runDanger(source: FakeCI, platform: GitHub, file: string) {
   const runtimeEnv = await exec.setupDanger()
   const results = await runDangerfileEnvironment(file, runtimeEnv)
   if (program["repl"]) {
-    openRepl(runtimeEnv.context)
+    openRepl(runtimeEnv.sandbox)
   } else {
     jsome(results)
   }
