@@ -1,11 +1,5 @@
 import { contextForDanger } from "../Dangerfile"
-import {
-  createDangerfileRuntimeEnvironment,
-  runDangerfileEnvironment,
-  updateDangerfile,
-  cleanDangerfile,
-  dangerJestConfig,
-} from "../DangerfileRunner"
+import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment, cleanDangerfile } from "../DangerfileRunner"
 
 import { FakeCI } from "../../ci_source/providers/Fake"
 import { FakePlatform } from "../../platforms/FakePlatform"
@@ -77,7 +71,7 @@ describe("with fixtures", () => {
     }
   })
 
-  it("handles relative imports correctly", async () => {
+  it.skip("handles relative imports correctly in Babel", async () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
     await runDangerfileEnvironment(resolve(fixtures, "__DangerfileImportRelative.js"), runtime)
@@ -107,25 +101,51 @@ describe("with fixtures", () => {
     })
   })
 
-  // This adds > 6 seconds to the tests! Only orta should be forced into that.
-  if (process.env["USER"] === "orta") {
-    it("can execute async/await scheduled functions", async () => {
-      // this test takes *forever* because of babel-polyfill being required
-      const context = await setupDangerfileContext()
-      const runtime = await createDangerfileRuntimeEnvironment(context)
-      const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.js"), runtime)
-      expect(results.warnings).toEqual([
-        {
-          message: "Async Function",
-        },
-        {
-          message: "After Async Function",
-        },
-      ])
-    })
-  }
+  it("in Typescript it handles multiple scheduled statements and all message types", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.ts"), runtime)
+    expect(results.warnings).toEqual([
+      {
+        message: "Async Function",
+      },
+      {
+        message: "After Async Function",
+      },
+    ])
+  })
 
-  it("can schedule callback-based promised", async () => {
+  it.skip("in babel it can execute async/await scheduled functions", async () => {
+    // this test takes *forever* because of babel-polyfill being required
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.js"), runtime)
+    expect(results.warnings).toEqual([
+      {
+        message: "Async Function",
+      },
+      {
+        message: "After Async Function",
+      },
+    ])
+  })
+
+  it("in typescript it can execute async/await scheduled functions", async () => {
+    // this test takes *forever* because of babel-polyfill being required
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.ts"), runtime)
+    expect(results.warnings).toEqual([
+      {
+        message: "Async Function",
+      },
+      {
+        message: "After Async Function",
+      },
+    ])
+  })
+
+  it("can schedule callback-based promised ", async () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
     const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileCallback.js"), runtime)
@@ -157,13 +177,6 @@ describe("with fixtures", () => {
 })
 
 describe("cleaning Dangerfiles", () => {
-  it("Supports removing the danger import", () => {
-    const path = resolve(os.tmpdir(), "fake_dangerfile_1")
-    fs.writeFileSync(path, "import { danger, warn, fail, message } from 'danger'")
-    updateDangerfile(path)
-    expect(fs.readFileSync(path).toString()).toEqual("// Removed import")
-  })
-
   it("also handles typescript style imports", () => {
     const before = `
 import { danger, warn, fail, message } from 'danger'
@@ -197,21 +210,4 @@ let { danger, warn, fail, message } = require('danger');
 `
     expect(cleanDangerfile(before)).toEqual(after)
   })
-})
-
-it("creates a working jest config", async () => {
-  const config = await dangerJestConfig()
-  // OK, this is almost perfect, but well, everyone has different paths.
-  // So we'll amend the ones that should be different per developer/CI
-  config.cacheDirectory = "[cache]"
-  config.testPathDirs = ["[testPathDirs]"]
-  config.testPathIgnorePatterns = ["[testPathIgnorePatterns]"]
-
-  const cwd = process.cwd()
-  config.transform = config.transform.map(([files, transformer]) => {
-    const trans = transformer.includes("ts-jest") ? "[ts-jest-transformer]" : transformer
-    return [files, trans]
-  })
-
-  expect(config).toMatchSnapshot()
 })

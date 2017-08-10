@@ -2,16 +2,37 @@
 
 ### Master
 
-- [WIP] Support [a vm2](https://github.com/patriksimek/vm2) based Dangerfile runner as an alternative to the 
-  jest infrastructure. There are two main reasons for this:
+### 2.0.0-alpha.1
 
-  * I haven't been able to completely understand how Jest's internals work around all of the code-eval and pre-requisite setup, which has made it hard to work on some more complex Peril features
-  * VM2 supports async code inside a Dangerfile
+- Support [a vm2](https://github.com/patriksimek/vm2) based Dangerfile runner as an alternative to the 
+  jest infrastructure. There are a few main reasons for this:
 
-  The massive downside to this is that Danger now has to build support for transpiling via Babel, or 
-  from TypeScript unlike before, where it was a freebie inside Jest. This means that a Dangerfile which used
-  to "just work" with no config may not. Thus, a breaking major semver.
+  * I haven't been able to completely understand how Jest's internals work around all of the code-eval and 
+    pre-requisite setup, which has made it hard to work on some more complex Peril features.
 
+  * Jest releases are every few months, personally I love this as a user of Jest, as an API consumer
+    it can be difficult to get changes shipped.
+
+  * The fact that both Danger/Jest make runtime changes means that you need to update them together
+
+  * I have commit access to vm2, so getting changes done is easy
+
+  I like to think of it as having gone from Jest's runner which is a massive toolbox, to vm2 which is a tiny 
+  toolbox where I'll have to add a bunch of new tools to get everything working.
+
+  The *massive downside* to this is that Danger now has to have support for transpiling via Babel, or 
+  from TypeScript unlike before, where it was a freebie inside Jest. Jest handled this so well. This means that a 
+  Dangerfile which used to "just work" with no config may not. Thus, IMO, this is a breaking major semver.
+
+  Is it likely that you need to make any changes? So far, it seems probably not. At least all of the tests with
+  Dangerfiles original from the older Jest runner pass with the new version.
+
+  This is an alpha release, because it's knowingly shipped with some breakages around babel support, specifically:
+
+  * Babel parsing of relative imports in a Dangerfile aren't working
+  * Some of the features which require the `regeneratorRuntime` to be set up aren't working yet
+
+  Those are blockers on a 2.0.0 release.
 
 ### 1.2.0
 
