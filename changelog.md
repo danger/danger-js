@@ -4,6 +4,10 @@
 
 // TODO
 
+### 2.0.0-alpha.2
+
+* Removes the `jest-*` dependencies - orta
+
 ### 2.0.0-alpha.1
 
 - Support [a vm2](https://github.com/patriksimek/vm2) based Dangerfile runner as an alternative to the 
