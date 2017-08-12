@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.2",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -84,8 +84,6 @@
     "commander": "^2.9.0",
     "debug": "^2.6.0",
     "github": "^9.2.0",
-    "jest-config": "^20.0.0",
-    "jest-runtime": "^20.0.0",
     "jsome": "^2.3.25",
     "jsonpointer": "^4.0.1",
     "lodash.find": "^4.6.0",
