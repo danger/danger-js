@@ -4,7 +4,7 @@
 
 // TODO
 
-### 2.0.0-alpha.4
+### 2.0.0-alpha.4-5
 
 * Allow running a dangerfile entirely from memory using the `Executor` API - orta
 
