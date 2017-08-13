@@ -72,7 +72,7 @@ async function runDanger(source: FakeCI, platform: GitHub, file: string) {
   const exec = new Executor(source, platform, config)
 
   const runtimeEnv = await exec.setupDanger()
-  const results = await runDangerfileEnvironment(file, runtimeEnv)
+  const results = await runDangerfileEnvironment(file, undefined, runtimeEnv)
   if (program["repl"]) {
     openRepl(runtimeEnv.sandbox)
   } else {

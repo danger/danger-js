@@ -70,11 +70,15 @@ export type TranspileType = null | "babel" | "typescript"
  * @param {any} environment the results of createDangerfileRuntimeEnvironment
  * @returns {DangerResults} the results of the run
  */
-export async function runDangerfileEnvironment(filename: string, environment: NodeVMOptions): Promise<DangerResults> {
+export async function runDangerfileEnvironment(
+  filename: string,
+  originalContents: string | undefined,
+  environment: NodeVMOptions
+): Promise<DangerResults> {
   const vm = new NodeVM(environment)
 
   // Require our dangerfile
-  const originalContents = fs.readFileSync(filename, "utf8")
+  originalContents = originalContents || fs.readFileSync(filename, "utf8")
   let content = cleanDangerfile(originalContents)
 
   // TODO: Relative imports get TS/Babel
