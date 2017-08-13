@@ -4,7 +4,11 @@
 
 // TODO
 
-### 2.0.0-alpha.2
+### 2.0.0-alpha.4
+
+* Allow running a dangerfile entirely from memory using the `Executor` API - orta
+
+### 2.0.0-alpha.2-3
 
 * Removes the `jest-*` dependencies - orta
 
