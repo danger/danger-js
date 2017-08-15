@@ -65,7 +65,6 @@ describe("with fixtures", () => {
 
     expect(results.fails[0].message).toContain("Danger failed to run")
     expect(results.markdowns[0]).toContain("hello is not defined")
-    console.log(results.markdowns)
   })
 
   it.skip("handles relative imports correctly in Babel", async () => {
@@ -183,7 +182,6 @@ describe("with fixtures", () => {
 
     expect(results.fails[0].message).toContain("Danger failed to run")
     expect(results.markdowns[0]).toContain("Error: failure")
-    console.log(results)
   })
 })
 
