@@ -42,7 +42,6 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
 
   const pr = await api.getPullRequestInfo()
   const diff = await api.getPullRequestDiff()
-  const getCommits = await api.getPullRequestCommits()
 
   const fileDiffs: any[] = parseDiff(diff)
 
@@ -166,6 +165,7 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
     }
   }
 
+  const getCommits = await api.getPullRequestCommits()
   return {
     modified_files: modifiedDiffs.map(d => d.to),
     created_files: addedDiffs.map(d => d.to),

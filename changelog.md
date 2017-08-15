@@ -4,6 +4,10 @@
 
 // TODO
 
+### 2.0.0-alpha.7
+
+* Uses the GitHub `diff_url` instead of the `diff` version header, as it conflicted with Peril - orta
+
 ### 2.0.0-alpha.6-7
 
 * Expose a Promise object to the external GitHub API - orta

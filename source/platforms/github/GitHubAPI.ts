@@ -207,11 +207,9 @@ export class GitHubAPI {
   }
 
   async getPullRequestDiff(): Promise<string> {
-    const repo = this.repoMetadata.repoSlug
-    const prID = this.repoMetadata.pullRequestID
-    const res = await this.get(`repos/${repo}/pulls/${prID}`, {
-      accept: "application/vnd.github.v3.diff",
-    })
+    const prJSON = await this.getPullRequestInfo()
+    const diffURL = prJSON["diff_url"]
+    const res = await this.get(diffURL)
 
     return res.ok ? res.text() : ""
   }
@@ -282,8 +280,11 @@ export class GitHubAPI {
       headers["Authorization"] = `token ${this.token}`
     }
 
+    const containsBase = path.startsWith("http")
     const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || "https://api.github.com"
-    return this.fetch(`${baseUrl}/${path}`, {
+    const url = containsBase ? path : `${baseUrl}/${path}`
+
+    return this.fetch(url, {
       method: method,
       body: body,
       headers: {
