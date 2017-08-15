@@ -43,6 +43,7 @@ export class GitHubAPI {
       headers: {
         ...this.additionalHeaders,
       },
+      Promise,
     })
 
     if (this.token) {
