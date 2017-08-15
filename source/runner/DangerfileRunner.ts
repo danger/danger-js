@@ -114,15 +114,26 @@ export async function runDangerfileEnvironment(
       messages: results.messages,
       markdowns: results.markdowns,
     }
-  } catch (e) {
+  } catch (error) {
     console.error("Unable to evaluate the Dangerfile")
-    return {
-      fails: [{ message: `\`\`\`\n${e.stack}\n\`\`\`` }],
-      warnings: [],
-      messages: [],
-      markdowns: [],
-    }
+    return resultsForCaughtError(filename, content, error)
   }
+}
+
+/** Returns Markdown results to post if an exception is raised during the danger run */
+const resultsForCaughtError = (file: string, contents: string, error: Error): DangerResults => {
+  const failure = `Danger failed to run \`${file}\`.`
+  const errorMD = `## Error ${error.name}
+\`\`\`
+${error.message}
+${error.stack}
+\`\`\`
+### Dangerfile
+\`\`\`
+${contents}
+\`\`\`
+  `
+  return { fails: [{ message: failure }], warnings: [], markdowns: [errorMD], messages: [] }
 }
 
 // https://regex101.com/r/dUq4yB/1
