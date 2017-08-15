@@ -4,9 +4,10 @@
 
 // TODO
 
-### 2.0.0-alpha.7
+### 2.0.0-alpha.8
 
 * Uses the GitHub `diff_url` instead of the `diff` version header, as it conflicted with Peril - orta
+* Handle exceptions in Dangerfile and report them as failures in Danger results - macklinu
 
 ### 2.0.0-alpha.6-7
 

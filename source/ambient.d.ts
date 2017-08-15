@@ -11,6 +11,7 @@ declare module "voca"
 declare module "jsome"
 declare module "jsonpointer"
 declare module "parse-link-header"
+declare module "pinpoint"
 
 declare module "*/package.json"
 

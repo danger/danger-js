@@ -1,5 +1,6 @@
 import * as fs from "fs"
 import * as path from "path"
+import * as pinpoint from "pinpoint"
 
 import { DangerResults } from "../dsl/DangerResults"
 import { DangerContext } from "../runner/Dangerfile"
@@ -92,27 +93,56 @@ export async function runDangerfileEnvironment(
   //   return originalRequire.apply(this, arguments)
   // }
 
-  vm.run(content, filename)
+  try {
+    vm.run(content, filename)
 
-  const results = environment.sandbox!.results!
-  await Promise.all(
-    results.scheduled.map((fnOrPromise: any) => {
-      if (fnOrPromise instanceof Promise) {
-        return fnOrPromise
-      }
-      if (fnOrPromise.length === 1) {
-        // callback-based function
-        return new Promise(res => fnOrPromise(res))
-      }
-      return fnOrPromise()
-    })
-  )
-  return {
-    fails: results.fails,
-    warnings: results.warnings,
-    messages: results.messages,
-    markdowns: results.markdowns,
+    const results = environment.sandbox!.results!
+    await Promise.all(
+      results.scheduled.map((fnOrPromise: any) => {
+        if (fnOrPromise instanceof Promise) {
+          return fnOrPromise
+        }
+        if (fnOrPromise.length === 1) {
+          // callback-based function
+          return new Promise(res => fnOrPromise(res))
+        }
+        return fnOrPromise()
+      })
+    )
+    return {
+      fails: results.fails,
+      warnings: results.warnings,
+      messages: results.messages,
+      markdowns: results.markdowns,
+    }
+  } catch (error) {
+    console.error("Unable to evaluate the Dangerfile")
+    return resultsForCaughtError(filename, content, error)
   }
+}
+
+/** Returns Markdown results to post if an exception is raised during the danger run */
+const resultsForCaughtError = (file: string, contents: string, error: Error): DangerResults => {
+  const match = /(\d+:\d+)/g.exec(error.stack!)
+  let code
+  if (match) {
+    const [line, column] = match[0].split(":").map(value => parseInt(value, 10) - 1)
+    code = pinpoint(contents, { line, column })
+  } else {
+    code = contents
+  }
+  const failure = `Danger failed to run \`${file}\`.`
+  const errorMD = `## Error ${error.name}
+\`\`\`
+${error.message}
+${error.stack}
+\`\`\`
+### Dangerfile
+\`\`\`
+${code}
+\`\`\`
+  `
+  return { fails: [{ message: failure }], warnings: [], markdowns: [errorMD], messages: [] }
 }
 
 // https://regex101.com/r/dUq4yB/1
