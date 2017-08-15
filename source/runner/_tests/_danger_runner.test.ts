@@ -63,7 +63,8 @@ describe("with fixtures", () => {
     const runtime = await createDangerfileRuntimeEnvironment(context)
     const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileBadSyntax.js"), undefined, runtime)
 
-    expect(results.fails[0].message).toContain("hello is not defined")
+    expect(results.fails[0].message).toContain("Danger failed to run")
+    expect(results.markdowns[0]).toContain("hello is not defined")
   })
 
   it.skip("handles relative imports correctly in Babel", async () => {
@@ -179,7 +180,8 @@ describe("with fixtures", () => {
     const runtime = await createDangerfileRuntimeEnvironment(context)
     const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileThrows.js"), undefined, runtime)
 
-    expect(results.fails[0].message).toContain("Error: failure")
+    expect(results.fails[0].message).toContain("Danger failed to run")
+    expect(results.markdowns[0]).toContain("Error: failure")
   })
 })
 
