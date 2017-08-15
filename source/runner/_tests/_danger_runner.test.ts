@@ -61,14 +61,9 @@ describe("with fixtures", () => {
   it("handles a failing dangerfile", async () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileBadSyntax.js"), undefined, runtime)
 
-    try {
-      await runDangerfileEnvironment(resolve(fixtures, "__DangerfileBadSyntax.js"), undefined, runtime)
-      throw new Error("Do not get to this")
-    } catch (e) {
-      // expect(e.message === ("Do not get to this")).toBeFalsy()
-      expect(e.message).toEqual("hello is not defined")
-    }
+    expect(results.fails[0].message).toContain("hello is not defined")
   })
 
   it.skip("handles relative imports correctly in Babel", async () => {
@@ -177,6 +172,14 @@ describe("with fixtures", () => {
     const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfilePlugin.js"), undefined, runtime)
 
     expect(results.fails[0].message).toContain("@types dependencies were added to package.json")
+  })
+
+  it("does not swallow errors thrown in Dangerfile", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileThrows.js"), undefined, runtime)
+
+    expect(results.fails[0].message).toContain("Error: failure")
   })
 })
 

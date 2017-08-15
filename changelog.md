@@ -4,6 +4,8 @@
 
 // TODO
 
+* Handle exceptions in Dangerfile and report them as failures in Danger results - macklinu
+
 ### 2.0.0-alpha.6-7
 
 * Expose a Promise object to the external GitHub API - orta

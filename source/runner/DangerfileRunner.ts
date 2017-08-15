@@ -92,26 +92,36 @@ export async function runDangerfileEnvironment(
   //   return originalRequire.apply(this, arguments)
   // }
 
-  vm.run(content, filename)
+  try {
+    vm.run(content, filename)
 
-  const results = environment.sandbox!.results!
-  await Promise.all(
-    results.scheduled.map((fnOrPromise: any) => {
-      if (fnOrPromise instanceof Promise) {
-        return fnOrPromise
-      }
-      if (fnOrPromise.length === 1) {
-        // callback-based function
-        return new Promise(res => fnOrPromise(res))
-      }
-      return fnOrPromise()
-    })
-  )
-  return {
-    fails: results.fails,
-    warnings: results.warnings,
-    messages: results.messages,
-    markdowns: results.markdowns,
+    const results = environment.sandbox!.results!
+    await Promise.all(
+      results.scheduled.map((fnOrPromise: any) => {
+        if (fnOrPromise instanceof Promise) {
+          return fnOrPromise
+        }
+        if (fnOrPromise.length === 1) {
+          // callback-based function
+          return new Promise(res => fnOrPromise(res))
+        }
+        return fnOrPromise()
+      })
+    )
+    return {
+      fails: results.fails,
+      warnings: results.warnings,
+      messages: results.messages,
+      markdowns: results.markdowns,
+    }
+  } catch (e) {
+    console.error("Unable to evaluate the Dangerfile")
+    return {
+      fails: [{ message: `\`\`\`\n${e.stack}\n\`\`\`` }],
+      warnings: [],
+      messages: [],
+      markdowns: [],
+    }
   }
 }
 
