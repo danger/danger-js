@@ -25,3 +25,12 @@ This seems to happen when you have multiple versions of Jest inside the same pro
 #### Danger is not posting to GitHub PRs, but everything looks fine?
 
 Try logging in to the GitHub account that should be writing the messages, it's possible that your account has triggered the bot detection algorithm on GitHub. This means that messages are sent correctly, but do not show up for anyone except the sender. This makes it more or less impossible to detect from Danger's side.
+
+## Circle CI doesnt run my build consistently
+
+Yeah... We're struggling with that one. It's something we keep taking stabs at improving, so [keep an eye on the issues][circle_issues]. Ideally this issue will get resolved and we'll get it [fixed for free][circle_pr].
+
+[circle_issues]: https://github.com/danger/danger-js/search?q=circle&state=open&type=Issues&utf8=✓
+[circle_pr]: https://discuss.circleci.com/t/pull-requests-not-triggering-build/1213
+
+
