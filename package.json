@@ -53,7 +53,7 @@
   "homepage": "https://github.com/danger/danger-js#readme",
   "devDependencies": {
     "@types/chalk": "^0.4.31",
-    "@types/commander": "^2.3.31",
+    "@types/commander": "^2.9.1",
     "@types/debug": "0.0.29",
     "@types/jest": "^20.0.0",
     "@types/node-fetch": "^1.6.6",
@@ -81,7 +81,7 @@
   "dependencies": {
     "babel-polyfill": "^6.20.0",
     "chalk": "^2.0.0",
-    "commander": "^2.9.0",
+    "commander": "^2.11.0",
     "debug": "^3.0.0",
     "github": "^9.2.0",
     "jsome": "^2.3.25",
