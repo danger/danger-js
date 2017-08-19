@@ -243,7 +243,7 @@ babel-code-frame@^6.22.0, babel-code-frame@^6.8.0:
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-babel-core@7.0.0-alpha-19, babel-core@7.0.0-alpha.19:
+babel-core@7.0.0-alpha.19:
   version "7.0.0-alpha.19"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-7.0.0-alpha.19.tgz#6127e8dcbe2fa1ce0864c7698aceed369d3b1b9d"
   dependencies:
@@ -479,6 +479,10 @@ babel-plugin-syntax-optional-catch-binding@7.0.0-alpha.19:
   version "7.0.0-alpha.19"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-optional-catch-binding/-/babel-plugin-syntax-optional-catch-binding-7.0.0-alpha.19.tgz#15479086d1c18ef63b02491ff96691116f17bb35"
 
+babel-plugin-syntax-typescript@7.0.0-alpha.19:
+  version "7.0.0-alpha.19"
+  resolved "https://registry.yarnpkg.com/babel-plugin-syntax-typescript/-/babel-plugin-syntax-typescript-7.0.0-alpha.19.tgz#fc5876863db297549f5d840d248eac3310241f84"
+
 babel-plugin-transform-async-generator-functions@7.0.0-alpha.19:
   version "7.0.0-alpha.19"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-async-generator-functions/-/babel-plugin-transform-async-generator-functions-7.0.0-alpha.19.tgz#9e9b7d0aee6b09f58756c484bf3f472225a551c2"
@@ -670,6 +674,12 @@ babel-plugin-transform-strict-mode@^6.24.1:
     babel-runtime "^6.22.0"
     babel-types "^6.24.1"
 
+babel-plugin-transform-typescript@7.0.0-alpha.19:
+  version "7.0.0-alpha.19"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-typescript/-/babel-plugin-transform-typescript-7.0.0-alpha.19.tgz#9b06c066393d6752e6e539e8b0b5929a78feb5b1"
+  dependencies:
+    babel-plugin-syntax-typescript "7.0.0-alpha.19"
+
 babel-plugin-transform-unicode-property-regex@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-unicode-property-regex/-/babel-plugin-transform-unicode-property-regex-2.0.3.tgz#db13fe12e7380dd6ce0e9206cff3eb4116483ece"
@@ -802,7 +812,7 @@ babel-traverse@6.12.0:
     invariant "^2.2.0"
     lodash "^4.2.0"
 
-babel-traverse@7.0.0-alpha-19, babel-traverse@7.0.0-alpha.19:
+babel-traverse@7.0.0-alpha.19:
   version "7.0.0-alpha.19"
   resolved "https://registry.yarnpkg.com/babel-traverse/-/babel-traverse-7.0.0-alpha.19.tgz#083f3f00a413fd9ec38383c0d5ae79511d9ed53d"
   dependencies:

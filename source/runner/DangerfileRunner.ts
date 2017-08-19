@@ -7,20 +7,28 @@ import { DangerContext } from "../runner/Dangerfile"
 
 import { NodeVM, NodeVMOptions } from "vm2"
 
-let hasTypeScript = false
 let hasBabel = false
+let hasTypeScript = false
+let hasFlow = false
 
 declare const regeneratorRuntime: any
 
 // You know you're being a dangerous badass when you have this many linter disables. Deal with it.
-try {
-  require.resolve("typescript") // tslint:disable-line
-  hasTypeScript = true
-} catch (e) {} // tslint:disable-line
+
 try {
   require.resolve("babel-core") // tslint:disable-line
   require("babel-polyfill") // tslint:disable-line
   hasBabel = true
+
+  try {
+    require.resolve("babel-plugin-transform-typescript") // tslint:disable-line
+    hasTypeScript = true
+  } catch (e) {} // tslint:disable-line
+
+  try {
+    require.resolve("babel-plugin-transform-flow-strip-types") // tslint:disable-line
+    hasFlow = true
+  } catch (e) {} // tslint:disable-line
 } catch (e) {} // tslint:disable-line
 
 /**
@@ -52,10 +60,11 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
 function compile(code: string, filename: string) {
   const filetype = path.extname(filename)
   let result = code
-  if (hasTypeScript && filetype.startsWith(".ts")) {
-    result = typescriptify(code)
+
+  if (hasBabel && hasTypeScript && !filename.includes("node_modules") && filetype.startsWith(".ts")) {
+    result = babelify(code, filename, ["transform-typescript"])
   } else if (hasBabel && !filename.includes("node_modules") && filetype.startsWith(".js")) {
-    result = babelify(code, filename)
+    result = babelify(code, filename, hasFlow ? ["transform-flow-strip-types"] : [])
   }
 
   return result
@@ -159,20 +168,17 @@ export function cleanDangerfile(contents: string): string {
   return contents.replace(es6Pattern, "// Removed import").replace(requirePattern, "// Removed require")
 }
 
-const typescriptify = (content: string): string => {
-  const ts = require("typescript") // tslint:disable-line
-  let result = ts.transpileModule(content, {})
-  return result.outputText
-}
-
-const babelify = (content: string, filename: string): string => {
+const babelify = (content: string, filename: string, extraPlugins: string[]): string => {
   const babel = require("babel-core") // tslint:disable-line
+  const options = babel.loadOptions({})
+
   const fileOpts = {
     filename,
     filenameRelative: filename,
     sourceMap: false,
     sourceFileName: null,
     sourceMapTarget: null,
+    plugins: [...extraPlugins, ...options.plugins],
   }
 
   const result = babel.transform(content, fileOpts)
