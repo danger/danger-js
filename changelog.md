@@ -8,7 +8,9 @@
 
 * Uses the Babel 7 alpha for all source compilation with JS, Flow+JS and TS. This worked without any changes to our
   internal infra which is pretty awesome. All TS tests passed. Babel 7 is still in alpha, but so is Danger 2.0 - so I'm 
-  happy to keep Danger in a pretty long alpha, till at least Babel 7 is in beta. - orta
+  happy to keep Danger in a pretty long alpha, till at least Babel 7 is in beta.
+  
+  It also still supports using TypeScript via the "`typescript"` module, if you have that installed. - orta
 
 ### 2.0.0-alpha.8
 

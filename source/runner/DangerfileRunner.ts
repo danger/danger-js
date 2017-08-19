@@ -7,13 +7,19 @@ import { DangerContext } from "../runner/Dangerfile"
 
 import { NodeVM, NodeVMOptions } from "vm2"
 
+let hasNativeTypeScript = false
 let hasBabel = false
-let hasTypeScript = false
+let hasBabelTypeScript = false
 let hasFlow = false
 
 declare const regeneratorRuntime: any
 
 // You know you're being a dangerous badass when you have this many linter disables. Deal with it.
+
+try {
+  require.resolve("typescript") // tslint:disable-line
+  hasNativeTypeScript = true
+} catch (e) {} // tslint:disable-line
 
 try {
   require.resolve("babel-core") // tslint:disable-line
@@ -22,7 +28,7 @@ try {
 
   try {
     require.resolve("babel-plugin-transform-typescript") // tslint:disable-line
-    hasTypeScript = true
+    hasBabelTypeScript = true
   } catch (e) {} // tslint:disable-line
 
   try {
@@ -60,8 +66,9 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
 function compile(code: string, filename: string) {
   const filetype = path.extname(filename)
   let result = code
-
-  if (hasBabel && hasTypeScript && !filename.includes("node_modules") && filetype.startsWith(".ts")) {
+  if (hasNativeTypeScript && !filename.includes("node_modules") && filetype.startsWith(".ts")) {
+    result = typescriptify(code)
+  } else if (hasBabel && hasBabelTypeScript && !filename.includes("node_modules") && filetype.startsWith(".ts")) {
     result = babelify(code, filename, ["transform-typescript"])
   } else if (hasBabel && !filename.includes("node_modules") && filetype.startsWith(".js")) {
     result = babelify(code, filename, hasFlow ? ["transform-flow-strip-types"] : [])
@@ -166,6 +173,12 @@ const es6Pattern = /^.* from ('|")danger('|");?$/gm
  */
 export function cleanDangerfile(contents: string): string {
   return contents.replace(es6Pattern, "// Removed import").replace(requirePattern, "// Removed require")
+}
+
+const typescriptify = (content: string): string => {
+  const ts = require("typescript") // tslint:disable-line
+  let result = ts.transpileModule(content, {})
+  return result.outputText
 }
 
 const babelify = (content: string, filename: string, extraPlugins: string[]): string => {
