@@ -18,7 +18,7 @@ import { distanceInWords } from "date-fns"
 
 // For some reason we're getting type errors on this includes module?
 // Wonder if we could move to the includes function in ES2015?
-import includes from "lodash.includes"
+import * as includes from "lodash.includes"
 const sentence = danger.utils.sentence
 
 schedule(async () => {
