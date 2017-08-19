@@ -12,6 +12,8 @@
   
   It also still supports using TypeScript via the "`typescript"` module, if you have that installed. - orta
 
+* `danger.github.thisPR` now uses the PR's head, not base - orta
+
 ### 2.0.0-alpha.8
 
 * Uses the GitHub `diff_url` instead of the `diff` version header, as it conflicted with Peril - orta

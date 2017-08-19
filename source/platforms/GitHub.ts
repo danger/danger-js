@@ -145,13 +145,13 @@ export class GitHub {
   }
 
   /**
-   * Converts the PR JSON into something easily used by the Github API client
+   * Converts the PR JSON into something easily used by the Github API client.
    */
   APIMetadataForPR(pr: GitHubPRDSL): GitHubAPIPR {
     return {
       number: pr.number,
-      repo: pr.base.repo.name,
-      owner: pr.base.repo.owner.login,
+      repo: pr.head.repo.name,
+      owner: pr.head.repo.owner.login,
     }
   }
 }
