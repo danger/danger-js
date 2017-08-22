@@ -14,16 +14,16 @@ describe("fileLinks", () => {
   it("Should convert a few paths into links", () => {
     const sut = utils(pr, apiFake)
     const links = sut.fileLinks(["a/b/c", "d/e/f"])
-    const url = "https://github.com/artsy/emission/blob/genevc/a/b/c"
+    const url = "https://github.com/orta/emission/blob/genevc/a/b/c"
     expect(links).toEqual(
-      `<a href="${url}">c</a> and <a href="https://github.com/artsy/emission/blob/genevc/d/e/f">f</a>`
+      `<a href="${url}">c</a> and <a href="https://github.com/orta/emission/blob/genevc/d/e/f">f</a>`
     )
   })
 
   it("Should convert a few paths into links showing full links", () => {
     const sut = utils(pr, apiFake)
     const links = sut.fileLinks(["a/b/c", "d/e/f"], false)
-    const url = "https://github.com/artsy/emission/blob/genevc"
+    const url = "https://github.com/orta/emission/blob/genevc"
     expect(links).toEqual(`<a href="${url}/a/b/c">a/b/c</a> and <a href="${url}/d/e/f">d/e/f</a>`)
   })
 

@@ -18,26 +18,26 @@ import { distanceInWords } from "date-fns"
 
 // For some reason we're getting type errors on this includes module?
 // Wonder if we could move to the includes function in ES2015?
-import * as includesOriginal from "lodash.includes"
-const includes = includesOriginal as Function
-
+import * as includes from "lodash.includes"
 const sentence = danger.utils.sentence
 
-// Request a CHANGELOG entry if not declared #trivial
-const hasChangelog = includes(danger.git.modified_files, "changelog.md")
-const isTrivial = includes(danger.github.pr.body + danger.github.pr.title, "#trivial")
-const isGreenkeeper = danger.github.pr.user.login === "greenkeeper"
+schedule(async () => {
+  // Request a CHANGELOG entry if not declared #trivial
+  const hasChangelog = includes(danger.git.modified_files, "changelog.md")
+  const isTrivial = includes(danger.github.pr.body + danger.github.pr.title, "#trivial")
+  const isGreenkeeper = danger.github.pr.user.login === "greenkeeper"
 
-if (!hasChangelog && !isTrivial && !isGreenkeeper) {
-  warn("Please add a changelog entry for your changes.")
+  if (!hasChangelog && !isTrivial && !isGreenkeeper) {
+    warn("Please add a changelog entry for your changes.")
 
-  // Politely ask for their name on the entry too
-  const changelogDiff = danger.git.diffForFile("changelog.md")
-  const contributorName = danger.github.pr.user.login
-  if (changelogDiff && !includes(changelogDiff, contributorName)) {
-    warn("Please add your GitHub name to the changelog entry, so we can attribute you correctly.")
+    // Politely ask for their name on the entry too
+    const changelogDiff = await danger.git.diffForFile("changelog.md")
+    const contributorName = danger.github.pr.user.login
+    if (changelogDiff && !includes(changelogDiff.diff, contributorName)) {
+      warn("Please add your GitHub name to the changelog entry, so we can attribute you correctly.")
+    }
   }
-}
+})
 
 import yarn from "danger-plugin-yarn"
 schedule(yarn())

@@ -93,4 +93,14 @@ describe("getPlatformDSLRepresentation", () => {
     const { pr } = await github.getPlatformDSLRepresentation()
     expect(pr.number).toEqual(327)
   })
+
+  it("should set thisPR correct", async () => {
+    const dsl = await github.getPlatformDSLRepresentation()
+
+    expect(dsl.thisPR).toEqual({
+      number: 327,
+      owner: "orta",
+      repo: "emission",
+    })
+  })
 })
