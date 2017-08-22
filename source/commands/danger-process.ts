@@ -1,3 +1,12 @@
+// Given the nature of this command, it can be tricky to test, so I use a command like this:
+//
+// env DANGER_GITHUB_API_TOKEN='xxx' DANGER_FAKE_CI="YEP" DANGER_TEST_REPO='artsy/eigen' DANGER_TEST_PR='2408'
+//   yarn ts-node -s -- source/commands/danger-process.ts ./scripts/danger_runner.rb
+//
+//
+
+import { spawn } from "child_process"
+
 import * as program from "commander"
 import { getCISource } from "../ci_source/get_ci_source"
 import { getPlatformForEnv } from "../platforms/platform"
@@ -8,13 +17,19 @@ import * as chalk from "chalk"
 
 declare const global: any
 
-// TODO: if we get more options around the dangerfile, we should
-//       support sharing `program` setup code with danger-pr.ts
+let subprocessName: string | undefined
 
 program
+  .usage("[options] <process_name>")
+  .description(
+    "Does a Danger run, but instead of handling the execution of a Dangerfile it will pass the DSL " +
+      "into another process expecting the process to eventually return results back as JSON. If you don't " +
+      "provide another process, then it will output to STDOUT."
+  )
   .option("-v, --verbose", "Verbose output of files")
   .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")
   .option("-t, --text-only", "Provide an STDOUT only interface, Danger will not post to your PR")
+  .action(process_name => (subprocessName = process_name))
   .parse(process.argv)
 
 // The dynamic nature of the program means typecasting a lot
@@ -98,7 +113,27 @@ async function run(): Promise<any> {
         delete dangerDSL.github.api
       }
 
-      process.stdout.write(JSON.stringify(dangerDSL, null, "  "))
+      const dslJSONString = JSON.stringify(dangerDSL, null, "  ") + "\n"
+      if (!subprocessName) {
+        process.stdout.write(dslJSONString)
+      } else {
+        const child = spawn(subprocessName)
+
+        child.stdin.write(dslJSONString)
+        child.stdin.end()
+
+        child.stdout.on("data", data => {
+          console.log(`stdout: ${data}`)
+        })
+
+        child.stderr.on("data", data => {
+          console.log(`stderr: ${data}`)
+        })
+
+        child.on("close", code => {
+          console.log(`child process exited with code ${code}`)
+        })
+      }
     }
   }
 }
