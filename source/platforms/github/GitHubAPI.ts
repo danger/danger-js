@@ -1,14 +1,15 @@
-import { api as fetch } from "../../api/fetch"
-import { RepoMetaData } from "../../ci_source/ci_source"
-import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
-import * as find from "lodash.find"
-import * as v from "voca"
-import * as parse from "parse-link-header"
-
-import * as node_fetch from "node-fetch"
 import * as GitHubNodeAPI from "github"
 import * as debug from "debug"
+import * as find from "lodash.find"
+import * as node_fetch from "node-fetch"
+import * as parse from "parse-link-header"
+import * as v from "voca"
+
+import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
+
+import { RepoMetaData } from "../../ci_source/ci_source"
 import { dangerSignaturePostfix } from "../../runner/templates/githubIssueTemplate"
+import { api as fetch } from "../../api/fetch"
 
 // The Handle the API specific parts of the github
 
@@ -209,7 +210,9 @@ export class GitHubAPI {
   async getPullRequestDiff(): Promise<string> {
     const prJSON = await this.getPullRequestInfo()
     const diffURL = prJSON["diff_url"]
-    const res = await this.get(diffURL)
+    const res = await this.get(diffURL, {
+      accept: "application/vnd.github.v3.diff",
+    })
 
     return res.ok ? res.text() : ""
   }

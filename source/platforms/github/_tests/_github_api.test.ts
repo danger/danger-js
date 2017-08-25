@@ -1,5 +1,5 @@
-import { GitHubAPI } from "../GitHubAPI"
 import { FakeCI } from "../../../ci_source/providers/Fake"
+import { GitHubAPI } from "../GitHubAPI"
 import { requestWithFixturedJSON } from "../../_tests/_github.test"
 
 const fetchJSON = (api, params): Promise<any> => {
@@ -9,6 +9,19 @@ const fetchJSON = (api, params): Promise<any> => {
         api,
         ...params,
       }),
+  })
+}
+
+const fetchText = (api, params): Promise<any> => {
+  return Promise.resolve({
+    ok: true,
+    text: () =>
+      Promise.resolve(
+        JSON.stringify({
+          api,
+          ...params,
+        })
+      ),
   })
 }
 
@@ -57,6 +70,20 @@ describe("API testing", () => {
     await api.updateCommentWithID(123, "Hello!")
 
     expect(api.patch).toHaveBeenCalledWith("repos/artsy/emission/issues/comments/123", {}, { body: "Hello!" })
+  })
+
+  it("getPullRequestDiff", async () => {
+    api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
+    api.fetch = fetchText
+    let text = await api.getPullRequestDiff()
+    expect(JSON.parse(text)).toMatchObject({
+      api: "https://github.com/artsy/emission/pull/327.diff",
+      headers: {
+        Authorization: "token ABCDE",
+        accept: "application/vnd.github.v3.diff",
+        "Content-Type": "application/json",
+      },
+    })
   })
 })
 
