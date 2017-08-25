@@ -2,7 +2,7 @@
 
 ### Master
 
-// TODO
+- Fixed #348 invalid json response body error - felipesabino
 
 ### 2.0.0-alpha.9
 
