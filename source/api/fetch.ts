@@ -49,9 +49,17 @@ export function api(url: string | node_fetch.Request, init: node_fetch.RequestIn
   return originalFetch(url, init).then(async (response: node_fetch.Response) => {
     // Handle failing errors
     if (!response.ok) {
-      const responseJSON = await response.json()
-      console.warn(`Request failed [${response.status}]: ${response.url}`)
-      console.warn(`Response: ${JSON.stringify(responseJSON, null, "  ")}`)
+      // we should not modify the response when an error occur to allow body stream to be read again if needed
+      let clonedResponse = response.clone()
+      console.warn(`Request failed [${clonedResponse.status}]: ${clonedResponse.url}`)
+      let responseBody = await clonedResponse.text()
+      try {
+        // tries to pretty print the JSON response when possible
+        const responseJSON = await JSON.parse(responseBody.toString())
+        console.warn(`Response: ${JSON.stringify(responseJSON, null, "  ")}`)
+      } catch (e) {
+        console.warn(`Response: ${responseBody}`)
+      }
     }
 
     return response
