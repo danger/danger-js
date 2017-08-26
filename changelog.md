@@ -4,6 +4,42 @@
 
 // TODO
 
+* Adds a `danger process` command, this command takes amn argument of a process to run which expects the Danger DSL as JSON in STDIN,
+  and will post a DangerResults object to it's STDOUT. This frees up another process to do whatever they want. So, others
+  can make their own Danger runner.
+
+  An example of this is [Danger Swift][danger-swift]. It takes a [JSON][swift-json] file via [STDIN][swift-stdin], [compiles
+  and evaluates][swift-eval] a [Swift file][swift-dangerfile] then passes the results back to `danger process` via [STDOUT][swift-stdout].
+
+  Another example is this simple Ruby script:
+
+  ```ruby
+    #!/usr/bin/env ruby
+
+  require 'json'
+  dsl_json = STDIN.tty? ? 'Cannot read from STDIN' : $stdin.read
+  danger = JSON.parse(dsl_json)
+  results = { warnings: [], messages:[], fails: [], markdowns: [] }
+
+  if danger.github.pr.body.include? "Hello world"
+    results.messages << { message: "Hey there" }
+  end
+
+  require 'json'
+  STDOUT.write(results.to_json)
+  ```
+
+  Which is basically Ruby Danger in ~10LOC. Lols.
+
+  This is the first release of the command, it's pretty untested, but it is usable IMO.
+
+[danger-swift]: https://github.com/danger/danger-swift
+[swift-json]: https://github.com/danger/danger-swift/blob/master/fixtures/eidolon_609.json
+[swift-stdin]: https://github.com/danger/danger-swift/blob/1576e336e41698861456533463c8821675427258/Sources/Runner/main.swift#L9-L11
+[swift-eval]: https://github.com/danger/danger-swift/blob/1576e336e41698861456533463c8821675427258/Sources/Runner/main.swift#L23-L40
+[swift-dangerfile]: https://github.com/danger/danger-swift/blob/1576e336e41698861456533463c8821675427258/Dangerfile.swift
+[swift-stdout]: https://github.com/danger/danger-swift/blob/1576e336e41698861456533463c8821675427258/Sources/Runner/main.swift#L48-L50
+
 ### 2.0.0-alpha.9
 
 * Uses the Babel 7 alpha for all source compilation with JS, Flow+JS and TS. This worked without any changes to our
