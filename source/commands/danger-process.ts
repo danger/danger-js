@@ -111,10 +111,12 @@ async function run(): Promise<any> {
       // Remove this to reduce STDOUT spam
       if (dangerDSL.github && dangerDSL.github.api) {
         delete dangerDSL.github.api
+        // Add an API token?
       }
 
       const dslJSONString = JSON.stringify(dangerDSL, null, "  ") + "\n"
       if (!subprocessName) {
+        //  Just pipe it out to the CLI
         process.stdout.write(dslJSONString)
       } else {
         const child = spawn(subprocessName)
@@ -122,8 +124,15 @@ async function run(): Promise<any> {
         child.stdin.write(dslJSONString)
         child.stdin.end()
 
-        child.stdout.on("data", data => {
+        child.stdout.on("data", async data => {
           console.log(`stdout: ${data}`)
+
+          data = data.toString()
+          const trimmed = data.trim()
+          if (trimmed.startsWith("{") && trimmed.endsWith("}") && trimmed.includes("markdowns")) {
+            const results = JSON.parse(trimmed)
+            await exec.handleResults(results)
+          }
         })
 
         child.stderr.on("data", data => {
