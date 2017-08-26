@@ -4,6 +4,10 @@
 
 // TODO
 
+### 2.0.0-alpha.11
+
+* Doh, makes the `danger process` command actually available via the CLI - orta
+
 ### 2.0.0-alpha.10
 
 * Adds a `danger process` command, this command takes amn argument of a process to run which expects the Danger DSL as JSON in STDIN,
@@ -33,7 +37,7 @@
 
   Which is basically Ruby Danger in ~10LOC. Lols.
 
-  This is the first release of the command, it's pretty untested, but it is usable IMO.
+  This is the first release of the command, it's pretty untested, but it is usable IMO. - orta
 
 [danger-swift]: https://github.com/danger/danger-swift
 [swift-json]: https://github.com/danger/danger-swift/blob/master/fixtures/eidolon_609.json

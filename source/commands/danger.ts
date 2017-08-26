@@ -1,6 +1,5 @@
 #! /usr/bin/env node
 
-// import app from "./app"
 import { version } from "../../package.json"
 import * as program from "commander"
 import * as debug from "debug"
@@ -13,5 +12,6 @@ d(`argv: ${process.argv}`)
 program
   .version(version)
   .command("run", "Runs danger on your local system", { isDefault: true })
+  .command("process", "Like `run` but lets another process handle evaluating a Dangerfile")
   .command("pr", "Runs your changes against an existing PR")
   .parse(process.argv)
