@@ -211,7 +211,7 @@ export class GitHubAPI {
     const prJSON = await this.getPullRequestInfo()
     const diffURL = prJSON["diff_url"]
     const res = await this.get(diffURL, {
-      accept: "application/vnd.github.v3.diff",
+      Accept: "application/vnd.github.v3.diff",
     })
 
     return res.ok ? res.text() : ""
@@ -287,6 +287,12 @@ export class GitHubAPI {
     const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || "https://api.github.com"
     const url = containsBase ? path : `${baseUrl}/${path}`
 
+    let customAccept = {}
+    if (headers.Accept && this.additionalHeaders.Accept) {
+      // We need to merge the accepts which are comma separated according to the HTML spec
+      // e.g. https://gist.github.com/LTe/5270348
+      customAccept = { Accept: `${this.additionalHeaders.Accept}, ${headers.Accept}` }
+    }
     return this.fetch(url, {
       method: method,
       body: body,
@@ -294,6 +300,7 @@ export class GitHubAPI {
         "Content-Type": "application/json",
         ...headers,
         ...this.additionalHeaders,
+        ...customAccept,
       },
     })
   }

@@ -80,7 +80,7 @@ describe("API testing", () => {
       api: "https://github.com/artsy/emission/pull/327.diff",
       headers: {
         Authorization: "token ABCDE",
-        accept: "application/vnd.github.v3.diff",
+        Accept: "application/vnd.github.v3.diff",
         "Content-Type": "application/json",
       },
     })
@@ -104,6 +104,24 @@ describe("Peril", () => {
       headers: {
         Authorization: "token ABCDE",
         CUSTOM: "HEADER",
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    })
+  })
+
+  it("Merges two Accept headers", async () => {
+    api.additionalHeaders = { Accept: "application/vnd.github.machine-man-preview+json" }
+
+    const request = await api.get("user", {
+      Accept: "application/vnd.github.v3.diff",
+    })
+
+    expect(api.fetch).toHaveBeenCalledWith("https://api.github.com/user", {
+      body: {},
+      headers: {
+        Accept: "application/vnd.github.machine-man-preview+json, application/vnd.github.v3.diff",
+        Authorization: "token ABCDE",
         "Content-Type": "application/json",
       },
       method: "GET",

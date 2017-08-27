@@ -2,7 +2,10 @@
 
 ### Master
 
-- Fixed #348 invalid json response body error - felipesabino
+### 2.0.0-alpha.12
+
+- Fixed #348 invalid json response body error on generating a diff - felipesabino
+- Potential fix for ^ that works with Peril also - orta
 
 ### 2.0.0-alpha.11
 
