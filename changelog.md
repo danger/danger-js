@@ -2,6 +2,10 @@
 
 ### Master
 
+### 2.0.0-alpha.13
+
+- Move back to the original URLs for diffs, instead of relying on PR metadata - orta
+
 ### 2.0.0-alpha.12
 
 - Fixed #348 invalid json response body error on generating a diff - felipesabino
