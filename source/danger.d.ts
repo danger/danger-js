@@ -598,6 +598,15 @@ declare module "danger" {
      */
     message: string
   }
+  /** A function with a callback function, which Danger wraps in a Promise */
+  type CallbackableFn = (callback: Function) => void
+
+  /**
+   * Types of things which Danger will schedule for you, it's recommended that you
+   * just throw in an `async () => { [...] }` function. Can also handle a function
+   * that has a single 'done' arg.
+   */
+  type Scheduleable = Promise<any> | Promise<void> | CallbackableFn
   /**
    * A Dangerfile is evaluated as a script, and so async code does not work
    * out of the box. By using the `schedule` function you can now register a
@@ -607,7 +616,7 @@ declare module "danger" {
    *
    * @param {Function} asyncFunction the function to run asynchronously
    */
-  function schedule(asyncFunction: (p: Promise<any>) => void): void
+  function schedule(asyncFunction: Scheduleable): void
 
   /**
    * Fails a build, outputting a specific reason for failing.
