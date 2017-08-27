@@ -87,7 +87,7 @@
     "chalk": "^2.0.0",
     "commander": "^2.9.0",
     "debug": "^3.0.0",
-    "github": "^9.2.0",
+    "github": "^10.0.0",
     "jsome": "^2.3.25",
     "jsonpointer": "^4.0.1",
     "lodash.find": "^4.6.0",
