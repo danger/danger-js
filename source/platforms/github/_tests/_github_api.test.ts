@@ -77,7 +77,7 @@ describe("API testing", () => {
     api.fetch = fetchText
     let text = await api.getPullRequestDiff()
     expect(JSON.parse(text)).toMatchObject({
-      api: "https://github.com/artsy/emission/pull/327.diff",
+      api: "https://api.github.com/repos/artsy/emission/pulls/1",
       headers: {
         Authorization: "token ABCDE",
         Accept: "application/vnd.github.v3.diff",
