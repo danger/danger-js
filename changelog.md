@@ -40,7 +40,7 @@
 
   Which is basically Ruby Danger in ~10LOC. Lols.
 
-  This is the first release of the command, it's pretty untested, but it is usable IMO. - orta
+  This is the first release of the command, it's pretty untested, but [it does work][swift-first-pr]. - orta
 
 [danger-swift]: https://github.com/danger/danger-swift
 [swift-json]: https://github.com/danger/danger-swift/blob/master/fixtures/eidolon_609.json
@@ -48,6 +48,7 @@
 [swift-eval]: https://github.com/danger/danger-swift/blob/1576e336e41698861456533463c8821675427258/Sources/Runner/main.swift#L23-L40
 [swift-dangerfile]: https://github.com/danger/danger-swift/blob/1576e336e41698861456533463c8821675427258/Dangerfile.swift
 [swift-stdout]: https://github.com/danger/danger-swift/blob/1576e336e41698861456533463c8821675427258/Sources/Runner/main.swift#L48-L50
+[swift-first-pr]: https://github.com/danger/danger-swift/pull/12
 
 ### 2.0.0-alpha.9
 
