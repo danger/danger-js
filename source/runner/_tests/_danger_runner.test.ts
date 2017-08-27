@@ -67,7 +67,7 @@ describe("with fixtures", () => {
     expect(results.markdowns[0]).toContain("hello is not defined")
   })
 
-  it.skip("handles relative imports correctly in Babel", async () => {
+  it("handles relative imports correctly in Babel", async () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
     await runDangerfileEnvironment(resolve(fixtures, "__DangerfileImportRelative.js"), undefined, runtime)
@@ -115,7 +115,7 @@ describe("with fixtures", () => {
     ])
   })
 
-  it.skip("in babel it can execute async/await scheduled functions", async () => {
+  it("in babel it can execute async/await scheduled functions", async () => {
     // this test takes *forever* because of babel-polyfill being required
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
