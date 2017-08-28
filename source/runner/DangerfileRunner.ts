@@ -183,7 +183,11 @@ const typescriptify = (content: string): string => {
 
 const babelify = (content: string, filename: string, extraPlugins: string[]): string => {
   const babel = require("babel-core") // tslint:disable-line
-  const options = babel.loadOptions({})
+  if (!babel.transform) {
+    return content
+  }
+
+  const options = babel.loadOptions ? babel.loadOptions({}) : { plugins: [] }
 
   const fileOpts = {
     filename,
