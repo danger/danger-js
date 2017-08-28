@@ -2,10 +2,9 @@
 
 ### Master
 
-- Improve the error handling around the babel API - #357 - orta
-
 ### 2.0.0-alpha.13
 
+- Improve the error handling around the babel API - #357 - orta
 - Move back to the original URLs for diffs, instead of relying on PR metadata - orta
 - Updates the types for `schedule` to be more accepting of what it actually takes - orta
 
