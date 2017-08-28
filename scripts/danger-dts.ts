@@ -48,6 +48,9 @@ declare module "danger" {
       }
       return newLine
     }
+    if (line.includes("export type")) {
+      return line
+    }
     if (line.includes("(")) {
       return "function " + line.trim()
     }

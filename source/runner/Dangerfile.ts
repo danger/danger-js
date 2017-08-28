@@ -4,6 +4,16 @@ import { MarkdownString } from "../dsl/Aliases"
 
 /// Start of Danger DSL definition
 
+/** A function with a callback function, which Danger wraps in a Promise */
+export type CallbackableFn = (callback: (done: any) => void) => void
+
+/**
+ * Types of things which Danger will schedule for you, it's recommended that you
+ * just throw in an `async () => { [...] }` function. Can also handle a function
+ * that has a single 'done' arg.
+ */
+export type Scheduleable = Promise<any> | Promise<void> | CallbackableFn
+
 export interface DangerContext {
   /**
    * A Dangerfile is evaluated as a script, and so async code does not work
@@ -14,7 +24,7 @@ export interface DangerContext {
    *
    * @param {Function} asyncFunction the function to run asynchronously
    */
-  schedule(asyncFunction: (p: Promise<any>) => void): void
+  schedule(asyncFunction: Scheduleable): void
 
   /**
    * Fails a build, outputting a specific reason for failing.
@@ -74,7 +84,7 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
     scheduled: [],
   }
 
-  const schedule = (fn: Function) => results.scheduled.push(fn)
+  const schedule = (fn: any) => results.scheduled.push(fn)
   const fail = (message: MarkdownString) => results.fails.push({ message })
   const warn = (message: MarkdownString) => results.warnings.push({ message })
   const message = (message: MarkdownString) => results.messages.push({ message })
