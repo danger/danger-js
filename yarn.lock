@@ -2,6 +2,37 @@
 # yarn lockfile v1
 
 
+"@types/babel-core@^6.25.1":
+  version "6.25.1"
+  resolved "https://registry.yarnpkg.com/@types/babel-core/-/babel-core-6.25.1.tgz#0168e12e5b8d29311c9b8d09629bdf38b172f2a6"
+  dependencies:
+    "@types/babel-template" "*"
+    "@types/babel-traverse" "*"
+    "@types/babel-types" "*"
+
+"@types/babel-template@*":
+  version "6.25.0"
+  resolved "https://registry.yarnpkg.com/@types/babel-template/-/babel-template-6.25.0.tgz#2505d7b55b88f821d98048b4fdf07b3b22563d30"
+  dependencies:
+    "@types/babel-types" "*"
+    "@types/babylon" "*"
+
+"@types/babel-traverse@*":
+  version "6.25.2"
+  resolved "https://registry.yarnpkg.com/@types/babel-traverse/-/babel-traverse-6.25.2.tgz#3cfaebe316fec515a964adbb84147b3c8971ba9f"
+  dependencies:
+    "@types/babel-types" "*"
+
+"@types/babel-types@*":
+  version "6.25.1"
+  resolved "https://registry.yarnpkg.com/@types/babel-types/-/babel-types-6.25.1.tgz#ce8f126a4403e11e1b0033a424f11638afac7889"
+
+"@types/babylon@*":
+  version "6.16.2"
+  resolved "https://registry.yarnpkg.com/@types/babylon/-/babylon-6.16.2.tgz#062ce63b693d9af1c246f5aedf928bc9c30589c8"
+  dependencies:
+    "@types/babel-types" "*"
+
 "@types/chalk@^0.4.31":
   version "0.4.31"
   resolved "https://registry.yarnpkg.com/@types/chalk/-/chalk-0.4.31.tgz#a31d74241a6b1edbb973cf36d97a2896834a51f9"
@@ -1246,9 +1277,9 @@ cssom@0.3.x, "cssom@>= 0.3.0 < 0.4.0", "cssom@>= 0.3.2 < 0.4.0":
   dependencies:
     cssom "0.3.x"
 
-danger-plugin-yarn@^0.2.9:
-  version "0.2.9"
-  resolved "https://registry.yarnpkg.com/danger-plugin-yarn/-/danger-plugin-yarn-0.2.9.tgz#89cac101aa98908dcbcb53f32abaa0d9931e5af7"
+danger-plugin-yarn@^1.0.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/danger-plugin-yarn/-/danger-plugin-yarn-1.1.1.tgz#6ecd03e221ae8b71f51e089150a766e8c8d4b2c3"
   dependencies:
     date-fns "^1.28.5"
     lodash.flatten "^4.4.0"
@@ -1820,9 +1851,9 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-github@^9.2.0:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/github/-/github-9.2.0.tgz#8a886dc40dd63636707dcaf99df3df26c59f16fc"
+github@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/github/-/github-10.0.0.tgz#701aa610ed6244b35d578d70b005d6b3859d2eff"
   dependencies:
     follow-redirects "0.0.7"
     https-proxy-agent "^1.0.0"

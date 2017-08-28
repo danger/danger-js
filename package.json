@@ -52,6 +52,7 @@
   },
   "homepage": "https://github.com/danger/danger-js#readme",
   "devDependencies": {
+    "@types/babel-core": "^6.25.1",
     "@types/chalk": "^0.4.31",
     "@types/commander": "^2.3.31",
     "@types/debug": "0.0.29",
