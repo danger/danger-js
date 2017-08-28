@@ -599,7 +599,7 @@ declare module "danger" {
     message: string
   }
   /** A function with a callback function, which Danger wraps in a Promise */
-  type CallbackableFn = (callback: Function) => void
+  type CallbackableFn = (callback: (done: any) => void) => void
 
   /**
    * Types of things which Danger will schedule for you, it's recommended that you

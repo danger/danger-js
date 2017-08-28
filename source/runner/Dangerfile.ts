@@ -5,7 +5,7 @@ import { MarkdownString } from "../dsl/Aliases"
 /// Start of Danger DSL definition
 
 /** A function with a callback function, which Danger wraps in a Promise */
-export type CallbackableFn = (callback: Function) => void
+export type CallbackableFn = (callback: (done: any) => void) => void
 
 /**
  * Types of things which Danger will schedule for you, it's recommended that you
