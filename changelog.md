@@ -23,7 +23,7 @@
   and will post a DangerResults object to it's STDOUT. This frees up another process to do whatever they want. So, others
   can make their own Danger runner.
 
-  An example of this is [Danger Swift][danger-swift]. It takes a [JSON][swift-json] file via [STDIN][swift-stdin], [compiles
+  An example of this is [Danger Swift][danger-swift]. It takes a [JSON][swift-json] document via [STDIN][swift-stdin], [compiles
   and evaluates][swift-eval] a [Swift file][swift-dangerfile] then passes the results back to `danger process` via [STDOUT][swift-stdout].
 
   Another example is this simple Ruby script:
