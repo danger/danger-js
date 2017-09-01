@@ -56,7 +56,7 @@ If you want to test locally against a known PR what I have done in the past is:
 
 * Ship a 0.0.1 release to NPM
 * Run `yarn link` inside my plugin's working directory
-* Then in an app that uses DangerJS, I add the dependency with `yarn add [plugin] -d`
+* Then in an app that uses Danger JS, I add the dependency with `yarn add [plugin] -d`
 * Then I convert that dependency to use a symlink to my working directory with `yarn link [plugin]`
 * Then I make sure that my library's transpiled code is always up-to-date with `yarn tsc -- --watch`
 * _Now_ I can use `danger pr` to run any existing pull request: `yarn danger -- pr -v https://github.com/artsy/emission/pull/597`
