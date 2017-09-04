@@ -2,8 +2,10 @@
 
 ### Master
 
+### 2.0.0-alpha.14
+
 - Adds a blank project generated in travis 8 to test no-babel or TS integration - orta
-- Improvments to `danger process` logging, and build fails correctly #363 - orta
+- Improvements to `danger process` logging, and build fails correctly #363 - orta
 
 ### 2.0.0-alpha.13
 
