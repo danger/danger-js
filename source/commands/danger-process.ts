@@ -14,6 +14,7 @@ import { Executor } from "../runner/Executor"
 import { providers } from "../ci_source/providers"
 import { sentence } from "../runner/DangerUtils"
 import * as chalk from "chalk"
+import { markdownCode, resultsWithFailure } from "./utils/reporting"
 
 declare const global: any
 
@@ -120,18 +121,20 @@ async function run(): Promise<any> {
         process.stdout.write(dslJSONString)
       } else {
         const child = spawn(subprocessName)
+        let allLogs = ""
 
         child.stdin.write(dslJSONString)
         child.stdin.end()
 
         child.stdout.on("data", async data => {
-          console.log(`stdout: ${data}`)
-
           data = data.toString()
           const trimmed = data.trim()
           if (trimmed.startsWith("{") && trimmed.endsWith("}") && trimmed.includes("markdowns")) {
             const results = JSON.parse(trimmed)
             await exec.handleResults(results)
+          } else {
+            console.log(`stdout: ${data}`)
+            allLogs += data
           }
         })
 
@@ -139,8 +142,14 @@ async function run(): Promise<any> {
           console.log(`stderr: ${data}`)
         })
 
-        child.on("close", code => {
+        child.on("close", async code => {
           console.log(`child process exited with code ${code}`)
+
+          // Submit an error back to the PR
+          if (process.exitCode) {
+            const results = resultsWithFailure(`${subprocessName}\` failed.`, "### Log\n\n" + markdownCode(allLogs))
+            await exec.handleResults(results)
+          }
         })
       }
     }
