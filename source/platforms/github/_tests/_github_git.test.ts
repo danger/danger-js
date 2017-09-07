@@ -166,15 +166,9 @@ describe("the dangerfile gitDSL", async () => {
         before: null,
         after: after,
         diff: [
-          {
-            op: "replace",
-            path: "",
-            value: {
-              a: "o, world",
-              b: 3,
-              c: ["one", "two", "three", "four"],
-            },
-          },
+          { op: "add", path: "/a", value: "o, world" },
+          { op: "add", path: "/b", value: 3 },
+          { op: "add", path: "/c", value: ["one", "two", "three", "four"] },
         ],
       })
     })
@@ -198,7 +192,7 @@ describe("the dangerfile gitDSL", async () => {
       expect(empty).toEqual({
         before: before,
         after: null,
-        diff: [{ op: "replace", path: "", value: null }],
+        diff: [{ op: "remove", path: "/a" }, { op: "remove", path: "/b" }, { op: "remove", path: "/c" }],
       })
     })
 
