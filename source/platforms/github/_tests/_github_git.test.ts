@@ -140,7 +140,7 @@ describe("the dangerfile gitDSL", async () => {
   })
 
   describe("JSONPatchForFile", () => {
-    it("returns a null for files not in the modified_files", async () => {
+    it("returns a null for files not in the change list", async () => {
       const gitDSL = await github.getPlatformGitRepresentation()
       const empty = await gitDSL.JSONPatchForFile("fuhqmahgads.json")
       expect(empty).toEqual(null)
@@ -179,7 +179,7 @@ describe("the dangerfile gitDSL", async () => {
   })
 
   describe("JSONDiffForFile", () => {
-    it("returns an empty object for files not in the modified_files", async () => {
+    it("returns an empty object for files not in the change list", async () => {
       const gitDSL = await github.getPlatformGitRepresentation()
       const empty = await gitDSL.JSONDiffForFile("fuhqmahgads.json")
       expect(empty).toEqual({})
@@ -276,6 +276,86 @@ describe("the dangerfile gitDSL", async () => {
           removed: [],
         },
       })
+    })
+  })
+
+  describe("textDiffForFile", () => {
+    it("returns a null for files not in the change list", async () => {
+      const gitDSL = await github.getPlatformGitRepresentation()
+      const empty = await gitDSL.diffForFile("fuhqmahgads.json")
+      expect(empty).toEqual(null)
+    })
+
+    it("returns a diff for created files", async () => {
+      const before = ""
+      const after =
+        "/* @flow */\n" +
+        "'use strict'\n" +
+        "import Relay from 'react-relay'\n" +
+        "import React from 'react'\n" +
+        "import { View, StyleSheet } from 'react-native'\n" +
+        "import Biography from './biography'\n" +
+        "import RelatedArtists from '../related_artists'\n" +
+        "import Separator from '../separator'\n" +
+        "class About extends React.Component\n"
+
+      github.api.fileContents = async (path, repo, ref) => {
+        return ref === masterSHA ? before : after
+      }
+
+      const gitDSL = await github.getPlatformGitRepresentation()
+      const diff = await gitDSL.diffForFile("lib/components/gene/about.js")
+
+      expect(diff.before).toEqual("")
+      expect(diff.after).toMatch(/class About extends React.Component/)
+      expect(diff.diff).toMatch(/class About extends React.Component/)
+    })
+
+    it("returns a diff for deleted files", async () => {
+      const before =
+        "'use strict'\n" +
+        "import Relay from 'react-relay'\n" +
+        "import React from 'react'\n" +
+        "import { StyleSheet, View, Dimensions } from 'react-native'\n\n" +
+        "class RelatedArtists extends React.Component"
+
+      const after = ""
+
+      github.api.fileContents = async (path, repo, ref) => {
+        return ref === masterSHA ? before : after
+      }
+
+      const gitDSL = await github.getPlatformGitRepresentation()
+      const diff = await gitDSL.diffForFile("lib/components/artist/related_artists/index.js")
+
+      expect(diff.before).toMatch(/class RelatedArtists extends React.Component/)
+      expect(diff.after).toEqual("")
+      expect(diff.diff).toMatch(/class RelatedArtists extends React.Component/)
+    })
+
+    it("returns a diff for modified files", async () => {
+      const before =
+        `- [dev] Updates Flow to 0.32 - orta\n` +
+        `- [dev] Updates React to 0.34 - orta\n` +
+        `- [dev] Turns on "keychain sharing" to fix a keychain bug in sim - orta`
+
+      const after = `- [dev] Updates Flow to 0.32 - orta
+        - [dev] Updates React to 0.34 - orta
+        - [dev] Turns on "keychain sharing" to fix a keychain bug in sim - orta
+        - GeneVC now shows about information, and trending artists - orta`
+
+      github.api.fileContents = async (path, repo, ref) => {
+        return ref === masterSHA ? before : after
+      }
+
+      const gitDSL = await github.getPlatformGitRepresentation()
+      const diff = await gitDSL.diffForFile("CHANGELOG.md")
+
+      expect(diff.before).toEqual(before)
+      expect(diff.after).toEqual(after)
+      expect(diff.added).toEqual("+- GeneVC now shows about information, and trending artists - orta")
+      expect(diff.removed).toEqual("")
+      expect(diff.diff).toMatch(/GeneVC now shows about information, and trending artists/)
     })
   })
 })

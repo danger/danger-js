@@ -147,7 +147,7 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
   const diffForFile = async (filename: string) => {
     // We already have access to the diff, so see if the file is in there
     // if it's not return an empty diff
-    const structuredDiff = modifiedDiffs.find((diff: any) => diff.from === filename || diff.to === filename)
+    const structuredDiff = fileDiffs.find((diff: any) => diff.from === filename || diff.to === filename)
     if (!structuredDiff) {
       return null
     }
