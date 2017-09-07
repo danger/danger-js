@@ -2,7 +2,7 @@
 
 ### Master
 
-- Updates `diffForFile` to include created and removed files - #368 - bdotdub
+- Updates `diffForFile` and `JSONPatchForFile` to include created and removed files - #368 - bdotdub
 
 ### 2.0.0-alpha.14
 

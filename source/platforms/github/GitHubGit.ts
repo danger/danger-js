@@ -67,21 +67,20 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
     const baseFile = await api.fileContents(filename, pr.base.repo.full_name, pr.base.sha)
     const headFile = await api.fileContents(filename, pr.head.repo.full_name, pr.head.sha)
 
-    if (baseFile && headFile) {
-      // Parse JSON
-      const baseJSON = JSON.parse(baseFile)
-      const headJSON = JSON.parse(headFile)
-      // Tiny bit of hand-waving here around the types. JSONPatchOperation is
-      // a simpler version of all operations inside the rfc6902 d.ts. Users
-      // of danger wont care that much, so I'm smudging the classes slightly
-      // to be ones we can add to the hosted docs.
-      return {
-        before: baseJSON,
-        after: headJSON,
-        diff: jsonDiff.createPatch(baseJSON, headJSON) as JSONPatchOperation[],
-      }
+    // Parse JSON. `fileContents` returns empty string for files that are
+    // missing in one of the refs, ie. when the file is created or deleted.
+    const baseJSON = baseFile === "" ? null : JSON.parse(baseFile)
+    const headJSON = headFile === "" ? null : JSON.parse(headFile)
+
+    // Tiny bit of hand-waving here around the types. JSONPatchOperation is
+    // a simpler version of all operations inside the rfc6902 d.ts. Users
+    // of danger wont care that much, so I'm smudging the classes slightly
+    // to be ones we can add to the hosted docs.
+    return {
+      before: baseJSON,
+      after: headJSON,
+      diff: jsonDiff.createPatch(baseJSON, headJSON) as JSONPatchOperation[],
     }
-    return null
   }
 
   /**

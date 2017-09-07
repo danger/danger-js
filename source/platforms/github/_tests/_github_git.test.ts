@@ -146,6 +146,62 @@ describe("the dangerfile gitDSL", async () => {
       expect(empty).toEqual(null)
     })
 
+    it("handles showing a patch for a created file", async () => {
+      const before = ""
+
+      const after = {
+        a: "o, world",
+        b: 3,
+        c: ["one", "two", "three", "four"],
+      }
+
+      github.api.fileContents = async (path, repo, ref) => {
+        const obj = ref === masterSHA ? before : after
+        return obj === "" ? "" : JSON.stringify(obj)
+      }
+
+      const gitDSL = await github.getPlatformGitRepresentation()
+      const empty = await gitDSL.JSONPatchForFile("data/schema.json")
+      expect(empty).toEqual({
+        before: null,
+        after: after,
+        diff: [
+          {
+            op: "replace",
+            path: "",
+            value: {
+              a: "o, world",
+              b: 3,
+              c: ["one", "two", "three", "four"],
+            },
+          },
+        ],
+      })
+    })
+
+    it("handles showing a patch for a deleted file", async () => {
+      const before = {
+        a: "o, world",
+        b: 3,
+        c: ["one", "two", "three", "four"],
+      }
+
+      const after = ""
+
+      github.api.fileContents = async (path, repo, ref) => {
+        const obj = ref === masterSHA ? before : after
+        return obj === "" ? "" : JSON.stringify(obj)
+      }
+
+      const gitDSL = await github.getPlatformGitRepresentation()
+      const empty = await gitDSL.JSONPatchForFile("data/schema.json")
+      expect(empty).toEqual({
+        before: before,
+        after: null,
+        diff: [{ op: "replace", path: "", value: null }],
+      })
+    })
+
     it("handles showing a patch for two different diff files", async () => {
       const before = {
         a: "Hello, world",
