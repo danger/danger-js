@@ -253,7 +253,12 @@ describe("the dangerfile gitDSL", async () => {
       expect(empty).toEqual({
         a: { after: "o, world", before: null },
         b: { after: 3, before: null },
-        c: { added: ["one", "two", "three", "four"], after: ["one", "two", "three", "four"], before: null, removed: [] },
+        c: {
+          added: ["one", "two", "three", "four"],
+          after: ["one", "two", "three", "four"],
+          before: null,
+          removed: [],
+        },
         d: { added: ["one", "two"], after: ["one", "two"], before: null, removed: [] },
         e: { added: ["five", "one", "three"], after: ["five", "one", "three"], before: null, removed: [] },
       })
@@ -277,8 +282,13 @@ describe("the dangerfile gitDSL", async () => {
       expect(empty).toEqual({
         a: { after: null, before: "o, world" },
         b: { after: null, before: 3 },
-        c: { added: [], after: null, before: ["one", "two", "three", "four"], removed: ["one", "two", "three", "four"] },
-        d: { added: [], after: null, before: ["one", "two",], removed: ["one", "two"] },
+        c: {
+          added: [],
+          after: null,
+          before: ["one", "two", "three", "four"],
+          removed: ["one", "two", "three", "four"],
+        },
+        d: { added: [], after: null, before: ["one", "two"], removed: ["one", "two"] },
         e: { added: [], after: null, before: ["five", "one", "three"], removed: ["five", "one", "three"] },
       })
     })
