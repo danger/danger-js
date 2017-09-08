@@ -110,7 +110,7 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
         before: jsonpointer.get(before, backAStepPath) || null,
       }
 
-      const counterpart = (other) => {
+      const emptyValueOfCounterpart = (other: any) => {
         if (Array.isArray(other)) {
           return []
         } else if (isobject(diff.after)) {
@@ -119,8 +119,8 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
         return null
       }
 
-      const beforeValue = diff.before || counterpart(diff.after)
-      const afterValue = diff.after || counterpart(diff.before)
+      const beforeValue = diff.before || emptyValueOfCounterpart(diff.after)
+      const afterValue = diff.after || emptyValueOfCounterpart(diff.before)
 
       // If they both are arrays, add some extra metadata about what was
       // added or removed. This makes it really easy to act on specific
