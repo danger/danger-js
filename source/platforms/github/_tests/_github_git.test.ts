@@ -235,6 +235,54 @@ describe("the dangerfile gitDSL", async () => {
       expect(empty).toEqual({})
     })
 
+    it("handles showing a patch for a created file", async () => {
+      github.api.fileContents = async (path, repo, ref) => {
+        const after = {
+          a: "o, world",
+          b: 3,
+          c: ["one", "two", "three", "four"],
+          d: ["one", "two"],
+          e: ["five", "one", "three"],
+        }
+
+        const obj = ref === masterSHA ? {} : after
+        return JSON.stringify(obj)
+      }
+      const gitDSL = await github.getPlatformGitRepresentation()
+      const empty = await gitDSL.JSONDiffForFile("data/schema.json")
+      expect(empty).toEqual({
+        a: { after: "o, world", before: null },
+        b: { after: 3, before: null },
+        c: { added: ["one", "two", "three", "four"], after: ["one", "two", "three", "four"], before: null, removed: [] },
+        d: { added: ["one", "two"], after: ["one", "two"], before: null, removed: [] },
+        e: { added: ["five", "one", "three"], after: ["five", "one", "three"], before: null, removed: [] },
+      })
+    })
+
+    it("handles showing a patch for a deleted file", async () => {
+      github.api.fileContents = async (path, repo, ref) => {
+        const before = {
+          a: "o, world",
+          b: 3,
+          c: ["one", "two", "three", "four"],
+          d: ["one", "two"],
+          e: ["five", "one", "three"],
+        }
+
+        const obj = ref === masterSHA ? before : {}
+        return JSON.stringify(obj)
+      }
+      const gitDSL = await github.getPlatformGitRepresentation()
+      const empty = await gitDSL.JSONDiffForFile("data/schema.json")
+      expect(empty).toEqual({
+        a: { after: null, before: "o, world" },
+        b: { after: null, before: 3 },
+        c: { added: [], after: null, before: ["one", "two", "three", "four"], removed: ["one", "two", "three", "four"] },
+        d: { added: [], after: null, before: ["one", "two",], removed: ["one", "two"] },
+        e: { added: [], after: null, before: ["five", "one", "three"], removed: ["five", "one", "three"] },
+      })
+    })
+
     it("handles showing a patch for two different diff files", async () => {
       github.api.fileContents = async (path, repo, ref) => {
         const before = {
