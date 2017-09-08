@@ -2,6 +2,8 @@
 
 ### Master
 
+- Updates `diffForFile`, `JSONPatchForFile`, and `JSONDiffForFile` to include created and removed files - #368 - bdotdub
+
 ### 2.0.0-alpha.14
 
 - Adds a blank project generated in travis 8 to test no-babel or TS integration - orta

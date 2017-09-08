@@ -67,21 +67,20 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
     const baseFile = await api.fileContents(filename, pr.base.repo.full_name, pr.base.sha)
     const headFile = await api.fileContents(filename, pr.head.repo.full_name, pr.head.sha)
 
-    if (baseFile && headFile) {
-      // Parse JSON
-      const baseJSON = JSON.parse(baseFile)
-      const headJSON = JSON.parse(headFile)
-      // Tiny bit of hand-waving here around the types. JSONPatchOperation is
-      // a simpler version of all operations inside the rfc6902 d.ts. Users
-      // of danger wont care that much, so I'm smudging the classes slightly
-      // to be ones we can add to the hosted docs.
-      return {
-        before: baseJSON,
-        after: headJSON,
-        diff: jsonDiff.createPatch(baseJSON, headJSON) as JSONPatchOperation[],
-      }
+    // Parse JSON. `fileContents` returns empty string for files that are
+    // missing in one of the refs, ie. when the file is created or deleted.
+    const baseJSON = baseFile === "" ? {} : JSON.parse(baseFile)
+    const headJSON = headFile === "" ? {} : JSON.parse(headFile)
+
+    // Tiny bit of hand-waving here around the types. JSONPatchOperation is
+    // a simpler version of all operations inside the rfc6902 d.ts. Users
+    // of danger wont care that much, so I'm smudging the classes slightly
+    // to be ones we can add to the hosted docs.
+    return {
+      before: baseFile === "" ? null : baseJSON,
+      after: headFile === "" ? null : headJSON,
+      diff: jsonDiff.createPatch(baseJSON, headJSON) as JSONPatchOperation[],
     }
-    return null
   }
 
   /**
@@ -107,25 +106,36 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
       const backAStepPath = pathSteps.length <= 2 ? path : pathSteps.slice(0, pathSteps.length - 1).join("/")
 
       const diff: any = {
-        after: jsonpointer.get(after, backAStepPath),
-        before: jsonpointer.get(before, backAStepPath),
+        after: jsonpointer.get(after, backAStepPath) || null,
+        before: jsonpointer.get(before, backAStepPath) || null,
       }
+
+      const emptyValueOfCounterpart = (other: any) => {
+        if (Array.isArray(other)) {
+          return []
+        } else if (isobject(diff.after)) {
+          return {}
+        }
+        return null
+      }
+
+      const beforeValue = diff.before || emptyValueOfCounterpart(diff.after)
+      const afterValue = diff.after || emptyValueOfCounterpart(diff.before)
 
       // If they both are arrays, add some extra metadata about what was
       // added or removed. This makes it really easy to act on specific
       // changes to JSON DSLs
 
-      if (Array.isArray(diff.after) && Array.isArray(diff.before)) {
-        const arrayBefore = diff.before as any[]
-        const arrayAfter = diff.after as any[]
+      if (Array.isArray(afterValue) && Array.isArray(beforeValue)) {
+        const arrayBefore = beforeValue as any[]
+        const arrayAfter = afterValue as any[]
 
         diff.added = arrayAfter.filter(o => !includes(arrayBefore, o))
         diff.removed = arrayBefore.filter(o => !includes(arrayAfter, o))
-
         // Do the same, but for keys inside an object if they both are objects.
-      } else if (isobject(diff.after) && isobject(diff.before)) {
-        const beforeKeys = keys(diff.before) as string[]
-        const afterKeys = keys(diff.after) as string[]
+      } else if (isobject(afterValue) && isobject(beforeValue)) {
+        const beforeKeys = keys(beforeValue) as string[]
+        const afterKeys = keys(afterValue) as string[]
         diff.added = afterKeys.filter(o => !includes(beforeKeys, o))
         diff.removed = beforeKeys.filter(o => !includes(afterKeys, o))
       }
@@ -147,7 +157,7 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
   const diffForFile = async (filename: string) => {
     // We already have access to the diff, so see if the file is in there
     // if it's not return an empty diff
-    const structuredDiff = modifiedDiffs.find((diff: any) => diff.from === filename || diff.to === filename)
+    const structuredDiff = fileDiffs.find((diff: any) => diff.from === filename || diff.to === filename)
     if (!structuredDiff) {
       return null
     }
