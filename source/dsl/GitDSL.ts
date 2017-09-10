@@ -42,7 +42,7 @@ export interface JSONDiffValue {
   after: any
   /** If both before & after are arrays, then you optionally get what is added. Empty if no additional objects. */
   added?: any[]
-  /** If both before & after are arrays, then you optionally get what is removed. Empty ig no removed objects. */
+  /** If both before & after are arrays, then you optionally get what is removed. Empty if no removed objects. */
   removed?: any[]
 }
 
