@@ -11,15 +11,14 @@ import { runDangerfileEnvironment } from "../runner/DangerfileRunner"
 import { dangerfilePath } from "./utils/file-utils"
 import validateDangerfileExists from "./utils/validateDangerfileExists"
 import openRepl from "./utils/repl"
+import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 
 const d = debug("danger:pr")
 
-program
-  .usage("[options] <pr_url>")
-  .description("Emulate running Danger against an existing GitHub Pull Request.")
-  .option("-v, --verbose", "Output more text to the stdout than a normal run")
-  .option("-d, --dangerfile [filePath]", "Specify custom dangerfile other than default dangerfile.js")
-  .parse(process.argv)
+program.usage("[options] <pr_url>").description("Emulate running Danger against an existing GitHub Pull Request.")
+setSharedArgs(program).parse(process.argv)
+
+const app = (program as any) as SharedCLI
 
 const dangerFile = dangerfilePath(program)
 
@@ -48,8 +47,8 @@ if (program.args.length === 0) {
 
 async function runDanger(source: FakeCI, platform: GitHub, file: string) {
   const config = {
-    stdoutOnly: program.textOnly,
-    verbose: program.verbose,
+    stdoutOnly: app.textOnly,
+    verbose: app.verbose,
   }
 
   const exec = new Executor(source, platform, config)

@@ -1,3 +1,8 @@
 {
-  "recommendations": ["Orta.vscode-jest"]
+  "recommendations": [
+    "Orta.vscode-jest",
+    "esbenp.prettier-vscode",
+    "christian-kohler.path-intellisense",
+    "wayou.vscode-todo-highlight"
+  ]
 }
