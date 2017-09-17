@@ -18,8 +18,15 @@
     "cacheDirectory": ".jest/cache"
   },
   "lint-staged": {
-    "*.json": ["npm run prettier-write --", "git add"],
-    "*.@(ts|tsx)": ["tslint --fix", "npm run prettier-write --", "git add"]
+    "*.json": ["yarn prettier --write", "git add"],
+    "*.@(ts|tsx)": ["tslint --fix", "yarn prettier --write", "git add"]
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": false,
+    "trailingComma": "es5",
+    "bracketSpacing": true
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -28,15 +35,13 @@
     "test:watch": "jest --watch",
     "lint": "tslint \"source/**/*.ts\"",
     "lint:fix": "tslint \"source/**/*.ts\" --fix",
-    "prettier": "prettier",
-    "prettier-write": "npm run prettier -- --parser typescript --no-semi --trailing-comma es5 --write --print-width 120",
-    "prettier-project": "npm run prettier-write -- 'source/**/*.{ts,tsx}'",
     "prepublishOnly": "npm run build && yarn declarations",
     "build": "shx rm -rf ./distribution && tsc && madge ./distribution --circular",
     "build:watch": "tsc -w",
     "link": "npm run build && chmod +x distribution/commands/danger.js && npm link",
     "declarations": "ts-node ./scripts/create-danger-dts.ts",
-    "docs:cp_defs": "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/github/lib/index.d.ts docs/docs_generate/github.d.ts",
+    "docs:cp_defs":
+      "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/github/lib/index.d.ts docs/docs_generate/github.d.ts",
     "docs": "yarn run docs:cp_defs; yarn typedoc -- --json docs/js_ref_dsl_docs.json --includeDeclarations ",
     "dts-lint": "yarn run declarations && yarn dtslint types"
   },

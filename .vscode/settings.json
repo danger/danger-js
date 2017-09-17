@@ -1,42 +1,27 @@
-// Place your settings in this file to overwrite default and user settings.
 {
-    "javascript.validate.enable": false,
-    "files.exclude": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/.DS_Store": true,
-        "distribution/": true,
-        "coverage": true
-    },
-    "search.exclude": {
-        "**/node_modules": true,
-        "distribution/": true
-    },
-    "files.associations": {
-        "**/*.js": "javascriptreact"
-    },
-    "spellchecker.language": "en_US",
-    "spellchecker.ignoreWordsList": [
-        "GitHub",
-        "repo",
-        "Awesommmmee",
-        "linters",
-        "TODO",
-        "repl"
-    ],
-    "spellchecker.documentTypes": [
-        "markdown",
-        "latex",
-        "plaintext"
-    ],
-    "spellchecker.ignoreRegExp": [],
-    "spellchecker.ignoreFileExtensions": [],
-    "spellchecker.checkInterval": 5000,
-    "eslint.enable": false,
-    "editor.formatOnSave": true,
-    "prettier.singleQuote": false,
-    "prettier.trailingComma": "es5",
-    "prettier.semi": false,
-    "prettier.printWidth": 120
+  // Place your settings in this file to overwrite default and user settings.
+  "javascript.validate.enable": false,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    "distribution/": true,
+    "coverage": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "distribution/": true
+  },
+  "files.associations": {
+    "**/*.js": "javascriptreact"
+  },
+  "spellchecker.language": "en_US",
+  "spellchecker.ignoreWordsList": ["GitHub", "repo", "Awesommmmee", "linters", "TODO", "repl"],
+  "spellchecker.documentTypes": ["markdown", "latex", "plaintext"],
+  "spellchecker.ignoreRegExp": [],
+  "spellchecker.ignoreFileExtensions": [],
+  "spellchecker.checkInterval": 5000,
+  "eslint.enable": false,
+  "editor.formatOnSave": true
 }
