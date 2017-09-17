@@ -46,7 +46,7 @@ export function getCISourceForExternal(env: Env, modulePath: string): CISource |
  * @param {string} modulePath relative path to CI provider
  * @returns {?CISource} a CI source if module loaded successfully, undefined otherwise
  */
-export function getCISource(env: Env, modulePath: string): CISource | undefined {
+export function getCISource(env: Env, modulePath: string | undefined): CISource | undefined {
   if (modulePath) {
     const external = getCISourceForExternal(env, modulePath)
     if (external) {

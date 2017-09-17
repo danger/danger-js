@@ -1,30 +1,24 @@
+import * as chalk from "chalk"
 import * as program from "commander"
 import * as debug from "debug"
-import * as fs from "fs"
+
 import { getCISource } from "../ci_source/get_ci_source"
+import { providers } from "../ci_source/providers"
 import { getPlatformForEnv } from "../platforms/platform"
+import { sentence } from "../runner/DangerUtils"
 import { Executor } from "../runner/Executor"
 import { dangerfilePath } from "./utils/file-utils"
-import { providers } from "../ci_source/providers"
-import { sentence } from "../runner/DangerUtils"
-import * as chalk from "chalk"
+import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
+import validateDangerfileExists from "./utils/validateDangerfileExists"
 
 const d = debug("danger:run")
 declare const global: any
 
-// TODO: if we get more options around the dangerfile, we should
-//       support sharing `program` setup code with danger-pr.ts
+program.usage("[options]").description("Runs a Dangerfile in JavaScript or TypeScript.")
 
-program
-  .option("-v, --verbose", "Verbose output of files")
-  .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")
-  .option("-t, --text-only", "Provide an STDOUT only interface, Danger will not post to your PR")
-  .option("-d, --dangerfile [filePath]", "Specify a custom dangerfile path")
-  .parse(process.argv)
+setSharedArgs(program).parse(process.argv)
 
-// The dynamic nature of the program means typecasting a lot
-// use this to work with dynamic propeties
-const app = program as any
+const app = (program as any) as SharedCLI
 
 process.on("unhandledRejection", function(reason: string, _p: any) {
   console.log(chalk.red("Error: "), reason)
@@ -73,27 +67,20 @@ async function run(): Promise<any> {
       console.log(`${chalk.bold("OK")}, everything looks good: ${source.name} on ${platform.name}`)
       const dangerFile = dangerfilePath(program)
 
-      try {
-        const stat = fs.statSync(dangerFile)
-
-        if (!!stat && stat.isFile()) {
-          d(`executing dangerfile at ${dangerFile}`)
-
-          const config = {
-            stdoutOnly: app.textOnly,
-            verbose: app.verbose,
-          }
-
-          const exec = new Executor(source, platform, config)
-          exec.setupAndRunDanger(dangerFile)
-        } else {
-          console.error(chalk.red(`Looks like your path '${dangerFile}' is not a valid path for a Dangerfile.`))
-          process.exitCode = 1
-        }
-      } catch (error) {
+      const exists = validateDangerfileExists(dangerFile)
+      if (!exists) {
+        console.error(chalk.red(`Looks like your path '${dangerFile}' is not a valid path for a Dangerfile.`))
         process.exitCode = 1
-        console.error(error.message)
-        console.error(error)
+      } else {
+        d(`executing dangerfile at ${dangerFile}`)
+
+        const config = {
+          stdoutOnly: app.textOnly,
+          verbose: app.verbose,
+        }
+
+        const exec = new Executor(source, platform, config)
+        exec.setupAndRunDanger(dangerFile)
       }
     }
   }
