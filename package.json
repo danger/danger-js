@@ -18,8 +18,15 @@
     "cacheDirectory": ".jest/cache"
   },
   "lint-staged": {
-    "*.json": ["npm run prettier-write --", "git add"],
-    "*.@(ts|tsx)": ["tslint --fix", "npm run prettier-write --", "git add"]
+    "*.json": ["yarn prettier --write", "git add"],
+    "*.@(ts|tsx)": ["tslint --fix", "yarn prettier --write", "git add"]
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": false,
+    "trailingComma": "es5",
+    "bracketSpacing": true
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -28,15 +35,13 @@
     "test:watch": "jest --watch",
     "lint": "tslint \"source/**/*.ts\"",
     "lint:fix": "tslint \"source/**/*.ts\" --fix",
-    "prettier": "prettier",
-    "prettier-write": "npm run prettier -- --parser typescript --no-semi --trailing-comma es5 --write --print-width 120",
-    "prettier-project": "npm run prettier-write -- 'source/**/*.{ts,tsx}'",
     "prepublishOnly": "npm run build && yarn declarations",
     "build": "shx rm -rf ./distribution && tsc && madge ./distribution --circular",
     "build:watch": "tsc -w",
     "link": "npm run build && chmod +x distribution/commands/danger.js && npm link",
     "declarations": "ts-node ./scripts/create-danger-dts.ts",
-    "docs:cp_defs": "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/github/lib/index.d.ts docs/docs_generate/github.d.ts",
+    "docs:cp_defs":
+      "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/github/lib/index.d.ts docs/docs_generate/github.d.ts",
     "docs": "yarn run docs:cp_defs; yarn typedoc -- --json docs/js_ref_dsl_docs.json --includeDeclarations ",
     "dts-lint": "yarn run declarations && yarn dtslint types"
   },
@@ -52,7 +57,6 @@
   },
   "homepage": "https://github.com/danger/danger-js#readme",
   "devDependencies": {
-    "@types/babel-core": "^6.25.1",
     "@types/chalk": "^0.4.31",
     "@types/commander": "^2.3.31",
     "@types/debug": "0.0.29",
@@ -71,24 +75,24 @@
     "danger-plugin-yarn": "^1.0.0",
     "date-fns": "^1.28.3",
     "husky": "^0.14.0",
-    "jest": "^20.0.4",
+    "jest": "21",
     "lint-staged": "^4.0.0",
     "madge": "^2.0.0",
     "prettier": "^1.5.3",
     "shx": "^0.2.1",
-    "ts-jest": "^20.0.10",
+    "ts-jest": "^21",
     "ts-node": "^3.2.1",
     "tslint": "^5.3.0",
     "tslint-config-prettier": "^1.0.0",
     "typedoc": "orta/typedoc#0.5.10-no-types",
-    "typescript": "^2.4.2"
+    "typescript": "^2.5"
   },
   "dependencies": {
     "babel-polyfill": "7.0.0-alpha.19",
     "chalk": "^2.0.0",
     "commander": "^2.9.0",
     "debug": "^3.0.0",
-    "github": "^10.0.0",
+    "github": "^11",
     "jsome": "^2.3.25",
     "jsonpointer": "^4.0.1",
     "lodash.find": "^4.6.0",
