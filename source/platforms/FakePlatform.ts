@@ -38,10 +38,6 @@ export class FakePlatform implements Platform {
     return true
   }
 
-  async editMainComment(_comment: string): Promise<boolean> {
-    return true
-  }
-
   async updateStatus(_success: boolean, _message: string): Promise<boolean> {
     return true
   }

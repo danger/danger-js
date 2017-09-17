@@ -99,15 +99,19 @@ describe("Peril", () => {
 
   it("Allows setting additional headers", async () => {
     const request = await api.get("user")
-    expect(api.fetch).toHaveBeenCalledWith("https://api.github.com/user", {
-      body: {},
-      headers: {
-        Authorization: "token ABCDE",
-        CUSTOM: "HEADER",
-        "Content-Type": "application/json",
+    expect(api.fetch).toHaveBeenCalledWith(
+      "https://api.github.com/user",
+      {
+        body: {},
+        headers: {
+          Authorization: "token ABCDE",
+          CUSTOM: "HEADER",
+          "Content-Type": "application/json",
+        },
+        method: "GET",
       },
-      method: "GET",
-    })
+      undefined
+    )
   })
 
   it("Merges two Accept headers", async () => {
@@ -117,15 +121,19 @@ describe("Peril", () => {
       Accept: "application/vnd.github.v3.diff",
     })
 
-    expect(api.fetch).toHaveBeenCalledWith("https://api.github.com/user", {
-      body: {},
-      headers: {
-        Accept: "application/vnd.github.machine-man-preview+json, application/vnd.github.v3.diff",
-        Authorization: "token ABCDE",
-        "Content-Type": "application/json",
+    expect(api.fetch).toHaveBeenCalledWith(
+      "https://api.github.com/user",
+      {
+        body: {},
+        headers: {
+          Accept: "application/vnd.github.machine-man-preview+json, application/vnd.github.v3.diff",
+          Authorization: "token ABCDE",
+          "Content-Type": "application/json",
+        },
+        method: "GET",
       },
-      method: "GET",
-    })
+      undefined
+    )
   })
 
   describe("Allows setting DANGER_GITHUB_APP env variable", () => {

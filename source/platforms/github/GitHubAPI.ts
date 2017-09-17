@@ -1,6 +1,5 @@
 import * as GitHubNodeAPI from "github"
 import * as debug from "debug"
-import * as find from "lodash.find"
 import * as node_fetch from "node-fetch"
 import * as parse from "parse-link-header"
 import * as v from "voca"
@@ -76,14 +75,13 @@ export class GitHubAPI {
 
   // The above is the API for Platform
 
-  async getDangerCommentID(): Promise<number | null> {
+  async getDangerCommentIDs(): Promise<number[]> {
     const userID = await this.getUserID()
     const allComments: any[] = await this.getPullRequestComments()
-    const dangerComment = find(
-      allComments,
-      (comment: any) => (!userID || comment.user.id === userID) && v.includes(comment.body, dangerSignaturePostfix)
-    )
-    return dangerComment ? dangerComment.id : null
+    return allComments
+      .filter(comment => userID || comment.user.id === userID)
+      .filter(comment => v.includes(comment.body, dangerSignaturePostfix))
+      .map(comment => comment.id)
   }
 
   async updateCommentWithID(id: number, comment: string): Promise<any> {
@@ -266,7 +264,7 @@ export class GitHubAPI {
       {},
       {
         state: passed ? "success" : "failure",
-        context: "Danger",
+        context: process.env["PERIL_INTEGRATION_ID"] ? "Peril" : "Danger",
         target_url: "http://danger.systems/js",
         description: message,
       }
@@ -277,7 +275,7 @@ export class GitHubAPI {
 
   // API Helpers
 
-  private api(path: string, headers: any = {}, body: any = {}, method: string) {
+  private api(path: string, headers: any = {}, body: any = {}, method: string, suppressErrors?: boolean) {
     if (this.token) {
       headers["Authorization"] = `token ${this.token}`
     }
@@ -292,24 +290,28 @@ export class GitHubAPI {
       // e.g. https://gist.github.com/LTe/5270348
       customAccept = { Accept: `${this.additionalHeaders.Accept}, ${headers.Accept}` }
     }
-    return this.fetch(url, {
-      method: method,
-      body: body,
-      headers: {
-        "Content-Type": "application/json",
-        ...headers,
-        ...this.additionalHeaders,
-        ...customAccept,
+    return this.fetch(
+      url,
+      {
+        method: method,
+        body: body,
+        headers: {
+          "Content-Type": "application/json",
+          ...headers,
+          ...this.additionalHeaders,
+          ...customAccept,
+        },
       },
-    })
+      suppressErrors
+    )
   }
 
   get(path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> {
     return this.api(path, headers, body, "GET")
   }
 
-  post(path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> {
-    return this.api(path, headers, JSON.stringify(body), "POST")
+  post(path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> {
+    return this.api(path, headers, JSON.stringify(body), "POST", suppressErrors)
   }
 
   patch(path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> {

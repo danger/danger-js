@@ -2,6 +2,12 @@
 
 ### Master
 
+Some UX fixes:
+
+- Don't show warnings about not setting a commit status (unless in verbose) - orta
+- Delete duplicate Danger message, due to fast Peril edits - orta
+- Show Peril in the commit status if inside Peril, not just Danger - orta
+
 ### 2.0.0-alpha.15
 
 - Updates `diffForFile`, `JSONPatchForFile`, and `JSONDiffForFile` to include created and removed files - #368 - bdotdub
