@@ -104,12 +104,12 @@ export class GitHub {
    * @returns {Promise<boolean>} did it work?
    */
   async deleteMainComment(): Promise<boolean> {
-    const commentID = await this.api.getDangerCommentID()
-    if (commentID) {
-      return await this.api.deleteCommentWithID(commentID)
+    const commentIDs = await this.api.getDangerCommentIDs()
+    for (let commentID of commentIDs) {
+      await this.api.deleteCommentWithID(commentID)
     }
 
-    return commentID !== null
+    return commentIDs.length > 0
   }
 
   /**
@@ -119,29 +119,23 @@ export class GitHub {
    * @returns {Promise<boolean>} success of posting comment
    */
   async updateOrCreateComment(newComment: string): Promise<boolean> {
-    const commentID = await this.api.getDangerCommentID()
-    if (commentID) {
-      await this.api.updateCommentWithID(commentID, newComment)
+    const commentIDs = await this.api.getDangerCommentIDs()
+
+    if (commentIDs.length) {
+      // Edit the first comment
+      await this.api.updateCommentWithID(commentIDs[0], newComment)
+
+      // Delete any dupes
+      for (let commentID of commentIDs) {
+        if (commentID !== commentIDs[0]) {
+          await this.api.deleteCommentWithID(commentID)
+        }
+      }
     } else {
       await this.createComment(newComment)
     }
-    return true
-  }
 
-  /**
-   * Updates the main Danger comment, when Danger has run
-   * more than once
-   *
-   * @param {string} comment updated text
-   *
-   * @returns {Promise<boolean>} did it work?
-   */
-  async editMainComment(comment: string): Promise<boolean> {
-    const commentID = await this.api.getDangerCommentID()
-    if (commentID) {
-      await this.api.updateCommentWithID(commentID, comment)
-    }
-    return commentID !== null
+    return true
   }
 
   /**

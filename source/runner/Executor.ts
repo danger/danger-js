@@ -147,6 +147,10 @@ export class Executor {
 
     const failed = fails.length > 0
     const successPosting = await this.platform.updateStatus(!failed, messageForResults(results))
+    if (this.options.verbose) {
+      console.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
+      console.log("If the build fails, then danger will use a failing exit code.")
+    }
 
     if (failureCount + messageCount === 0) {
       console.log("No issues or messages were sent. Removing any existing messages.")

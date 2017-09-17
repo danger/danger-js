@@ -10,7 +10,11 @@ declare const global: any
  * @param {fetch.RequestInit} [init] the usual options
  * @returns {Promise<fetch.Response>} network-y promise
  */
-export function api(url: string | node_fetch.Request, init: node_fetch.RequestInit): Promise<node_fetch.Response> {
+export function api(
+  url: string | node_fetch.Request,
+  init: node_fetch.RequestInit,
+  suppressErrorReporting?: boolean
+): Promise<node_fetch.Response> {
   if (global.verbose && global.verbose === true) {
     const output = ["curl", "-i"]
 
@@ -48,7 +52,7 @@ export function api(url: string | node_fetch.Request, init: node_fetch.RequestIn
   const originalFetch: any = node_fetch
   return originalFetch(url, init).then(async (response: node_fetch.Response) => {
     // Handle failing errors
-    if (!response.ok) {
+    if (!suppressErrorReporting && !response.ok) {
       // we should not modify the response when an error occur to allow body stream to be read again if needed
       let clonedResponse = response.clone()
       console.warn(`Request failed [${clonedResponse.status}]: ${clonedResponse.url}`)
