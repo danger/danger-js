@@ -14,9 +14,9 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "pretty": true,
-    "target": "es2015",
+    "target": "es5",
     "outDir": "distribution",
-    "lib": ["es5", "es2017"]
+    "lib": ["es2017"]
   },
   "formatCodeOptions": {
     "indentSize": 2,

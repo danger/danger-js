@@ -167,7 +167,8 @@ export function cleanDangerfile(contents: string): string {
 
 const typescriptify = (content: string): string => {
   const ts = require("typescript") // tslint:disable-line
-  let result = ts.transpileModule(content, {})
+  const compilerOptions = JSON.parse(fs.readFileSync("tsconfig.json", "utf8"))
+  let result = ts.transpileModule(content, compilerOptions)
   return result.outputText
 }
 
