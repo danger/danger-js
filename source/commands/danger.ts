@@ -3,10 +3,15 @@
 import { version } from "../../package.json"
 import * as program from "commander"
 import * as debug from "debug"
+import * as chalk from "chalk"
 
 const d = debug("danger:runner")
-
 d(`argv: ${process.argv}`)
+
+process.on("unhandledRejection", function(reason: string, _p: any) {
+  console.log(chalk.red("Error: "), reason)
+  process.exitCode = 1
+})
 
 // Provides the root node to the command-line architecture
 program
