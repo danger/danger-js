@@ -92,22 +92,12 @@ export async function runDangerfileEnvironment(
   originalContents: string | undefined,
   environment: NodeVMOptions
 ): Promise<DangerResults> {
+  environment.sourceExtensions = ["js", "ts"]
   const vm = new NodeVM(environment)
 
   // Require our dangerfile
   originalContents = originalContents || fs.readFileSync(filename, "utf8")
   let content = cleanDangerfile(originalContents)
-
-  // TODO: Relative imports get TS/Babel
-
-  // var Module = require("module")
-  // var originalRequire = Module.prototype.require
-
-  // Module.prototype.require = function() {
-  //   //do your thing here
-  //   console.log(arguments)
-  //   return originalRequire.apply(this, arguments)
-  // }
 
   try {
     vm.run(content, filename)
