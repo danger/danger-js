@@ -7,6 +7,7 @@ Some UX fixes:
 - Don't show warnings about not setting a commit status (unless in verbose) - orta
 - Delete duplicate Danger message, due to fast Peril edits - orta
 - Show Peril in the commit status if inside Peril, not just Danger - orta
+- [internal] Tightened the typings on the commands, and abstracted them to share some code - orta
 
 ### 2.0.0-alpha.15
 

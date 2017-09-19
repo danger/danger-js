@@ -2,51 +2,28 @@ import * as chalk from "chalk"
 import * as program from "commander"
 import * as debug from "debug"
 
-import { getCISource } from "../ci_source/get_ci_source"
-import { providers } from "../ci_source/providers"
 import { getPlatformForEnv } from "../platforms/platform"
-import { sentence } from "../runner/DangerUtils"
 import { Executor } from "../runner/Executor"
 import { dangerfilePath } from "./utils/file-utils"
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import validateDangerfileExists from "./utils/validateDangerfileExists"
+import getRuntimeCISource from "./utils/getRuntimeCISource"
 
 const d = debug("danger:run")
 declare const global: any
 
 program.usage("[options]").description("Runs a Dangerfile in JavaScript or TypeScript.")
-
 setSharedArgs(program).parse(process.argv)
 
 const app = (program as any) as SharedCLI
-
-process.on("unhandledRejection", function(reason: string, _p: any) {
-  console.log(chalk.red("Error: "), reason)
-  process.exitCode = 1
-})
 
 if (process.env["DANGER_VERBOSE"] || app.verbose) {
   global.verbose = true
 }
 
 // a dirty wrapper to allow async functionality in the setup
-async function run(): Promise<any> {
-  const source = getCISource(process.env, app.externalCiProvider || undefined)
-
-  if (!source) {
-    console.log("Could not find a CI source for this run. Does Danger support this CI service?")
-    console.log(`Danger supports: ${sentence(providers.map(p => p.name))}.`)
-
-    if (!process.env["CI"]) {
-      console.log("You may want to consider using `danger pr` to run Danger locally.")
-    }
-
-    process.exitCode = 1
-  }
-  // run the sources setup function, if it exists
-  if (source && source.setup) {
-    await source.setup()
-  }
+async function run() {
+  const source = await getRuntimeCISource(app)
 
   if (source && !source.isPR) {
     // This does not set a failing exit code
