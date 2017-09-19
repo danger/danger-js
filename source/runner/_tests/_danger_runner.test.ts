@@ -183,6 +183,12 @@ describe("with fixtures", () => {
     expect(results.fails[0].message).toContain("Danger failed to run")
     expect(results.markdowns[0]).toContain("Error: failure")
   })
+
+  it("handles relative imports correctly in TypeScript", async () => {
+    const context = await setupDangerfileContext()
+    const runtime = await createDangerfileRuntimeEnvironment(context)
+    await runDangerfileEnvironment(resolve(fixtures, "__DangerfileImportRelative.ts"), undefined, runtime)
+  })
 })
 
 describe("cleaning Dangerfiles", () => {
