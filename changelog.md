@@ -2,6 +2,8 @@
 
 ### Master
 
+### 2.0.0-alpha.16
+
 Some UX fixes:
 
 - Don't show warnings about not setting a commit status (unless in verbose) - orta
