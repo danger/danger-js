@@ -133,6 +133,11 @@ export async function runDangerfileEnvironment(
     }
   } catch (error) {
     console.error("Unable to evaluate the Dangerfile")
+    // Let Peril handle the error, if it's running inside the Peril environment
+    // it can provide more metadata.
+    if (process.env["PERIL_INTEGRATION_ID"]) {
+      throw error
+    }
     return resultsForCaughtError(filename, content, error)
   }
 }
