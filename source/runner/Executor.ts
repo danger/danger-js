@@ -1,16 +1,15 @@
-import { contextForDanger } from "../runner/Dangerfile"
+import { contextForDanger, DangerContext } from "../runner/Dangerfile"
 import { DangerDSL } from "../dsl/DangerDSL"
 import { CISource } from "../ci_source/ci_source"
 import { Platform } from "../platforms/platform"
 import { DangerResults } from "../dsl/DangerResults"
 import { template as githubResultsTemplate } from "./templates/githubIssueTemplate"
-import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment } from "./DangerfileRunner"
+import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment } from "./runners/vm2"
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
 import * as debug from "debug"
 import * as chalk from "chalk"
 import { sentence, href } from "./DangerUtils"
-import { NodeVMOptions } from "vm2"
 
 // This is still badly named, maybe it really should just be runner?
 
@@ -44,7 +43,7 @@ export class Executor {
    *  Runs all of the operations for a running just Danger
    * @returns {DangerfileRuntimeEnv} A runtime environment to run Danger in
    */
-  async setupDanger(): Promise<NodeVMOptions> {
+  async setupDanger(): Promise<DangerContext> {
     const dsl = await this.dslForDanger()
     const context = contextForDanger(dsl)
     return await createDangerfileRuntimeEnvironment(context)
@@ -56,7 +55,7 @@ export class Executor {
    * @returns {Promise<DangerResults>} The results of the Danger run
    */
 
-  async runDanger(file: string, runtime: NodeVMOptions) {
+  async runDanger(file: string, runtime: DangerContext) {
     let results = {} as DangerResults
 
     // If an eval of the Dangerfile fails, we should generate a

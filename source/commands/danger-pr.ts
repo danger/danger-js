@@ -7,7 +7,7 @@ import { GitHub } from "../platforms/GitHub"
 import { GitHubAPI } from "../platforms/github/GitHubAPI"
 import { Executor } from "../runner/Executor"
 import { pullRequestParser } from "../platforms/github/pullRequestParser"
-import { runDangerfileEnvironment } from "../runner/DangerfileRunner"
+import { runDangerfileEnvironment } from "../runner/runners/inline"
 import { dangerfilePath } from "./utils/file-utils"
 import validateDangerfileExists from "./utils/validateDangerfileExists"
 import openRepl from "./utils/repl"
@@ -56,7 +56,7 @@ async function runDanger(source: FakeCI, platform: GitHub, file: string) {
   const runtimeEnv = await exec.setupDanger()
   const results = await runDangerfileEnvironment(file, undefined, runtimeEnv)
   if (program.repl) {
-    openRepl(runtimeEnv.sandbox)
+    openRepl(runtimeEnv)
   } else {
     jsome(results)
   }
