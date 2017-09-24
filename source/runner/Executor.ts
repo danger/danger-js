@@ -4,7 +4,7 @@ import { CISource } from "../ci_source/ci_source"
 import { Platform } from "../platforms/platform"
 import { DangerResults } from "../dsl/DangerResults"
 import { template as githubResultsTemplate } from "./templates/githubIssueTemplate"
-import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment } from "./runners/vm2"
+import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment } from "./runners/inline"
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
 import * as debug from "debug"

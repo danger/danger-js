@@ -48,6 +48,7 @@ describe("with fixtures", () => {
   it("handles a full set of messages", async () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
+    const test = () => console.log("HIYA")
     const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileFullMessages.js"), undefined, runtime)
 
     expect(results).toEqual({
@@ -85,7 +86,7 @@ describe("with fixtures", () => {
     })
   })
 
-  it.only("handles multiple scheduled statements and all message types", async () => {
+  it("handles multiple scheduled statements and all message types", async () => {
     const context = await setupDangerfileContext()
     const runtime = await createDangerfileRuntimeEnvironment(context)
     const results = await runDangerfileEnvironment(

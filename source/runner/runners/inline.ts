@@ -1,5 +1,4 @@
 import * as fs from "fs"
-import * as path from "path"
 
 import { DangerResults } from "../../dsl/DangerResults"
 import { DangerContext } from "../../runner/Dangerfile"
@@ -9,9 +8,6 @@ import { DangerRunner } from "./runner"
 import compile from "./utils/transpiler"
 import cleanDangerfile from "./utils/cleanDangerfile"
 import resultsForCaughtError from "./utils/resultsForCaughtError"
-var Module = require("module")
-
-import * as vm from "vm"
 
 /**
  * Executes a Dangerfile at a specific path, with a context.
@@ -77,25 +73,15 @@ export async function runDangerfileEnvironment(
 
   try {
     // Move all the DSL attributes into the global scope
-    for (var key in environment) {
+    for (let key in environment) {
       if (environment.hasOwnProperty(key)) {
-        var element = environment[key]
+        let element = environment[key]
         global[key] = element
+        // this[key] = element
       }
     }
 
-    debugger
-
-    // Fake a `require("dangerfile")` via the internal module API
-    // requireFromString(compiled, filename)
-
-    vm.runInThisContext(compiled, {
-      filename: filename,
-      lineOffset: 0,
-      displayErrors: true,
-    })
-
-    // compiledWrapper.gr
+    eval(compiled)
 
     const results = environment.results
     await Promise.all(
