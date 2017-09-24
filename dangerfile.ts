@@ -2,6 +2,10 @@
 // This means we can re-use the type infra from the app, without having to
 // fake the import.
 
+console.log(global)
+console.log(require)
+console.log(require.extensions)
+
 import { DangerDSL } from "./source/dsl/DangerDSL"
 declare var danger: DangerDSL
 // declare var results: any

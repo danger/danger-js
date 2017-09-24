@@ -13,6 +13,8 @@ import validateDangerfileExists from "./utils/validateDangerfileExists"
 import openRepl from "./utils/repl"
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 
+import inlineRunner from "../runner/runners/inline"
+
 const d = debug("danger:pr")
 
 program.usage("[options] <pr_url>").description("Emulate running Danger against an existing GitHub Pull Request.")
@@ -51,7 +53,7 @@ async function runDanger(source: FakeCI, platform: GitHub, file: string) {
     verbose: app.verbose,
   }
 
-  const exec = new Executor(source, platform, config)
+  const exec = new Executor(source, platform, inlineRunner, config)
 
   const runtimeEnv = await exec.setupDanger()
   const results = await runDangerfileEnvironment(file, undefined, runtimeEnv)

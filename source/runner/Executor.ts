@@ -4,12 +4,12 @@ import { CISource } from "../ci_source/ci_source"
 import { Platform } from "../platforms/platform"
 import { DangerResults } from "../dsl/DangerResults"
 import { template as githubResultsTemplate } from "./templates/githubIssueTemplate"
-import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment } from "./runners/inline"
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
 import * as debug from "debug"
 import * as chalk from "chalk"
 import { sentence, href } from "./DangerUtils"
+import { DangerRunner } from "./runners/runner"
 
 // This is still badly named, maybe it really should just be runner?
 
@@ -26,6 +26,7 @@ export class Executor {
   constructor(
     public readonly ciSource: CISource,
     public readonly platform: Platform,
+    public readonly runner: DangerRunner,
     public readonly options: ExecutorOptions
   ) {}
 
@@ -46,7 +47,7 @@ export class Executor {
   async setupDanger(): Promise<DangerContext> {
     const dsl = await this.dslForDanger()
     const context = contextForDanger(dsl)
-    return await createDangerfileRuntimeEnvironment(context)
+    return await this.runner.createDangerfileRuntimeEnvironment(context)
   }
 
   /**
@@ -61,7 +62,7 @@ export class Executor {
     // If an eval of the Dangerfile fails, we should generate a
     // message that can go back to the CI
     try {
-      results = await runDangerfileEnvironment(file, undefined, runtime)
+      results = await this.runner.runDangerfileEnvironment(file, undefined, runtime)
     } catch (error) {
       results = this.resultsForError(error)
     }

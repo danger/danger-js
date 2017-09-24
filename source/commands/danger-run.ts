@@ -8,6 +8,7 @@ import { dangerfilePath } from "./utils/file-utils"
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import validateDangerfileExists from "./utils/validateDangerfileExists"
 import getRuntimeCISource from "./utils/getRuntimeCISource"
+import inlineRunner from "../runner/runners/inline"
 
 const d = debug("danger:run")
 declare const global: any
@@ -56,7 +57,7 @@ async function run() {
           verbose: app.verbose,
         }
 
-        const exec = new Executor(source, platform, config)
+        const exec = new Executor(source, platform, inlineRunner, config)
         exec.setupAndRunDanger(dangerFile)
       }
     }

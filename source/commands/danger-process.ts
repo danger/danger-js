@@ -7,6 +7,8 @@ import runDangerSubprocess, { prepareDangerDSL } from "./utils/runDangerSubproce
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import getRuntimeCISource from "./utils/getRuntimeCISource"
 
+import inlineRunner from "../runner/runners/inline"
+
 // Given the nature of this command, it can be tricky to test, so I use a command like this:
 //
 // env DANGER_GITHUB_API_TOKEN='xxx' DANGER_FAKE_CI="YEP" DANGER_TEST_REPO='artsy/eigen' DANGER_TEST_PR='2408'
@@ -62,7 +64,7 @@ async function run() {
         verbose: app.verbose,
       }
 
-      const exec = new Executor(source, platform, config)
+      const exec = new Executor(source, platform, inlineRunner, config)
       const dangerDSL = await exec.dslForDanger()
       const processInput = prepareDangerDSL(dangerDSL)
 

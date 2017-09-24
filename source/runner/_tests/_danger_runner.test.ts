@@ -1,5 +1,5 @@
 import { contextForDanger } from "../Dangerfile"
-import { createDangerfileRuntimeEnvironment, runDangerfileEnvironment } from "../runners/inline"
+import inlineRunner from "../runners/inline"
 
 import { FakeCI } from "../../ci_source/providers/Fake"
 import { FakePlatform } from "../../platforms/FakePlatform"
@@ -22,7 +22,7 @@ async function setupDangerfileContext() {
     verbose: false,
   }
 
-  const exec = new Executor(new FakeCI({}), platform, config)
+  const exec = new Executor(new FakeCI({}), platform, inlineRunner, config)
 
   platform.getPlatformGitRepresentation = jest.fn()
   platform.getPlatformDSLRepresentation = jest.fn()
@@ -34,8 +34,12 @@ async function setupDangerfileContext() {
 describe("with fixtures", () => {
   it("handles a blank Dangerfile", async () => {
     const context = await setupDangerfileContext()
-    const runtime = await createDangerfileRuntimeEnvironment(context)
-    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileEmpty.js"), undefined, runtime)
+    const runtime = await inlineRunner.createDangerfileRuntimeEnvironment(context)
+    const results = await inlineRunner.runDangerfileEnvironment(
+      resolve(fixtures, "__DangerfileEmpty.js"),
+      undefined,
+      runtime
+    )
 
     expect(results).toEqual({
       fails: [],
@@ -47,9 +51,13 @@ describe("with fixtures", () => {
 
   it("handles a full set of messages", async () => {
     const context = await setupDangerfileContext()
-    const runtime = await createDangerfileRuntimeEnvironment(context)
+    const runtime = await inlineRunner.createDangerfileRuntimeEnvironment(context)
     const test = () => console.log("HIYA")
-    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileFullMessages.js"), undefined, runtime)
+    const results = await inlineRunner.runDangerfileEnvironment(
+      resolve(fixtures, "__DangerfileFullMessages.js"),
+      undefined,
+      runtime
+    )
 
     expect(results).toEqual({
       fails: [{ message: "this is a failure" }],
@@ -61,8 +69,12 @@ describe("with fixtures", () => {
 
   it("handles a failing dangerfile", async () => {
     const context = await setupDangerfileContext()
-    const runtime = await createDangerfileRuntimeEnvironment(context)
-    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileBadSyntax.js"), undefined, runtime)
+    const runtime = await inlineRunner.createDangerfileRuntimeEnvironment(context)
+    const results = await inlineRunner.runDangerfileEnvironment(
+      resolve(fixtures, "__DangerfileBadSyntax.js"),
+      undefined,
+      runtime
+    )
 
     expect(results.fails[0].message).toContain("Danger failed to run")
     expect(results.markdowns[0]).toContain("hello is not defined")
@@ -70,14 +82,18 @@ describe("with fixtures", () => {
 
   it("handles relative imports correctly in Babel", async () => {
     const context = await setupDangerfileContext()
-    const runtime = await createDangerfileRuntimeEnvironment(context)
-    await runDangerfileEnvironment(resolve(fixtures, "__DangerfileImportRelative.js"), undefined, runtime)
+    const runtime = await inlineRunner.createDangerfileRuntimeEnvironment(context)
+    await inlineRunner.runDangerfileEnvironment(resolve(fixtures, "__DangerfileImportRelative.js"), undefined, runtime)
   })
 
   it("handles scheduled (async) code", async () => {
     const context = await setupDangerfileContext()
-    const runtime = await createDangerfileRuntimeEnvironment(context)
-    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileScheduled.js"), undefined, runtime)
+    const runtime = await inlineRunner.createDangerfileRuntimeEnvironment(context)
+    const results = await inlineRunner.runDangerfileEnvironment(
+      resolve(fixtures, "__DangerfileScheduled.js"),
+      undefined,
+      runtime
+    )
     expect(results).toEqual({
       fails: [],
       messages: [],
@@ -88,8 +104,8 @@ describe("with fixtures", () => {
 
   it("handles multiple scheduled statements and all message types", async () => {
     const context = await setupDangerfileContext()
-    const runtime = await createDangerfileRuntimeEnvironment(context)
-    const results = await runDangerfileEnvironment(
+    const runtime = await inlineRunner.createDangerfileRuntimeEnvironment(context)
+    const results = await inlineRunner.runDangerfileEnvironment(
       resolve(fixtures, "__DangerfileMultiScheduled.js"),
       undefined,
       runtime
@@ -104,8 +120,12 @@ describe("with fixtures", () => {
 
   it("in Typescript it handles multiple scheduled statements and all message types", async () => {
     const context = await setupDangerfileContext()
-    const runtime = await createDangerfileRuntimeEnvironment(context)
-    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.ts"), undefined, runtime)
+    const runtime = await inlineRunner.createDangerfileRuntimeEnvironment(context)
+    const results = await inlineRunner.runDangerfileEnvironment(
+      resolve(fixtures, "__DangerfileAsync.ts"),
+      undefined,
+      runtime
+    )
     expect(results.warnings).toEqual([
       {
         message: "Async Function",
@@ -119,8 +139,12 @@ describe("with fixtures", () => {
   it("in babel it can execute async/await scheduled functions", async () => {
     // this test takes *forever* because of babel-polyfill being required
     const context = await setupDangerfileContext()
-    const runtime = await createDangerfileRuntimeEnvironment(context)
-    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.js"), undefined, runtime)
+    const runtime = await inlineRunner.createDangerfileRuntimeEnvironment(context)
+    const results = await inlineRunner.runDangerfileEnvironment(
+      resolve(fixtures, "__DangerfileAsync.js"),
+      undefined,
+      runtime
+    )
     expect(results.warnings).toEqual([
       {
         message: "Async Function",
@@ -134,8 +158,12 @@ describe("with fixtures", () => {
   it("in typescript it can execute async/await scheduled functions", async () => {
     // this test takes *forever* because of babel-polyfill being required
     const context = await setupDangerfileContext()
-    const runtime = await createDangerfileRuntimeEnvironment(context)
-    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileAsync.ts"), undefined, runtime)
+    const runtime = await inlineRunner.createDangerfileRuntimeEnvironment(context)
+    const results = await inlineRunner.runDangerfileEnvironment(
+      resolve(fixtures, "__DangerfileAsync.ts"),
+      undefined,
+      runtime
+    )
     expect(results.warnings).toEqual([
       {
         message: "Async Function",
@@ -148,8 +176,12 @@ describe("with fixtures", () => {
 
   it("can schedule callback-based promised ", async () => {
     const context = await setupDangerfileContext()
-    const runtime = await createDangerfileRuntimeEnvironment(context)
-    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileCallback.js"), undefined, runtime)
+    const runtime = await inlineRunner.createDangerfileRuntimeEnvironment(context)
+    const results = await inlineRunner.runDangerfileEnvironment(
+      resolve(fixtures, "__DangerfileCallback.js"),
+      undefined,
+      runtime
+    )
     expect(results.warnings).toEqual([
       {
         message: "Scheduled a callback",
@@ -159,8 +191,12 @@ describe("with fixtures", () => {
 
   it("can handle TypeScript based Dangerfiles", async () => {
     const context = await setupDangerfileContext()
-    const runtime = await createDangerfileRuntimeEnvironment(context)
-    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileTypeScript.ts"), undefined, runtime)
+    const runtime = await inlineRunner.createDangerfileRuntimeEnvironment(context)
+    const results = await inlineRunner.runDangerfileEnvironment(
+      resolve(fixtures, "__DangerfileTypeScript.ts"),
+      undefined,
+      runtime
+    )
     expect(results.messages).toEqual([
       {
         message: "Honey, we got Types",
@@ -170,16 +206,24 @@ describe("with fixtures", () => {
 
   it("can handle a plugin (which is already used in Danger)", async () => {
     const context = await setupDangerfileContext()
-    const runtime = await createDangerfileRuntimeEnvironment(context)
-    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfilePlugin.js"), undefined, runtime)
+    const runtime = await inlineRunner.createDangerfileRuntimeEnvironment(context)
+    const results = await inlineRunner.runDangerfileEnvironment(
+      resolve(fixtures, "__DangerfilePlugin.js"),
+      undefined,
+      runtime
+    )
 
     expect(results.fails[0].message).toContain("@types dependencies were added to package.json")
   })
 
   it("does not swallow errors thrown in Dangerfile", async () => {
     const context = await setupDangerfileContext()
-    const runtime = await createDangerfileRuntimeEnvironment(context)
-    const results = await runDangerfileEnvironment(resolve(fixtures, "__DangerfileThrows.js"), undefined, runtime)
+    const runtime = await inlineRunner.createDangerfileRuntimeEnvironment(context)
+    const results = await inlineRunner.runDangerfileEnvironment(
+      resolve(fixtures, "__DangerfileThrows.js"),
+      undefined,
+      runtime
+    )
 
     expect(results.fails[0].message).toContain("Danger failed to run")
     expect(results.markdowns[0]).toContain("Error: failure")
