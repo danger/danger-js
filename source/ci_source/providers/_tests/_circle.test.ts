@@ -79,10 +79,15 @@ describe(".pullRequestID", () => {
   it("can derive it from PR Url", () => {
     let env = {
       CI_PULL_REQUEST: "https://github.com/artsy/eigen/pull/23",
+    }
+    let env2 = {
       CIRCLE_PULL_REQUEST: "https://github.com/artsy/eigen/pull/23",
     }
     const circle = new Circle(env)
     expect(circle.pullRequestID).toEqual("23")
+
+    const circle2 = new Circle(env2)
+    expect(circle2.pullRequestID).toEqual("23")
   })
 })
 
