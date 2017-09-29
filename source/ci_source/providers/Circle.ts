@@ -41,7 +41,7 @@ export class Circle implements CISource {
   }
 
   get isPR(): boolean {
-    if (ensureEnvKeysExist(this.env, ["CI_PULL_REQUEST"])) {
+    if (ensureEnvKeysExist(this.env, ["CI_PULL_REQUEST"]) || ensureEnvKeysExist(this.env, ["CIRCLE_PULL_REQUEST"])) {
       return true
     }
 
@@ -50,7 +50,7 @@ export class Circle implements CISource {
   }
 
   private _prParseURL(): { owner?: string; reponame?: string; id?: string } {
-    const prUrl = this.env.CI_PULL_REQUEST || ""
+    const prUrl = this.env.CI_PULL_REQUEST || this.env.CIRCLE_PULL_REQUEST || ""
     const splitSlug = prUrl.split("/")
     if (splitSlug.length === 7) {
       const owner = splitSlug[3]
