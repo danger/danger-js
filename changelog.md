@@ -2,6 +2,10 @@
 
 ### Master
 
+// I'm adding it without a version number since I don't know what version it'll be if/when this is merged <_<
+
+- Improve CircleCI PR detection
+
 ### 2.0.0-alpha.16
 
 Some UX fixes:
