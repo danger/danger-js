@@ -1259,13 +1259,14 @@ cssom@0.3.x, "cssom@>= 0.3.0 < 0.4.0", "cssom@>= 0.3.2 < 0.4.0":
     cssom "0.3.x"
 
 danger-plugin-yarn@^1.0.0:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/danger-plugin-yarn/-/danger-plugin-yarn-1.1.1.tgz#6ecd03e221ae8b71f51e089150a766e8c8d4b2c3"
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/danger-plugin-yarn/-/danger-plugin-yarn-1.2.0.tgz#3681db67f71e65dc6dd7a0a31ef3e7f56e9b29d3"
   dependencies:
     date-fns "^1.28.5"
     lodash.flatten "^4.4.0"
     lodash.includes "^4.3.0"
     node-fetch "^1.7.1"
+    semver "^5.4.1"
   optionalDependencies:
     esdoc "^0.5.2"
 
@@ -3805,6 +3806,10 @@ sax@^1.1.4, sax@^1.2.1:
 "semver@2 || 3 || 4 || 5", semver@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
+
+semver@^5.4.1:
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
 
 semver@~5.0.1:
   version "5.0.3"
