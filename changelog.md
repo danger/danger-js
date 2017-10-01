@@ -5,6 +5,7 @@
 // I'm adding it without a version number since I don't know what version it'll be if/when this is merged <_<
 
 - Improve CircleCI PR detection
+- Moves internal methods away from Sync to avoid problems when running in Peril - ashfurrow
 - Passes through non-zero exit codes from `danger process` runs - ashfurrow
 
 ### 2.0.0-alpha.16
