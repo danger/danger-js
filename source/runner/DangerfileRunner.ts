@@ -94,9 +94,25 @@ export async function runDangerfileEnvironment(
 ): Promise<DangerResults> {
   const vm = new NodeVM(environment)
 
+  const fetchContents = async () => {
+    return new Promise<string>((resolve, reject) => {
+      if (originalContents) {
+        resolve(originalContents)
+      } else {
+        fs.readFile(filename, "utf8", (error, data) => {
+          if (error) {
+            reject(error)
+          } else {
+            resolve(data)
+          }
+        })
+      }
+    })
+  }
+
   // Require our dangerfile
-  originalContents = originalContents || fs.readFileSync(filename, "utf8")
-  let content = cleanDangerfile(originalContents)
+  const fetchedContents = await fetchContents()
+  let content = cleanDangerfile(fetchedContents)
 
   // TODO: Relative imports get TS/Babel
 
