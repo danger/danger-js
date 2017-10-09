@@ -42,6 +42,9 @@ schedule(async () => {
 import yarn from "danger-plugin-yarn"
 schedule(yarn())
 
+import jest from "danger-plugin-jest"
+jest()
+
 // Some good old-fashioned maintainance upkeep
 
 // Ensure the danger.d.ts is always up to date inside this repo.
