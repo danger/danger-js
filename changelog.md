@@ -5,7 +5,7 @@
 ### Master
 
 
-### 2.0.0-alpha.18
+### 2.0.0-alpha.18 - 19
 
 - Moves internal methods away from Sync to avoid problems when running in Peril - ashfurrow
 - Passes through non-zero exit codes from `danger process` runs - ashfurrow
