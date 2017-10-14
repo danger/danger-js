@@ -46,3 +46,4 @@ docs/js_ref_dsl_docs.json
 
 types/index.d.ts
 .jest/
+test-results.json

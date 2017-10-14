@@ -12,9 +12,9 @@ matrix:
     - yarn global add greenkeeper-lockfile@1
     before_script:
     - greenkeeper-lockfile-update
+    after_script:
     - yarn run link
     - danger run --verbose
-    after_script:
     - greenkeeper-lockfile-upload
   - node_js: '6'
 
