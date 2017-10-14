@@ -1,5 +1,7 @@
 import * as fs from "fs"
 
+import * as _require from "require-from-string"
+
 import { DangerResults } from "../../dsl/DangerResults"
 import { DangerContext } from "../../runner/Dangerfile"
 
@@ -80,8 +82,13 @@ export async function runDangerfileEnvironment(
         // this[key] = element
       }
     }
+    // const myCWD = path.dirname(process.cwd())
+    // process.chdir(path.dirname(filename))
+    // eval(compiled)
+    // process.chdir(myCWD)
 
-    eval(compiled)
+    // _eval(compiled, filename, environment, true)
+    _require(compiled, filename, {})
 
     const results = environment.results
     await Promise.all(

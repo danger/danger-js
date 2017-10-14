@@ -16,6 +16,7 @@ declare module "pinpoint"
 declare module "*/package.json"
 
 declare module "require-from-string"
+declare module "node-eval"
 
 // declare module "require-from-string" {
 //   export interface RequireOptions {

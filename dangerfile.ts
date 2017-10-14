@@ -2,9 +2,9 @@
 // This means we can re-use the type infra from the app, without having to
 // fake the import.
 
-console.log(global)
-console.log(require)
-console.log(require.extensions)
+// console.log(global)
+// console.log(require)
+// console.log(require.extensions)
 
 import { DangerDSL } from "./source/dsl/DangerDSL"
 declare var danger: DangerDSL
@@ -45,6 +45,8 @@ schedule(yarn())
 // Ensure the danger.d.ts is always up to date inside this repo.
 // This also serves as the "one true DSL" for a Danger run against a PR
 // which tools can then work against.
+
+// debugger
 
 import dtsGenerator from "./scripts/danger-dts"
 const currentDTS = dtsGenerator()
