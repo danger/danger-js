@@ -7,6 +7,7 @@ const correctEnv = {
   CIRCLE_PROJECT_REPONAME: "someproject",
   CIRCLE_BUILD_NUM: "1501",
   CIRCLE_PR_NUMBER: "800",
+  CIRCLE_PULL_REQUEST: "https://github.com/artsy/eigen/pull/800",
   CI_PULL_REQUEST: "https://github.com/artsy/eigen/pull/800",
 }
 
@@ -48,6 +49,7 @@ describe(".isPR", () => {
       CIRCLE_PROJECT_REPONAME: "someproject",
       CIRCLE_BUILD_NUM: "1501",
       CIRCLE_PR_NUMBER: "800",
+      CIRCLE_PULL_REQUEST: "https://github.com/artsy/eigen/pull/800",
       CI_PULL_REQUEST: "https://github.com/artsy/eigen/pull/800",
     }
     env[key] = null
@@ -68,7 +70,7 @@ describe(".isPR", () => {
   })
 })
 
-describe(".pullReuestID", () => {
+describe(".pullRequestID", () => {
   it("pulls it out of the env", () => {
     const circle = new Circle({ CIRCLE_PR_NUMBER: "800" })
     expect(circle.pullRequestID).toEqual("800")
@@ -78,8 +80,14 @@ describe(".pullReuestID", () => {
     let env = {
       CI_PULL_REQUEST: "https://github.com/artsy/eigen/pull/23",
     }
+    let env2 = {
+      CIRCLE_PULL_REQUEST: "https://github.com/artsy/eigen/pull/23",
+    }
     const circle = new Circle(env)
     expect(circle.pullRequestID).toEqual("23")
+
+    const circle2 = new Circle(env2)
+    expect(circle2.pullRequestID).toEqual("23")
   })
 })
 

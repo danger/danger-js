@@ -1,6 +1,21 @@
-//  Please add your own contribution below inside the Master section, ideally with a consumer's perspective in mind.
+// Please add your own contribution below inside the Master section
+// These docs are aimed at users rather than danger developers, so please limit technical
+// terminology to in here.
 
 ### Master
+
+
+### 2.0.0-alpha.18 - 19
+
+- Moves internal methods away from Sync to avoid problems when running in Peril - ashfurrow
+- Passes through non-zero exit codes from `danger process` runs - ashfurrow
+
+### 2.0.0-alpha.17
+
+
+- Improve CircleCI PR detection
+
+### 2.0.0-alpha.16
 
 Some UX fixes:
 

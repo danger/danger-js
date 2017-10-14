@@ -46,7 +46,7 @@ Some quick links to get you started:
 
 ## This thing is broken, I should help improve it!
 
-Awesommmmee.
+Awesommmmee. Everything you need is down below. You can also refer to [CONTRIBUTING](CONTRIBUTING.md) file where you'll find the same information listed below.
 
 ```sh
 git clone https://github.com/danger/danger-js.git

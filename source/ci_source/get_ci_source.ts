@@ -20,23 +20,23 @@ export function getCISourceForEnv(env: Env): CISource | undefined {
  * @export
  * @param {Env} env The environment.
  * @param {string} modulePath relative path to CI provider
- * @returns {?CISource} a CI source if module loaded successfully, undefined otherwise
+ * @returns {Promise<?CISource>} a CI source if module loaded successfully, undefined otherwise
  */
-export function getCISourceForExternal(env: Env, modulePath: string): CISource | undefined {
+export async function getCISourceForExternal(env: Env, modulePath: string): Promise<CISource | undefined> {
   const path = resolve(process.cwd(), modulePath)
-
-  try {
-    const exist = fs.statSync(path).isFile()
-
-    if (exist) {
-      const externalModule = require(path) //tslint:disable-line:no-require-imports
-      const moduleConstructor = externalModule.default || externalModule
-      return new moduleConstructor(env)
-    }
-  } catch (e) {
-    console.error(`could not load CI provider at ${modulePath} due to ${e}`)
-  }
-  return undefined
+  return new Promise<CISource | undefined>(resolve => {
+    fs.stat(path, (error, stat) => {
+      if (error) {
+        console.error(`could not load CI provider at ${modulePath} due to ${error}`)
+      }
+      if (stat && stat.isFile()) {
+        const externalModule = require(path) //tslint:disable-line:no-require-imports
+        const moduleConstructor = externalModule.default || externalModule
+        resolve(new moduleConstructor(env))
+      }
+      resolve()
+    })
+  })
 }
 
 /**
@@ -44,11 +44,11 @@ export function getCISourceForExternal(env: Env, modulePath: string): CISource |
  * @export
  * @param {Env} env The environment.
  * @param {string} modulePath relative path to CI provider
- * @returns {?CISource} a CI source if module loaded successfully, undefined otherwise
+ * @returns {Promise<?CISource>} a CI source if module loaded successfully, undefined otherwise
  */
-export function getCISource(env: Env, modulePath: string | undefined): CISource | undefined {
+export async function getCISource(env: Env, modulePath: string | undefined): Promise<CISource | undefined> {
   if (modulePath) {
-    const external = getCISourceForExternal(env, modulePath)
+    const external = await getCISourceForExternal(env, modulePath)
     if (external) {
       return external
     }

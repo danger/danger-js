@@ -40,7 +40,8 @@ const runDangerSubprocess = (subprocessName: string, dslJSONString: string, exec
   child.on("close", async code => {
     console.log(`child process exited with code ${code}`)
     // Submit an error back to the PR
-    if (process.exitCode) {
+    if (code) {
+      process.exitCode = code
       const results = resultsWithFailure(`${subprocessName}\` failed.`, "### Log\n\n" + markdownCode(allLogs))
       await exec.handleResults(results)
     }

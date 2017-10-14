@@ -14,14 +14,14 @@ describe(".getCISourceForEnv", () => {
   })
 })
 
-describe(".getCISourceForExternal", () => {
-  test("should resolve module relatively", () => {
-    const ci = getCISourceForExternal({}, "./source/ci_source/_tests/fixtures/dummy_ci.js")
+describe(".getCISourceForExternal", async () => {
+  test("should resolve module relatively", async () => {
+    const ci = await getCISourceForExternal({}, "./source/ci_source/_tests/fixtures/dummy_ci.js")
     expect(ci).toBeInstanceOf(DummyCI)
   })
 
-  test("should return undefined if module resolution fails", () => {
-    const ci = getCISourceForExternal({}, "./dummy_ci.js")
+  test("should return undefined if module resolution fails", async () => {
+    const ci = await getCISourceForExternal({}, "./dummy_ci.js")
     expect(ci).toBeUndefined()
   })
 })
