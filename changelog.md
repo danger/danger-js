@@ -4,6 +4,15 @@
 
 ### Master
 
+- Moves away from vm2 to a require-based Dangerfile runner. This removes the sandboxing aspect of
+  the Dangerfile completely, but the sandboxing was mainly for Peril and I have a plan for that.
+
+  https://github.com/danger/peril/issues/159
+
+  I would like to move the main parts of Danger JS to also work like `danger process`, so I'll
+  be continuing to work as a alpha for a bit more. One interesting side-effect of this could be that
+  I can remove `schedule` from the DSL. I've not tested it yet though. Turns out this change is _real_
+  hard to write tests for. I've made #394 for that.
 
 ### 2.0.0-alpha.18 - 19
 

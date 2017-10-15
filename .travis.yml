@@ -13,14 +13,12 @@ matrix:
 
   # Does the real danger run
   - node_js: node
-    before_script:
-    - greenkeeper-lockfile-update
-    - yarn run link
     script:
+    - yarn add jest
+    - yarn jest --outputFile test-results.json --json
+    - yarn run link
     - echo "This is only for running the real danger on this repo"
     - danger run --verbose
-    after_script:
-    - greenkeeper-lockfile-upload
 
   # Create some fake projects at runtime
   - node_js: '7'

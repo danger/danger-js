@@ -11,6 +11,7 @@
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
+    "testResultsProcessor": "jest-json-reporter",
     "testRegex": "(.test)\\.(ts|tsx)$",
     "verbose": true,
     "testPathIgnorePatterns": ["/node_modules/", "/distribution/", "/types/"],
@@ -72,10 +73,12 @@
     "babel-preset-es2015": "7.0.0-alpha.19",
     "babel-preset-stage-3": "7.0.0-alpha.19",
     "babel-traverse": "7.0.0-alpha.19",
+    "danger-plugin-jest": "^1.0.1",
     "danger-plugin-yarn": "^1.0.0",
     "date-fns": "^1.28.3",
     "husky": "^0.14.0",
     "jest": "21",
+    "jest-json-reporter": "^1.2.2",
     "lint-staged": "^4.0.0",
     "madge": "^2.0.0",
     "prettier": "^1.7.4",

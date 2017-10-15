@@ -21,24 +21,6 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
   return dangerfileContext
 }
 
-// /**
-//  * A quick implmentation of what actually happens when require is called, but
-//  * without the file acccess. This comes from
-//  * https://stackoverflow.com/questions/17581830/load-node-js-module-from-string-in-memory#17585470
-//  *
-//  * If this implmentation isn't enough, we can use the module require-from-string
-//  *
-//  * @param src the source code
-//  * @param filename the path the file represents on disk
-//  */
-// function requireFromString(src: string, filename: string) {
-//   var parent = module.parent
-//   var m = new Module(filename, parent)
-//   m.paths = Module._nodeModulePaths(path.dirname(filename))
-//   m._compile(src, filename)
-//   return m.exports
-// }
-
 /**
  * Executes a Dangerfile at a specific path, with a context.
  * The values inside a Danger context are applied as globals to the Dangerfiles runtime.
@@ -82,12 +64,7 @@ export async function runDangerfileEnvironment(
         // this[key] = element
       }
     }
-    // const myCWD = path.dirname(process.cwd())
-    // process.chdir(path.dirname(filename))
-    // eval(compiled)
-    // process.chdir(myCWD)
 
-    // _eval(compiled, filename, environment, true)
     _require(compiled, filename, {})
 
     const results = environment.results

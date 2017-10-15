@@ -1,0 +1,1675 @@
+{
+  "numFailedTestSuites": 1,
+  "numFailedTests": 4,
+  "numPassedTestSuites": 21,
+  "numPassedTests": 198,
+  "numPendingTestSuites": 0,
+  "numPendingTests": 0,
+  "numRuntimeErrorTestSuites": 0,
+  "numTotalTestSuites": 22,
+  "numTotalTests": 202,
+  "snapshot": {
+    "added": 0,
+    "didUpdate": false,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 6,
+    "total": 6,
+    "unchecked": 0,
+    "unmatched": 0,
+    "updated": 0
+  },
+  "startTime": 1507554401713,
+  "success": false,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["dangerfilePath"],
+          "failureMessages": [
+            "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).toEqual(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected value to equal:\n  \u001b[32m\"123\"\u001b[39m\nReceived:\n  \u001b[31m\"23\"\u001b[39m\n    at Object.<anonymous> (/Users/orta/dev/projects/danger/danger-js/source/commands/utils/_tests/file-utils.test.ts:10:50)\n    at Object.asyncFn (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/jasmine_async.js:126:345)\n    at resolve (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/queue_runner.js:47:12)\n    at Promise (<anonymous>)\n    at mapper (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/queue_runner.js:36:499)\n    at promise.then (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/queue_runner.js:75:39)\n    at <anonymous>\n    at process._tickCallback (internal/process/next_tick.js:188:7)"
+          ],
+          "fullName": "dangerfilePath should return anything passed into the program's dangerfile",
+          "status": "failed",
+          "title": "should return anything passed into the program's dangerfile"
+        },
+        {
+          "ancestorTitles": ["dangerfilePath"],
+          "failureMessages": [
+            "ReferenceError: mockDangerfilePath is not defined\n    at Object.<anonymous> (/Users/orta/dev/projects/danger/danger-js/source/commands/utils/_tests/file-utils.test.ts:14:23)\n    at Object.asyncFn (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/jasmine_async.js:126:345)\n    at resolve (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/queue_runner.js:47:12)\n    at Promise (<anonymous>)\n    at mapper (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/queue_runner.js:36:499)\n    at promise.then (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/queue_runner.js:75:39)\n    at <anonymous>\n    at process._tickCallback (internal/process/next_tick.js:188:7)"
+          ],
+          "fullName": "dangerfilePath should find a dangerfile.js if there is no program, and the .js file exists",
+          "status": "failed",
+          "title": "should find a dangerfile.js if there is no program, and the .js file exists"
+        },
+        {
+          "ancestorTitles": ["dangerfilePath"],
+          "failureMessages": [
+            "ReferenceError: mockDangerfilePath is not defined\n    at Object.<anonymous> (/Users/orta/dev/projects/danger/danger-js/source/commands/utils/_tests/file-utils.test.ts:19:23)\n    at Object.asyncFn (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/jasmine_async.js:126:345)\n    at resolve (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/queue_runner.js:47:12)\n    at Promise (<anonymous>)\n    at mapper (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/queue_runner.js:36:499)\n    at promise.then (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/queue_runner.js:75:39)\n    at <anonymous>\n    at process._tickCallback (internal/process/next_tick.js:188:7)"
+          ],
+          "fullName":
+            "dangerfilePath should find a dangerfile.ts if there is no program, and the .js file does not exist",
+          "status": "failed",
+          "title": "should find a dangerfile.ts if there is no program, and the .js file does not exist"
+        },
+        {
+          "ancestorTitles": ["dangerfilePath"],
+          "failureMessages": [
+            "ReferenceError: mockDangerfilePath is not defined\n    at Object.<anonymous> (/Users/orta/dev/projects/danger/danger-js/source/commands/utils/_tests/file-utils.test.ts:24:23)\n    at Object.asyncFn (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/jasmine_async.js:126:345)\n    at resolve (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/queue_runner.js:47:12)\n    at Promise (<anonymous>)\n    at mapper (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/queue_runner.js:36:499)\n    at promise.then (/Users/orta/dev/projects/danger/danger-js/node_modules/jest-jasmine2/build/queue_runner.js:75:39)\n    at <anonymous>\n    at process._tickCallback (internal/process/next_tick.js:188:7)"
+          ],
+          "fullName": "dangerfilePath should raise if nothing exists",
+          "status": "failed",
+          "title": "should raise if nothing exists"
+        }
+      ],
+      "endTime": 1507554404688,
+      "message":
+        "\u001b[1m\u001b[31m  \u001b[1m● \u001b[1mdangerfilePath › should return anything passed into the program's dangerfile\u001b[39m\u001b[22m\n\n    \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).toEqual(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n    \n    Expected value to equal:\n      \u001b[32m\"123\"\u001b[39m\n    Received:\n      \u001b[31m\"23\"\u001b[39m\n\u001b[2m      \u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[2m\u001b[0m\u001b[36msource/commands/utils/_tests/file-utils.test.ts\u001b[39m\u001b[0m\u001b[2m:10:50)\u001b[2m\u001b[22m\n\u001b[2m          at Promise (<anonymous>)\u001b[22m\n\u001b[2m          at <anonymous>\u001b[22m\n\u001b[2m      \u001b[2mat process._tickCallback (\u001b[2minternal/process/next_tick.js\u001b[2m:188:7)\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[1mdangerfilePath › should find a dangerfile.js if there is no program, and the .js file exists\u001b[39m\u001b[22m\n\n    ReferenceError: mockDangerfilePath is not defined\n\u001b[2m      \u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[2m\u001b[0m\u001b[36msource/commands/utils/_tests/file-utils.test.ts\u001b[39m\u001b[0m\u001b[2m:14:23)\u001b[2m\u001b[22m\n\u001b[2m          at Promise (<anonymous>)\u001b[22m\n\u001b[2m          at <anonymous>\u001b[22m\n\u001b[2m      \u001b[2mat process._tickCallback (\u001b[2minternal/process/next_tick.js\u001b[2m:188:7)\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[1mdangerfilePath › should find a dangerfile.ts if there is no program, and the .js file does not exist\u001b[39m\u001b[22m\n\n    ReferenceError: mockDangerfilePath is not defined\n\u001b[2m      \u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[2m\u001b[0m\u001b[36msource/commands/utils/_tests/file-utils.test.ts\u001b[39m\u001b[0m\u001b[2m:19:23)\u001b[2m\u001b[22m\n\u001b[2m          at Promise (<anonymous>)\u001b[22m\n\u001b[2m          at <anonymous>\u001b[22m\n\u001b[2m      \u001b[2mat process._tickCallback (\u001b[2minternal/process/next_tick.js\u001b[2m:188:7)\u001b[2m\u001b[22m\n\n\u001b[1m\u001b[31m  \u001b[1m● \u001b[1mdangerfilePath › should raise if nothing exists\u001b[39m\u001b[22m\n\n    ReferenceError: mockDangerfilePath is not defined\n\u001b[2m      \u001b[22m\n\u001b[2m      \u001b[2mat Object.<anonymous> (\u001b[2m\u001b[0m\u001b[36msource/commands/utils/_tests/file-utils.test.ts\u001b[39m\u001b[0m\u001b[2m:24:23)\u001b[2m\u001b[22m\n\u001b[2m          at Promise (<anonymous>)\u001b[22m\n\u001b[2m          at <anonymous>\u001b[22m\n\u001b[2m      \u001b[2mat process._tickCallback (\u001b[2minternal/process/next_tick.js\u001b[2m:188:7)\u001b[2m\u001b[22m\n",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/commands/utils/_tests/file-utils.test.ts",
+      "startTime": 1507554403029,
+      "status": "failed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["setup"],
+          "failureMessages": [],
+          "fullName": "setup gets diff / pr info in setup",
+          "status": "passed",
+          "title": "gets diff / pr info in setup"
+        },
+        {
+          "ancestorTitles": ["setup"],
+          "failureMessages": [],
+          "fullName": "setup gets diff / pr info / utils in setup",
+          "status": "passed",
+          "title": "gets diff / pr info / utils in setup"
+        },
+        {
+          "ancestorTitles": ["setup"],
+          "failureMessages": [],
+          "fullName": "setup Creates a DangerResults for a raising dangerfile",
+          "status": "passed",
+          "title": "Creates a DangerResults for a raising dangerfile"
+        },
+        {
+          "ancestorTitles": ["setup"],
+          "failureMessages": [],
+          "fullName": "setup Deletes a post when there are no messages",
+          "status": "passed",
+          "title": "Deletes a post when there are no messages"
+        },
+        {
+          "ancestorTitles": ["setup"],
+          "failureMessages": [],
+          "fullName": "setup Updates or Creates comments for warnings",
+          "status": "passed",
+          "title": "Updates or Creates comments for warnings"
+        },
+        {
+          "ancestorTitles": ["setup"],
+          "failureMessages": [],
+          "fullName": "setup Updates or Creates comments for warnings",
+          "status": "passed",
+          "title": "Updates or Creates comments for warnings"
+        },
+        {
+          "ancestorTitles": ["setup"],
+          "failureMessages": [],
+          "fullName": "setup Updates the status with success for a passed results",
+          "status": "passed",
+          "title": "Updates the status with success for a passed results"
+        },
+        {
+          "ancestorTitles": ["setup"],
+          "failureMessages": [],
+          "fullName": "setup Updates the status with success for a passed results",
+          "status": "passed",
+          "title": "Updates the status with success for a passed results"
+        }
+      ],
+      "endTime": 1507554405049,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/runner/_tests/_executor.test.ts",
+      "startTime": 1507554403106,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["the dangerfile gitDSL"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL sets the modified/created/deleted",
+          "status": "passed",
+          "title": "sets the modified/created/deleted"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL shows the diff for a specific file",
+          "status": "passed",
+          "title": "shows the diff for a specific file"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL should include `before` text content of the file",
+          "status": "passed",
+          "title": "should include `before` text content of the file"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL should include `after` text content of the file",
+          "status": "passed",
+          "title": "should include `after` text content of the file"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL should include `added` text content of the file",
+          "status": "passed",
+          "title": "should include `added` text content of the file"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL should include `removed` text content of the file",
+          "status": "passed",
+          "title": "should include `removed` text content of the file"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL resolves to `null` for files not in modified_files",
+          "status": "passed",
+          "title": "resolves to `null` for files not in modified_files"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL sets up commit data correctly",
+          "status": "passed",
+          "title": "sets up commit data correctly"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL", "JSONPatchForFile"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL JSONPatchForFile returns a null for files not in the change list",
+          "status": "passed",
+          "title": "returns a null for files not in the change list"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL", "JSONPatchForFile"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL JSONPatchForFile handles showing a patch for a created file",
+          "status": "passed",
+          "title": "handles showing a patch for a created file"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL", "JSONPatchForFile"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL JSONPatchForFile handles showing a patch for a deleted file",
+          "status": "passed",
+          "title": "handles showing a patch for a deleted file"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL", "JSONPatchForFile"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL JSONPatchForFile handles showing a patch for two different diff files",
+          "status": "passed",
+          "title": "handles showing a patch for two different diff files"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL", "JSONDiffForFile"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL JSONDiffForFile returns an empty object for files not in the change list",
+          "status": "passed",
+          "title": "returns an empty object for files not in the change list"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL", "JSONDiffForFile"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL JSONDiffForFile handles showing a patch for a created file",
+          "status": "passed",
+          "title": "handles showing a patch for a created file"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL", "JSONDiffForFile"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL JSONDiffForFile handles showing a patch for a deleted file",
+          "status": "passed",
+          "title": "handles showing a patch for a deleted file"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL", "JSONDiffForFile"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL JSONDiffForFile handles showing a patch for two different diff files",
+          "status": "passed",
+          "title": "handles showing a patch for two different diff files"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL", "JSONDiffForFile"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL JSONDiffForFile handles a package.json change elegantly",
+          "status": "passed",
+          "title": "handles a package.json change elegantly"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL", "textDiffForFile"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL textDiffForFile returns a null for files not in the change list",
+          "status": "passed",
+          "title": "returns a null for files not in the change list"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL", "textDiffForFile"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL textDiffForFile returns a diff for created files",
+          "status": "passed",
+          "title": "returns a diff for created files"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL", "textDiffForFile"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL textDiffForFile returns a diff for deleted files",
+          "status": "passed",
+          "title": "returns a diff for deleted files"
+        },
+        {
+          "ancestorTitles": ["the dangerfile gitDSL", "textDiffForFile"],
+          "failureMessages": [],
+          "fullName": "the dangerfile gitDSL textDiffForFile returns a diff for modified files",
+          "status": "passed",
+          "title": "returns a diff for modified files"
+        }
+      ],
+      "endTime": 1507554405259,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/platforms/github/_tests/_github_git.test.ts",
+      "startTime": 1507554404731,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["getPlatformDSLRepresentation"],
+          "failureMessages": [],
+          "fullName": "getPlatformDSLRepresentation should return the correct review title from getReviewInfo",
+          "status": "passed",
+          "title": "should return the correct review title from getReviewInfo"
+        },
+        {
+          "ancestorTitles": ["getPlatformDSLRepresentation"],
+          "failureMessages": [],
+          "fullName": "getPlatformDSLRepresentation should get the issue label",
+          "status": "passed",
+          "title": "should get the issue label"
+        },
+        {
+          "ancestorTitles": ["getPlatformDSLRepresentation"],
+          "failureMessages": [],
+          "fullName": "getPlatformDSLRepresentation should get the commits of the pull request",
+          "status": "passed",
+          "title": "should get the commits of the pull request"
+        },
+        {
+          "ancestorTitles": ["getPlatformDSLRepresentation"],
+          "failureMessages": [],
+          "fullName": "getPlatformDSLRepresentation should get the reviews",
+          "status": "passed",
+          "title": "should get the reviews"
+        },
+        {
+          "ancestorTitles": ["getPlatformDSLRepresentation"],
+          "failureMessages": [],
+          "fullName": "getPlatformDSLRepresentation should get the reviewer requests",
+          "status": "passed",
+          "title": "should get the reviewer requests"
+        },
+        {
+          "ancestorTitles": ["getPlatformDSLRepresentation"],
+          "failureMessages": [],
+          "fullName": "getPlatformDSLRepresentation should get the pull request informations",
+          "status": "passed",
+          "title": "should get the pull request informations"
+        },
+        {
+          "ancestorTitles": ["getPlatformDSLRepresentation"],
+          "failureMessages": [],
+          "fullName": "getPlatformDSLRepresentation should set thisPR correct",
+          "status": "passed",
+          "title": "should set thisPR correct"
+        },
+        {
+          "ancestorTitles": [],
+          "failureMessages": [],
+          "fullName": "fileContents expects to grab PR JSON and pull out a file API call",
+          "status": "passed",
+          "title": "fileContents expects to grab PR JSON and pull out a file API call"
+        },
+        {
+          "ancestorTitles": ["API testing"],
+          "failureMessages": [],
+          "fullName": "API testing getUserInfo",
+          "status": "passed",
+          "title": "getUserInfo"
+        },
+        {
+          "ancestorTitles": ["API testing"],
+          "failureMessages": [],
+          "fullName": "API testing updateCommentWithID",
+          "status": "passed",
+          "title": "updateCommentWithID"
+        },
+        {
+          "ancestorTitles": ["API testing"],
+          "failureMessages": [],
+          "fullName": "API testing getPullRequestDiff",
+          "status": "passed",
+          "title": "getPullRequestDiff"
+        },
+        {
+          "ancestorTitles": ["Peril"],
+          "failureMessages": [],
+          "fullName": "Peril Allows setting additional headers",
+          "status": "passed",
+          "title": "Allows setting additional headers"
+        },
+        {
+          "ancestorTitles": ["Peril"],
+          "failureMessages": [],
+          "fullName": "Peril Merges two Accept headers",
+          "status": "passed",
+          "title": "Merges two Accept headers"
+        },
+        {
+          "ancestorTitles": ["Peril", "Allows setting DANGER_GITHUB_APP env variable"],
+          "failureMessages": [],
+          "fullName": "Peril Allows setting DANGER_GITHUB_APP env variable Makes getUserId return undefined",
+          "status": "passed",
+          "title": "Makes getUserId return undefined"
+        }
+      ],
+      "endTime": 1507554405414,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/platforms/github/_tests/_github_api.test.ts",
+      "startTime": 1507554405112,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["fetch"],
+          "failureMessages": [],
+          "fullName": "fetch handles json success",
+          "status": "passed",
+          "title": "handles json success"
+        },
+        {
+          "ancestorTitles": ["fetch"],
+          "failureMessages": [],
+          "fullName": "fetch handles json error",
+          "status": "passed",
+          "title": "handles json error"
+        },
+        {
+          "ancestorTitles": ["fetch"],
+          "failureMessages": [],
+          "fullName": "fetch handles plain text error",
+          "status": "passed",
+          "title": "handles plain text error"
+        }
+      ],
+      "endTime": 1507554405556,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/api/_tests/fetch.test.ts",
+      "startTime": 1507554405332,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["being found when looking for CI"],
+          "failureMessages": [],
+          "fullName": "being found when looking for CI finds Buildkite with the right ENV",
+          "status": "passed",
+          "title": "finds Buildkite with the right ENV"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI validates when all Buildkite environment vars are set",
+          "status": "passed",
+          "title": "validates when all Buildkite environment vars are set"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI does not validate without env",
+          "status": "passed",
+          "title": "does not validate without env"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR validates when all buildkite environment vars are set",
+          "status": "passed",
+          "title": "validates when all buildkite environment vars are set"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate outside of buildkite",
+          "status": "passed",
+          "title": "does not validate outside of buildkite"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when BUILDKITE_PULL_REQUEST is missing",
+          "status": "passed",
+          "title": "does not validate when BUILDKITE_PULL_REQUEST is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when BUILDKITE_REPO is missing",
+          "status": "passed",
+          "title": "does not validate when BUILDKITE_REPO is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when BUILDKITE is missing",
+          "status": "passed",
+          "title": "does not validate when BUILDKITE is missing"
+        },
+        {
+          "ancestorTitles": [".pullRequestID"],
+          "failureMessages": [],
+          "fullName": ".pullRequestID pulls it out of the env",
+          "status": "passed",
+          "title": "pulls it out of the env"
+        },
+        {
+          "ancestorTitles": [".repoSlug"],
+          "failureMessages": [],
+          "fullName": ".repoSlug derives it from the repo URL",
+          "status": "passed",
+          "title": "derives it from the repo URL"
+        },
+        {
+          "ancestorTitles": [".repoSlug"],
+          "failureMessages": [],
+          "fullName": ".repoSlug derives it from the repo URL in SSH format",
+          "status": "passed",
+          "title": "derives it from the repo URL in SSH format"
+        }
+      ],
+      "endTime": 1507554405660,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/ci_source/providers/_tests/_buildkite.test.ts",
+      "startTime": 1507554405453,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["being found when looking for CI"],
+          "failureMessages": [],
+          "fullName": "being found when looking for CI finds VSTS with the right ENV",
+          "status": "passed",
+          "title": "finds VSTS with the right ENV"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI validates when all VSTS environment vars are set",
+          "status": "passed",
+          "title": "validates when all VSTS environment vars are set"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI does not validate without environment vars",
+          "status": "passed",
+          "title": "does not validate without environment vars"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI does not validate without the repository provider being set to github",
+          "status": "passed",
+          "title": "does not validate without the repository provider being set to github"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR validates when all VSTS environment vars are set",
+          "status": "passed",
+          "title": "validates when all VSTS environment vars are set"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate without environment vars",
+          "status": "passed",
+          "title": "does not validate without environment vars"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when BUILD_SOURCEBRANCH is missing",
+          "status": "passed",
+          "title": "does not validate when BUILD_SOURCEBRANCH is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when BUILD_REPOSITORY_PROVIDER is missing",
+          "status": "passed",
+          "title": "does not validate when BUILD_REPOSITORY_PROVIDER is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when BUILD_REASON is missing",
+          "status": "passed",
+          "title": "does not validate when BUILD_REASON is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when BUILD_REPOSITORY_NAME is missing",
+          "status": "passed",
+          "title": "does not validate when BUILD_REPOSITORY_NAME is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR needs to have a PR number",
+          "status": "passed",
+          "title": "needs to have a PR number"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR validates with the correct build reason",
+          "status": "passed",
+          "title": "validates with the correct build reason"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate without the correct build reason",
+          "status": "passed",
+          "title": "does not validate without the correct build reason"
+        },
+        {
+          "ancestorTitles": [".pullRequestID"],
+          "failureMessages": [],
+          "fullName": ".pullRequestID pulls it out of the env",
+          "status": "passed",
+          "title": "pulls it out of the env"
+        },
+        {
+          "ancestorTitles": [".repoSlug"],
+          "failureMessages": [],
+          "fullName": ".repoSlug pulls it out of the env",
+          "status": "passed",
+          "title": "pulls it out of the env"
+        }
+      ],
+      "endTime": 1507554405803,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/ci_source/providers/_tests/_vsts.test.ts",
+      "startTime": 1507554405596,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["being found when looking for CI"],
+          "failureMessages": [],
+          "fullName": "being found when looking for CI finds BuddyBuild with the right ENV",
+          "status": "passed",
+          "title": "finds BuddyBuild with the right ENV"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI validates when all BuddyBuild environment vars are set",
+          "status": "passed",
+          "title": "validates when all BuddyBuild environment vars are set"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI does not validate",
+          "status": "passed",
+          "title": "does not validate"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR validates when all BuddyBuild environment vars are set",
+          "status": "passed",
+          "title": "validates when all BuddyBuild environment vars are set"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate outside of BuddyBuild",
+          "status": "passed",
+          "title": "does not validate outside of BuddyBuild"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when BUDDYBUILD_REPO_SLUG is missing",
+          "status": "passed",
+          "title": "does not validate when BUDDYBUILD_REPO_SLUG is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR needs to have a PR number",
+          "status": "passed",
+          "title": "needs to have a PR number"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when BUDDYBUILD_PULL_REQUEST is missing",
+          "status": "passed",
+          "title": "does not validate when BUDDYBUILD_PULL_REQUEST is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR needs to have a PR number",
+          "status": "passed",
+          "title": "needs to have a PR number"
+        },
+        {
+          "ancestorTitles": [".pullRequestID"],
+          "failureMessages": [],
+          "fullName": ".pullRequestID pulls it out of the env",
+          "status": "passed",
+          "title": "pulls it out of the env"
+        },
+        {
+          "ancestorTitles": [".repoSlug"],
+          "failureMessages": [],
+          "fullName": ".repoSlug pulls it out of the env",
+          "status": "passed",
+          "title": "pulls it out of the env"
+        }
+      ],
+      "endTime": 1507554405830,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/ci_source/providers/_tests/_buddyBuild.test.ts",
+      "startTime": 1507554405698,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["getPlatformDSLRepresentation"],
+          "failureMessages": [],
+          "fullName": "getPlatformDSLRepresentation should return the correct review title from getReviewInfo",
+          "status": "passed",
+          "title": "should return the correct review title from getReviewInfo"
+        },
+        {
+          "ancestorTitles": ["getPlatformDSLRepresentation"],
+          "failureMessages": [],
+          "fullName": "getPlatformDSLRepresentation should get the issue label",
+          "status": "passed",
+          "title": "should get the issue label"
+        },
+        {
+          "ancestorTitles": ["getPlatformDSLRepresentation"],
+          "failureMessages": [],
+          "fullName": "getPlatformDSLRepresentation should get the commits of the pull request",
+          "status": "passed",
+          "title": "should get the commits of the pull request"
+        },
+        {
+          "ancestorTitles": ["getPlatformDSLRepresentation"],
+          "failureMessages": [],
+          "fullName": "getPlatformDSLRepresentation should get the reviews",
+          "status": "passed",
+          "title": "should get the reviews"
+        },
+        {
+          "ancestorTitles": ["getPlatformDSLRepresentation"],
+          "failureMessages": [],
+          "fullName": "getPlatformDSLRepresentation should get the reviewer requests",
+          "status": "passed",
+          "title": "should get the reviewer requests"
+        },
+        {
+          "ancestorTitles": ["getPlatformDSLRepresentation"],
+          "failureMessages": [],
+          "fullName": "getPlatformDSLRepresentation should get the pull request informations",
+          "status": "passed",
+          "title": "should get the pull request informations"
+        },
+        {
+          "ancestorTitles": ["getPlatformDSLRepresentation"],
+          "failureMessages": [],
+          "fullName": "getPlatformDSLRepresentation should set thisPR correct",
+          "status": "passed",
+          "title": "should set thisPR correct"
+        }
+      ],
+      "endTime": 1507554405989,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/platforms/_tests/_github.test.ts",
+      "startTime": 1507554405878,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["being found when looking for CI"],
+          "failureMessages": [],
+          "fullName": "being found when looking for CI finds Jenkins with the right ENV",
+          "status": "passed",
+          "title": "finds Jenkins with the right ENV"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI validates when JENKINS_URL is present in environment",
+          "status": "passed",
+          "title": "validates when JENKINS_URL is present in environment"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI does not validate without JENKINS_URL",
+          "status": "passed",
+          "title": "does not validate without JENKINS_URL"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR validates when all Jenkins environment variables are set",
+          "status": "passed",
+          "title": "validates when all Jenkins environment variables are set"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate with required environment variables",
+          "status": "passed",
+          "title": "does not validate with required environment variables"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when JENKINS_URL is missing",
+          "status": "passed",
+          "title": "does not validate when JENKINS_URL is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when ghprbPullId is missing",
+          "status": "passed",
+          "title": "does not validate when ghprbPullId is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when ghprbGhRepository is missing",
+          "status": "passed",
+          "title": "does not validate when ghprbGhRepository is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR needs to have a PR number",
+          "status": "passed",
+          "title": "needs to have a PR number"
+        },
+        {
+          "ancestorTitles": [".pullRequestID"],
+          "failureMessages": [],
+          "fullName": ".pullRequestID pulls it out of environment",
+          "status": "passed",
+          "title": "pulls it out of environment"
+        },
+        {
+          "ancestorTitles": [".repoSlug"],
+          "failureMessages": [],
+          "fullName": ".repoSlug pulls it out of environment",
+          "status": "passed",
+          "title": "pulls it out of environment"
+        }
+      ],
+      "endTime": 1507554405995,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/ci_source/providers/_tests/_jenkins.test.ts",
+      "startTime": 1507554405876,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["being found when looking for CI"],
+          "failureMessages": [],
+          "fullName": "being found when looking for CI finds Drone with the right ENV",
+          "status": "passed",
+          "title": "finds Drone with the right ENV"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI validates when all Drone environment vars are set",
+          "status": "passed",
+          "title": "validates when all Drone environment vars are set"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI does not validate without DRONE",
+          "status": "passed",
+          "title": "does not validate without DRONE"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR validates when all Drone environment vars are set",
+          "status": "passed",
+          "title": "validates when all Drone environment vars are set"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate without DRONE_PULL_REQUEST",
+          "status": "passed",
+          "title": "does not validate without DRONE_PULL_REQUEST"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when DRONE_PULL_REQUEST is missing",
+          "status": "passed",
+          "title": "does not validate when DRONE_PULL_REQUEST is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when DRONE_REPO is missing",
+          "status": "passed",
+          "title": "does not validate when DRONE_REPO is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR needs to have a PR number",
+          "status": "passed",
+          "title": "needs to have a PR number"
+        },
+        {
+          "ancestorTitles": [".pullRequestID"],
+          "failureMessages": [],
+          "fullName": ".pullRequestID pulls it out of the env",
+          "status": "passed",
+          "title": "pulls it out of the env"
+        },
+        {
+          "ancestorTitles": [".repoSlug"],
+          "failureMessages": [],
+          "fullName": ".repoSlug pulls it out of the env",
+          "status": "passed",
+          "title": "pulls it out of the env"
+        }
+      ],
+      "endTime": 1507554406143,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/ci_source/providers/_tests/_drone.test.ts",
+      "startTime": 1507554406025,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["being found when looking for CI"],
+          "failureMessages": [],
+          "fullName": "being found when looking for CI finds Semaphore with the right ENV",
+          "status": "passed",
+          "title": "finds Semaphore with the right ENV"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI validates when all Semaphore environment vars are set",
+          "status": "passed",
+          "title": "validates when all Semaphore environment vars are set"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI does not validate without josh",
+          "status": "passed",
+          "title": "does not validate without josh"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR validates when all semaphore environment vars are set",
+          "status": "passed",
+          "title": "validates when all semaphore environment vars are set"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate outside of semaphore",
+          "status": "passed",
+          "title": "does not validate outside of semaphore"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when SEMAPHORE_CI_API_TOKEN is missing",
+          "status": "passed",
+          "title": "does not validate when SEMAPHORE_CI_API_TOKEN is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when SEMAPHORE_PROJECT_USERNAME is missing",
+          "status": "passed",
+          "title": "does not validate when SEMAPHORE_PROJECT_USERNAME is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when SEMAPHORE_PROJECT_REPONAME is missing",
+          "status": "passed",
+          "title": "does not validate when SEMAPHORE_PROJECT_REPONAME is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when SEMAPHORE_BUILD_NUM is missing",
+          "status": "passed",
+          "title": "does not validate when SEMAPHORE_BUILD_NUM is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR needs to have a PR number",
+          "status": "passed",
+          "title": "needs to have a PR number"
+        },
+        {
+          "ancestorTitles": [".pullRequestID"],
+          "failureMessages": [],
+          "fullName": ".pullRequestID pulls it out of the env",
+          "status": "passed",
+          "title": "pulls it out of the env"
+        },
+        {
+          "ancestorTitles": [".repoSlug"],
+          "failureMessages": [],
+          "fullName": ".repoSlug derives it from the PR Url",
+          "status": "passed",
+          "title": "derives it from the PR Url"
+        }
+      ],
+      "endTime": 1507554406171,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/ci_source/providers/_tests/_semaphore.test.ts",
+      "startTime": 1507554406034,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["parsing urls"],
+          "failureMessages": [],
+          "fullName": "parsing urls handles bad data",
+          "status": "passed",
+          "title": "handles bad data"
+        },
+        {
+          "ancestorTitles": ["parsing urls"],
+          "failureMessages": [],
+          "fullName": "parsing urls pulls out the repo / pr ID",
+          "status": "passed",
+          "title": "pulls out the repo / pr ID"
+        },
+        {
+          "ancestorTitles": ["parsing urls"],
+          "failureMessages": [],
+          "fullName": "parsing urls handles query params too",
+          "status": "passed",
+          "title": "handles query params too"
+        }
+      ],
+      "endTime": 1507554406319,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/platforms/github/_tests/_pull_request_parser.test.ts",
+      "startTime": 1507554406185,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["being found when looking for CI"],
+          "failureMessages": [],
+          "fullName": "being found when looking for CI finds Circle with the right ENV",
+          "status": "passed",
+          "title": "finds Circle with the right ENV"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI validates when all Circle environment vars are set",
+          "status": "passed",
+          "title": "validates when all Circle environment vars are set"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI does not validate without josh",
+          "status": "passed",
+          "title": "does not validate without josh"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR validates when all circle environment vars are set",
+          "status": "passed",
+          "title": "validates when all circle environment vars are set"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate outside of circle",
+          "status": "passed",
+          "title": "does not validate outside of circle"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when CIRCLE_CI_API_TOKEN is missing",
+          "status": "passed",
+          "title": "does not validate when CIRCLE_CI_API_TOKEN is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when CIRCLE_PROJECT_USERNAME is missing",
+          "status": "passed",
+          "title": "does not validate when CIRCLE_PROJECT_USERNAME is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when CIRCLE_PROJECT_REPONAME is missing",
+          "status": "passed",
+          "title": "does not validate when CIRCLE_PROJECT_REPONAME is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when CIRCLE_BUILD_NUM is missing",
+          "status": "passed",
+          "title": "does not validate when CIRCLE_BUILD_NUM is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR needs to have a PR number",
+          "status": "passed",
+          "title": "needs to have a PR number"
+        },
+        {
+          "ancestorTitles": [".pullRequestID"],
+          "failureMessages": [],
+          "fullName": ".pullRequestID pulls it out of the env",
+          "status": "passed",
+          "title": "pulls it out of the env"
+        },
+        {
+          "ancestorTitles": [".pullRequestID"],
+          "failureMessages": [],
+          "fullName": ".pullRequestID can derive it from PR Url",
+          "status": "passed",
+          "title": "can derive it from PR Url"
+        },
+        {
+          "ancestorTitles": [".repoSlug"],
+          "failureMessages": [],
+          "fullName": ".repoSlug derives it from the PR Url",
+          "status": "passed",
+          "title": "derives it from the PR Url"
+        }
+      ],
+      "endTime": 1507554406396,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/ci_source/providers/_tests/_circle.test.ts",
+      "startTime": 1507554406208,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["being found when looking for CI"],
+          "failureMessages": [],
+          "fullName": "being found when looking for CI finds DockerCloud with the right ENV",
+          "status": "passed",
+          "title": "finds DockerCloud with the right ENV"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI validates when all DockerCloud environment vars are set",
+          "status": "passed",
+          "title": "validates when all DockerCloud environment vars are set"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI does not validate without env",
+          "status": "passed",
+          "title": "does not validate without env"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR validates when all dockerCloud environment vars are set",
+          "status": "passed",
+          "title": "validates when all dockerCloud environment vars are set"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate outside of dockerCloud",
+          "status": "passed",
+          "title": "does not validate outside of dockerCloud"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when PULL_REQUEST_URL is missing",
+          "status": "passed",
+          "title": "does not validate when PULL_REQUEST_URL is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when SOURCE_REPOSITORY_URL is missing",
+          "status": "passed",
+          "title": "does not validate when SOURCE_REPOSITORY_URL is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when DOCKER_REPO is missing",
+          "status": "passed",
+          "title": "does not validate when DOCKER_REPO is missing"
+        },
+        {
+          "ancestorTitles": [".pullRequestID"],
+          "failureMessages": [],
+          "fullName": ".pullRequestID pulls it out of the env",
+          "status": "passed",
+          "title": "pulls it out of the env"
+        },
+        {
+          "ancestorTitles": [".repoSlug"],
+          "failureMessages": [],
+          "fullName": ".repoSlug derives it from the PR Url",
+          "status": "passed",
+          "title": "derives it from the PR Url"
+        }
+      ],
+      "endTime": 1507554406488,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/ci_source/providers/_tests/_dockerCloud.test.ts",
+      "startTime": 1507554406350,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [".getCISourceForEnv"],
+          "failureMessages": [],
+          "fullName": ".getCISourceForEnv returns undefined if nothing is found",
+          "status": "passed",
+          "title": "returns undefined if nothing is found"
+        },
+        {
+          "ancestorTitles": [".getCISourceForEnv"],
+          "failureMessages": [],
+          "fullName": ".getCISourceForEnv falls back to the fake if DANGER_FAKE_CI exists",
+          "status": "passed",
+          "title": "falls back to the fake if DANGER_FAKE_CI exists"
+        },
+        {
+          "ancestorTitles": [".getCISourceForExternal"],
+          "failureMessages": [],
+          "fullName": ".getCISourceForExternal should resolve module relatively",
+          "status": "passed",
+          "title": "should resolve module relatively"
+        },
+        {
+          "ancestorTitles": [".getCISourceForExternal"],
+          "failureMessages": [],
+          "fullName": ".getCISourceForExternal should return undefined if module resolution fails",
+          "status": "passed",
+          "title": "should return undefined if module resolution fails"
+        }
+      ],
+      "endTime": 1507554406659,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/ci_source/_tests/_get_ci_source.test.ts",
+      "startTime": 1507554406468,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["being found when looking for CI"],
+          "failureMessages": [],
+          "fullName": "being found when looking for CI finds Travis with the right ENV",
+          "status": "passed",
+          "title": "finds Travis with the right ENV"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI validates when all Travis environment vars are set and Josh K says so",
+          "status": "passed",
+          "title": "validates when all Travis environment vars are set and Josh K says so"
+        },
+        {
+          "ancestorTitles": [".isCI"],
+          "failureMessages": [],
+          "fullName": ".isCI does not validate without josh",
+          "status": "passed",
+          "title": "does not validate without josh"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR validates when all Travis environment vars are set and Josh K says so",
+          "status": "passed",
+          "title": "validates when all Travis environment vars are set and Josh K says so"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate without josh",
+          "status": "passed",
+          "title": "does not validate without josh"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when TRAVIS_PULL_REQUEST is missing",
+          "status": "passed",
+          "title": "does not validate when TRAVIS_PULL_REQUEST is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR does not validate when TRAVIS_REPO_SLUG is missing",
+          "status": "passed",
+          "title": "does not validate when TRAVIS_REPO_SLUG is missing"
+        },
+        {
+          "ancestorTitles": [".isPR"],
+          "failureMessages": [],
+          "fullName": ".isPR needs to have a PR number",
+          "status": "passed",
+          "title": "needs to have a PR number"
+        },
+        {
+          "ancestorTitles": [".pullRequestID"],
+          "failureMessages": [],
+          "fullName": ".pullRequestID pulls it out of the env",
+          "status": "passed",
+          "title": "pulls it out of the env"
+        },
+        {
+          "ancestorTitles": [".repoSlug"],
+          "failureMessages": [],
+          "fullName": ".repoSlug pulls it out of the env",
+          "status": "passed",
+          "title": "pulls it out of the env"
+        }
+      ],
+      "endTime": 1507554406677,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/ci_source/providers/_tests/_travis.test.ts",
+      "startTime": 1507554406538,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["generating messages"],
+          "failureMessages": [],
+          "fullName": "generating messages shows no tables for empty results",
+          "status": "passed",
+          "title": "shows no tables for empty results"
+        },
+        {
+          "ancestorTitles": ["generating messages"],
+          "failureMessages": [],
+          "fullName": "generating messages shows no tables for results without messages",
+          "status": "passed",
+          "title": "shows no tables for results without messages"
+        },
+        {
+          "ancestorTitles": ["generating messages"],
+          "failureMessages": [],
+          "fullName": "generating messages Shows the failing messages in a table",
+          "status": "passed",
+          "title": "Shows the failing messages in a table"
+        },
+        {
+          "ancestorTitles": ["generating messages"],
+          "failureMessages": [],
+          "fullName": "generating messages Shows the warning messages in a table",
+          "status": "passed",
+          "title": "Shows the warning messages in a table"
+        },
+        {
+          "ancestorTitles": ["generating messages"],
+          "failureMessages": [],
+          "fullName": "generating messages does not break commonmark rules around line breaks",
+          "status": "passed",
+          "title": "does not break commonmark rules around line breaks"
+        },
+        {
+          "ancestorTitles": ["generating messages"],
+          "failureMessages": [],
+          "fullName": "generating messages Should include summary on top of message",
+          "status": "passed",
+          "title": "Should include summary on top of message"
+        },
+        {
+          "ancestorTitles": ["generating messages"],
+          "failureMessages": [],
+          "fullName":
+            "generating messages leaves space between <td>s to allow GitHub to render message content as markdown",
+          "status": "passed",
+          "title": "leaves space between <td>s to allow GitHub to render message content as markdown"
+        }
+      ],
+      "endTime": 1507554406834,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/runner/templates/_tests/_githubIssueTemplates.test.ts",
+      "startTime": 1507554406695,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["sentence()"],
+          "failureMessages": [],
+          "fullName": "sentence() handles falsy input",
+          "status": "passed",
+          "title": "handles falsy input"
+        },
+        {
+          "ancestorTitles": ["sentence()"],
+          "failureMessages": [],
+          "fullName": "sentence() handles empty array",
+          "status": "passed",
+          "title": "handles empty array"
+        },
+        {
+          "ancestorTitles": ["sentence()"],
+          "failureMessages": [],
+          "fullName": "sentence() handles array with one item",
+          "status": "passed",
+          "title": "handles array with one item"
+        },
+        {
+          "ancestorTitles": ["sentence()"],
+          "failureMessages": [],
+          "fullName": "sentence() handles array with multiple items",
+          "status": "passed",
+          "title": "handles array with multiple items"
+        },
+        {
+          "ancestorTitles": ["href()"],
+          "failureMessages": [],
+          "fullName": "href() returns null when href and text are falsy",
+          "status": "passed",
+          "title": "returns null when href and text are falsy"
+        },
+        {
+          "ancestorTitles": ["href()"],
+          "failureMessages": [],
+          "fullName": "href() returns just the text when the href is missing",
+          "status": "passed",
+          "title": "returns just the text when the href is missing"
+        },
+        {
+          "ancestorTitles": ["href()"],
+          "failureMessages": [],
+          "fullName": "href() returns <a> tag with href as text when text is missing",
+          "status": "passed",
+          "title": "returns <a> tag with href as text when text is missing"
+        },
+        {
+          "ancestorTitles": ["href()"],
+          "failureMessages": [],
+          "fullName": "href() returns <a> tag for supplied href and text",
+          "status": "passed",
+          "title": "returns <a> tag for supplied href and text"
+        }
+      ],
+      "endTime": 1507554406863,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/runner/_tests/_danger_utils.test.ts",
+      "startTime": 1507554406740,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["fileLinks"],
+          "failureMessages": [],
+          "fullName": "fileLinks Should convert a few paths into links",
+          "status": "passed",
+          "title": "Should convert a few paths into links"
+        },
+        {
+          "ancestorTitles": ["fileLinks"],
+          "failureMessages": [],
+          "fullName": "fileLinks Should convert a few paths into links showing full links",
+          "status": "passed",
+          "title": "Should convert a few paths into links showing full links"
+        },
+        {
+          "ancestorTitles": ["fileLinks"],
+          "failureMessages": [],
+          "fullName": "fileLinks Should convert a few paths into links showing full link on a custom fork/branch",
+          "status": "passed",
+          "title": "Should convert a few paths into links showing full link on a custom fork/branch"
+        },
+        {
+          "ancestorTitles": ["getContents"],
+          "failureMessages": [],
+          "fullName": "getContents should call the API's getContents",
+          "status": "passed",
+          "title": "should call the API's getContents"
+        }
+      ],
+      "endTime": 1507554406991,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/platforms/github/_tests/_github_utils.test.ts",
+      "startTime": 1507554406914,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "failureMessages": [],
+          "fullName": "should bail if there is no DANGER_GITHUB_API_TOKEN found",
+          "status": "passed",
+          "title": "should bail if there is no DANGER_GITHUB_API_TOKEN found"
+        }
+      ],
+      "endTime": 1507554407016,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/platforms/_tests/_platform.test.ts",
+      "startTime": 1507554406860,
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["with fixtures"],
+          "failureMessages": [],
+          "fullName": "with fixtures handles a blank Dangerfile",
+          "status": "passed",
+          "title": "handles a blank Dangerfile"
+        },
+        {
+          "ancestorTitles": ["with fixtures"],
+          "failureMessages": [],
+          "fullName": "with fixtures handles a full set of messages",
+          "status": "passed",
+          "title": "handles a full set of messages"
+        },
+        {
+          "ancestorTitles": ["with fixtures"],
+          "failureMessages": [],
+          "fullName": "with fixtures handles a failing dangerfile",
+          "status": "passed",
+          "title": "handles a failing dangerfile"
+        },
+        {
+          "ancestorTitles": ["with fixtures"],
+          "failureMessages": [],
+          "fullName": "with fixtures handles relative imports correctly in Babel",
+          "status": "passed",
+          "title": "handles relative imports correctly in Babel"
+        },
+        {
+          "ancestorTitles": ["with fixtures"],
+          "failureMessages": [],
+          "fullName": "with fixtures handles scheduled (async) code",
+          "status": "passed",
+          "title": "handles scheduled (async) code"
+        },
+        {
+          "ancestorTitles": ["with fixtures"],
+          "failureMessages": [],
+          "fullName": "with fixtures handles multiple scheduled statements and all message types",
+          "status": "passed",
+          "title": "handles multiple scheduled statements and all message types"
+        },
+        {
+          "ancestorTitles": ["with fixtures"],
+          "failureMessages": [],
+          "fullName": "with fixtures in Typescript it handles multiple scheduled statements and all message types",
+          "status": "passed",
+          "title": "in Typescript it handles multiple scheduled statements and all message types"
+        },
+        {
+          "ancestorTitles": ["with fixtures"],
+          "failureMessages": [],
+          "fullName": "with fixtures in babel it can execute async/await scheduled functions",
+          "status": "passed",
+          "title": "in babel it can execute async/await scheduled functions"
+        },
+        {
+          "ancestorTitles": ["with fixtures"],
+          "failureMessages": [],
+          "fullName": "with fixtures in typescript it can execute async/await scheduled functions",
+          "status": "passed",
+          "title": "in typescript it can execute async/await scheduled functions"
+        },
+        {
+          "ancestorTitles": ["with fixtures"],
+          "failureMessages": [],
+          "fullName": "with fixtures can schedule callback-based promised ",
+          "status": "passed",
+          "title": "can schedule callback-based promised "
+        },
+        {
+          "ancestorTitles": ["with fixtures"],
+          "failureMessages": [],
+          "fullName": "with fixtures can handle TypeScript based Dangerfiles",
+          "status": "passed",
+          "title": "can handle TypeScript based Dangerfiles"
+        },
+        {
+          "ancestorTitles": ["with fixtures"],
+          "failureMessages": [],
+          "fullName": "with fixtures can handle a plugin (which is already used in Danger)",
+          "status": "passed",
+          "title": "can handle a plugin (which is already used in Danger)"
+        },
+        {
+          "ancestorTitles": ["with fixtures"],
+          "failureMessages": [],
+          "fullName": "with fixtures does not swallow errors thrown in Dangerfile",
+          "status": "passed",
+          "title": "does not swallow errors thrown in Dangerfile"
+        },
+        {
+          "ancestorTitles": ["cleaning Dangerfiles"],
+          "failureMessages": [],
+          "fullName": "cleaning Dangerfiles also handles typescript style imports",
+          "status": "passed",
+          "title": "also handles typescript style imports"
+        },
+        {
+          "ancestorTitles": ["cleaning Dangerfiles"],
+          "failureMessages": [],
+          "fullName": "cleaning Dangerfiles also handles require style imports",
+          "status": "passed",
+          "title": "also handles require style imports"
+        }
+      ],
+      "endTime": 1507554407860,
+      "message": "",
+      "name": "/Users/orta/dev/projects/danger/danger-js/source/runner/_tests/_danger_runner.test.ts",
+      "startTime": 1507554403103,
+      "status": "passed",
+      "summary": ""
+    }
+  ],
+  "wasInterrupted": false
+}
