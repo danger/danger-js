@@ -4,6 +4,8 @@
 
 ### Master
 
+### 2.0.0-alpha.20
+
 - Moves away from vm2 to a require-based Dangerfile runner. This removes the sandboxing aspect of
   the Dangerfile completely, but the sandboxing was mainly for Peril and I have a plan for that.
 
