@@ -16,19 +16,11 @@
     "pretty": true,
     "target": "es5",
     "outDir": "distribution",
-    "lib": ["es5", "es2015"]
+    "lib": ["es2017"]
   },
   "formatCodeOptions": {
     "indentSize": 2,
     "tabSize": 2
   },
-  "exclude": [
-    "dangerfile.ts",
-    "scripts",
-    "node_modules",
-    "source/**/fixtures/*",
-    "source/**/_tests/*",
-    "distribution",
-    "types"
-  ]
+  "exclude": ["scripts", "node_modules", "source/**/fixtures/*", "source/**/_tests/*", "distribution", "types"]
 }

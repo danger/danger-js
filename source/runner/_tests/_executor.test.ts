@@ -2,6 +2,7 @@ import { Executor } from "../Executor"
 import { FakeCI } from "../../ci_source/providers/Fake"
 import { FakePlatform } from "../../platforms/FakePlatform"
 import { emptyResults, warnResults, failsResults } from "./fixtures/ExampleDangerResults"
+import inlineRunner from "../runners/inline"
 
 const defaultConfig = {
   stdoutOnly: false,
@@ -11,7 +12,7 @@ const defaultConfig = {
 describe("setup", () => {
   it("gets diff / pr info in setup", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
 
     platform.getPlatformGitRepresentation = jest.fn()
     platform.getPlatformDSLRepresentation = jest.fn()
@@ -22,7 +23,7 @@ describe("setup", () => {
   })
 
   it("gets diff / pr info / utils in setup", async () => {
-    const exec = new Executor(new FakeCI({}), new FakePlatform(), defaultConfig)
+    const exec = new Executor(new FakeCI({}), new FakePlatform(), inlineRunner, defaultConfig)
     const dsl = await exec.dslForDanger()
     expect(dsl.git).toBeTruthy()
     expect(dsl.github).toBeTruthy()
@@ -31,7 +32,7 @@ describe("setup", () => {
 
   it("Creates a DangerResults for a raising dangerfile", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
 
     // This is a real error occuring when Danger modifies the Dangerfile
     // as it is given a path of ""
@@ -50,7 +51,7 @@ describe("setup", () => {
 
   it("Deletes a post when there are no messages", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
     platform.deleteMainComment = jest.fn()
 
     await exec.handleResults(emptyResults)
@@ -59,7 +60,7 @@ describe("setup", () => {
 
   it("Updates or Creates comments for warnings", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
     platform.updateOrCreateComment = jest.fn()
 
     await exec.handleResults(warnResults)
@@ -68,7 +69,7 @@ describe("setup", () => {
 
   it("Updates or Creates comments for warnings", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
     platform.updateOrCreateComment = jest.fn()
 
     await exec.handleResults(warnResults)
@@ -77,7 +78,7 @@ describe("setup", () => {
 
   it("Updates the status with success for a passed results", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 
@@ -90,7 +91,7 @@ describe("setup", () => {
 
   it("Updates the status with success for a passed results", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 

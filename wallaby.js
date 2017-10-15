@@ -1,29 +1,30 @@
-module.exports = (wallaby) => ({
-  files: [
-    {pattern: "source/**/fixtures/**/*.*", instrument: false},
-    "source/**/!(*.test).ts",
-    {pattern: "package.json", instrument: false}
-  ],
+module.exports = wallaby => {
+  const babel = JSON.parse(require("fs").readFileSync(require("path").join(__dirname, ".babelrc")))
+  babel.presets.push("babel-preset-jest")
 
-  tests: [
-    "source/**/*.test.ts"
-  ],
+  return {
+    files: [
+      "tsconfig.json",
+      { pattern: "source/**/fixtures/**/*.*", instrument: false },
+      "source/**/!(*.test).ts",
+      { pattern: "package.json", instrument: false },
+    ],
 
-  env: {
-    type: "node"
-  },
+    tests: ["source/**/*.test.ts"],
 
-  compilers: {
-    "**/*.ts?(x)": wallaby.compilers.typeScript()
-  },
+    env: {
+      type: "node",
+    },
 
-  // fixtures are not instrumented, but still need to be compiled
-  preprocessors: {
-    "source/**/fixtures/**/*.js?(x)": file => require('babel-core')
-      .transform(
-        file.content,
-        JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '.babelrc'))))
-  },
+    compilers: {
+      "**/*.ts?(x)": wallaby.compilers.typeScript(),
+    },
 
-  testFramework: "jest"
-})
+    // fixtures are not instrumented, but still need to be compiled
+    preprocessors: {
+      "source/**/fixtures/**/*.js?(x)": file => require("babel-core").transform(file.content, babel),
+    },
+
+    testFramework: "jest",
+  }
+}

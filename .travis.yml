@@ -7,19 +7,23 @@ cache:
 
 matrix:
   include:
-  - node_js: node
-    before_install:
-    - yarn global add greenkeeper-lockfile@1
-    before_script:
-    - greenkeeper-lockfile-update
-    after_script:
-    - yarn run link
-    - danger run --verbose
-    - greenkeeper-lockfile-upload
+  # Some normal CI test runs
+  - node_js: '8'
   - node_js: '6'
 
+  # Does the real danger run
+  - node_js: node
+    script:
+    - yarn add jest
+    - yarn jest --outputFile test-results.json --json
+    - yarn run link
+    - echo "This is only for running the real danger on this repo"
+    - danger run --verbose
+
+  # Create some fake projects at runtime
   - node_js: '7'
     script:
+      - echo "This is only for Integration tests on two blank projects"
       - yarn build
       - mkdir danger_blank_test
       - cd danger_blank_test
@@ -41,7 +45,6 @@ matrix:
       - cd ..
       - rm -rf danger_babel_test
 
-  - node_js: '8'
 
 script:
 - yarn lint
