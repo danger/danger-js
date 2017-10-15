@@ -31,14 +31,14 @@ try {
 
 // Now that we have a sense of what exists inside the users' node modules
 
-const typescriptify = (content: string): string => {
+export const typescriptify = (content: string): string => {
   const ts = require("typescript") // tslint:disable-line
   const compilerOptions = JSON.parse(fs.readFileSync("tsconfig.json", "utf8"))
   let result = ts.transpileModule(content, compilerOptions)
   return result.outputText
 }
 
-const babelify = (content: string, filename: string, extraPlugins: string[]): string => {
+export const babelify = (content: string, filename: string, extraPlugins: string[]): string => {
   const babel = require("babel-core") // tslint:disable-line
   if (!babel.transform) {
     return content
@@ -52,6 +52,7 @@ const babelify = (content: string, filename: string, extraPlugins: string[]): st
     sourceMap: false,
     sourceFileName: null,
     sourceMapTarget: null,
+    sourceType: "module",
     plugins: [...extraPlugins, ...options.plugins],
   }
 
