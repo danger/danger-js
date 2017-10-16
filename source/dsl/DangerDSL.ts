@@ -11,6 +11,30 @@ export interface DangerDSLJSONType {
   git: GitJSONDSL
   /** The data only version of GitHub DSL */
   github: GitHubDSL
+  /**
+   * Used in the Danger JSON DSL to pass metadata between
+   * processes. It will be undefined when used inside the Danger DSL
+   */
+  settings: {
+    /**
+     * Saves each client re-implmenting logic to grab these vars
+     * for their API clients
+     */
+    github: {
+      /** API token for the GitHub client to use */
+      accessToken: string
+      /** Optional URL for enterprise GitHub */
+      baseURL: string | undefined
+      /** Optional headers to add to a request */
+      additionalHeaders: any
+    }
+    /**
+     * This is still a bit of a WIP, but this should
+     * pass args/opts from the original CLI call through
+     * to the process.
+     */
+    cliArgs: any
+  }
 }
 
 /**

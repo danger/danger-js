@@ -1,8 +1,10 @@
 import { GitDSL, JSONPatchOperation, GitJSONDSL } from "../../dsl/GitDSL"
-import { GitHubCommit, GitHubJSONDSL } from "../../dsl/GitHubDSL"
+import { GitHubCommit, GitHubJSONDSL, GitHubDSL } from "../../dsl/GitHubDSL"
 import { GitCommit } from "../../dsl/Commit"
 
 import { GitHubAPI } from "../github/GitHubAPI"
+
+import * as GitHub from "github"
 
 import * as os from "os"
 
@@ -56,7 +58,7 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitJSONDS
   }
 }
 
-export const gitJSONToGitDSL = (github: GitHubJSONDSL, api: GitHubAPI, json: GitJSONDSL): GitDSL => {
+export const gitJSONToGitDSL = (github: GitHubDSL, api: GitHub, json: GitJSONDSL): GitDSL => {
   /**
    * Takes a filename, and pulls from the PR the two versions of a file
    * where we then pass that off to the rfc6902 JSON patch generator.
@@ -71,8 +73,8 @@ export const gitJSONToGitDSL = (github: GitHubJSONDSL, api: GitHubAPI, json: Git
     }
 
     // Grab the two files contents.
-    const baseFile = await api.fileContents(filename, github.pr.base.repo.full_name, github.pr.base.sha)
-    const headFile = await api.fileContents(filename, github.pr.head.repo.full_name, github.pr.head.sha)
+    const baseFile = await github.utils.fileContents(filename, github.pr.base.repo.full_name, github.pr.base.sha)
+    const headFile = await github.utils.fileContents(filename, github.pr.head.repo.full_name, github.pr.head.sha)
 
     // Parse JSON. `fileContents` returns empty string for files that are
     // missing in one of the refs, ie. when the file is created or deleted.
@@ -162,8 +164,9 @@ export const gitJSONToGitDSL = (github: GitHubJSONDSL, api: GitHubAPI, json: Git
    * @param filename File path for the diff
    */
   const diffForFile = async (filename: string) => {
-    // We already have access to the diff, so see if the file is in there
-    // if it's not return an empty diff
+    // const diff = await api.getPullRequestDiff()
+    const diff = await api.pullRequests.get()
+    const fileDiffs: any[] = parseDiff(diff)
     const structuredDiff = fileDiffs.find((diff: any) => diff.from === filename || diff.to === filename)
     if (!structuredDiff) {
       return null
@@ -174,8 +177,8 @@ export const gitJSONToGitDSL = (github: GitHubJSONDSL, api: GitHubAPI, json: Git
       .reduce((a: Changes, b: Changes) => a.concat(b), [])
 
     return {
-      before: await api.fileContents(filename, github.pr.base.repo.full_name, github.pr.base.sha),
-      after: await api.fileContents(filename, github.pr.head.repo.full_name, github.pr.head.sha),
+      before: await github.utils.fileContents(filename, github.pr.base.repo.full_name, github.pr.base.sha),
+      after: await github.utils.fileContents(filename, github.pr.head.repo.full_name, github.pr.head.sha),
       diff: allLines.map(getContent).join(os.EOL),
       added: allLines
         .filter(byType("add"))

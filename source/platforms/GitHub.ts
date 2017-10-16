@@ -1,8 +1,10 @@
-import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
+import { GitJSONDSL } from "../dsl/GitDSL"
 import { GitHubPRDSL, GitHubDSL, GitHubIssue, GitHubAPIPR, GitHubJSONDSL } from "../dsl/GitHubDSL"
 import { GitHubAPI } from "./github/GitHubAPI"
 import GitHubUtils from "./github/GitHubUtils"
 import gitDSLForGitHub from "./github/GitHubGit"
+
+import * as NodeGitHub from "github"
 
 /** Handles conforming to the Platform Interface for GitHub, API work is handle by GitHubAPI */
 
@@ -152,10 +154,10 @@ export class GitHub {
 
 // This class should get un-classed, but for now we can expand by functions
 
-export const githubJSONToGitHubDSL = (gh: GitHubJSONDSL): GitHubDSL => {
+export const githubJSONToGitHubDSL = (gh: GitHubJSONDSL, api: NodeGitHub): GitHubDSL => {
   return {
     ...gh,
-    api: {} as any,
-    utils: GitHubUtils(gh.pr, this.api),
+    api,
+    utils: GitHubUtils(gh.pr, api),
   }
 }
