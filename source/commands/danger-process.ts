@@ -8,7 +8,7 @@ import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import getRuntimeCISource from "./utils/getRuntimeCISource"
 
 import inlineRunner from "../runner/runners/inline"
-import { dsLGenerator } from "../runner/dslGenerator"
+import { jsonDSLGenerator } from "../runner/dslGenerator"
 
 // Given the nature of this command, it can be tricky to test, so I use a command like this:
 //
@@ -65,7 +65,7 @@ async function run() {
         verbose: app.verbose,
       }
 
-      const dangerDSL = await dsLGenerator(platform)
+      const dangerDSL = await jsonDSLGenerator(platform)
       const processInput = prepareDangerDSL(dangerDSL)
 
       if (!subprocessName) {

@@ -31,7 +31,24 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
 
   return {
     fileLinks,
-    fileContents: api.fileContents,
+    fileContents: async (path: string, repoSlug?: string, ref?: string): Promise<string> => {
+      // Use the current state of PR if no repo/ref is passed
+      if (!repoSlug || !ref) {
+        repoSlug = pr.head.repo.full_name
+        ref = pr.head.ref
+      }
+
+      // api.getFileContents(path, repoSlug, ref)
+      const data = await api.repos.getContent({
+        ref,
+        path,
+        repo: repoSlug.split("\\")[1],
+        owner: repoSlug.split("\\")[0],
+      })
+
+      const buffer = new Buffer(data.content, "base64")
+      return buffer.toString()
+    },
   }
 }
 

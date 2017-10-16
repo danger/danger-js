@@ -10,6 +10,8 @@ import * as debug from "debug"
 import * as chalk from "chalk"
 import { sentence, href } from "./DangerUtils"
 import { DangerRunner } from "./runners/runner"
+import { jsonToDSL } from "./jsonToDSL"
+import { jsonDSLGenerator } from "./dslGenerator"
 
 // This is still badly named, maybe it really should just be runner?
 
@@ -45,8 +47,9 @@ export class Executor {
    * @returns {DangerfileRuntimeEnv} A runtime environment to run Danger in
    */
   async setupDanger(): Promise<DangerContext> {
-    const dsl = await this.dslForDanger()
-    const context = contextForDanger(dsl)
+    const dsl = await jsonDSLGenerator(this.platform)
+    const realDSL = await jsonToDSL(dsl)
+    const context = contextForDanger(realDSL)
     return await this.runner.createDangerfileRuntimeEnvironment(context)
   }
 

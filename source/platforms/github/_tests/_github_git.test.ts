@@ -6,6 +6,7 @@ import { FakeCI } from "../../../ci_source/providers/Fake"
 import { readFileSync } from "fs"
 import { resolve, join as pathJoin } from "path"
 import { EOL } from "os"
+import { gitJSONToGitDSL } from "../GitHubGit"
 
 const fixtures = resolve(__dirname, "..", "..", "_tests", "fixtures")
 
@@ -42,7 +43,8 @@ describe("the dangerfile gitDSL", async () => {
   })
 
   it("sets the modified/created/deleted", async () => {
-    const gitDSL = await github.getPlatformGitRepresentation()
+    const gitJSONDSL = await github.getPlatformGitRepresentation()
+    const gitDSL = gitJSONToGitDSL(gitJSONDSL)
 
     expect(gitDSL.modified_files).toEqual([
       "CHANGELOG.md",

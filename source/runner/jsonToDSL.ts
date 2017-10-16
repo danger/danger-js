@@ -8,7 +8,7 @@ import { sentence, href } from "./DangerUtils"
 export const jsonToDSL = async (dsl: DangerDSLJSONType): Promise<DangerDSLType> => {
   const api = githubAPIForDSL(dsl)
   const github = githubJSONToGitHubDSL(dsl.github, api)
-  const git = gitJSONToGitDSL(github, api, dsl.git)
+  const git = gitJSONToGitDSL(github, dsl.git)
   return {
     git,
     github: github,

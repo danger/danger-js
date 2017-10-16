@@ -72,7 +72,7 @@ export interface DangerDSLType {
 export class DangerDSL {
   public readonly github: GitHubDSL
 
-  constructor(platformDSL: any, public readonly git: GitDSL, public readonly utils: DangerUtilsDSL) {
+  constructor(platformDSL: any, public readonly git: GitJSONDSL, public readonly utils: DangerUtilsDSL) {
     // As GitLab etc support is added this will need to be changed
     this.github = platformDSL
   }

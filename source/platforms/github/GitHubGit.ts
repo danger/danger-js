@@ -1,10 +1,8 @@
 import { GitDSL, JSONPatchOperation, GitJSONDSL } from "../../dsl/GitDSL"
-import { GitHubCommit, GitHubJSONDSL, GitHubDSL } from "../../dsl/GitHubDSL"
+import { GitHubCommit, GitHubDSL } from "../../dsl/GitHubDSL"
 import { GitCommit } from "../../dsl/Commit"
 
 import { GitHubAPI } from "../github/GitHubAPI"
-
-import * as GitHub from "github"
 
 import * as os from "os"
 
@@ -58,7 +56,7 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitJSONDS
   }
 }
 
-export const gitJSONToGitDSL = (github: GitHubDSL, api: GitHub, json: GitJSONDSL): GitDSL => {
+export const gitJSONToGitDSL = (github: GitHubDSL, json: GitJSONDSL): GitDSL => {
   /**
    * Takes a filename, and pulls from the PR the two versions of a file
    * where we then pass that off to the rfc6902 JSON patch generator.
@@ -164,8 +162,16 @@ export const gitJSONToGitDSL = (github: GitHubDSL, api: GitHub, json: GitJSONDSL
    * @param filename File path for the diff
    */
   const diffForFile = async (filename: string) => {
-    // const diff = await api.getPullRequestDiff()
-    const diff = await api.pullRequests.get()
+    // TODO: Remove GitHubAPI  by switching entirely to node-github
+    // See https://github.com/octokit/node-github/issues/602
+
+    const ghAPI = new GitHubAPI(
+      { repoSlug: github.pr.head.repo.full_name, pullRequestID: String(github.pr.number) },
+      process.env["DANGER_GITHUB_API_TOKEN"]
+    )
+
+    const diff = await ghAPI.getPullRequestDiff()
+
     const fileDiffs: any[] = parseDiff(diff)
     const structuredDiff = fileDiffs.find((diff: any) => diff.from === filename || diff.to === filename)
     if (!structuredDiff) {
@@ -178,12 +184,16 @@ export const gitJSONToGitDSL = (github: GitHubDSL, api: GitHub, json: GitJSONDSL
 
     return {
       before: await github.utils.fileContents(filename, github.pr.base.repo.full_name, github.pr.base.sha),
+
       after: await github.utils.fileContents(filename, github.pr.head.repo.full_name, github.pr.head.sha),
+
       diff: allLines.map(getContent).join(os.EOL),
+
       added: allLines
         .filter(byType("add"))
         .map(getContent)
         .join(os.EOL),
+
       removed: allLines
         .filter(byType("del"))
         .map(getContent)
