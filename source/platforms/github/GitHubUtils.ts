@@ -2,6 +2,7 @@ import { basename } from "path"
 import { sentence, href } from "../../runner/DangerUtils"
 import { GitHubPRDSL, GitHubUtilsDSL } from "./../../dsl/GitHubDSL"
 import { GitHubAPI } from "../github/GitHubAPI"
+
 // We need to curry in access to the GitHub PR metadata
 
 const utils = (pr: GitHubPRDSL, api: GitHubAPI): GitHubUtilsDSL => {

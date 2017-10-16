@@ -53,8 +53,14 @@ export interface JSONDiff {
 
 // This is `danger.git`
 
-/** The git specific metadata for a PR */
-export interface GitDSL {
+/**
+ *
+ * The Git Related Metadata which is available inside the Danger DSL JSON
+ *
+ * @namespace JSONDSL
+ */
+
+export interface GitJSONDSL {
   /**
    * Filepaths with changes relative to the git root
    * @type {string[]}
@@ -73,6 +79,12 @@ export interface GitDSL {
    */
   readonly deleted_files: string[]
 
+  /** The Git commit metadata */
+  readonly commits: GitCommit[]
+}
+
+/** The git specific metadata for a PR */
+export interface GitDSL extends GitJSONDSL {
   /** Offers the diff for a specific file
    *
    * @param {string} filename the path to the json file
@@ -108,7 +120,4 @@ export interface GitDSL {
    * @param {string} filename the path to the json file
    */
   JSONDiffForFile(filename: string): Promise<JSONDiff>
-
-  /** The Git commit metadata */
-  readonly commits: GitCommit[]
 }

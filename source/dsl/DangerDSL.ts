@@ -1,6 +1,17 @@
-import { GitDSL } from "../dsl/GitDSL"
+import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitHubDSL } from "../dsl/GitHubDSL"
 import { DangerUtilsDSL } from "./DangerUtilsDSL"
+
+/**
+ *  The root of the Danger JSON DSL.
+ */
+
+export interface DangerDSLJSONType {
+  /** The data only version of Git DSL */
+  git: GitJSONDSL
+  /** The data only version of GitHub DSL */
+  github: GitHubDSL
+}
 
 /**
  *  The Danger DSL provides the metadata for introspection

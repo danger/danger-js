@@ -1,11 +1,11 @@
 import { spawn } from "child_process"
 
-import { DangerDSL } from "../../dsl/DangerDSL"
+import { DangerDSLJSONType } from "../../dsl/DangerDSL"
 import { Executor } from "../../runner/Executor"
 import { markdownCode, resultsWithFailure } from "./reporting"
 
 // Sanitizes the DSL so for sending via STDOUT
-export const prepareDangerDSL = (dangerDSL: DangerDSL) => {
+export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
   if (dangerDSL.github && dangerDSL.github.api) {
     delete dangerDSL.github.api
   }

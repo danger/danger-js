@@ -1,5 +1,5 @@
-import { GitDSL, JSONPatchOperation } from "../../dsl/GitDSL"
-import { GitHubCommit } from "../../dsl/GitHubDSL"
+import { GitDSL, JSONPatchOperation, GitJSONDSL } from "../../dsl/GitDSL"
+import { GitHubCommit, GitHubJSONDSL } from "../../dsl/GitHubDSL"
 import { GitCommit } from "../../dsl/Commit"
 
 import { GitHubAPI } from "../github/GitHubAPI"
@@ -34,13 +34,11 @@ function githubCommitToGitCommit(ghCommit: GitHubCommit): GitCommit {
   }
 }
 
-export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
+export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitJSONDSL> {
   // Note: This repetition feels bad, could the GitHub object cache JSON returned
   // from the API?
 
   // We'll need all this info to be able to generate a working GitDSL object
-
-  const pr = await api.getPullRequestInfo()
   const diff = await api.getPullRequestDiff()
 
   const fileDiffs: any[] = parseDiff(diff)
@@ -49,6 +47,16 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
   const removedDiffs = fileDiffs.filter((diff: any) => diff["deleted"])
   const modifiedDiffs = fileDiffs.filter((diff: any) => !includes(addedDiffs, diff) && !includes(removedDiffs, diff))
 
+  const getCommits = await api.getPullRequestCommits()
+  return {
+    modified_files: modifiedDiffs.map(d => d.to),
+    created_files: addedDiffs.map(d => d.to),
+    deleted_files: removedDiffs.map(d => d.from),
+    commits: getCommits.map(githubCommitToGitCommit),
+  }
+}
+
+export const gitJSONToGitDSL = (github: GitHubJSONDSL, api: GitHubAPI, json: GitJSONDSL): GitDSL => {
   /**
    * Takes a filename, and pulls from the PR the two versions of a file
    * where we then pass that off to the rfc6902 JSON patch generator.
@@ -58,14 +66,13 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
   const JSONPatchForFile = async (filename: string) => {
     // We already have access to the diff, so see if the file is in there
     // if it's not return an empty diff
-    const modified = modifiedDiffs.find(diff => diff.to === filename)
-    if (!modified) {
+    if (json.modified_files.includes(filename)) {
       return null
     }
 
     // Grab the two files contents.
-    const baseFile = await api.fileContents(filename, pr.base.repo.full_name, pr.base.sha)
-    const headFile = await api.fileContents(filename, pr.head.repo.full_name, pr.head.sha)
+    const baseFile = await api.fileContents(filename, github.pr.base.repo.full_name, github.pr.base.sha)
+    const headFile = await api.fileContents(filename, github.pr.head.repo.full_name, github.pr.head.sha)
 
     // Parse JSON. `fileContents` returns empty string for files that are
     // missing in one of the refs, ie. when the file is created or deleted.
@@ -167,21 +174,26 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitDSL> {
       .reduce((a: Changes, b: Changes) => a.concat(b), [])
 
     return {
-      before: await api.fileContents(filename, pr.base.repo.full_name, pr.base.sha),
-      after: await api.fileContents(filename, pr.head.repo.full_name, pr.head.sha),
+      before: await api.fileContents(filename, github.pr.base.repo.full_name, github.pr.base.sha),
+      after: await api.fileContents(filename, github.pr.head.repo.full_name, github.pr.head.sha),
       diff: allLines.map(getContent).join(os.EOL),
-      added: allLines.filter(byType("add")).map(getContent).join(os.EOL),
-      removed: allLines.filter(byType("del")).map(getContent).join(os.EOL),
+      added: allLines
+        .filter(byType("add"))
+        .map(getContent)
+        .join(os.EOL),
+      removed: allLines
+        .filter(byType("del"))
+        .map(getContent)
+        .join(os.EOL),
     }
   }
 
-  const getCommits = await api.getPullRequestCommits()
   return {
-    modified_files: modifiedDiffs.map(d => d.to),
-    created_files: addedDiffs.map(d => d.to),
-    deleted_files: removedDiffs.map(d => d.from),
+    modified_files: json.modified_files,
+    created_files: json.created_files,
+    deleted_files: json.deleted_files,
+    commits: json.commits,
     diffForFile,
-    commits: getCommits.map(githubCommitToGitCommit),
     JSONPatchForFile,
     JSONDiffForFile,
   }

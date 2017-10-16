@@ -1,4 +1,4 @@
-import { Violation } from "../platforms/messaging/violation"
+import { Violation } from "../dsl/Violation"
 import { MarkdownString } from "../dsl/Aliases"
 
 /**
