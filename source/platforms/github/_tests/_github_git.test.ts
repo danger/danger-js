@@ -44,7 +44,7 @@ describe("the dangerfile gitDSL", async () => {
 
   it("sets the modified/created/deleted", async () => {
     const gitJSONDSL = await github.getPlatformGitRepresentation()
-    const gitDSL = gitJSONToGitDSL(gitJSONDSL)
+    const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
 
     expect(gitDSL.modified_files).toEqual([
       "CHANGELOG.md",
@@ -75,42 +75,51 @@ describe("the dangerfile gitDSL", async () => {
   })
 
   it("shows the diff for a specific file", async () => {
-    const gitDSL = await github.getPlatformGitRepresentation()
+    const gitJSONDSL = await github.getPlatformGitRepresentation()
+    const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
+
     const { diff } = await gitDSL.diffForFile("tsconfig.json")
 
     expect(stripWhitespaceForSnapshot(diff)).toMatchSnapshot()
   })
 
   it("should include `before` text content of the file", async () => {
-    const gitDSL = await github.getPlatformGitRepresentation()
+    const gitJSONDSL = await github.getPlatformGitRepresentation()
+    const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
+
     const { before } = await gitDSL.diffForFile("tsconfig.json")
 
     expect(stripWhitespaceForSnapshot(before)).toMatchSnapshot()
   })
 
   it("should include `after` text content of the file", async () => {
-    const gitDSL = await github.getPlatformGitRepresentation()
+    const gitJSONDSL = await github.getPlatformGitRepresentation()
+    const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
+
     const { after } = await gitDSL.diffForFile("tsconfig.json")
 
     expect(stripWhitespaceForSnapshot(after)).toMatchSnapshot()
   })
 
   it("should include `added` text content of the file", async () => {
-    const gitDSL = await github.getPlatformGitRepresentation()
+    const gitJSONDSL = await github.getPlatformGitRepresentation()
+    const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
     const { added } = await gitDSL.diffForFile("tsconfig.json")
 
     expect(stripWhitespaceForSnapshot(added)).toMatchSnapshot()
   })
 
   it("should include `removed` text content of the file", async () => {
-    const gitDSL = await github.getPlatformGitRepresentation()
+    const gitJSONDSL = await github.getPlatformGitRepresentation()
+    const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
     const { removed } = await gitDSL.diffForFile("tsconfig.json")
 
     expect(stripWhitespaceForSnapshot(removed)).toMatchSnapshot()
   })
 
   it("resolves to `null` for files not in modified_files", async () => {
-    const gitDSL = await github.getPlatformGitRepresentation()
+    const gitJSONDSL = await github.getPlatformGitRepresentation()
+    const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
     const result = await gitDSL.diffForFile("fuhqmahgads.json")
 
     expect(result).toBeNull()
@@ -143,7 +152,8 @@ describe("the dangerfile gitDSL", async () => {
 
   describe("JSONPatchForFile", () => {
     it("returns a null for files not in the change list", async () => {
-      const gitDSL = await github.getPlatformGitRepresentation()
+      const gitJSONDSL = await github.getPlatformGitRepresentation()
+      const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
       const empty = await gitDSL.JSONPatchForFile("fuhqmahgads.json")
       expect(empty).toEqual(null)
     })
@@ -162,7 +172,9 @@ describe("the dangerfile gitDSL", async () => {
         return obj === "" ? "" : JSON.stringify(obj)
       }
 
-      const gitDSL = await github.getPlatformGitRepresentation()
+      const gitJSONDSL = await github.getPlatformGitRepresentation()
+      const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
+
       const empty = await gitDSL.JSONPatchForFile("data/schema.json")
       expect(empty).toEqual({
         before: null,
@@ -189,7 +201,8 @@ describe("the dangerfile gitDSL", async () => {
         return obj === "" ? "" : JSON.stringify(obj)
       }
 
-      const gitDSL = await github.getPlatformGitRepresentation()
+      const gitJSONDSL = await github.getPlatformGitRepresentation()
+      const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
       const empty = await gitDSL.JSONPatchForFile("data/schema.json")
       expect(empty).toEqual({
         before: before,
@@ -216,7 +229,8 @@ describe("the dangerfile gitDSL", async () => {
         return JSON.stringify(obj)
       }
 
-      const gitDSL = await github.getPlatformGitRepresentation()
+      const gitJSONDSL = await github.getPlatformGitRepresentation()
+      const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
       const empty = await gitDSL.JSONPatchForFile("data/schema.json")
       expect(empty).toEqual({
         before,
@@ -232,7 +246,8 @@ describe("the dangerfile gitDSL", async () => {
 
   describe("JSONDiffForFile", () => {
     it("returns an empty object for files not in the change list", async () => {
-      const gitDSL = await github.getPlatformGitRepresentation()
+      const gitJSONDSL = await github.getPlatformGitRepresentation()
+      const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
       const empty = await gitDSL.JSONDiffForFile("fuhqmahgads.json")
       expect(empty).toEqual({})
     })
@@ -250,7 +265,8 @@ describe("the dangerfile gitDSL", async () => {
         const obj = ref === masterSHA ? {} : after
         return JSON.stringify(obj)
       }
-      const gitDSL = await github.getPlatformGitRepresentation()
+      const gitJSONDSL = await github.getPlatformGitRepresentation()
+      const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
       const empty = await gitDSL.JSONDiffForFile("data/schema.json")
       expect(empty).toEqual({
         a: { after: "o, world", before: null },
@@ -279,7 +295,8 @@ describe("the dangerfile gitDSL", async () => {
         const obj = ref === masterSHA ? before : {}
         return JSON.stringify(obj)
       }
-      const gitDSL = await github.getPlatformGitRepresentation()
+      const gitJSONDSL = await github.getPlatformGitRepresentation()
+      const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
       const empty = await gitDSL.JSONDiffForFile("data/schema.json")
       expect(empty).toEqual({
         a: { after: null, before: "o, world" },
@@ -316,7 +333,8 @@ describe("the dangerfile gitDSL", async () => {
         const obj = ref === masterSHA ? before : after
         return JSON.stringify(obj)
       }
-      const gitDSL = await github.getPlatformGitRepresentation()
+      const gitJSONDSL = await github.getPlatformGitRepresentation()
+      const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
       const empty = await gitDSL.JSONDiffForFile("data/schema.json")
       expect(empty).toEqual({
         a: { after: "o, world", before: "Hello, world" },
@@ -361,7 +379,8 @@ describe("the dangerfile gitDSL", async () => {
         const obj = ref === masterSHA ? before : after
         return JSON.stringify(obj)
       }
-      const gitDSL = await github.getPlatformGitRepresentation()
+      const gitJSONDSL = await github.getPlatformGitRepresentation()
+      const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
       const empty = await gitDSL.JSONDiffForFile("data/schema.json")
       expect(empty).toEqual({
         dependencies: {
@@ -391,7 +410,8 @@ describe("the dangerfile gitDSL", async () => {
 
   describe("textDiffForFile", () => {
     it("returns a null for files not in the change list", async () => {
-      const gitDSL = await github.getPlatformGitRepresentation()
+      const gitJSONDSL = await github.getPlatformGitRepresentation()
+      const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
       const empty = await gitDSL.diffForFile("fuhqmahgads.json")
       expect(empty).toEqual(null)
     })
@@ -435,7 +455,8 @@ describe("the dangerfile gitDSL", async () => {
         return ref === masterSHA ? before : after
       }
 
-      const gitDSL = await github.getPlatformGitRepresentation()
+      const gitJSONDSL = await github.getPlatformGitRepresentation()
+      const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
       const diff = await gitDSL.diffForFile("lib/components/artist/related_artists/index.js")
 
       expect(diff.before).toMatch(/class RelatedArtists extends React.Component/)
@@ -458,7 +479,8 @@ describe("the dangerfile gitDSL", async () => {
         return ref === masterSHA ? before : after
       }
 
-      const gitDSL = await github.getPlatformGitRepresentation()
+      const gitJSONDSL = await github.getPlatformGitRepresentation()
+      const gitDSL = gitJSONToGitDSL({} as any, gitJSONDSL)
       const diff = await gitDSL.diffForFile("CHANGELOG.md")
 
       expect(diff.before).toEqual(before)
