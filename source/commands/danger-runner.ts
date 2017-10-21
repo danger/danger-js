@@ -9,11 +9,13 @@ import { Executor } from "../runner/Executor"
 import { getPlatformForEnv } from "../platforms/platform"
 import getRuntimeCISource from "./utils/getRuntimeCISource"
 import { dangerfilePath } from "./utils/file-utils"
+import { DangerDSLJSONType } from "../dsl/DangerDSL"
+import { jsonToDSL } from "../runner/jsonToDSL"
 
 // Given the nature of this command, it can be tricky to test, so I use a command like this:
 //
-// yarn build; cat source/_tests/fixtures/danger-js-pr-384.json
-// | env DANGER_FAKE_CI="YEP" DANGER_TEST_REPO='danger/danger-js' DANGER_TEST_PR='384' node distribution/commands/danger-runner.js
+// tslint:disable-next-line:max-line-length
+// yarn build; cat source/_tests/fixtures/danger-js-pr-395.json | env DANGER_FAKE_CI="YEP" DANGER_TEST_REPO='danger/danger-js' DANGER_TEST_PR='395' node distribution/commands/danger-runner.js --text-only
 //
 // Which will build danger, then run just the dangerfile runner with a fixtured version of the JSON
 
@@ -26,7 +28,8 @@ setSharedArgs(program).parse(process.argv)
 const app = (program as any) as SharedCLI
 
 const run = async (jsonString: string) => {
-  const dsl = JSON.parse(jsonString)
+  const dslJSON = JSON.parse(jsonString) as { danger: DangerDSLJSONType }
+  const dsl = await jsonToDSL(dslJSON.danger)
   const dangerFile = dangerfilePath(program)
 
   // Set up the runtime env
@@ -36,6 +39,7 @@ const run = async (jsonString: string) => {
 
   const config = {
     stdoutOnly: app.textOnly,
+    jsonOnly: true,
     verbose: app.verbose,
   }
 

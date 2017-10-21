@@ -43,8 +43,8 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
         owner: repoSlug.split("/")[0],
       })
 
-      if (data) {
-        const buffer = new Buffer(data.content, "base64")
+      if (data && data.type === "file") {
+        const buffer = new Buffer(data.content, data.encoding)
         return buffer.toString()
       } else {
         return ""

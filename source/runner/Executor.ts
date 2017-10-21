@@ -18,6 +18,8 @@ import { jsonDSLGenerator } from "./dslGenerator"
 export interface ExecutorOptions {
   /** Should we do a text-only run? E.g. skipping comments */
   stdoutOnly: boolean
+  /** Should the output be submitted as a JSON string? */
+  jsonOnly: boolean
   /** Should Danger post as much info as possible */
   verbose: boolean
 }
@@ -91,7 +93,7 @@ export class Executor {
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    */
   async handleResults(results: DangerResults) {
-    if (this.options.stdoutOnly) {
+    if (this.options.stdoutOnly || this.options.jsonOnly) {
       this.handleResultsPostingToSTDOUT(results)
     } else {
       this.handleResultsPostingToPlatform(results)
@@ -104,33 +106,47 @@ export class Executor {
    */
   async handleResultsPostingToSTDOUT(results: DangerResults) {
     const { fails, warnings, messages, markdowns } = results
+    process.exitCode = fails.length > 0 ? 1 : 0
 
-    const table = [
-      { name: "Failures", messages: fails.map(f => f.message) },
-      { name: "Warnings", messages: warnings.map(w => w.message) },
-      { name: "Messages", messages: messages.map(m => m.message) },
-      { name: "Markdowns", messages: markdowns },
-    ]
+    if (this.options.jsonOnly) {
+      // Format for Danger Process
+      const results = {
+        failures: fails,
+        warnings: warnings,
+        messages: messages,
+        markdowns: markdowns,
+      }
+      process.stdout.write(JSON.stringify(results, null, 2))
+    } else {
+      // Human-readable format
 
-    // Consider looking at getting the terminal width, and making it 60%
-    // if over a particular size
+      const table = [
+        { name: "Failures", messages: fails.map(f => f.message) },
+        { name: "Warnings", messages: warnings.map(w => w.message) },
+        { name: "Messages", messages: messages.map(m => m.message) },
+        { name: "Markdowns", messages: markdowns },
+      ]
 
-    table.forEach(row => {
-      console.log(`## ${chalk.bold(row.name)}`)
-      console.log(row.messages.join(chalk.bold("\n-\n")))
-    })
+      // Consider looking at getting the terminal width, and making it 60%
+      // if over a particular size
 
-    if (fails.length > 0) {
-      const s = fails.length === 1 ? "" : "s"
-      const are = fails.length === 1 ? "is" : "are"
-      const message = chalk.underline("Failing the build")
-      console.log(`${message}, there ${are} ${fails.length} fail${s}.`)
-      process.exitCode = 1
-    } else if (warnings.length > 0) {
-      const message = chalk.underline("not failing the build")
-      console.log(`Found only warnings, ${message}`)
-    } else if (messages.length > 0) {
-      console.log("Found only messages, passing those to review.")
+      table.forEach(row => {
+        console.log(`## ${chalk.bold(row.name)}`)
+        console.log(row.messages.join(chalk.bold("\n-\n")))
+      })
+
+      if (fails.length > 0) {
+        const s = fails.length === 1 ? "" : "s"
+        const are = fails.length === 1 ? "is" : "are"
+        const message = chalk.underline("Failing the build")
+        console.log(`${message}, there ${are} ${fails.length} fail${s}.`)
+        process.exitCode = 1
+      } else if (warnings.length > 0) {
+        const message = chalk.underline("not failing the build")
+        console.log(`Found only warnings, ${message}`)
+      } else if (messages.length > 0) {
+        console.log("Found only messages, passing those to review.")
+      }
     }
   }
 

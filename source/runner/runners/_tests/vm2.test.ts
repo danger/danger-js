@@ -1,3 +1,5 @@
+// Note: This file is ignored by Wallaby.js (but is included in jest runs)
+
 import { contextForDanger } from "../../Dangerfile"
 import inlineRunner from "../inline"
 import vm2 from "../vm2"

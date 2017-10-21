@@ -24,15 +24,21 @@ that feels natural in the environment of your app.
 `danger process` expects one argument, the command to trigger the process for Danger JS to run. This command should 
 expect the Danger DSL as JSON in STDIN, and it is expected that it would post results to STDOUT via JSON. 
 
-You can preview the JSON using our Peril Staging environment, here are a few PRs:
+You can preview the DSL which will be sent to your process via `danger pr` with the `--js` and `--json` flags, for example:
 
-* [artsy/eidolon#609](https://peril-staging.herokuapp.com/api/v1/pr/dsl?owner=artsy&repo=eidolon&number=609)
-* [danger/danger-swift#2](https://peril-staging.herokuapp.com/api/v1/pr/dsl?owner=danger&repo=danger-swift&number=2)
-* [orta/danger-plugin-spellcheck#7](https://peril-staging.herokuapp.com/api/v1/pr/dsl?owner=orta&repo=danger-plugin-spellcheck&number=7)
+```sh
+danger pr https://github.com/danger/danger-js/pull/395 --js 
+```
 
-*Note*: This DSL response does not include the GitHub API metadata, I plan to add this.
+This shows you DSL as a JavaScript object - this is easier to read and syntax highlighted, if you'd like a data fixture however, use `--json`:
 
-You can change the PR params to an public repo's params to get a sense of what it looks like on your own PRs.
+```sh
+danger pr https://github.com/danger/danger-js/pull/395 --json > danger-js-395.dsl.json
+```
+
+This will work for any open repo, and if you've set up your local shell to include `DANGER_GITHUB_API_TOKEN` then you can
+use this with any private repository too. The JSON schema is documented in Danger JS's types as [DangerJSONDSLType][]. I
+plan to add a full reference for this, similar to the reference for the user's DSL in the future in these docs.
 
 A runner can output anything during the process to STDOUT, and it will be logged to the user. However, Danger JS is 
 listening for a JSON response in this format:
@@ -106,4 +112,4 @@ It's pretty likely that your CI already has node, so it can just be `npm install
 [swift-dangerfile]: https://github.com/danger/danger-swift/blob/1576e336e41698861456533463c8821675427258/Dangerfile.swift
 [swift-stdout]: https://github.com/danger/danger-swift/blob/1576e336e41698861456533463c8821675427258/Sources/Runner/main.swift#L48-L50
 [swift-first-pr]: https://github.com/danger/danger-swift/pull/12
-
+[DangerJSONDSLType]: https://github.com/danger/danger-js/blob/master/source/dsl/DangerDSL.ts

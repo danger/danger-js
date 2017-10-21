@@ -85,7 +85,8 @@ export interface GitJSONDSL {
 
 /** The git specific metadata for a PR */
 export interface GitDSL extends GitJSONDSL {
-  /** Offers the diff for a specific file
+  /**
+   * Offers the diff for a specific file
    *
    * @param {string} filename the path to the json file
    */

@@ -61,7 +61,6 @@ export async function runDangerfileEnvironment(
       if (environment.hasOwnProperty(key)) {
         let element = environment[key]
         global[key] = element
-        // this[key] = element
       }
     }
 

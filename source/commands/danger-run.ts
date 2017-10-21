@@ -42,7 +42,7 @@ async function run() {
     }
 
     if (platform) {
-      d.log(`${chalk.bold("OK")}, everything looks good: ${source.name} on ${platform.name}`)
+      d(`${chalk.bold("OK")}, everything looks good: ${source.name} on ${platform.name}`)
       const dangerFile = dangerfilePath(program)
 
       const exists = validateDangerfileExists(dangerFile)
@@ -55,6 +55,7 @@ async function run() {
         const config = {
           stdoutOnly: app.textOnly,
           verbose: app.verbose,
+          jsonOnly: false,
         }
 
         const exec = new Executor(source, platform, inlineRunner, config)

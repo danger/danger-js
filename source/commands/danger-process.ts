@@ -63,6 +63,7 @@ async function run() {
       const config = {
         stdoutOnly: app.textOnly,
         verbose: app.verbose,
+        jsonOnly: false,
       }
 
       const dangerDSL = await jsonDSLGenerator(platform)

@@ -14,13 +14,28 @@ import openRepl from "./utils/repl"
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 
 import inlineRunner from "../runner/runners/inline"
+import { jsonDSLGenerator } from "../runner/dslGenerator"
+import { prepareDangerDSL } from "./utils/runDangerSubprocess"
+
+// yarn build; cat source/_tests/fixtures/danger-js-pr-384.json |  node --inspect  --inspect-brk distribution/commands/danger-runner.js --text-only
 
 const d = debug("danger:pr")
 
-program.usage("[options] <pr_url>").description("Emulate running Danger against an existing GitHub Pull Request.")
+interface App extends SharedCLI {
+  /** Should we show the Danger Process PR JSON? */
+  json: boolean
+  js: boolean
+}
+
+program
+  .usage("[options] <pr_url>")
+  .description("Emulate running Danger against an existing GitHub Pull Request.")
+  .option("-J, --json", "Output the JSON that would be passed into `danger process` for this PR.")
+  .option("-j, --js", "Strips the readbility changes to the DSL JSON.")
+
 setSharedArgs(program).parse(process.argv)
 
-const app = (program as any) as SharedCLI
+const app = (program as any) as App
 
 const dangerFile = dangerfilePath(program)
 
@@ -42,15 +57,21 @@ if (program.args.length === 0) {
       const source = new FakeCI({ DANGER_TEST_REPO: pr.repo, DANGER_TEST_PR: pr.pullRequestNumber })
       const api = new GitHubAPI(source, process.env["DANGER_GITHUB_API_TOKEN"])
       const platform = new GitHub(api)
-      runDanger(source, platform, dangerFile)
+      if (app.json || app.js) {
+        runProcessJSON(platform)
+      } else {
+        runDanger(source, platform, dangerFile)
+      }
     }
   }
 }
 
+// Run Danger traditionally
 async function runDanger(source: FakeCI, platform: GitHub, file: string) {
   const config = {
     stdoutOnly: app.textOnly,
     verbose: app.verbose,
+    jsonOnly: false,
   }
 
   const exec = new Executor(source, platform, inlineRunner, config)
@@ -61,5 +82,19 @@ async function runDanger(source: FakeCI, platform: GitHub, file: string) {
     openRepl(runtimeEnv)
   } else {
     jsome(results)
+  }
+}
+
+// Run Danger Process and output the JSON to CLI
+async function runProcessJSON(platform: GitHub) {
+  const dangerDSL = await jsonDSLGenerator(platform)
+  const processInput = prepareDangerDSL(dangerDSL)
+  const output = JSON.parse(processInput)
+  const dsl = { danger: output }
+  // See https://github.com/Javascipt/Jsome/issues/12
+  if (app.json) {
+    process.stdout.write(JSON.stringify(dsl, null, 2))
+  } else {
+    jsome(dsl)
   }
 }
