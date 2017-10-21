@@ -27,8 +27,6 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
     return sentence(hrefs)
   }
 
-  // TODO: New fileContents that uses the exxternal API
-
   return {
     fileLinks,
     fileContents: async (path: string, repoSlug?: string, ref?: string): Promise<string> => {
@@ -38,7 +36,6 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
         ref = pr.head.ref
       }
 
-      // api.getFileContents(path, repoSlug, ref)
       const data = await api.repos.getContent({
         ref,
         path,
@@ -46,8 +43,12 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
         owner: repoSlug.split("/")[0],
       })
 
-      const buffer = new Buffer(data.content, "base64")
-      return buffer.toString()
+      if (data) {
+        const buffer = new Buffer(data.content, "base64")
+        return buffer.toString()
+      } else {
+        return ""
+      }
     },
   }
 }

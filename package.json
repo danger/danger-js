@@ -13,7 +13,6 @@
     },
     "testResultsProcessor": "jest-json-reporter",
     "testRegex": "(.test)\\.(ts|tsx)$",
-    "verbose": true,
     "testPathIgnorePatterns": ["/node_modules/", "/distribution/", "/types/"],
     "moduleFileExtensions": ["js", "jsx", "json", "ts", "tsx"],
     "cacheDirectory": ".jest/cache"

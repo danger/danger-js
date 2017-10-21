@@ -2,43 +2,40 @@
 // This means we can re-use the type infra from the app, without having to
 // fake the import.
 
-// console.log(global)
-// console.log(require)
-// console.log(require.extensions)
-
-import { DangerDSL } from "./source/dsl/DangerDSL"
-declare var danger: DangerDSL
+import { DangerDSLType } from "./source/dsl/DangerDSL"
+declare var danger: DangerDSLType
 // declare var results: any
 declare function warn(params: string): void
 declare function fail(params: string): void
-// declare function message(params: string): void
+declare function message(params: string): void
 // declare function markdown(params: string): void
-declare function schedule(promise: Promise<any | void>): void
-declare function schedule(promise: () => Promise<any | void>): void
-declare function schedule(callback: (resolve: any) => void): void
+// declare function schedule(promise: Promise<any | void>): void
+// declare function schedule(promise: () => Promise<any | void>): void
+// declare function schedule(callback: (resolve: any) => void): void
 
 import * as fs from "fs"
 
-schedule(async () => {
-  // Request a CHANGELOG entry if not declared #trivial
-  const hasChangelog = danger.git.modified_files.includes("changelog.md")
-  const isTrivial = (danger.github.pr.body + danger.github.pr.title).includes("#trivial")
-  const isGreenkeeper = danger.github.pr.user.login === "greenkeeper"
+message("Worked")
 
-  if (!hasChangelog && !isTrivial && !isGreenkeeper) {
-    warn("Please add a changelog entry for your changes.")
+// Request a CHANGELOG entry if not declared #trivial
+const hasChangelog = danger.git.modified_files.includes("changelog.md")
+const isTrivial = (danger.github.pr.body + danger.github.pr.title).includes("#trivial")
+const isGreenkeeper = danger.github.pr.user.login === "greenkeeper"
 
-    // Politely ask for their name on the entry too
-    const changelogDiff = await danger.git.diffForFile("changelog.md")
+if (!hasChangelog && !isTrivial && !isGreenkeeper) {
+  warn("Please add a changelog entry for your changes.")
+
+  // Politely ask for their name on the entry too
+  danger.git.diffForFile("changelog.md").then(changelogDiff => {
     const contributorName = danger.github.pr.user.login
     if (changelogDiff && changelogDiff.diff.includes(contributorName)) {
       warn("Please add your GitHub name to the changelog entry, so we can attribute you correctly.")
     }
-  }
-})
+  })
+}
 
 import yarn from "danger-plugin-yarn"
-schedule(yarn())
+yarn()
 
 import jest from "danger-plugin-jest"
 jest()
