@@ -42,8 +42,8 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
       const data = await api.repos.getContent({
         ref,
         path,
-        repo: repoSlug.split("\\")[1],
-        owner: repoSlug.split("\\")[0],
+        repo: repoSlug.split("/")[1],
+        owner: repoSlug.split("/")[0],
       })
 
       const buffer = new Buffer(data.content, "base64")

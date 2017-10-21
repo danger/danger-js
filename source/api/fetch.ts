@@ -3,6 +3,7 @@ import * as node_fetch from "node-fetch"
 
 const d = debug("danger:networking")
 declare const global: any
+
 /**
  * Adds logging to every fetch request if a global var for `verbose` is set to true
  *
@@ -15,6 +16,13 @@ export function api(
   init: node_fetch.RequestInit,
   suppressErrorReporting?: boolean
 ): Promise<node_fetch.Response> {
+  const isTests = typeof jest !== "undefined"
+  if (isTests && !url.toString().includes("localhost")) {
+    const message = `No API calls in tests please: ${url}`
+    debugger // tslint:disable-line
+    throw new Error(message)
+  }
+
   if (global.verbose && global.verbose === true) {
     const output = ["curl", "-i"]
 

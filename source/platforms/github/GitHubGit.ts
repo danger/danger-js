@@ -56,7 +56,9 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitJSONDS
   }
 }
 
-export const gitJSONToGitDSL = (github: GitHubDSL, json: GitJSONDSL): GitDSL => {
+// TODO: Remove the GitHubAPI
+// This is blocked by https://github.com/octokit/node-github/issues/602
+export const gitJSONToGitDSL = (github: GitHubDSL, json: GitJSONDSL, githubAPI?: GitHubAPI): GitDSL => {
   /**
    * Takes a filename, and pulls from the PR the two versions of a file
    * where we then pass that off to the rfc6902 JSON patch generator.
@@ -64,9 +66,10 @@ export const gitJSONToGitDSL = (github: GitHubDSL, json: GitJSONDSL): GitDSL => 
    * @param filename The path of the file
    */
   const JSONPatchForFile = async (filename: string) => {
+    // debugger
     // We already have access to the diff, so see if the file is in there
     // if it's not return an empty diff
-    if (json.modified_files.includes(filename)) {
+    if (!json.modified_files.includes(filename)) {
       return null
     }
 
@@ -98,6 +101,7 @@ export const gitJSONToGitDSL = (github: GitHubDSL, json: GitJSONDSL): GitDSL => 
    */
   const JSONDiffForFile = async (filename: string) => {
     const patchObject = await JSONPatchForFile(filename)
+
     if (!patchObject) {
       return {}
     }
@@ -165,15 +169,18 @@ export const gitJSONToGitDSL = (github: GitHubDSL, json: GitJSONDSL): GitDSL => 
     // TODO: Remove GitHubAPI  by switching entirely to node-github
     // See https://github.com/octokit/node-github/issues/602
 
-    const ghAPI = new GitHubAPI(
-      { repoSlug: github.pr.head.repo.full_name, pullRequestID: String(github.pr.number) },
-      process.env["DANGER_GITHUB_API_TOKEN"]
-    )
+    const ghAPI =
+      githubAPI ||
+      new GitHubAPI(
+        { repoSlug: github.pr.head.repo.full_name, pullRequestID: String(github.pr.number) },
+        process.env["DANGER_GITHUB_API_TOKEN"]
+      )
 
     const diff = await ghAPI.getPullRequestDiff()
 
     const fileDiffs: any[] = parseDiff(diff)
     const structuredDiff = fileDiffs.find((diff: any) => diff.from === filename || diff.to === filename)
+
     if (!structuredDiff) {
       return null
     }
