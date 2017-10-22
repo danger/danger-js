@@ -2,7 +2,7 @@
 // These docs are aimed at users rather than danger developers, so please limit technical
 // terminology to in here.
 
-### Master
+// ### Master
 
 ### 2.0.0-beta.1
 
@@ -22,22 +22,26 @@
 - Adds a `--js` and `--json` option to `danger pr` which shows the output in a way that works with `danger process`. 
   This means you can preview the data for any pull request.
 
+./[@orta][]
+
 ### 2.0.0-alpha.20
 
-- Moves away from vm2 to a require-based Dangerfile runner. This removes the sandboxing aspect of
-  the Dangerfile completely, but the sandboxing was mainly for Peril and I have a plan for that.
+Moves away from vm2 to a require-based Dangerfile runner. This removes the sandboxing aspect of
+the Dangerfile completely, but the sandboxing was mainly for Peril and I have a plan for that.
 
-  https://github.com/danger/peril/issues/159
+https://github.com/danger/peril/issues/159
 
-  I would like to move the main parts of Danger JS to also work like `danger process`, so I'll
-  be continuing to work as a alpha for a bit more. One interesting side-effect of this could be that
-  I can remove `schedule` from the DSL. I've not tested it yet though. Turns out this change is _real_
-  hard to write tests for. I've made #394 for that.
+I would like to move the main parts of Danger JS to also work like `danger process`, so I'll
+be continuing to work as a alpha for a bit more. One interesting side-effect of this could be that
+I can remove `schedule` from the DSL. I've not tested it yet though. Turns out this change is _real_
+hard to write tests for. I've made #394 for that.
+
+./[@orta][]
 
 ### 2.0.0-alpha.18 - 19
 
-- Moves internal methods away from Sync to avoid problems when running in Peril - ashfurrow
-- Passes through non-zero exit codes from `danger process` runs - ashfurrow
+- Moves internal methods away from Sync to avoid problems when running in Peril - [@ashfurrow][]
+- Passes through non-zero exit codes from `danger process` runs - [@ashfurrow][]
 
 ### 2.0.0-alpha.17
 
@@ -48,10 +52,10 @@
 
 Some UX fixes:
 
-- Don't show warnings about not setting a commit status (unless in verbose) - orta
-- Delete duplicate Danger message, due to fast Peril edits - orta
-- Show Peril in the commit status if inside Peril, not just Danger - orta
-- [internal] Tightened the typings on the commands, and abstracted them to share some code - orta
+- Don't show warnings about not setting a commit status (unless in verbose) - [@orta][]
+- Delete duplicate Danger message, due to fast Peril edits - [@orta][]
+- Show Peril in the commit status if inside Peril, not just Danger - [@orta][]
+- [internal] Tightened the typings on the commands, and abstracted them to share some code - [@orta][]
 
 ### 2.0.0-alpha.15
 
@@ -59,23 +63,23 @@ Some UX fixes:
 
 ### 2.0.0-alpha.14
 
-- Adds a blank project generated in travis 8 to test no-babel or TS integration - orta
-- Improvements to `danger process` logging, and build fails correctly #363 - orta
+- Adds a blank project generated in travis 8 to test no-babel or TS integration - [@orta][]
+- Improvements to `danger process` logging, and build fails correctly #363 - [@orta][]
 
 ### 2.0.0-alpha.13
 
-- Improve the error handling around the babel API - #357 - orta
-- Move back to the original URLs for diffs, instead of relying on PR metadata - orta
-- Updates the types for `schedule` to be more accepting of what it actually takes - orta
+- Improve the error handling around the babel API - #357 - [@orta][]
+- Move back to the original URLs for diffs, instead of relying on PR metadata - [@orta][]
+- Updates the types for `schedule` to be more accepting of what it actually takes - [@orta][]
 
 ### 2.0.0-alpha.12
 
 - Fixed #348 invalid json response body error on generating a diff - felipesabino
-- Potential fix for ^ that works with Peril also - orta
+- Potential fix for ^ that works with Peril also - [@orta][]
 
 ### 2.0.0-alpha.11
 
-* Doh, makes the `danger process` command actually available via the CLI - orta
+* Doh, makes the `danger process` command actually available via the CLI - [@orta][]
 
 ### 2.0.0-alpha.10
 
@@ -106,7 +110,7 @@ Some UX fixes:
 
   Which is basically Ruby Danger in ~10LOC. Lols.
 
-  This is the first release of the command, it's pretty untested, but [it does work][swift-first-pr]. - orta
+  This is the first release of the command, it's pretty untested, but [it does work][swift-first-pr]. - [@orta][]
 
 [danger-swift]: https://github.com/danger/danger-swift
 [swift-json]: https://github.com/danger/danger-swift/blob/master/fixtures/eidolon_609.json
@@ -122,26 +126,26 @@ Some UX fixes:
   internal infra which is pretty awesome. All TS tests passed. Babel 7 is still in alpha, but so is Danger 2.0 - so I'm 
   happy to keep Danger in a pretty long alpha, till at least Babel 7 is in beta.
   
-  It also still supports using TypeScript via the "`typescript"` module, if you have that installed. - orta
+  It also still supports using TypeScript via the "`typescript"` module, if you have that installed. - [@orta][]
 
-* `danger.github.thisPR` now uses the PR's head, not base - orta
+* `danger.github.thisPR` now uses the PR's head, not base - [@orta][]
 
 ### 2.0.0-alpha.8
 
-* Uses the GitHub `diff_url` instead of the `diff` version header, as it conflicted with Peril - orta
+* Uses the GitHub `diff_url` instead of the `diff` version header, as it conflicted with Peril - [@orta][]
 * Handle exceptions in Dangerfile and report them as failures in Danger results - macklinu
 
 ### 2.0.0-alpha.6-7
 
-* Expose a Promise object to the external GitHub API - orta
+* Expose a Promise object to the external GitHub API - [@orta][]
 
 ### 2.0.0-alpha.4-5
 
-* Allow running a dangerfile entirely from memory using the `Executor` API - orta
+* Allow running a dangerfile entirely from memory using the `Executor` API - [@orta][]
 
 ### 2.0.0-alpha.2-3
 
-* Removes the `jest-*` dependencies - orta
+* Removes the `jest-*` dependencies - [@orta][]
 
 ### 2.0.0-alpha.1
 
@@ -177,21 +181,21 @@ Some UX fixes:
 
 ### 1.2.0
 
-- Exposes an internal API for reading a file from a GitHub repo as `danger.github.utils.fileContents` - orta
+- Exposes an internal API for reading a file from a GitHub repo as `danger.github.utils.fileContents` - [@orta][]
 
   Ideally this is what you should be using in plugins to read files, it's what Danger uses throughout the
   codebase internally. This means that your plugin/dangerfile doesn't need to rely on running on the CI
   when instead it could run via the GitHub API.
 
-- Update prettier - orta
+- Update prettier - [@orta][]
 - Removes dtslint as a dependency - sapegin/orta
 
 ### 1.1.0
 
 -   Support retrive paginated pull request commit list - kwonoj
 -  Add support for VSTS CI - mlabrum
--  Remove the DSL duplication on the `danger` export, it wasn't needed or used. - orta
--  Update to TypeScript 2.4.x - orta
+-  Remove the DSL duplication on the `danger` export, it wasn't needed or used. - [@orta][]
+-  Update to TypeScript 2.4.x - [@orta][]
 -  Rename github test static_file to remove `:` from the filename to fix a checkout issue on windows - mlabrum
 
 ### 1.0.0
@@ -202,7 +206,7 @@ and now it's 30th June 2017. It's awesome to look back through the CHANGELOG and
 
 You can find out a lot more about the 1.0, and Danger's history on my [Artsy blog post on the Danger 1.0](https://artsy.github.io/blog/2017/06/30/danger-one-oh-again/).
 
--   Adds inline docs for all CI providers - orta
+-   Adds inline docs for all CI providers - [@orta][]
 
 ### 0.21.1
 
@@ -213,14 +217,14 @@ You can find out a lot more about the 1.0, and Danger's history on my [Artsy blo
 
 ### 0.21.0
 
--   Posts status reports for passing/failing builds, if the account for danger has access - orta
--   Adds prettier to the codebase - orta
--   Converts a bunch of Danger's dangerfile into a plugin - [danger-plugin-yarn](https://github.com/orta/danger-plugin-yarn) - orta
+-   Posts status reports for passing/failing builds, if the account for danger has access - [@orta][]
+-   Adds prettier to the codebase - [@orta][]
+-   Converts a bunch of Danger's dangerfile into a plugin - [danger-plugin-yarn](https://github.com/orta/danger-plugin-yarn) - [@orta][]
 
 This is my first non-trivial plugin, based on infrastructure from @macklinu.
 Plugins are looking great, you can get some info at <https://github.com/macklinu/generator-danger-plugin>.
 
--   Docs updates for the website - orta
+-   Docs updates for the website - [@orta][]
 
 ### 0.20.0
 
@@ -233,7 +237,7 @@ Plugins are looking great, you can get some info at <https://github.com/macklinu
 ### 0.19.0
 
 -   Update to Jest 20 - macklinu
--   Change the danger.d.ts to use module exports instead of globals - orta
+-   Change the danger.d.ts to use module exports instead of globals - [@orta][]
 -   Render markdown inside `message()`, `warn()`, and `fail()` messages. - macklinu
 
 An example:
@@ -334,27 +338,27 @@ If these files are supposed to not exist, please update your PR body to include 
 
 ### 0.15.0
 
--   When a Dangerfile fails to eval, send a message to the PR - orta
+-   When a Dangerfile fails to eval, send a message to the PR - [@orta][]
 
 ### 0.14.2
 
--   Updated jest-\* dependencies to 19.x - orta
+-   Updated jest-\* dependencies to 19.x - [@orta][]
 
     Updating the jest-\* dependencies seems to be exhibiting strange behavior in tests for windows if you update, and
     use windows, can you please confirm that everything is 👍
 
--   Added type shapings to `JSONPatchForFile` - orta
+-   Added type shapings to `JSONPatchForFile` - [@orta][]
 -   Replaced deprecated `lodash.isarray` package with `Array.isArray` - damassi
 
 ### 0.14.1
 
--   Moved `@types/chalk` from dependencies to devDependencies - orta
--   Killed some stray console logs - orta
--   Updated the danger.d.ts - orta
+-   Moved `@types/chalk` from dependencies to devDependencies - [@orta][]
+-   Killed some stray console logs - [@orta][]
+-   Updated the danger.d.ts - [@orta][]
 
 ### 0.14.0
 
--   TypeScript Dangerfiles are now support in Danger - orta
+-   TypeScript Dangerfiles are now support in Danger - [@orta][]
 
     We use TypeScript in Danger, and a lot of my work in Artsy now uses TypeScript (see: [JS2017 at Artsy](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#TypeScrip1t)), so I wanted to
     explore using TypeScript in Dangerfiles.
@@ -367,7 +371,7 @@ If these files are supposed to not exist, please update your PR body to include 
     This repo is now using both a babel Dangerfile (running on Circle CI) and a TypeScript one (running on Travis) to
     ensure that we don't accidentally break either.
 
--   Created a new `danger.d.ts` for VS Code users to get auto-completion etc - orta
+-   Created a new `danger.d.ts` for VS Code users to get auto-completion etc - [@orta][]
 -   Added a two new `git` DSL functions: `git.JSONDiffForFile(filename)` and `git.JSONPatchForFile(filename)`.
 
     -   `git.JSONPatchForFile`
@@ -408,14 +412,14 @@ If these files are supposed to not exist, please update your PR body to include 
         -   `before` and `after` are both objects - in which case `added` and `removed` are the added or removed keys
         -   `before` and `after` are both arrays - in which case `added` and `removed` are the added or removed values
 
--   Exposed all global functions ( like `warn`, `fail`, `git`, `schedule`, ... ) on the `danger` object. - orta
+-   Exposed all global functions ( like `warn`, `fail`, `git`, `schedule`, ... ) on the `danger` object. - [@orta][]
 
     This is specifically to simplify building library code. It should not affect end-users. If you want to
     look at making a Danger JS Plugin, I'd recommend exposing a function which takes the `danger` object and working from that. If you're interested, there is an active discussion on plugin support in the DangerJS issues.
 
--   Improves messaging to the terminal - orta
--   Adds the ability to not have Danger post to GitHub via a flag: `danger run --text-only` - orta
--   Fix a crasher with `prs.find` #181 - orta
+-   Improves messaging to the terminal - [@orta][]
+-   Adds the ability to not have Danger post to GitHub via a flag: `danger run --text-only` - [@orta][]
+-   Fix a crasher with `prs.find` #181 - [@orta][]
 
 ### 0.13.0
 
@@ -431,7 +435,7 @@ If these files are supposed to not exist, please update your PR body to include 
     danger.utils.sentence(["A", "B", "C"]) // "A, B and C"
     ```
 
--   Adds `danger.github.utils` - which currently has only one function: `fileLinks` - orta
+-   Adds `danger.github.utils` - which currently has only one function: `fileLinks` - [@orta][]
 
     Most of the time people are working with a list of files (e.g. modified, or created) and then
     want to present clickable links to those. As the logic to figure the URLs is very GitHub specific,
@@ -484,12 +488,12 @@ If these files are supposed to not exist, please update your PR body to include 
 -   `danger.github.requested_reviewers` - Find out who has been requested to review a PR.
 
 
--   Updated TypeScript and Jest dependencies - orta
+-   Updated TypeScript and Jest dependencies - [@orta][]
 -   Add support for Github Enterprise via DANGER_GITHUB_API_BASE_URL env var - mashbourne
 
 ### 0.11.3 - 0.11.5
 
--   Internal changes for usage with Peril - orta
+-   Internal changes for usage with Peril - [@orta][]
 
 -   Add `danger pr --repl`, which drops into a Node.js REPL after evaluating the dangerfile - macklinu
 -   Add support for Codeship - deecewan
@@ -504,20 +508,20 @@ If these files are supposed to not exist, please update your PR body to include 
 
 ### 0.10.0
 
--   Adds support for running Danger against a PR locally - orta
+-   Adds support for running Danger against a PR locally - [@orta][]
 
 The workflow is that you find a PR that exhibits the behavior you'd like Danger to run against,
 then edit the local `Dangerfile.js` and run `yarn run danger pr https://github.com/facebook/jest/pull/2629`.
 
 This will post the results to your console, instead of on the PR itself.
 
--   Danger changes to your Dangerfile are not persisted after the run - orta
+-   Danger changes to your Dangerfile are not persisted after the run - [@orta][]
 -   Add summary comment for danger message - kwonoj
--   Add `jest-environment-node` to the Package.json - orta
+-   Add `jest-environment-node` to the Package.json - [@orta][]
 
 ### 0.9.0
 
--   Adds support for `git.commits` and `github.commits` - orta
+-   Adds support for `git.commits` and `github.commits` - [@orta][]
 
     Why two? Well github.commits contains a bunch of github specific metadata ( e.g. GitHub user creds,
     commit comment counts. ) Chances are, you're always going to use `git.commits` however if you
@@ -536,21 +540,21 @@ if (merges.length) { fail("Please rebase your PR")}
 ### 0.8.0
 
 -   Support `danger run -ci` to specify external CI provider - kwonoj
--   Adds `--verbose` to `danger`, which for now will echo out all the URLs Danger has requested - orta
+-   Adds `--verbose` to `danger`, which for now will echo out all the URLs Danger has requested - [@orta][]
 -   Migrate codebase into TypeScript from flow - kwonoj
--   Handle removing all sorts  of import types for Danger in the Dangerfile - orta
+-   Handle removing all sorts  of import types for Danger in the Dangerfile - [@orta][]
 
 ### 0.7.3-4-5
 
--   A failing network request will raise an error - orta
--   Fix Dangerfile parsing which broke due to Peril related changes - orta
--   Tweak the npmignore, ship less random stuff to others - orta
+-   A failing network request will raise an error - [@orta][]
+-   Fix Dangerfile parsing which broke due to Peril related changes - [@orta][]
+-   Tweak the npmignore, ship less random stuff to others - [@orta][]
 
 ### 0.7.2
 
--   Fixes to the shipped Flow/TS definitions - orta
--   Adds more functions the the internal Danger GitHub client - orta
--   Infrastructure work to allow Peril to run a Dangerfile - orta
+-   Fixes to the shipped Flow/TS definitions - [@orta][]
+-   Adds more functions the the internal Danger GitHub client - [@orta][]
+-   Infrastructure work to allow Peril to run a Dangerfile - [@orta][]
 -   Upgrade outdated ESLint packages - macklinu
 -   Enhance Windows OS compatibility - kwonoj
 
@@ -559,36 +563,36 @@ if (merges.length) { fail("Please rebase your PR")}
 -   Set exit code to 1 when running `danger` throws an error - macklinu
 -   Add Jenkins CI source - macklinu
 -   Add .editorconfig - macklinu
--   Adds jest-runtime to the dependencies - orta
+-   Adds jest-runtime to the dependencies - [@orta][]
 
 ### 0.7.0
 
--   You can build and run in vscode using your own custom `env/development.env` file. This is useful because you can use the debugger against a real PR. See `env/development.env.example` for syntax.  - orta
+-   You can build and run in vscode using your own custom `env/development.env` file. This is useful because you can use the debugger against a real PR. See `env/development.env.example` for syntax.  - [@orta][]
 
 -   Uses `jest-transform` and `jest-runtime` to eval and apply babel transforms.
 
     This does two things, makes it feasible to do [hosted-danger](https://github.com/danger/peril) and
-    makes it possible to write your Dangerfile in a way that's consistent with the rest of your JavaScript. - orta
+    makes it possible to write your Dangerfile in a way that's consistent with the rest of your JavaScript. - [@orta][]
 
 -   Add tests directory to .npmignore - macklinu
 -   Update to Jest 18 - macklinu
 
 ### 0.6.10
 
--   Brings back the ability to emulate a fake CI run locally via `danger` - orta
+-   Brings back the ability to emulate a fake CI run locally via `danger` - [@orta][]
 
 ### 0.6.9
 
--   Makes `babel-polyfill` a direct dependency, this is because it is actually an implicit dependency in the app. I'm not sure how I feel about this, I guess if we use a part of it in the babel translation of a user's Dangerfile them I'm OK with it. - orta
+-   Makes `babel-polyfill` a direct dependency, this is because it is actually an implicit dependency in the app. I'm not sure how I feel about this, I guess if we use a part of it in the babel translation of a user's Dangerfile them I'm OK with it. - [@orta][]
 
 ### 0.6.6 - 0.6.7 - 0.6.8
 
--   Ship flow annotations with the npm module - orta
+-   Ship flow annotations with the npm module - [@orta][]
 
 ### 0.6.5
 
 -   Adds more node instances to travis - romanki + orta
--   Adds support for Semaphore CI - orta
+-   Adds support for Semaphore CI - [@orta][]
 
 ### 0.6.4
 
@@ -607,7 +611,7 @@ if (changelogDiff && changelogDiff.indexOf(contributorName) === -1) {
 
 ### 0.6.3
 
--   Does not break commonmark on GitHub - orta
+-   Does not break commonmark on GitHub - [@orta][]
 -   upgrades to flow 0.35.0 and fixes associated type errors in covariant/invariant interfaces - nsfmc
 -   omits flow requirement for new test files - nsfmc
 -   adds support for circleci - nsfmc
@@ -615,23 +619,23 @@ if (changelogDiff && changelogDiff.indexOf(contributorName) === -1) {
 
 ### 0.5.0
 
--   `danger.pr` -> `danger.github.pr`, I've also created interfaces for them - orta
--   `warn`, `message`, `markdown` are all ported over to DangerJS - orta
--   Shows a HTML table for Danger message - orta
--   Now offers a Flow-typed definition file, it's not shipped to their repo yet, you can make it by `npm run export-flowtype` - orta
--   Started turning this into a real project by adding tests - orta
+-   `danger.pr` -> `danger.github.pr`, I've also created interfaces for them - [@orta][]
+-   `warn`, `message`, `markdown` are all ported over to DangerJS - [@orta][]
+-   Shows a HTML table for Danger message - [@orta][]
+-   Now offers a Flow-typed definition file, it's not shipped to their repo yet, you can make it by `npm run export-flowtype` - [@orta][]
+-   Started turning this into a real project by adding tests - [@orta][]
 
 ### 0.0.5-0.0.10
 
--   Changes some files casing, added some logs, a bit of error reporting, and verifying everything works through npm - orta
+-   Changes some files casing, added some logs, a bit of error reporting, and verifying everything works through npm - [@orta][]
 
 ### 0.0.4
 
--   Danger edit an existing post, and delete it when it's not relevant - orta
+-   Danger edit an existing post, and delete it when it's not relevant - [@orta][]
 
 ### 0.0.3
 
--   Danger will post a comment on a GitHub PR with any Fails - orta
+-   Danger will post a comment on a GitHub PR with any Fails - [@orta][]
 
 ### 0.0.2
 
@@ -679,11 +683,13 @@ if (!hasChangelog) {
 
 That should do ya. I think. This doesn't support babel, and I haven't explored using other modules etc, so...
 
-./
+./[@orta][]
 
 ### 0.0.1
 
-Not usable for others, only stubs of classes etc. - orta
+Not usable for others, only stubs of classes etc. - [@orta][]
 
 [danger-swift]: https://github.com/danger/danger-swift#danger-swift
 [danger-go]: https://github.com/bdotdub/danger-go
+[@orta]: https://github.com/orta
+[@ashfurrow]: https://github.com/ashfurrow
