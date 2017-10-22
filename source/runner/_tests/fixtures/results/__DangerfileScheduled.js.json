@@ -1,10 +1,11 @@
 {
-  "failures": [],
+  "fails": [],
   "warnings": [
     {
       "message": "Asynchronous Warning"
     }
   ],
   "messages": [],
-  "markdowns": []
+  "markdowns": [],
+  "scheduled": [{}]
 }

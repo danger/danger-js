@@ -66,29 +66,11 @@ export async function runDangerfileEnvironment(
 
     _require(compiled, filename, {})
 
-    const results = environment.results
-    await Promise.all(
-      results.scheduled.map((fnOrPromise: any) => {
-        if (fnOrPromise instanceof Promise) {
-          return fnOrPromise
-        }
-        if (fnOrPromise.length === 1) {
-          // callback-based function
-          return new Promise(res => fnOrPromise(res))
-        }
-        return fnOrPromise()
-      })
-    )
-
-    return {
-      fails: results.fails,
-      warnings: results.warnings,
-      messages: results.messages,
-      markdowns: results.markdowns,
-    }
+    return environment.results
   } catch (error) {
     console.error("Unable to evaluate the Dangerfile")
-    return resultsForCaughtError(filename, content, error)
+    environment.results = resultsForCaughtError(filename, content, error)
+    return environment.results
   }
 }
 

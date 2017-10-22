@@ -1,6 +1,10 @@
 {
   "fails": [],
-  "warnings": [],
+  "warnings": [
+    {
+      "message": "Totally Async"
+    }
+  ],
   "messages": [],
   "markdowns": [],
   "scheduled": []

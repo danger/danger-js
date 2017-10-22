@@ -1,13 +1,12 @@
-import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
+import setSharedArgs from "./utils/sharedDangerfileArgs"
+import * as nodeCleanup from "node-cleanup"
 
 import * as program from "commander"
+import * as getSTDIN from "get-stdin"
 import * as chalk from "chalk"
 
 import { contextForDanger } from "../runner/Dangerfile"
 import inline from "../runner/runners/inline"
-import { Executor } from "../runner/Executor"
-import { getPlatformForEnv } from "../platforms/platform"
-import getRuntimeCISource from "./utils/getRuntimeCISource"
 import { dangerfilePath } from "./utils/file-utils"
 import { DangerDSLJSONType } from "../dsl/DangerDSL"
 import { jsonToDSL } from "../runner/jsonToDSL"
@@ -25,64 +24,36 @@ program
 
 setSharedArgs(program).parse(process.argv)
 
-const app = (program as any) as SharedCLI
+let foundDSL = false
+let runtimeEnv = {} as any
 
 const run = async (jsonString: string) => {
-  console.log(jsonString)
-
+  foundDSL = true
   const dslJSON = JSON.parse(jsonString) as { danger: DangerDSLJSONType }
   const dsl = await jsonToDSL(dslJSON.danger)
   const dangerFile = dangerfilePath(program)
 
   // Set up the runtime env
   const context = contextForDanger(dsl)
-  const runtimeEnv = await inline.createDangerfileRuntimeEnvironment(context)
-  const results = await inline.runDangerfileEnvironment(dangerFile, undefined, runtimeEnv)
-  console.log(results)
-
-  const config = {
-    stdoutOnly: app.textOnly,
-    jsonOnly: true,
-    verbose: app.verbose,
-  }
-
-  const source = await getRuntimeCISource(app)
-  const platform = getPlatformForEnv(process.env, source!)
-
-  const exec = new Executor(source!, platform, inline, config)
-  await exec.handleResults(results)
+  runtimeEnv = await inline.createDangerfileRuntimeEnvironment(context)
+  await inline.runDangerfileEnvironment(dangerFile, undefined, runtimeEnv)
 }
 
-// getSTDIN().then(run)
-
-const stdin = process.stdin
-
-stdin.setEncoding("utf8")
-
-let foundDSL = false
-
-stdin.on("readable", () => {
-  const data = stdin.read()
-  if (data) {
-    const trimmed = data.toString().trim()
-    console.log("> ", trimmed)
-    if (trimmed.startsWith("{") && trimmed.endsWith("}") && trimmed.includes("danger")) {
-      console.log(">>>")
-      console.log(trimmed)
-      console.log(">>>")
-      foundDSL = true
-      run(trimmed)
-    }
+// Wait till the end of the process to print out the results
+nodeCleanup(() => {
+  if (foundDSL) {
+    process.stdout.write(JSON.stringify(runtimeEnv.results, null, 2))
   }
 })
 
-stdin.on("end", () => {
-  console.log("stdend")
-})
-
+// Add a timeout so that CI doesn't run forever if something has broken.
 setTimeout(() => {
   if (!foundDSL) {
-    console.error(chalk.red("Timeout: Failed to get the Danger DSL after 10 seconds"))
+    console.error(chalk.red("Timeout: Failed to get the Danger DSL after 1 second"))
     process.exitCode = 1
+    process.exit(1)
   }
-}, 10000)
+}, 1000)
+
+// Start waiting on STDIN for the DSL
+getSTDIN().then(run)

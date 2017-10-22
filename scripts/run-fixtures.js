@@ -10,7 +10,7 @@ const chalk = require("chalk")
 const expect = require("expect")
 
 // Toggle this on to update the JSON files for each run
-const writeResults = false
+const writeResults = true
 
 const runnerFileJS = "distribution/commands/danger-runner.js"
 

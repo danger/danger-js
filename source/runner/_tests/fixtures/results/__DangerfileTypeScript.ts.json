@@ -1,10 +1,11 @@
 {
-  "failures": [],
+  "fails": [],
   "warnings": [],
   "messages": [
     {
       "message": "Honey, we got Types"
     }
   ],
-  "markdowns": []
+  "markdowns": [],
+  "scheduled": []
 }

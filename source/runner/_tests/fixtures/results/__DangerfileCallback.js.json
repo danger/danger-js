@@ -1,10 +1,11 @@
 {
-  "failures": [],
+  "fails": [],
   "warnings": [
     {
       "message": "Scheduled a callback"
     }
   ],
   "messages": [],
-  "markdowns": []
+  "markdowns": [],
+  "scheduled": [null]
 }

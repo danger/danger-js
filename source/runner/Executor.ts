@@ -111,10 +111,10 @@ export class Executor {
     if (this.options.jsonOnly) {
       // Format for Danger Process
       const results = {
-        failures: fails,
-        warnings: warnings,
-        messages: messages,
-        markdowns: markdowns,
+        fails,
+        warnings,
+        messages,
+        markdowns,
       }
       process.stdout.write(JSON.stringify(results, null, 2))
     } else {

@@ -1,5 +1,5 @@
 {
-  "failures": [
+  "fails": [
     {
       "message": "this is a failure"
     }
@@ -14,5 +14,6 @@
       "message": "this is a message"
     }
   ],
-  "markdowns": ["this is a *markdown*"]
+  "markdowns": ["this is a *markdown*"],
+  "scheduled": []
 }

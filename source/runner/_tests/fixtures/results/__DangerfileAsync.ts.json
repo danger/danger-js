@@ -1,5 +1,5 @@
 {
-  "failures": [],
+  "fails": [],
   "warnings": [
     {
       "message": "Async Function"
@@ -9,5 +9,6 @@
     }
   ],
   "messages": [],
-  "markdowns": []
+  "markdowns": [],
+  "scheduled": [null]
 }

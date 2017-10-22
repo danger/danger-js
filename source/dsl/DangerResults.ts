@@ -33,5 +33,5 @@ export interface DangerRuntimeContainer extends DangerResults {
   /**
    * Asynchronous functions to be run after parsing
    */
-  scheduled: any[]
+  scheduled?: any[]
 }

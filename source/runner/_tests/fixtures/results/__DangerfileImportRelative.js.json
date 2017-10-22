@@ -1,6 +1,7 @@
 {
-  "failures": [],
+  "fails": [],
   "warnings": [],
   "messages": [],
-  "markdowns": []
+  "markdowns": [],
+  "scheduled": []
 }
