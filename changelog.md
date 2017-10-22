@@ -4,6 +4,24 @@
 
 ### Master
 
+### 2.0.0-beta.1
+
+- Converts the command `danger` (and `danger run`) to use `danger process` under the hood. What does this do?
+
+  * Dangerfile evaluation is in a separate process, run without a vm sandbox. This fixes the async problem which we 
+    created `schedule` for. Previously, any async work in your Dangerfile needed to be declared to Danger so that
+    it knew when all of the work had finished. Now that the running happens inside another process, we can use 
+    the `on_exit` calls of the process to know that all work is done. So, _in Danger_ (not in Peril) async code will 
+    work just like inside a traditional node app.
+
+  * Makes `danger process` a first class citizen. This is awesome because there will be reliable support 
+    for other languages like [danger-swift][], [danger-go][] and more to come.
+
+  * The `danger process` system is now codified in types, so it's really easy to document on the website.
+
+- Adds a `--js` and `--json` option to `danger pr` which shows the output in a way that works with `danger process`. 
+  This means you can preview the data for any pull request.
+
 ### 2.0.0-alpha.20
 
 - Moves away from vm2 to a require-based Dangerfile runner. This removes the sandboxing aspect of
@@ -666,3 +684,6 @@ That should do ya. I think. This doesn't support babel, and I haven't explored u
 ### 0.0.1
 
 Not usable for others, only stubs of classes etc. - orta
+
+[danger-swift]: https://github.com/danger/danger-swift#danger-swift
+[danger-go]: https://github.com/bdotdub/danger-go
