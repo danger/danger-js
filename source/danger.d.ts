@@ -35,6 +35,14 @@ declare module "danger" {
     date: string
   }
   /**
+   * The shape of the JSON passed between Danger and a subprocess. It's built
+   * to be expanded in the future.
+   */
+  interface DangerJSON {
+    danger: DangerDSLJSONType
+  }
+
+  /**
    *  The root of the Danger JSON DSL.
    */
 
@@ -130,7 +138,7 @@ declare module "danger" {
     /**
      * Asynchronous functions to be run after parsing
      */
-    scheduled: any[]
+    scheduled?: any[]
   }
 
   /**

@@ -2,6 +2,10 @@ import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitHubDSL } from "../dsl/GitHubDSL"
 import { DangerUtilsDSL } from "./DangerUtilsDSL"
 
+/**
+ * The shape of the JSON passed between Danger and a subprocess. It's built
+ * to be expanded in the future.
+ */
 export interface DangerJSON {
   danger: DangerDSLJSONType
 }
