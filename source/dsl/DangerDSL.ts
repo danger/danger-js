@@ -2,6 +2,10 @@ import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitHubDSL } from "../dsl/GitHubDSL"
 import { DangerUtilsDSL } from "./DangerUtilsDSL"
 
+export interface DangerJSON {
+  danger: DangerDSLJSONType
+}
+
 /**
  *  The root of the Danger JSON DSL.
  */

@@ -2,7 +2,7 @@ import dangerRunToRunnerCLI from "../dangerRunToRunnerCLI"
 
 describe("it can handle the command", () => {
   it("`danger`", () => {
-    expect(dangerRunToRunnerCLI(["danger"])).toEqual("danger runner")
+    expect(dangerRunToRunnerCLI(["danger"])).toEqual(["danger", "runner"])
   })
 
   it("`danger --dangerfile myDangerfile.ts`", () => {

@@ -1,7 +1,7 @@
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 
 import * as program from "commander"
-import * as getSTDIN from "get-stdin"
+import * as chalk from "chalk"
 
 import { contextForDanger } from "../runner/Dangerfile"
 import inline from "../runner/runners/inline"
@@ -28,6 +28,8 @@ setSharedArgs(program).parse(process.argv)
 const app = (program as any) as SharedCLI
 
 const run = async (jsonString: string) => {
+  console.log(jsonString)
+
   const dslJSON = JSON.parse(jsonString) as { danger: DangerDSLJSONType }
   const dsl = await jsonToDSL(dslJSON.danger)
   const dangerFile = dangerfilePath(program)
@@ -36,6 +38,7 @@ const run = async (jsonString: string) => {
   const context = contextForDanger(dsl)
   const runtimeEnv = await inline.createDangerfileRuntimeEnvironment(context)
   const results = await inline.runDangerfileEnvironment(dangerFile, undefined, runtimeEnv)
+  console.log(results)
 
   const config = {
     stdoutOnly: app.textOnly,
@@ -50,4 +53,36 @@ const run = async (jsonString: string) => {
   await exec.handleResults(results)
 }
 
-getSTDIN().then(run)
+// getSTDIN().then(run)
+
+const stdin = process.stdin
+
+stdin.setEncoding("utf8")
+
+let foundDSL = false
+
+stdin.on("readable", () => {
+  const data = stdin.read()
+  if (data) {
+    const trimmed = data.toString().trim()
+    console.log("> ", trimmed)
+    if (trimmed.startsWith("{") && trimmed.endsWith("}") && trimmed.includes("danger")) {
+      console.log(">>>")
+      console.log(trimmed)
+      console.log(">>>")
+      foundDSL = true
+      run(trimmed)
+    }
+  }
+})
+
+stdin.on("end", () => {
+  console.log("stdend")
+})
+
+setTimeout(() => {
+  if (!foundDSL) {
+    console.error(chalk.red("Timeout: Failed to get the Danger DSL after 10 seconds"))
+    process.exitCode = 1
+  }
+}, 10000)

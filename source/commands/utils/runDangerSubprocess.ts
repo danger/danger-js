@@ -1,6 +1,6 @@
 import { spawn } from "child_process"
 
-import { DangerDSLJSONType } from "../../dsl/DangerDSL"
+import { DangerDSLJSONType, DangerJSON } from "../../dsl/DangerDSL"
 import { Executor } from "../../runner/Executor"
 import { markdownCode, resultsWithFailure } from "./reporting"
 
@@ -10,7 +10,8 @@ export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
     delete dangerDSL.github.api
   }
 
-  return JSON.stringify(dangerDSL, null, "  ") + "\n"
+  const dangerJSONOutput: DangerJSON = { danger: dangerDSL }
+  return JSON.stringify(dangerJSONOutput, null, "  ") + "\n"
 }
 
 // Runs the Danger process, can either take a simpl
