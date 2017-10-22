@@ -8,6 +8,7 @@ import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import getRuntimeCISource from "./utils/getRuntimeCISource"
 
 import inlineRunner from "../runner/runners/inline"
+import { jsonDSLGenerator } from "../runner/dslGenerator"
 
 // Given the nature of this command, it can be tricky to test, so I use a command like this:
 //
@@ -38,10 +39,7 @@ if (process.env["DANGER_VERBOSE"] || app.verbose) {
   global.verbose = true
 }
 
-// a dirty wrapper to allow async functionality in the setup
-async function run() {
-  const source = await getRuntimeCISource(app)
-
+getRuntimeCISource(app).then(source => {
   // This does not set a failing exit code
   if (source && !source.isPR) {
     console.log("Skipping Danger due to not this run not executing on a PR.")
@@ -62,20 +60,20 @@ async function run() {
       const config = {
         stdoutOnly: app.textOnly,
         verbose: app.verbose,
+        jsonOnly: false,
       }
 
-      const exec = new Executor(source, platform, inlineRunner, config)
-      const dangerDSL = await exec.dslForDanger()
-      const processInput = prepareDangerDSL(dangerDSL)
+      jsonDSLGenerator(platform).then(dangerJSONDSL => {
+        const processInput = prepareDangerDSL(dangerJSONDSL)
 
-      if (!subprocessName) {
-        //  Just pipe it out to the CLI
-        process.stdout.write(processInput)
-      } else {
-        runDangerSubprocess(subprocessName, processInput, exec)
-      }
+        if (!subprocessName) {
+          //  Just pipe it out to the CLI
+          process.stdout.write(processInput)
+        } else {
+          const exec = new Executor(source, platform, inlineRunner, config)
+          runDangerSubprocess([subprocessName], processInput, exec)
+        }
+      })
     }
   }
-}
-
-run()
+})

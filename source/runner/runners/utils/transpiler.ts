@@ -6,7 +6,7 @@ let hasBabel = false
 let hasBabelTypeScript = false
 let hasFlow = false
 
-// Yes, lots of linter disables, but I want to support TS/Babel/Neither correclty
+// Yes, lots of linter disables, but I want to support TS/Babel/Neither correctly
 
 try {
   require.resolve("typescript") // tslint:disable-line

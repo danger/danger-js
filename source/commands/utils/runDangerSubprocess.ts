@@ -1,21 +1,26 @@
 import { spawn } from "child_process"
 
-import { DangerDSL } from "../../dsl/DangerDSL"
+import { DangerDSLJSONType, DangerJSON } from "../../dsl/DangerDSL"
 import { Executor } from "../../runner/Executor"
 import { markdownCode, resultsWithFailure } from "./reporting"
 
 // Sanitizes the DSL so for sending via STDOUT
-export const prepareDangerDSL = (dangerDSL: DangerDSL) => {
+export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
   if (dangerDSL.github && dangerDSL.github.api) {
     delete dangerDSL.github.api
   }
 
-  return JSON.stringify(dangerDSL, null, "  ") + "\n"
+  const dangerJSONOutput: DangerJSON = { danger: dangerDSL }
+  return JSON.stringify(dangerJSONOutput, null, "  ") + "\n"
 }
 
-// Runs the Danger process
-const runDangerSubprocess = (subprocessName: string, dslJSONString: string, exec: Executor) => {
-  const child = spawn(subprocessName)
+// Runs the Danger process, can either take a simpl
+const runDangerSubprocess = (subprocessName: string[], dslJSONString: string, exec: Executor) => {
+  let processName = subprocessName[0]
+  let args = subprocessName
+  args.shift() // mutate and remove the first element
+
+  const child = spawn(processName, args)
   let allLogs = ""
 
   child.stdin.write(dslJSONString)

@@ -1,4 +1,10 @@
 import * as program from "commander"
+import * as chalk from "chalk"
+
+process.on("unhandledRejection", function(reason: string, _p: any) {
+  console.log(chalk.red("Error: "), reason)
+  process.exitCode = 1
+})
 
 export interface SharedCLI extends program.ICommand {
   verbose: boolean

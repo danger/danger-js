@@ -1,6 +1,10 @@
 import * as fs from "fs"
 
-const mapLines = (s: string, func: (s: string) => string) => s.split("\n").map(func).join("\n")
+const mapLines = (s: string, func: (s: string) => string) =>
+  s
+    .split("\n")
+    .map(func)
+    .join("\n")
 
 const createDTS = () => {
   const header = `//
@@ -16,10 +20,9 @@ declare module "danger" {
 
   let fileOutput = ""
 
-  const extras = ["source/platforms/messaging/violation.ts"]
   const dslFiles = fs.readdirSync("source/dsl").map(f => `source/dsl/${f}`)
 
-  dslFiles.concat(extras).forEach(file => {
+  dslFiles.forEach(file => {
     // Sometimes they have more stuff, in those cases
     // offer a way to crop the file.
     const content = fs.readFileSync(file).toString()

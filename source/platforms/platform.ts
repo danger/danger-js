@@ -1,5 +1,5 @@
 import { Env, CISource } from "../ci_source/ci_source"
-import { GitDSL } from "../dsl/GitDSL"
+import { GitJSONDSL } from "../dsl/GitDSL"
 import { GitHub } from "./GitHub"
 import { GitHubAPI } from "./github/GitHubAPI"
 
@@ -34,7 +34,7 @@ export interface Platform {
   /** Pulls in the platform specific metadata for inspection */
   getPlatformDSLRepresentation: () => Promise<any>
   /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
-  getPlatformGitRepresentation: () => Promise<GitDSL>
+  getPlatformGitRepresentation: () => Promise<GitJSONDSL>
   /** Creates a comment on the PR */
   createComment: (body: string) => Promise<any>
   /** Delete the main Danger comment */

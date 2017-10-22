@@ -7,7 +7,9 @@ const fixtures = resolve(__dirname, "..", "..", "_tests", "fixtures")
 const fixuredData = path => JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString())
 const pr = fixuredData("github_pr.json")
 const apiFake = {
-  fileContents: jest.fn(),
+  repos: {
+    getContent: jest.fn(),
+  },
 } as any
 
 describe("fileLinks", () => {
@@ -40,6 +42,11 @@ describe("getContents", () => {
   it("should call the API's getContents", () => {
     const sut = utils(pr, apiFake)
     sut.fileContents("/a/b/c.ts")
-    expect(apiFake.fileContents).toHaveBeenCalledWith("/a/b/c.ts")
+    expect(apiFake.repos.getContent).toHaveBeenCalledWith({
+      owner: "orta",
+      path: "/a/b/c.ts",
+      ref: "genevc",
+      repo: "emission",
+    })
   })
 })

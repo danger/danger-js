@@ -6,8 +6,8 @@
 // console.log(require)
 // console.log(require.extensions)
 
-import { DangerDSL } from "./source/dsl/DangerDSL"
-declare var danger: DangerDSL
+import { DangerDSLType } from "./source/dsl/DangerDSL"
+declare var danger: DangerDSLType
 // declare var results: any
 declare function warn(params: string): void
 declare function fail(params: string): void
@@ -16,6 +16,8 @@ declare function fail(params: string): void
 declare function schedule(promise: Promise<any | void>): void
 declare function schedule(promise: () => Promise<any | void>): void
 declare function schedule(callback: (resolve: any) => void): void
+
+warn("this worked")
 
 import * as fs from "fs"
 

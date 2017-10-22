@@ -1,12 +1,9 @@
 import { GitCommit } from "./Commit"
 import * as GitHub from "github"
 
-// This is `danger.github`
+// This is `danger.github` inside the JSON
 
-/** The GitHub metadata for your PR */
-export interface GitHubDSL {
-  /** An authenticated API so you can extend danger's behavior. An instance of the "github" npm module. */
-  api: GitHub
+export interface GitHubJSONDSL {
   /** The issue metadata for a code review session */
   issue: GitHubIssue
   /** The PR metadata for a code review session */
@@ -19,6 +16,14 @@ export interface GitHubDSL {
   reviews: GitHubReview[]
   /** The people requested to review this PR */
   requested_reviewers: GitHubUser[]
+}
+
+// This is `danger.github`
+
+/** The GitHub metadata for your PR */
+export interface GitHubDSL extends GitHubJSONDSL {
+  /** An authenticated API so you can extend danger's behavior. An instance of the "github" npm module. */
+  api: GitHub
   /** A scope for useful functions related to GitHub */
   utils: GitHubUtilsDSL
 }

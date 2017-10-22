@@ -1,4 +1,4 @@
-import { Violation } from "../platforms/messaging/violation"
+import { Violation } from "../dsl/Violation"
 import { MarkdownString } from "../dsl/Aliases"
 
 /**
@@ -33,5 +33,5 @@ export interface DangerRuntimeContainer extends DangerResults {
   /**
    * Asynchronous functions to be run after parsing
    */
-  scheduled: any[]
+  scheduled?: any[]
 }

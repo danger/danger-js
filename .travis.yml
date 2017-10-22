@@ -7,9 +7,15 @@ cache:
 
 matrix:
   include:
-  # Some normal CI test runs
-  - node_js: '8'
+  # Only normal CI test run :D
   - node_js: '6'
+  - node_js: '8'
+
+  # Checks every example dangerfile can run in `danger runner`.
+  - node_js: '8.4'
+    script:
+     - yarn build
+     - node scripts/run-fixtures.js
 
   # Does the real danger run
   - node_js: node

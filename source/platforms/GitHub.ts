@@ -1,8 +1,10 @@
-import { GitDSL } from "../dsl/GitDSL"
-import { GitHubPRDSL, GitHubDSL, GitHubIssue, GitHubAPIPR } from "../dsl/GitHubDSL"
+import { GitJSONDSL } from "../dsl/GitDSL"
+import { GitHubPRDSL, GitHubDSL, GitHubIssue, GitHubAPIPR, GitHubJSONDSL } from "../dsl/GitHubDSL"
 import { GitHubAPI } from "./github/GitHubAPI"
 import GitHubUtils from "./github/GitHubUtils"
 import gitDSLForGitHub from "./github/GitHubGit"
+
+import * as NodeGitHub from "github"
 
 /** Handles conforming to the Platform Interface for GitHub, API work is handle by GitHubAPI */
 
@@ -27,7 +29,7 @@ export class GitHub {
    *
    * @returns {Promise<GitDSL>} the git DSL
    */
-  async getPlatformGitRepresentation(): Promise<GitDSL> {
+  async getPlatformGitRepresentation(): Promise<GitJSONDSL> {
     return gitDSLForGitHub(this.api)
   }
 
@@ -54,7 +56,7 @@ export class GitHub {
    *
    * @returns {Promise<GitHubDSL>} JSON response of the DSL
    */
-  async getPlatformDSLRepresentation(): Promise<GitHubDSL> {
+  async getPlatformDSLRepresentation(): Promise<GitHubJSONDSL> {
     const pr = await this.getReviewInfo()
     if (pr === {}) {
       process.exitCode = 1
@@ -70,17 +72,17 @@ export class GitHub {
     const reviews = await this.api.getReviews()
     const requested_reviewers = await this.api.getReviewerRequests()
 
-    const externalAPI = this.api.getExternalAPI()
+    // const externalAPI = this.api.getExternalAPI()
     const thisPR = this.APIMetadataForPR(pr)
     return {
-      api: externalAPI,
+      // api: externalAPI,
       issue,
       pr,
       commits,
       reviews,
       requested_reviewers,
       thisPR,
-      utils: GitHubUtils(pr, this.api),
+      // utils: GitHubUtils(pr, this.api),
     }
   }
 
@@ -147,5 +149,15 @@ export class GitHub {
       repo: pr.head.repo.name,
       owner: pr.head.repo.owner.login,
     }
+  }
+}
+
+// This class should get un-classed, but for now we can expand by functions
+
+export const githubJSONToGitHubDSL = (gh: GitHubJSONDSL, api: NodeGitHub): GitHubDSL => {
+  return {
+    ...gh,
+    api,
+    utils: GitHubUtils(gh.pr, api),
   }
 }

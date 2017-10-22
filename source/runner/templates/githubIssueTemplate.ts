@@ -1,5 +1,5 @@
 import { DangerResults } from "../../dsl/DangerResults"
-import { Violation } from "../../platforms/messaging/violation"
+import { Violation } from "../../dsl/Violation"
 import * as v from "voca"
 
 /**

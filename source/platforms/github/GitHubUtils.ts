@@ -1,10 +1,12 @@
 import { basename } from "path"
 import { sentence, href } from "../../runner/DangerUtils"
 import { GitHubPRDSL, GitHubUtilsDSL } from "./../../dsl/GitHubDSL"
-import { GitHubAPI } from "../github/GitHubAPI"
+
+import * as GitHub from "github"
+
 // We need to curry in access to the GitHub PR metadata
 
-const utils = (pr: GitHubPRDSL, api: GitHubAPI): GitHubUtilsDSL => {
+const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
   /**
    * Converts a set of filepaths into a sentence'd set of hrefs for the
    * current PR. Can be configured to just show the name (instead of full filepath), to
@@ -27,7 +29,27 @@ const utils = (pr: GitHubPRDSL, api: GitHubAPI): GitHubUtilsDSL => {
 
   return {
     fileLinks,
-    fileContents: api.fileContents,
+    fileContents: async (path: string, repoSlug?: string, ref?: string): Promise<string> => {
+      // Use the current state of PR if no repo/ref is passed
+      if (!repoSlug || !ref) {
+        repoSlug = pr.head.repo.full_name
+        ref = pr.head.ref
+      }
+
+      const data = await api.repos.getContent({
+        ref,
+        path,
+        repo: repoSlug.split("/")[1],
+        owner: repoSlug.split("/")[0],
+      })
+
+      if (data && data.type === "file") {
+        const buffer = new Buffer(data.content, data.encoding)
+        return buffer.toString()
+      } else {
+        return ""
+      }
+    },
   }
 }
 

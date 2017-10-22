@@ -1,0 +1,19 @@
+{
+  "fails": [
+    {
+      "message": "this is a failure"
+    }
+  ],
+  "warnings": [
+    {
+      "message": "this is a warning"
+    }
+  ],
+  "messages": [
+    {
+      "message": "this is a message"
+    }
+  ],
+  "markdowns": ["this is a *markdown*"],
+  "scheduled": []
+}
