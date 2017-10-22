@@ -38,7 +38,7 @@ danger pr https://github.com/danger/danger-js/pull/395 --json > danger-js-395.ds
 
 This will work for any open repo, and if you've set up your local shell to include `DANGER_GITHUB_API_TOKEN` then you can
 use this with any private repository too. The JSON schema is documented in Danger JS's types as [DangerJSONDSLType][]. I
-plan to add a full reference for this, similar to the reference for the user's DSL in the future in these docs.
+plan to add a full reference for this, similar to the reference for the user's DSL in the future in these docs. _Note"_ The JSON will include your access token, so you probably want to sanitze that before commiting it to the repo.
 
 A runner can output anything during the process to STDOUT, and it will be logged to the user. However, Danger JS is 
 listening for a JSON response in this format:

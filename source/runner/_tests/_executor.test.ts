@@ -7,6 +7,7 @@ import inlineRunner from "../runners/inline"
 const defaultConfig = {
   stdoutOnly: false,
   verbose: false,
+  jsonOnly: false,
 }
 
 describe("setup", () => {

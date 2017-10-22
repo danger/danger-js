@@ -13,9 +13,13 @@ export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
   return JSON.stringify(dangerDSL, null, "  ") + "\n"
 }
 
-// Runs the Danger process
-const runDangerSubprocess = (subprocessName: string, dslJSONString: string, exec: Executor) => {
-  const child = spawn(subprocessName)
+// Runs the Danger process, can either take a simpl
+const runDangerSubprocess = (subprocessName: string[], dslJSONString: string, exec: Executor) => {
+  let processName = subprocessName[0]
+  let args = subprocessName
+  args.shift() // mutate and remove the first element
+
+  const child = spawn(processName, args)
   let allLogs = ""
 
   child.stdin.write(dslJSONString)
