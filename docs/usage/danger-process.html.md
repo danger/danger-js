@@ -1,4 +1,4 @@
- ---
+---
 title: Danger in my Language
 subtitle: Using Danger Process
 layout: guide_js
