@@ -1,8 +1,6 @@
-/*eslint-disable */
-
 schedule(done => {
-  setTimeout(() => {
-    warn('Scheduled a callback');
-    done();
-  });
-});
+	setTimeout(() => {
+		warn("Scheduled a callback")
+		done()
+	})
+})

@@ -11,6 +11,5 @@ docs
 scripts
 dangerfile.js
 env
-.eslintrc.json
 jsconfig.json
 coverage
