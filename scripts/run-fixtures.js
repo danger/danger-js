@@ -10,7 +10,7 @@ const chalk = require("chalk")
 const expect = require("expect")
 
 // Toggle this on to update the JSON files for each run
-const writeResults = true
+const writeResults = false
 console.log("If this script fails, you probably want to update the fixtures - just edit script/run-fixtures.js")
 const runnerFileJS = "distribution/commands/danger-runner.js"
 

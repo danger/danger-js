@@ -2,7 +2,7 @@ import * as fs from "fs"
 
 import * as _require from "require-from-string"
 
-import { DangerResults } from "../../dsl/DangerResults"
+import { DangerResults, DangerRuntimeContainer } from "../../dsl/DangerResults"
 import { DangerContext } from "../../runner/Dangerfile"
 
 import { DangerRunner } from "./runner"
@@ -66,11 +66,33 @@ export async function runDangerfileEnvironment(
 
     _require(compiled, filename, {})
 
+    // Don't stop all current async code from breaking,
+    // however new code (without Peril support) can run
+    // without the scheduler
+    await runAllScheduledTasks(environment.results)
+
     return environment.results
   } catch (error) {
     console.error("Unable to evaluate the Dangerfile")
     environment.results = resultsForCaughtError(filename, content, error)
     return environment.results
+  }
+}
+
+const runAllScheduledTasks = async (results: DangerRuntimeContainer) => {
+  if (results.scheduled) {
+    await Promise.all(
+      results.scheduled.map((fnOrPromise: any) => {
+        if (fnOrPromise instanceof Promise) {
+          return fnOrPromise
+        }
+        if (fnOrPromise.length === 1) {
+          // callback-based function
+          return new Promise(res => fnOrPromise(res))
+        }
+        return fnOrPromise()
+      })
+    )
   }
 }
 

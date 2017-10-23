@@ -9,7 +9,14 @@ matrix:
   include:
   # Only normal CI test run :D
   - node_js: '6'
+  
   - node_js: '8'
+    after_script:
+    - rm -rf node_modules/@types/babel-*
+    - rm -rf node_modules/@types/babylon
+    - yarn docs
+    - yarn add dtslint@0.1.2
+    - yarn dts-lint
 
   # Checks every example dangerfile can run in `danger runner`.
   - node_js: '8.4'
@@ -56,10 +63,6 @@ script:
 - yarn lint
 - yarn add jest
 - yarn jest
-- rm -rf node_modules/@types/babel-*
-- rm -rf node_modules/@types/babylon
-- yarn docs
-- if [[ $TRAVIS_NODE_VERSION == "8" ]]; then yarn add dtslint; yarn dts-lint; fi
 
 notifications:
   slack: dangergem:9FOZou9EGBV9xO1Ol4bxRPz9
