@@ -17,8 +17,6 @@ declare function schedule(promise: Promise<any | void>): void
 declare function schedule(promise: () => Promise<any | void>): void
 declare function schedule(callback: (resolve: any) => void): void
 
-warn("this worked")
-
 import * as fs from "fs"
 
 schedule(async () => {
