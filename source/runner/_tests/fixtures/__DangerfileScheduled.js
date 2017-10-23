@@ -1,8 +1,8 @@
-/*eslint-disable */
-
-schedule(new Promise((res) => {
-  setTimeout(() => {
-    warn('Asynchronous Warning');
-    res();
-  }, 10);
-}));
+schedule(
+	new Promise(res => {
+		setTimeout(() => {
+			warn("Asynchronous Warning")
+			res()
+		}, 10)
+	})
+)

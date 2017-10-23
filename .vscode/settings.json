@@ -22,6 +22,5 @@
   "spellchecker.ignoreRegExp": [],
   "spellchecker.ignoreFileExtensions": [],
   "spellchecker.checkInterval": 5000,
-  "eslint.enable": false,
   "editor.formatOnSave": true
 }

@@ -1,37 +1,35 @@
-/*eslint-disable */
-
 debugger
 
 schedule(
-  new Promise(res => {
-    setTimeout(() => {
-      fail("Asynchronous Failure")
-      res()
-    }, 100)
-  })
+	new Promise(res => {
+		setTimeout(() => {
+			fail("Asynchronous Failure")
+			res()
+		}, 100)
+	})
 )
 
 schedule(
-  new Promise(res => {
-    warn("Asynchronous Warning")
-    res()
-  })
+	new Promise(res => {
+		warn("Asynchronous Warning")
+		res()
+	})
 )
 
 schedule(
-  new Promise(res => {
-    setTimeout(() => {
-      message("Asynchronous Message")
-      res()
-    }, 10)
-  })
+	new Promise(res => {
+		setTimeout(() => {
+			message("Asynchronous Message")
+			res()
+		}, 10)
+	})
 )
 
 schedule(
-  new Promise(res => {
-    setTimeout(() => {
-      markdown("Asynchronous Markdown")
-      res()
-    }, 50)
-  })
+	new Promise(res => {
+		setTimeout(() => {
+			markdown("Asynchronous Markdown")
+			res()
+		}, 50)
+	})
 )
