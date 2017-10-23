@@ -1,18 +1,24 @@
 {
-  "name": "tsconfig.json",
-  "path": "tsconfig.json",
-  "sha": "90aabbabf81ac4fbc81ef1e8f40de99972b7e2ac",
-  "size": 153,
-  "url": "https://api.github.com/repos/artsy/emission/contents/tsconfig.json?ref=98f3e73f5e419f3af9ab928c86312f28a3c87475",
-  "html_url": "https://github.com/artsy/emission/blob/98f3e73f5e419f3af9ab928c86312f28a3c87475/tsconfig.json",
-  "git_url": "https://api.github.com/repos/artsy/emission/git/blobs/90aabbabf81ac4fbc81ef1e8f40de99972b7e2ac",
-  "download_url": "https://raw.githubusercontent.com/artsy/emission/98f3e73f5e419f3af9ab928c86312f28a3c87475/tsconfig.json",
-  "type": "file",
-  "content": "ewogICAgImNvbXBpbGVyT3B0aW9ucyI6IHsKICAgICAgICAiYWxsb3dKcyI6\nIHRydWUKICAgIH0sCiAgICAiZXhjbHVkZSI6IFsKICAgICAgICAibm9kZV9t\nb2R1bGVzIiwKICAgICAgICAiUG9kL0Fzc2V0cyIsCiAgICAgICAgIkV4YW1w\nbGUvQnVpbGQiCiAgICBdCn0K\n",
-  "encoding": "base64",
-  "_links": {
-    "self": "https://api.github.com/repos/artsy/emission/contents/tsconfig.json?ref=98f3e73f5e419f3af9ab928c86312f28a3c87475",
-    "git": "https://api.github.com/repos/artsy/emission/git/blobs/90aabbabf81ac4fbc81ef1e8f40de99972b7e2ac",
-    "html": "https://github.com/artsy/emission/blob/98f3e73f5e419f3af9ab928c86312f28a3c87475/tsconfig.json"
+  "data": {
+    "name": "tsconfig.json",
+    "path": "tsconfig.json",
+    "sha": "90aabbabf81ac4fbc81ef1e8f40de99972b7e2ac",
+    "size": 153,
+    "url":
+      "https://api.github.com/repos/artsy/emission/contents/tsconfig.json?ref=98f3e73f5e419f3af9ab928c86312f28a3c87475",
+    "html_url": "https://github.com/artsy/emission/blob/98f3e73f5e419f3af9ab928c86312f28a3c87475/tsconfig.json",
+    "git_url": "https://api.github.com/repos/artsy/emission/git/blobs/90aabbabf81ac4fbc81ef1e8f40de99972b7e2ac",
+    "download_url":
+      "https://raw.githubusercontent.com/artsy/emission/98f3e73f5e419f3af9ab928c86312f28a3c87475/tsconfig.json",
+    "type": "file",
+    "content":
+      "ewogICAgImNvbXBpbGVyT3B0aW9ucyI6IHsKICAgICAgICAiYWxsb3dKcyI6\nIHRydWUKICAgIH0sCiAgICAiZXhjbHVkZSI6IFsKICAgICAgICAibm9kZV9t\nb2R1bGVzIiwKICAgICAgICAiUG9kL0Fzc2V0cyIsCiAgICAgICAgIkV4YW1w\nbGUvQnVpbGQiCiAgICBdCn0K\n",
+    "encoding": "base64",
+    "_links": {
+      "self":
+        "https://api.github.com/repos/artsy/emission/contents/tsconfig.json?ref=98f3e73f5e419f3af9ab928c86312f28a3c87475",
+      "git": "https://api.github.com/repos/artsy/emission/git/blobs/90aabbabf81ac4fbc81ef1e8f40de99972b7e2ac",
+      "html": "https://github.com/artsy/emission/blob/98f3e73f5e419f3af9ab928c86312f28a3c87475/tsconfig.json"
+    }
   }
 }

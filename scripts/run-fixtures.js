@@ -11,7 +11,7 @@ const expect = require("expect")
 
 // Toggle this on to update the JSON files for each run
 const writeResults = true
-
+console.log("If this script fails, you probably want to update the fixtures - just edit script/run-fixtures.js")
 const runnerFileJS = "distribution/commands/danger-runner.js"
 
 // Get all the fixtures

@@ -71,3 +71,12 @@ const missing = names.filter(n => !readme.includes(n))
 if (missing.length) {
   warn(`These providers are missing from the README: ${sentence(missing)}`)
 }
+
+console.log("before")
+danger.github.utils.fileContents("scripts/run-fixtures.js").then(fixtures => {
+  console.log("after")
+  console.log(fixtures)
+  if (fixtures.includes("const writeResults = true")) {
+    fail("Fixtures test script is still in write mode, edit `scripts/run-fixtures.js`.")
+  }
+})
