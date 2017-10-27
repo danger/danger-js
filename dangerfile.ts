@@ -2,10 +2,6 @@
 // This means we can re-use the type infra from the app, without having to
 // fake the import.
 
-// console.log(global)
-// console.log(require)
-// console.log(require.extensions)
-
 import { DangerDSLType } from "./source/dsl/DangerDSL"
 declare var danger: DangerDSLType
 // declare var results: any
@@ -21,7 +17,7 @@ import * as fs from "fs"
 
 schedule(async () => {
   // Request a CHANGELOG entry if not declared #trivial
-  const hasChangelog = danger.git.modified_files.includes("changelog.md")
+  const hasChangelog = danger.git.modified_files.includes("CHANGELOG.md")
   const isTrivial = (danger.github.pr.body + danger.github.pr.title).includes("#trivial")
   const isGreenkeeper = danger.github.pr.user.login === "greenkeeper"
 
@@ -71,3 +67,9 @@ const missing = names.filter(n => !readme.includes(n))
 if (missing.length) {
   warn(`These providers are missing from the README: ${sentence(missing)}`)
 }
+
+danger.github.utils.fileContents("scripts/run-fixtures.js").then(fixtures => {
+  if (fixtures.includes("const writeResults = true")) {
+    fail("Fixtures test script is still in write mode, edit `scripts/run-fixtures.js`.")
+  }
+})

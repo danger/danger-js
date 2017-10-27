@@ -35,16 +35,15 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
         repoSlug = pr.head.repo.full_name
         ref = pr.head.ref
       }
-
-      const data = await api.repos.getContent({
+      const opts = {
         ref,
         path,
         repo: repoSlug.split("/")[1],
         owner: repoSlug.split("/")[0],
-      })
-
-      if (data && data.type === "file") {
-        const buffer = new Buffer(data.content, data.encoding)
+      }
+      const response = await api.repos.getContent(opts)
+      if (response && response.data && response.data.type === "file") {
+        const buffer = new Buffer(response.data.content, response.data.encoding)
         return buffer.toString()
       } else {
         return ""
