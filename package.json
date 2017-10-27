@@ -35,8 +35,10 @@
     "test:watch": "jest --watch",
     "lint": "tslint \"source/**/*.ts\"",
     "lint:fix": "tslint \"source/**/*.ts\" --fix",
-    "prepublishOnly": "yarn run build && yarn declarations",
+    "prepublishOnly": "yarn run build && yarn declarations && yarn build:flow-types",
     "build": "shx rm -rf ./distribution && tsc -p tsconfig.production.json && madge ./distribution --circular",
+    "build:flow-types":
+      "cp source/danger.d.ts source/_danger.d.ts; sed -ie 's/api: GitHub/api: any/g' source/_danger.d.ts; npx flowgen source/_danger.d.ts -o distribution/danger.js.flow; rm source/_danger.d.ts",
     "build:watch": "tsc -w",
     "link": "yarn run build && chmod +x distribution/commands/danger.js && npm link",
     "declarations": "ts-node ./scripts/create-danger-dts.ts",

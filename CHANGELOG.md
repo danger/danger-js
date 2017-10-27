@@ -7,6 +7,8 @@
 ### 2.0.0-beta.2
 
 - Fixes a bug with `danger.github.utils` in that it didn't work as of b1, and now it does :+1: - [@orta][]
+- Ships a `danger.js.flow` in the root of the project, this may be enough to support flow typing, thanks to [@joarwilk][] 
+  and [flowgen](https://github.com/joarwilk/flowgen) - [@orta][]
 
 ### 2.0.0-beta.1
 
@@ -697,3 +699,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [danger-go]: https://github.com/bdotdub/danger-go
 [@orta]: https://github.com/orta
 [@ashfurrow]: https://github.com/ashfurrow
+[@joarwilk]: https://github.com/joarwilk
