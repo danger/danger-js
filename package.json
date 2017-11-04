@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -38,7 +38,7 @@
     "prepublishOnly": "yarn run build && yarn declarations && yarn build:flow-types",
     "build": "shx rm -rf ./distribution && tsc -p tsconfig.production.json && madge ./distribution --circular",
     "build:flow-types":
-      "cp source/danger.d.ts source/_danger.d.ts; sed -ie 's/api: GitHub/api: any/g' source/_danger.d.ts; npx flowgen source/_danger.d.ts -o distribution/danger.js.flow; rm source/_danger.d.ts",
+      "cp source/danger.d.ts source/_danger.d.ts; sed -ie 's/api: GitHub/api: any/g' source/_danger.d.ts; npx flowgen source/_danger.d.ts -o distribution/danger.js.flow; node scripts/update_flow_types.js",
     "build:watch": "tsc -w",
     "link": "yarn run build && chmod +x distribution/commands/danger.js && npm link",
     "declarations": "ts-node ./scripts/create-danger-dts.ts",
