@@ -4,6 +4,11 @@
 
 // ### Master
 
+### 2.0.0
+
+- Fixes the `danger.js.flow` fix to handle exports correctly, you _probably_ need to add
+  `.*/node_modules/danger/distribution/danger.js.flow` to the `[libs]` section of your settings for it to work though - [@orta][]
+
 ### 2.0.0-beta.2
 
 - Fixes a bug with `danger.github.utils` in that it didn't work as of b1, and now it does :+1: - [@orta][]
