@@ -6,7 +6,7 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *
  *  For setting up Circle CI, we recommend turning on "Only Build pull requests." in "Advanced Setting." Without this enabled,
  *  it is _really_ tricky for Danger to know whether you are in a pull request or not, as the environment metadata
- *  isn't reliable.
+ *  isn't reliable. This may be different with Circle v2.
  *
  *  With that set up, you can you add `yarn danger` to your `circle.yml`. If you override the default
  *  `test:` section, then add it as an extra step. Otherwise add a new `pre` section to the test:
@@ -20,13 +20,6 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *  ### Token Setup
  *
  *  There is no difference here for OSS vs Closed, add your `DANGER_GITHUB_API_TOKEN` to the Environment variable settings page.
- *
- *  ### I still want to run commit builds
- *
- *  OK, alright. So, if you add a `DANGER_CIRCLE_CI_API_TOKEN` then Danger will use the Circle API to look up
- *  the status of whether a commit is inside a PR or not. You can generate a token from inside the project set_trace_func
- *  then go to Permissions > "API Permissions" and generate a token with access to Status. Take that token and add
- *  it to Build Settings > "Environment Variables".
  *
  */
 export class Circle implements CISource {

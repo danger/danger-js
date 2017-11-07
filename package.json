@@ -1,11 +1,14 @@
 {
   "name": "danger",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
   "bin": {
-    "danger": "distribution/commands/danger.js"
+    "danger": "distribution/commands/danger.js",
+    "danger-pr": "distribution/commands/danger-pr.js",
+    "danger-process": "distribution/commands/danger-process.js",
+    "danger-run": "distribution/commands/danger-run.js"
   },
   "jest": {
     "transform": {
