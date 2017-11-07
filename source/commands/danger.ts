@@ -16,7 +16,8 @@ process.on("unhandledRejection", function(reason: string, _p: any) {
 // Provides the root node to the command-line architecture
 program
   .version(version)
-  .command("run", "Runs danger on your local system", { isDefault: true })
   .command("process", "Like `run` but lets another process handle evaluating a Dangerfile")
   .command("pr", "Runs your changes against an existing PR")
+  .command("runner", "Runs a dangerfile against a DSL passed in via STDIN")
+  .command("run", "Runs danger on your local system", { isDefault: true })
   .parse(process.argv)

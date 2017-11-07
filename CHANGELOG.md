@@ -4,6 +4,10 @@
 
 // ### Master
 
+### 2.0.1
+
+- Potential fixes for CLI sub-commands not running when packaging danger - [@orta][]
+
 ### 2.0.0
 
 - Fixes the `danger.js.flow` fix to handle exports correctly, you _probably_ need to add
