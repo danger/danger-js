@@ -13,3 +13,4 @@ dangerfile.js
 env
 jsconfig.json
 coverage
+.jest
