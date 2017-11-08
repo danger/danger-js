@@ -89,7 +89,8 @@
     "diff_url": "https://github.com/artsy/emission/pull/327.diff",
     "patch_url": "https://github.com/artsy/emission/pull/327.patch"
   },
-  "body": "Gap at the top is for follow button \n\n![screen shot 2016-09-30 at 15 08 40](https://cloud.githubusercontent.com/assets/49038/18994491/f46402d4-871f-11e6-85c8-21dc99addc7d.png)\n\n![screen shot 2016-09-30 at 15 08 43](https://cloud.githubusercontent.com/assets/49038/18994493/f64c635c-871f-11e6-8e95-fe2d7c0e0c1c.png)\n",
+  "body":
+    "Gap at the top is for follow button \n\n![screen shot 2016-09-30 at 15 08 40](https://cloud.githubusercontent.com/assets/49038/18994491/f46402d4-871f-11e6-85c8-21dc99addc7d.png)\n\n![screen shot 2016-09-30 at 15 08 43](https://cloud.githubusercontent.com/assets/49038/18994493/f64c635c-871f-11e6-8e95-fe2d7c0e0c1c.png)\n",
   "closed_by": {
     "login": "mennenia",
     "id": 373860,

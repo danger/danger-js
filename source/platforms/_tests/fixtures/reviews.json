@@ -20,7 +20,8 @@
       "type": "User",
       "site_admin": false
     },
-    "body": "Generally speaking, there's a _lot_ of similar shaped code here that seems to mainly only be different to the artist a tiny amount\n",
+    "body":
+      "Generally speaking, there's a _lot_ of similar shaped code here that seems to mainly only be different to the artist a tiny amount\n",
     "state": "COMMENTED",
     "html_url": "https://github.com/artsy/emission/pull/327#pullrequestreview-2332973",
     "pull_request_url": "https://api.github.com/repos/artsy/emission/pulls/327",

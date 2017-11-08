@@ -22,7 +22,8 @@
     },
     "url": "https://api.github.com/repos/artsy/emission/commits/13da2c844def1f4262ee440bd86fb2a3b021718b",
     "html_url": "https://github.com/artsy/emission/commit/13da2c844def1f4262ee440bd86fb2a3b021718b",
-    "comments_url": "https://api.github.com/repos/artsy/emission/commits/13da2c844def1f4262ee440bd86fb2a3b021718b/comments",
+    "comments_url":
+      "https://api.github.com/repos/artsy/emission/commits/13da2c844def1f4262ee440bd86fb2a3b021718b/comments",
     "author": {
       "login": "orta",
       "id": 49038,
@@ -92,7 +93,8 @@
     },
     "url": "https://api.github.com/repos/artsy/emission/commits/8075da28808804930754fa7bb63afd949fd70fce",
     "html_url": "https://github.com/artsy/emission/commit/8075da28808804930754fa7bb63afd949fd70fce",
-    "comments_url": "https://api.github.com/repos/artsy/emission/commits/8075da28808804930754fa7bb63afd949fd70fce/comments",
+    "comments_url":
+      "https://api.github.com/repos/artsy/emission/commits/8075da28808804930754fa7bb63afd949fd70fce/comments",
     "author": {
       "login": "orta",
       "id": 49038,
@@ -162,7 +164,8 @@
     },
     "url": "https://api.github.com/repos/artsy/emission/commits/76c122e47ee36170c86739bb6cc665b6114e308c",
     "html_url": "https://github.com/artsy/emission/commit/76c122e47ee36170c86739bb6cc665b6114e308c",
-    "comments_url": "https://api.github.com/repos/artsy/emission/commits/76c122e47ee36170c86739bb6cc665b6114e308c/comments",
+    "comments_url":
+      "https://api.github.com/repos/artsy/emission/commits/76c122e47ee36170c86739bb6cc665b6114e308c/comments",
     "author": {
       "login": "orta",
       "id": 49038,
@@ -232,7 +235,8 @@
     },
     "url": "https://api.github.com/repos/artsy/emission/commits/8dd830864c4cb888d65a60a161e573b792edf9c8",
     "html_url": "https://github.com/artsy/emission/commit/8dd830864c4cb888d65a60a161e573b792edf9c8",
-    "comments_url": "https://api.github.com/repos/artsy/emission/commits/8dd830864c4cb888d65a60a161e573b792edf9c8/comments",
+    "comments_url":
+      "https://api.github.com/repos/artsy/emission/commits/8dd830864c4cb888d65a60a161e573b792edf9c8/comments",
     "author": {
       "login": "orta",
       "id": 49038,
@@ -302,7 +306,8 @@
     },
     "url": "https://api.github.com/repos/artsy/emission/commits/466bdef69fdbcdceb3b35242370edc328605ae1e",
     "html_url": "https://github.com/artsy/emission/commit/466bdef69fdbcdceb3b35242370edc328605ae1e",
-    "comments_url": "https://api.github.com/repos/artsy/emission/commits/466bdef69fdbcdceb3b35242370edc328605ae1e/comments",
+    "comments_url":
+      "https://api.github.com/repos/artsy/emission/commits/466bdef69fdbcdceb3b35242370edc328605ae1e/comments",
     "author": {
       "login": "orta",
       "id": 49038,
@@ -372,7 +377,8 @@
     },
     "url": "https://api.github.com/repos/artsy/emission/commits/cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
     "html_url": "https://github.com/artsy/emission/commit/cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
-    "comments_url": "https://api.github.com/repos/artsy/emission/commits/cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75/comments",
+    "comments_url":
+      "https://api.github.com/repos/artsy/emission/commits/cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75/comments",
     "author": {
       "login": "orta",
       "id": 49038,
