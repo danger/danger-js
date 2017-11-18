@@ -4,6 +4,8 @@
 
 // ### Master
 
+- Adds a warning when you try to import Danger when you're not in a Dangerfole - [@orta][]
+
 ### 2.0.1
 
 - Potential fixes for CLI sub-commands not running when packaging danger - [@orta][]
