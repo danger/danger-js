@@ -20,7 +20,7 @@ const runDangerSubprocess = (subprocessName: string[], dslJSONString: string, ex
   let args = subprocessName
   args.shift() // mutate and remove the first element
 
-  const child = spawn(processName, args)
+  const child = spawn(processName, args, { env: process.env })
   let allLogs = ""
 
   child.stdin.write(dslJSONString)
