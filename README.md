@@ -13,40 +13,45 @@ Formalize your Pull Request etiquette.
 
 Danger runs after your CI, automating your team's conventions surrounding code review.
 
-This provides another logical step in your process, through this Danger can help lint your rote tasks in daily code review.
+This provides another logical step in your process, through this Danger can help lint your rote tasks in daily code
+review.
 
 You can use Danger to codify your teams norms, leaving humans to think about harder problems.
 
-Danger JS currently works with GitHub and Travis CI, Circle CI, Semaphore, Jenkins, Docker Cloud, surf-build, Codeship, Drone, Buildkite, buddybuild or Visual Studio Team Services.
+Danger JS currently works with GitHub and Travis CI, Circle CI, Semaphore, Jenkins, Docker Cloud, surf-build, Codeship,
+Drone, Buildkite, buddybuild or Visual Studio Team Services.
 
 ## For example?
 
 You can:
 
--   Enforce CHANGELOGs
--   Enforce links to Trello/JIRA in PR/MR bodies
--   Enforce using descriptive labels
--   Look out for common anti-patterns
--   Highlight interesting build artifacts
--   Give warnings when specific files change
+* Enforce CHANGELOGs
+* Enforce links to Trello/JIRA in PR/MR bodies
+* Enforce using descriptive labels
+* Look out for common anti-patterns
+* Highlight interesting build artifacts
+* Give warnings when specific files change
 
-Danger provides the glue to let _you_ build out the rules specific to your team's culture, offering useful metadata and a comprehensive plugin system to share common issues.
+Danger provides the glue to let _you_ build out the rules specific to your team's culture, offering useful metadata and
+a comprehensive plugin system to share common issues.
 
 ## Getting Started
 
-Alright. So, actually, you may be in the wrong place. From here on in, this README is going to be for people who are interested in working on and improving on Danger JS.
+Alright. So, actually, you may be in the wrong place. From here on in, this README is going to be for people who are
+interested in working on and improving on Danger JS.
 
 We keep all of the end-user documentation at <http://danger.systems/js>.
 
 Some quick links to get you started:
 
--   [Getting Started](http://danger.systems/js/guides/getting_started.html) 
--   [Guides Index](http://danger.systems/js/guides.html)
--   [DSL Reference](http://danger.systems/js/reference.html)
+* [Getting Started](http://danger.systems/js/guides/getting_started.html)
+* [Guides Index](http://danger.systems/js/guides.html)
+* [DSL Reference](http://danger.systems/js/reference.html)
 
 ## This thing is broken, I should help improve it!
 
-Awesommmmee. Everything you need is down below. You can also refer to [CONTRIBUTING](CONTRIBUTING.md) file where you'll find the same information listed below.
+Awesommmmee. Everything you need is down below. You can also refer to [CONTRIBUTING](CONTRIBUTING.md) file where you'll
+find the same information listed below.
 
 ```sh
 git clone https://github.com/danger/danger-js.git
@@ -65,8 +70,8 @@ yarn test
 yarn lint
 ```
 
-The fixers for both tslint and prettier will be applied when you commit, and on a push your code will be verified
-that it compiles.
+The fixers for both tslint and prettier will be applied when you commit, and on a push your code will be verified that
+it compiles.
 
 ### What is the TODO?
 
@@ -76,37 +81,35 @@ Check the issues, I try and keep my short term perspective there. Long term is i
 
 Following [this commit](https://github.com/danger/danger-js/commit/a26ac3b3bd4f002acd37f6a363c8e74c9d5039ab) as a model:
 
--   Checkout the `master` branch. Ensure your working tree is clean, and make sure you have the latest changes by running `git pull`.
--   Update `package.json` with the new version - for the sake of this example, the new version is **0.21.0**.
--   Modify `changelog.md`, adding a new `### 0.21.0` heading under the `### Master` heading at the top of the file.
--   Commit both changes with the commit message **Version bump**.
--   Tag this commit - `git tag 0.21.0`.
--   Push the commit and tag to master - `git push origin master --follow-tags`. Travis CI will build the tagged commit and publish that tagged version to NPM.
+* Checkout the `master` branch. Ensure your working tree is clean, and make sure you have the latest changes by running
+  `git pull`.
+* Update `package.json` with the new version - for the sake of this example, the new version is **0.21.0**.
+* Modify `changelog.md`, adding a new `### 0.21.0` heading under the `### Master` heading at the top of the file.
+* Commit both changes with the commit message **Version bump**.
+* Publish - `npm publish`.
 
 :ship:
 
 ## License, Contributor's Guidelines and Code of Conduct
 
-We try to keep as much discussion as possible in GitHub issues, but also have a pretty inactive Slack --- if you'd like an invite, ping [@Orta](https://twitter.com/orta/) a DM on Twitter with your email. It's mostly interesting if you want to stay on top of Danger without all the emails from GitHub.
+We try to keep as much discussion as possible in GitHub issues, but also have a pretty inactive Slack --- if you'd like
+an invite, ping [@Orta](https://twitter.com/orta/) a DM on Twitter with your email. It's mostly interesting if you want
+to stay on top of Danger without all the emails from GitHub.
 
-> This project is open source under the MIT license, which means you have full access to the source code and can modify it to fit your own needs.
+> This project is open source under the MIT license, which means you have full access to the source code and can modify
+> it to fit your own needs.
 >
-> This project subscribes to the [Moya Contributors Guidelines](https://github.com/Moya/contributors) which TLDR: means we give out push access easily and often.
+> This project subscribes to the [Moya Contributors Guidelines](https://github.com/Moya/contributors) which TLDR: means
+> we give out push access easily and often.
 >
-> Contributors subscribe to the [Contributor Code of Conduct](http://contributor-covenant.org/version/1/3/0/) based on the [Contributor Covenant](http://contributor-covenant.org) version 1.3.0.
+> Contributors subscribe to the [Contributor Code of Conduct](http://contributor-covenant.org/version/1/3/0/) based on
+> the [Contributor Covenant](http://contributor-covenant.org) version 1.3.0.
 
 [emiss]: https://github.com/artsy/emission/blob/master/dangerfile.ts
-
 [danger-js]: https://github.com/danger/danger-js/blob/master/dangerfile.ts
-
 [meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
-
 [fbj]: https://github.com/facebook/jest/blob/master/dangerfile.js
-
 [sc]: https://github.com/styled-components/styled-components/blob/master/dangerfile.js
-
 [rxjs]: https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js
-
 [setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
-
 [jest]: https://github.com/facebook/jest
