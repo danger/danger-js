@@ -3,6 +3,8 @@ developers, so please limit technical // terminology to in here.
 
 // ### Master
 
+### 2.0.2
+
 * Adds a warning when you try to import Danger when you're not in a Dangerfile - [@orta][]
 * Exports the current process env to the `danger run` subprocess - [@orta][]
 
