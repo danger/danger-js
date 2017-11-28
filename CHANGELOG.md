@@ -3,6 +3,10 @@ developers, so please limit technical // terminology to in here.
 
 // ### Master
 
+### 2.0.4
+
+* Fix `gloabally` typo in documentation. [@dfalling][]
+
 ### 2.0.2 - 2.0.3
 
 * Adds a warning when you try to import Danger when you're not in a Dangerfile - [@orta][]
