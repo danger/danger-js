@@ -1245,6 +1245,12 @@ cli-cursor@^2.1.0:
   dependencies:
     restore-cursor "^2.0.0"
 
+cli-interact@^0.1.9:
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/cli-interact/-/cli-interact-0.1.9.tgz#e58ae8505bbf7ed2e12671057cd559b12fdce28f"
+  dependencies:
+    readline-sync "~0.4.9"
+
 cli-spinners@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-0.1.2.tgz#bb764d88e185fb9e1e6a2a1f19772318f605e31c"
@@ -4232,6 +4238,10 @@ readdirp@^2.0.0:
     minimatch "^3.0.2"
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
+
+readline-sync@~0.4.9:
+  version "0.4.10"
+  resolved "https://registry.yarnpkg.com/readline-sync/-/readline-sync-0.4.10.tgz#bef03d993eca3585fd064f5d56d7276765dfc121"
 
 rechoir@^0.6.2:
   version "0.6.2"

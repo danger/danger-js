@@ -98,6 +98,7 @@
   "dependencies": {
     "babel-polyfill": "7.0.0-alpha.19",
     "chalk": "^2.0.0",
+    "cli-interact": "^0.1.9",
     "commander": "^2.9.0",
     "debug": "^3.0.0",
     "get-stdin": "^5.0.1",

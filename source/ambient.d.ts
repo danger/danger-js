@@ -18,6 +18,7 @@ declare module "*/package.json"
 declare module "require-from-string"
 declare module "node-eval"
 declare module "node-cleanup"
+declare module "cli-interact"
 
 // declare module "require-from-string" {
 //   export interface RequireOptions {
