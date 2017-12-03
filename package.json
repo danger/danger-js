@@ -16,13 +16,30 @@
     },
     "testResultsProcessor": "jest-json-reporter",
     "testRegex": "(.test)\\.(ts|tsx)$",
-    "testPathIgnorePatterns": ["/node_modules/", "/distribution/", "/types/"],
-    "moduleFileExtensions": ["js", "jsx", "json", "ts", "tsx"],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/distribution/",
+      "/types/"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json",
+      "ts",
+      "tsx"
+    ],
     "cacheDirectory": ".jest/cache"
   },
   "lint-staged": {
-    "*.json": ["yarn prettier --write", "git add"],
-    "*.@(ts|tsx)": ["tslint --fix", "yarn prettier --write", "git add"]
+    "*.json": [
+      "yarn prettier --write",
+      "git add"
+    ],
+    "*.@(ts|tsx)": [
+      "tslint --fix",
+      "yarn prettier --write",
+      "git add"
+    ]
   },
   "prettier": {
     "printWidth": 120,
@@ -40,13 +57,11 @@
     "lint:fix": "tslint \"source/**/*.ts\" --fix",
     "prepublishOnly": "yarn run build && yarn declarations && yarn build:flow-types",
     "build": "shx rm -rf ./distribution && tsc -p tsconfig.production.json && madge ./distribution --circular",
-    "build:flow-types":
-      "cp source/danger.d.ts source/_danger.d.ts; sed -ie 's/api: GitHub/api: any/g' source/_danger.d.ts; npx flowgen source/_danger.d.ts -o distribution/danger.js.flow; node scripts/update_flow_types.js",
+    "build:flow-types": "cp source/danger.d.ts source/_danger.d.ts; sed -ie 's/api: GitHub/api: any/g' source/_danger.d.ts; npx flowgen source/_danger.d.ts -o distribution/danger.js.flow; node scripts/update_flow_types.js",
     "build:watch": "tsc -w",
     "link": "yarn run build && chmod +x distribution/commands/danger.js && npm link",
     "declarations": "ts-node ./scripts/create-danger-dts.ts",
-    "docs:cp_defs":
-      "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/github/lib/index.d.ts docs/docs_generate/github.d.ts",
+    "docs:cp_defs": "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/github/lib/index.d.ts docs/docs_generate/github.d.ts",
     "docs": "yarn run docs:cp_defs; yarn typedoc -- --json docs/js_ref_dsl_docs.json --includeDeclarations ",
     "dts-lint": "yarn run declarations && yarn dtslint types"
   },
@@ -54,7 +69,10 @@
     "type": "git",
     "url": "git+https://github.com/danger/danger-js.git"
   },
-  "keywords": ["danger", "ci"],
+  "keywords": [
+    "danger",
+    "ci"
+  ],
   "author": "Orta Therox",
   "license": "MIT",
   "bugs": {
@@ -69,6 +87,7 @@
     "@types/jest": "^20.0.0",
     "@types/lodash.includes": "^4.3.3",
     "@types/node-fetch": "^1.6.6",
+    "@types/readline-sync": "^1.4.2",
     "babel-cli": "7.0.0-alpha.19",
     "babel-core": "7.0.0-alpha.19",
     "babel-plugin-syntax-async-functions": "7.0.0-alpha.19",
@@ -98,7 +117,6 @@
   "dependencies": {
     "babel-polyfill": "7.0.0-alpha.19",
     "chalk": "^2.0.0",
-    "cli-interact": "^0.1.9",
     "commander": "^2.9.0",
     "debug": "^3.0.0",
     "get-stdin": "^5.0.1",
@@ -114,6 +132,7 @@
     "parse-diff": "^0.4.0",
     "parse-link-header": "^1.0.1",
     "pinpoint": "^1.1.0",
+    "readline-sync": "^1.4.7",
     "require-from-string": "^2.0.1",
     "rfc6902": "^2.0.0",
     "vm2": "patriksimek/vm2#custom_files",

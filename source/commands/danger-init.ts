@@ -2,8 +2,9 @@ import * as fs from "fs"
 
 import * as program from "commander"
 import * as chalk from "chalk"
-import * as cliInteract from "cli-interact"
+import * as readlineSync from "readline-sync"
 import { setTimeout } from "timers"
+import { generateDefaultDangerfile } from "./init/default-dangerfile"
 
 program
   .description("Helps you get set up through to your first Danger.")
@@ -20,14 +21,17 @@ interface InitUI {
   askWithAnswers: (message: string, answers: string[]) => string
 }
 
-interface State {
-  hasSetUpAccount: boolean
+export interface InitState {
   filename: string
   botName: string
   isAnOSSRepo: boolean
   isWindows: boolean
   isMac: boolean
   supportsHLinks: boolean
+
+  hasCreatedDangerfile: boolean
+  hasSetUpAccount: boolean
+  hasSetUpAccountToken: boolean
 }
 
 class UI {
@@ -35,17 +39,15 @@ class UI {
     console.log(msg)
   }
   header = (msg: String) => this.say(chalk.bold("## " + msg))
-  command = (command: string) => this.say(chalk.gray.bold("> " + command))
+  command = (command: string) => this.say("> " + chalk.gray.bold(command) + " \n")
 
   link = (_name: string, href: string) => "-> " + href
 
-  pause = async (secs: number) => new Promise(done => setTimeout(done, secs / 1000))
-  waitForReturn = () => cliInteract.getChar("aaa")
-
-  askWithAnswers = (message: string, answers: string[]) => {
-    const a = cliInteract.getChoice(message, answers)
-    console.log(a)
-    return a
+  pause = async (secs: number) => new Promise(done => setTimeout(done, secs * 1000))
+  waitForReturn = () => readlineSync.question()
+  askWithAnswers = (_message: string, answers: string[]) => {
+    const a = readlineSync.keyInSelect(answers)
+    return answers[a]
   }
 }
 
@@ -57,7 +59,7 @@ const checkForTypeScript = () => fs.readFileSync("node_modules/typescript/packag
 // const _checkForBabel = () =>
 // fs.readFileSync("node_modules/babel-core/package.json") || fs.readFileSync("node_modules/@babel/core/package.json")
 
-const generateInitialState = (osProcess: NodeJS.Process): State => {
+const generateInitialState = (osProcess: NodeJS.Process): InitState => {
   const isMac = osProcess.platform === "darwin"
   const isWindows = osProcess.platform === "win32"
   const isIterm = osProcess.env["ITERM_SESSION_ID"] !== undefined
@@ -70,13 +72,14 @@ const generateInitialState = (osProcess: NodeJS.Process): State => {
     filename: checkForTypeScript() ? "Dangerfile.ts" : "Dangerfile.js",
     botName: "",
     hasSetUpAccount: false,
+    hasCreatedDangerfile: false,
+    hasSetUpAccountToken: false,
   }
 }
 
 const go = async () => {
   const initialState = generateInitialState(process)
   const ui: InitUI = new UI()
-
   await showTodoState(ui, initialState)
   await setupDangerfile(ui, initialState)
   await setupGitHubAccount(ui, initialState)
@@ -85,31 +88,32 @@ const go = async () => {
   await thanks(ui, initialState)
 }
 
-const showTodoState = async (ui: InitUI, state: State) => {
+const showTodoState = async (ui: InitUI, state: InitState) => {
   ui.say("We need to do the following:\n")
   await ui.pause(0.6)
-  ui.say(" - [ ] Create a Dangerfile and add a few simple rules.")
+  ui.say(` - [${state.hasCreatedDangerfile ? "x" : " "}] Create a Dangerfile and add a few simple rules.`)
   await ui.pause(0.6)
   ui.say(` - [${state.hasSetUpAccount ? "x" : " "}] Create a GitHub account for Danger to use, for messaging.`)
   await ui.pause(0.6)
-  ui.say(" - [ ] Set up an access token for Danger.")
+  ui.say(` - [${state.hasSetUpAccountToken ? "x" : " "}] Set up an access token for Danger.`)
   await ui.pause(0.6)
   ui.say(" - [ ] Set up Danger to run on your CI.\n\n")
 }
 
-const setupDangerfile = async (ui: InitUI, state: State) => {
+const setupDangerfile = async (ui: InitUI, state: InitState) => {
   ui.header("Step 1: Creating a starter Dangerfile")
   ui.say("I've set up an example Dangerfile for you in this folder.\n")
   await ui.pause(1)
 
-  const content = "default dangerfile"
+  const content = generateDefaultDangerfile(state)
   // File.write("Dangerfile", content)
 
   ui.header("Step 1: Creating a starter Dangerfile")
   ui.say("I've set up an example Dangerfile for you in this folder.\n")
   await ui.pause(1)
 
-  ui.say(chalk.bold(`> cat ${process.cwd()}/${state.filename}\n`))
+  ui.command(`cat ${process.cwd()}/${state.filename}`)
+
   content.split("\n").forEach(l => ui.say(`  ` + chalk.green(l)))
   ui.say("")
   await ui.pause(2)
@@ -123,10 +127,10 @@ const setupDangerfile = async (ui: InitUI, state: State) => {
   ui.waitForReturn()
 }
 
-const setupGitHubAccount = async (ui: InitUI, state: State) => {
+const setupGitHubAccount = async (ui: InitUI, state: InitState) => {
   ui.header("Step 2: Creating a GitHub account")
 
-  ui.say("In order to get the most out of Danger, I'd recommend giving her the ability to post in")
+  ui.say("In order to get the most out of Danger, I'd recommend giving it the ability to post in")
   ui.say("the code-review comment section.\n\n")
   await ui.pause(1)
 
@@ -159,7 +163,7 @@ const setupGitHubAccount = async (ui: InitUI, state: State) => {
   ui.waitForReturn()
 }
 
-const setupGHAccessToken = async (ui: InitUI, state: State) => {
+const setupGHAccessToken = async (ui: InitUI, state: InitState) => {
   ui.header("Step 3: Configuring a GitHub Personal Access Token")
 
   ui.say("Here's the link, you should open this in the private session where you just created the new GitHub account")
@@ -203,12 +207,12 @@ const setupGHAccessToken = async (ui: InitUI, state: State) => {
 //   ui.say(`Note: Holding ${modifier_key} and ${clicks} a link will open it in your browser.`)
 // }
 
-const wrapItUp = async (ui: InitUI, _state: State) => {
+const wrapItUp = async (ui: InitUI, _state: InitState) => {
   ui.header("Useful info")
   ui.say("- One of the best ways to test out new rules locally is via " + chalk.yellow("bundle exec danger pr") + ".")
   await ui.pause(0.6)
   ui.say(
-    "- You can have Danger output all of her variables to the console via the " + chalk.yellow("--verbose") + " option."
+    "- You can have Danger output all of the variables to the console via the " + chalk.yellow("--verbose") + " option."
   )
   await ui.pause(0.6)
   ui.say("- You can look at the following Dangerfiles to get some more ideas:")
@@ -218,7 +222,7 @@ const wrapItUp = async (ui: InitUI, _state: State) => {
   await ui.pause(1)
 }
 
-const thanks = async (ui: InitUI, _state: State) => {
+const thanks = async (ui: InitUI, _state: InitState) => {
   ui.say("\n\n🎉")
   await ui.pause(0.6)
 

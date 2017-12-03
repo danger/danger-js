@@ -3,6 +3,8 @@ developers, so please limit technical // terminology to in here.
 
 // ### Master
 
+* Adds a new command for getting set up: `danger init` - [@orta][]
+
 ### 2.0.2 - 2.0.3
 
 * Adds a warning when you try to import Danger when you're not in a Dangerfile - [@orta][]
