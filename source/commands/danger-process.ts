@@ -42,7 +42,7 @@ if (process.env["DANGER_VERBOSE"] || app.verbose) {
 getRuntimeCISource(app).then(source => {
   // This does not set a failing exit code
   if (source && !source.isPR) {
-    console.log("Skipping Danger due to not this run not executing on a PR.")
+    console.log("Skipping Danger due to this run not executing on a PR.")
   }
 
   // The optimal path
