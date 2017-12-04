@@ -5,6 +5,7 @@ developers, so please limit technical // terminology to in here.
 
 ### 2.0.4
 
+* Fix double negative in documentation. [@dfalling][]
 * Fix `gloabally` typo in documentation. [@dfalling][]
 
 ### 2.0.2 - 2.0.3
