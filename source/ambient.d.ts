@@ -20,6 +20,9 @@ declare module "node-eval"
 declare module "node-cleanup"
 declare module "cli-interact"
 
+declare module "hyperlinker"
+declare module "supports-hyperlinks"
+
 // declare module "require-from-string" {
 //   export interface RequireOptions {
 //     /** List of paths, that will be appended to module paths. Useful, when you want

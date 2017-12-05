@@ -3,13 +3,24 @@ import * as fs from "fs"
 import * as program from "commander"
 import * as chalk from "chalk"
 import * as readlineSync from "readline-sync"
+import { basename } from "path"
 import { setTimeout } from "timers"
 import { generateDefaultDangerfile } from "./init/default-dangerfile"
+
+import * as supportsHyperlinks from "supports-hyperlinks"
+import * as hyperLinker from "hyperlinker"
 
 program
   .description("Helps you get set up through to your first Danger.")
   .option("-i, --impatient", "Don't add dramatic pauses.")
   .option("-d, --defaults", "Always take the default action.")
+
+interface App {
+  impatient: boolean
+  defaults: boolean
+}
+
+const app: App = program as any
 
 interface InitUI {
   header: (msg: String) => void
@@ -33,21 +44,23 @@ export interface InitState {
   hasSetUpAccount: boolean
   hasSetUpAccountToken: boolean
 }
+const createUI = (state: InitState, app: App): InitUI => {
+  const say = (msg: String) => console.log(msg)
+  const fancyLink = (name: string, href: string) => hyperLinker(name, href)
+  const inlineLink = (_name: string, href: string) => "-> " + href
+  const linkToUse = state.supportsHLinks ? fancyLink : inlineLink
 
-class UI {
-  say = (msg: String) => {
-    console.log(msg)
-  }
-  header = (msg: String) => this.say(chalk.bold("## " + msg))
-  command = (command: string) => this.say("> " + chalk.gray.bold(command) + " \n")
-
-  link = (_name: string, href: string) => "-> " + href
-
-  pause = async (secs: number) => new Promise(done => setTimeout(done, secs * 1000))
-  waitForReturn = () => readlineSync.question()
-  askWithAnswers = (_message: string, answers: string[]) => {
-    const a = readlineSync.keyInSelect(answers)
-    return answers[a]
+  return {
+    say,
+    header: (msg: String) => say(chalk.bold("\n## " + msg + "\n")),
+    command: (command: string) => say("> " + chalk.white.bold(command) + " \n"),
+    link: (name: string, href: string) => linkToUse(name, href),
+    pause: async (secs: number) => new Promise(done => setTimeout(done, secs * 1000)),
+    waitForReturn: () => (app.impatient ? Promise.resolve() : readlineSync.question("\n↵ ")),
+    askWithAnswers: (_message: string, answers: string[]) => {
+      const a = readlineSync.keyInSelect(answers, "", { defaultInput: answers[0] })
+      return answers[a]
+    },
   }
 }
 
@@ -59,27 +72,29 @@ const checkForTypeScript = () => fs.readFileSync("node_modules/typescript/packag
 // const _checkForBabel = () =>
 // fs.readFileSync("node_modules/babel-core/package.json") || fs.readFileSync("node_modules/@babel/core/package.json")
 
+const capitalizeFirstLetter = (string: string) => string.charAt(0).toUpperCase() + string.slice(1)
+const camelCase = (str: string) => str.split("-").reduce((a, b) => a + b.charAt(0).toUpperCase() + b.slice(1))
+
 const generateInitialState = (osProcess: NodeJS.Process): InitState => {
   const isMac = osProcess.platform === "darwin"
   const isWindows = osProcess.platform === "win32"
-  const isIterm = osProcess.env["ITERM_SESSION_ID"] !== undefined
-  const isVTE = false
+  const folderName = capitalizeFirstLetter(camelCase(basename(osProcess.cwd())))
   return {
     isMac,
     isWindows,
-    supportsHLinks: isIterm || isVTE,
+    supportsHLinks: supportsHyperlinks.stdout,
     isAnOSSRepo: false, // Not asked yet
     filename: checkForTypeScript() ? "Dangerfile.ts" : "Dangerfile.js",
-    botName: "",
+    botName: folderName + "Bot",
     hasSetUpAccount: false,
     hasCreatedDangerfile: false,
     hasSetUpAccountToken: false,
   }
 }
 
-const go = async () => {
+const go = async (app: App) => {
   const initialState = generateInitialState(process)
-  const ui: InitUI = new UI()
+  const ui: InitUI = createUI(initialState, app)
   await showTodoState(ui, initialState)
   await setupDangerfile(ui, initialState)
   await setupGitHubAccount(ui, initialState)
@@ -87,6 +102,8 @@ const go = async () => {
   await wrapItUp(ui, initialState)
   await thanks(ui, initialState)
 }
+
+const highlight = chalk.bold.yellow
 
 const showTodoState = async (ui: InitUI, state: InitState) => {
   ui.say("We need to do the following:\n")
@@ -102,40 +119,45 @@ const showTodoState = async (ui: InitUI, state: InitState) => {
 
 const setupDangerfile = async (ui: InitUI, state: InitState) => {
   ui.header("Step 1: Creating a starter Dangerfile")
-  ui.say("I've set up an example Dangerfile for you in this folder.\n")
-  await ui.pause(1)
 
-  const content = generateDefaultDangerfile(state)
-  // File.write("Dangerfile", content)
+  if (!fs.existsSync("dangerfile.js") && !fs.existsSync("dangerfile.ts")) {
+    ui.say("I've set up an example Dangerfile for you in this folder.\n")
+    await ui.pause(1)
 
-  ui.header("Step 1: Creating a starter Dangerfile")
-  ui.say("I've set up an example Dangerfile for you in this folder.\n")
-  await ui.pause(1)
+    const content = generateDefaultDangerfile(state)
+    // File.write("Dangerfile", content)
 
-  ui.command(`cat ${process.cwd()}/${state.filename}`)
+    ui.command(`cat ${process.cwd()}/${state.filename}`)
 
-  content.split("\n").forEach(l => ui.say(`  ` + chalk.green(l)))
-  ui.say("")
-  await ui.pause(2)
+    content.split("\n").forEach(l => ui.say(`  ` + chalk.green(l)))
+    ui.say("")
+    await ui.pause(2)
 
-  ui.say("There's a collection of small, simple ideas in here, but Danger is about being able to easily")
-  ui.say("iterate. The power comes from you having the ability to codify fixes for some of the problems")
-  ui.say("that come up in day to day programming. It can be difficult to try and see those from day 1.")
+    ui.say("There's a collection of small, simple rukes in here, but Danger is about being able to easily")
+    ui.say("iterate. The power comes from you having the ability to codify fixes for some of the problems")
+    ui.say("that come up in day to day programming. It can be difficult to try and see those from day 1.")
 
-  ui.say("\nIf you'd like to investigate the file, and make some changes - I'll wait here,")
-  ui.say("press return when you're ready to move on...")
-  ui.waitForReturn()
+    ui.say("\nIf you'd like to investigate the file, and make some changes - I'll wait here,")
+    ui.say("press return when you're ready to move on...")
+    ui.waitForReturn()
+  } else {
+    ui.say("You already have a Dangerfile, so that simplifies this step!")
+  }
 }
 
 const setupGitHubAccount = async (ui: InitUI, state: InitState) => {
   ui.header("Step 2: Creating a GitHub account")
 
   ui.say("In order to get the most out of Danger, I'd recommend giving it the ability to post in")
-  ui.say("the code-review comment section.\n\n")
+  ui.say("the code-review comment section.\n")
   await ui.pause(1)
 
-  ui.say("IMO, it's best to do this by using the private mode of your browser. Create an account like")
-  ui.say(`${state.botName}, and don't forget a cool robot avatar.\n\n`)
+  ui.say(
+    `IMO, it's best to do this by using the private mode of your browser. Create an account like: ${highlight(
+      state.botName
+    )},`
+  )
+  ui.say(`and don't forget a cool robot avatar too.\n`)
   await ui.pause(1)
   ui.say("Here are great resources for creative commons images of robots:")
   const flickr = ui.link("flickr", "https://www.flickr.com/search/?text=robot&license=2%2C3%2C4%2C5%2C6%2C9")
@@ -156,7 +178,6 @@ const setupGitHubAccount = async (ui: InitUI, state: InitState) => {
     ui.say("to read and comment on.")
   }
 
-  ui.say("")
   // note_about_clicking_links
   await ui.pause(1)
   ui.say("\nCool, please press return when you have your account ready (and you've verified the email...)")
@@ -167,33 +188,36 @@ const setupGHAccessToken = async (ui: InitUI, state: InitState) => {
   ui.header("Step 3: Configuring a GitHub Personal Access Token")
 
   ui.say("Here's the link, you should open this in the private session where you just created the new GitHub account")
-  ui.link("New GitHub Token", "https://github.com/settings/tokens/new")
+  ui.say("\n" + ui.link("New GitHub Token", "https://github.com/settings/tokens/new"))
   await ui.pause(1)
 
   state.isAnOSSRepo =
     ui.askWithAnswers(
-      "For token access rights, I need to know if this is for an Open Source or Closed Source project\n",
-      ["Open", "Closed"]
-    ) === "Open"
+      "For token access rights, I need to know if this is for an Open Source or private project\n",
+      ["Open Source", "Private Repo"]
+    ) === "Open Source"
 
   if (state.isAnOSSRepo) {
-    ui.say("For Open Source projects, I'd recommend giving the token the smallest scope possible.")
-    ui.say("This means only providing access to " + chalk.yellow("public_repo") + " in the token.\n\n")
+    ui.say("\n\nFor Open Source projects, I'd recommend giving the token the smallest scope possible.")
+    ui.say("This means only providing access to " + highlight("public_repo") + " in the token.\n")
     await ui.pause(1)
-    ui.say("This token limits Danger's abilities to just writing comments on OSS projects. I recommend")
+    ui.say(
+      "This token limits Danger's abilities to " +
+        chalk.bold("just") +
+        " writing comments on OSS projects. We recommend"
+    )
     ui.say("this because the token can quite easily be extracted from the environment via pull requests.")
 
-    ui.say(
-      "\nIt is important that you do not store this token in your repository, as GitHub will automatically revoke it when pushed.\n"
-    )
+    ui.say("\nIt is important that you do not store this token in your repository, as GitHub will")
+    ui.say("automatically revoke your token when pushed.\n")
   } else {
-    ui.say("For Closed Source projects, I'd recommend giving the token access to the whole repo scope.")
-    ui.say("This means only providing access to " + chalk.yellow("repo") + ", and its children in the token.\n\n")
+    ui.say("\n\nFor private projects, I'd recommend giving the token access to the whole repo scope.")
+    ui.say("This means only providing access to " + highlight("repo") + ", and its children in the token.\n\n")
     await ui.pause(1)
-    ui.say("It's worth noting that you " + chalk.bold.white("should not") + " re-use this token for OSS repos.")
-    ui.say("Make a new one for those repos with just " + chalk.yellow("public_repo") + ".")
+    ui.say("It's worth noting that you " + chalk.bold.red("should not") + " re-use this token for OSS repos.")
+    ui.say("Make a new one for those repos with just " + highlight("public_repo") + ".")
     await ui.pause(1)
-    ui.say("Additionally, don't forget to add your new GitHub account as a collaborator to your Closed Source project.")
+    ui.say("Additionally, don't forget to add your new GitHub account as a collaborator to your private project.")
   }
 
   ui.say("\n👍, please press return when you have your token set up...")
@@ -209,26 +233,45 @@ const setupGHAccessToken = async (ui: InitUI, state: InitState) => {
 
 const wrapItUp = async (ui: InitUI, _state: InitState) => {
   ui.header("Useful info")
-  ui.say("- One of the best ways to test out new rules locally is via " + chalk.yellow("bundle exec danger pr") + ".")
-  await ui.pause(0.6)
   ui.say(
-    "- You can have Danger output all of the variables to the console via the " + chalk.yellow("--verbose") + " option."
+    "- One of the best ways to test out new rules as you build them is via " + highlight("bundle exec danger pr") + "."
   )
   await ui.pause(0.6)
-  ui.say("- You can look at the following Dangerfiles to get some more ideas:")
+  ui.say("- You can have Danger output a lot of info via the " + highlight("--verbose") + " option.")
   await ui.pause(0.6)
-  // ui.link("https://github.com/danger/danger/blob/master/Dangerfile")
-  // ui.link("https://github.com/artsy/eigen/blob/master/Dangerfile")
+  ui.say("- You can look at the following Dangerfiles to get some more ideas:\n")
+  await ui.pause(0.6)
+
+  const link = (name: string, url: string) => ui.say("  * " + ui.link(name, url))
+  link("artsy/Emission#dangerfile.ts", "https://github.com/artsy/emission/blob/master/dangerfile.ts")
+  link(
+    "facebook/react-native#danger/dangerfile.js",
+    "https://github.com/facebook/react-native/blob/master/danger/dangerfile.js"
+  )
+  link(
+    "apollographql/apollo-client#dangerfile.ts",
+    "https://github.com/apollographql/apollo-client/blob/master/dangerfile.ts"
+  )
+  link(
+    "styled-components/styled-components#dangerfile.js",
+    "https://github.com/styled-components/styled-components/blob/master/dangerfile.js"
+  )
+  link(
+    "styleguidist/react-styleguidist#dangerfile.js",
+    "https://github.com/styleguidist/react-styleguidist/blob/master/dangerfile.js"
+  )
+  link("storybooks/storybook#dangerfle.js", "https://github.com/storybooks/storybook/blob/master/dangerfile.js")
+  link("ReactiveX/rxjs#dangerfle.js", "https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js")
+
   await ui.pause(1)
 }
 
 const thanks = async (ui: InitUI, _state: InitState) => {
-  ui.say("\n\n🎉")
+  ui.say("\n\n🎉\n")
   await ui.pause(0.6)
 
-  ui.say(
-    "And you're good to go. Danger is a collaboration between Orta Therox, Gem 'Danger' Maslen, and all the people."
-  )
+  ui.say("And you're good to go. Danger is a collaboration between Orta Therox, Gem 'Danger' Maslen,")
+  ui.say("and every who has sent PRs.\n")
   ui.say(
     "If you like Danger, let others know. If you want to know more, follow " +
       chalk.yellow("@orta") +
@@ -239,4 +282,4 @@ const thanks = async (ui: InitUI, _state: InitState) => {
   ui.say("If you don't like something about Danger, help us improve the project - it's all volunteer time! xxx")
 }
 
-go()
+go(app)
