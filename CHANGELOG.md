@@ -4,6 +4,8 @@ developers, so please limit technical // terminology to in here.
 // ### Master
 
 * Adds a new command for getting set up: `danger init` - [@orta][]
+* Fix double negative in documentation. [@dfalling][]
+* Fix `gloabally` typo in documentation. [@dfalling][]
 
 ### 2.0.2 - 2.0.3
 
@@ -737,3 +739,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@orta]: https://github.com/orta
 [@ashfurrow]: https://github.com/ashfurrow
 [@joarwilk]: https://github.com/joarwilk
+[@dfalling]: https://github.com/dfalling

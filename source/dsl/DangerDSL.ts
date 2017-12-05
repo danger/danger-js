@@ -68,7 +68,7 @@ export interface DangerDSLType {
   readonly github: GitHubDSL
 
   /**
-   * Functions which are gloablly useful in most Dangerfiles. Right
+   * Functions which are globally useful in most Dangerfiles. Right
    * now, these functions are around making sentences of arrays, or
    * for making hrefs easily.
    */
