@@ -95,35 +95,46 @@ const generateInitialState = (osProcess: NodeJS.Process): InitState => {
 }
 
 const go = async (app: App) => {
-  const initialState = generateInitialState(process)
-  const ui: InitUI = createUI(initialState, app)
-  await showTodoState(ui, initialState)
-  await setupDangerfile(ui, initialState)
-  await setupGitHubAccount(ui, initialState)
-  await setupGHAccessToken(ui, initialState)
-  await wrapItUp(ui, initialState)
-  await thanks(ui, initialState)
+  const state = generateInitialState(process)
+  const ui: InitUI = createUI(state, app)
+
+  const { isOSS } = await showTodoState(ui)
+  state.isAnOSSRepo = isOSS
+
+  await setupDangerfile(ui, state)
+  await setupGitHubAccount(ui, state)
+  await setupGHAccessToken(ui, state)
+  await wrapItUp(ui, state)
+  await thanks(ui, state)
 }
 
 const highlight = chalk.bold.yellow
 
-const showTodoState = async (ui: InitUI, state: InitState) => {
+const showTodoState = async (ui: InitUI) => {
   ui.say("Welcome to Danger Init - this will take you through setting up Danger for this project.")
   ui.say("There are four main steps we need to do:\n")
   await ui.pause(0.6)
-  ui.say(` - [${state.hasCreatedDangerfile ? "x" : " "}] Create a Dangerfile and add a few simple rules.`)
+  ui.say(` - [ ] Create a Dangerfile and add a few simple rules.`)
   await ui.pause(0.6)
-  ui.say(` - [${state.hasSetUpAccount ? "x" : " "}] Create a GitHub account for Danger to use, for messaging.`)
+  ui.say(` - [ ] Create a GitHub account for Danger to use, for messaging.`)
   await ui.pause(0.6)
-  ui.say(` - [${state.hasSetUpAccountToken ? "x" : " "}] Set up an access token for Danger.`)
+  ui.say(` - [ ] Set up an access token for Danger.`)
   await ui.pause(0.6)
   ui.say(" - [ ] Set up Danger to run on your CI.\n")
+
+  await ui.pause(2)
+  ui.say(`But before we start, we need one bit of information from you.`)
+  ui.say("Is this is for an Open Source or private project?")
+
+  // TODO: Check for this via the API instead?
+  const isOSS = ui.askWithAnswers("", ["Open Source", "Private Repo"]) === "Open Source"
+  return { isOSS }
 }
 
 const setupDangerfile = async (ui: InitUI, state: InitState) => {
   ui.header("Step 1: Creating a starter Dangerfile")
 
-  if (!fs.existsSync("dangerfile.js") || !fs.existsSync("dangerfile.ts")) {
+  if (!fs.existsSync("dangerfile.js") && !fs.existsSync("dangerfile.ts")) {
     // if (!fs.existsSync("dangerfile.js") && !fs.existsSync("dangerfile.ts")) {
     ui.say("Ok, when you're ready for Danger to create a default Dangerfile, press return...")
     ui.waitForReturn()
@@ -200,13 +211,9 @@ const setupGHAccessToken = async (ui: InitUI, state: InitState) => {
   ui.say("\n" + ui.link("New GitHub Token", "https://github.com/settings/tokens/new"))
   await ui.pause(1)
 
-  ui.say("For token access rights, I need to know if this is for an Open Source or private project\n")
-  // TODO: Check for this via the API instead!
-  state.isAnOSSRepo = ui.askWithAnswers("", ["Open Source", "Private Repo"]) === "Open Source"
-
   if (state.isAnOSSRepo) {
-    ui.say("\n\nFor Open Source projects, I'd recommend giving the token the smallest scope possible.")
-    ui.say("This means only providing access to " + highlight("public_repo") + " in the token.\n")
+    ui.say("\nFor Open Source projects, I'd recommend giving the token the smallest scope possible.")
+    ui.say("This means only providing access to " + highlight("public_repo") + " in the token.")
     await ui.pause(1)
     ui.say(
       "This token limits Danger's abilities to " +
@@ -218,7 +225,7 @@ const setupGHAccessToken = async (ui: InitUI, state: InitState) => {
     ui.say("\nIt is important that you do not store this token in your repository, as GitHub will")
     ui.say("automatically revoke your token when pushed.\n")
   } else {
-    ui.say("\n\nFor private projects, I'd recommend giving the token access to the whole repo scope.")
+    ui.say("\nFor private projects, I'd recommend giving the token access to the whole repo scope.")
     ui.say("This means only providing access to " + highlight("repo") + ", and its children in the token.\n\n")
     await ui.pause(1)
     ui.say("It's worth noting that you " + chalk.bold.red("should not") + " re-use this token for OSS repos.")
@@ -287,7 +294,7 @@ const thanks = async (ui: InitUI, _state: InitState) => {
       " on Twitter."
   )
   ui.say("If you don't like something about Danger, help us improve the project - it's all done on volunteer time! xxx")
-  ui.say("Remember: it's nice to be nice.")
+  ui.say("Remember: it's nice to be nice.\n")
 }
 
 go(app)
