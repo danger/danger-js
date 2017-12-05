@@ -44,8 +44,6 @@ docs/doc_generate/
 docs/docs_generate/
 docs/js_ref_dsl_docs.json
 
-static/source/images/js/danger-logo-hero-cachable@2x.png
-
 types/index.d.ts
 .jest/
 test-results.json

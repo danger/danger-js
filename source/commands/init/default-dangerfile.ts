@@ -64,7 +64,7 @@ export const createImport = (state: InitState) => {
 
 export const changelogRule = `
 // Check for a CHANGELOG entry
-const hasChangelog = danger.git.modified_files.includes('CHANGELOG.md')
+const hasChangelog = danger.git.modified_files.some(f => f === 'CHANGELOG.md')
 const description = danger.github.pr.body + danger.github.pr.title
 const isTrivial = description.includes('#trivial')
 
@@ -90,10 +90,8 @@ if (danger.github.pr.assignee === null) {
 export const checkSeparateTestsFolder = (src: string, tests: string) => `
 // Request changes to ${src} also include changes to tests.
 const allFiles = danger.git.modified_files.concat(danger.git.created_files)
-const modifiedAppFiles = allFiles.filter(p => includes(p, '${src}/'))
-const modifiedTestFiles = allFiles.filter(p => includes(p, '${tests}/'))
-const hasAppChanges = modifiedAppFiles.length > 0;
-const hasTestChanges = modifiedTestFiles.length > 0;
+const hasAppChanges = allFiles.some(p => includes(p, '${src}/'))
+const hasTestChanges = allFiles.some(p => includes(p, '${tests}/'))
 
 if (hasAppChanges && !hasTestChanges) {
   warn('This PR does not include changes to tests, even though it affects app code.');
