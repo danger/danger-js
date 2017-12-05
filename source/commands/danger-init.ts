@@ -13,11 +13,9 @@ import { generateDefaultDangerfile } from "./init/default-dangerfile"
 program
   .description("Helps you get set up through to your first Danger.")
   .option("-i, --impatient", "Don't add dramatic pauses.")
-  .option("-d, --defaults", "Always take the default action.")
 
 interface App {
   impatient: boolean
-  defaults: boolean
 }
 
 const app: App = program as any
@@ -51,7 +49,7 @@ export interface InitState {
 const createUI = (state: InitState, app: App): InitUI => {
   const say = (msg: String) => console.log(msg)
   const fancyLink = (name: string, href: string) => hyperLinker(name, href)
-  const inlineLink = (_name: string, href: string) => "-> " + href
+  const inlineLink = (_name: string, href: string) => chalk.underline(href)
   const linkToUse = state.supportsHLinks ? fancyLink : inlineLink
 
   return {
@@ -125,12 +123,16 @@ const showTodoState = async (ui: InitUI, state: InitState) => {
 const setupDangerfile = async (ui: InitUI, state: InitState) => {
   ui.header("Step 1: Creating a starter Dangerfile")
 
-  if (!fs.existsSync("dangerfile.js") && fs.existsSync("dangerfile.ts")) {
-    ui.say("I've set up an example Dangerfile for you in this folder.\n")
+  if (!fs.existsSync("dangerfile.js") || !fs.existsSync("dangerfile.ts")) {
+    // if (!fs.existsSync("dangerfile.js") && !fs.existsSync("dangerfile.ts")) {
+    ui.say("Ok, when you're ready for Danger to create a default Dangerfile, press return...")
+    ui.waitForReturn()
+
+    ui.say("\nI've set up an example Dangerfile for you in this folder.\n")
     await ui.pause(1)
 
     const content = generateDefaultDangerfile(state)
-    // File.write("Dangerfile", content)
+    fs.writeFileSync(state.filename, content, "utf8")
 
     ui.command(`cat ${process.cwd()}/${state.filename}`)
 
@@ -279,12 +281,13 @@ const thanks = async (ui: InitUI, _state: InitState) => {
   ui.say("and every who has sent PRs.\n")
   ui.say(
     "If you like Danger, let others know. If you want to know more, follow " +
-      chalk.yellow("@orta") +
+      highlight("@orta") +
       " and " +
-      chalk.yellow("@DangerSystems") +
+      highlight("@DangerSystems") +
       " on Twitter."
   )
-  ui.say("If you don't like something about Danger, help us improve the project - it's all volunteer time! xxx")
+  ui.say("If you don't like something about Danger, help us improve the project - it's all done on volunteer time! xxx")
+  ui.say("Remember: it's nice to be nice.")
 }
 
 go(app)

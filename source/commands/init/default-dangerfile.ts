@@ -4,8 +4,9 @@ import { InitState } from "../danger-init"
 
 const generateDangerfileState = () => ({
   hasCHANGELOG: fs.existsSync("CHANGELOG.md"),
-  hasSeparateTestFolder: fs.existsSync("tests"),
+  hasSeparateTestFolder: fs.existsSync("tests") || fs.existsSync("specs"),
   hasPrettier: fs.existsSync("node_modules/.bin/prettier") || fs.existsSync("node_modules/.bin/prettier.bin"),
+  hasJest: fs.existsSync("node_modules/.bin/jest") || fs.existsSync("node_modules/.bin/jest.bin"),
 })
 
 export const generateDefaultDangerfile = (state: InitState) => {
@@ -22,11 +23,11 @@ export const generateDefaultDangerfile = (state: InitState) => {
     rules.push(assignSomeone)
   }
 
-  if (!dangerfileState.hasSeparateTestFolder) {
-    if (fs.existsSync("src")) {
-      rules.push(checkSeparateTestsFolder("src"))
-    } else if (fs.existsSync("lib")) {
-      rules.push(checkSeparateTestsFolder("lib"))
+  if (dangerfileState.hasSeparateTestFolder || dangerfileState.hasJest) {
+    const tests = dangerfileState.hasJest ? "__tests__" : "tests"
+    const source = ["src", "source", "lib"].filter(path => fs.existsSync(path))
+    if (source[0]) {
+      rules.push(checkSeparateTestsFolder(source[0], tests))
     }
   }
 
@@ -41,7 +42,13 @@ export const formatDangerfile = (dangerfile: string, dangerfileState: any) => {
   if (dangerfileState.hasPrettier) {
     // tslint:disable-next-line:no-require-imports
     const { format } = require("prettier")
-    return format(dangerfile)
+    // Get package settings
+    const localPrettier = fs.existsSync("package.json") && JSON.parse(fs.readFileSync("package.json", "utf8")).prettier
+    // Always include this
+    const always = { editorconfig: true }
+    const settings = localPrettier ? { ...always, ...localPrettier } : always
+
+    return format(dangerfile, settings)
   } else {
     return dangerfile
   }
@@ -80,16 +87,15 @@ if (danger.github.pr.assignee === null) {
 }
 `
 // For projects not using Jest
-export const checkSeparateTestsFolder = (src: string) => `
+export const checkSeparateTestsFolder = (src: string, tests: string) => `
 // Request changes to ${src} also include changes to tests.
-
-const allChangedFiles = danger.git.modified_files.concat(danger.git.created_files)
-const modifiedAppFiles = allChangedFiles.filter(p => includes(p, '${src}/'))
-const modifiedTestFiles = allChangedFiles.filter(p => includes(p, 'test/'))
-
+const allFiles = danger.git.modified_files.concat(danger.git.created_files)
+const modifiedAppFiles = allFiles.filter(p => includes(p, '${src}/'))
+const modifiedTestFiles = allFiles.filter(p => includes(p, '${tests}/'))
 const hasAppChanges = modifiedAppFiles.length > 0;
 const hasTestChanges = modifiedTestFiles.length > 0;
+
 if (hasAppChanges && !hasTestChanges) {
-  warn('This PR does not include any changes to tests, even though it affects app code.');
+  warn('This PR does not include changes to tests, even though it affects app code.');
 }
 `
