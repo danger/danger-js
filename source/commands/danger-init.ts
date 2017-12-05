@@ -1,14 +1,14 @@
-import * as fs from "fs"
-
-import * as program from "commander"
 import * as chalk from "chalk"
+import * as hyperLinker from "hyperlinker"
+import * as program from "commander"
 import * as readlineSync from "readline-sync"
+import * as supportsHyperlinks from "supports-hyperlinks"
+
+import * as fs from "fs"
 import { basename } from "path"
 import { setTimeout } from "timers"
-import { generateDefaultDangerfile } from "./init/default-dangerfile"
 
-import * as supportsHyperlinks from "supports-hyperlinks"
-import * as hyperLinker from "hyperlinker"
+import { generateDefaultDangerfile } from "./init/default-dangerfile"
 
 program
   .description("Helps you get set up through to your first Danger.")
@@ -35,10 +35,14 @@ interface InitUI {
 export interface InitState {
   filename: string
   botName: string
-  isAnOSSRepo: boolean
+
   isWindows: boolean
   isMac: boolean
+  isBabel: boolean
+  isTypeScript: boolean
   supportsHLinks: boolean
+
+  isAnOSSRepo: boolean
 
   hasCreatedDangerfile: boolean
   hasSetUpAccount: boolean
@@ -64,13 +68,9 @@ const createUI = (state: InitState, app: App): InitUI => {
   }
 }
 
-// re: link
-// echo -e '\e]8;;http://example.com\aThis is a link\e]8;;\a'
-//
-
-const checkForTypeScript = () => fs.readFileSync("node_modules/typescript/package.json")
-// const _checkForBabel = () =>
-// fs.readFileSync("node_modules/babel-core/package.json") || fs.readFileSync("node_modules/@babel/core/package.json")
+const checkForTypeScript = () => fs.existsSync("node_modules/typescript/package.json")
+const checkForBabel = () =>
+  fs.existsSync("node_modules/babel-core/package.json") || fs.existsSync("node_modules/@babel/core/package.json")
 
 const capitalizeFirstLetter = (string: string) => string.charAt(0).toUpperCase() + string.slice(1)
 const camelCase = (str: string) => str.split("-").reduce((a, b) => a + b.charAt(0).toUpperCase() + b.slice(1))
@@ -79,12 +79,16 @@ const generateInitialState = (osProcess: NodeJS.Process): InitState => {
   const isMac = osProcess.platform === "darwin"
   const isWindows = osProcess.platform === "win32"
   const folderName = capitalizeFirstLetter(camelCase(basename(osProcess.cwd())))
+  const isTypeScript = checkForTypeScript()
+  const isBabel = checkForBabel()
   return {
     isMac,
     isWindows,
+    isTypeScript,
+    isBabel,
+    isAnOSSRepo: true,
     supportsHLinks: supportsHyperlinks.stdout,
-    isAnOSSRepo: false, // Not asked yet
-    filename: checkForTypeScript() ? "Dangerfile.ts" : "Dangerfile.js",
+    filename: isTypeScript ? "Dangerfile.ts" : "Dangerfile.js",
     botName: folderName + "Bot",
     hasSetUpAccount: false,
     hasCreatedDangerfile: false,
@@ -120,7 +124,7 @@ const showTodoState = async (ui: InitUI, state: InitState) => {
 const setupDangerfile = async (ui: InitUI, state: InitState) => {
   ui.header("Step 1: Creating a starter Dangerfile")
 
-  if (!fs.existsSync("dangerfile.js") && !fs.existsSync("dangerfile.ts")) {
+  if (!fs.existsSync("dangerfile.js") && fs.existsSync("dangerfile.ts")) {
     ui.say("I've set up an example Dangerfile for you in this folder.\n")
     await ui.pause(1)
 
@@ -129,11 +133,11 @@ const setupDangerfile = async (ui: InitUI, state: InitState) => {
 
     ui.command(`cat ${process.cwd()}/${state.filename}`)
 
-    content.split("\n").forEach(l => ui.say(`  ` + chalk.green(l)))
+    content.split("\n").forEach((l: string) => ui.say(`  ` + chalk.green(l)))
     ui.say("")
     await ui.pause(2)
 
-    ui.say("There's a collection of small, simple rukes in here, but Danger is about being able to easily")
+    ui.say("There's a collection of small, simple rules in here, but Danger is about being able to easily")
     ui.say("iterate. The power comes from you having the ability to codify fixes for some of the problems")
     ui.say("that come up in day to day programming. It can be difficult to try and see those from day 1.")
 
