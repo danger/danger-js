@@ -110,7 +110,8 @@ const go = async (app: App) => {
 const highlight = chalk.bold.yellow
 
 const showTodoState = async (ui: InitUI, state: InitState) => {
-  ui.say("We need to do the following:\n")
+  ui.say("Welcome to Danger Init - this will take you through setting up Danger for this project.")
+  ui.say("There are four main steps we need to do:\n")
   await ui.pause(0.6)
   ui.say(` - [${state.hasCreatedDangerfile ? "x" : " "}] Create a Dangerfile and add a few simple rules.`)
   await ui.pause(0.6)
@@ -118,7 +119,7 @@ const showTodoState = async (ui: InitUI, state: InitState) => {
   await ui.pause(0.6)
   ui.say(` - [${state.hasSetUpAccountToken ? "x" : " "}] Set up an access token for Danger.`)
   await ui.pause(0.6)
-  ui.say(" - [ ] Set up Danger to run on your CI.\n\n")
+  ui.say(" - [ ] Set up Danger to run on your CI.\n")
 }
 
 const setupDangerfile = async (ui: InitUI, state: InitState) => {
@@ -153,17 +154,17 @@ const setupGitHubAccount = async (ui: InitUI, state: InitState) => {
   ui.header("Step 2: Creating a GitHub account")
 
   ui.say("In order to get the most out of Danger, I'd recommend giving it the ability to post in")
-  ui.say("the code-review comment section.\n")
+  ui.say("the code-review comment section.")
+
+  ui.say("\n" + ui.link("GitHub Home", "https://github.com") + "\n")
+
   await ui.pause(1)
 
-  ui.say(
-    `IMO, it's best to do this by using the private mode of your browser. Create an account like: ${highlight(
-      state.botName
-    )},`
-  )
-  ui.say(`and don't forget a cool robot avatar too.\n`)
+  ui.say(`IMO, it's best to do this by using the private mode of your browser.`)
+  ui.say(`Create an account like: ${highlight(state.botName)} and don't forget a cool robot avatar too.\n`)
+
   await ui.pause(1)
-  ui.say("Here are great resources for creative commons images of robots:")
+  ui.say("Here are great resources for creative-commons images of robots:\n")
   const flickr = ui.link("flickr", "https://www.flickr.com/search/?text=robot&license=2%2C3%2C4%2C5%2C6%2C9")
   const googImages = ui.link(
     "googleimages",
@@ -174,6 +175,9 @@ const setupGitHubAccount = async (ui: InitUI, state: InitState) => {
   ui.say("")
   await ui.pause(1)
 
+  noteAboutClickingLinks(ui, state)
+  await ui.pause(1)
+
   if (state.isAnOSSRepo) {
     ui.say(`${state.botName} does not need privileged access to your repo or org. This is because Danger will only`)
     ui.say("be writing comments, and you do not need special access for that.")
@@ -182,7 +186,6 @@ const setupGitHubAccount = async (ui: InitUI, state: InitState) => {
     ui.say("to read and comment on.")
   }
 
-  // note_about_clicking_links
   await ui.pause(1)
   ui.say("\nCool, please press return when you have your account ready (and you've verified the email...)")
   ui.waitForReturn()
@@ -195,11 +198,9 @@ const setupGHAccessToken = async (ui: InitUI, state: InitState) => {
   ui.say("\n" + ui.link("New GitHub Token", "https://github.com/settings/tokens/new"))
   await ui.pause(1)
 
-  state.isAnOSSRepo =
-    ui.askWithAnswers(
-      "For token access rights, I need to know if this is for an Open Source or private project\n",
-      ["Open Source", "Private Repo"]
-    ) === "Open Source"
+  ui.say("For token access rights, I need to know if this is for an Open Source or private project\n")
+  // TODO: Check for this via the API instead!
+  state.isAnOSSRepo = ui.askWithAnswers("", ["Open Source", "Private Repo"]) === "Open Source"
 
   if (state.isAnOSSRepo) {
     ui.say("\n\nFor Open Source projects, I'd recommend giving the token the smallest scope possible.")
@@ -228,12 +229,12 @@ const setupGHAccessToken = async (ui: InitUI, state: InitState) => {
   ui.waitForReturn()
 }
 
-// const noteAboutClickingLinks = (ui: InitUI, state: State) => {
-//   const modifier_key = state.isMac ? "cmd ( ⌘ )" : "ctrl"
-//   const clicks = state.isWindows ? "clicking" : "double clicking"
-
-//   ui.say(`Note: Holding ${modifier_key} and ${clicks} a link will open it in your browser.`)
-// }
+const noteAboutClickingLinks = (ui: InitUI, state: InitState) => {
+  const modifier_key = state.isMac ? "cmd ( ⌘ )" : "ctrl"
+  const clicks = state.isWindows || state.supportsHLinks ? "clicking" : "double clicking"
+  const sidenote = chalk.italic.bold("Sidenote: ")
+  ui.say(`${sidenote} Holding ${modifier_key} and ${clicks} a link will open it in your browser.\n`)
+}
 
 const wrapItUp = async (ui: InitUI, _state: InitState) => {
   ui.header("Useful info")
