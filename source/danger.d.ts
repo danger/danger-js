@@ -520,6 +520,10 @@ declare module "danger" {
      * Whether the user is an org, or a user
      */
     type: "User" | "Organization"
+    /**
+     * The url for a users's image
+     */
+    avatar_url: string
   }
 
   /**
