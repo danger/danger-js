@@ -1,4 +1,5 @@
-import { InitState, InitUI, highlight } from "../danger-init"
+import { highlight } from "../danger-init"
+import { InitUI, InitState } from "./interfaces"
 
 export const travis = async (ui: InitUI, state: InitState) => {
   // https://travis-ci.org/artsy/eigen/settings
@@ -23,6 +24,18 @@ export const travis = async (ui: InitUI, state: InitState) => {
   if (state.isAnOSSRepo) {
     ui.say('As you have an OSS repo - make sure to have "Display value in build log" enabled.')
   }
+
+  ui.say("Next, you need to edit your `.travis.yml` to include `yarn danger`. If you already have")
+  ui.say("a `script:` section then we recommend adding this command at the end of the script step: `- yarn danger`.\n")
+  ui.say("Otherwise, add a `before_script` step to the root of the `.travis.yml` with `yarn danger`\n")
+
+  ui.say(" ```yaml")
+  ui.say("   before_script:")
+  ui.say("     - yarn danger")
+  ui.say(" ```\n")
+
+  ui.say("Adding this to your `.travis.yml` allows Danger to fail your build.")
+  ui.say("With that set up, you can edit your job to add `yarn danger` at the build action.")
 }
 
 export const circle = async (ui: InitUI, state: InitState) => {
@@ -58,6 +71,14 @@ export const circle = async (ui: InitUI, state: InitState) => {
   ui.say(`In order to expose the environment variable, go to: ${circleSettings}`)
 
   ui.say("The name is " + highlight("DANGER_GITHUB_API_TOKEN") + " and the value is the GitHub Personal Access Token.")
+
+  ui.say("With that set up, you can you add `yarn danger` to your `circle.yml`. If you override the default")
+  ui.say("`test:` section, then add danger as an extra step. \nOtherwise add a new `pre` section to the test:\n")
+  ui.say("  ``` ruby")
+  ui.say("  test:")
+  ui.say("    override:")
+  ui.say("        - yarn danger")
+  ui.say("  ```")
 }
 
 export const unsure = async (ui: InitUI, _state: InitState) => {

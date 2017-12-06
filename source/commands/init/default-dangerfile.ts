@@ -1,6 +1,5 @@
 import * as fs from "fs"
-
-import { InitState } from "../danger-init"
+import { InitState } from "./interfaces"
 
 const generateDangerfileState = () => ({
   hasCHANGELOG: fs.existsSync("CHANGELOG.md"),
