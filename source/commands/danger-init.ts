@@ -135,10 +135,6 @@ const setupDangerfile = async (ui: InitUI, state: InitState) => {
   ui.header("Step 1: Creating a starter Dangerfile")
 
   if (!fs.existsSync("dangerfile.js") && !fs.existsSync("dangerfile.ts")) {
-    // if (!fs.existsSync("dangerfile.js") && !fs.existsSync("dangerfile.ts")) {
-    ui.say("Ok, when you're ready for Danger to create a default Dangerfile, press return...")
-    ui.waitForReturn()
-
     ui.say("\nI've set up an example Dangerfile for you in this folder.\n")
     await ui.pause(1)
 

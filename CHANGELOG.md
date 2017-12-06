@@ -3,7 +3,7 @@ developers, so please limit technical // terminology to in here.
 
 // ### Master
 
-### 2.1.1
+### 2.1.1 - 2.1.2
 
 * Fixes for `danger init` - there's always a patch :D - [@orta][]
 
