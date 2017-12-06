@@ -1,5 +1,4 @@
-import { highlight } from "../danger-init"
-import { InitUI, InitState } from "./interfaces"
+import { InitUI, InitState, highlight } from "./interfaces"
 
 export const travis = async (ui: InitUI, state: InitState) => {
   // https://travis-ci.org/artsy/eigen/settings

@@ -6,7 +6,7 @@ import * as fs from "fs"
 import { generateDefaultDangerfile } from "./init/default-dangerfile"
 import { travis, circle, unsure } from "./init/add-to-ci"
 import { generateInitialState, createUI } from "./init/state-setup"
-import { InitUI, InitState } from "./init/interfaces"
+import { InitUI, InitState, highlight } from "./init/interfaces"
 
 program
   .description("Helps you get set up through to your first Danger.")
@@ -32,8 +32,6 @@ const go = async (app: App) => {
   await wrapItUp(ui, state)
   await thanks(ui, state)
 }
-
-export const highlight = chalk.bold.yellow
 
 const showTodoState = async (ui: InitUI) => {
   ui.say("Welcome to Danger Init - this will take you through setting up Danger for this project.")

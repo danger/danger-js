@@ -1,3 +1,5 @@
+import * as chalk from "chalk"
+
 export interface InitState {
   filename: string
   botName: string
@@ -27,3 +29,5 @@ export interface InitUI {
   link: (name: string, href: string) => string
   askWithAnswers: (message: string, answers: string[]) => string
 }
+
+export const highlight = chalk.bold.yellow
