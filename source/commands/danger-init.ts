@@ -9,6 +9,8 @@ import { basename } from "path"
 import { setTimeout } from "timers"
 
 import { generateDefaultDangerfile } from "./init/default-dangerfile"
+import { getRepoSlug } from "./init/get-repo-slug"
+import { travis, circle, unsure } from "./init/add-to-ci"
 
 program
   .description("Helps you get set up through to your first Danger.")
@@ -20,7 +22,7 @@ interface App {
 
 const app: App = program as any
 
-interface InitUI {
+export interface InitUI {
   header: (msg: String) => void
   command: (command: string) => void
   say: (msg: String) => void
@@ -30,22 +32,6 @@ interface InitUI {
   askWithAnswers: (message: string, answers: string[]) => string
 }
 
-export interface InitState {
-  filename: string
-  botName: string
-
-  isWindows: boolean
-  isMac: boolean
-  isBabel: boolean
-  isTypeScript: boolean
-  supportsHLinks: boolean
-
-  isAnOSSRepo: boolean
-
-  hasCreatedDangerfile: boolean
-  hasSetUpAccount: boolean
-  hasSetUpAccountToken: boolean
-}
 const createUI = (state: InitState, app: App): InitUI => {
   const say = (msg: String) => console.log(msg)
   const fancyLink = (name: string, href: string) => hyperLinker(name, href)
@@ -66,12 +52,25 @@ const createUI = (state: InitState, app: App): InitUI => {
   }
 }
 
-const checkForTypeScript = () => fs.existsSync("node_modules/typescript/package.json")
-const checkForBabel = () =>
-  fs.existsSync("node_modules/babel-core/package.json") || fs.existsSync("node_modules/@babel/core/package.json")
+export interface InitState {
+  filename: string
+  botName: string
 
-const capitalizeFirstLetter = (string: string) => string.charAt(0).toUpperCase() + string.slice(1)
-const camelCase = (str: string) => str.split("-").reduce((a, b) => a + b.charAt(0).toUpperCase() + b.slice(1))
+  isWindows: boolean
+  isMac: boolean
+  isBabel: boolean
+  isTypeScript: boolean
+  supportsHLinks: boolean
+
+  isAnOSSRepo: boolean
+
+  hasCreatedDangerfile: boolean
+  hasSetUpAccount: boolean
+  hasSetUpAccountToken: boolean
+
+  repoSlug: string | null
+  ciType: "travis" | "circle" | "unknown"
+}
 
 const generateInitialState = (osProcess: NodeJS.Process): InitState => {
   const isMac = osProcess.platform === "darwin"
@@ -79,6 +78,10 @@ const generateInitialState = (osProcess: NodeJS.Process): InitState => {
   const folderName = capitalizeFirstLetter(camelCase(basename(osProcess.cwd())))
   const isTypeScript = checkForTypeScript()
   const isBabel = checkForBabel()
+  const hasTravis = fs.existsSync(".travis.yml")
+  const hasCircle = fs.existsSync("circle.yml")
+  const ciType = hasTravis ? "travis" : hasCircle ? "circle" : "unknown"
+
   return {
     isMac,
     isWindows,
@@ -91,8 +94,17 @@ const generateInitialState = (osProcess: NodeJS.Process): InitState => {
     hasSetUpAccount: false,
     hasCreatedDangerfile: false,
     hasSetUpAccountToken: false,
+    repoSlug: getRepoSlug(),
+    ciType,
   }
 }
+
+const checkForTypeScript = () => fs.existsSync("node_modules/typescript/package.json")
+const checkForBabel = () =>
+  fs.existsSync("node_modules/babel-core/package.json") || fs.existsSync("node_modules/@babel/core/package.json")
+
+const capitalizeFirstLetter = (string: string) => string.charAt(0).toUpperCase() + string.slice(1)
+const camelCase = (str: string) => str.split("-").reduce((a, b) => a + b.charAt(0).toUpperCase() + b.slice(1))
 
 const go = async (app: App) => {
   const state = generateInitialState(process)
@@ -104,11 +116,12 @@ const go = async (app: App) => {
   await setupDangerfile(ui, state)
   await setupGitHubAccount(ui, state)
   await setupGHAccessToken(ui, state)
+  await addToCI(ui, state)
   await wrapItUp(ui, state)
   await thanks(ui, state)
 }
 
-const highlight = chalk.bold.yellow
+export const highlight = chalk.bold.yellow
 
 const showTodoState = async (ui: InitUI) => {
   ui.say("Welcome to Danger Init - this will take you through setting up Danger for this project.")
@@ -274,6 +287,19 @@ const wrapItUp = async (ui: InitUI, _state: InitState) => {
   link("ReactiveX/rxjs#dangerfle.js", "https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js")
 
   await ui.pause(1)
+}
+
+const addToCI = async (ui: InitUI, state: InitState) => {
+  ui.header("Add to CI")
+
+  await ui.pause(0.6)
+  if (state.ciType === "travis") {
+    await travis(ui, state)
+  } else if (state.ciType === "circle") {
+    await circle(ui, state)
+  } else {
+    await unsure(ui, state)
+  }
 }
 
 const thanks = async (ui: InitUI, _state: InitState) => {
