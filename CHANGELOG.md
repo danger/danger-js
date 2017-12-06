@@ -3,6 +3,8 @@ developers, so please limit technical // terminology to in here.
 
 // ### Master
 
+### 2.1.0
+
 * Adds a new command for getting set up: `danger init` - [@orta][]
 * Fix double negative in documentation. [@dfalling][]
 * Fix `gloabally` typo in documentation. [@dfalling][]
