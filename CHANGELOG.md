@@ -3,6 +3,10 @@ developers, so please limit technical // terminology to in here.
 
 // ### Master
 
+### 2.1.1
+
+* Fixes for `danger init` - there's always a patch :D - [@orta][]
+
 ### 2.1.0
 
 * Adds a new command for getting set up: `danger init` - [@orta][]
