@@ -1,14 +1,12 @@
 import * as chalk from "chalk"
-import * as hyperLinker from "hyperlinker"
 import * as program from "commander"
-import * as readlineSync from "readline-sync"
-import * as supportsHyperlinks from "supports-hyperlinks"
 
 import * as fs from "fs"
-import { basename } from "path"
-import { setTimeout } from "timers"
 
 import { generateDefaultDangerfile } from "./init/default-dangerfile"
+import { travis, circle, unsure } from "./init/add-to-ci"
+import { generateInitialState, createUI } from "./init/state-setup"
+import { InitUI, InitState, highlight } from "./init/interfaces"
 
 program
   .description("Helps you get set up through to your first Danger.")
@@ -20,80 +18,6 @@ interface App {
 
 const app: App = program as any
 
-interface InitUI {
-  header: (msg: String) => void
-  command: (command: string) => void
-  say: (msg: String) => void
-  pause: (secs: number) => Promise<{}>
-  waitForReturn: () => void
-  link: (name: string, href: string) => string
-  askWithAnswers: (message: string, answers: string[]) => string
-}
-
-export interface InitState {
-  filename: string
-  botName: string
-
-  isWindows: boolean
-  isMac: boolean
-  isBabel: boolean
-  isTypeScript: boolean
-  supportsHLinks: boolean
-
-  isAnOSSRepo: boolean
-
-  hasCreatedDangerfile: boolean
-  hasSetUpAccount: boolean
-  hasSetUpAccountToken: boolean
-}
-const createUI = (state: InitState, app: App): InitUI => {
-  const say = (msg: String) => console.log(msg)
-  const fancyLink = (name: string, href: string) => hyperLinker(name, href)
-  const inlineLink = (_name: string, href: string) => chalk.underline(href)
-  const linkToUse = state.supportsHLinks ? fancyLink : inlineLink
-
-  return {
-    say,
-    header: (msg: String) => say(chalk.bold("\n## " + msg + "\n")),
-    command: (command: string) => say("> " + chalk.white.bold(command) + " \n"),
-    link: (name: string, href: string) => linkToUse(name, href),
-    pause: async (secs: number) => new Promise(done => setTimeout(done, secs * 1000)),
-    waitForReturn: () => (app.impatient ? Promise.resolve() : readlineSync.question("\n↵ ")),
-    askWithAnswers: (_message: string, answers: string[]) => {
-      const a = readlineSync.keyInSelect(answers, "", { defaultInput: answers[0] })
-      return answers[a]
-    },
-  }
-}
-
-const checkForTypeScript = () => fs.existsSync("node_modules/typescript/package.json")
-const checkForBabel = () =>
-  fs.existsSync("node_modules/babel-core/package.json") || fs.existsSync("node_modules/@babel/core/package.json")
-
-const capitalizeFirstLetter = (string: string) => string.charAt(0).toUpperCase() + string.slice(1)
-const camelCase = (str: string) => str.split("-").reduce((a, b) => a + b.charAt(0).toUpperCase() + b.slice(1))
-
-const generateInitialState = (osProcess: NodeJS.Process): InitState => {
-  const isMac = osProcess.platform === "darwin"
-  const isWindows = osProcess.platform === "win32"
-  const folderName = capitalizeFirstLetter(camelCase(basename(osProcess.cwd())))
-  const isTypeScript = checkForTypeScript()
-  const isBabel = checkForBabel()
-  return {
-    isMac,
-    isWindows,
-    isTypeScript,
-    isBabel,
-    isAnOSSRepo: true,
-    supportsHLinks: supportsHyperlinks.stdout,
-    filename: isTypeScript ? "Dangerfile.ts" : "Dangerfile.js",
-    botName: folderName + "Bot",
-    hasSetUpAccount: false,
-    hasCreatedDangerfile: false,
-    hasSetUpAccountToken: false,
-  }
-}
-
 const go = async (app: App) => {
   const state = generateInitialState(process)
   const ui: InitUI = createUI(state, app)
@@ -104,11 +28,10 @@ const go = async (app: App) => {
   await setupDangerfile(ui, state)
   await setupGitHubAccount(ui, state)
   await setupGHAccessToken(ui, state)
+  await addToCI(ui, state)
   await wrapItUp(ui, state)
   await thanks(ui, state)
 }
-
-const highlight = chalk.bold.yellow
 
 const showTodoState = async (ui: InitUI) => {
   ui.say("Welcome to Danger Init - this will take you through setting up Danger for this project.")
@@ -274,6 +197,19 @@ const wrapItUp = async (ui: InitUI, _state: InitState) => {
   link("ReactiveX/rxjs#dangerfle.js", "https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js")
 
   await ui.pause(1)
+}
+
+const addToCI = async (ui: InitUI, state: InitState) => {
+  ui.header("Add to CI")
+
+  await ui.pause(0.6)
+  if (state.ciType === "travis") {
+    await travis(ui, state)
+  } else if (state.ciType === "circle") {
+    await circle(ui, state)
+  } else {
+    await unsure(ui, state)
+  }
 }
 
 const thanks = async (ui: InitUI, _state: InitState) => {
