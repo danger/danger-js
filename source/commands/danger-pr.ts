@@ -1,4 +1,4 @@
-import * as program from "commander"
+import { ArgumentParser, SubParser } from "argparse"
 import * as debug from "debug"
 import * as jsome from "jsome"
 
@@ -11,7 +11,7 @@ import { runDangerfileEnvironment } from "../runner/runners/inline"
 import { dangerfilePath } from "./utils/file-utils"
 import validateDangerfileExists from "./utils/validateDangerfileExists"
 import openRepl from "./utils/repl"
-import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
+import { SharedCLI, registerSharedArgs } from "./utils/sharedDangerfileArgs"
 
 import inlineRunner from "../runner/runners/inline"
 import { jsonDSLGenerator } from "../runner/dslGenerator"
@@ -21,30 +21,43 @@ import { prepareDangerDSL } from "./utils/runDangerSubprocess"
 
 const d = debug("danger:pr")
 
-interface App extends SharedCLI {
+export interface App extends SharedCLI {
   /** Should we show the Danger Process PR JSON? */
   json: boolean
   js: boolean
+  repl: boolean
+  prUrl: string
 }
 
-program
-  .usage("[options] <pr_url>")
-  .description("Emulate running Danger against an existing GitHub Pull Request.")
-  .option("-J, --json", "Output the JSON that would be passed into `danger process` for this PR.")
-  .option("-j, --js", "Strips the readbility changes to the DSL JSON.")
+export function createParser(subparsers: SubParser): ArgumentParser {
+  const parser = subparsers.addParser("pr", { help: "Runs your changes against an existing PR" })
 
-setSharedArgs(program).parse(process.argv)
+  registerSharedArgs(parser)
 
-const app = (program as any) as App
+  parser.addArgument(["-J", "--json"], {
+    action: "storeTrue",
+    help: "Output the JSON that would be passed into `danger process` for this PR.",
+  })
+  parser.addArgument(["-j", "--js"], {
+    action: "storeTrue",
+    help: "Strips the readbility changes to the DSL JSON.",
+  })
+  parser.addArgument(["--repl"], {
+    action: "storeTrue",
+    help: "Drop into a Node.js REPL after evaluating the dangerfile",
+  })
 
-const dangerFile = dangerfilePath(program)
+  parser.addArgument(["prUrl"], {
+    metavar: "PR_URL",
+    help: "URL of the pull request",
+  })
 
-if (program.args.length === 0) {
-  console.error("Please include a PR URL to run against")
-  process.exitCode = 1
-} else {
-  const pr = pullRequestParser(program.args[0])
+  return parser
+}
 
+export async function main(app: App) {
+  const dangerFile = dangerfilePath(app)
+  const pr = pullRequestParser(app.prUrl)
   if (!pr) {
     console.error("Could not get a repo and a PR number from your URL, bad copy & paste?")
     process.exitCode = 1
@@ -58,16 +71,16 @@ if (program.args.length === 0) {
       const api = new GitHubAPI(source, process.env["DANGER_GITHUB_API_TOKEN"])
       const platform = new GitHub(api)
       if (app.json || app.js) {
-        runProcessJSON(platform)
+        runProcessJSON(app, platform)
       } else {
-        runDanger(source, platform, dangerFile)
+        runDanger(app, source, platform, dangerFile)
       }
     }
   }
 }
 
 // Run Danger traditionally
-async function runDanger(source: FakeCI, platform: GitHub, file: string) {
+async function runDanger(app: App, source: FakeCI, platform: GitHub, file: string) {
   const config = {
     stdoutOnly: app.textOnly,
     verbose: app.verbose,
@@ -78,7 +91,7 @@ async function runDanger(source: FakeCI, platform: GitHub, file: string) {
 
   const runtimeEnv = await exec.setupDanger()
   const results = await runDangerfileEnvironment(file, undefined, runtimeEnv)
-  if (program.repl) {
+  if (app.repl) {
     openRepl(runtimeEnv)
   } else {
     jsome(results)
@@ -86,7 +99,7 @@ async function runDanger(source: FakeCI, platform: GitHub, file: string) {
 }
 
 // Run Danger Process and output the JSON to CLI
-async function runProcessJSON(platform: GitHub) {
+async function runProcessJSON(app: App, platform: GitHub) {
   const dangerDSL = await jsonDSLGenerator(platform)
   const processInput = prepareDangerDSL(dangerDSL)
   const output = JSON.parse(processInput)
