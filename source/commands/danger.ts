@@ -21,19 +21,39 @@ const parser = new ArgumentParser({
 
 const subparsers = parser.addSubparsers({ title: "subcommands" })
 
-subparsers.addParser("init", { help: "Helps you get started with Danger" })
-subparsers.addParser("process", { help: "Like `run` but lets another process handle evaluating a Dangerfile" })
+import * as dangerInit from "./danger-init"
+import * as dangerProcess from "./danger-init"
+import * as dangerPr from "./danger-pr"
+import * as dangerRunner from "./danger-runner"
+import * as dangerRun from "./danger-run"
 
-import * as pr from "./danger-pr"
-pr.createParser(subparsers).setDefaults({
+// For each subcommand, set a bogus `entryPoint` argument which we use below
+// to start the program.
+dangerInit.createParser(subparsers).setDefaults({
   entryPoint: (args: any) => {
-    pr.main(args as pr.App)
+    dangerInit.main(args as dangerInit.App)
+  },
+})
+dangerProcess.createParser(subparsers).setDefaults({
+  entryPoint: (args: any) => {
+    dangerProcess.main(args as dangerProcess.App)
+  },
+})
+dangerPr.createParser(subparsers).setDefaults({
+  entryPoint: (args: any) => {
+    dangerPr.main(args as dangerPr.App)
+  },
+})
+dangerRunner.createParser(subparsers).setDefaults({
+  entryPoint: (args: any) => {
+    dangerRunner.main(args as dangerRunner.App)
+  },
+})
+dangerRun.createParser(subparsers).setDefaults({
+  entryPoint: (args: any) => {
+    dangerRun.main(args as dangerRun.App)
   },
 })
 
-subparsers.addParser("runner", { help: "Runs a dangerfile against a DSL passed in via STDIN" })
-subparsers.addParser("run", { help: "Runs danger on your local system (default)" })
-
 const args = parser.parseArgs()
-
 args.entryPoint(args)

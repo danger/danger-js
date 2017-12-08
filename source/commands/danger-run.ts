@@ -1,22 +1,27 @@
+import { ArgumentParser, SubParser } from "argparse"
 import * as chalk from "chalk"
-import * as program from "commander"
 
 import { getPlatformForEnv } from "../platforms/platform"
 import { Executor } from "../runner/Executor"
 import runDangerSubprocess, { prepareDangerDSL } from "./utils/runDangerSubprocess"
-import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
+import { registerSharedArgs, SharedCLI as App } from "./utils/sharedDangerfileArgs"
 import getRuntimeCISource from "./utils/getRuntimeCISource"
 
 import inlineRunner from "../runner/runners/inline"
 import { jsonDSLGenerator } from "../runner/dslGenerator"
 import dangerRunToRunnerCLI from "./utils/dangerRunToRunnerCLI"
 
-program.usage("[options]").description("Runs a Dangerfile in JavaScript or TypeScript.")
-setSharedArgs(program).parse(process.argv)
+export function createParser(subparsers: SubParser): ArgumentParser {
+  const parser = subparsers.addParser("run", { help: "Runs danger on your local system (default)" })
+  registerSharedArgs(parser)
+  return parser
+}
 
-const app = (program as any) as SharedCLI
+export { SharedCLI as App } from "./utils/sharedDangerfileArgs"
 
-getRuntimeCISource(app).then(source => {
+export async function main(app: App) {
+  const source = await getRuntimeCISource(app)
+
   // This does not set a failing exit code
   if (source && !source.isPR) {
     console.log("Skipping Danger due to this run not executing on a PR.")
@@ -49,4 +54,4 @@ getRuntimeCISource(app).then(source => {
       })
     }
   }
-})
+}

@@ -1,5 +1,5 @@
+import { ArgumentParser, SubParser } from "argparse"
 import * as chalk from "chalk"
-import * as program from "commander"
 
 import * as fs from "fs"
 
@@ -8,17 +8,20 @@ import { travis, circle, unsure } from "./init/add-to-ci"
 import { generateInitialState, createUI } from "./init/state-setup"
 import { InitUI, InitState, highlight } from "./init/interfaces"
 
-program
-  .description("Helps you get set up through to your first Danger.")
-  .option("-i, --impatient", "Don't add dramatic pauses.")
-
-interface App {
+export interface App {
   impatient: boolean
 }
 
-const app: App = program as any
+export function createParser(subparsers: SubParser): ArgumentParser {
+  const parser = subparsers.addParser("init", { help: "Helps you get started with Danger" })
+  parser.addArgument(["-i", "--impatient"], {
+    action: "storeTrue",
+    help: "Don't add dramatic pauses.",
+  })
+  return parser
+}
 
-const go = async (app: App) => {
+export const main = async (app: App) => {
   const state = generateInitialState(process)
   const ui: InitUI = createUI(state, app)
 
@@ -228,5 +231,3 @@ const thanks = async (ui: InitUI, _state: InitState) => {
   ui.say("If you don't like something about Danger, help us improve the project - it's all done on volunteer time! xxx")
   ui.say("Remember: it's nice to be nice.\n")
 }
-
-go(app)

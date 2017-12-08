@@ -1,7 +1,5 @@
-import setSharedArgs from "./utils/sharedDangerfileArgs"
+import { ArgumentParser, SubParser } from "argparse"
 import * as nodeCleanup from "node-cleanup"
-
-import * as program from "commander"
 import * as getSTDIN from "get-stdin"
 import * as chalk from "chalk"
 
@@ -18,42 +16,51 @@ import { jsonToDSL } from "../runner/jsonToDSL"
 //
 // Which will build danger, then run just the dangerfile runner with a fixtured version of the JSON
 
-program
-  .usage("[options] dangerfile")
-  .description("Handles running the Dangerfile, expects a DSL from STDIN, which should be passed from `danger run`.")
+export interface App {
+  dangerfile: string
+}
 
-setSharedArgs(program).parse(process.argv)
-
+export function createParser(subparsers: SubParser): ArgumentParser {
+  const parser = subparsers.addParser("runner", {
+    help: "Runs a dangerfile against a DSL passed in via STDIN",
+    epilog: "Should be passed from `danger run`",
+  })
+  parser.addArgument(["dangerfile"], {
+    metavar: "DANGERFILE",
+    help: "Path to the dangerfile.",
+  })
+  return parser
+}
 let foundDSL = false
 let runtimeEnv = {} as any
 
-const run = async (jsonString: string) => {
-  foundDSL = true
-  const dslJSON = JSON.parse(jsonString) as { danger: DangerDSLJSONType }
-  const dsl = await jsonToDSL(dslJSON.danger)
-  const dangerFile = dangerfilePath(program)
+export async function main(app: App) {
+  // Start waiting on STDIN for the DSL
+  getSTDIN().then(async jsonString => {
+    foundDSL = true
+    const dslJSON = JSON.parse(jsonString) as { danger: DangerDSLJSONType }
+    const dsl = await jsonToDSL(dslJSON.danger)
+    const dangerFile = dangerfilePath(app)
 
-  // Set up the runtime env
-  const context = contextForDanger(dsl)
-  runtimeEnv = await inline.createDangerfileRuntimeEnvironment(context)
-  await inline.runDangerfileEnvironment(dangerFile, undefined, runtimeEnv)
+    // Set up the runtime env
+    const context = contextForDanger(dsl)
+    runtimeEnv = await inline.createDangerfileRuntimeEnvironment(context)
+    await inline.runDangerfileEnvironment(dangerFile, undefined, runtimeEnv)
+  })
+
+  // Wait till the end of the process to print out the results
+  nodeCleanup(() => {
+    if (foundDSL) {
+      process.stdout.write(JSON.stringify(runtimeEnv.results, null, 2))
+    }
+  })
+
+  // Add a timeout so that CI doesn't run forever if something has broken.
+  setTimeout(() => {
+    if (!foundDSL) {
+      console.error(chalk.red("Timeout: Failed to get the Danger DSL after 1 second"))
+      process.exitCode = 1
+      process.exit(1)
+    }
+  }, 1000)
 }
-
-// Wait till the end of the process to print out the results
-nodeCleanup(() => {
-  if (foundDSL) {
-    process.stdout.write(JSON.stringify(runtimeEnv.results, null, 2))
-  }
-})
-
-// Add a timeout so that CI doesn't run forever if something has broken.
-setTimeout(() => {
-  if (!foundDSL) {
-    console.error(chalk.red("Timeout: Failed to get the Danger DSL after 1 second"))
-    process.exitCode = 1
-    process.exit(1)
-  }
-}, 1000)
-
-// Start waiting on STDIN for the DSL
-getSTDIN().then(run)

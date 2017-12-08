@@ -31,9 +31,7 @@ export interface App extends SharedCLI {
 
 export function createParser(subparsers: SubParser): ArgumentParser {
   const parser = subparsers.addParser("pr", { help: "Runs your changes against an existing PR" })
-
   registerSharedArgs(parser)
-
   parser.addArgument(["-J", "--json"], {
     action: "storeTrue",
     help: "Output the JSON that would be passed into `danger process` for this PR.",
@@ -46,12 +44,10 @@ export function createParser(subparsers: SubParser): ArgumentParser {
     action: "storeTrue",
     help: "Drop into a Node.js REPL after evaluating the dangerfile",
   })
-
   parser.addArgument(["prUrl"], {
     metavar: "PR_URL",
     help: "URL of the pull request",
   })
-
   return parser
 }
 
