@@ -5,7 +5,7 @@ import * as jsome from "jsome"
 import { FakeCI } from "../ci_source/providers/Fake"
 import { GitHub } from "../platforms/GitHub"
 import { GitHubAPI } from "../platforms/github/GitHubAPI"
-import { Executor } from "../runner/Executor"
+import { Executor, ExecutorOptions } from "../runner/Executor"
 import { pullRequestParser } from "../platforms/github/pullRequestParser"
 import { runDangerfileEnvironment } from "../runner/runners/inline"
 import { dangerfilePath } from "./utils/file-utils"
@@ -68,12 +68,12 @@ if (program.args.length === 0) {
 
 // Run Danger traditionally
 async function runDanger(source: FakeCI, platform: GitHub, file: string) {
-  const config = {
+  const config: ExecutorOptions = {
     stdoutOnly: app.textOnly,
     verbose: app.verbose,
     jsonOnly: false,
+    dangerID: "default",
   }
-
   const exec = new Executor(source, platform, inlineRunner, config)
 
   const runtimeEnv = await exec.setupDanger()

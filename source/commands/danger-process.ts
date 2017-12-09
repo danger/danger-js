@@ -2,7 +2,7 @@ import * as chalk from "chalk"
 import * as program from "commander"
 
 import { getPlatformForEnv } from "../platforms/platform"
-import { Executor } from "../runner/Executor"
+import { Executor, ExecutorOptions } from "../runner/Executor"
 import runDangerSubprocess, { prepareDangerDSL } from "./utils/runDangerSubprocess"
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import getRuntimeCISource from "./utils/getRuntimeCISource"
@@ -57,10 +57,11 @@ getRuntimeCISource(app).then(source => {
     }
 
     if (platform) {
-      const config = {
+      const config: ExecutorOptions = {
         stdoutOnly: app.textOnly,
         verbose: app.verbose,
         jsonOnly: false,
+        dangerID: app.id || "default",
       }
 
       jsonDSLGenerator(platform).then(dangerJSONDSL => {
