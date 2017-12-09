@@ -7,7 +7,7 @@ import * as v from "voca"
 import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
 
 import { RepoMetaData } from "../../ci_source/ci_source"
-import { dangerSignaturePostfix } from "../../runner/templates/githubIssueTemplate"
+import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates/githubIssueTemplate"
 import { api as fetch } from "../../api/fetch"
 
 // The Handle the API specific parts of the github
@@ -75,10 +75,13 @@ export class GitHubAPI {
 
   // The above is the API for Platform
 
-  async getDangerCommentIDs(): Promise<number[]> {
+  async getDangerCommentIDs(dangerID: string): Promise<number[]> {
     const userID = await this.getUserID()
     const allComments: any[] = await this.getPullRequestComments()
+    const dangerIDMessage = dangerIDToString(dangerID)
+
     return allComments
+      .filter(comment => v.includes(comment.body, dangerIDMessage))
       .filter(comment => userID || comment.user.id === userID)
       .filter(comment => v.includes(comment.body, dangerSignaturePostfix))
       .map(comment => comment.id)

@@ -36,11 +36,11 @@ export interface Platform {
   /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
   getPlatformGitRepresentation: () => Promise<GitJSONDSL>
   /** Creates a comment on the PR */
-  createComment: (body: string) => Promise<any>
+  createComment: (dangerID: string, body: string) => Promise<any>
   /** Delete the main Danger comment */
-  deleteMainComment: () => Promise<boolean>
+  deleteMainComment: (dangerID: string) => Promise<boolean>
   /** Replace the main Danger comment */
-  updateOrCreateComment: (newComment: string) => Promise<any>
+  updateOrCreateComment: (dangerID: string, newComment: string) => Promise<any>
   /** Sets the current PR's status */
   updateStatus: (passed: boolean, message: string) => Promise<boolean>
 }

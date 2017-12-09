@@ -11,6 +11,7 @@ export interface SharedCLI extends program.ICommand {
   externalCiProvider: string
   textOnly: boolean
   dangerfile: string
+  id: string
 }
 
 export default (command: program.ICommand) =>
@@ -19,3 +20,4 @@ export default (command: program.ICommand) =>
     .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")
     .option("-t, --text-only", "Provide an STDOUT only interface, Danger will not post to your PR")
     .option("-d, --dangerfile [filePath]", "Specify a custom dangerfile path")
+    .option("-i, --id [danger_id]", "Specify a unique Danger ID for the Danger run")
