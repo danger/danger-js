@@ -90,7 +90,7 @@
     "prettier": "^1.7.4",
     "shx": "^0.2.1",
     "ts-jest": "^21",
-    "ts-node": "^3.2.1",
+    "ts-node": "^4.0.0",
     "tslint": "^5.3.0",
     "tslint-config-prettier": "^1.0.0",
     "typedoc": "orta/typedoc#0.5.10-no-types",
