@@ -105,8 +105,8 @@ export class GitHub {
    *
    * @returns {Promise<boolean>} did it work?
    */
-  async deleteMainComment(): Promise<boolean> {
-    const commentIDs = await this.api.getDangerCommentIDs()
+  async deleteMainComment(dangerID: string): Promise<boolean> {
+    const commentIDs = await this.api.getDangerCommentIDs(dangerID)
     for (let commentID of commentIDs) {
       await this.api.deleteCommentWithID(commentID)
     }
@@ -120,8 +120,8 @@ export class GitHub {
    * @param {string} newComment string value of comment
    * @returns {Promise<boolean>} success of posting comment
    */
-  async updateOrCreateComment(newComment: string): Promise<boolean> {
-    const commentIDs = await this.api.getDangerCommentIDs()
+  async updateOrCreateComment(dangerID: string, newComment: string): Promise<boolean> {
+    const commentIDs = await this.api.getDangerCommentIDs(dangerID)
 
     if (commentIDs.length) {
       // Edit the first comment

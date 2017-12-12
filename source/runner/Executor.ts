@@ -22,6 +22,8 @@ export interface ExecutorOptions {
   jsonOnly: boolean
   /** Should Danger post as much info as possible */
   verbose: boolean
+  /** A unique ID to handle multiple Danger runs */
+  dangerID: string
 }
 
 export class Executor {
@@ -164,6 +166,7 @@ export class Executor {
 
     this.d(results)
 
+    const dangerID = this.options.dangerID
     const failed = fails.length > 0
     const successPosting = await this.platform.updateStatus(!failed, messageForResults(results))
     if (this.options.verbose) {
@@ -173,7 +176,7 @@ export class Executor {
 
     if (failureCount + messageCount === 0) {
       console.log("No issues or messages were sent. Removing any existing messages.")
-      await this.platform.deleteMainComment()
+      await this.platform.deleteMainComment(dangerID)
     } else {
       if (fails.length > 0) {
         const s = fails.length === 1 ? "" : "s"
@@ -187,8 +190,8 @@ export class Executor {
       } else if (messageCount > 0) {
         console.log("Found only messages, passing those to review.")
       }
-      const comment = githubResultsTemplate(results)
-      await this.platform.updateOrCreateComment(comment)
+      const comment = githubResultsTemplate(dangerID, results)
+      await this.platform.updateOrCreateComment(dangerID, comment)
     }
 
     // More info, is more info.

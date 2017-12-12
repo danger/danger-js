@@ -7,6 +7,7 @@ exports[`generating messages leaves space between <td>s to allow GitHub to rende
   1 warning:  _Maybe you meant ...
   1 messages
   1 markdown notices
+  DangerID: danger-id-example-id;
 -->
 
 <table>
