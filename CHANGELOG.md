@@ -3,6 +3,11 @@ developers, so please limit technical // terminology to in here.
 
 // ### Master
 
+### 2.1.4
+
+* Adds a CLI option for a unique Danger ID per run to `danger` and `danger process`,
+ so you can have multiple Danger comments on the same PR. - [@orta][]
+
 ### 2.1.1 - 2.1.2 - 2.1.3
 
 * Fixes/Improvements for `danger init` - [@orta][]
