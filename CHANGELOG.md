@@ -3,6 +3,10 @@ developers, so please limit technical // terminology to in here.
 
 // ### Master
 
+### 2.1.5
+
+* The TS compiler will force a module type of commonjs when transpiling the Dangerfile - [@orta][]
+
 ### 2.1.4
 
 * Adds a CLI option for a unique Danger ID per run to `danger` and `danger process`,

@@ -34,8 +34,29 @@ try {
 export const typescriptify = (content: string): string => {
   const ts = require("typescript") // tslint:disable-line
   const compilerOptions = JSON.parse(fs.readFileSync("tsconfig.json", "utf8"))
-  let result = ts.transpileModule(content, compilerOptions)
+  let result = ts.transpileModule(content, sanitizeTSConfig(compilerOptions))
   return result.outputText
+}
+
+const sanitizeTSConfig = (config: any) => {
+  if (!config.compilerOptions) {
+    return config
+  }
+
+  const safeConfig = config
+
+  // It can make sense to ship TS code with modules
+  // for `import`/`export` syntax, but as we're running
+  // the transpiled code on vanilla node - it'll need to
+  // be used with plain old commonjs
+  //
+  // @see https://github.com/apollographql/react-apollo/pull/1402#issuecomment-351810274
+  //
+  if (safeConfig.compilerOptions.module) {
+    safeConfig.compilerOptions.module = "commonjs"
+  }
+
+  return safeConfig
 }
 
 export const babelify = (content: string, filename: string, extraPlugins: string[]): string => {
