@@ -1,12 +1,12 @@
 import * as program from "commander"
-import * as chalk from "chalk"
+import chalk from "chalk"
 
 process.on("unhandledRejection", function(reason: string, _p: any) {
   console.log(chalk.red("Error: "), reason)
   process.exitCode = 1
 })
 
-export interface SharedCLI extends program.ICommand {
+export interface SharedCLI extends program.CommanderStatic {
   verbose: boolean
   externalCiProvider: string
   textOnly: boolean
@@ -14,7 +14,7 @@ export interface SharedCLI extends program.ICommand {
   id: string
 }
 
-export default (command: program.ICommand) =>
+export default (command: any) =>
   command
     .option("-v, --verbose", "Verbose output of files")
     .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")

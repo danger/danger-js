@@ -1,4 +1,4 @@
-import * as chalk from "chalk"
+import chalk from "chalk"
 import * as program from "commander"
 
 import { getPlatformForEnv } from "../platforms/platform"

@@ -3,6 +3,8 @@ developers, so please limit technical // terminology to in here.
 
 // ### Master
 
+* Updates dependencies - orta
+
 ### 2.1.5
 
 * The TS compiler will force a module type of commonjs when transpiling the Dangerfile - [@orta][]
@@ -10,7 +12,7 @@ developers, so please limit technical // terminology to in here.
 ### 2.1.4
 
 * Adds a CLI option for a unique Danger ID per run to `danger` and `danger process`,
- so you can have multiple Danger comments on the same PR. - [@orta][]
+  so you can have multiple Danger comments on the same PR. - [@orta][]
 
 ### 2.1.1 - 2.1.2 - 2.1.3
 
@@ -677,8 +679,7 @@ if (changelogDiff && changelogDiff.indexOf(contributorName) === -1) {
 * `danger.pr` -> `danger.github.pr`, I've also created interfaces for them - [@orta][]
 * `warn`, `message`, `markdown` are all ported over to DangerJS - [@orta][]
 * Shows a HTML table for Danger message - [@orta][]
-* Now offers a Flow-typed definition file, it's not shipped to their repo yet, you can make it by `npm run
-  export-flowtype` - [@orta][]
+* Now offers a Flow-typed definition file, it's not shipped to their repo yet, you can make it by `npm run export-flowtype` - [@orta][]
 * Started turning this into a real project by adding tests - [@orta][]
 
 ### 0.0.5-0.0.10
