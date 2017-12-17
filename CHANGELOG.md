@@ -3,9 +3,11 @@ developers, so please limit technical // terminology to in here.
 
 // ### Master
 
-* Updates dependencies - orta
-* Link to the build URL if Danger can find it in the CI env - orta
-* Removes the "couldn't post a status" message - orta
+### 2.1.6
+
+* Updates dependencies - [@orta][]
+* Link to the build URL if Danger can find it in the CI env - [@orta][]
+* Removes the "couldn't post a status" message - [@orta][]
 
 ### 2.1.5
 
