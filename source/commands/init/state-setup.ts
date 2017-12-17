@@ -1,7 +1,7 @@
 import * as readlineSync from "readline-sync"
 import * as supportsHyperlinks from "supports-hyperlinks"
 import * as hyperLinker from "hyperlinker"
-import * as chalk from "chalk"
+import chalk from "chalk"
 
 import { basename } from "path"
 import { setTimeout } from "timers"

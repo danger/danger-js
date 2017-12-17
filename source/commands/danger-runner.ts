@@ -3,7 +3,7 @@ import * as nodeCleanup from "node-cleanup"
 
 import * as program from "commander"
 import * as getSTDIN from "get-stdin"
-import * as chalk from "chalk"
+import chalk from "chalk"
 
 import { contextForDanger } from "../runner/Dangerfile"
 import inline from "../runner/runners/inline"

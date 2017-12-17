@@ -1,4 +1,4 @@
-import * as chalk from "chalk"
+import chalk from "chalk"
 
 export interface InitState {
   filename: string
@@ -30,4 +30,4 @@ export interface InitUI {
   askWithAnswers: (message: string, answers: string[]) => string
 }
 
-export const highlight = chalk.bold.yellow
+export const highlight = chalk.bold.yellow as any

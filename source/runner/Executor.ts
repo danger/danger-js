@@ -7,7 +7,7 @@ import { template as githubResultsTemplate } from "./templates/githubIssueTempla
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
 import * as debug from "debug"
-import * as chalk from "chalk"
+import chalk from "chalk"
 import { sentence, href } from "./DangerUtils"
 import { DangerRunner } from "./runners/runner"
 import { jsonToDSL } from "./jsonToDSL"

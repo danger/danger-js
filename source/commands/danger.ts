@@ -3,7 +3,7 @@
 import { version } from "../../package.json"
 import * as program from "commander"
 import * as debug from "debug"
-import * as chalk from "chalk"
+import chalk from "chalk"
 
 const d = debug("danger:runner")
 d(`argv: ${process.argv}`)

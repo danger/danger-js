@@ -64,8 +64,6 @@
   },
   "homepage": "https://github.com/danger/danger-js#readme",
   "devDependencies": {
-    "@types/chalk": "^2.2.0",
-    "@types/commander": "^2.12.2",
     "@types/debug": "0.0.30",
     "@types/get-stdin": "^5.0.1",
     "@types/jest": "^21.1.8",
