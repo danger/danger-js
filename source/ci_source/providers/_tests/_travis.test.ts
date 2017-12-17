@@ -5,6 +5,7 @@ const correctEnv = {
   HAS_JOSH_K_SEAL_OF_APPROVAL: "true",
   TRAVIS_PULL_REQUEST: "800",
   TRAVIS_REPO_SLUG: "artsy/eigen",
+  TRAVIS_JOB_ID: "317790046",
 }
 
 describe("being found when looking for CI", () => {
@@ -74,5 +75,12 @@ describe(".repoSlug", () => {
   it("pulls it out of the env", () => {
     const travis = new Travis(correctEnv)
     expect(travis.repoSlug).toEqual("artsy/eigen")
+  })
+})
+
+describe(".ciRunURL", () => {
+  it("pulls it out of the env", () => {
+    const travis = new Travis(correctEnv)
+    expect(travis.ciRunURL).toEqual("https://travis-ci.org/artsy/eigen/jobs/317790046")
   })
 })

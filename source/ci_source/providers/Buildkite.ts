@@ -46,10 +46,16 @@ export class Buildkite implements CISource {
   get pullRequestID(): string {
     return this.env.BUILDKITE_PULL_REQUEST
   }
+
   get repoSlug(): string {
     return this._parseRepoURL()
   }
+
   get supportedPlatforms(): string[] {
     return ["github"]
+  }
+
+  get ciRunURL() {
+    return process.env.BUILDKITE_BUILD_URL
   }
 }

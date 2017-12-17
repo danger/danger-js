@@ -1,6 +1,8 @@
 import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist, getPullRequestIDForBranch } from "../ci_source_helpers"
 
+// https://documentation.codeship.com/pro/builds-and-configuration/environment-variables/
+
 /**
  * ### CI Setup
  *
