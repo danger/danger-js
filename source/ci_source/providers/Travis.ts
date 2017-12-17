@@ -42,10 +42,16 @@ export class Travis implements CISource {
   get pullRequestID(): string {
     return this.env.TRAVIS_PULL_REQUEST
   }
+
   get repoSlug(): string {
     return this.env.TRAVIS_REPO_SLUG
   }
-  get supportedPlatforms(): string[] {
+
+  get ciRunURL() {
+    return this.env["CIRCLE_BUILD_URL"]
+  }
+
+  get supportedPlatforms() {
     return ["github"]
   }
 }

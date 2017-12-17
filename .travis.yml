@@ -17,6 +17,7 @@ matrix:
     - yarn docs
     - yarn add dtslint@0.1.2
     - yarn dts-lint
+    - echo "--Shell Export Lists START--" ; export -p; echo "--Shell Export Lists STOP--"
 
   # Checks every example dangerfile can run in `danger runner`.
   - node_js: '8.4'
