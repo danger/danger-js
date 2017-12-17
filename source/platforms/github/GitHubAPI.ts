@@ -43,7 +43,6 @@ export class GitHubAPI {
       headers: {
         ...this.additionalHeaders,
       },
-      Promise,
     })
 
     if (this.token) {
@@ -135,7 +134,7 @@ export class GitHubAPI {
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}`)
 
-    return res.ok ? res.json() as Promise<GitHubPRDSL> : {} as GitHubPRDSL
+    return res.ok ? (res.json() as Promise<GitHubPRDSL>) : ({} as GitHubPRDSL)
   }
 
   /**
@@ -184,7 +183,9 @@ export class GitHubAPI {
         page = getNextPageFromLinkHeader(response)
       } else {
         this.d(
-          `getPullRequestCommits:: Failed to get response while traverse page ${page} with ${response.status}, bailing rest of pages if exists`
+          `getPullRequestCommits:: Failed to get response while traverse page ${page} with ${
+            response.status
+          }, bailing rest of pages if exists`
         )
         page = -1
       }

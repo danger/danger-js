@@ -25,7 +25,6 @@ const githubAPIForDSL = (dsl: DangerDSLJSONType) => {
     headers: {
       ...dsl.settings.github.additionalHeaders,
     },
-    Promise,
   })
 
   if (dsl.settings.github && dsl.settings.github.accessToken) {
