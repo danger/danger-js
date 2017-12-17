@@ -42,7 +42,7 @@ export interface Platform {
   /** Replace the main Danger comment */
   updateOrCreateComment: (dangerID: string, newComment: string) => Promise<any>
   /** Sets the current PR's status */
-  updateStatus: (passed: boolean, message: string) => Promise<boolean>
+  updateStatus: (passed: boolean, message: string, url?: string) => Promise<boolean>
 }
 
 /**

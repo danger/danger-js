@@ -47,8 +47,25 @@ export class GitHub {
    * then return true.
    */
 
-  async updateStatus(passed: boolean, message: string): Promise<boolean> {
-    return await this.api.updateStatus(passed, message)
+  async updateStatus(passed: boolean, message: string, url?: string): Promise<boolean> {
+    const ghAPI = this.api.getExternalAPI()
+
+    const prJSON = await this.api.getPullRequestInfo()
+    const ref = prJSON.head
+    try {
+      await ghAPI.repos.createStatus({
+        repo: ref.repo.name,
+        owner: ref.repo.owner.login,
+        sha: ref.sha,
+        state: passed ? "success" : "failure",
+        context: process.env["PERIL_INTEGRATION_ID"] ? "Peril" : "Danger",
+        target_url: url || "http://danger.systems/js",
+        description: message,
+      })
+      return true
+    } catch (error) {
+      return false
+    }
   }
 
   /**
@@ -72,17 +89,14 @@ export class GitHub {
     const reviews = await this.api.getReviews()
     const requested_reviewers = await this.api.getReviewerRequests()
 
-    // const externalAPI = this.api.getExternalAPI()
     const thisPR = this.APIMetadataForPR(pr)
     return {
-      // api: externalAPI,
       issue,
       pr,
       commits,
       reviews,
       requested_reviewers,
       thisPR,
-      // utils: GitHubUtils(pr, this.api),
     }
   }
 

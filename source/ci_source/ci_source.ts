@@ -31,4 +31,7 @@ export interface CISource {
 
   /** allows the source to do some setup */
   setup?(): Promise<any>
+
+  /** Optional URL for the CI run, for a status update link */
+  readonly ciRunURL?: string
 }

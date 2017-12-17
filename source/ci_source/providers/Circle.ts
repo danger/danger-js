@@ -71,7 +71,12 @@ export class Circle implements CISource {
   get repoURL(): string {
     return this.env.CIRCLE_REPOSITORY_URL
   }
+
   get supportedPlatforms(): string[] {
     return ["github"]
+  }
+
+  get ciRunURL() {
+    return this.env["CIRCLE_BUILD_URL"]
   }
 }

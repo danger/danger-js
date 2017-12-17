@@ -8,6 +8,7 @@ const defaultConfig = {
   stdoutOnly: false,
   verbose: false,
   jsonOnly: false,
+  dangerID: "123",
 }
 
 describe("setup", () => {
@@ -86,11 +87,12 @@ describe("setup", () => {
     await exec.handleResults(warnResults)
     expect(platform.updateStatus).toBeCalledWith(
       true,
-      "⚠️ Danger found some issues. Don't worry, everything is fixable."
+      "⚠️ Danger found some issues. Don't worry, everything is fixable.",
+      undefined
     )
   })
 
-  it("Updates the status with success for a passed results", async () => {
+  it("Updates the status with success for failing results", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
     platform.updateOrCreateComment = jest.fn()
@@ -99,7 +101,21 @@ describe("setup", () => {
     await exec.handleResults(failsResults)
     expect(platform.updateStatus).toBeCalledWith(
       false,
-      "⚠️ Danger found some issues. Don't worry, everything is fixable."
+      "⚠️ Danger found some issues. Don't worry, everything is fixable.",
+      undefined
     )
+  })
+
+  it("Passes the URL from a platform to the updateStatus", async () => {
+    const platform = new FakePlatform()
+    const ci: any = new FakeCI({})
+    ci.ciRunURL = "https://url.com"
+
+    const exec = new Executor(ci, platform, inlineRunner, defaultConfig)
+    platform.updateOrCreateComment = jest.fn()
+    platform.updateStatus = jest.fn()
+
+    await exec.handleResults(failsResults)
+    expect(platform.updateStatus).toBeCalledWith(expect.anything(), expect.anything(), ci.ciRunURL)
   })
 })

@@ -2,6 +2,7 @@ import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
 
 // https://jenkins.io/
+// https://wiki.jenkins.io/display/JENKINS/Building+a+software+project#Buildingasoftwareproject-belowJenkinsSetEnvironmentVariables
 
 /**
  * ### CI Setup
@@ -52,5 +53,9 @@ export class Jenkins implements CISource {
 
   get supportedPlatforms(): string[] {
     return ["github"]
+  }
+
+  get ciRunURL() {
+    return process.env.BUILD_URL
   }
 }

@@ -258,7 +258,7 @@ export class GitHubAPI {
     return res.ok ? res.json() : { labels: [] }
   }
 
-  async updateStatus(passed: boolean, message: string): Promise<any> {
+  async updateStatus(passed: boolean, message: string, url?: string): Promise<any> {
     const repo = this.repoMetadata.repoSlug
 
     const prJSON = await this.getPullRequestInfo()
@@ -269,7 +269,7 @@ export class GitHubAPI {
       {
         state: passed ? "success" : "failure",
         context: process.env["PERIL_INTEGRATION_ID"] ? "Peril" : "Danger",
-        target_url: "http://danger.systems/js",
+        target_url: url || "http://danger.systems/js",
         description: message,
       }
     )

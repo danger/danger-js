@@ -168,7 +168,7 @@ export class Executor {
 
     const dangerID = this.options.dangerID
     const failed = fails.length > 0
-    const successPosting = await this.platform.updateStatus(!failed, messageForResults(results))
+    const successPosting = await this.platform.updateStatus(!failed, messageForResults(results), this.ciSource.ciRunURL)
     if (this.options.verbose) {
       console.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
       console.log("If the build fails, then danger will use a failing exit code.")
