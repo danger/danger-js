@@ -90,7 +90,7 @@
     "madge": "^2.0.0",
     "prettier": "^1.9.2",
     "shx": "^0.2.1",
-    "ts-jest": "^21.2.4",
+    "ts-jest": "^22.0.0",
     "ts-node": "^4.0.2",
     "tslint": "^5.8.0",
     "tslint-config-prettier": "^1.6.0",
