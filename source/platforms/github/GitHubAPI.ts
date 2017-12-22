@@ -227,7 +227,7 @@ export class GitHubAPI {
     const repo = this.repoMetadata.repoSlug
     const res = await this.get(`repos/${repo}/pulls`)
 
-    return res.ok ? res.json : []
+    return res.ok ? res.json() : []
   }
 
   async getReviewerRequests(): Promise<any> {
