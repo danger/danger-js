@@ -3,6 +3,10 @@ developers, so please limit technical // terminology to in here.
 
 // ### Master
 
+### 2.1.7
+
+* Fix Codeship integration - [#caffodian][]
+
 ### 2.1.6
 
 * Updates dependencies - [@orta][]
