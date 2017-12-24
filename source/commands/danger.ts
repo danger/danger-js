@@ -17,7 +17,6 @@ process.on("unhandledRejection", function(reason: string, _p: any) {
 })
 
 // Provides the root node to the command-line architecture
-setSharedArgs(program)
 
 program
   .version(version)
@@ -26,7 +25,9 @@ program
   .command("pr", "Runs your changes against an existing PR")
   .command("runner", "Runs a dangerfile against a DSL passed in via STDIN")
   .command("run", "Runs danger on your local system")
-  .parse(process.argv)
+
+setSharedArgs(program)
+program.parse(process.argv)
 
 const app = (program as any) as SharedCLI
 runRunner(app)
