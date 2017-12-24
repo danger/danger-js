@@ -11,6 +11,7 @@ developers, so please limit technical // terminology to in here.
 * Updates documentation dependencies - [@orta][]
 * Fixes to running `danger` with params - [@orta][]
 * Fixes for `danger pr` not acting like `danger` WRT async code - [@orta][]
+* Fixes `tsconfig.json` parse to be JSON5 friendly - [@gantman][]
 
 ### 2.1.6
 
