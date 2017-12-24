@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 import setSharedArgs from "./utils/sharedDangerfileArgs"
 import * as nodeCleanup from "node-cleanup"
 

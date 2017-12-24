@@ -3,9 +3,14 @@ developers, so please limit technical // terminology to in here.
 
 // ### Master
 
+<<<<<<< HEAD
+
 ### 2.1.7
 
-* Fix Codeship integration - [#caffodian][]
+* Fix Codeship integration - [@caffodian][]
+* Updates documentation dependencies - [@orta][]
+* Fixes to running `danger` with params - [@orta][]
+* Fixes for `danger pr` not acting like `danger` WRT async code - [@orta][]
 
 ### 2.1.6
 
@@ -764,3 +769,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@ashfurrow]: https://github.com/ashfurrow
 [@joarwilk]: https://github.com/joarwilk
 [@dfalling]: https://github.com/dfalling
+[@caffodian]: https://github.com/caffodian

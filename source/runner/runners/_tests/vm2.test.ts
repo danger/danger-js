@@ -6,12 +6,14 @@ import vm2 from "../vm2"
 
 import { FakeCI } from "../../../ci_source/providers/Fake"
 import { FakePlatform } from "../../../platforms/FakePlatform"
-import { Executor } from "../../Executor"
+import { Executor, ExecutorOptions } from "../../Executor"
 
 import * as os from "os"
 import * as fs from "fs"
 
 import { resolve } from "path"
+import { jsonToDSL } from "../../jsonToDSL"
+import { jsonDSLGenerator } from "../../dslGenerator"
 const fixtures = resolve(__dirname, "../../_tests/fixtures")
 
 // const runners = [{ name: "inline", fn: inlineRunner }, { name: "vm2", fn: vm2 }]
@@ -20,17 +22,21 @@ const runners = [{ name: "vm2", fn: vm2 }]
 
 runners.forEach(run => {
   describe(run.name, () => {
+    const config: ExecutorOptions = {
+      stdoutOnly: false,
+      verbose: false,
+      jsonOnly: true,
+      dangerID: run.name,
+    }
+
     const makeExecutor = () => {
       const platform = new FakePlatform()
-      const config = {
-        stdoutOnly: false,
-        verbose: false,
-      }
 
       exec = new Executor(new FakeCI({}), platform, run.fn, config)
-
       platform.getPlatformGitRepresentation = jest.fn()
-      platform.getPlatformDSLRepresentation = jest.fn()
+      platform.getPlatformDSLRepresentation = async () => ({
+        pr: {},
+      })
       return exec
     }
 
@@ -40,18 +46,15 @@ runners.forEach(run => {
      */
     async function setupDangerfileContext() {
       const platform = new FakePlatform()
-      const config = {
-        stdoutOnly: false,
-        verbose: false,
-      }
-
       exec = new Executor(new FakeCI({}), platform, run.fn, config)
 
-      platform.getPlatformGitRepresentation = jest.fn()
-      platform.getPlatformDSLRepresentation = jest.fn()
+      // platform.getPlatformGitRepresentation = async () =
+      // platform.getPlatformDSLRepresentation = jest.fn()
 
-      const dsl = await exec.dslForDanger()
-      return contextForDanger(dsl)
+      const dsl = await jsonDSLGenerator(platform)
+      dsl.github = { pr: {} } as any
+      const realDSL = await jsonToDSL(dsl)
+      return contextForDanger(realDSL)
     }
 
     let exec: Executor
@@ -78,7 +81,7 @@ runners.forEach(run => {
         const exec = makeExecutor()
 
         const dsl = await exec.dslForDanger()
-        const context = await contextForDanger(dsl)
+        const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
 
         const results = await exec.runner.runDangerfileEnvironment(
