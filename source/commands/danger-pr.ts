@@ -7,17 +7,13 @@ import * as jsome from "jsome"
 import { FakeCI } from "../ci_source/providers/Fake"
 import { GitHub } from "../platforms/GitHub"
 import { GitHubAPI } from "../platforms/github/GitHubAPI"
-import { Executor, ExecutorOptions } from "../runner/Executor"
 import { pullRequestParser } from "../platforms/github/pullRequestParser"
-import { runDangerfileEnvironment } from "../runner/runners/inline"
 import { dangerfilePath } from "./utils/file-utils"
 import validateDangerfileExists from "./utils/validateDangerfileExists"
-import openRepl from "./utils/repl"
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
-
-import inlineRunner from "../runner/runners/inline"
 import { jsonDSLGenerator } from "../runner/dslGenerator"
 import { prepareDangerDSL } from "./utils/runDangerSubprocess"
+import { runRunner } from "./run/runner"
 
 // yarn build; cat source/_tests/fixtures/danger-js-pr-384.json |  node --inspect  --inspect-brk distribution/commands/danger-runner.js --text-only
 
@@ -32,8 +28,8 @@ interface App extends SharedCLI {
 program
   .usage("[options] <pr_url>")
   .description("Emulate running Danger against an existing GitHub Pull Request.")
-  .option("-J, --json", "Output the JSON that would be passed into `danger process` for this PR.")
-  .option("-j, --js", "Strips the readbility changes to the DSL JSON.")
+  .option("-J, --json", "Output the raw JSON that would be passed into `danger process` for this PR.")
+  .option("-j, --js", "A more human-readable version of the JSON.")
 
 setSharedArgs(program).parse(process.argv)
 
@@ -60,35 +56,16 @@ if (program.args.length === 0) {
       const api = new GitHubAPI(source, process.env["DANGER_GITHUB_API_TOKEN"])
       const platform = new GitHub(api)
       if (app.json || app.js) {
-        runProcessJSON(platform)
+        runHalfProcessJSON(platform)
       } else {
-        runDanger(source, platform, dangerFile)
+        runRunner(app, { source, platform })
       }
     }
   }
 }
 
-// Run Danger traditionally
-async function runDanger(source: FakeCI, platform: GitHub, file: string) {
-  const config: ExecutorOptions = {
-    stdoutOnly: app.textOnly,
-    verbose: app.verbose,
-    jsonOnly: false,
-    dangerID: "default",
-  }
-  const exec = new Executor(source, platform, inlineRunner, config)
-
-  const runtimeEnv = await exec.setupDanger()
-  const results = await runDangerfileEnvironment(file, undefined, runtimeEnv)
-  if (program.repl) {
-    openRepl(runtimeEnv)
-  } else {
-    jsome(results)
-  }
-}
-
-// Run Danger Process and output the JSON to CLI
-async function runProcessJSON(platform: GitHub) {
+// Run the first part of a Danger Process and output the JSON to CLI
+async function runHalfProcessJSON(platform: GitHub) {
   const dangerDSL = await jsonDSLGenerator(platform)
   const processInput = prepareDangerDSL(dangerDSL)
   const output = JSON.parse(processInput)
@@ -96,7 +73,7 @@ async function runProcessJSON(platform: GitHub) {
   // See https://github.com/Javascipt/Jsome/issues/12
   if (app.json) {
     process.stdout.write(JSON.stringify(dsl, null, 2))
-  } else {
+  } else if (app.js) {
     jsome(dsl)
   }
 }

@@ -26,8 +26,7 @@ program
   .command("runner", "Runs a dangerfile against a DSL passed in via STDIN")
   .command("run", "Runs danger on your local system")
 
-setSharedArgs(program)
-program.parse(process.argv)
+setSharedArgs(program).parse(process.argv)
 
 const app = (program as any) as SharedCLI
 runRunner(app)

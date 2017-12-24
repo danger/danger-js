@@ -12,6 +12,7 @@ export interface SharedCLI extends program.CommanderStatic {
   textOnly: boolean
   dangerfile: string
   id: string
+  repl: string
 }
 
 export default (command: any) =>
