@@ -1,5 +1,6 @@
 import * as fs from "fs"
 import * as path from "path"
+import * as JSON5 from "json5"
 
 let hasNativeTypeScript = false
 let hasBabel = false
@@ -33,7 +34,7 @@ try {
 
 export const typescriptify = (content: string): string => {
   const ts = require("typescript") // tslint:disable-line
-  const compilerOptions = JSON.parse(fs.readFileSync("tsconfig.json", "utf8"))
+  const compilerOptions = JSON5.parse(fs.readFileSync("tsconfig.json", "utf8"))
   let result = ts.transpileModule(content, sanitizeTSConfig(compilerOptions))
   return result.outputText
 }
