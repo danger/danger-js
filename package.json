@@ -68,6 +68,7 @@
     "@types/debug": "0.0.30",
     "@types/get-stdin": "^5.0.1",
     "@types/jest": "^21.1.9",
+    "@types/json5": "^0.0.29",
     "@types/lodash.includes": "^4.3.3",
     "@types/node-fetch": "^1.6.6",
     "@types/readline-sync": "^1.4.2",
