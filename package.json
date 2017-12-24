@@ -49,7 +49,8 @@
     "declarations": "ts-node ./scripts/create-danger-dts.ts",
     "docs:cp_defs":
       "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/github/lib/index.d.ts docs/docs_generate/github.d.ts",
-    "docs": "yarn run docs:cp_defs; yarn typedoc -- --json docs/js_ref_dsl_docs.json --includeDeclarations ",
+    "docs":
+      "yarn run docs:cp_defs; yarn typedoc --ignoreCompilerErrors --mode modules --json docs/js_ref_dsl_docs.json --includeDeclarations source",
     "dts-lint": "yarn run declarations && yarn dtslint types"
   },
   "repository": {
@@ -94,7 +95,7 @@
     "ts-node": "^4.0.2",
     "tslint": "^5.8.0",
     "tslint-config-prettier": "^1.6.0",
-    "typedoc": "orta/typedoc#0.5.10-no-types",
+    "typedoc": "0.9.0",
     "typescript": "^2.6.2"
   },
   "dependencies": {

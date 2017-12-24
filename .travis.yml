@@ -62,7 +62,7 @@ matrix:
 script:
 - yarn lint
 - yarn add jest
-- yarn jest --forceExit --runInBand
+- yarn jest --runInBand
 
 notifications:
   slack: dangergem:9FOZou9EGBV9xO1Ol4bxRPz9
