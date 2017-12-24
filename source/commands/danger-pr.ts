@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 import * as program from "commander"
 import * as debug from "debug"
 import * as jsome from "jsome"
