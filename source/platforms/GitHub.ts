@@ -160,8 +160,8 @@ export class GitHub {
   APIMetadataForPR(pr: GitHubPRDSL): GitHubAPIPR {
     return {
       number: pr.number,
-      repo: pr.head.repo.name,
-      owner: pr.head.repo.owner.login,
+      repo: pr.base.repo.name,
+      owner: pr.base.repo.owner.login,
     }
   }
 }

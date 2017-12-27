@@ -99,7 +99,7 @@ describe("getPlatformDSLRepresentation", () => {
 
     expect(dsl.thisPR).toEqual({
       number: 327,
-      owner: "orta",
+      owner: "artsy",
       repo: "emission",
     })
   })
