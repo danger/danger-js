@@ -3,8 +3,6 @@ developers, so please limit technical // terminology to in here.
 
 // ### Master
 
-<<<<<<< HEAD
-
 ### 2.1.7
 
 * Fix Codeship integration - [@caffodian][]
@@ -12,6 +10,7 @@ developers, so please limit technical // terminology to in here.
 * Fixes to running `danger` with params - [@orta][]
 * Fixes for `danger pr` not acting like `danger` WRT async code - [@orta][]
 * Fixes `tsconfig.json` parse to be JSON5 friendly - [@gantman][]
+* Fixes for `danger.github.thisPR` to use the base metadata for a PR, I'm too used to branch workflows - [@orta][]
 
 ### 2.1.6
 
