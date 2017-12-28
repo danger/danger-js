@@ -29,4 +29,6 @@ program
 setSharedArgs(program).parse(process.argv)
 
 const app = (program as any) as SharedCLI
-runRunner(app)
+if (app.args.length === 0) {
+  runRunner(app)
+}
