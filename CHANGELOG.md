@@ -9,6 +9,7 @@
 ## Master
 
 * Add a note in `danger pr` if you don't have a token set up - [@orta][]
+* Bunch of docs updates - [@orta][]
 
 ### 2.1.7
 

@@ -3,7 +3,7 @@ title: About the Dangerfile
 subtitle: The Dangerfile
 layout: guide_js
 order: 1
-blurb: Step two on using Danger in your app, how to work with it locally and nuances around async code and working with files.
+blurb: Step two on using Danger in your app, how to work locally and nuances around working with files.
 ---
 
 ## Writing your Dangerfile
@@ -14,7 +14,7 @@ If you are using Babel in your project, your Dangerfile will use the same transp
 
 ## Working on your Dangerfile
 
-There are two ways to locally work on your Dangerfile.  These both rely on using the GitHub API locally, so you may hit the GitHub API rate-limit or need to have authenticated request for private repos. In which case you can use an access token to do authenticated requests by exposing a token to Danger.
+There are two ways to locally work on your Dangerfile. These both rely on using the GitHub API locally, so you may hit the GitHub API rate-limit or need to have authenticated request for private repos. In which case you can use an access token to do authenticated requests by exposing a token to Danger.
 
 ```sh
 export DANGER_GITHUB_API_TOKEN='xxxxxxxxxx'
@@ -49,30 +49,6 @@ DANGER_TEST_PR='1234' npm run danger
 
 Assuming that your local file-system matches up to that branch on GitHub, this will be a good approximation of how danger will work when you integrate it into your CI system. Note: this will leave a comment on the PR.
 
-## Async
-
-We've not found the perfect pattern for handling different patterns of asynchronous behavior inside a Dangerfile. Here are some patterns for handling them.
-
--   **Ignore Async.** - A Dangerfile is a script, the non-blocking aspect of the node API can be ignored. E.g. use `fs.readFileSync` instead of `fs.readFile`. Danger works really well with [ShellJS][]
-
--   **Scheduling** - The Dangerfile DSL includes a function called `schedule`, this can handle either a promise or a function with a callback arg. For example using `async/await`:
-
-```js
-import { schedule, danger } from "danger"
-
-/// [... a bunch of functions]
-
-schedule(async () => {
-  const packageDiff = await danger.git.JSONDiffForFile("package.json")
-  checkForRelease(packageDiff)
-  checkForNewDependencies(packageDiff)
-  checkForLockfileDiff(packageDiff)
-  checkForTypesInDeps(packageDiff)
-})
-```
-
-In this case, the closure is queued up and Danger waits until all `schedule` functions/promises are finished before continuing, so make sure to not cause it to lock. There is no timeout yet.
-
 ## Working with files
 
 Over time, we've found it easier to create up-front arrays of files you are be interested in - then you can work with these potential arrays of files. For example:
@@ -105,38 +81,29 @@ As the JavaScript library API is relatively limited, the Danger module includes 
 
 ## Finding more info
 
-The CHANGELOG for Danger is kept entirely end-user focused, so if there is an aspect of the Dangerfile that you do not know, or looks confusing and there is nothing in the documentation - check the CHANGELOG. This is where we write-up why a change happened, and how it can affect Danger users.
+The [CHANGELOG][changelog] for Danger is kept entirely end-user focused, so if there is an aspect of the Dangerfile that you do not know, or looks confusing and there is nothing in the documentation - [check the CHANGELOG][changelog]. This is where we write-up why a change happened, and how it can affect Danger users.
 
 ### Examples
 
-If you'd like to work with some reference material, here are some examples in the wild. 
+If you'd like to work with some reference material, here are some examples in the wild.
 
 JavaScript:
 
--   **Apps** - [Artsy/metaphysics][meta].
--   **Libraries** - [Facebook/Jest][fbj], [styled-components/styled-components][sc] and [ReactiveX/rxjs][rxjs].
+* **Apps** - [Artsy/metaphysics][meta].
+* **Libraries** - [facebook/react-native][rn], [styled-components/styled-components][sc] and [ReactiveX/rxjs][rxjs].
 
 Some TypeScript examples:
 
--   **Apps** - [Artsy/Emission][emiss]
--   **Libraries** [danger/danger-js][danger-js]
+* **Apps** - [Artsy/Emission][emiss]
+* **Libraries** [danger/danger-js][danger-js]
 
 [emiss]: https://github.com/artsy/emission/blob/master/dangerfile.ts
-
 [danger-js]: https://github.com/danger/danger-js/blob/master/dangerfile.ts
-
 [meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
-
-[fbj]: https://github.com/facebook/jest/blob/master/dangerfile.js
-
+[rn]: https://github.com/facebook/react-native/blob/master/danger/dangerfile.js
 [sc]: https://github.com/styled-components/styled-components/blob/master/dangerfile.js
-
 [rxjs]: https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js
-
 [setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
-
 [jest]: https://github.com/facebook/jest
-
-[shelljs]: http://github.com/shelljs/shelljs
-
 [ts_guide]: /js/tutorials/typescript.html
+[changelog]: http://danger.systems/js/changelog.html
