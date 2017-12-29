@@ -50,10 +50,16 @@ if (program.args.length === 0) {
     // TODO: Use custom `fetch` in GitHub that stores and uses local cache if PR is closed, these PRs
     //       shouldn't change often and there is a limit on API calls per hour.
 
+    const token = process.env["DANGER_GITHUB_API_TOKEN"]
+    if (!token) {
+      console.log("You don't have a DANGER_GITHUB_API_TOKEN set up, this is optional, but TBH, you want to do this")
+      console.log("Check out: http://danger.systems/js/guides/the_dangerfile.html#working-on-your-dangerfile")
+    }
+
     if (validateDangerfileExists(dangerFile)) {
       d(`executing dangerfile at ${dangerFile}`)
       const source = new FakeCI({ DANGER_TEST_REPO: pr.repo, DANGER_TEST_PR: pr.pullRequestNumber })
-      const api = new GitHubAPI(source, process.env["DANGER_GITHUB_API_TOKEN"])
+      const api = new GitHubAPI(source, token)
       const platform = new GitHub(api)
       if (app.json || app.js) {
         runHalfProcessJSON(platform)

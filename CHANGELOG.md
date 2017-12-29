@@ -1,8 +1,14 @@
+<!--
+
 // Please add your own contribution below inside the Master section
 // These docs are aimed at users rather than danger developers, so please limit technical
 // terminology to in here.
 
-// ### Master
+-->
+
+## Master
+
+* Add a note in `danger pr` if you don't have a token set up - [@orta][]
 
 ### 2.1.7
 
