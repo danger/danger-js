@@ -1,4 +1,4 @@
-import { contextForDanger, DangerContext } from "../runner/Dangerfile"
+import { contextForDanger, DangerContext } from "./Dangerfile"
 import { DangerDSL } from "../dsl/DangerDSL"
 import { CISource } from "../ci_source/ci_source"
 import { Platform } from "../platforms/platform"
