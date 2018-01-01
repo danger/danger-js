@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "2.1.10",
+  "version": "3.0.0",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -8,7 +8,8 @@
     "danger": "distribution/commands/danger.js",
     "danger-pr": "distribution/commands/danger-pr.js",
     "danger-process": "distribution/commands/danger-process.js",
-    "danger-run": "distribution/commands/danger-run.js",
+    "danger-ci": "distribution/commands/danger-ci.js",
+    "danger-runner": "distribution/commands/danger-runner.js",
     "danger-init": "distribution/commands/danger-init.js"
   },
   "jest": {
@@ -42,6 +43,7 @@
     "lint:fix": "tslint \"source/**/*.ts\" --fix",
     "prepublishOnly": "yarn run build && yarn declarations && yarn build:flow-types",
     "build": "shx rm -rf ./distribution && tsc -p tsconfig.production.json && madge ./distribution --circular",
+    "build:fast": "tsc -p tsconfig.production.json",
     "build:flow-types":
       "cp source/danger.d.ts source/_danger.d.ts; sed -ie 's/api: GitHub/api: any/g' source/_danger.d.ts; npx flowgen source/_danger.d.ts -o distribution/danger.js.flow; node scripts/update_flow_types.js",
     "build:watch": "tsc -w",
@@ -102,7 +104,7 @@
   "dependencies": {
     "babel-polyfill": "7.0.0-alpha.19",
     "chalk": "^2.3.0",
-    "commander": "^2.12.2",
+    "commander": "sennav/commander.js#master",
     "debug": "^3.1.0",
     "get-stdin": "^5.0.1",
     "github": "^13.0.1",

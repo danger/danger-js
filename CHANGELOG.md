@@ -8,6 +8,29 @@
 
 ## Master
 
+### 3.0.0
+
+* Updates to the CLI user interface. Breaking changes for everyone.
+
+  **TLDR** - change `yarn danger` to `yarn danger ci`.
+
+  Danger JS has been fighting an uphill battle for a while with respects to CLI naming, and
+  duplication of work. So, now it's been simplified. There are four user facing commands:
+
+  * `danger init` - Helps you get started with Danger
+  * `danger ci` - Runs Danger on CI
+  * `danger process` - Like `ci` but lets another process handle evaluating a Dangerfile
+  * `danger pr` - Runs your local Dangerfile against an existing GitHub PR. Will not post on the PR
+
+  This release deprecates running `danger` on it's own, so if you have `yarn danger` then move that be `yarn danger ci`.
+
+  Each command name is now much more obvious in it intentions, I've heard many times that people aren't sure what commands do
+  and it's _is_ still even worse in Danger ruby. I figure now is as good a time as any a good time to call it a clean slate.
+
+  On a positive note, I gave all of the help screens an update and tried to improve language where I could.
+
+- [@orta][]
+
 ### 2.1.9-10
 
 * Fix to `danger pr` and `danger` infinite looping - [@orta][]

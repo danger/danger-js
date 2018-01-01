@@ -53,8 +53,8 @@ if (danger.github.pr.body.length < 10) {
 
 This can be expanded to all sorts of checks for example:
 
--   Making sure every PR references an issue, or JIRA ticket.
--   Skipping particular rules based on what someone says inside the message. E.g. "This is a trivial PR."
+* Making sure every PR references an issue, or JIRA ticket.
+* Skipping particular rules based on what someone says inside the message. E.g. "This is a trivial PR."
 
 ## Results of CI Processes
 
@@ -64,7 +64,7 @@ Let's assume you're using CI for running tests or linters.
 script:
   - yarn lint
   - yarn test
-  - yarn danger
+  - yarn danger ci
 ```
 
 If your tool does not have an extra log file output option, you can look at using [`tee`][tee] to copy the text output into a file for later reading ( so you'd change `- yarn lint` to `yarn lint | tee 'linter.log'` )
@@ -92,13 +92,8 @@ More mature tools may have a JSON output reporter, so you can parse that file an
 If you build something that is a generic wrapper around a specific linting tool, this is a great place to convert that code [into a plugin][plugin] so that anyone can use it. In this case, Danger effectively is a way of moving these messages into the code review session.
 
 [started]: /js/guides/getting_started.html
-
 [artsy]: http://artsy.github.io
-
 [no-slacking]: https://github.com/alloy/no-slacking-on-pull-requests-bot
-
 [pr]: https://developer.github.com/v3/pulls/#get-a-single-pull-request
-
 [tee]: http://linux.101hacks.com/unix/tee-command-examples/
-
 [plugin]: /js/usage/extending-danger.html

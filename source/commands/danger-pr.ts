@@ -13,11 +13,12 @@ import validateDangerfileExists from "./utils/validateDangerfileExists"
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import { jsonDSLGenerator } from "../runner/dslGenerator"
 import { prepareDangerDSL } from "./utils/runDangerSubprocess"
-import { runRunner } from "./run/runner"
+import { runRunner } from "./ci/runner"
 
 // yarn build; cat source/_tests/fixtures/danger-js-pr-384.json |  node --inspect  --inspect-brk distribution/commands/danger-runner.js --text-only
 
 const d = debug("danger:pr")
+const log = console.log
 
 interface App extends SharedCLI {
   /** Should we show the Danger Process PR JSON? */
@@ -30,6 +31,26 @@ program
   .description("Emulate running Danger against an existing GitHub Pull Request.")
   .option("-J, --json", "Output the raw JSON that would be passed into `danger process` for this PR.")
   .option("-j, --js", "A more human-readable version of the JSON.")
+
+  .on("--help", () => {
+    log("\n")
+    log("  Docs:")
+    if (!process.env["DANGER_GITHUB_API_TOKEN"]) {
+      log("")
+      log("     You don't have a DANGER_GITHUB_API_TOKEN set up, this is optional, but TBH, you want to do this.")
+      log("     Check out: http://danger.systems/js/guides/the_dangerfile.html#working-on-your-dangerfile")
+      log("")
+    }
+    log("")
+    log("    -> API Reference")
+    log("       http://danger.systems/js/reference.html")
+    log("")
+    log("    -> Getting started:")
+    log("       http://danger.systems/js/guides/getting_started.html")
+    log("")
+    log("    -> The Dangerfile")
+    log("       http://danger.systems/js/guides/the_dangerfile.html")
+  })
 
 setSharedArgs(program).parse(process.argv)
 d(`Starting Danger PR`)
@@ -69,6 +90,10 @@ if (program.args.length === 0) {
         d("running process separated Danger")
         // Always post to STDOUT in `danger-pr`
         app.textOnly = true
+
+        // Can't send these to `danger runner`
+        delete app.js
+        delete app.json
         runRunner(app, { source, platform })
       }
     }

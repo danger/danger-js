@@ -8,13 +8,13 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *  it is _really_ tricky for Danger to know whether you are in a pull request or not, as the environment metadata
  *  isn't reliable. This may be different with Circle v2.
  *
- *  With that set up, you can you add `yarn danger` to your `circle.yml`. If you override the default
+ *  With that set up, you can you add `yarn danger ci` to your `circle.yml`. If you override the default
  *  `test:` section, then add it as an extra step. Otherwise add a new `pre` section to the test:
  *
  *    ``` ruby
  *    test:
  *      override:
- *          - yarn danger
+ *          - yarn danger ci
  *    ```
  *
  *  ### Token Setup

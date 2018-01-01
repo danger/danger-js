@@ -11,8 +11,18 @@ import { generateInitialState, createUI } from "./init/state-setup"
 import { InitUI, InitState, highlight } from "./init/interfaces"
 
 program
-  .description("Helps you get set up through to your first Danger.")
+  .description("Helps you get set up through to your first Dangerfile.")
   .option("-i, --impatient", "Don't add dramatic pauses.")
+
+  .on("--help", () => {
+    console.log("\n")
+    console.log("  Docs:")
+    console.log("")
+    console.log("    -> Getting started:")
+    console.log("       http://danger.systems/js/guides/getting_started.html")
+  })
+
+program.parse(process.argv)
 
 interface App {
   impatient: boolean

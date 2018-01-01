@@ -3,7 +3,7 @@
 import * as program from "commander"
 
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
-import { runRunner } from "./run/runner"
+import { runRunner } from "./ci/runner"
 
 program.usage("[options]").description("Runs a Dangerfile in JavaScript or TypeScript.")
 setSharedArgs(program).parse(process.argv)

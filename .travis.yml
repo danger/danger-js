@@ -30,8 +30,8 @@ matrix:
     - yarn add jest
     - yarn jest --outputFile test-results.json --json
     - yarn run link
-    - echo "This is the real `danger` run on this repo"
-    - DEBUG="*" danger run --verbose
+    - echo "This is the real `danger ci` run on this repo"
+    - DEBUG="*" danger ci --verbose
     - DEBUG="*" danger pr https://github.com/danger/danger-js/pull/465 --verbose # To make sure it isn't broken again in a bad build
 
   # Create some fake projects at runtime
@@ -45,7 +45,7 @@ matrix:
       - yarn add file:..
       - echo "warn('I warned you')" > dangerfile.js
       - echo "Testing a blank Dangerfile on an empty project"
-      - DEBUG="*" yarn danger -- run --text-only
+      - DEBUG="*" yarn danger run --text-only
       - cd ..
       - rm -rf danger_blank_test
 
@@ -55,7 +55,7 @@ matrix:
       - yarn add file:..
       - echo "warn('Expect 2 warnings'); const a = async () => {warn('the other');}; schedule(a)" > dangerfile.js
       - echo "Testing a blank Dangerfile on a babel CRA project"
-      - DEBUG="*" yarn danger -- run --text-only
+      - DEBUG="*" yarn danger ci --text-only
       - cd ..
       - rm -rf danger_babel_test
 

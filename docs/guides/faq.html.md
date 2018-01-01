@@ -19,7 +19,7 @@ Ish, it's currently quite complex to set up, but work is on-going on [Danger/Per
 Let's say you run Danger on the same CI service that deploys your code. If that's open source, you don't want to be letting anyone pull out your private env vars. The work around for this is to not simply call Danger on every test run:
 
 ```sh
-'[ ! -z $DANGER_GITHUB_API_TOKEN ] && yarn danger || echo "Skipping Danger for External Contributor"'
+'[ ! -z $DANGER_GITHUB_API_TOKEN ] && yarn danger ci || echo "Skipping Danger for External Contributor"'
 ```
 
 This ensures that Danger only runs when you have the environment variables set up to run. This is how Danger works for a lot of the open source mobile projects in Artsy.
@@ -28,20 +28,15 @@ This ensures that Danger only runs when you have the environment variables set u
 
 We'd recommend first becoming acquainted with the [VISION.md][] inside Danger, this is the long-term plan. Then there are two ways to start contributing today:
 
--   Opinions are extra welcome on issues marked as [Open For Discussion][open].
+* Opinions are extra welcome on issues marked as [Open For Discussion][open].
 
--   Well defined work items like features or fixes are marked as [You Can Do This][you-can-do-this].
+* Well defined work items like features or fixes are marked as [You Can Do This][you-can-do-this].
 
 We keep comments in the public domain, there is a Slack, but it's very rarely used. If you're interested in joining, you can DM [orta][].
 
 [77]: https://github.com/danger/danger-js/issues/77
-
 [vision.md]: https://github.com/danger/danger-js/blob/master/VISION.md
-
 [open]: https://github.com/danger/danger-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22Open+for+Discussion%22
-
 [you-can-do-this]: https://github.com/danger/danger-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22You+Can+Do+This%22
-
 [orta]: https://twitter.com/orta/
-
 [peril]: https://github.com/danger/peril

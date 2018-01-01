@@ -2,18 +2,18 @@ import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
 /**
  * ### CI Setup
- *  You need to edit your `.travis.yml` to include `yarn danger`. If you already have
- *  a `script:` section then we recommend adding this command at the end of the script step: `- yarn danger`.
+ *  You need to edit your `.travis.yml` to include `yarn danger ci`. If you already have
+ *  a `script:` section then we recommend adding this command at the end of the script step: `- yarn danger ci`.
  *
- *   Otherwise, add a `before_script` step to the root of the `.travis.yml` with `yarn danger`
+ *   Otherwise, add a `before_script` step to the root of the `.travis.yml` with `yarn danger ci`
  *
  *   ```ruby
  *     before_script:
- *       - yarn danger
+ *       - yarn danger ci
  *   ```
  *
  *  Adding this to your `.travis.yml` allows Danger to fail your build, both on the TravisCI website and within your Pull Request.
- *  With that set up, you can edit your job to add `yarn danger` at the build action.
+ *  With that set up, you can edit your job to add `yarn danger ci` at the build action.
  *
  *  ### Token Setup
  *

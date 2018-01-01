@@ -12,11 +12,11 @@ A plugin in this context is nothing special, it's a node module that you create 
 
 You can get started with the [danger-plugin](https://github.com/danger/generator-danger-plugin/) Yeoman generator. This will ask a few questions around your language choices and GitHub metadata.
 
--   `cd` to your JavaScript projects folder.
--   Install the Yeoman generator and our template: `npm i -g yo generator-danger-plugin`.
--   Start the process: `yo danger-plugin`.
+* `cd` to your JavaScript projects folder.
+* Install the Yeoman generator and our template: `npm i -g yo generator-danger-plugin`.
+* Start the process: `yo danger-plugin`.
 
-This will either generate a JavaScript or TypeScript project, if you ask this biased author's opinion - try the TypeScript one. Mainly, because it comes with a great editor experience for VS Code. 
+This will either generate a JavaScript or TypeScript project, if you ask this biased author's opinion - try the TypeScript one. Mainly, because it comes with a great editor experience for VS Code.
 
 This project should look something like:
 
@@ -48,7 +48,7 @@ This is the file where you want to paste in your existing Dangerfile code. Note,
 
 ## Testing
 
-Now that you're in the secret global club, you can see in `src/index.test.{j,t}s` that you can easily mock the Danger API. Calls like `warning`, `fail`, `message` and `markdown` can easily be tested via `jest.fn` mocks, and the Danger API can be stubbed by setting a JS object which is shaped how you'd like it to be. 
+Now that you're in the secret global club, you can see in `src/index.test.{j,t}s` that you can easily mock the Danger API. Calls like `warning`, `fail`, `message` and `markdown` can easily be tested via `jest.fn` mocks, and the Danger API can be stubbed by setting a JS object which is shaped how you'd like it to be.
 
 Should be pretty easy to make Act Arrange and Assert style tests with that infrastructure in place.
 
@@ -58,8 +58,8 @@ If you want to test locally against a known PR what I have done in the past is:
 * Run `yarn link` inside my plugin's working directory
 * Then in an app that uses Danger JS, I add the dependency with `yarn add [plugin] -d`
 * Then I convert that dependency to use a symlink to my working directory with `yarn link [plugin]`
-* Then I make sure that my library's transpiled code is always up-to-date with `yarn tsc -- --watch`
-* _Now_ I can use `danger pr` to run any existing pull request: `yarn danger -- pr -v https://github.com/artsy/emission/pull/597`
+* Then I make sure that my library's transpiled code is always up-to-date with `yarn tsc --watch`
+* _Now_ I can use `danger pr` to run any existing pull request: `yarn danger pr -v https://github.com/artsy/emission/pull/597`
 
 Note that using `danger pr` more than 2-3 times would require that you send authenticated requests, so make sure that your shell has the environment `DANGER_GITHUB_API_TOKEN` set to a valid token.
 

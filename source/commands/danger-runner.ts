@@ -14,7 +14,7 @@ import { dangerfilePath } from "./utils/file-utils"
 import { DangerDSLJSONType } from "../dsl/DangerDSL"
 import { jsonToDSL } from "../runner/jsonToDSL"
 
-const d = debug("danger:run")
+const d = debug("danger:runner")
 
 // Given the nature of this command, it can be tricky to test, so I use a command like this:
 //
@@ -26,10 +26,11 @@ const d = debug("danger:run")
 program
   .usage("[options]")
   .description(
-    "Handles running the Dangerfile, expects a DSL from STDIN, which should be passed from `danger` or danger run`. You probably don;t need to use this command."
+    "Handles running the Dangerfile, expects a DSL from STDIN, which should be passed from `danger` or danger run`. You probably don't need to use this command."
   )
 
-setSharedArgs(program).parse(process.argv)
+const argvClone = process.argv.slice(0)
+setSharedArgs(program).parse(argvClone)
 d(`Started Danger Run with ${program.args}`)
 
 let foundDSL = false
@@ -52,9 +53,9 @@ const run = async (jsonString: string) => {
 // Wait till the end of the process to print out the results. Will
 // only post the results when the process has succeeded, leaving the
 // host process to create a message from the logs.
-nodeCleanup(() => {
-  d("Detected process has finished, sending the results back to the host process")
-  if (foundDSL && process.exitCode === 0) {
+nodeCleanup((exitCode: number, signal: string) => {
+  d(`Process has finished with ${exitCode} ${signal}, sending the results back to the host process`)
+  if (foundDSL) {
     process.stdout.write(JSON.stringify(runtimeEnv.results, null, 2))
   }
 })

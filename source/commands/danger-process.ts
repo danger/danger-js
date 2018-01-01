@@ -29,6 +29,13 @@ program
       "into another process expecting the process to eventually return results back as JSON. If you don't " +
       "provide another process, then it will output to STDOUT."
   )
+  .on("--help", () => {
+    console.log("\n")
+    console.log("  Docs:")
+    console.log("")
+    console.log("    -> Danger Process:")
+    console.log("       http://danger.systems/js/usage/danger-process.html")
+  })
 
 setSharedArgs(program)
 program.action(process_name => (subprocessName = process_name)).parse(process.argv)
