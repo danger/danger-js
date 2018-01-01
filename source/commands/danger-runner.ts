@@ -49,10 +49,12 @@ const run = async (jsonString: string) => {
   await inline.runDangerfileEnvironment(dangerFile, undefined, runtimeEnv)
 }
 
-// Wait till the end of the process to print out the results
+// Wait till the end of the process to print out the results. Will
+// only post the results when the process has succeeded, leaving the
+// host process to create a message from the logs.
 nodeCleanup(() => {
   d("Detected process has finished, sending the results back to the host process")
-  if (foundDSL) {
+  if (foundDSL && process.exitCode === 0) {
     process.stdout.write(JSON.stringify(runtimeEnv.results, null, 2))
   }
 })
