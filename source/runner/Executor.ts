@@ -36,6 +36,8 @@ export class Executor {
     public readonly options: ExecutorOptions
   ) {}
 
+  /** TODO: Next two functions aren't used in Danger, are they used in Peril? */
+
   /** Mainly just a dumb helper because I can't do
    * async functions in danger-run.js
    * @param {string} file the path to run Danger from
@@ -95,6 +97,7 @@ export class Executor {
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    */
   async handleResults(results: DangerResults) {
+    this.d(`Got Results back, current settings`, this.options)
     if (this.options.stdoutOnly || this.options.jsonOnly) {
       this.handleResultsPostingToSTDOUT(results)
     } else {

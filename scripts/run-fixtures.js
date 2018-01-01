@@ -44,6 +44,7 @@ const runDangerfile = fixture => {
     DANGER_TEST_REPO: "danger/danger",
     DANGER_TEST_PR: "395",
     DANGER_GITHUB_API_TOKEN: "1234",
+    DEBUG: "danger",
   }
   const command = commandArgs.join(" ")
 

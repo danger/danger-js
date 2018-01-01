@@ -1,8 +1,11 @@
+import * as debug from "debug"
 import { spawn } from "child_process"
 
 import { DangerDSLJSONType, DangerJSON } from "../../dsl/DangerDSL"
 import { Executor } from "../../runner/Executor"
 import { markdownCode, resultsWithFailure } from "./reporting"
+
+const d = debug("danger:runDangerSubprocess")
 
 // Sanitizes the DSL so for sending via STDOUT
 export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
@@ -20,6 +23,7 @@ const runDangerSubprocess = (subprocessName: string[], dslJSONString: string, ex
   let args = subprocessName
   args.shift() // mutate and remove the first element
 
+  d(`Running subprocess: ${processName} - ${args}`)
   const child = spawn(processName, args, { env: process.env })
   let allLogs = ""
 
@@ -30,10 +34,13 @@ const runDangerSubprocess = (subprocessName: string[], dslJSONString: string, ex
     data = data.toString()
     const trimmed = data.trim()
     if (trimmed.startsWith("{") && trimmed.endsWith("}") && trimmed.includes("markdowns")) {
+      d("Got JSON results")
       const results = JSON.parse(trimmed)
       await exec.handleResults(results)
     } else {
-      console.log(`stdout: ${data}`)
+      if (data.trim().length === 0) {
+        console.log(`stdout: ${data}`)
+      }
       allLogs += data
     }
   })
