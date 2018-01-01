@@ -32,6 +32,7 @@ program
   .option("-j, --js", "A more human-readable version of the JSON.")
 
 setSharedArgs(program).parse(process.argv)
+d(`Starting Danger PR`)
 
 const app = (program as any) as App
 

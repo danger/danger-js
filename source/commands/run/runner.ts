@@ -1,4 +1,5 @@
 import chalk from "chalk"
+import * as debug from "debug"
 
 import { getPlatformForEnv, Platform } from "../../platforms/platform"
 import { Executor, ExecutorOptions } from "../../runner/Executor"
@@ -11,12 +12,15 @@ import { jsonDSLGenerator } from "../../runner/dslGenerator"
 import dangerRunToRunnerCLI from "../utils/dangerRunToRunnerCLI"
 import { CISource } from "../../ci_source/ci_source"
 
+const d = debug("danger:process_runner")
+
 export interface RunnerConfig {
   source: CISource
   platform: Platform
 }
 
 export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
+  d(`Starting sub-process run with ${app.args}`)
   const source = (config && config.source) || (await getRuntimeCISource(app))
 
   // This does not set a failing exit code
@@ -48,6 +52,8 @@ export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
       const processInput = prepareDangerDSL(dangerJSONDSL)
 
       const runnerCommand = dangerRunToRunnerCLI(process.argv)
+      d(`Preparing to run: ${runnerCommand}`)
+
       const exec = new Executor(source, platform, inlineRunner, config)
       runDangerSubprocess(runnerCommand, processInput, exec)
     }

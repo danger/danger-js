@@ -24,11 +24,15 @@ program
   .command("process", "Like `run` but lets another process handle evaluating a Dangerfile")
   .command("pr", "Runs your changes against an existing PR")
   .command("runner", "Runs a dangerfile against a DSL passed in via STDIN")
-  .command("run", "Runs danger on your local system")
+  .command("run", "Runs danger on your local system", { isDefault: true })
 
 setSharedArgs(program).parse(process.argv)
 
 const app = (program as any) as SharedCLI
-if (app.args.length === 0) {
+
+const commands = ["init", "process", "pr", "runner", "run"]
+const hasSubcommand = commands.find(c => app.args.includes(c))
+if (!hasSubcommand) {
+  d(`Running default runner`)
   runRunner(app)
 }

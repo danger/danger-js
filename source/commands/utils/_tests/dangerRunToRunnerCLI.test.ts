@@ -39,3 +39,18 @@ it("`node distribution/commands/danger-run.js --dangerfile 'myDanger file.ts'`",
     dangerRunToRunnerCLI(["node", "distribution/commands/danger-run.js", "--dangerfile", "myDanger file.ts"])
   ).toEqual(["node", "distribution/commands/danger-runner.js", "--dangerfile", "myDanger file.ts"])
 })
+
+it("`node distribution/commands/danger-pr.js --dangerfile 'myDanger file.ts'`", () => {
+  expect(
+    dangerRunToRunnerCLI(["node", "distribution/commands/danger-pr.js", "--dangerfile", "myDanger file.ts"])
+  ).toEqual(["node", "distribution/commands/danger-runner.js", "--dangerfile", "myDanger file.ts"])
+})
+
+it("`danger pr --dangerfile 'myDanger file.ts'`", () => {
+  expect(dangerRunToRunnerCLI(["danger", "pr", "--dangerfile", "myDanger file.ts"])).toEqual([
+    "danger",
+    "runner",
+    "--dangerfile",
+    "myDanger file.ts",
+  ])
+})

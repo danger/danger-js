@@ -34,9 +34,9 @@
   version "9.1.8"
   resolved "https://registry.yarnpkg.com/@types/highlight.js/-/highlight.js-9.1.8.tgz#d227f18bcb8f3f187e16965f2444859a04689758"
 
-"@types/jest@^21.1.9":
-  version "21.1.9"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-21.1.9.tgz#a913d6224e9d8a1f24908af536f65b5bf4d489bc"
+"@types/jest@^22.0.0":
+  version "22.0.0"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-22.0.0.tgz#23009941178aad7979a9591e026f7a96054d7bc0"
 
 "@types/json5@^0.0.29":
   version "0.0.29"
@@ -1576,9 +1576,9 @@ danger-plugin-jest@^1.0.1:
   optionalDependencies:
     serve "^5.1.5"
 
-danger-plugin-yarn@^1.0.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/danger-plugin-yarn/-/danger-plugin-yarn-1.2.0.tgz#3681db67f71e65dc6dd7a0a31ef3e7f56e9b29d3"
+danger-plugin-yarn@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/danger-plugin-yarn/-/danger-plugin-yarn-1.2.1.tgz#e161d898ab3ddd5a80695c38471205476af9da81"
   dependencies:
     date-fns "^1.28.5"
     lodash.flatten "^4.4.0"

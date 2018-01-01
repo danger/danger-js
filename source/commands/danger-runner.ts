@@ -4,6 +4,7 @@ import setSharedArgs from "./utils/sharedDangerfileArgs"
 import * as nodeCleanup from "node-cleanup"
 
 import * as program from "commander"
+import * as debug from "debug"
 import * as getSTDIN from "get-stdin"
 import chalk from "chalk"
 
@@ -13,6 +14,8 @@ import { dangerfilePath } from "./utils/file-utils"
 import { DangerDSLJSONType } from "../dsl/DangerDSL"
 import { jsonToDSL } from "../runner/jsonToDSL"
 
+const d = debug("danger:run")
+
 // Given the nature of this command, it can be tricky to test, so I use a command like this:
 //
 // tslint:disable-next-line:max-line-length
@@ -21,15 +24,19 @@ import { jsonToDSL } from "../runner/jsonToDSL"
 // Which will build danger, then run just the dangerfile runner with a fixtured version of the JSON
 
 program
-  .usage("[options] dangerfile")
-  .description("Handles running the Dangerfile, expects a DSL from STDIN, which should be passed from `danger run`.")
+  .usage("[options]")
+  .description(
+    "Handles running the Dangerfile, expects a DSL from STDIN, which should be passed from `danger` or danger run`. You probably don;t need to use this command."
+  )
 
 setSharedArgs(program).parse(process.argv)
+d(`Started Danger Run with ${program.args}`)
 
 let foundDSL = false
 let runtimeEnv = {} as any
 
 const run = async (jsonString: string) => {
+  d("Got STDIN for Danger Run")
   foundDSL = true
   const dslJSON = JSON.parse(jsonString) as { danger: DangerDSLJSONType }
   const dsl = await jsonToDSL(dslJSON.danger)
@@ -38,11 +45,13 @@ const run = async (jsonString: string) => {
   // Set up the runtime env
   const context = contextForDanger(dsl)
   runtimeEnv = await inline.createDangerfileRuntimeEnvironment(context)
+  d(`Evaluating ${dangerFile}`)
   await inline.runDangerfileEnvironment(dangerFile, undefined, runtimeEnv)
 }
 
 // Wait till the end of the process to print out the results
 nodeCleanup(() => {
+  d("Detected process has finished, sending the results back to the host process")
   if (foundDSL) {
     process.stdout.write(JSON.stringify(runtimeEnv.results, null, 2))
   }

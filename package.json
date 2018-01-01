@@ -83,7 +83,7 @@
     "babel-preset-stage-3": "7.0.0-alpha.19",
     "babel-traverse": "7.0.0-alpha.19",
     "danger-plugin-jest": "^1.0.1",
-    "danger-plugin-yarn": "^1.0.0",
+    "danger-plugin-yarn": "^1.2.1",
     "date-fns": "^1.28.3",
     "husky": "^0.14.0",
     "jest": "22.0.4",

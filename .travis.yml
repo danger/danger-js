@@ -30,8 +30,9 @@ matrix:
     - yarn add jest
     - yarn jest --outputFile test-results.json --json
     - yarn run link
-    - echo "This is only for running the real danger on this repo"
-    - danger run --verbose
+    - echo "This is the real `danger` run on this repo"
+    - DEBUG="*" danger run --verbose
+    - DEBUG="*" danger pr https://github.com/danger/danger-js/pull/465 --verbose # To make sure it isn't broken again in a bad build
 
   # Create some fake projects at runtime
   - node_js: '7'
