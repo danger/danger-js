@@ -8,6 +8,12 @@
 
 ## Master
 
+### 2.1.9
+
+* Fix to `danger pr` and `danger` infinite looping - [@orta][]
+
+### 2.1.8
+
 * Add a note in `danger pr` if you don't have a token set up - [@orta][]
 * Bunch of docs updates - [@orta][]
 
