@@ -11,9 +11,15 @@ import inlineRunner from "../runner/runners/inline"
 import { jsonDSLGenerator } from "../runner/dslGenerator"
 import dangerRunToRunnerCLI from "./utils/dangerRunToRunnerCLI"
 
-export function createParser(subparsers: SubParser): ArgumentParser {
-  const parser = subparsers.addParser("run", { help: "Runs danger on your local system (default)" })
+export function addArguments(parser: ArgumentParser) {
   registerSharedArgs(parser)
+}
+
+export function createParser(subparsers: SubParser): ArgumentParser {
+  const parser = subparsers.addParser("run", {
+    help: "(default) Runs danger on your local system",
+  })
+  addArguments(parser)
   return parser
 }
 

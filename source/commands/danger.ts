@@ -13,22 +13,30 @@ process.on("unhandledRejection", function(reason: string, _p: any) {
   process.exitCode = 1
 })
 
-const parser = new ArgumentParser({
+const sharedOptions = {
   version,
   prog: "danger",
   description: "Danger: Unit tests for Team Culture",
-})
+}
+// The ArgumentParser constructor mutates; cloning works around it.
+const mainParser = new ArgumentParser(Object.assign({}, sharedOptions))
+const shortcutParser = new ArgumentParser(
+  Object.assign(
+    {
+      debug: true,
+      addHelp: false,
+    },
+    sharedOptions
+  )
+)
 
-const subparsers = parser.addSubparsers({ title: "subcommands" })
+const subparsers = mainParser.addSubparsers({ title: "subcommands" })
 
 import * as dangerInit from "./danger-init"
 import * as dangerProcess from "./danger-process"
 import * as dangerPr from "./danger-pr"
 import * as dangerRunner from "./danger-runner"
 import * as dangerRun from "./danger-run"
-
-import { registerSharedArgs } from "./utils/sharedDangerfileArgs"
-registerSharedArgs(parser)
 
 // For each subcommand, set a bogus `entryPoint` argument which we use below
 // to start the program.
@@ -63,6 +71,19 @@ dangerRun.createParser(subparsers).setDefaults({
   },
 })
 
-const args = parser.parseArgs()
+dangerRun.addArguments(shortcutParser)
+shortcutParser.setDefaults({
+  entryPoint: (args: dangerRun.App) => {
+    dangerRun.main(args)
+  },
+})
+
+let args
+try {
+  args = shortcutParser.parseArgs()
+} catch (e) {
+  args = mainParser.parseArgs()
+}
+
 console.log("args", args)
 args.entryPoint(args)
