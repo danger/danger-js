@@ -63,8 +63,12 @@ if (program.args.length === 0) {
       const api = new GitHubAPI(source, token)
       const platform = new GitHub(api)
       if (app.json || app.js) {
+        d("getting just the JSON/JS DSL")
         runHalfProcessJSON(platform)
       } else {
+        d("running process separated Danger")
+        // Always post to STDOUT in `danger-pr`
+        app.textOnly = true
         runRunner(app, { source, platform })
       }
     }

@@ -8,7 +8,7 @@
 
 ## Master
 
-### 2.1.9
+### 2.1.9-10
 
 * Fix to `danger pr` and `danger` infinite looping - [@orta][]
 

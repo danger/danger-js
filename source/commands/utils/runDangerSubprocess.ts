@@ -46,13 +46,16 @@ const runDangerSubprocess = (subprocessName: string[], dslJSONString: string, ex
   })
 
   child.stderr.on("data", data => {
-    console.log(`stderr: ${data}`)
+    if (data.toString().trim().length === 0) {
+      console.log(`stdout: ${data}`)
+    }
   })
 
   child.on("close", async code => {
-    console.log(`child process exited with code ${code}`)
+    d(`child process exited with code ${code}`)
     // Submit an error back to the PR
     if (code) {
+      d(`Handling potential fail`)
       process.exitCode = code
       const results = resultsWithFailure(`${subprocessName}\` failed.`, "### Log\n\n" + markdownCode(allLogs))
       await exec.handleResults(results)
