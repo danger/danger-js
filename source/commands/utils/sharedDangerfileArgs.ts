@@ -16,13 +16,13 @@ export interface SharedCLI extends program.ICommand {
 
 export default (command: program.ICommand) =>
   command
-    .option("-v, --verbose", "Verbose output of files")
+    .option("-V, --verbose", "Verbose output of files")
     .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")
     .option("-t, --text-only", "Provide an STDOUT only interface, Danger will not post to your PR")
     .option("-d, --dangerfile [filePath]", "Specify a custom dangerfile path")
 
 export function registerSharedArgs(parser: ArgumentParser) {
-  parser.addArgument(["-v", "--verbose"], {
+  parser.addArgument(["-V", "--verbose"], {
     action: "storeTrue",
     help: "Verbose output of files",
   })

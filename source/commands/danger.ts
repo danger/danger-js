@@ -22,38 +22,47 @@ const parser = new ArgumentParser({
 const subparsers = parser.addSubparsers({ title: "subcommands" })
 
 import * as dangerInit from "./danger-init"
-import * as dangerProcess from "./danger-init"
+import * as dangerProcess from "./danger-process"
 import * as dangerPr from "./danger-pr"
 import * as dangerRunner from "./danger-runner"
 import * as dangerRun from "./danger-run"
 
+import { registerSharedArgs } from "./utils/sharedDangerfileArgs"
+registerSharedArgs(parser)
+
 // For each subcommand, set a bogus `entryPoint` argument which we use below
 // to start the program.
+
 dangerInit.createParser(subparsers).setDefaults({
-  entryPoint: (args: any) => {
-    dangerInit.main(args as dangerInit.App)
+  entryPoint: (args: dangerInit.App) => {
+    dangerInit.main(args)
   },
 })
+
 dangerProcess.createParser(subparsers).setDefaults({
-  entryPoint: (args: any) => {
-    dangerProcess.main(args as dangerProcess.App)
+  entryPoint: (args: dangerProcess.App) => {
+    dangerProcess.main(args)
   },
 })
+
 dangerPr.createParser(subparsers).setDefaults({
-  entryPoint: (args: any) => {
-    dangerPr.main(args as dangerPr.App)
+  entryPoint: (args: dangerPr.App) => {
+    dangerPr.main(args)
   },
 })
+
 dangerRunner.createParser(subparsers).setDefaults({
-  entryPoint: (args: any) => {
-    dangerRunner.main(args as dangerRunner.App)
+  entryPoint: (args: dangerRunner.App) => {
+    dangerRunner.main(args)
   },
 })
+
 dangerRun.createParser(subparsers).setDefaults({
-  entryPoint: (args: any) => {
-    dangerRun.main(args as dangerRun.App)
+  entryPoint: (args: dangerRun.App) => {
+    dangerRun.main(args)
   },
 })
 
 const args = parser.parseArgs()
+console.log("args", args)
 args.entryPoint(args)
