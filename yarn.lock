@@ -74,10 +74,6 @@
   version "8.0.46"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.46.tgz#6e1766b2d0ed06631d5b5f87bb8e72c8dbb6888e"
 
-"@types/node@^7.0.39":
-  version "7.0.51"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.51.tgz#1fb9bd2c7d28b1e8b1fe438f01494d0da8e451af"
-
 "@types/readline-sync@^1.4.2":
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/@types/readline-sync/-/readline-sync-1.4.2.tgz#516b5f4f250534062b6bb08ae8367a088dcf739f"
@@ -872,6 +868,14 @@ babel-polyfill@7.0.0-alpha.19:
     core-js "^2.4.0"
     regenerator-runtime "^0.10.0"
 
+babel-polyfill@^6.23.0:
+  version "6.26.0"
+  resolved "https://registry.yarnpkg.com/babel-polyfill/-/babel-polyfill-6.26.0.tgz#379937abc67d7895970adc621f284cd966cf2153"
+  dependencies:
+    babel-runtime "^6.26.0"
+    core-js "^2.5.0"
+    regenerator-runtime "^0.10.5"
+
 babel-preset-es2015@7.0.0-alpha.19:
   version "7.0.0-alpha.19"
   resolved "https://registry.yarnpkg.com/babel-preset-es2015/-/babel-preset-es2015-7.0.0-alpha.19.tgz#938fd5feae186fff28c9f7c8cd1f0ee094174524"
@@ -1410,7 +1414,7 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@^2.11.0:
+commander@^2.11.0, commander@^2.12.2:
   version "2.12.2"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.12.2.tgz#0f5946c427ed9ec0d91a46bb9def53e54650e555"
 
@@ -1419,12 +1423,6 @@ commander@^2.8.1, commander@^2.9.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
   dependencies:
     graceful-readlink ">= 1.0.0"
-
-commander@sennav/commander.js#master:
-  version "2.11.0"
-  resolved "https://codeload.github.com/sennav/commander.js/tar.gz/7bec2adb7dcd175237362e01cdd3b12989d4dbf8"
-  dependencies:
-    "@types/node" "^7.0.39"
 
 commander@~2.6.0:
   version "2.6.0"
@@ -4616,6 +4614,10 @@ regenerate@^1.3.2:
 regenerator-runtime@^0.10.0:
   version "0.10.3"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.10.3.tgz#8c4367a904b51ea62a908ac310bf99ff90a82a3e"
+
+regenerator-runtime@^0.10.5:
+  version "0.10.5"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz#336c3efc1220adcedda2c9fab67b5a7955a33658"
 
 regenerator-runtime@^0.11.0:
   version "0.11.0"
