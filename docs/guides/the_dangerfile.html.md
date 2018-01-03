@@ -10,7 +10,7 @@ blurb: Step two on using Danger in your app, how to work locally and nuances aro
 
 The Danger JS DSL is fully typed via TypeScript. These definitions are shipped with the Danger module. If your text editor supports working with type definitions you will get inline-documentation and auto-completion after you import danger in your Dangerfile. Visual Studios Code will do this by default for you.
 
-If you are using Babel in your project, your Dangerfile will use the same transpilation settings. If you're using TypeScript + Jest it will work out of the box too, however, if you don't, you should head over to the [TypeScript guide][ts_guide]
+If you are using Babel in your project, your Dangerfile will use the same transpilation settings. If you're using TypeScript + Jest it will work out of the box too, however, if you don't, you should head over to the [transpilation guide][transpilation_guide]
 
 ## Working on your Dangerfile
 
@@ -105,5 +105,5 @@ Some TypeScript examples:
 [rxjs]: https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js
 [setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
 [jest]: https://github.com/facebook/jest
-[ts_guide]: /js/tutorials/typescript.html
+[transpilation_guide]: /js/tutorials/transiplation.html
 [changelog]: http://danger.systems/js/changelog.html
