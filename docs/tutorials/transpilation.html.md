@@ -16,6 +16,18 @@ A few notes:
 * Babel 7 support for TypeScript is supported
 * Whether you use `dangerfile.ts` or `dangerfile.js` is irrelevant
 
+### TypeScript gotchas
+
+You might have a `src` folder where your actual source code is kept, and adding a `dangerfile.ts` at the root which will break compilation. The answer to this is to add the dangerfile to the `"exclude"` section. Then to get inline errors working correct, add it to the `"include"`. It's a neat little trick. You can see it working in [artsy/emission#tsconfig.json][tsconfig]
+
+```json
+{
+  "compilerOptions": {},
+  "include": ["src/**/*.ts", "src/**/*.tsx", "dangerfile.ts"],
+  "exclude": ["dangerfile.ts", "node_modules"]
+}
+```
+
 ### The "danger" module
 
 The `danger` module is removed before evaluation, it's only there to fake your dev env into working correctly. In reality, all of the exports are added to the global environment. If you import `"danger"` in code that isn't evaluated inside Danger itself, it will raise an exception.
@@ -47,3 +59,5 @@ it("does nothing when there's a PR body", () => {
   })
 })
 ```
+
+[tsconfig]: https://github.com/artsy/emission/blob/master/tsconfig.json
