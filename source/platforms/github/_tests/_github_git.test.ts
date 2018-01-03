@@ -14,13 +14,19 @@ import { GitDSL } from "../../../dsl/GitDSL"
 
 const fixtures = resolve(__dirname, "..", "..", "_tests", "fixtures")
 
+/** Returns a fixture. */
+const loadFixture = (path: string): string =>
+  readFileSync(pathJoin(fixtures, path), {})
+    .toString()
+    .replace(/\r/g, "")
+
 /** Returns JSON from the fixtured dir */
 export const requestWithFixturedJSON = async (path: string): Promise<() => Promise<any>> => () =>
-  Promise.resolve(JSON.parse(readFileSync(pathJoin(fixtures, path), {}).toString()))
+  Promise.resolve(JSON.parse(loadFixture(path)))
 
 /** Returns arbitrary text value from a request */
 export const requestWithFixturedContent = async (path: string): Promise<() => Promise<string>> => () =>
-  Promise.resolve(readFileSync(pathJoin(fixtures, path), {}).toString())
+  Promise.resolve(loadFixture(path))
 
 /**
  * HACKish: Jest on Windows seems to include some additional
