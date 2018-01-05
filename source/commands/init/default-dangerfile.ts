@@ -73,7 +73,7 @@ if (!hasChangelog && !isTrivial) {
 `
 
 export const descriptionRule = `
-// No PR is too small to include a decription of why you made a change
+// No PR is too small to include a description of why you made a change
 if (danger.github.pr.body.length < 10) {
   warn('Please include a description of your PR changes.');
 }
