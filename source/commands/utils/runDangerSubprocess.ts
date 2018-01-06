@@ -4,7 +4,7 @@ import { spawn } from "child_process"
 
 import { DangerDSLJSONType, DangerJSON } from "../../dsl/DangerDSL"
 import { Executor } from "../../runner/Executor"
-import { markdownCode, resultsWithFailure } from "./reporting"
+import { markdownCode, resultsWithFailure, mergeResults } from "./reporting"
 
 const d = debug("danger:runDangerSubprocess")
 
@@ -25,9 +25,8 @@ const runDangerSubprocess = (subprocessName: string[], dslJSONString: string, ex
   let results = {} as any
   args.shift() // mutate and remove the first element
 
-  d("ARGV:", process.argv)
-
-  d(`Running subprocess: ${path.basename(processName)} - ${args}`)
+  const processDisplayName = path.basename(processName)
+  d(`Running subprocess: ${processDisplayName} - ${args}`)
   const child = spawn(processName, args, { env: process.env })
   let allLogs = ""
 
@@ -41,16 +40,14 @@ const runDangerSubprocess = (subprocessName: string[], dslJSONString: string, ex
       d("Got JSON results from STDOUT")
       results = JSON.parse(trimmed)
     } else {
-      if (trimmed.length === 0) {
-        console.log(`stdout: ${data}`)
-      }
+      console.log(`${data}`)
       allLogs += data
     }
   })
 
   child.stderr.on("data", data => {
-    if (data.toString().trim().length === 0) {
-      console.log(`stdout: ${data}`)
+    if (data.toString().trim().length !== 0) {
+      console.log(`${data}`)
     }
   })
 
@@ -60,9 +57,13 @@ const runDangerSubprocess = (subprocessName: string[], dslJSONString: string, ex
     if (code) {
       d(`Handling fail from subprocess`)
       process.exitCode = code
-      results =
-        results ||
-        resultsWithFailure(`${path.basename(subprocessName[0])}\` failed.`, "### Log\n\n" + markdownCode(allLogs))
+
+      const failResults = resultsWithFailure(`${processDisplayName}\` failed.`, "### Log\n\n" + markdownCode(allLogs))
+      if (results) {
+        results = mergeResults(results, failResults)
+      } else {
+        results = failResults
+      }
     }
     await exec.handleResults(results)
   })

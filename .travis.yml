@@ -33,7 +33,7 @@ matrix:
     - echo "This is the real `danger ci` run on this repo"
     - DEBUG="*" danger ci --verbose
     - echo "Validating that danger pr works as expected"
-    - DEBUG="*" danger pr https://github.com/danger/danger-js/pull/465 --verbose 
+    - DEBUG="*" danger pr https://github.com/danger/danger-js/pull/465 --dangerfile dangerfile.circle.js --verbose 
 
   # Create some fake projects at runtime
   - node_js: '7'
