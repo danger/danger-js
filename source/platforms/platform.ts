@@ -2,7 +2,6 @@ import { Env, CISource } from "../ci_source/ci_source"
 import { GitJSONDSL } from "../dsl/GitDSL"
 import { GitHub } from "./GitHub"
 import { GitHubAPI } from "./github/GitHubAPI"
-import { LocalGit } from "./local-git"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any
@@ -53,10 +52,6 @@ export interface Platform {
  * @returns {Platform} returns a platform if it can be supported
  */
 export function getPlatformForEnv(env: Env, source: CISource): Platform {
-  if (source.name === "local repo") {
-    return new LocalGit()
-  }
-
   const token = env["DANGER_GITHUB_API_TOKEN"]
   if (!token) {
     console.error("The DANGER_GITHUB_API_TOKEN environmental variable is missing")
