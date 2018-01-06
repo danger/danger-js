@@ -8,6 +8,11 @@
 
 ## Master
 
+### 3.0.1
+
+* Bug fixes and debug improvements. If you're interested run danger with `DEBUG="*" yarn danger [etc]`
+  and you'll get a _lot_ of output. This should make it much easier to understand what's going on. - [@orta][]
+
 ### 3.0.0
 
 * Updates to the CLI user interface. Breaking changes for everyone.
