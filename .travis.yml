@@ -32,7 +32,8 @@ matrix:
     - yarn run link
     - echo "This is the real `danger ci` run on this repo"
     - DEBUG="*" danger ci --verbose
-    - DEBUG="*" danger pr https://github.com/danger/danger-js/pull/465 --verbose # To make sure it isn't broken again in a bad build
+    - echo "Validating that danger pr works as expected"
+    - DEBUG="*" danger pr https://github.com/danger/danger-js/pull/465 --verbose 
 
   # Create some fake projects at runtime
   - node_js: '7'
