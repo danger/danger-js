@@ -34,7 +34,9 @@ program
 
 program.parse(process.argv)
 
-const showUpgradeNotice = process.env.CI && ['init', 'ci', 'process', 'pr', '--help'].some(cmd => process.argv.includes(cmd))
+const showUpgradeNotice =
+  process.env.CI && ["init", "ci", "process", "pr", "--help"].some(cmd => process.argv.includes(cmd))
+
 if (showUpgradeNotice) {
   console.error("You may have updated from Danger 2.x -> 3.x without updating from `danger` to `danger ci`.")
 }

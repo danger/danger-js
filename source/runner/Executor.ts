@@ -111,8 +111,6 @@ export class Executor {
    */
   async handleResultsPostingToSTDOUT(results: DangerResults) {
     const { fails, warnings, messages, markdowns } = results
-    process.exitCode = fails.length > 0 ? 1 : 0
-
     if (this.options.jsonOnly) {
       // Format for Danger Process
       const results = {
