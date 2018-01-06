@@ -53,7 +53,6 @@ program
   })
 
 setSharedArgs(program).parse(process.argv)
-d(`Starting Danger PR`)
 
 const app = (program as any) as App
 
@@ -77,6 +76,8 @@ if (program.args.length === 0) {
       console.log("You don't have a DANGER_GITHUB_API_TOKEN set up, this is optional, but TBH, you want to do this")
       console.log("Check out: http://danger.systems/js/guides/the_dangerfile.html#working-on-your-dangerfile")
     }
+
+    console.log(`Starting Danger PR on ${pr.repo}#${pr.pullRequestNumber}`)
 
     if (validateDangerfileExists(dangerFile)) {
       d(`executing dangerfile at ${dangerFile}`)

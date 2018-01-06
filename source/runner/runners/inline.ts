@@ -1,5 +1,6 @@
 import * as fs from "fs"
 
+import * as debug from "debug"
 import * as _require from "require-from-string"
 
 import { DangerResults, DangerRuntimeContainer } from "../../dsl/DangerResults"
@@ -10,6 +11,8 @@ import { DangerRunner } from "./runner"
 import compile from "./utils/transpiler"
 import cleanDangerfile from "./utils/cleanDangerfile"
 import resultsForCaughtError from "./utils/resultsForCaughtError"
+
+const d = debug("danger:inline_runner")
 
 /**
  * Executes a Dangerfile at a specific path, with a context.
@@ -37,8 +40,8 @@ export async function runDangerfileEnvironment(
   // We need to change the local runtime to support running JavaScript
   // and TypeScript through babel first. This is a simple implmentation
   // and if we need more nuance, then we can look at other implementations
-
   const customModuleHandler = (module: any, filename: string) => {
+    d("Handling custom module: ", filename)
     const contents = fs.readFileSync(filename, "utf8")
     const compiled = compile(contents, filename)
     module._compile(compiled, filename)
@@ -64,8 +67,9 @@ export async function runDangerfileEnvironment(
       }
     }
 
+    d("[Start Dangerfile]: ", filename)
     _require(compiled, filename, {})
-
+    d("[Stop Dangerfile]: ", filename)
     // Don't stop all current async code from breaking,
     // however new code (without Peril support) can run
     // without the scheduler
@@ -74,6 +78,7 @@ export async function runDangerfileEnvironment(
     return environment.results
   } catch (error) {
     console.error("Unable to evaluate the Dangerfile")
+    d("Got a parse error: ", error)
     environment.results = resultsForCaughtError(filename, content, error)
     return environment.results
   }
@@ -81,6 +86,7 @@ export async function runDangerfileEnvironment(
 
 const runAllScheduledTasks = async (results: DangerRuntimeContainer) => {
   if (results.scheduled) {
+    d(`Scheduler waiting on: ${results.scheduled.length} tasks`)
     await Promise.all(
       results.scheduled.map((fnOrPromise: any) => {
         if (fnOrPromise instanceof Promise) {
