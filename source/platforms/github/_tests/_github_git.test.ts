@@ -6,11 +6,11 @@ import { FakeCI } from "../../../ci_source/providers/Fake"
 import { readFileSync } from "fs"
 import { resolve, join as pathJoin } from "path"
 import { EOL } from "os"
-import { gitJSONToGitDSL } from "../GitHubGit"
+import { gitHubGitDSL as gitJSONToGitDSL } from "../GitHubGit"
 
 import * as NodeGitHub from "@octokit/rest"
 import { GitHubDSL } from "../../../dsl/GitHubDSL"
-import { GitDSL } from "../../../dsl/GitDSL"
+import { GitDSL, GitJSONDSL } from "../../../dsl/GitDSL"
 
 const fixtures = resolve(__dirname, "..", "..", "_tests", "fixtures")
 
@@ -43,6 +43,7 @@ const masterSHA = JSON.parse(readFileSync(pathJoin(fixtures, pullRequestInfoFile
 describe("the dangerfile gitDSL", async () => {
   let github: GitHub = {} as any
   let nodeGitHubAPI: NodeGitHub = {} as any
+  let gitJSONDSL: GitJSONDSL = {} as any
 
   let githubDSL: GitHubDSL = {} as any
   let gitDSL: GitDSL = {} as any
@@ -66,7 +67,7 @@ describe("the dangerfile gitDSL", async () => {
     nodeGitHubAPI = new NodeGitHub()
     nodeGitHubAPI.repos.getContent = async ({ ref }) => (await requestWithFixturedJSON(`static_file.${ref}.json`))()
 
-    const gitJSONDSL = await github.getPlatformGitRepresentation()
+    gitJSONDSL = await github.getPlatformGitRepresentation()
     const githubJSONDSL = await github.getPlatformDSLRepresentation()
     githubDSL = githubJSONToGitHubDSL(githubJSONDSL, nodeGitHubAPI)
     gitDSL = gitJSONToGitDSL(githubDSL, gitJSONDSL, github.api)
@@ -183,6 +184,7 @@ describe("the dangerfile gitDSL", async () => {
         return obj === "" ? "" : JSON.stringify(obj)
       }
 
+      gitDSL = gitJSONToGitDSL(githubDSL, gitJSONDSL, github.api)
       const empty = await gitDSL.JSONPatchForFile("data/schema.json")
 
       expect(empty).toEqual({
@@ -210,6 +212,7 @@ describe("the dangerfile gitDSL", async () => {
         return obj === "" ? "" : JSON.stringify(obj)
       }
 
+      gitDSL = gitJSONToGitDSL(githubDSL, gitJSONDSL, github.api)
       const empty = await gitDSL.JSONPatchForFile("data/schema.json")
       expect(empty).toEqual({
         before: before,
@@ -236,6 +239,7 @@ describe("the dangerfile gitDSL", async () => {
         return JSON.stringify(obj)
       }
 
+      gitDSL = gitJSONToGitDSL(githubDSL, gitJSONDSL, github.api)
       const empty = await gitDSL.JSONPatchForFile("data/schema.json")
 
       expect(empty).toEqual({
@@ -270,6 +274,7 @@ describe("the dangerfile gitDSL", async () => {
         return JSON.stringify(obj)
       }
 
+      gitDSL = gitJSONToGitDSL(githubDSL, gitJSONDSL, github.api)
       const empty = await gitDSL.JSONDiffForFile("data/schema.json")
 
       expect(empty).toEqual({
@@ -300,6 +305,7 @@ describe("the dangerfile gitDSL", async () => {
         return JSON.stringify(obj)
       }
 
+      gitDSL = gitJSONToGitDSL(githubDSL, gitJSONDSL, github.api)
       const empty = await gitDSL.JSONDiffForFile("data/schema.json")
 
       expect(empty).toEqual({
@@ -338,6 +344,7 @@ describe("the dangerfile gitDSL", async () => {
         return JSON.stringify(obj)
       }
 
+      gitDSL = gitJSONToGitDSL(githubDSL, gitJSONDSL, github.api)
       const empty = await gitDSL.JSONDiffForFile("data/schema.json")
 
       expect(empty).toEqual({
@@ -384,6 +391,7 @@ describe("the dangerfile gitDSL", async () => {
         return JSON.stringify(obj)
       }
 
+      gitDSL = gitJSONToGitDSL(githubDSL, gitJSONDSL, github.api)
       const empty = await gitDSL.JSONDiffForFile("data/schema.json")
 
       expect(empty).toEqual({
@@ -435,6 +443,7 @@ describe("the dangerfile gitDSL", async () => {
         return ref === masterSHA ? before : after
       }
 
+      gitDSL = gitJSONToGitDSL(githubDSL, gitJSONDSL, github.api)
       const diff = await gitDSL.diffForFile("lib/components/gene/about.js")
 
       expect(diff.before).toEqual("")
@@ -455,6 +464,7 @@ describe("the dangerfile gitDSL", async () => {
         return ref === masterSHA ? before : after
       }
 
+      gitDSL = gitJSONToGitDSL(githubDSL, gitJSONDSL, github.api)
       const diff = await gitDSL.diffForFile("lib/components/artist/related_artists/index.js")
 
       expect(diff.before).toMatch(/class RelatedArtists extends React.Component/)
@@ -477,6 +487,7 @@ describe("the dangerfile gitDSL", async () => {
         return ref === masterSHA ? before : after
       }
 
+      gitDSL = gitJSONToGitDSL(githubDSL, gitJSONDSL, github.api)
       const diff = await gitDSL.diffForFile("CHANGELOG.md")
 
       expect(diff.before).toEqual(before)

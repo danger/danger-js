@@ -1,10 +1,15 @@
 import { GitDSL } from "../dsl/GitDSL"
 import { Platform } from "./platform"
 
+export interface LocalGitOptions {
+  base?: string
+  staged?: boolean
+}
+
 export class LocalGit implements Platform {
   public readonly name: string
 
-  constructor() {
+  constructor(public readonly options: LocalGitOptions) {
     this.name = "local git"
   }
 
