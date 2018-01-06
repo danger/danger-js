@@ -89,21 +89,24 @@ If you'd like to work with some reference material, here are some examples in th
 
 JavaScript:
 
-* **Apps** - [Artsy/metaphysics][meta].
-* **Libraries** - [facebook/react-native][rn], [styled-components/styled-components][sc] and [ReactiveX/rxjs][rxjs].
+* **Libraries** - [facebook/react-native][rn], [facebook/react][r], [styled-components/styled-components][sc] and [ReactiveX/rxjs][rxjs].
+* **Docs** - [bamlab/dev-standards][bamlab]
 
 Some TypeScript examples:
 
 * **Apps** - [Artsy/Emission][emiss]
-* **Libraries** [danger/danger-js][danger-js]
+* **Libraries** [danger/danger-js][danger-js], [apollographql/apollo-client][apollo]
 
 [emiss]: https://github.com/artsy/emission/blob/master/dangerfile.ts
 [danger-js]: https://github.com/danger/danger-js/blob/master/dangerfile.ts
 [meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
 [rn]: https://github.com/facebook/react-native/blob/master/danger/dangerfile.js
+[r]: https://github.com/facebook/react/blob/master/dangerfile.js
 [sc]: https://github.com/styled-components/styled-components/blob/master/dangerfile.js
 [rxjs]: https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js
 [setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
 [jest]: https://github.com/facebook/jest
 [transpilation_guide]: /js/tutorials/transiplation.html
 [changelog]: http://danger.systems/js/changelog.html
+[apollo]: https://github.com/apollographql/apollo-client/blob/master/dangerfile.ts
+[bamlab]: https://github.com/bamlab/dev-standards/blob/master/dangerfile.js

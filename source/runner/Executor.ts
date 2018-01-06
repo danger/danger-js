@@ -111,8 +111,6 @@ export class Executor {
    */
   async handleResultsPostingToSTDOUT(results: DangerResults) {
     const { fails, warnings, messages, markdowns } = results
-    process.exitCode = fails.length > 0 ? 1 : 0
-
     if (this.options.jsonOnly) {
       // Format for Danger Process
       const results = {
@@ -123,6 +121,7 @@ export class Executor {
       }
       process.stdout.write(JSON.stringify(results, null, 2))
     } else {
+      this.d("Writing to STDOUT:", results)
       // Human-readable format
 
       const table = [
@@ -167,7 +166,7 @@ export class Executor {
     const failureCount = [...fails, ...warnings].length
     const messageCount = [...messages, ...markdowns].length
 
-    this.d(results)
+    this.d("Posting to platform:", results)
 
     const dangerID = this.options.dangerID
     const failed = fails.length > 0
@@ -186,6 +185,7 @@ export class Executor {
         const are = fails.length === 1 ? "is" : "are"
         console.log(`Failing the build, there ${are} ${fails.length} fail${s}.`)
         if (!successPosting) {
+          this.d("Failing the build due to handleResultsPostingToPlatform not successfully setting a commit status")
           process.exitCode = 1
         }
       } else if (warnings.length > 0) {

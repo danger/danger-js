@@ -31,7 +31,10 @@ program
 
 const argvClone = process.argv.slice(0)
 setSharedArgs(program).parse(argvClone)
-d(`Started Danger Run with ${program.args}`)
+d(`Started Danger runner with ${program.args}`)
+
+console.log(process.env)
+console.log(program.args)
 
 let foundDSL = false
 let runtimeEnv = {} as any
