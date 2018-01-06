@@ -1,5 +1,10 @@
 import { GitDSL } from "../dsl/GitDSL"
 import { Platform } from "./platform"
+import { gitJSONToGitDSL, GitJSONToGitDSLConfig } from "./git/gitJSONToGitDSL"
+import { diffToGitJSONDSL } from "./git/diffToGitJSONDSL"
+import { GitCommit } from "../dsl/Commit"
+import { localGetDiff } from "./git/localGetDiff"
+import { localGetFileAtSHA } from "./git/localGetFileAtSHA"
 
 export interface LocalGitOptions {
   base?: string
@@ -14,19 +19,23 @@ export class LocalGit implements Platform {
   }
 
   async getPlatformDSLRepresentation(): Promise<any> {
-    return {}
+    return null
   }
 
   async getPlatformGitRepresentation(): Promise<GitDSL> {
-    return {
-      modified_files: [],
-      created_files: [],
-      deleted_files: [],
-      diffForFile: async () => ({ before: "", after: "", diff: "", added: "", removed: "" }),
-      JSONDiffForFile: async () => ({} as any),
-      JSONPatchForFile: async () => ({} as any),
-      commits: [],
+    const diff = ""
+    const commits: GitCommit[] = []
+    const gitJSON = diffToGitJSONDSL(diff, commits)
+
+    const config: GitJSONToGitDSLConfig = {
+      repo: process.cwd(),
+      baseSHA: this.options.base,
+      headSHA: "HEAD",
+      getFileContents: localGetFileAtSHA,
+      getFullDiff: localGetDiff,
     }
+
+    return gitJSONToGitDSL(gitJSON, config)
   }
 
   async updateOrCreateComment(_newComment: string): Promise<boolean> {

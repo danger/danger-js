@@ -1,20 +1,9 @@
-import { GitDSL, JSONPatchOperation, GitJSONDSL } from "../../dsl/GitDSL"
+import { GitDSL, GitJSONDSL } from "../../dsl/GitDSL"
 import { GitHubCommit, GitHubDSL } from "../../dsl/GitHubDSL"
 import { GitCommit } from "../../dsl/Commit"
 
 import { GitHubAPI } from "../github/GitHubAPI"
 
-import * as os from "os"
-
-import * as parseDiff from "parse-diff"
-
-// At what point should we just import lodash?
-import * as includes from "lodash.includes"
-import * as isobject from "lodash.isobject"
-import * as keys from "lodash.keys"
-
-import * as jsonDiff from "rfc6902"
-import * as jsonpointer from "jsonpointer"
 import { diffToGitJSONDSL } from "../git/diffToGitJSONDSL"
 import { GitJSONToGitDSLConfig, gitJSONToGitDSL } from "../git/gitJSONToGitDSL"
 
