@@ -68,10 +68,8 @@ if (missing.length) {
   warn(`These providers are missing from the README: ${sentence(missing)}`)
 }
 
-if (danger.github) {
-  danger.github.utils.fileContents("scripts/run-fixtures.js").then(fixtures => {
-    if (fixtures.includes("const writeResults = true")) {
-      fail("Fixtures test script is still in write mode, edit `scripts/run-fixtures.js`.")
-    }
-  })
-}
+danger.github.utils.fileContents("scripts/run-fixtures.js").then(fixtures => {
+  if (fixtures.includes("const writeResults = true")) {
+    fail("Fixtures test script is still in write mode, edit `scripts/run-fixtures.js`.")
+  }
+})
