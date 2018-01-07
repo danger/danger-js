@@ -29,13 +29,17 @@ export class LocalGit implements Platform {
 
     const config: GitJSONToGitDSLConfig = {
       repo: process.cwd(),
-      baseSHA: this.options.base,
+      baseSHA: this.options.base || "master",
       headSHA: "HEAD",
       getFileContents: localGetFileAtSHA,
       getFullDiff: localGetDiff,
     }
 
     return gitJSONToGitDSL(gitJSON, config)
+  }
+
+  supportsCommenting() {
+    return false
   }
 
   async updateOrCreateComment(_newComment: string): Promise<boolean> {

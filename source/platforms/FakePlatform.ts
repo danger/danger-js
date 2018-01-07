@@ -26,6 +26,10 @@ export class FakePlatform implements Platform {
     }
   }
 
+  supportsCommenting() {
+    return true
+  }
+
   async updateOrCreateComment(_newComment: string): Promise<boolean> {
     return true
   }

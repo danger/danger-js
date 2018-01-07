@@ -4,7 +4,7 @@ import { exec } from "child_process"
 const d = debug("danger:localGetDiff")
 
 export const localGetDiff = (base: string, head: string) =>
-  new Promise(done => {
+  new Promise<string>(done => {
     const call = `git diff --no-index ${base} ${head}`
     d(call)
 

@@ -5,6 +5,10 @@ describe("it can handle the command", () => {
     expect(dangerRunToRunnerCLI(["danger", "ci"])).toEqual("danger runner".split(" "))
   })
 
+  it("`danger local`", () => {
+    expect(dangerRunToRunnerCLI(["danger", "local"])).toEqual("danger runner".split(" "))
+  })
+
   it("`danger ci --dangerfile myDangerfile.ts`", () => {
     expect(dangerRunToRunnerCLI(["danger", "ci", "--dangerfile", "myDangerfile.ts"])).toEqual(
       "danger runner --dangerfile myDangerfile.ts".split(" ")

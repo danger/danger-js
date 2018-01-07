@@ -9,8 +9,8 @@
     "danger-pr": "distribution/commands/danger-pr.js",
     "danger-process": "distribution/commands/danger-process.js",
     "danger-ci": "distribution/commands/danger-ci.js",
-    "danger-runner": "distribution/commands/danger-runner.js",
-    "danger-init": "distribution/commands/danger-init.js"
+    "danger-init": "distribution/commands/danger-init.js",
+    "danger-local": "distribution/commands/danger-local.js"
   },
   "jest": {
     "transform": {
@@ -36,12 +36,12 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "prepush": "yarn run build",
+    "prepush": "yarn build; yarn danger:pre",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "tslint \"source/**/*.ts\"",
     "lint:fix": "tslint \"source/**/*.ts\" --fix",
-    "prepublishOnly": "yarn run build && yarn declarations && yarn build:flow-types",
+    "prepublishOnly": "yarn build && yarn declarations && yarn build:flow-types",
     "build": "shx rm -rf ./distribution && tsc -p tsconfig.production.json && madge ./distribution --circular",
     "build:fast": "tsc -p tsconfig.production.json",
     "build:flow-types":
@@ -53,7 +53,8 @@
       "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/@octokit/rest/index.d.ts docs/docs_generate/github.d.ts",
     "docs":
       "yarn run docs:cp_defs; yarn typedoc --ignoreCompilerErrors --mode modules --json docs/js_ref_dsl_docs.json --includeDeclarations source",
-    "dts-lint": "yarn run declarations && yarn dtslint types"
+    "dts-lint": "yarn run declarations && yarn dtslint types",
+    "danger:prepush": "node  distribution/commands/danger.js local --dangerfile dangerfile.lite.ts"
   },
   "repository": {
     "type": "git",

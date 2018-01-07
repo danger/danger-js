@@ -10,9 +10,11 @@ export function dangerfilePath(program: any): string {
   if (program.dangerfile) {
     return program.dangerfile
   }
+
   if (existsSync("dangerfile.ts")) {
     return "dangerfile.ts"
   }
+
   if (existsSync("dangerfile.js")) {
     return "dangerfile.js"
   }

@@ -4,7 +4,7 @@ import { exec } from "child_process"
 const d = debug("danger:localGetFileAtSHA")
 
 export const localGetFileAtSHA = (path: string, _repo: string | undefined, sha: string) =>
-  new Promise(done => {
+  new Promise<string>(done => {
     const call = `git show ${sha}:"${path}"`
     d(call)
 

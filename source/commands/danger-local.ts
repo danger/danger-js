@@ -26,4 +26,4 @@ const app = (program as any) as App
 const base = app.base || "master"
 const localPlatform = new LocalGit({ base, staged: app.staging })
 const fakeSource = new FakeCI(process.env)
-runRunner(app, { source: fakeSource, platform: localPlatform })
+runRunner(app, { source: fakeSource, platform: localPlatform, additionalArgs: ["--local"] })
