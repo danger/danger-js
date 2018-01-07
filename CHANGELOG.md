@@ -8,6 +8,10 @@
 
 ## Master
 
+### 3.0.2
+
+* Don't log ENV vars during a run - thanks @samdmarshall. - [@orta][]
+
 ### 3.0.1
 
 * Bug fixes and debug improvements. If you're interested run danger with `DEBUG="*" yarn danger [etc]`
