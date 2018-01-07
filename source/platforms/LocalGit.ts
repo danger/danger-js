@@ -5,6 +5,7 @@ import { diffToGitJSONDSL } from "./git/diffToGitJSONDSL"
 import { GitCommit } from "../dsl/Commit"
 import { localGetDiff } from "./git/localGetDiff"
 import { localGetFileAtSHA } from "./git/localGetFileAtSHA"
+import { localGetCommits } from "./git/localGetCommits"
 
 export interface LocalGitOptions {
   base?: string
@@ -23,8 +24,11 @@ export class LocalGit implements Platform {
   }
 
   async getPlatformGitRepresentation(): Promise<GitDSL> {
-    const diff = ""
-    const commits: GitCommit[] = []
+    const base = this.options.base || "master"
+    const head = "HEAD"
+
+    const diff = await localGetDiff(base, head)
+    const commits: GitCommit[] = await localGetCommits(base, head)
     const gitJSON = diffToGitJSONDSL(diff, commits)
 
     const config: GitJSONToGitDSLConfig = {

@@ -5,7 +5,7 @@ const d = debug("danger:localGetDiff")
 
 export const localGetDiff = (base: string, head: string) =>
   new Promise<string>(done => {
-    const call = `git diff --no-index ${base} ${head}`
+    const call = `git diff ${base}...${head}`
     d(call)
 
     exec(call, (err, stdout, _stderr) => {
