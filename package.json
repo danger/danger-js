@@ -36,7 +36,7 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "prepush": "yarn build; yarn danger:pre",
+    "prepush": "yarn build; yarn danger:prepush",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "tslint \"source/**/*.ts\"",
