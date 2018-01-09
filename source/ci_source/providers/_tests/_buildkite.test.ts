@@ -39,16 +39,12 @@ describe(".isPR", () => {
 
   const envs = ["BUILDKITE_PULL_REQUEST", "BUILDKITE_REPO", "BUILDKITE"]
   envs.forEach((key: string) => {
-    let env = {
-      BUILDKITE: "true",
-      BUILDKITE_PULL_REQUEST: "800",
-      BUILDKITE_REPO: "https://github.com/artsy/eigen",
-    }
+    let env = { ...correctEnv }
     env[key] = null
 
     it(`does not validate when ${key} is missing`, () => {
-      const buildkite = new Buildkite({})
-      expect(buildkite.isPR).toBeFalsy()
+      const buildkite = new Buildkite(env)
+      expect(buildkite.isCI && buildkite.isPR).toBeFalsy()
     })
   })
 })
