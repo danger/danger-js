@@ -1,6 +1,6 @@
 import * as child_process from "child_process"
 import { Env, CISource } from "../ci_source"
-import { ensureEnvKeysExist, getPullRequestIDForBranch } from "../ci_source_helpers"
+import { ensureEnvKeysExist, ensureEnvKeysAreInt, getPullRequestIDForBranch } from "../ci_source_helpers"
 import { getRepoSlug } from "../../commands/init/get-repo-slug"
 
 /**
@@ -36,18 +36,6 @@ export class Nevercode implements CISource {
     const mustHave = ["NEVERCODE_PULL_REQUEST"]
     const mustBeInts = ["NEVERCODE_GIT_PROVIDER_PULL_REQUEST"]
     return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, mustBeInts)
-  }
-
-  private _parseRepoURL(): string {
-    // Nevercode doesn't currently provide NEVERCODE_REPO itself
-    // but consumers have the option of setting it themselves.
-    let repoURL = this.env.NEVERCODE_REPO || ""
-    if (repoURL.length == "") {
-      repoURL = this.default.repoURL
-    }
-    const regexp = new RegExp("([/:])([^/]+/[^/.]+)(?:.git)?$")
-    const matches = repoURL.match(regexp)
-    return matches ? matches[2] : ""
   }
 
   get pullRequestID(): string {
