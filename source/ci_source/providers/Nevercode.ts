@@ -9,19 +9,12 @@ import { getRepoSlug } from "../../commands/init/get-repo-slug"
  * Environment Variables Documented: https://developer.nevercode.io/v1.0/docs/environment-variables-files
  */
 export class Nevercode implements CISource {
-  private default = { prID: "0", repoURL: "" }
+  private default = { prID: "0" }
   constructor(private readonly env: Env) {}
 
   async setup(): Promise<any> {
     const prID = await getPullRequestIDForBranch(this, this.env, this.branchName)
     this.default.prID = prID.toString()
-    const prURL = child_process
-      .execSync("git remote get-url origin")
-      .toString()
-      .trim()
-    if (prURL.length > 0) {
-      this.default.repoURL = prURL
-    }
   }
 
   get name(): string {
