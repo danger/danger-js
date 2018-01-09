@@ -1,4 +1,3 @@
-import * as child_process from "child_process"
 import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist, ensureEnvKeysAreInt, getPullRequestIDForBranch } from "../ci_source_helpers"
 import { getRepoSlug } from "../../commands/init/get-repo-slug"
