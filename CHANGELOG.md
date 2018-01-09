@@ -8,7 +8,9 @@
 
 ## Master
 
-### 3.next
+\*
+
+### 3.0.3
 
 * Added support for Nevercode.io as a CI Provider - [@fbartho][]
 
