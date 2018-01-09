@@ -6,6 +6,7 @@ import { DockerCloud } from "./DockerCloud"
 import { Drone } from "./Drone"
 import { FakeCI } from "./Fake"
 import { Jenkins } from "./Jenkins"
+import { Nevercode } from "./Nevercode"
 import { Semaphore } from "./Semaphore"
 import { Surf } from "./Surf"
 import { Travis } from "./Travis"
@@ -20,6 +21,7 @@ const providers = [
   Drone,
   FakeCI,
   Jenkins,
+  Nevercode,
   Semaphore,
   Surf,
   Travis,
@@ -35,6 +37,7 @@ const realProviders = [
   DockerCloud,
   Drone,
   Jenkins,
+  Nevercode,
   Semaphore,
   Surf,
   Travis,
