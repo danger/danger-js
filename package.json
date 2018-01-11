@@ -88,7 +88,7 @@
     "danger-plugin-yarn": "^1.2.1",
     "date-fns": "^1.28.3",
     "husky": "^0.14.0",
-    "jest": "22.0.4",
+    "jest": "22.0.5",
     "jest-json-reporter": "^1.2.2",
     "lint-staged": "^6.0.0",
     "madge": "^2.0.0",
