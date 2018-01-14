@@ -35,9 +35,6 @@ function githubCommitToGitCommit(ghCommit: GitHubCommit): GitCommit {
 }
 
 export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitJSONDSL> {
-  // Note: This repetition feels bad, could the GitHub object cache JSON returned
-  // from the API?
-
   // We'll need all this info to be able to generate a working GitDSL object
   const diff = await api.getPullRequestDiff()
 
@@ -56,9 +53,7 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitJSONDS
   }
 }
 
-// TODO: Remove the GitHubAPI
-// This is blocked by https://github.com/octokit/node-github/issues/602
-export const gitJSONToGitDSL = (github: GitHubDSL, json: GitJSONDSL, githubAPI?: GitHubAPI): GitDSL => {
+export const gitJSONToGitDSL = (github: GitHubDSL, json: GitJSONDSL): GitDSL => {
   /**
    * Takes a filename, and pulls from the PR the two versions of a file
    * where we then pass that off to the rfc6902 JSON patch generator.
@@ -166,17 +161,12 @@ export const gitJSONToGitDSL = (github: GitHubDSL, json: GitJSONDSL, githubAPI?:
    * @param filename File path for the diff
    */
   const diffForFile = async (filename: string) => {
-    // TODO: Remove GitHubAPI  by switching entirely to node-github
-    // See https://github.com/octokit/node-github/issues/602
-
-    const ghAPI =
-      githubAPI ||
-      new GitHubAPI(
-        { repoSlug: github.pr.head.repo.full_name, pullRequestID: String(github.pr.number) },
-        process.env["DANGER_GITHUB_API_TOKEN"]
-      )
-
-    const diff = await ghAPI.getPullRequestDiff()
+    const diff = await github.api.pullRequests.get({
+      owner: github.pr.base.user,
+      repo: github.pr.base.repo.name,
+      number: github.pr.number,
+      headers: { accept: "application/vnd.github.v3.diff" },
+    } as any)
 
     const fileDiffs: any[] = parseDiff(diff)
     const structuredDiff = fileDiffs.find((diff: any) => diff.from === filename || diff.to === filename)

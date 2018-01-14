@@ -69,7 +69,7 @@ describe("the dangerfile gitDSL", async () => {
     const gitJSONDSL = await github.getPlatformGitRepresentation()
     const githubJSONDSL = await github.getPlatformDSLRepresentation()
     githubDSL = githubJSONToGitHubDSL(githubJSONDSL, nodeGitHubAPI)
-    gitDSL = gitJSONToGitDSL(githubDSL, gitJSONDSL, github.api)
+    gitDSL = gitJSONToGitDSL(githubDSL, gitJSONDSL)
   })
 
   it("sets the modified/created/deleted", async () => {
