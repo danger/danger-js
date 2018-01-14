@@ -8,7 +8,7 @@
 
 ## Master
 
-\*
+* Paginate for issues - [@orta][]
 
 ### 3.0.3
 

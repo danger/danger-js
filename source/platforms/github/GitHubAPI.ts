@@ -137,16 +137,19 @@ export class GitHubAPI {
     return res.ok ? (res.json() as Promise<GitHubPRDSL>) : ({} as GitHubPRDSL)
   }
 
+  async getPullRequestCommits(): Promise<any[]> {
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
+    return await this.getAllOfResource(`repos/${repo}/pulls/${prID}/commits`)
+  }
+
   /**
    * Get list of commits in pull requests. This'll try to iterate all available pages
    * Until it reaches hard limit of api itself (250 commits).
    * https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request
    *
    */
-  async getPullRequestCommits(): Promise<any> {
-    const repo = this.repoMetadata.repoSlug
-    const prID = this.repoMetadata.pullRequestID
-
+  async getAllOfResource(path: string): Promise<any> {
     const ret: Array<any> = []
 
     /**
@@ -173,7 +176,7 @@ export class GitHubAPI {
     //iterates commit request pages until next page's not available, or response failed for some reason.
     let page = 0
     while (page >= 0) {
-      const requestUrl = `repos/${repo}/pulls/${prID}/commits${page > 0 ? `?page=${page}` : ""}`
+      const requestUrl = `${path}${page > 0 ? `?page=${page}` : ""}`
       this.d(`getPullRequestCommits:: Sending pull request commit request for ${page === 0 ? "first" : `${page}`} page`)
       this.d(`getPullRequestCommits:: Request url generated "${requestUrl}"`)
 
@@ -200,13 +203,10 @@ export class GitHubAPI {
     return response.json()
   }
 
-  // TODO: This does not handle pagination
-  async getPullRequestComments(): Promise<any> {
+  async getPullRequestComments(): Promise<any[]> {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
-    const res = await this.get(`repos/${repo}/issues/${prID}/comments`)
-
-    return res.ok ? res.json() : []
+    return await this.getAllOfResource(`repos/${repo}/issues/${prID}/comments`)
   }
 
   async getPullRequestDiff(): Promise<string> {
