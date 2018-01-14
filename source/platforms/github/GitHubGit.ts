@@ -7,6 +7,9 @@ import { GitHubAPI } from "../github/GitHubAPI"
 import { diffToGitJSONDSL } from "../git/diffToGitJSONDSL"
 import { GitJSONToGitDSLConfig, gitJSONToGitDSL } from "../git/gitJSONToGitDSL"
 
+import * as debug from "debug"
+const d = debug("danger:GitHubGit")
+
 /**
  * Returns the response for the new comment
  *
@@ -51,5 +54,6 @@ export const gitHubGitDSL = (github: GitHubDSL, json: GitJSONDSL, githubAPI?: Gi
     getFullDiff: ghAPI.getPullRequestDiff,
   }
 
+  d("Setting up git DSL with: ", config)
   return gitJSONToGitDSL(json, config)
 }

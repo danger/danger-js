@@ -9,13 +9,13 @@ declare function warn(params: string): void
 declare function fail(params: string): void
 // declare function message(params: string): void
 // declare function markdown(params: string): void
-declare function schedule(promise: Promise<any | void>): void
-declare function schedule(promise: () => Promise<any | void>): void
-declare function schedule(callback: (resolve: any) => void): void
+// declare function schedule(promise: Promise<any | void>): void
+// declare function schedule(promise: () => Promise<any | void>): void
+// declare function schedule(callback: (resolve: any) => void): void
 
 import * as fs from "fs"
 
-schedule(async () => {
+const checkREADME = async () => {
   // Request a CHANGELOG entry if not declared #trivial
   const hasChangelog = danger.git.modified_files.includes("CHANGELOG.md")
   const isTrivial = (danger.github.pr.body + danger.github.pr.title).includes("#trivial")
@@ -31,10 +31,11 @@ schedule(async () => {
       warn("Please add your GitHub name to the changelog entry, so we can attribute you correctly.")
     }
   }
-})
+}
+checkREADME()
 
 import yarn from "danger-plugin-yarn"
-schedule(yarn())
+yarn()
 
 import jest from "danger-plugin-jest"
 jest()
