@@ -308,7 +308,11 @@ declare module "danger" {
 
   /** The GitHub metadata for your PR */
   interface GitHubDSL extends GitHubJSONDSL {
-    /** An authenticated API so you can extend danger's behavior. An instance of the "github" npm module. */
+    /**
+     * An authenticated API so you can extend danger's behavior by using the [GitHub v3 API](https://developer.github.com/v3/).
+     *
+     * A set up instance of the "github" npm module. You can get the full [API here](https://octokit.github.io/node-github/).
+     */
     api: GitHub
     /** A scope for useful functions related to GitHub */
     utils: GitHubUtilsDSL
