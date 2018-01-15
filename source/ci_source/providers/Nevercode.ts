@@ -19,8 +19,12 @@ export class Nevercode implements CISource {
 
   get isPR(): boolean {
     const mustHave = ["NEVERCODE_PULL_REQUEST", "NEVERCODE_REPO_SLUG"]
-    const mustBeInts = ["NEVERCODE_GIT_PROVIDER_PULL_REQUEST"]
-    return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, mustBeInts)
+    const mustBeInts = ["NEVERCODE_GIT_PROVIDER_PULL_REQUEST", "NEVERCODE_PULL_REQUEST_NUMBER"]
+    return (
+      ensureEnvKeysExist(this.env, mustHave) &&
+      ensureEnvKeysAreInt(this.env, mustBeInts) &&
+      this.env.NEVERCODE_PULL_REQUEST == "true"
+    )
   }
 
   get pullRequestID(): string {
