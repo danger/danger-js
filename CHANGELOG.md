@@ -8,6 +8,10 @@
 
 ## Master
 
+### 3.0.5
+
+* Nevercode ENV var fixes - [@fbartho][]
+
 ### 3.0.4
 
 * Paginate for issues - [@orta][]
