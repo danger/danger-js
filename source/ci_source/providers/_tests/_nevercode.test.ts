@@ -3,7 +3,9 @@ import { getCISourceForEnv } from "../../get_ci_source"
 
 const correctEnv = {
   NEVERCODE: "true",
+  NEVERCODE_REPO_SLUG: "danger/danger-js",
   NEVERCODE_PULL_REQUEST: "true",
+  NEVERCODE_PULL_REQUEST_NUMBER: "2",
   NEVERCODE_GIT_PROVIDER_PULL_REQUEST: "123234",
 }
 

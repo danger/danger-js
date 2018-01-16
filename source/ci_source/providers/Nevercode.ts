@@ -1,6 +1,5 @@
 import { Env, CISource } from "../ci_source"
-import { ensureEnvKeysExist, ensureEnvKeysAreInt, getPullRequestIDForBranch } from "../ci_source_helpers"
-import { getRepoSlug } from "../../commands/init/get-repo-slug"
+import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
 
 /**
  * Nevercode.io CI Integration
@@ -8,13 +7,7 @@ import { getRepoSlug } from "../../commands/init/get-repo-slug"
  * Environment Variables Documented: https://developer.nevercode.io/v1.0/docs/environment-variables-files
  */
 export class Nevercode implements CISource {
-  private default = { prID: "0" }
   constructor(private readonly env: Env) {}
-
-  async setup(): Promise<any> {
-    const prID = await getPullRequestIDForBranch(this, this.env, this.branchName)
-    this.default.prID = prID.toString()
-  }
 
   get name(): string {
     return "Nevercode"
@@ -25,17 +18,21 @@ export class Nevercode implements CISource {
   }
 
   get isPR(): boolean {
-    const mustHave = ["NEVERCODE_PULL_REQUEST"]
-    const mustBeInts = ["NEVERCODE_GIT_PROVIDER_PULL_REQUEST"]
-    return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, mustBeInts)
+    const mustHave = ["NEVERCODE_PULL_REQUEST", "NEVERCODE_REPO_SLUG"]
+    const mustBeInts = ["NEVERCODE_GIT_PROVIDER_PULL_REQUEST", "NEVERCODE_PULL_REQUEST_NUMBER"]
+    return (
+      ensureEnvKeysExist(this.env, mustHave) &&
+      ensureEnvKeysAreInt(this.env, mustBeInts) &&
+      this.env.NEVERCODE_PULL_REQUEST == "true"
+    )
   }
 
   get pullRequestID(): string {
-    return this.default.prID
+    return this.env.NEVERCODE_PULL_REQUEST_NUMBER
   }
 
   get repoSlug(): string {
-    return getRepoSlug()
+    return this.env.NEVERCODE_REPO_SLUG
   }
 
   get supportedPlatforms(): string[] {
