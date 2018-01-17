@@ -107,7 +107,7 @@
     "commander": "^2.12.2",
     "debug": "^3.1.0",
     "get-stdin": "^5.0.1",
-    "github": "^13.0.1",
+    "@octokit/rest": "^14.0.0",
     "hyperlinker": "^1.0.0",
     "jsome": "^2.3.25",
     "json5": "^0.5.1",

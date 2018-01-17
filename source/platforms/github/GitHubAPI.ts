@@ -1,4 +1,4 @@
-import * as GitHubNodeAPI from "github"
+import * as GitHubNodeAPI from "@octokit/rest"
 import * as debug from "debug"
 import * as node_fetch from "node-fetch"
 import * as parse from "parse-link-header"
