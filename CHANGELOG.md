@@ -1,12 +1,18 @@
 <!--
 
-// Please add your own contribution below inside the Master section
+// Please add your own contribution below inside the Master section, no need to 
+// set a version number, that happens during a deploy.
+//
 // These docs are aimed at users rather than danger developers, so please limit technical
-// terminology to in here.
+// terminology in here.
 
 -->
 
 ## Master
+
+\*
+
+### 3.0.5
 
 * Added support for Bitrise as a CI Provider - [@tychota][]
 
@@ -831,3 +837,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@dfalling]: https://github.com/dfalling
 [@caffodian]: https://github.com/caffodian
 [@fbartho]: https://github.com/fbartho
+[@tychota]: https://github.com/tychota
