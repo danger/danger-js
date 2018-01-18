@@ -1,3 +1,4 @@
+import { Bitrise } from "./Bitrise"
 import { BuddyBuild } from "./BuddyBuild"
 import { Buildkite } from "./Buildkite"
 import { Circle } from "./Circle"
@@ -26,6 +27,7 @@ const providers = [
   Buildkite,
   BuddyBuild,
   VSTS,
+  Bitrise,
 ]
 
 // Mainly used for Dangerfile linting
