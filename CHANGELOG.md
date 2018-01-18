@@ -8,6 +8,8 @@
 
 ## Master
 
+* Added support for Bitrise as a CI Provider - [@tychota][]
+
 ### 3.0.5
 
 * Nevercode ENV var fixes - [@fbartho][]
