@@ -27,8 +27,7 @@ matrix:
   # Does the real danger run
   - node_js: node
     script:
-    - yarn add jest
-    - yarn jest --outputFile test-results.json --json
+    - yarn jest --outputFile test-results.json --json --runInBand
     - yarn run link
     - echo "This is the real `danger ci` run on this repo"
     - DEBUG="*" danger ci --verbose
