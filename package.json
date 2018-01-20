@@ -50,7 +50,7 @@
     "link": "yarn run build && chmod +x distribution/commands/danger.js && npm link",
     "declarations": "ts-node ./scripts/create-danger-dts.ts",
     "docs:cp_defs":
-      "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/github/lib/index.d.ts docs/docs_generate/github.d.ts",
+      "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/@octokit/rest/index.d.ts docs/docs_generate/github.d.ts",
     "docs":
       "yarn run docs:cp_defs; yarn typedoc --ignoreCompilerErrors --mode modules --json docs/js_ref_dsl_docs.json --includeDeclarations source",
     "dts-lint": "yarn run declarations && yarn dtslint types"
@@ -102,12 +102,12 @@
     "typescript": "^2.6.2"
   },
   "dependencies": {
+    "@octokit/rest": "^14.0.3",
     "babel-polyfill": "^6.23.0",
     "chalk": "^2.3.0",
     "commander": "^2.12.2",
     "debug": "^3.1.0",
     "get-stdin": "^5.0.1",
-    "github": "^13.0.1",
     "hyperlinker": "^1.0.0",
     "jsome": "^2.3.25",
     "json5": "^0.5.1",

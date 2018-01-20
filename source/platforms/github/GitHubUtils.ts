@@ -2,7 +2,7 @@ import { basename } from "path"
 import { sentence, href } from "../../runner/DangerUtils"
 import { GitHubPRDSL, GitHubUtilsDSL } from "./../../dsl/GitHubDSL"
 
-import * as GitHub from "github"
+import * as GitHub from "@octokit/rest"
 
 // We need to curry in access to the GitHub PR metadata
 

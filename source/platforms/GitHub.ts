@@ -4,7 +4,7 @@ import { GitHubAPI } from "./github/GitHubAPI"
 import GitHubUtils from "./github/GitHubUtils"
 import gitDSLForGitHub from "./github/GitHubGit"
 
-import * as NodeGitHub from "github"
+import * as NodeGitHub from "@octokit/rest"
 
 /** Handles conforming to the Platform Interface for GitHub, API work is handle by GitHubAPI */
 

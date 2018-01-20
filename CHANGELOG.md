@@ -10,7 +10,10 @@
 
 ## Master
 
-\*
+* Updates our API from "github" to "@octokit/rest"
+
+  this looks like mainly an internal change, and should not affect any
+  existing dangerfiles. - [@fbartho][] [@orta][]
 
 ### 3.0.6
 

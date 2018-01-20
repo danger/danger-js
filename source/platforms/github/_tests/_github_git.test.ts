@@ -8,7 +8,7 @@ import { resolve, join as pathJoin } from "path"
 import { EOL } from "os"
 import { gitJSONToGitDSL } from "../GitHubGit"
 
-import * as NodeGitHub from "github"
+import * as NodeGitHub from "@octokit/rest"
 import { GitHubDSL } from "../../../dsl/GitHubDSL"
 import { GitDSL } from "../../../dsl/GitDSL"
 

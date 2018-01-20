@@ -1,5 +1,5 @@
 import { GitCommit } from "./Commit"
-import * as GitHub from "github"
+import * as GitHub from "@octokit/rest"
 
 // This is `danger.github` inside the JSON
 
