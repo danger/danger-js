@@ -54,7 +54,7 @@
     "docs":
       "yarn run docs:cp_defs; yarn typedoc --ignoreCompilerErrors --mode modules --json docs/js_ref_dsl_docs.json --includeDeclarations source",
     "dts-lint": "yarn run declarations && yarn dtslint types",
-    "danger:prepush": "node  distribution/commands/danger.js local --dangerfile dangerfile.lite.ts"
+    "danger:prepush": "node distribution/commands/danger.js local --dangerfile dangerfile.lite.ts"
   },
   "repository": {
     "type": "git",
