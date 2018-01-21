@@ -6,6 +6,7 @@ import { GitCommit } from "../dsl/Commit"
 import { localGetDiff } from "./git/localGetDiff"
 import { localGetFileAtSHA } from "./git/localGetFileAtSHA"
 import { localGetCommits } from "./git/localGetCommits"
+import { readFileSync } from "fs"
 
 export interface LocalGitOptions {
   base?: string
@@ -65,4 +66,6 @@ export class LocalGit implements Platform {
   async updateStatus(_success: boolean, _message: string): Promise<boolean> {
     return true
   }
+
+  getFileContents = (path: string) => new Promise<string>(res => res(readFileSync(path, "utf8")))
 }

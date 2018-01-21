@@ -24,6 +24,8 @@ export class GitHubAPI {
   additionalHeaders: any
   private readonly d = debug("danger:GitHubAPI")
 
+  private pr: GitHubPRDSL
+
   constructor(public readonly repoMetadata: RepoMetaData, public readonly token?: APIToken) {
     // This allows Peril to DI in a new Fetch function
     // which can handle unique API edge-cases around integrations
@@ -130,11 +132,20 @@ export class GitHubAPI {
   }
 
   getPullRequestInfo = async (): Promise<GitHubPRDSL> => {
+    if (this.pr) {
+      return this.pr
+    }
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}`)
+    const prDSL = (await res.json()) as GitHubPRDSL
+    this.pr = prDSL
 
-    return res.ok ? (res.json() as Promise<GitHubPRDSL>) : ({} as GitHubPRDSL)
+    if (res.ok) {
+      return prDSL
+    } else {
+      throw `Could not get PR Metadata for repos/${repo}/pulls/${prID}`
+    }
   }
 
   getPullRequestCommits = async (): Promise<any[]> => {

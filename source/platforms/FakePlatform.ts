@@ -1,6 +1,7 @@
 import { GitDSL } from "../dsl/GitDSL"
 import { CISource } from "../ci_source/ci_source"
 import { Platform } from "./platform"
+import { readFileSync } from "fs-extra"
 
 export class FakePlatform implements Platform {
   public readonly name: string
@@ -45,4 +46,6 @@ export class FakePlatform implements Platform {
   async updateStatus(_success: boolean, _message: string): Promise<boolean> {
     return true
   }
+
+  getFileContents = (path: string) => new Promise<string>(res => res(readFileSync(path, "utf8")))
 }
