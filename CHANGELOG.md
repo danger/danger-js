@@ -10,7 +10,14 @@
 
 ## Master
 
-\*
+* Adds a new command `danger local`
+
+  This command will look between the current branch and master
+  and use that to evaluate a dangerfile. This is aimed specifically at
+  tools like git commit hooks, and for people who don't do code review.
+
+  `danger.github` will be falsy in this context, so you could share a dangerfile
+  between your CI + code Review. - [@orta][]
 
 ### 3.0.5
 
