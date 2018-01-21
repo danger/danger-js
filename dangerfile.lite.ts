@@ -5,8 +5,12 @@ declare var danger: DangerDSLType
 declare function warn(params: string): void
 
 const hasChangelog = danger.git.modified_files.includes("CHANGELOG.md")
-if (!hasChangelog) {
-  warn("Please add a changelog entry for your changes.")
+const isTrivial = danger.github && (danger.github.pr.body + danger.github.pr.title).includes("#trivial")
+
+if (!hasChangelog && !isTrivial) {
+  warn(
+    "Please add a changelog entry for your changes. You can find it in `CHANGELOG.md` \n\n Please add your change and name to the master section."
+  )
 }
 
 import dtsGenerator from "./scripts/danger-dts"
