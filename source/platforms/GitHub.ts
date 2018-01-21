@@ -20,24 +20,20 @@ export class GitHub {
    *
    * @returns {Promise<any>} JSON representation
    */
-  async getReviewInfo(): Promise<GitHubPRDSL> {
-    return await this.api.getPullRequestInfo()
-  }
+  getReviewInfo = (): Promise<GitHubPRDSL> => this.api.getPullRequestInfo()
 
   /**
    * Get the Code Review diff representation
    *
    * @returns {Promise<GitDSL>} the git DSL
    */
-  async getPlatformGitRepresentation(): Promise<GitJSONDSL> {
-    return gitDSLForGitHub(this.api)
-  }
+  getPlatformGitRepresentation = (): Promise<GitJSONDSL> => gitDSLForGitHub(this.api)
 
   /**
    * Gets issue specific metadata for a PR
    */
 
-  async getIssue(): Promise<GitHubIssue> {
+  getIssue = async (): Promise<GitHubIssue> => {
     const issue = await this.api.getIssue()
     return issue || { labels: [] }
   }
@@ -47,7 +43,7 @@ export class GitHub {
    * then return true.
    */
 
-  async updateStatus(passed: boolean, message: string, url?: string): Promise<boolean> {
+  updateStatus = async (passed: boolean, message: string, url?: string): Promise<boolean> => {
     const ghAPI = this.api.getExternalAPI()
 
     const prJSON = await this.api.getPullRequestInfo()
@@ -73,7 +69,7 @@ export class GitHub {
    *
    * @returns {Promise<GitHubDSL>} JSON response of the DSL
    */
-  async getPlatformDSLRepresentation(): Promise<GitHubJSONDSL> {
+  getPlatformDSLRepresentation = async (): Promise<GitHubJSONDSL> => {
     const pr = await this.getReviewInfo()
     if (pr === {}) {
       process.exitCode = 1
@@ -110,9 +106,7 @@ export class GitHub {
    * @param {string} comment you want to post
    * @returns {Promise<any>} JSON response of new comment
    */
-  async createComment(comment: string): Promise<any> {
-    return this.api.postPRComment(comment)
-  }
+  createComment = (comment: string) => this.api.postPRComment(comment)
 
   // In Danger RB we support a danger_id property,
   // this should be handled at some point
@@ -123,7 +117,7 @@ export class GitHub {
    *
    * @returns {Promise<boolean>} did it work?
    */
-  async deleteMainComment(dangerID: string): Promise<boolean> {
+  deleteMainComment = async (dangerID: string): Promise<boolean> => {
     const commentIDs = await this.api.getDangerCommentIDs(dangerID)
     for (let commentID of commentIDs) {
       await this.api.deleteCommentWithID(commentID)
@@ -161,13 +155,15 @@ export class GitHub {
   /**
    * Converts the PR JSON into something easily used by the Github API client.
    */
-  APIMetadataForPR(pr: GitHubPRDSL): GitHubAPIPR {
+  APIMetadataForPR = (pr: GitHubPRDSL): GitHubAPIPR => {
     return {
       number: pr.number,
       repo: pr.base.repo.name,
       owner: pr.base.repo.owner.login,
     }
   }
+
+  getFileContents = this.api.fileContents
 }
 
 // This class should get un-classed, but for now we can expand by functions

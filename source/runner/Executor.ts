@@ -125,11 +125,11 @@ export class Executor {
       // Human-readable format
 
       const table = [
-        { name: "Failures", messages: fails.map(f => f.message) },
-        { name: "Warnings", messages: warnings.map(w => w.message) },
-        { name: "Messages", messages: messages.map(m => m.message) },
-        { name: "Markdowns", messages: markdowns },
-      ]
+        fails.length && { name: "Failures", messages: fails.map(f => f.message) },
+        warnings.length && { name: "Warnings", messages: warnings.map(w => w.message) },
+        messages.length && { name: "Messages", messages: messages.map(m => m.message) },
+        markdowns.length && { name: "Markdowns", messages: markdowns },
+      ].filter(r => r !== 0) as { name: string; messages: string[] }[]
 
       // Consider looking at getting the terminal width, and making it 60%
       // if over a particular size
@@ -142,14 +142,16 @@ export class Executor {
       if (fails.length > 0) {
         const s = fails.length === 1 ? "" : "s"
         const are = fails.length === 1 ? "is" : "are"
-        const message = chalk.underline("Failing the build")
-        console.log(`${message}, there ${are} ${fails.length} fail${s}.`)
+        const message = chalk.underline.red("Failing the build")
+        console.log(`Danger: ${message}, there ${are} ${fails.length} fail${s}.`)
         process.exitCode = 1
       } else if (warnings.length > 0) {
         const message = chalk.underline("not failing the build")
-        console.log(`Found only warnings, ${message}`)
+        console.log(`Danger: Found only warnings, ${message}`)
       } else if (messages.length > 0) {
-        console.log("Found only messages, passing those to review.")
+        console.log("Danger: Passed, found only messages.")
+      } else if (!messages.length && !fails.length && !messages.length && !warnings.length) {
+        console.log("Danger: Passed review, received no feedback.")
       }
     }
   }

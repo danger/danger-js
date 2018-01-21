@@ -10,14 +10,34 @@
 
 ## Master
 
-* Adds a new command `danger local`
+* Adds a new command `danger local`.
 
   This command will look between the current branch and master
   and use that to evaluate a dangerfile. This is aimed specifically at
   tools like git commit hooks, and for people who don't do code review.
 
   `danger.github` will be falsy in this context, so you could share a dangerfile
-  between your CI + code Review. - [@orta][]
+  between `danger local` and `danger ci`.
+
+  When I thought about how to use it on Danger JS, I opted to make another Dangerfile and import it at the end of
+  the main Dangerfile. This new Dangerfile only contains rules which can run with just `danger.git`, e.g. CHANGELOG/README
+  checks. I called it `dangerfile.lite.ts`.
+
+  Our setup looks like:
+
+  ```json
+  "scripts": {
+    "prepush": "yarn build; yarn danger:prepush",
+    "danger:prepush": "yarn danger local --dangerfile dangerfile.lite.ts"
+    // [...]
+  ```
+
+You'll need to have [husky](https://www.npmjs.com/package/husky) installed for this to work. - [@orta][]
+
+* STDOUT formatting has been improved, which is the terminal only version of
+  Danger's typical GitHub comment style system. It's used in `danger pr`, `danger ci --stdout`
+  and `danger local`. - [@orta][]
+* Exposed a get file contents for the platform abstraction so that Peril can work on many platforms in the future - [@orta][]
 
 ### 3.0.5
 

@@ -13,18 +13,14 @@ declare function fail(params: string): void
 // declare function schedule(promise: () => Promise<any | void>): void
 // declare function schedule(callback: (resolve: any) => void): void
 
-import * as fs from "fs"
-
 const checkREADME = async () => {
   // Request a CHANGELOG entry if not declared #trivial
   const hasChangelog = danger.git.modified_files.includes("CHANGELOG.md")
   const isTrivial = (danger.github.pr.body + danger.github.pr.title).includes("#trivial")
   const isGreenkeeper = danger.github.pr.user.login === "greenkeeper"
 
+  // Politely ask for their name on the entry too
   if (!hasChangelog && !isTrivial && !isGreenkeeper) {
-    warn("Please add a changelog entry for your changes, by adding a note in the master section to `CHANGELOG.md`.")
-
-    // Politely ask for their name on the entry too
     const changelogDiff = await danger.git.diffForFile("CHANGELOG.md")
     const contributorName = danger.github.pr.user.login
     if (changelogDiff && changelogDiff.diff.includes(contributorName)) {
@@ -40,37 +36,5 @@ yarn()
 import jest from "danger-plugin-jest"
 jest()
 
-// Some good old-fashioned maintainance upkeep
-
-// Ensure the danger.d.ts is always up to date inside this repo.
-// This also serves as the "one true DSL" for a Danger run against a PR
-// which tools can then work against.
-
-// debugger
-
-import dtsGenerator from "./scripts/danger-dts"
-const currentDTS = dtsGenerator()
-const savedDTS = fs.readFileSync("source/danger.d.ts").toString()
-if (currentDTS !== savedDTS) {
-  const message = "There are changes to the Danger DSL which are not reflected in the current danger.d.ts."
-  const idea = "Please run <code>yarn declarations</code> and update this PR."
-  fail(`${message}<br/><i>${idea}</i>`)
-}
-
-// Always ensure we name all CI providers in the README. These
-// regularly get forgotten on a PR adding a new one.
-const sentence = danger.utils.sentence
-
-import { realProviders } from "./source/ci_source/providers"
-const readme = fs.readFileSync("README.md").toString()
-const names = realProviders.map(p => new p({}).name)
-const missing = names.filter(n => !readme.includes(n))
-if (missing.length) {
-  warn(`These providers are missing from the README: ${sentence(missing)}`)
-}
-
-danger.github.utils.fileContents("scripts/run-fixtures.js").then(fixtures => {
-  if (fixtures.includes("const writeResults = true")) {
-    fail("Fixtures test script is still in write mode, edit `scripts/run-fixtures.js`.")
-  }
-})
+// Re-run the git push hooks
+import "./dangerfile.lite"
