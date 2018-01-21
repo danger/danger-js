@@ -22,10 +22,10 @@ const checkREADME = async () => {
   const isGreenkeeper = danger.github.pr.user.login === "greenkeeper"
 
   if (!hasChangelog && !isTrivial && !isGreenkeeper) {
-    warn("Please add a changelog entry for your changes.")
+    warn("Please add a changelog entry for your changes, by adding a note in the master section to `CHANGELOG.md`.")
 
     // Politely ask for their name on the entry too
-    const changelogDiff = await danger.git.diffForFile("changelog.md")
+    const changelogDiff = await danger.git.diffForFile("CHANGELOG.md")
     const contributorName = danger.github.pr.user.login
     if (changelogDiff && changelogDiff.diff.includes(contributorName)) {
       warn("Please add your GitHub name to the changelog entry, so we can attribute you correctly.")

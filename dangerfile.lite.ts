@@ -15,7 +15,7 @@ const savedDTS = fs.readFileSync("source/danger.d.ts").toString()
 if (currentDTS !== savedDTS) {
   const message = "There are changes to the Danger DSL which are not reflected in the current danger.d.ts."
   const idea = "Please run <code>yarn declarations</code> and update this PR."
-  fail(`${message}<br/><i>${idea}</i>`)
+  fail(`${message}\n - ${idea}`)
 }
 
 // Always ensure we name all CI providers in the README. These

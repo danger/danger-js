@@ -8,13 +8,13 @@ blurb: How Danger's TypeScript/Babel integration works.
 
 ### Transpilation
 
-Danger tries to pick up either Babel or TypeScript up at runtime. It does this by `require`ing the both dependencies, which will follow the standard [NodeJS require resolution](https://nodejs.org/api/modules.html#modules_all_together). If either don't exist, then the Dangerfile will be treated as not needing transpilation and passing .
+Danger tries to pick up either Babel or TypeScript up at runtime. It does this by `require`ing both dependencies, which will follow the standard [NodeJS require resolution](https://nodejs.org/api/modules.html#modules_all_together). If either don't exist, then the Dangerfile will be treated as not needing transpilation and passed directly to the node runtime.
 
 A few notes:
 
 * TypeScript is prioritized over Babel
 * Babel 7 support for TypeScript is supported
-* Whether you use `dangerfile.ts` or `dangerfile.js` is irrelevant
+* Whether you use `dangerfile.ts` or `dangerfile.js` is irrelevant, the environment matters more
 
 ### TypeScript gotchas
 
@@ -32,7 +32,7 @@ You might have a `src` folder where your actual source code is kept, and adding 
 
 The `danger` module is removed before evaluation, it's only there to fake your dev env into working correctly. In reality, all of the exports are added to the global environment. If you import `"danger"` in code that isn't evaluated inside Danger itself, it will raise an exception.
 
-You can use something like jest's module mocking system to fake it, you can manipulate the object to be whatever you want in tests:
+You can use something like jest's module mocking system to fake it in tests, sp you can manipulate the object PR to look like whatever you want in tests:
 
 ```js
 jest.mock("danger", () => jest.fn())
