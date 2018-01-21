@@ -10,12 +10,16 @@
 
 ## Master
 
-* Updates our API from "github" to "@octokit/rest"
+* Adds a new command `danger local`
 
-  this looks like mainly an internal change, and should not affect any
-  existing dangerfiles. - [@fbartho][] [@orta][]
+  This command will look between the current branch and master
+  and use that to evaluate a dangerfile. This is aimed specifically at
+  tools like git commit hooks, and for people who don't do code review.
 
-### 3.0.6
+  `danger.github` will be falsy in this context, so you could share a dangerfile
+  between your CI + code Review. - [@orta][]
+
+### 3.0.5
 
 * Added support for Bitrise as a CI Provider - [@tychota][]
 

@@ -41,7 +41,9 @@ export async function runDangerfileEnvironment(
   // and TypeScript through babel first. This is a simple implmentation
   // and if we need more nuance, then we can look at other implementations
   const customModuleHandler = (module: any, filename: string) => {
-    d("Handling custom module: ", filename)
+    if (!filename.includes("node_modules")) {
+      d("Handling custom module: ", filename)
+    }
     const contents = fs.readFileSync(filename, "utf8")
     const compiled = compile(contents, filename)
     module._compile(compiled, filename)
@@ -67,9 +69,9 @@ export async function runDangerfileEnvironment(
       }
     }
 
-    d("[Start Dangerfile]: ", filename)
+    d("Started parsing Dangerfile: ", filename)
     _require(compiled, filename, {})
-    d("[Stop Dangerfile]: ", filename)
+    d("Finished running dangerfile: ", filename)
     // Don't stop all current async code from breaking,
     // however new code (without Peril support) can run
     // without the scheduler
@@ -99,6 +101,7 @@ const runAllScheduledTasks = async (results: DangerRuntimeContainer) => {
         return fnOrPromise()
       })
     )
+    d(`Finished scheduled tasks`)
   }
 }
 

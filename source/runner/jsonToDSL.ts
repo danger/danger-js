@@ -1,14 +1,26 @@
 import * as GitHubNodeAPI from "@octokit/rest"
 
 import { DangerDSLJSONType, DangerDSLType } from "../dsl/DangerDSL"
-import { gitJSONToGitDSL } from "../platforms/github/GitHubGit"
+import { gitHubGitDSL as githubJSONToGitDSL } from "../platforms/github/GitHubGit"
 import { githubJSONToGitHubDSL } from "../platforms/GitHub"
 import { sentence, href } from "./DangerUtils"
+import { LocalGit } from "../platforms/LocalGit"
+import { GitDSL } from "../dsl/GitDSL"
 
 export const jsonToDSL = async (dsl: DangerDSLJSONType): Promise<DangerDSLType> => {
   const api = githubAPIForDSL(dsl)
-  const github = githubJSONToGitHubDSL(dsl.github, api)
-  const git = gitJSONToGitDSL(github, dsl.git)
+  const platformExists = [dsl.github].some(p => !!p)
+  const github = dsl.github && githubJSONToGitHubDSL(dsl.github, api)
+  // const gitlab = dsl.gitlab && githubJSONToGitLabDSL(dsl.gitlab, api)
+
+  let git: GitDSL
+  if (!platformExists) {
+    const localPlatform = new LocalGit({ base: "master" })
+    git = await localPlatform.getPlatformGitRepresentation()
+  } else {
+    git = githubJSONToGitDSL(github, dsl.git)
+  }
+
   return {
     git,
     github: github,

@@ -100,6 +100,10 @@ export class GitHub {
     }
   }
 
+  supportsCommenting() {
+    return true
+  }
+
   /**
    * Returns the response for the new comment
    *

@@ -9,32 +9,33 @@ declare function warn(params: string): void
 declare function fail(params: string): void
 // declare function message(params: string): void
 // declare function markdown(params: string): void
-declare function schedule(promise: Promise<any | void>): void
-declare function schedule(promise: () => Promise<any | void>): void
-declare function schedule(callback: (resolve: any) => void): void
+// declare function schedule(promise: Promise<any | void>): void
+// declare function schedule(promise: () => Promise<any | void>): void
+// declare function schedule(callback: (resolve: any) => void): void
 
 import * as fs from "fs"
 
-schedule(async () => {
+const checkREADME = async () => {
   // Request a CHANGELOG entry if not declared #trivial
   const hasChangelog = danger.git.modified_files.includes("CHANGELOG.md")
   const isTrivial = (danger.github.pr.body + danger.github.pr.title).includes("#trivial")
   const isGreenkeeper = danger.github.pr.user.login === "greenkeeper"
 
   if (!hasChangelog && !isTrivial && !isGreenkeeper) {
-    warn("Please add a changelog entry for your changes.")
+    warn("Please add a changelog entry for your changes, by adding a note in the master section to `CHANGELOG.md`.")
 
     // Politely ask for their name on the entry too
-    const changelogDiff = await danger.git.diffForFile("changelog.md")
+    const changelogDiff = await danger.git.diffForFile("CHANGELOG.md")
     const contributorName = danger.github.pr.user.login
     if (changelogDiff && changelogDiff.diff.includes(contributorName)) {
       warn("Please add your GitHub name to the changelog entry, so we can attribute you correctly.")
     }
   }
-})
+}
+checkREADME()
 
 import yarn from "danger-plugin-yarn"
-schedule(yarn())
+yarn()
 
 import jest from "danger-plugin-jest"
 jest()

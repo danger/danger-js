@@ -35,6 +35,8 @@ export interface Platform {
   getPlatformDSLRepresentation: () => Promise<any>
   /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
   getPlatformGitRepresentation: () => Promise<GitJSONDSL>
+  /** Can it update comments? */
+  supportsCommenting: () => boolean
   /** Creates a comment on the PR */
   createComment: (dangerID: string, body: string) => Promise<any>
   /** Delete the main Danger comment */

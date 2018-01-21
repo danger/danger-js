@@ -18,6 +18,7 @@ program
   .command("process", "Like `ci` but lets another process handle evaluating a Dangerfile")
   .command("pr", "Runs your local Dangerfile against an existing GitHub PR. Will not post on the PR")
   .command("runner", "Runs a dangerfile against a DSL passed in via STDIN [You probably don't need this]")
+  .command("local", "Runs danger standalone on a repo, useful for git hooks")
   .on("--help", () => {
     console.log("\n")
     console.log("  Docs:")
@@ -37,7 +38,7 @@ const originalProcessArgV = process.argv
 program.parse(process.argv)
 
 const showUpgradeNotice =
-  process.env.CI && ["init", "ci", "process", "pr", "--help"].some(cmd => originalProcessArgV.includes(cmd))
+  process.env.CI && ["init", "ci", "process", "pr", "local", "--help"].some(cmd => originalProcessArgV.includes(cmd))
 
 if (showUpgradeNotice) {
   console.error("You may have updated from Danger 2.x -> 3.x without updating from `danger` to `danger ci`.")
