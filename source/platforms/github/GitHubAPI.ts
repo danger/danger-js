@@ -36,7 +36,7 @@ export class GitHubAPI {
    * I wouldn't have a problem with moving this to use this API under the hood
    * but for now that's just a refactor someone can try.
    */
-  getExternalAPI(): GitHubNodeAPI {
+  getExternalAPI = (): GitHubNodeAPI => {
     const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || undefined
     const api = new GitHubNodeAPI({
       host: baseUrl,
@@ -59,7 +59,7 @@ export class GitHubAPI {
    * @returns {Promise<string>} text contents
    *
    */
-  async fileContents(path: string, repoSlug?: string, ref?: string): Promise<string> {
+  fileContents = async (path: string, repoSlug?: string, ref?: string): Promise<string> => {
     // Use the current state of PR if no repo/ref is passed
     if (!repoSlug || !ref) {
       const prJSON = await this.getPullRequestInfo()
@@ -74,7 +74,7 @@ export class GitHubAPI {
 
   // The above is the API for Platform
 
-  async getDangerCommentIDs(dangerID: string): Promise<number[]> {
+  getDangerCommentIDs = async (dangerID: string): Promise<number[]> => {
     const userID = await this.getUserID()
     const allComments: any[] = await this.getPullRequestComments()
     const dangerIDMessage = dangerIDToString(dangerID)
@@ -86,7 +86,7 @@ export class GitHubAPI {
       .map(comment => comment.id)
   }
 
-  async updateCommentWithID(id: number, comment: string): Promise<any> {
+  updateCommentWithID = async (id: number, comment: string): Promise<any> => {
     const repo = this.repoMetadata.repoSlug
     const res = await this.patch(
       `repos/${repo}/issues/comments/${id}`,
@@ -99,7 +99,7 @@ export class GitHubAPI {
     return res.json()
   }
 
-  async deleteCommentWithID(id: number): Promise<boolean> {
+  deleteCommentWithID = async (id: number): Promise<boolean> => {
     const repo = this.repoMetadata.repoSlug
     const res = await this.api(`repos/${repo}/issues/comments/${id}`, {}, {}, "DELETE")
 
@@ -107,7 +107,7 @@ export class GitHubAPI {
     return Promise.resolve(res.status === 204)
   }
 
-  async getUserID(): Promise<number | undefined> {
+  getUserID = async (): Promise<number | undefined> => {
     if (process.env["DANGER_GITHUB_APP"]) {
       return
     }
@@ -115,7 +115,7 @@ export class GitHubAPI {
     return info.id
   }
 
-  async postPRComment(comment: string): Promise<any> {
+  postPRComment = async (comment: string): Promise<any> => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.post(
@@ -129,7 +129,7 @@ export class GitHubAPI {
     return res.json()
   }
 
-  async getPullRequestInfo(): Promise<GitHubPRDSL> {
+  getPullRequestInfo = async (): Promise<GitHubPRDSL> => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}`)
@@ -137,7 +137,7 @@ export class GitHubAPI {
     return res.ok ? (res.json() as Promise<GitHubPRDSL>) : ({} as GitHubPRDSL)
   }
 
-  async getPullRequestCommits(): Promise<any[]> {
+  getPullRequestCommits = async (): Promise<any[]> => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     return await this.getAllOfResource(`repos/${repo}/pulls/${prID}/commits`)
@@ -149,7 +149,7 @@ export class GitHubAPI {
    * https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request
    *
    */
-  async getAllOfResource(path: string): Promise<any> {
+  getAllOfResource = async (path: string): Promise<any> => {
     const ret: Array<any> = []
 
     /**
@@ -197,22 +197,18 @@ export class GitHubAPI {
     return ret
   }
 
-  async getUserInfo(): Promise<GitHubUser> {
-    const response: any = await this.get("user")
-
+  getUserInfo = async (): Promise<GitHubUser> => {
+    const response = await this.get("user")
     return response.json()
   }
 
-  async getPullRequestComments(): Promise<any[]> {
+  getPullRequestComments = async (): Promise<any[]> => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     return await this.getAllOfResource(`repos/${repo}/issues/${prID}/comments`)
   }
 
   getPullRequestDiff = async () => {
-    console.log("Hello")
-    console.log(this)
-    console.log(this.repoMetadata)
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}`, {
@@ -221,19 +217,19 @@ export class GitHubAPI {
     return res.ok ? res.text() : ""
   }
 
-  async getFileContents(path: string, repoSlug: string, ref: string): Promise<any> {
+  getFileContents = async (path: string, repoSlug: string, ref: string): Promise<any> => {
     const res = await this.get(`repos/${repoSlug}/contents/${path}?ref=${ref}`)
     return res.ok ? res.json() : { content: "" }
   }
 
-  async getPullRequests(): Promise<any> {
+  getPullRequests = async (): Promise<any> => {
     const repo = this.repoMetadata.repoSlug
     const res = await this.get(`repos/${repo}/pulls`)
 
     return res.ok ? res.json() : []
   }
 
-  async getReviewerRequests(): Promise<any> {
+  getReviewerRequests = async (): Promise<any> => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}/requested_reviewers`, {
@@ -243,7 +239,7 @@ export class GitHubAPI {
     return res.ok ? res.json() : []
   }
 
-  async getReviews(): Promise<any> {
+  getReviews = async (): Promise<any> => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}/reviews`, {
@@ -253,7 +249,7 @@ export class GitHubAPI {
     return res.ok ? res.json() : []
   }
 
-  async getIssue(): Promise<any> {
+  getIssue = async (): Promise<any> => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/issues/${prID}`)
@@ -261,7 +257,7 @@ export class GitHubAPI {
     return res.ok ? res.json() : { labels: [] }
   }
 
-  async updateStatus(passed: boolean, message: string, url?: string): Promise<any> {
+  updateStatus = async (passed: boolean, message: string, url?: string): Promise<any> => {
     const repo = this.repoMetadata.repoSlug
 
     const prJSON = await this.getPullRequestInfo()
@@ -282,7 +278,7 @@ export class GitHubAPI {
 
   // API Helpers
 
-  private api(path: string, headers: any = {}, body: any = {}, method: string, suppressErrors?: boolean) {
+  private api = (path: string, headers: any = {}, body: any = {}, method: string, suppressErrors?: boolean) => {
     if (this.token) {
       headers["Authorization"] = `token ${this.token}`
     }
@@ -313,15 +309,12 @@ export class GitHubAPI {
     )
   }
 
-  get(path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> {
-    return this.api(path, headers, body, "GET")
-  }
+  get = (path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> =>
+    this.api(path, headers, body, "GET")
 
-  post(path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> {
-    return this.api(path, headers, JSON.stringify(body), "POST", suppressErrors)
-  }
+  post = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
+    this.api(path, headers, JSON.stringify(body), "POST", suppressErrors)
 
-  patch(path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> {
-    return this.api(path, headers, JSON.stringify(body), "PATCH")
-  }
+  patch = (path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> =>
+    this.api(path, headers, JSON.stringify(body), "PATCH")
 }
