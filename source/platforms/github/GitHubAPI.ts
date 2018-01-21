@@ -209,7 +209,10 @@ export class GitHubAPI {
     return await this.getAllOfResource(`repos/${repo}/issues/${prID}/comments`)
   }
 
-  async getPullRequestDiff(): Promise<string> {
+  getPullRequestDiff = async () => {
+    console.log("Hello")
+    console.log(this)
+    console.log(this.repoMetadata)
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}`, {

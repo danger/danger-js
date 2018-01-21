@@ -46,6 +46,10 @@ export const gitHubGitDSL = (github: GitHubDSL, json: GitJSONDSL, githubAPI?: Gi
       process.env["DANGER_GITHUB_API_TOKEN"]
     )
 
+  if (!githubAPI) {
+    d("Got no GH API, had to make it")
+  }
+
   const config: GitJSONToGitDSLConfig = {
     repo: github.pr.head.repo.full_name,
     baseSHA: github.pr.base.sha,
