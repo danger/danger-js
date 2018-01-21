@@ -10,6 +10,8 @@
 
 ## Master
 
+## 3.1.0
+
 * Adds a new command `danger local`.
 
   This command will look between the current branch and master
