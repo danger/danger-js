@@ -37,6 +37,7 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 * STDOUT formatting has been improved, which is the terminal only version of
   Danger's typical GitHub comment style system. It's used in `danger pr`, `danger ci --stdout`
   and `danger local`. - [@orta][]
+* Exposed a get file contents for the platform abstraction so that Peril can work on many platforms in the future - [@orta][]
 
 ### 3.0.5
 
