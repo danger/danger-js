@@ -1,6 +1,7 @@
-# Danger JS :no_entry_sign: [![npm](https://img.shields.io/npm/v/danger.svg)](https://www.npmjs.com/package/danger) [![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=master)](https://travis-ci.org/danger/danger-js) [![Build Status](https://ci.appveyor.com/api/projects/status/ep5hgeox3lbc5c7f?svg=true)](https://ci.appveyor.com/project/orta/danger-js/branch/master) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/danger)
-
-Formalize your Pull Request etiquette.
+<p align="center">
+  <img src="http://danger.systems/images/js/danger-logo-hero-cachable@2x.png" width=250 /></br>
+  Formalize your Pull Request etiquette.
+</p>
 
 <p align="center">
     <a href="#what-is-danger-js">What is Danger JS?</a> &bull;
@@ -8,7 +9,7 @@ Formalize your Pull Request etiquette.
     <a href="#this-thing-is-broken-i-should-help-improve-it">Helping Out</a> &bull;
     <a href="http://danger.systems/js/usage/extending-danger.html">Plugin Development</a>
 </p>
-
+  
 ## What is Danger JS?
 
 Danger runs after your CI, automating your team's conventions surrounding code review.
@@ -19,6 +20,8 @@ You can use Danger to codify your teams norms, leaving humans to think about har
 
 Danger JS currently works with GitHub and Travis CI, Circle CI, Semaphore, Jenkins, Docker Cloud, Bitrise, surf-build,
 Codeship, Drone, Buildkite, Nevercode, buddybuild or Visual Studio Team Services.
+
+[![npm](https://img.shields.io/npm/v/danger.svg)](https://www.npmjs.com/package/danger) [![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=master)](https://travis-ci.org/danger/danger-js) [![Build Status](https://ci.appveyor.com/api/projects/status/ep5hgeox3lbc5c7f?svg=true)](https://ci.appveyor.com/project/orta/danger-js/branch/master) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/danger)
 
 ## For example?
 
