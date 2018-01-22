@@ -92,7 +92,7 @@
     "jest": "22.1.4",
     "jest-json-reporter": "^1.2.2",
     "lint-staged": "^6.0.1",
-    "madge": "^2.2.0",
+    "madge": "^3.0.0",
     "prettier": "^1.10.2",
     "shx": "^0.2.1",
     "ts-jest": "^22.0.1",
