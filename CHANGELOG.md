@@ -10,6 +10,11 @@
 
 ## Master
 
+## 3.1.1
+
+* Allows `danger runner` (the hidden command which runs the process) to accept
+  unknown command flags (such as ones passed to it via `danger local`.) - [@adam-moss][]/[@orta][]
+
 ## 3.1.0
 
 * Adds a new command `danger local`.
@@ -867,3 +872,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@caffodian]: https://github.com/caffodian
 [@fbartho]: https://github.com/fbartho
 [@tychota]: https://github.com/tychota
+[@adam-moss]: https://github.com/adam-moss

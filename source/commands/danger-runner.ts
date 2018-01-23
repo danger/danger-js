@@ -19,6 +19,7 @@ const d = debug("danger:runner")
 // Given the nature of this command, it can be tricky to test, so I use a command like this:
 //
 // tslint:disable-next-line:max-line-length
+//
 // yarn build; cat source/_tests/fixtures/danger-js-pr-395.json | env DANGER_FAKE_CI="YEP" DANGER_TEST_REPO='danger/danger-js' DANGER_TEST_PR='395' node distribution/commands/danger-runner.js --text-only
 //
 // Which will build danger, then run just the dangerfile runner with a fixtured version of the JSON
@@ -28,6 +29,9 @@ program
   .description(
     "Handles running the Dangerfile, expects a DSL from STDIN, which should be passed from `danger` or danger run`. You probably don't need to use this command."
   )
+  // Because other calls will trigger this one,
+  // and we don't want to keep a white/blacklist
+  .allowUnknownOption(true)
 
 const argvClone = process.argv.slice(0)
 setSharedArgs(program).parse(argvClone)
