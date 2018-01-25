@@ -108,12 +108,6 @@ export interface DangerDSLType {
    * for making hrefs easily.
    */
   readonly utils: DangerUtilsDSL
-
-  /**
-   * When Peril is running your Dangerfile, the Danger DSL is
-   * extended with additional options.
-   */
-  readonly peril?: PerilDSL
 }
 
 /// End of Danger DSL definition

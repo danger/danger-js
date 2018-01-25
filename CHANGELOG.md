@@ -10,9 +10,10 @@
 
 ## Master
 
-## 3.1.2
+## 3.1.2-3.1.3
 
 * Peril typings to the Danger DSL. [@orta][]
+* Reference docs updates for the website. [@orta][]
 
 ## 3.1.1
 
