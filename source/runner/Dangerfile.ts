@@ -106,5 +106,6 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
     markdown,
     results,
     danger: dsl,
+    peril: {} as any,
   }
 }
