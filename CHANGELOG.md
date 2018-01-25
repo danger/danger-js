@@ -10,6 +10,8 @@
 
 ## Master
 
+* Peril typings to the Danger DSL. [@orta][]
+
 ## 3.1.1
 
 * Allows `danger runner` (the hidden command which runs the process) to accept
