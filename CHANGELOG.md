@@ -10,6 +10,8 @@
 
 ## Master
 
+## 3.1.5
+
 * fixed --base option to compare with correct branch [@peterjgrainger]
 
 ## 3.1.4
