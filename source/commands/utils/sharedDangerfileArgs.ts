@@ -22,3 +22,4 @@ export default (command: any) =>
     .option("-t, --text-only", "Provide an STDOUT only interface, Danger will not post to your PR")
     .option("-d, --dangerfile [filePath]", "Specify a custom dangerfile path")
     .option("-i, --id [danger_id]", "Specify a unique Danger ID for the Danger run")
+    .option("-b, --base [branch_name]", "Base branch")

@@ -10,9 +10,16 @@
 
 ## Master
 
-## 3.1.2
+* fixed --base option to compare with correct branch [@peterjgrainger]
+
+## 3.1.4
+
+* Register danger-runner as a package binary. [@urkle][]
+
+## 3.1.2-3.1.3
 
 * Peril typings to the Danger DSL. [@orta][]
+* Reference docs updates for the website. [@orta][]
 
 ## 3.1.1
 

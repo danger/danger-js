@@ -8,11 +8,9 @@ import * as debug from "debug"
 import * as getSTDIN from "get-stdin"
 import chalk from "chalk"
 
-import { contextForDanger } from "../runner/Dangerfile"
 import inline from "../runner/runners/inline"
 import { dangerfilePath } from "./utils/file-utils"
-import { DangerDSLJSONType } from "../dsl/DangerDSL"
-import { jsonToDSL } from "../runner/jsonToDSL"
+import { jsonToContext } from "../runner/json-to-context"
 
 const d = debug("danger:runner")
 
@@ -43,12 +41,9 @@ let runtimeEnv = {} as any
 const run = async (jsonString: string) => {
   d("Got STDIN for Danger Run")
   foundDSL = true
-  const dslJSON = JSON.parse(jsonString) as { danger: DangerDSLJSONType }
-  const dsl = await jsonToDSL(dslJSON.danger)
   const dangerFile = dangerfilePath(program)
-
   // Set up the runtime env
-  const context = contextForDanger(dsl)
+  const context = await jsonToContext(jsonString, program)
   runtimeEnv = await inline.createDangerfileRuntimeEnvironment(context)
   d(`Evaluating ${dangerFile}`)
   await inline.runDangerfileEnvironment(dangerFile, undefined, runtimeEnv)

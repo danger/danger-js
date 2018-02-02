@@ -103,7 +103,7 @@ declare module "danger" {
        * pass args/opts from the original CLI call through
        * to the process.
        */
-      cliArgs: any
+      cliArgs: CliArgs
     }
   }
 
@@ -140,12 +140,6 @@ declare module "danger" {
      * for making hrefs easily.
      */
     readonly utils: DangerUtilsDSL
-
-    /**
-     * When Peril is running your Dangerfile, the Danger DSL is
-     * extended with additional options.
-     */
-    readonly peril?: PerilDSL
   }
   /**
    * The representation of what running a Dangerfile generates.
@@ -716,7 +710,7 @@ declare module "danger" {
    */
   type Scheduleable = Promise<any> | Promise<void> | CallbackableFn
   /**
-   * A Dangerfile is evaluated as a script, and so async code does not work
+   * A Dangerfile, in Peril, is evaluated as a script, and so async code does not work
    * out of the box. By using the `schedule` function you can now register a
    * section of code to evaluate across multiple tick cycles.
    *
@@ -727,14 +721,15 @@ declare module "danger" {
   function schedule(asyncFunction: Scheduleable): void
 
   /**
-   * Fails a build, outputting a specific reason for failing.
+   * Fails a build, outputting a specific reason for failing into a HTML table.
    *
    * @param {MarkdownString} message the String to output
    */
   function fail(message: MarkdownString): void
 
   /**
-   * Highlights low-priority issues, but does not fail the build.
+   * Highlights low-priority issues, but does not fail the build. Message
+   * is shown inside a HTML table.
    *
    * @param {MarkdownString} message the String to output
    */
@@ -749,7 +744,7 @@ declare module "danger" {
   function message(message: MarkdownString): void
 
   /**
-   * Puts a message inside the Danger table
+   * Adds raw markdown into the Danger comment, under the table
    *
    * @param {MarkdownString} message the String to output
    */
@@ -760,6 +755,13 @@ declare module "danger" {
    * will be looking for in order to generate useful rules.
    */
   const danger: DangerDSLType
+
+  /**
+   * When Peril is running your Dangerfile, the Danger DSL is
+   * extended with additional options.
+   */
+  const peril: PerilDSL
+
   /**
    * The current results of a Danger run, this can be useful if you
    * are wanting to introspect on whether a build has already failed.

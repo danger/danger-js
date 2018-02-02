@@ -15,7 +15,7 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType): Promise<DangerDSLType> 
 
   let git: GitDSL
   if (!platformExists) {
-    const localPlatform = new LocalGit({ base: "master" })
+    const localPlatform = new LocalGit(dsl.settings.cliArgs)
     git = await localPlatform.getPlatformGitRepresentation()
   } else {
     git = githubJSONToGitDSL(github, dsl.git)

@@ -67,6 +67,6 @@ Note that using `danger pr` more than 2-3 times would require that you send auth
 
 With your code tested and ready, you can publish - update your app's `package.json` and import your new node module into your Dangerfile. Done and dusted.
 
-With the Ruby version of Danger, we collate all of the plugins to highlight them on the homepage of the site - I'd like to do this again sometime, so please include the tag `"danger-plugin"` inside your `package.json`. Then at some point this website will pull all of the READMEs into the site.
+We collate all of the plugins to highlight them on the homepage of the site - so please include the tag `"danger-plugin"` inside your `package.json`. Then this website will display your plugins README.
 
 Finally send us a tweet to [@DangerSystems](https://twitter.com/dangersystems) to let us know you've made something awesome.
