@@ -10,6 +10,8 @@
 
 ## Master
 
+* Register danger-runner as a package binary. [@urkle][]
+
 ## 3.1.2-3.1.3
 
 * Peril typings to the Danger DSL. [@orta][]
