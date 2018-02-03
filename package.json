@@ -119,7 +119,7 @@
     "lodash.isobject": "^3.0.2",
     "lodash.keys": "^4.0.8",
     "node-cleanup": "^2.1.2",
-    "node-fetch": "^1.7.3",
+    "node-fetch": "^2.0.0",
     "parse-diff": "^0.4.0",
     "parse-git-config": "^1.1.1",
     "parse-github-url": "^1.0.2",
