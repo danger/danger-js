@@ -10,6 +10,8 @@
 
 ## Master
 
+* Fix a minor typo in Semaphore CI setup. [@hongrich][]
+
 ## 3.1.4
 
 * Register danger-runner as a package binary. [@urkle][]
