@@ -1,6 +1,7 @@
 import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitHubDSL } from "../dsl/GitHubDSL"
 import { DangerUtilsDSL } from "./DangerUtilsDSL"
+import { CliArgs } from "../runner/cli-args"
 
 /**
  * The shape of the JSON passed between Danger and a subprocess. It's built
@@ -71,7 +72,7 @@ export interface DangerDSLJSONType {
      * pass args/opts from the original CLI call through
      * to the process.
      */
-    cliArgs: any
+    cliArgs: CliArgs
   }
 }
 

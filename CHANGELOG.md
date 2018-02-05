@@ -10,6 +10,8 @@
 
 ## Master
 
+* Fix --base options for danger local. [@peterjgrainger][]
+
 * Fix a minor typo in Semaphore CI setup. [@hongrich][]
 
 ## 3.1.4
