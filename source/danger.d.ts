@@ -103,7 +103,7 @@ declare module "danger" {
        * pass args/opts from the original CLI call through
        * to the process.
        */
-      cliArgs: any
+      cliArgs: CliArgs
     }
   }
 
