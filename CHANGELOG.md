@@ -6,6 +6,9 @@
 // These docs are aimed at users rather than danger developers, so please limit technical
 // terminology in here.
 
+// Note: if this is your first PR, you'll need to add your URL to the footnotes
+//       see the bottom of this file
+
 -->
 
 ## Master
@@ -889,3 +892,7 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@fbartho]: https://github.com/fbartho
 [@tychota]: https://github.com/tychota
 [@adam-moss]: https://github.com/adam-moss
+[@urkle]: https://github.com/urkle
+[@wizardishungry]: https://github.com/wizardishungry
+[@hongrich]: https://github.com/hongrich
+[@peterjgrainger]: https://github.com/peterjgrainger
