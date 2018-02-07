@@ -15,9 +15,26 @@ export interface LocalGitOptions {
 
 export class LocalGit implements Platform {
   public readonly name: string
+  private gitDiff: string
 
   constructor(public readonly options: LocalGitOptions) {
     this.name = "local git"
+  }
+
+  async getGitDiff(): Promise<string> {
+    if (this.gitDiff) {
+      return this.gitDiff
+    }
+    const base = this.options.base || "master"
+    const head = "HEAD"
+
+    this.gitDiff = await localGetDiff(base, head)
+    return this.gitDiff
+  }
+
+  async validateThereAreChanges(): Promise<boolean> {
+    const diff = await this.getGitDiff()
+    return diff.trim().length > 0
   }
 
   async getPlatformDSLRepresentation(): Promise<any> {
@@ -27,8 +44,7 @@ export class LocalGit implements Platform {
   async getPlatformGitRepresentation(): Promise<GitDSL> {
     const base = this.options.base || "master"
     const head = "HEAD"
-
-    const diff = await localGetDiff(base, head)
+    const diff = await this.getGitDiff()
     const commits: GitCommit[] = await localGetCommits(base, head)
     const gitJSON = diffToGitJSONDSL(diff, commits)
 

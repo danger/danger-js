@@ -13,6 +13,7 @@
 * Fix --base options for danger local. [@peterjgrainger][]
 * Fix a minor typo in Semaphore CI setup. [@hongrich][]
 * Fix for capitalized Dangerfiles in CI environment. [@wizardishungry][]
+* Fix `danger local` crashing when comparing master to HEAD with no changes. [@orta][]
 
 ## 3.1.4
 

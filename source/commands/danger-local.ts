@@ -25,5 +25,11 @@ setSharedArgs(program).parse(process.argv)
 const app = (program as any) as App
 const base = app.base || "master"
 const localPlatform = new LocalGit({ base, staged: app.staging })
-const fakeSource = new FakeCI(process.env)
-runRunner(app, { source: fakeSource, platform: localPlatform, additionalArgs: ["--local"] })
+localPlatform.validateThereAreChanges().then(changes => {
+  if (changes) {
+    const fakeSource = new FakeCI(process.env)
+    runRunner(app, { source: fakeSource, platform: localPlatform, additionalArgs: ["--local"] })
+  } else {
+    console.log("No git changes detected between head and master.")
+  }
+})
