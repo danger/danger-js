@@ -10,6 +10,8 @@
 
 ## Master
 
+## 3.1.5
+
 * Fix --base options for danger local. [@peterjgrainger][]
 * Fix a minor typo in Semaphore CI setup. [@hongrich][]
 * Fix for capitalized Dangerfiles in CI environment. [@wizardishungry][]
