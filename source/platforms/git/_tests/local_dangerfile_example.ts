@@ -16,6 +16,7 @@ const goAsync = async () => {
   const firstFileDiff = await git.diffForFile(git.modified_files[0])
   const firstJSONFile = git.modified_files.find(f => f.endsWith("json"))
   const jsonDiff = firstJSONFile && (await git.JSONDiffForFile(firstJSONFile))
+  const jsonDiffKeys = jsonDiff && showArray(Object.keys(jsonDiff))
 
   markdown(`
 created: ${showArray(git.created_files)}
@@ -24,7 +25,7 @@ deleted: ${showArray(git.deleted_files)}
 commits: ${git.commits.length}
 messages: ${showArray(git.commits, c => c.message)}
 diffForFile keys:${showArray(Object.keys(firstFileDiff))}
-jsonDiff keys:${showArray(Object.keys(jsonDiff))}
+jsonDiff keys:${jsonDiffKeys || "no JSON files in the diff"}
 `)
 }
 goAsync()
