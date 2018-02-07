@@ -1,6 +1,6 @@
 <!--
 
-// Please add your own contribution below inside the Master section, no need to 
+// Please add your own contribution below inside the Master section, no need to
 // set a version number, that happens during a deploy.
 //
 // These docs are aimed at users rather than danger developers, so please limit technical
@@ -11,8 +11,8 @@
 ## Master
 
 * Fix --base options for danger local. [@peterjgrainger][]
-
 * Fix a minor typo in Semaphore CI setup. [@hongrich][]
+* Fix for capitalized Dangerfiles in CI environment. [@wizardishungry][]
 
 ## 3.1.4
 
