@@ -106,7 +106,7 @@ Some TypeScript examples:
 [rxjs]: https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js
 [setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
 [jest]: https://github.com/facebook/jest
-[transpilation_guide]: /js/tutorials/transiplation.html
+[transpilation_guide]: /js/tutorials/transpilation.html
 [changelog]: http://danger.systems/js/changelog.html
 [apollo]: https://github.com/apollographql/apollo-client/blob/master/dangerfile.ts
 [bamlab]: https://github.com/bamlab/dev-standards/blob/master/dangerfile.js
