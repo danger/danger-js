@@ -13,6 +13,10 @@
 
 ## Master
 
+## 3.1.6
+
+* Move more code to only live inside functions. [@orta][]
+
 ## 3.1.5
 
 * Fix --base options for danger local. [@peterjgrainger][]
