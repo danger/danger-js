@@ -121,7 +121,7 @@
     "node-cleanup": "^2.1.2",
     "node-fetch": "^1.7.3",
     "parse-diff": "^0.4.0",
-    "parse-git-config": "^1.1.1",
+    "parse-git-config": "^2.0.0",
     "parse-github-url": "^1.0.2",
     "parse-link-header": "^1.0.1",
     "pinpoint": "^1.1.0",
