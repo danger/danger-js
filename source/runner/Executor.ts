@@ -88,7 +88,7 @@ export class Executor {
     const git = await this.platform.getPlatformGitRepresentation()
     const platformDSL = await this.platform.getPlatformDSLRepresentation()
     const utils = { sentence, href }
-    return new DangerDSL(platformDSL, git, utils)
+    return new DangerDSL(platformDSL, git, utils, this.platform.name)
   }
 
   /**

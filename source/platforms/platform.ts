@@ -2,6 +2,8 @@ import { Env, CISource } from "../ci_source/ci_source"
 import { GitJSONDSL } from "../dsl/GitDSL"
 import { GitHub } from "./GitHub"
 import { GitHubAPI } from "./github/GitHubAPI"
+import { BitBucketServer } from "./BitBucketServer"
+import { BitBucketServerAPI } from "./bitbucket_server/BitBucketServerAPI"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any
@@ -56,14 +58,27 @@ export interface Platform {
  * @returns {Platform} returns a platform if it can be supported
  */
 export function getPlatformForEnv(env: Env, source: CISource): Platform {
-  const token = env["DANGER_GITHUB_API_TOKEN"]
-  if (!token) {
-    console.error("The DANGER_GITHUB_API_TOKEN environmental variable is missing")
-    console.error("Without an api token, danger will be unable to comment on a PR")
-    throw new Error("Cannot use authenticated API requests.")
+  // GitHub
+  const ghToken = env["DANGER_GITHUB_API_TOKEN"]
+  if (ghToken) {
+    const api = new GitHubAPI(source, ghToken)
+    const github = new GitHub(api)
+    return github
   }
 
-  const api = new GitHubAPI(source, token)
-  const github = new GitHub(api)
-  return github
+  // BitBucket Server
+  const bbsHost = env["DANGER_BITBUCKETSERVER_HOST"]
+  if (bbsHost) {
+    const api = new BitBucketServerAPI(source, {
+      host: bbsHost,
+      username: env["DANGER_BITBUCKETSERVER_USERNAME"],
+      password: env["DANGER_BITBUCKETSERVER_PASSWORD"],
+    })
+    const bbs = new BitBucketServer(api)
+    return bbs
+  }
+
+  console.error("The DANGER_GITHUB_API_TOKEN/DANGER_BITBUCKETSERVER_HOST environmental variable is missing")
+  console.error("Without an api token, danger will be unable to comment on a PR")
+  throw new Error("Cannot use authenticated API requests.")
 }

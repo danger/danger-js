@@ -1,5 +1,6 @@
 import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitHubDSL } from "../dsl/GitHubDSL"
+import { BitBucketServerDSL } from "../dsl/BitBucketServerDSL"
 import { DangerUtilsDSL } from "./DangerUtilsDSL"
 import { CliArgs } from "../runner/cli-args"
 
@@ -114,10 +115,17 @@ export interface DangerDSLType {
 /// End of Danger DSL definition
 
 export class DangerDSL {
-  public readonly github: GitHubDSL
+  public readonly github?: GitHubDSL
+  public readonly bitbucket_server?: BitBucketServerDSL
 
-  constructor(platformDSL: any, public readonly git: GitJSONDSL, public readonly utils: DangerUtilsDSL) {
-    // As GitLab etc support is added this will need to be changed
-    this.github = platformDSL
+  constructor(platformDSL: any, public readonly git: GitJSONDSL, public readonly utils: DangerUtilsDSL, name: string) {
+    switch (name) {
+      case "GitHub":
+        this.github = platformDSL
+      case "BitBucketServer":
+        this.bitbucket_server = platformDSL
+      default:
+        throw new Error(`Unable to construct DangerDSL for platform "${name}"`)
+    }
   }
 }

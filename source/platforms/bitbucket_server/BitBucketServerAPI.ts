@@ -1,0 +1,196 @@
+import * as debug from "debug"
+import * as node_fetch from "node-fetch"
+import * as v from "voca"
+
+import {
+  BitBucketServerPRDSL,
+  BitBucketServerCommit,
+  BitBucketServerPRComment,
+  JIRAIssue,
+  BitBucketServerPRActivity,
+} from "../../dsl/BitBucketServerDSL"
+
+import { RepoMetaData } from "../../ci_source/ci_source"
+import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates/githubIssueTemplate"
+import { api as fetch } from "../../api/fetch"
+
+// Note that there are parts of this class which don't seem to be
+// used by Danger, they are exposed for Peril support.
+
+/** This represent the BitBucketServer API */
+
+export class BitBucketServerAPI {
+  fetch: typeof fetch
+  private readonly baseUrl = process.env["DANGER_BITBUCKETSERVER_HOST"]
+  private readonly d = debug("danger:BitBucketServerAPI")
+
+  private pr: BitBucketServerPRDSL
+
+  constructor(
+    public readonly repoMetadata: RepoMetaData,
+    public readonly repoCredentials: { host: string; username: string; password: string }
+  ) {
+    // This allows Peril to DI in a new Fetch function
+    // which can handle unique API edge-cases around integrations
+    this.fetch = fetch
+  }
+
+  private getPRBasePath(service = "api") {
+    const [projectKey, repositorySlug] = this.repoMetadata.repoSlug.split("/")
+    const pullRequestId = this.repoMetadata.pullRequestID
+    return (
+      `${this.baseUrl}/rest/${service}/1.0/` +
+      `projects/${projectKey}/` +
+      `repos/${repositorySlug}/` +
+      `pull-requests/${pullRequestId}`
+    )
+  }
+
+  getPullRequestInfo = async (): Promise<BitBucketServerPRDSL> => {
+    if (this.pr) {
+      return this.pr
+    }
+    const path = this.getPRBasePath()
+    const res = await this.get(path)
+    const prDSL = (await res.json()) as BitBucketServerPRDSL
+    this.pr = prDSL
+
+    if (res.ok) {
+      return prDSL
+    } else {
+      throw `Could not get PR Metadata for ${path}`
+    }
+  }
+
+  getPullRequestCommits = async (): Promise<BitBucketServerCommit[]> => {
+    const path = `${this.getPRBasePath()}/commits`
+    const res = await this.get(path)
+    return (await res.json()).values
+  }
+
+  getPullRequestDiff = async () => {
+    // TODO: possible?
+    return ""
+  }
+
+  getPullRequestComments = async (): Promise<BitBucketServerPRActivity[]> => {
+    const path = `${this.getPRBasePath()}/activities?fromType=COMMENT`
+    const res = await this.get(path)
+    return (await res.json()).values
+  }
+
+  getPullRequestActivities = async (): Promise<BitBucketServerPRActivity[]> => {
+    const path = `${this.getPRBasePath()}/activities?fromType=ACTIVITY`
+    const res = await this.get(path)
+    return (await res.json()).values
+  }
+
+  getIssues = async (): Promise<JIRAIssue[]> => {
+    const path = `${this.getPRBasePath("jira")}/issues`
+    const res = await this.get(path)
+    return await res.json()
+  }
+
+  getDangerComments = async (dangerID: string): Promise<BitBucketServerPRComment[]> => {
+    const username = this.repoCredentials.username
+    const activities = await this.getPullRequestComments()
+    const dangerIDMessage = dangerIDToString(dangerID)
+
+    const comments = activities.map(activity => activity.comment).filter(Boolean) as BitBucketServerPRComment[]
+
+    return comments
+      .filter(comment => v.includes(comment!.text, dangerIDMessage))
+      .filter(comment => username || comment!.author.name === username)
+      .filter(comment => v.includes(comment!.text, dangerSignaturePostfix))
+  }
+
+  getFileContents = async (filePath: string) => {
+    const [projectKey, repositorySlug] = this.repoMetadata.repoSlug.split("/")
+    const path =
+      `${this.baseUrl}/` +
+      `projects/${projectKey}/` +
+      `repos/${repositorySlug}/` +
+      `raw/${filePath}` +
+      `?at=${this.pr.toRef.id}`
+    const res = await this.get(path)
+    return await res.text()
+  }
+
+  postBuildStatus = async (
+    commitId: string,
+    payload: {
+      state: string
+      key: string
+      name: string
+      url: string
+      description: string
+    }
+  ) => {
+    const res = await this.post(`rest/build-status/1.0/commits/${commitId}`, {}, payload)
+    return await res.json()
+  }
+
+  postPRComment = async (comment: string) => {
+    const path = `${this.getPRBasePath()}/comments`
+    const res = await this.post(path, {}, { text: comment })
+    return await res.json()
+  }
+
+  deleteComment = async ({ id }: BitBucketServerPRComment) => {
+    const path = `${this.getPRBasePath()}/comments/${id}`
+    const res = await this.delete(path)
+    if (!res.ok) {
+      throw new Error(`Failed to delete comment "${id}`)
+    }
+  }
+
+  updateComment = async ({ id, version }: BitBucketServerPRComment, comment: string) => {
+    const path = `${this.getPRBasePath()}/comments/${id}`
+    const res = await this.put(
+      path,
+      {},
+      {
+        text: comment,
+        version,
+      }
+    )
+    return await res.json()
+  }
+
+  // API implementation
+
+  private api = (path: string, headers: any = {}, body: any = {}, method: string, suppressErrors?: boolean) => {
+    if (this.repoCredentials.username) {
+      headers["Authorization"] = `basic ${new Buffer(
+        this.repoCredentials.username + ":" + this.repoCredentials.password
+      ).toString("base64")}`
+    }
+
+    const url = `${this.repoCredentials.host}/${path}`
+    this.d(`${method} ${url}`)
+    return this.fetch(
+      url,
+      {
+        method,
+        body,
+        headers: {
+          "Content-Type": "application/json",
+          ...headers,
+        },
+      },
+      suppressErrors
+    )
+  }
+
+  get = (path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> =>
+    this.api(path, headers, body, "GET")
+
+  post = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
+    this.api(path, headers, JSON.stringify(body), "POST", suppressErrors)
+
+  put = (path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> =>
+    this.api(path, headers, JSON.stringify(body), "PUT")
+
+  delete = (path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> =>
+    this.api(path, headers, JSON.stringify(body), "DELETE")
+}
