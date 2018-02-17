@@ -124,8 +124,6 @@ export class DangerDSL {
         this.github = platformDSL
       case "BitBucketServer":
         this.bitbucket_server = platformDSL
-      default:
-        throw new Error(`Unable to construct DangerDSL for platform "${name}"`)
     }
   }
 }
