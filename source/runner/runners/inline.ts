@@ -79,7 +79,7 @@ export async function runDangerfileEnvironment(
 
     return environment.results
   } catch (error) {
-    console.error("Unable to evaluate the Dangerfile")
+    console.error("Unable to evaluate the Dangerfile\n", error)
     d("Got a parse error: ", error)
     environment.results = resultsForCaughtError(filename, content, error)
     return environment.results
