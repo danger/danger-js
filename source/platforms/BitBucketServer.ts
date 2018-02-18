@@ -34,7 +34,7 @@ export class BitBucketServer implements Platform {
 
   updateStatus = async (passed: boolean, message: string, url?: string): Promise<boolean> => {
     const pr = await this.api.getPullRequestInfo()
-    const { latestCommit } = pr.toRef
+    const { latestCommit } = pr.fromRef
     try {
       await this.api.postBuildStatus(latestCommit, {
         state: passed ? "SUCCESSFUL" : "FAILED",

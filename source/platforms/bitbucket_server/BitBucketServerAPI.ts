@@ -137,6 +137,7 @@ export class BitBucketServerAPI {
     }
   ) => {
     const res = await this.post(`rest/build-status/1.0/commits/${commitId}`, {}, payload)
+    throwIfNotOk(res)
     return await res.json()
   }
 
