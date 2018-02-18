@@ -49,7 +49,7 @@ export interface BitBucketServerPRDSL {
   locked: boolean
   author: BitBucketServerPRParticipant & { role: "AUTHOR" }
   reviewers: (BitBucketServerPRParticipant & { role: "REVIEWER" })[]
-  participants: (BitBucketServerPRParticipant & { role: "PARTICPANT" })[]
+  participants: (BitBucketServerPRParticipant & { role: "PARTICIPANT" })[]
   links: BitBucketServerLinks<"self">
 }
 
