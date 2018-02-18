@@ -71,8 +71,10 @@ export class GitHub implements Platform {
    * @returns {Promise<GitHubDSL>} JSON response of the DSL
    */
   getPlatformDSLRepresentation = async (): Promise<GitHubJSONDSL> => {
-    const pr = await this.getReviewInfo()
-    if (pr === {}) {
+    let pr: GitHubPRDSL
+    try {
+      pr = await this.getReviewInfo()
+    } catch {
       process.exitCode = 1
       throw `
         Could not find pull request information,
