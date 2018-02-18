@@ -13,6 +13,10 @@
 
 ## Master
 
+## 3.1.7
+
+* Minor error reporting improvements. [@orta][]
+
 ## 3.1.6
 
 * Move more code to only live inside functions. [@orta][]
