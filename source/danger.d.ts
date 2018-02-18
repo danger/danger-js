@@ -251,7 +251,9 @@ declare module "danger" {
     /** The data only version of Git DSL */
     git: GitJSONDSL
     /** The data only version of GitHub DSL */
-    github: GitHubDSL
+    github?: GitHubDSL
+    /** The data only version of BitBucket Server DSL */
+    bitbucket_server?: BitBucketServerJSONDSL
     /**
      * Used in the Danger JSON DSL to pass metadata between
      * processes. It will be undefined when used inside the Danger DSL
@@ -303,7 +305,9 @@ declare module "danger" {
      *  this is the full JSON from the webhook. You can find the full
      *  typings for those webhooks [at github-webhook-event-types](https://github.com/orta/github-webhook-event-types).
      */
-    readonly github: GitHubDSL
+    readonly github?: GitHubDSL
+
+    readonly bitbucket_server?: BitBucketServerDSL
 
     /**
      * Functions which are globally useful in most Dangerfiles. Right
