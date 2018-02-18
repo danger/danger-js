@@ -1,6 +1,6 @@
 import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitHubDSL } from "../dsl/GitHubDSL"
-import { BitBucketServerDSL } from "../dsl/BitBucketServerDSL"
+import { BitBucketServerDSL, BitBucketServerJSONDSL } from "../dsl/BitBucketServerDSL"
 import { DangerUtilsDSL } from "./DangerUtilsDSL"
 import { CliArgs } from "../runner/cli-args"
 
@@ -50,7 +50,9 @@ export interface DangerDSLJSONType {
   /** The data only version of Git DSL */
   git: GitJSONDSL
   /** The data only version of GitHub DSL */
-  github: GitHubDSL
+  github?: GitHubDSL
+  /** The data only version of BitBucket Server DSL */
+  bitbucket_server?: BitBucketServerJSONDSL
   /**
    * Used in the Danger JSON DSL to pass metadata between
    * processes. It will be undefined when used inside the Danger DSL
@@ -102,7 +104,9 @@ export interface DangerDSLType {
    *  this is the full JSON from the webhook. You can find the full
    *  typings for those webhooks [at github-webhook-event-types](https://github.com/orta/github-webhook-event-types).
    */
-  readonly github: GitHubDSL
+  readonly github?: GitHubDSL
+
+  readonly bitbucket_server?: BitBucketServerDSL
 
   /**
    * Functions which are globally useful in most Dangerfiles. Right

@@ -21,14 +21,13 @@ import { api as fetch } from "../../api/fetch"
 
 export class BitBucketServerAPI {
   fetch: typeof fetch
-  private readonly baseUrl = process.env["DANGER_BITBUCKETSERVER_HOST"]
   private readonly d = debug("danger:BitBucketServerAPI")
 
   private pr: BitBucketServerPRDSL
 
   constructor(
     public readonly repoMetadata: RepoMetaData,
-    public readonly repoCredentials: { host: string; username: string; password: string }
+    public readonly repoCredentials: { host: string; username?: string; password?: string }
   ) {
     // This allows Peril to DI in a new Fetch function
     // which can handle unique API edge-cases around integrations
@@ -36,14 +35,8 @@ export class BitBucketServerAPI {
   }
 
   private getPRBasePath(service = "api") {
-    const [projectKey, repositorySlug] = this.repoMetadata.repoSlug.split("/")
-    const pullRequestId = this.repoMetadata.pullRequestID
-    return (
-      `${this.baseUrl}/rest/${service}/1.0/` +
-      `projects/${projectKey}/` +
-      `repos/${repositorySlug}/` +
-      `pull-requests/${pullRequestId}`
-    )
+    const { repoSlug, pullRequestID } = this.repoMetadata
+    return `rest/${service}/1.0/${repoSlug}/pull-requests/${pullRequestID}`
   }
 
   getPullRequestInfo = async (): Promise<BitBucketServerPRDSL> => {
@@ -52,19 +45,16 @@ export class BitBucketServerAPI {
     }
     const path = this.getPRBasePath()
     const res = await this.get(path)
+    throwIfNotOk(res)
     const prDSL = (await res.json()) as BitBucketServerPRDSL
     this.pr = prDSL
-
-    if (res.ok) {
-      return prDSL
-    } else {
-      throw `Could not get PR Metadata for ${path}`
-    }
+    return prDSL
   }
 
   getPullRequestCommits = async (): Promise<BitBucketServerCommit[]> => {
     const path = `${this.getPRBasePath()}/commits`
     const res = await this.get(path)
+    throwIfNotOk(res)
     return (await res.json()).values
   }
 
@@ -76,18 +66,21 @@ export class BitBucketServerAPI {
   getPullRequestComments = async (): Promise<BitBucketServerPRActivity[]> => {
     const path = `${this.getPRBasePath()}/activities?fromType=COMMENT`
     const res = await this.get(path)
+    throwIfNotOk(res)
     return (await res.json()).values
   }
 
   getPullRequestActivities = async (): Promise<BitBucketServerPRActivity[]> => {
     const path = `${this.getPRBasePath()}/activities?fromType=ACTIVITY`
     const res = await this.get(path)
+    throwIfNotOk(res)
     return (await res.json()).values
   }
 
   getIssues = async (): Promise<JIRAIssue[]> => {
     const path = `${this.getPRBasePath("jira")}/issues`
     const res = await this.get(path)
+    throwIfNotOk(res)
     return await res.json()
   }
 
@@ -105,13 +98,8 @@ export class BitBucketServerAPI {
   }
 
   getFileContents = async (filePath: string) => {
-    const [projectKey, repositorySlug] = this.repoMetadata.repoSlug.split("/")
-    const path =
-      `${this.baseUrl}/` +
-      `projects/${projectKey}/` +
-      `repos/${repositorySlug}/` +
-      `raw/${filePath}` +
-      `?at=${this.pr.toRef.id}`
+    const { repoSlug } = this.repoMetadata
+    const path = `${repoSlug}/` + `raw/${filePath}` + `?at=${this.pr.toRef.id}`
     const res = await this.get(path)
     return await res.text()
   }
@@ -161,7 +149,7 @@ export class BitBucketServerAPI {
 
   private api = (path: string, headers: any = {}, body: any = {}, method: string, suppressErrors?: boolean) => {
     if (this.repoCredentials.username) {
-      headers["Authorization"] = `basic ${new Buffer(
+      headers["Authorization"] = `Basic ${new Buffer(
         this.repoCredentials.username + ":" + this.repoCredentials.password
       ).toString("base64")}`
     }
@@ -193,4 +181,14 @@ export class BitBucketServerAPI {
 
   delete = (path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> =>
     this.api(path, headers, JSON.stringify(body), "DELETE")
+}
+
+function throwIfNotOk(res: node_fetch.Response) {
+  if (!res.ok) {
+    let message = `${res.status} - ${res.statusText}`
+    if (res.status >= 400 && res.status < 500) {
+      message += ` (Have you set DANGER_BITBUCKETSERVER_USERNAME and DANGER_BITBUCKETSERVER_PASSWORD?)`
+    }
+    throw new Error(message)
+  }
 }

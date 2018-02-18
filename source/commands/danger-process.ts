@@ -60,7 +60,7 @@ getRuntimeCISource(app).then(source => {
     if (!platform) {
       console.log(chalk.red(`Could not find a source code hosting platform for ${source.name}.`))
       console.log(
-        `Currently Danger JS only supports GitHub, if you want other platforms, consider the Ruby version or help out.`
+        `Currently Danger JS only supports GitHub and BitBucket Server, if you want other platforms, consider the Ruby version or help out.`
       )
       process.exitCode = 1
     }

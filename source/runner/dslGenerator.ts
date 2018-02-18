@@ -8,7 +8,7 @@ export const jsonDSLGenerator = async (platform: Platform): Promise<DangerDSLJSO
 
   return {
     git,
-    github: platformDSL,
+    [platform.name === "BitBucketServer" ? "bitbucket_server" : "github"]: platformDSL,
     settings: {
       github: {
         accessToken: process.env["DANGER_GITHUB_API_TOKEN"] || "NO_TOKEN",

@@ -48,6 +48,10 @@ export function ensureEnvKeysAreInt(env: Env, keys: string[]): boolean {
  * If there are multiple pull requests open for a branch, returns the first.
  */
 export async function getPullRequestIDForBranch(metadata: RepoMetaData, env: Env, branch: string): Promise<number> {
+  if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
+    // TODO:
+  }
+
   const token = env["DANGER_GITHUB_API_TOKEN"]
   if (!token) {
     return 0

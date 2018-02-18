@@ -2,10 +2,11 @@ import { GitJSONDSL } from "../dsl/GitDSL"
 import { BitBucketServerPRDSL, BitBucketServerJSONDSL } from "../dsl/BitBucketServerDSL"
 import { BitBucketServerAPI } from "./bitbucket_server/BitBucketServerAPI"
 import gitDSLForBitBucketServer from "./bitbucket_server/BitBucketServerGit"
+import { Platform } from "./platform"
 
 /** Handles conforming to the Platform Interface for BitBucketServer, API work is handle by BitBucketServerAPI */
 
-export class BitBucketServer {
+export class BitBucketServer implements Platform {
   name: string
 
   constructor(public readonly api: BitBucketServerAPI) {

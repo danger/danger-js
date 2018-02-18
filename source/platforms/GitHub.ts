@@ -5,10 +5,11 @@ import GitHubUtils from "./github/GitHubUtils"
 import gitDSLForGitHub from "./github/GitHubGit"
 
 import * as NodeGitHub from "@octokit/rest"
+import { Platform } from "./platform"
 
 /** Handles conforming to the Platform Interface for GitHub, API work is handle by GitHubAPI */
 
-export class GitHub {
+export class GitHub implements Platform {
   name: string
 
   constructor(public readonly api: GitHubAPI) {

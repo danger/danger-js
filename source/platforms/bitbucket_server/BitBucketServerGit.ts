@@ -1,5 +1,3 @@
-import { URL } from "url"
-
 import { GitDSL, GitJSONDSL } from "../../dsl/GitDSL"
 import { BitBucketServerCommit, BitBucketServerDSL } from "../../dsl/BitBucketServerDSL"
 import { GitCommit } from "../../dsl/Commit"
@@ -10,6 +8,7 @@ import { diffToGitJSONDSL } from "../git/diffToGitJSONDSL"
 import { GitJSONToGitDSLConfig, gitJSONToGitDSL } from "../git/gitJSONToGitDSL"
 
 import * as debug from "debug"
+import { RepoMetaData } from "../../ci_source/ci_source"
 const d = debug("danger:BitBucketServerGit")
 
 /**
@@ -18,11 +17,12 @@ const d = debug("danger:BitBucketServerGit")
  * @param {BitBucketServerCommit} ghCommit A BitBucketServer based commit
  * @returns {GitCommit} a Git commit representation without GH metadata
  */
-function bitBucketServerCommitToGitCommit(bbsCommit: BitBucketServerCommit): GitCommit {
-  const url = new URL(
-    `projects/${null}/repos/${null}/commits/${bbsCommit.id}`, // TODO: need repoMetadata here
-    process.env["DANGER_BITBUCKET_HOST"]
-  ).toString()
+function bitBucketServerCommitToGitCommit(
+  bbsCommit: BitBucketServerCommit,
+  repoMetadata: RepoMetaData,
+  host: string
+): GitCommit {
+  const url = `${host}/${repoMetadata.repoSlug}/commits/${bbsCommit.id}`
   return {
     sha: bbsCommit.id,
     parents: bbsCommit.parents.map(p => p.id),
@@ -46,7 +46,9 @@ export default async function gitDSLForBitBucketServer(api: BitBucketServerAPI):
   // We'll need all this info to be able to generate a working GitDSL object
   const diff = await api.getPullRequestDiff()
   const gitCommits = await api.getPullRequestCommits()
-  const commits = gitCommits.map(bitBucketServerCommitToGitCommit)
+  const commits = gitCommits.map(commit =>
+    bitBucketServerCommitToGitCommit(commit, api.repoMetadata, api.repoCredentials.host)
+  )
   return diffToGitJSONDSL(diff, commits)
 }
 

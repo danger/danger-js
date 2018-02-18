@@ -5,15 +5,14 @@ import * as debug from "debug"
 import * as jsome from "jsome"
 
 import { FakeCI } from "../ci_source/providers/Fake"
-import { GitHub } from "../platforms/GitHub"
-import { GitHubAPI } from "../platforms/github/GitHubAPI"
-import { pullRequestParser } from "../platforms/github/pullRequestParser"
+import { pullRequestParser } from "../platforms/pullRequestParser"
 import { dangerfilePath } from "./utils/file-utils"
 import validateDangerfileExists from "./utils/validateDangerfileExists"
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import { jsonDSLGenerator } from "../runner/dslGenerator"
 import { prepareDangerDSL } from "./utils/runDangerSubprocess"
 import { runRunner } from "./ci/runner"
+import { Platform, getPlatformForEnv } from "../platforms/platform"
 
 // yarn build; cat source/_tests/fixtures/danger-js-pr-384.json |  node --inspect  --inspect-brk distribution/commands/danger-runner.js --text-only
 
@@ -35,7 +34,7 @@ program
   .on("--help", () => {
     log("\n")
     log("  Docs:")
-    if (!process.env["DANGER_GITHUB_API_TOKEN"]) {
+    if (!process.env["DANGER_GITHUB_API_TOKEN"] && !process.env["DANGER_BITBUCKETSERVER_HOST"]) {
       log("")
       log("     You don't have a DANGER_GITHUB_API_TOKEN set up, this is optional, but TBH, you want to do this.")
       log("     Check out: http://danger.systems/js/guides/the_dangerfile.html#working-on-your-dangerfile")
@@ -71,19 +70,13 @@ if (program.args.length === 0) {
     // TODO: Use custom `fetch` in GitHub that stores and uses local cache if PR is closed, these PRs
     //       shouldn't change often and there is a limit on API calls per hour.
 
-    const token = process.env["DANGER_GITHUB_API_TOKEN"]
-    if (!token) {
-      console.log("You don't have a DANGER_GITHUB_API_TOKEN set up, this is optional, but TBH, you want to do this")
-      console.log("Check out: http://danger.systems/js/guides/the_dangerfile.html#working-on-your-dangerfile")
-    }
-
     console.log(`Starting Danger PR on ${pr.repo}#${pr.pullRequestNumber}`)
 
     if (validateDangerfileExists(dangerFile)) {
       d(`executing dangerfile at ${dangerFile}`)
       const source = new FakeCI({ DANGER_TEST_REPO: pr.repo, DANGER_TEST_PR: pr.pullRequestNumber })
-      const api = new GitHubAPI(source, token)
-      const platform = new GitHub(api)
+      const platform = getPlatformForEnv(process.env, source, /* requireAuth */ false)
+
       if (app.json || app.js) {
         d("getting just the JSON/JS DSL")
         runHalfProcessJSON(platform)
@@ -102,7 +95,7 @@ if (program.args.length === 0) {
 }
 
 // Run the first part of a Danger Process and output the JSON to CLI
-async function runHalfProcessJSON(platform: GitHub) {
+async function runHalfProcessJSON(platform: Platform) {
   const dangerDSL = await jsonDSLGenerator(platform)
   const processInput = prepareDangerDSL(dangerDSL)
   const output = JSON.parse(processInput)

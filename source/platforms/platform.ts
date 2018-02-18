@@ -57,15 +57,7 @@ export interface Platform {
  * @param {CISource} source The existing source, to ensure they can run against each other
  * @returns {Platform} returns a platform if it can be supported
  */
-export function getPlatformForEnv(env: Env, source: CISource): Platform {
-  // GitHub
-  const ghToken = env["DANGER_GITHUB_API_TOKEN"]
-  if (ghToken) {
-    const api = new GitHubAPI(source, ghToken)
-    const github = new GitHub(api)
-    return github
-  }
-
+export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true): Platform {
   // BitBucket Server
   const bbsHost = env["DANGER_BITBUCKETSERVER_HOST"]
   if (bbsHost) {
@@ -76,6 +68,19 @@ export function getPlatformForEnv(env: Env, source: CISource): Platform {
     })
     const bbs = new BitBucketServer(api)
     return bbs
+  }
+
+  // GitHub
+  const ghToken = env["DANGER_GITHUB_API_TOKEN"]
+  if (ghToken || !requireAuth) {
+    if (!ghToken) {
+      console.log("You don't have a DANGER_GITHUB_API_TOKEN set up, this is optional, but TBH, you want to do this")
+      console.log("Check out: http://danger.systems/js/guides/the_dangerfile.html#working-on-your-dangerfile")
+    }
+
+    const api = new GitHubAPI(source, ghToken)
+    const github = new GitHub(api)
+    return github
   }
 
   console.error("The DANGER_GITHUB_API_TOKEN/DANGER_BITBUCKETSERVER_HOST environmental variable is missing")

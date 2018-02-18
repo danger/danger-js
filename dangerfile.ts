@@ -14,10 +14,14 @@ declare function fail(params: string): void
 // declare function schedule(callback: (resolve: any) => void): void
 
 const checkREADME = async () => {
+  if (!danger.github) {
+    return
+  }
+
   // Request a CHANGELOG entry if not declared #trivial
   const hasChangelog = danger.git.modified_files.includes("CHANGELOG.md")
   const isTrivial = (danger.github.pr.body + danger.github.pr.title).includes("#trivial")
-  const isGreenkeeper = danger.github.pr.user.login === "greenkeeper"
+  const isGreenkeeper = danger.github!.pr.user.login === "greenkeeper"
 
   // Politely ask for their name on the entry too
   if (!hasChangelog && !isTrivial && !isGreenkeeper) {
