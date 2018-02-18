@@ -35,7 +35,7 @@ export interface JIRAIssue {
  */
 
 export interface BitBucketServerPRDSL {
-  id: string
+  id: number
   version: number
   title: string
   description: string

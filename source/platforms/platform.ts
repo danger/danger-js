@@ -3,7 +3,7 @@ import { GitJSONDSL } from "../dsl/GitDSL"
 import { GitHub } from "./GitHub"
 import { GitHubAPI } from "./github/GitHubAPI"
 import { BitBucketServer } from "./BitBucketServer"
-import { BitBucketServerAPI } from "./bitbucket_server/BitBucketServerAPI"
+import { BitBucketServerAPI, bitbucketServerRepoCredentialsFromEnv } from "./bitbucket_server/BitBucketServerAPI"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any
@@ -61,11 +61,7 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
   // BitBucket Server
   const bbsHost = env["DANGER_BITBUCKETSERVER_HOST"]
   if (bbsHost) {
-    const api = new BitBucketServerAPI(source, {
-      host: bbsHost,
-      username: env["DANGER_BITBUCKETSERVER_USERNAME"],
-      password: env["DANGER_BITBUCKETSERVER_PASSWORD"],
-    })
+    const api = new BitBucketServerAPI(source, bitbucketServerRepoCredentialsFromEnv(env))
     const bbs = new BitBucketServer(api)
     return bbs
   }

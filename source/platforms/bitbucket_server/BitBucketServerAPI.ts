@@ -10,12 +10,29 @@ import {
   BitBucketServerPRActivity,
 } from "../../dsl/BitBucketServerDSL"
 
-import { RepoMetaData } from "../../ci_source/ci_source"
+import { RepoMetaData, Env } from "../../ci_source/ci_source"
 import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates/bitbucketServerTemplate"
 import { api as fetch } from "../../api/fetch"
 
 // Note that there are parts of this class which don't seem to be
 // used by Danger, they are exposed for Peril support.
+
+export interface BitBucketRepoCredentials {
+  host: string
+  username?: string
+  password?: string
+}
+
+export function bitbucketServerRepoCredentialsFromEnv(env: Env): BitBucketRepoCredentials {
+  if (!env["DANGER_BITBUCKETSERVER_HOST"]) {
+    throw new Error(`DANGER_BITBUCKETSERVER_HOST is not set`)
+  }
+  return {
+    host: env["DANGER_BITBUCKETSERVER_HOST"],
+    username: env["DANGER_BITBUCKETSERVER_USERNAME"],
+    password: env["DANGER_BITBUCKETSERVER_PASSWORD"],
+  }
+}
 
 /** This represent the BitBucketServer API */
 
@@ -25,10 +42,7 @@ export class BitBucketServerAPI {
 
   private pr: BitBucketServerPRDSL
 
-  constructor(
-    public readonly repoMetadata: RepoMetaData,
-    public readonly repoCredentials: { host: string; username?: string; password?: string }
-  ) {
+  constructor(public readonly repoMetadata: RepoMetaData, public readonly repoCredentials: BitBucketRepoCredentials) {
     // This allows Peril to DI in a new Fetch function
     // which can handle unique API edge-cases around integrations
     this.fetch = fetch
@@ -37,6 +51,14 @@ export class BitBucketServerAPI {
   private getPRBasePath(service = "api") {
     const { repoSlug, pullRequestID } = this.repoMetadata
     return `rest/${service}/1.0/${repoSlug}/pull-requests/${pullRequestID}`
+  }
+
+  getPullRequestsFromBranch = async (branch: string): Promise<BitBucketServerPRDSL[]> => {
+    const { repoSlug } = this.repoMetadata
+    const path = `rest/api/1.0/${repoSlug}/pull-requests?at=refs/heads/${branch}&withProperties=false&withAttributes=false`
+    const res = await this.get(path)
+    throwIfNotOk(res)
+    return (await res.json()).values as BitBucketServerPRDSL[]
   }
 
   getPullRequestInfo = async (): Promise<BitBucketServerPRDSL> => {

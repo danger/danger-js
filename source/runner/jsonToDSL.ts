@@ -7,7 +7,10 @@ import { sentence, href } from "./DangerUtils"
 import { LocalGit } from "../platforms/LocalGit"
 import { GitDSL } from "../dsl/GitDSL"
 import { bitBucketServerGitDSL } from "../platforms/bitbucket_server/BitBucketServerGit"
-import { BitBucketServerAPI } from "../platforms/bitbucket_server/BitBucketServerAPI"
+import {
+  BitBucketServerAPI,
+  bitbucketServerRepoCredentialsFromEnv,
+} from "../platforms/bitbucket_server/BitBucketServerAPI"
 
 export const jsonToDSL = async (dsl: DangerDSLJSONType): Promise<DangerDSLType> => {
   const api = apiForDSL(dsl)
@@ -41,11 +44,7 @@ const apiForDSL = (dsl: DangerDSLJSONType): GitHubNodeAPI | BitBucketServerAPI =
   if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
     return new BitBucketServerAPI(
       { repoSlug: "", pullRequestID: "" },
-      {
-        host: process.env["DANGER_BITBUCKETSERVER_HOST"]!,
-        username: process.env["DANGER_BITBUCKETSERVER_USERNAME"],
-        password: process.env["DANGER_BITBUCKETSERVER_PASSWORD"],
-      }
+      bitbucketServerRepoCredentialsFromEnv(process.env)
     )
   }
 
