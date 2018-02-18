@@ -124,8 +124,8 @@ export class BitBucketServerAPI {
     return await res.json()
   }
 
-  deleteComment = async ({ id }: BitBucketServerPRComment) => {
-    const path = `${this.getPRBasePath()}/comments/${id}`
+  deleteComment = async ({ id, version }: BitBucketServerPRComment) => {
+    const path = `${this.getPRBasePath()}/comments/${id}?version=${version}`
     const res = await this.delete(path)
     if (!res.ok) {
       throw new Error(`Failed to delete comment "${id}`)
