@@ -11,7 +11,7 @@ import {
 } from "../../dsl/BitBucketServerDSL"
 
 import { RepoMetaData } from "../../ci_source/ci_source"
-import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates/githubIssueTemplate"
+import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates/bitbucketServerTemplate"
 import { api as fetch } from "../../api/fetch"
 
 // Note that there are parts of this class which don't seem to be

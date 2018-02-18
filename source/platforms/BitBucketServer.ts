@@ -92,9 +92,6 @@ export class BitBucketServer implements Platform {
    */
   createComment = (comment: string) => this.api.postPRComment(comment)
 
-  // In Danger RB we support a danger_id property,
-  // this should be handled at some point
-
   /**
    * Deletes the main Danger comment, used when you have
    * fixed all your failures.

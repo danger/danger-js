@@ -4,6 +4,7 @@ import { CISource } from "../ci_source/ci_source"
 import { Platform } from "../platforms/platform"
 import { DangerResults } from "../dsl/DangerResults"
 import { template as githubResultsTemplate } from "./templates/githubIssueTemplate"
+import { template as bitbucketServerTemplate } from "./templates/bitbucketServerTemplate"
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
 import * as debug from "debug"
@@ -195,7 +196,9 @@ export class Executor {
       } else if (messageCount > 0) {
         console.log("Found only messages, passing those to review.")
       }
-      const comment = githubResultsTemplate(dangerID, results)
+      const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
+        ? bitbucketServerTemplate(dangerID, results)
+        : githubResultsTemplate(dangerID, results)
       await this.platform.updateOrCreateComment(dangerID, comment)
     }
 
