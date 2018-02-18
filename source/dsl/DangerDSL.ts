@@ -121,6 +121,7 @@ export class DangerDSL {
   constructor(platformDSL: any, public readonly git: GitJSONDSL, public readonly utils: DangerUtilsDSL, name: string) {
     switch (name) {
       case "GitHub":
+      case "Fake": // Testing only
         this.github = platformDSL
       case "BitBucketServer":
         this.bitbucket_server = platformDSL
