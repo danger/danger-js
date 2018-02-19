@@ -1,13 +1,15 @@
 [ignore]
-distribution
-.*/_tests/.*
-.*dangerfile.js
-node_modules/jest*/**/**
+.*/source/.*
+.*/node_modules/.*
 
 [include]
+dangerfile.flow.js
 
 [libs]
-flow-typed/
+distribution/danger.js.flow
+
+[lints]
 
 [options]
-unsafe.enable_getters_and_setters=true
+
+[strict]

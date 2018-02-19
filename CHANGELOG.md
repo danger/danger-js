@@ -13,6 +13,8 @@
 
 ## Master
 
+* Improvements to the Flow definition file. [@orta][]
+
 ## 3.1.7
 
 * Minor error reporting improvements. [@orta][]

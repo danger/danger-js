@@ -14,9 +14,13 @@ matrix:
     after_script:
     - rm -rf node_modules/@types/babel-*
     - rm -rf node_modules/@types/babylon
+    - echo "Testing that the Danger d.ts file lints"
     - yarn docs
     - yarn add dtslint@0.1.2
     - yarn dts-lint
+    - echo "Testing Flow definition file"
+    - yarn build:flow-types
+    - yarn flow check
 
   # Checks every example dangerfile can run in `danger runner`.
   - node_js: '8.4'
