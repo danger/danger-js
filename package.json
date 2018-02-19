@@ -97,7 +97,7 @@
     "prettier": "^1.10.2",
     "shx": "^0.2.1",
     "ts-jest": "^22.0.1",
-    "ts-node": "^4.1.0",
+    "ts-node": "^5.0.0",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.8.0",
     "typedoc": "0.9.0",
