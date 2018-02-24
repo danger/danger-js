@@ -34,14 +34,14 @@ export interface GitJSONToGitDSLConfig {
   getFullStructuredDiff?: (base: string, head: string) => Promise<GitStructuredDiff>
 }
 
-export interface GitStructuredDiff {
+export type GitStructuredDiff = {
+  from?: string
+  to?: string
   chunks: Chunk[]
-}
+}[]
 
 export interface Chunk {
   changes: Changes
-  from?: string
-  to?: string
 }
 
 export type Changes = { type: "add" | "del"; content: string }[]
@@ -158,11 +158,9 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
       fileDiffs = await config.getFullStructuredDiff(config.baseSHA, config.headSHA)
     } else {
       const diff = await config.getFullDiff!(config.baseSHA, config.headSHA)
-      fileDiffs = { chunks: parseDiff(diff) }
+      fileDiffs = parseDiff(diff)
     }
-    const structuredDiff: GitStructuredDiff = {
-      chunks: fileDiffs.chunks.filter(diff => diff.from === filename || diff.to === filename),
-    }
+    const structuredDiff = fileDiffs.find(diff => diff.from === filename || diff.to === filename)
 
     if (!structuredDiff) {
       return null

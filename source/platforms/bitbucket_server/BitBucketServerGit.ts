@@ -4,7 +4,7 @@ import { GitCommit } from "../../dsl/Commit"
 
 import { BitBucketServerAPI } from "../bitbucket_server/BitBucketServerAPI"
 
-import { GitJSONToGitDSLConfig, gitJSONToGitDSL, GitStructuredDiff, Chunk } from "../git/gitJSONToGitDSL"
+import { GitJSONToGitDSLConfig, gitJSONToGitDSL, GitStructuredDiff } from "../git/gitJSONToGitDSL"
 
 import * as debug from "debug"
 import { EOL } from "os"
@@ -88,20 +88,14 @@ const bitBucketServerDiffToGitJSONDSL = (diffs: BitBucketServerDiff[], commits: 
 }
 
 const bitBucketServerDiffToGitStructuredDiff = (diffs: BitBucketServerDiff[]): GitStructuredDiff => {
-  const chunks: Chunk[] = []
-
-  for (const diff of diffs) {
-    for (const hunk of diff.hunks) {
-      chunks.push({
-        from: diff.source && diff.source.toString,
-        to: diff.destination && diff.destination.toString,
-        changes: hunk.segments.map(segment => ({
-          type: segment.type === "ADDED" ? ("add" as "add") : ("del" as "del"),
-          content: segment.lines.map(({ line }) => line).join(EOL),
-        })),
-      })
-    }
-  }
-
-  return { chunks }
+  return diffs.map(diff => ({
+    from: diff.source && diff.source.toString,
+    to: diff.destination && diff.destination.toString,
+    chunks: diff.hunks.map(hunk => ({
+      changes: hunk.segments.map(segment => ({
+        type: segment.type === "ADDED" ? ("add" as "add") : ("del" as "del"),
+        content: segment.lines.map(({ line }) => line).join(EOL),
+      })),
+    })),
+  }))
 }
