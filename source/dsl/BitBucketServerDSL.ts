@@ -1,6 +1,10 @@
+import { RepoMetaData } from "../ci_source/ci_source"
+
 // This is `danger.bitbucket_server` inside the JSON
 
 export interface BitBucketServerJSONDSL {
+  /** The pull request and repository metadata */
+  metadata: RepoMetaData
   /** The related JIRA issues */
   issues: JIRAIssue[]
   /** The PR metadata */
@@ -76,13 +80,52 @@ export interface BitBucketServerCommit {
   }[]
 }
 
-export type BitBucketServerPRStatus = "APPROVED" | "UNAPPROVED" | "NEEDS_WORK"
+export interface BitBucketServerDiff {
+  destination?: BitBucketServerFile
+  source?: BitBucketServerFile
+  hunks: BitBucketServerHunk[]
+  truncated: boolean
+  toHash: string
+  fromHash: string
+  whitespace: "SHOW" | "IGNORE_ALL"
+}
+
+export interface BitBucketServerFile {
+  components: string[]
+  name: string
+  parent: string
+  toString: string
+}
+
+export interface BitBucketServerHunk {
+  destinationLine: number
+  destinationSpan: number
+  segments: BitBucketServerSegment[]
+  sourceLine: number
+  sourceSpan: number
+  truncated: boolean
+}
+
+export interface BitBucketServerSegment {
+  lines: BitBucketServerLine[]
+  truncated: boolean
+  type: "ADDED" | "REMOVED"
+}
+
+export interface BitBucketServerLine {
+  source: number
+  destination: number
+  line: string
+  truncated: boolean
+  conflictMarker?: "OURS"
+  commentIds?: number[]
+}
 
 export interface BitBucketServerPRParticipant {
   user: BitBucketServerUser
   role: "AUTHOR" | "REVIEWER" | "PARTICIPANT"
   approved: boolean
-  status: BitBucketServerPRStatus
+  status: "APPROVED" | "UNAPPROVED" | "NEEDS_WORK"
 }
 
 /**

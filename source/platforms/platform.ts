@@ -61,7 +61,13 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
   // BitBucket Server
   const bbsHost = env["DANGER_BITBUCKETSERVER_HOST"]
   if (bbsHost) {
-    const api = new BitBucketServerAPI(source, bitbucketServerRepoCredentialsFromEnv(env))
+    const api = new BitBucketServerAPI(
+      {
+        pullRequestID: source.pullRequestID,
+        repoSlug: source.repoSlug,
+      },
+      bitbucketServerRepoCredentialsFromEnv(env)
+    )
     const bbs = new BitBucketServer(api)
     return bbs
   }

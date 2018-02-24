@@ -8,6 +8,7 @@ import {
   BitBucketServerPRComment,
   JIRAIssue,
   BitBucketServerPRActivity,
+  BitBucketServerDiff,
 } from "../../dsl/BitBucketServerDSL"
 
 import { RepoMetaData, Env } from "../../ci_source/ci_source"
@@ -80,9 +81,19 @@ export class BitBucketServerAPI {
     return (await res.json()).values
   }
 
-  getPullRequestDiff = async () => {
-    // TODO: possible?
-    return ""
+  getStructuredDiff = async (base: string, head: string): Promise<BitBucketServerDiff[]> => {
+    const { repoSlug } = this.repoMetadata
+    const path = `rest/api/1.0/${repoSlug}/compare/diff?withComments=false&from=${base}&to=${head}`
+    const res = await this.get(path)
+    throwIfNotOk(res)
+    return (await res.json()).diffs
+  }
+
+  getPullRequestDiff = async (): Promise<BitBucketServerDiff[]> => {
+    const path = `${this.getPRBasePath()}/diff?withComments=false`
+    const res = await this.get(path)
+    throwIfNotOk(res)
+    return (await res.json()).diffs
   }
 
   getPullRequestComments = async (): Promise<BitBucketServerPRActivity[]> => {
@@ -119,10 +130,13 @@ export class BitBucketServerAPI {
       .filter(comment => v.includes(comment!.text, dangerSignaturePostfix))
   }
 
-  getFileContents = async (filePath: string) => {
-    const { repoSlug } = this.repoMetadata
-    const path = `${repoSlug}/` + `raw/${filePath}` + `?at=${this.pr.toRef.id}`
-    const res = await this.get(path)
+  getFileContents = async (filePath: string, repoSlug: string, refspec: string) => {
+    const path = `${repoSlug}/` + `raw/${filePath}` + `?at=${refspec}`
+    const res = await this.get(path, undefined, true)
+    if (res.status === 404) {
+      return ""
+    }
+    throwIfNotOk(res)
     return await res.text()
   }
 
@@ -193,8 +207,8 @@ export class BitBucketServerAPI {
     )
   }
 
-  get = (path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> =>
-    this.api(path, headers, body, "GET")
+  get = (path: string, headers: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
+    this.api(path, headers, undefined, "GET", suppressErrors)
 
   post = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
     this.api(path, headers, JSON.stringify(body), "POST", suppressErrors)

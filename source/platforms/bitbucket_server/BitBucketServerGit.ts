@@ -1,13 +1,13 @@
 import { GitDSL, GitJSONDSL } from "../../dsl/GitDSL"
-import { BitBucketServerCommit, BitBucketServerDSL } from "../../dsl/BitBucketServerDSL"
+import { BitBucketServerCommit, BitBucketServerDSL, BitBucketServerDiff } from "../../dsl/BitBucketServerDSL"
 import { GitCommit } from "../../dsl/Commit"
 
 import { BitBucketServerAPI } from "../bitbucket_server/BitBucketServerAPI"
 
-import { diffToGitJSONDSL } from "../git/diffToGitJSONDSL"
-import { GitJSONToGitDSLConfig, gitJSONToGitDSL } from "../git/gitJSONToGitDSL"
+import { GitJSONToGitDSLConfig, gitJSONToGitDSL, GitStructuredDiff, Chunk } from "../git/gitJSONToGitDSL"
 
 import * as debug from "debug"
+import { EOL } from "os"
 import { RepoMetaData } from "../../ci_source/ci_source"
 const d = debug("danger:BitBucketServerGit")
 
@@ -49,7 +49,7 @@ export default async function gitDSLForBitBucketServer(api: BitBucketServerAPI):
   const commits = gitCommits.map(commit =>
     bitBucketServerCommitToGitCommit(commit, api.repoMetadata, api.repoCredentials.host)
   )
-  return diffToGitJSONDSL(diff, commits)
+  return bitBucketServerDiffToGitJSONDSL(diff, commits)
 }
 
 export const bitBucketServerGitDSL = (
@@ -58,13 +58,50 @@ export const bitBucketServerGitDSL = (
   bitBucketServerAPI: BitBucketServerAPI
 ): GitDSL => {
   const config: GitJSONToGitDSLConfig = {
-    repo: `${bitBucketServer.pr.fromRef.repository.project.key}/${bitBucketServer.pr.fromRef.repository.slug}`,
+    repo:
+      `projects/${bitBucketServer.pr.fromRef.repository.project.key}/` +
+      `repos/${bitBucketServer.pr.fromRef.repository.slug}`,
     baseSHA: bitBucketServer.pr.fromRef.latestCommit,
     headSHA: bitBucketServer.pr.toRef.latestCommit,
     getFileContents: bitBucketServerAPI.getFileContents,
-    getFullDiff: bitBucketServerAPI.getPullRequestDiff,
+    getFullStructuredDiff: async (base: string, head: string) => {
+      const diff = await bitBucketServerAPI.getStructuredDiff(base, head)
+      return bitBucketServerDiffToGitStructuredDiff(diff)
+    },
   }
 
   d("Setting up git DSL with: ", config)
   return gitJSONToGitDSL(json, config)
+}
+
+const bitBucketServerDiffToGitJSONDSL = (diffs: BitBucketServerDiff[], commits: GitCommit[]): GitJSONDSL => {
+  const deleted_files = diffs.filter(diff => diff.source && !diff.destination).map(diff => diff.source!.toString)
+  const created_files = diffs.filter(diff => !diff.source && diff.destination).map(diff => diff.destination!.toString)
+  const modified_files = diffs.filter(diff => diff.source && diff.destination).map(diff => diff.destination!.toString)
+
+  return {
+    modified_files,
+    created_files,
+    deleted_files,
+    commits,
+  }
+}
+
+const bitBucketServerDiffToGitStructuredDiff = (diffs: BitBucketServerDiff[]): GitStructuredDiff => {
+  const chunks: Chunk[] = []
+
+  for (const diff of diffs) {
+    for (const hunk of diff.hunks) {
+      chunks.push({
+        from: diff.source && diff.source.toString,
+        to: diff.destination && diff.destination.toString,
+        changes: hunk.segments.map(segment => ({
+          type: segment.type === "ADDED" ? ("add" as "add") : ("del" as "del"),
+          content: segment.lines.map(({ line }) => line).join(EOL),
+        })),
+      })
+    }
+  }
+
+  return { chunks }
 }

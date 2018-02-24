@@ -14,7 +14,7 @@ import {
 
 export const jsonToDSL = async (dsl: DangerDSLJSONType): Promise<DangerDSLType> => {
   const api = apiForDSL(dsl)
-  const platformExists = [dsl.github].some(p => !!p)
+  const platformExists = [dsl.github, dsl.bitbucket_server].some(p => !!p)
   const github = dsl.github && githubJSONToGitHubDSL(dsl.github, api as GitHubNodeAPI)
   const bitbucket_server = dsl.bitbucket_server
   // const gitlab = dsl.gitlab && githubJSONToGitLabDSL(dsl.gitlab, api)
@@ -42,10 +42,7 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType): Promise<DangerDSLType> 
 
 const apiForDSL = (dsl: DangerDSLJSONType): GitHubNodeAPI | BitBucketServerAPI => {
   if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
-    return new BitBucketServerAPI(
-      { repoSlug: "", pullRequestID: "" },
-      bitbucketServerRepoCredentialsFromEnv(process.env)
-    )
+    return new BitBucketServerAPI(dsl.bitbucket_server!.metadata, bitbucketServerRepoCredentialsFromEnv(process.env))
   }
 
   const api = new GitHubNodeAPI({

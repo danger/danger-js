@@ -6,10 +6,11 @@ import * as GitHub from "@octokit/rest"
 
 declare module "danger" {
   type MarkdownString = string
-
   // This is `danger.bitbucket_server` inside the JSON
 
   interface BitBucketServerJSONDSL {
+    /** The pull request and repository metadata */
+    metadata: RepoMetaData
     /** The related JIRA issues */
     issues: JIRAIssue[]
     /** The PR metadata */
@@ -85,13 +86,52 @@ declare module "danger" {
     }[]
   }
 
-  type BitBucketServerPRStatus = "APPROVED" | "UNAPPROVED" | "NEEDS_WORK"
+  interface BitBucketServerDiff {
+    destination?: BitBucketServerFile
+    source?: BitBucketServerFile
+    hunks: BitBucketServerHunk[]
+    truncated: boolean
+    toHash: string
+    fromHash: string
+    whitespace: "SHOW" | "IGNORE_ALL"
+  }
+
+  interface BitBucketServerFile {
+    components: string[]
+    name: string
+    parent: string
+    toString: string
+  }
+
+  interface BitBucketServerHunk {
+    destinationLine: number
+    destinationSpan: number
+    segments: BitBucketServerSegment[]
+    sourceLine: number
+    sourceSpan: number
+    truncated: boolean
+  }
+
+  interface BitBucketServerSegment {
+    lines: BitBucketServerLine[]
+    truncated: boolean
+    type: "ADDED" | "REMOVED"
+  }
+
+  interface BitBucketServerLine {
+    source: number
+    destination: number
+    line: string
+    truncated: boolean
+    conflictMarker?: "OURS"
+    commentIds?: number[]
+  }
 
   interface BitBucketServerPRParticipant {
     user: BitBucketServerUser
     role: "AUTHOR" | "REVIEWER" | "PARTICIPANT"
     approved: boolean
-    status: BitBucketServerPRStatus
+    status: "APPROVED" | "UNAPPROVED" | "NEEDS_WORK"
   }
 
   /**

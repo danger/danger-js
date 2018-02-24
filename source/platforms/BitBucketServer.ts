@@ -72,6 +72,7 @@ export class BitBucketServer implements Platform {
     const issues = await this.api.getIssues()
 
     return {
+      metadata: this.api.repoMetadata,
       pr,
       commits,
       comments,
