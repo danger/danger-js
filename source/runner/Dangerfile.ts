@@ -31,7 +31,7 @@ export interface DangerContext {
    *
    * @param {MarkdownString} message the String to output
    */
-  fail(message: MarkdownString): void
+  fail(message: MarkdownString, file?: string, line?: string): void
 
   /**
    * Highlights low-priority issues, but does not fail the build. Message
@@ -39,7 +39,7 @@ export interface DangerContext {
    *
    * @param {MarkdownString} message the String to output
    */
-  warn(message: MarkdownString): void
+  warn(message: MarkdownString, file?: string, line?: string): void
 
   /**
    * Adds a message to the Danger table, the only difference between this
@@ -47,7 +47,7 @@ export interface DangerContext {
    *
    * @param {MarkdownString} message the String to output
    */
-  message(message: MarkdownString): void
+  message(message: MarkdownString, file?: string, line?: string): void
 
   /**
    * Adds raw markdown into the Danger comment, under the table
@@ -83,6 +83,10 @@ export interface DangerContext {
  * @param {DangerDSLType} dsl The DSL which is turned into `danger`
  * @returns {DangerContext} a DangerContext-like API
  */
+/// PULL DO WZOROWANIA SIE: https://github.com/danger/danger-js/pull/99/files
+/// DOKUMENTACJA: https://danger.systems/js/usage/danger-process.html
+/// TU JESTES. POTRZEBUJESZ TESTÓW KTÓRE SPRAWDZAJA CZY PARSUJE SIE CONTEXT Z NOWYMI MODELAMI VIOLATION
+/// POTEM ROBISZ TEST ZE JAK DOSTAJESZ JSONA Z NOWYM MODELEM TO SIE PARSUJE I DODAJE NA GITHUBA
 export function contextForDanger(dsl: DangerDSLType): DangerContext {
   const results: DangerRuntimeContainer = {
     fails: [],
@@ -93,9 +97,10 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
   }
 
   const schedule = (fn: any) => results.scheduled && results.scheduled.push(fn)
-  const fail = (message: MarkdownString) => results.fails.push({ message })
-  const warn = (message: MarkdownString) => results.warnings.push({ message })
-  const message = (message: MarkdownString) => results.messages.push({ message })
+  const fail = (message: MarkdownString, file?: string, line?: string) => results.fails.push({ message, file, line })
+  const warn = (message: MarkdownString, file?: string, line?: string) => results.warnings.push({ message, file, line })
+  const message = (message: MarkdownString, file?: string, line?: string) =>
+    results.messages.push({ message, file, line })
   const markdown = (message: MarkdownString) => results.markdowns.push(message)
 
   return {

@@ -9,4 +9,6 @@ export interface Violation {
    * @type {string}
    */
   message: string
+  file?: string
+  line?: string
 }
