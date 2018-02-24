@@ -13,6 +13,8 @@
 
 ## Master
 
+* Update the PR DSL to include bots. [@orta][]
+
 ## 3.1.7
 
 * Minor error reporting improvements. [@orta][]
