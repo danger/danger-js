@@ -3,7 +3,7 @@ import * as debug from "debug"
 
 import { getPlatformForEnv, Platform } from "../../platforms/platform"
 import { Executor, ExecutorOptions } from "../../runner/Executor"
-import runDangerSubprocess, { prepareDangerDSL } from "../utils/runDangerSubprocess"
+import runDangerSubprocess from "../utils/runDangerSubprocess"
 import { SharedCLI } from "../utils/sharedDangerfileArgs"
 import getRuntimeCISource from "../utils/getRuntimeCISource"
 
@@ -50,13 +50,11 @@ export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
         dangerID: app.id || "default",
       }
 
-      const processInput = prepareDangerDSL(dangerJSONDSL)
-
       const runnerCommand = dangerRunToRunnerCLI(process.argv)
       d(`Preparing to run: ${runnerCommand}`)
 
       const exec = new Executor(source, platform, inlineRunner, config)
-      runDangerSubprocess(runnerCommand, processInput, exec)
+      runDangerSubprocess(runnerCommand, dangerJSONDSL, exec)
     }
   }
 }

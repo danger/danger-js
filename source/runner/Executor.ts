@@ -1,5 +1,5 @@
 import { contextForDanger, DangerContext } from "./Dangerfile"
-import { DangerDSL } from "../dsl/DangerDSL"
+import { DangerDSL, DangerDSLType } from "../dsl/DangerDSL"
 import { CISource } from "../ci_source/ci_source"
 import { Platform } from "../platforms/platform"
 import { DangerResults } from "../dsl/DangerResults"
@@ -76,7 +76,7 @@ export class Executor {
       results = this.resultsForError(error)
     }
 
-    await this.handleResults(results)
+    await this.handleResults(results, runtime.danger)
     return results
   }
 
@@ -96,12 +96,12 @@ export class Executor {
    *
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    */
-  async handleResults(results: DangerResults) {
+  async handleResults(results: DangerResults, danger: DangerDSLType) {
     this.d(`Got Results back, current settings`, this.options)
     if (this.options.stdoutOnly || this.options.jsonOnly) {
       this.handleResultsPostingToSTDOUT(results)
     } else {
-      this.handleResultsPostingToPlatform(results)
+      this.handleResultsPostingToPlatform(results, danger)
     }
   }
   /**
@@ -161,7 +161,7 @@ export class Executor {
    *
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    */
-  async handleResultsPostingToPlatform(results: DangerResults) {
+  async handleResultsPostingToPlatform(results: DangerResults, danger: DangerDSLType) {
     // Delete the message if there's nothing to say
     const { fails, warnings, messages, markdowns } = results
 

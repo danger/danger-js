@@ -4,6 +4,7 @@ import { spawn } from "child_process"
 
 import { DangerDSLJSONType, DangerJSON } from "../../dsl/DangerDSL"
 import { Executor } from "../../runner/Executor"
+import { jsonToDSL } from "../../runner/jsonToDSL"
 import { markdownCode, resultsWithFailure, mergeResults } from "./reporting"
 
 const d = debug("danger:runDangerSubprocess")
@@ -19,13 +20,14 @@ export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
 }
 
 // Runs the Danger process, can either take a simpl
-const runDangerSubprocess = (subprocessName: string[], dslJSONString: string, exec: Executor) => {
+const runDangerSubprocess = (subprocessName: string[], dslJSON: DangerDSLJSONType, exec: Executor) => {
   let processName = subprocessName[0]
   let args = subprocessName
   let results = {} as any
   args.shift() // mutate and remove the first element
 
   const processDisplayName = path.basename(processName)
+  const dslJSONString = prepareDangerDSL(dslJSON)
   d(`Running subprocess: ${processDisplayName} - ${args}`)
   const child = spawn(processName, args, { env: process.env })
   let allLogs = ""
@@ -65,7 +67,8 @@ const runDangerSubprocess = (subprocessName: string[], dslJSONString: string, ex
         results = failResults
       }
     }
-    await exec.handleResults(results)
+    const danger = await jsonToDSL(dslJSON)
+    await exec.handleResults(results, danger)
   })
 }
 

@@ -83,10 +83,6 @@ export interface DangerContext {
  * @param {DangerDSLType} dsl The DSL which is turned into `danger`
  * @returns {DangerContext} a DangerContext-like API
  */
-/// PULL DO WZOROWANIA SIE: https://github.com/danger/danger-js/pull/99/files
-/// DOKUMENTACJA: https://danger.systems/js/usage/danger-process.html
-/// TU JESTES. POTRZEBUJESZ TESTÓW KTÓRE SPRAWDZAJA CZY PARSUJE SIE CONTEXT Z NOWYMI MODELAMI VIOLATION
-/// POTEM ROBISZ TEST ZE JAK DOSTAJESZ JSONA Z NOWYM MODELEM TO SIE PARSUJE I DODAJE NA GITHUBA
 export function contextForDanger(dsl: DangerDSLType): DangerContext {
   const results: DangerRuntimeContainer = {
     fails: [],
