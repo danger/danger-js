@@ -3,12 +3,24 @@ import { FakeCI } from "../../ci_source/providers/Fake"
 import { FakePlatform } from "../../platforms/FakePlatform"
 import { emptyResults, warnResults, failsResults } from "./fixtures/ExampleDangerResults"
 import inlineRunner from "../runners/inline"
+import { jsonDSLGenerator } from "../dslGenerator"
+import { jsonToDSL } from "../jsonToDSL"
+import { DangerDSLType } from "../../dsl/DangerDSL"
 
 const defaultConfig = {
   stdoutOnly: false,
   verbose: false,
   jsonOnly: false,
   dangerID: "123",
+}
+
+let defaultDsl = (platform): Promise<DangerDSLType> => {
+  return jsonDSLGenerator(platform).then(jsonDSL => {
+    jsonDSL.github = {
+      pr: { number: 1, base: { sha: "321" }, head: { sha: "123", repo: { full_name: "123" } } },
+    } as any
+    return jsonToDSL(jsonDSL)
+  })
 }
 
 describe("setup", () => {
@@ -54,37 +66,41 @@ describe("setup", () => {
   it("Deletes a post when there are no messages", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
     platform.deleteMainComment = jest.fn()
 
-    await exec.handleResults(emptyResults)
+    await exec.handleResults(emptyResults, dsl)
     expect(platform.deleteMainComment).toBeCalled()
   })
 
   it("Updates or Creates comments for warnings", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
 
-    await exec.handleResults(warnResults)
+    await exec.handleResults(warnResults, dsl)
     expect(platform.updateOrCreateComment).toBeCalled()
   })
 
   it("Updates or Creates comments for warnings", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
 
-    await exec.handleResults(warnResults)
+    await exec.handleResults(warnResults, dsl)
     expect(platform.updateOrCreateComment).toBeCalled()
   })
 
   it("Updates the status with success for a passed results", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 
-    await exec.handleResults(warnResults)
+    await exec.handleResults(warnResults, dsl)
     expect(platform.updateStatus).toBeCalledWith(
       true,
       "⚠️ Danger found some issues. Don't worry, everything is fixable.",
@@ -95,10 +111,11 @@ describe("setup", () => {
   it("Updates the status with success for failing results", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 
-    await exec.handleResults(failsResults)
+    await exec.handleResults(failsResults, dsl)
     expect(platform.updateStatus).toBeCalledWith(
       false,
       "⚠️ Danger found some issues. Don't worry, everything is fixable.",
@@ -112,10 +129,11 @@ describe("setup", () => {
     ci.ciRunURL = "https://url.com"
 
     const exec = new Executor(ci, platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 
-    await exec.handleResults(failsResults)
+    await exec.handleResults(failsResults, dsl)
     expect(platform.updateStatus).toBeCalledWith(expect.anything(), expect.anything(), ci.ciRunURL)
   })
 })
