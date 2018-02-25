@@ -103,7 +103,7 @@
   ],
   "reviewers": [],
   "state": "OPEN",
-  "title": "add banana",
+  "title": "Pull request title",
   "toRef": {
     "displayId": "master",
     "id": "refs/heads/master",
