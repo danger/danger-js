@@ -10,5 +10,9 @@ export interface Violation {
    */
   message: string
   file?: string
-  line?: string
+  line?: number
+}
+
+export function isInline(violation: Violation): boolean {
+  return violation.file !== undefined || violation.line !== undefined
 }

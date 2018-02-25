@@ -135,7 +135,7 @@ export class GitHubAPI {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.post(
-      `repos/${repo}/issues/${prID}/comments`,
+      `repos/${repo}/pulls/${prID}/comments`,
       {},
       {
         body: comment,
@@ -144,7 +144,7 @@ export class GitHubAPI {
         position: position,
       }
     )
-
+    console.log("response from inline comment: " + res.json())
     return res.json()
   }
 

@@ -12,6 +12,7 @@ import { sentence, href } from "./DangerUtils"
 import { DangerRunner } from "./runners/runner"
 import { jsonToDSL } from "./jsonToDSL"
 import { jsonDSLGenerator } from "./dslGenerator"
+import { Violation, isInline as isInlineViolation } from "../dsl/Violation"
 
 // This is still badly named, maybe it really should just be runner?
 
@@ -195,7 +196,34 @@ export class Executor {
       } else if (messageCount > 0) {
         console.log("Found only messages, passing those to review.")
       }
-      const comment = githubResultsTemplate(dangerID, results)
+
+      let inlineResults: DangerResults = {
+        warnings: results.warnings.filter(m => isInlineViolation(m)),
+        fails: results.fails.filter(m => isInlineViolation(m)),
+        messages: results.messages.filter(m => isInlineViolation(m)),
+        markdowns: [],
+      }
+      let sendViolation = (violation: Violation, kind: string): void => {
+        let file = violation.file
+        let line = violation.line
+        if (file && line) {
+          let commit = danger.github.pr.head
+          console.log("Creating comment. Commit: " + commit.sha + ', file: "' + file + '", line: ' + line)
+          this.platform.createInlineComment(kind + ": " + violation.message, commit.sha, file, line)
+        }
+      }
+      inlineResults.warnings.forEach(v => sendViolation(v, "warnings"))
+      inlineResults.fails.forEach(v => sendViolation(v, "fails"))
+      inlineResults.messages.forEach(v => sendViolation(v, "messages"))
+
+      let regularResults: DangerResults = {
+        warnings: results.warnings.filter(m => !isInlineViolation(m)),
+        fails: results.fails.filter(m => !isInlineViolation(m)),
+        messages: results.messages.filter(m => !isInlineViolation(m)),
+        markdowns: results.markdowns,
+      }
+
+      const comment = githubResultsTemplate(dangerID, regularResults)
       await this.platform.updateOrCreateComment(dangerID, comment)
     }
 

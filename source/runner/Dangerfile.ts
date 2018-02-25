@@ -31,7 +31,7 @@ export interface DangerContext {
    *
    * @param {MarkdownString} message the String to output
    */
-  fail(message: MarkdownString, file?: string, line?: string): void
+  fail(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * Highlights low-priority issues, but does not fail the build. Message
@@ -39,7 +39,7 @@ export interface DangerContext {
    *
    * @param {MarkdownString} message the String to output
    */
-  warn(message: MarkdownString, file?: string, line?: string): void
+  warn(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * Adds a message to the Danger table, the only difference between this
@@ -47,7 +47,7 @@ export interface DangerContext {
    *
    * @param {MarkdownString} message the String to output
    */
-  message(message: MarkdownString, file?: string, line?: string): void
+  message(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * Adds raw markdown into the Danger comment, under the table
@@ -93,9 +93,9 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
   }
 
   const schedule = (fn: any) => results.scheduled && results.scheduled.push(fn)
-  const fail = (message: MarkdownString, file?: string, line?: string) => results.fails.push({ message, file, line })
-  const warn = (message: MarkdownString, file?: string, line?: string) => results.warnings.push({ message, file, line })
-  const message = (message: MarkdownString, file?: string, line?: string) =>
+  const fail = (message: MarkdownString, file?: string, line?: number) => results.fails.push({ message, file, line })
+  const warn = (message: MarkdownString, file?: string, line?: number) => results.warnings.push({ message, file, line })
+  const message = (message: MarkdownString, file?: string, line?: number) =>
     results.messages.push({ message, file, line })
   const markdown = (message: MarkdownString) => results.markdowns.push(message)
 

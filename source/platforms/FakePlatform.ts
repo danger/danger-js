@@ -23,7 +23,16 @@ export class FakePlatform implements Platform {
       diffForFile: async () => ({ before: "", after: "", diff: "", added: "", removed: "" }),
       JSONDiffForFile: async () => ({} as any),
       JSONPatchForFile: async () => ({} as any),
-      commits: [],
+      commits: [
+        {
+          sha: "123",
+          author: { name: "1", email: "1", date: "1" },
+          committer: { name: "1", email: "1", date: "1" },
+          message: "456",
+          tree: { sha: "123", url: "123" },
+          url: "123",
+        },
+      ],
     }
   }
 

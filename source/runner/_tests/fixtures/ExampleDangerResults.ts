@@ -21,6 +21,13 @@ export const warnResults: DangerResults = {
   markdowns: [],
 }
 
+export const inlineWarnResults: DangerResults = {
+  messages: [],
+  warnings: [{ message: "Test message", file: "File.swift", line: 10 }],
+  fails: [],
+  markdowns: [],
+}
+
 export const failsResults: DangerResults = {
   fails: [{ message: "Failing message" }],
   warnings: [],

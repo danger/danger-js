@@ -1,7 +1,7 @@
 import { Executor } from "../Executor"
 import { FakeCI } from "../../ci_source/providers/Fake"
 import { FakePlatform } from "../../platforms/FakePlatform"
-import { emptyResults, warnResults, failsResults } from "./fixtures/ExampleDangerResults"
+import { emptyResults, warnResults, inlineWarnResults, failsResults } from "./fixtures/ExampleDangerResults"
 import inlineRunner from "../runners/inline"
 import { jsonDSLGenerator } from "../dslGenerator"
 import { jsonToDSL } from "../jsonToDSL"
@@ -91,6 +91,17 @@ describe("setup", () => {
 
     await exec.handleResults(warnResults, dsl)
     expect(platform.updateOrCreateComment).toBeCalled()
+  })
+
+  it("Creates an inline comment for warning", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    platform.createInlineComment = jest.fn()
+    platform.updateOrCreateComment = jest.fn()
+
+    await exec.handleResults(inlineWarnResults, dsl)
+    expect(platform.createInlineComment).toBeCalled()
   })
 
   it("Updates the status with success for a passed results", async () => {
