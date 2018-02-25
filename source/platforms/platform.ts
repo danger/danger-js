@@ -39,6 +39,8 @@ export interface Platform {
   supportsCommenting: () => boolean
   /** Creates a comment on the PR */
   createComment: (dangerID: string, body: string) => Promise<any>
+  /** Creates an inline comment on the PR */
+  createInlineComment: (comment: string, commitId: string, path: string, position: number) => Promise<any>
   /** Delete the main Danger comment */
   deleteMainComment: (dangerID: string) => Promise<boolean>
   /** Replace the main Danger comment */

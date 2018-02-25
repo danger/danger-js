@@ -131,6 +131,23 @@ export class GitHubAPI {
     return res.json()
   }
 
+  postInlinePRComment = async (comment: string, commitId: string, path: string, position: number) => {
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
+    const res = await this.post(
+      `repos/${repo}/issues/${prID}/comments`,
+      {},
+      {
+        body: comment,
+        commit_id: commitId,
+        path: path,
+        position: position,
+      }
+    )
+
+    return res.json()
+  }
+
   getPullRequestInfo = async (): Promise<GitHubPRDSL> => {
     if (this.pr) {
       return this.pr

@@ -108,6 +108,18 @@ export class GitHub {
    */
   createComment = (comment: string) => this.api.postPRComment(comment)
 
+  /**
+   * Returns the response for the new inline comment
+   *
+   * @param {string} comment you want to post
+   * @param {string} commitId to make a comment in
+   * @param {string} path to the file
+   * @param {number} position in the file
+   * @returns {Promise<any>} JSON response of new comment
+   */
+  createInlineComment = (comment: string, commitId: string, path: string, position: number) =>
+    this.api.postInlinePRComment(comment, commitId, path, position)
+
   // In Danger RB we support a danger_id property,
   // this should be handled at some point
 
