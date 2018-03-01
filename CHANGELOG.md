@@ -14,6 +14,7 @@
 ## Master
 
 * Update the PR DSL to include bots. [@orta][]
+* Don't check for same user ID on comment when running as a GitHub App. [@tibdex][]
 
 ## 3.1.7
 
