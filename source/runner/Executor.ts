@@ -204,6 +204,8 @@ export class Executor {
         messages: results.messages.filter(m => isInlineViolation(m)),
         markdowns: [],
       }
+      // TODO: Get current inline comments, if any of the old ones is not present
+      // in the new ones - delete.
       let sendViolation = (violation: Violation, kind: string): void => {
         let file = violation.file
         let line = violation.line
@@ -213,6 +215,8 @@ export class Executor {
           this.platform.createInlineComment(danger.git, kind + ": " + violation.message, file, line)
         }
       }
+      // TODO: Check if any of the inline comments were not accepted
+      // add them to regular comments instead.
       inlineResults.warnings.forEach(v => sendViolation(v, "warnings"))
       inlineResults.fails.forEach(v => sendViolation(v, "fails"))
       inlineResults.messages.forEach(v => sendViolation(v, "messages"))

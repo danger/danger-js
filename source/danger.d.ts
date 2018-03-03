@@ -205,6 +205,10 @@ declare module "danger" {
   }
   /** All Text diff values will be this shape */
   interface TextDiff {
+    /** Git diff chunks */
+    // Not sure if this is the right place for this one, but few methods needs both chunks & text diffs and I didn't want to parse two times the same file
+    // We could rename the interface, but couldn't find a good one
+    chunks: any[]
     /** The value before the PR's applied changes */
     before: string
     /** The value after the PR's applied changes */
@@ -699,6 +703,12 @@ declare module "danger" {
      *
      */
     message: string
+    file?: string
+    line?: number
+  }
+
+  export function isInline(violation: Violation): boolean {
+    return violation.file !== undefined || violation.line !== undefined
   }
   /** A function with a callback function, which Danger wraps in a Promise */
   type CallbackableFn = (callback: (done: any) => void) => void
@@ -725,7 +735,7 @@ declare module "danger" {
    *
    * @param {MarkdownString} message the String to output
    */
-  function fail(message: MarkdownString): void
+  function fail(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * Highlights low-priority issues, but does not fail the build. Message
@@ -733,7 +743,7 @@ declare module "danger" {
    *
    * @param {MarkdownString} message the String to output
    */
-  function warn(message: MarkdownString): void
+  function warn(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * Adds a message to the Danger table, the only difference between this
@@ -741,7 +751,7 @@ declare module "danger" {
    *
    * @param {MarkdownString} message the String to output
    */
-  function message(message: MarkdownString): void
+  function message(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * Adds raw markdown into the Danger comment, under the table

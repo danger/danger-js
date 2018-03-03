@@ -41,10 +41,10 @@ export interface Platform {
   supportsInlineComments: () => boolean
   /** Creates a comment on the PR */
   createComment: (dangerID: string, body: string) => Promise<any>
-  /** Creates an inline comment on the PR. Please make sure to check if the platform supports inline comments by using `.supportInlineComments` func */
+  /** Creates an inline comment on the PR if possible */
   // Here we pass GitDSL because platforms have different endpoints for inline comments
   // Wasn't sure if passing the dsl is the best way of achieving this, though
-  createInlineComment: (git: GitDSL, comment: string, path: string, line: number) => Promise<any>
+  createInlineComment: (git: GitDSL, comment: string, path: string, line: number) => Promise<any | undefined>
   /** Delete the main Danger comment */
   deleteMainComment: (dangerID: string) => Promise<boolean>
   /** Replace the main Danger comment */

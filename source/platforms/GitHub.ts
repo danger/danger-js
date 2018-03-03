@@ -113,18 +113,48 @@ export class GitHub {
   createComment = (comment: string) => this.api.postPRComment(comment)
 
   /**
-   * Makes an inline comment if possible
+   * Makes an inline comment if possible. If platform can't make an inline comment with given arguments,
+   * it returns `undefined`. (e.g. platform doesn't support inline comments or line was out of diff).
    *
    * @returns {Promise<any>} JSON response of new comment
    */
-  createInlineComment = (git: GitDSL, comment: string, path: string, line: number): Promise<any> => {
-    let position = this.findPositionForInlineComment(line, path, git)
+  createInlineComment = (git: GitDSL, comment: string, path: string, line: number): Promise<any | undefined> => {
+    if (!this.supportsInlineComments) {
+      return new Promise(_v => undefined)
+    }
+
     let commitId = git.commits[git.commits.length - 1].sha
-    return this.api.postInlinePRComment(comment, commitId, path, position)
+
+    return this.findPositionForInlineComment(git, line, path).then(position => {
+      if (position !== undefined) {
+        return this.api.postInlinePRComment(comment, commitId, path, position)
+      } else {
+        return undefined
+      }
+    })
   }
 
-  findPositionForInlineComment = (line: number, _path: string, _git: GitDSL): number => {
-    return line
+  findPositionForInlineComment = (git: GitDSL, line: number, path: string): Promise<number | undefined> => {
+    return git.diffForFile(path).then(diff => {
+      if (diff === undefined) {
+        return undefined
+      }
+
+      let fileLine = 0
+      for (let chunk of diff!.chunks) {
+        // Search for a change (that is not a deletion). "ln" is for normal changes, "ln2" for additions,
+        // thus need to check for either of them
+        let index = chunk.changes.findIndex((c: any) => c.type != "del" && (c.ln == line || c.ln2 == line))
+        if (index != -1) {
+          fileLine += index + 1
+          break
+        } else {
+          fileLine += chunk.changes.length + 1
+        }
+      }
+
+      return fileLine
+    })
   }
 
   // In Danger RB we support a danger_id property,

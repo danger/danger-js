@@ -52,7 +52,7 @@ export class FakePlatform implements Platform {
     return true
   }
 
-  async createInlineComment(_git: GitDSL, _comment: string, _path: string, _line: number): Promise<any> {
+  async createInlineComment(_git: GitDSL, _comment: string, _path: string, _line: number): Promise<any | undefined> {
     return true
   }
 
