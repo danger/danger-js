@@ -40,6 +40,10 @@ export class FakePlatform implements Platform {
     return true
   }
 
+  supportsInlineComments() {
+    return true
+  }
+
   async updateOrCreateComment(_newComment: string): Promise<boolean> {
     return true
   }
@@ -48,7 +52,7 @@ export class FakePlatform implements Platform {
     return true
   }
 
-  async createInlineComment(_comment: string, _commitId: string, _path: string, _position: number): Promise<any> {
+  async createInlineComment(_git: GitDSL, _comment: string, _path: string, _line: number): Promise<any> {
     return true
   }
 

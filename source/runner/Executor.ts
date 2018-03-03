@@ -162,6 +162,7 @@ export class Executor {
    *
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    */
+  // TODO: Instead of danger, pass gitDSL
   async handleResultsPostingToPlatform(results: DangerResults, danger: DangerDSLType) {
     // Delete the message if there's nothing to say
     const { fails, warnings, messages, markdowns } = results
@@ -209,7 +210,7 @@ export class Executor {
         if (file && line) {
           let commit = danger.github.pr.head
           console.log("Creating comment. Commit: " + commit.sha + ', file: "' + file + '", line: ' + line)
-          this.platform.createInlineComment(kind + ": " + violation.message, commit.sha, file, line)
+          this.platform.createInlineComment(danger.git, kind + ": " + violation.message, file, line)
         }
       }
       inlineResults.warnings.forEach(v => sendViolation(v, "warnings"))

@@ -1,5 +1,5 @@
 import { Env, CISource } from "../ci_source/ci_source"
-import { GitJSONDSL } from "../dsl/GitDSL"
+import { GitJSONDSL, GitDSL } from "../dsl/GitDSL"
 import { GitHub } from "./GitHub"
 import { GitHubAPI } from "./github/GitHubAPI"
 
@@ -37,10 +37,14 @@ export interface Platform {
   getPlatformGitRepresentation: () => Promise<GitJSONDSL>
   /** Can it update comments? */
   supportsCommenting: () => boolean
+  /** Does the platform support inline comments? */
+  supportsInlineComments: () => boolean
   /** Creates a comment on the PR */
   createComment: (dangerID: string, body: string) => Promise<any>
-  /** Creates an inline comment on the PR */
-  createInlineComment: (comment: string, commitId: string, path: string, position: number) => Promise<any>
+  /** Creates an inline comment on the PR. Please make sure to check if the platform supports inline comments by using `.supportInlineComments` func */
+  // Here we pass GitDSL because platforms have different endpoints for inline comments
+  // Wasn't sure if passing the dsl is the best way of achieving this, though
+  createInlineComment: (git: GitDSL, comment: string, path: string, line: number) => Promise<any>
   /** Delete the main Danger comment */
   deleteMainComment: (dangerID: string) => Promise<boolean>
   /** Replace the main Danger comment */

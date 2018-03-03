@@ -1,4 +1,4 @@
-import { GitJSONDSL } from "../dsl/GitDSL"
+import { GitJSONDSL, GitDSL } from "../dsl/GitDSL"
 import { GitHubPRDSL, GitHubDSL, GitHubIssue, GitHubAPIPR, GitHubJSONDSL } from "../dsl/GitHubDSL"
 import { GitHubAPI } from "./github/GitHubAPI"
 import GitHubUtils from "./github/GitHubUtils"
@@ -100,6 +100,10 @@ export class GitHub {
     return true
   }
 
+  supportsInlineComments() {
+    return true
+  }
+
   /**
    * Returns the response for the new comment
    *
@@ -109,16 +113,19 @@ export class GitHub {
   createComment = (comment: string) => this.api.postPRComment(comment)
 
   /**
-   * Returns the response for the new inline comment
+   * Makes an inline comment if possible
    *
-   * @param {string} comment you want to post
-   * @param {string} commitId to make a comment in
-   * @param {string} path to the file
-   * @param {number} position in the file
    * @returns {Promise<any>} JSON response of new comment
    */
-  createInlineComment = (comment: string, commitId: string, path: string, position: number) =>
-    this.api.postInlinePRComment(comment, commitId, path, position)
+  createInlineComment = (git: GitDSL, comment: string, path: string, line: number): Promise<any> => {
+    let position = this.findPositionForInlineComment(line, path, git)
+    let commitId = git.commits[git.commits.length - 1].sha
+    return this.api.postInlinePRComment(comment, commitId, path, position)
+  }
+
+  findPositionForInlineComment = (line: number, _path: string, _git: GitDSL): number => {
+    return line
+  }
 
   // In Danger RB we support a danger_id property,
   // this should be handled at some point
