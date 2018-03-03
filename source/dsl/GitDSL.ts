@@ -2,6 +2,10 @@ import { GitCommit } from "./Commit"
 
 /** All Text diff values will be this shape */
 export interface TextDiff {
+  /** Git diff chunks */
+  // Not sure if this is the right place for this one, but few methods needs both chunks & text diffs and I didn't want to parse two times the same file
+  // We could rename the interface, but couldn't find a good one
+  chunks: any[]
   /** The value before the PR's applied changes */
   before: string
   /** The value after the PR's applied changes */

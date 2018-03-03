@@ -103,6 +103,12 @@ describe("the dangerfile gitDSL", async () => {
     ])
   })
 
+  it("show diff chunks for a specific file", async () => {
+    const { chunks } = await gitDSL.diffForFile("tsconfig.json")
+
+    expect(chunks).toMatchSnapshot()
+  })
+
   it("shows the diff for a specific file", async () => {
     const { diff } = await gitDSL.diffForFile("tsconfig.json")
 

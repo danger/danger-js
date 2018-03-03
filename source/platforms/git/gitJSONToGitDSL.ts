@@ -155,6 +155,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
       .reduce((a: Changes, b: Changes) => a.concat(b), [])
 
     return {
+      chunks: structuredDiff.chunks,
       before: await config.getFileContents(filename, config.repo, config.baseSHA),
       after: await config.getFileContents(filename, config.repo, config.headSHA),
 
