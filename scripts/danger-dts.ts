@@ -20,7 +20,10 @@ declare module "danger" {
 
   let fileOutput = ""
 
-  const dslFiles = fs.readdirSync("source/dsl").map(f => `source/dsl/${f}`)
+  const dslFiles = fs
+    .readdirSync("source/dsl")
+    .filter(f => !f.startsWith("_tests"))
+    .map(f => `source/dsl/${f}`)
 
   dslFiles.forEach(file => {
     // Sometimes they have more stuff, in those cases

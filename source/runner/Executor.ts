@@ -234,8 +234,14 @@ export class Executor {
     let inlineResults = resultsIntoInlineResults(results)
     let promises = inlineResults.map(inlineResult => {
       return this.sendInlineComment(git, inlineResult)
-        .then(_ => emptyDangerResults)
-        .catch(_ => inlineResultsIntoResults(inlineResult))
+        .then(response => {
+          console.log("response from inline comment: " + JSON.stringify(response, null, 4))
+          return emptyDangerResults
+        })
+        .catch(error => {
+          console.log("error from inline comment: " + JSON.stringify(error, null, 4))
+          return inlineResultsIntoResults(inlineResult)
+        })
     })
     return Promise.all(promises).then(dangerResults => {
       return new Promise<DangerResults>(resolve => {

@@ -144,7 +144,6 @@ export class GitHubAPI {
         position: position,
       }
     )
-    console.log("response from inline comment: " + res.json())
     return res.json()
   }
 

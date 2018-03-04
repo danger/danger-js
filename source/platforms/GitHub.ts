@@ -126,6 +126,7 @@ export class GitHub {
     let commitId = git.commits[git.commits.length - 1].sha
 
     return this.findPositionForInlineComment(git, line, path).then(position => {
+      console.log("position: " + position + ", file: " + path + ", line: " + line)
       return this.api.postInlinePRComment(comment, commitId, path, position)
     })
   }

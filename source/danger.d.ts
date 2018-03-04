@@ -191,10 +191,24 @@ declare module "danger" {
     line: number
 
     /**
-     * Violation results for given file/line
-     *
+     * Failed messages
      */
-    results: DangerResults
+    fails: string[]
+
+    /**
+     * Messages for info
+     */
+    warnings: string[]
+
+    /**
+     * A set of messages to show inline
+     */
+    messages: string[]
+
+    /**
+     * Markdown messages to attach at the bottom of the comment
+     */
+    markdowns: string[]
   }
 
   export const emptyDangerResults = {
@@ -272,24 +286,46 @@ declare module "danger" {
     }
   }
 
-  export async function resultsIntoInlineResults(results: DangerResults): Promise<DangerInlineResults[]> {
+  export function resultsIntoInlineResults(results: DangerResults): DangerInlineResults[] {
     let dangerInlineResults: DangerInlineResults[] = []
 
     let violationsIntoInlineResults = (kind: string) => {
       for (let violation of results[kind]) {
         if (violation.file && violation.line) {
           let findInlineResult = dangerInlineResults.find(r => r.file == violation.file && r.line == violation.line)
-          let inlineResult = findInlineResult
-            ? findInlineResult
-            : { file: violation.file, line: violation.line, results: emptyDangerResults }
-          inlineResult.results[kind].push(violation)
-          dangerInlineResults.push(inlineResult)
+          if (findInlineResult) {
+            findInlineResult[kind].push(violation.message)
+          } else {
+            let inlineResult = {
+              file: violation.file,
+              line: violation.line,
+              fails: [],
+              warnings: [],
+              messages: [],
+              markdowns: [],
+            }
+            inlineResult[kind].push(violation.message)
+            dangerInlineResults.push(inlineResult)
+          }
         }
       }
     }
-    ;["fails", "warnings", "messages", "markdowns"].forEach(violationsIntoInlineResults)
+    Object.keys(results).forEach(violationsIntoInlineResults)
 
-    return new Promise<DangerInlineResults[]>(resolve => resolve(dangerInlineResults))
+    return dangerInlineResults
+  }
+
+  export function inlineResultsIntoResults(inlineResults: DangerInlineResults): DangerResults {
+    let messageToViolation = (message: string): Violation => {
+      return { message: message, file: inlineResults.file, line: inlineResults.line }
+    }
+
+    return {
+      fails: inlineResults.fails.map(messageToViolation),
+      warnings: inlineResults.warnings.map(messageToViolation),
+      messages: inlineResults.messages.map(messageToViolation),
+      markdowns: inlineResults.markdowns.map(messageToViolation),
+    }
   }
 
   /**
