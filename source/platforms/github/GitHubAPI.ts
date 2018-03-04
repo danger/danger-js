@@ -144,7 +144,11 @@ export class GitHubAPI {
         position: position,
       }
     )
-    return res.json()
+    if (res.ok) {
+      return res.json()
+    } else {
+      throw await res.json()
+    }
   }
 
   getPullRequestInfo = async (): Promise<GitHubPRDSL> => {
