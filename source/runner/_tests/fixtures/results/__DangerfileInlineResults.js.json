@@ -20,6 +20,10 @@
       "line": "17"
     }
   ],
-  "markdowns": ["this is a *markdown*"],
+  "markdowns": [
+    {
+      "message": "this is a *markdown*"
+    }
+  ],
   "scheduled": []
 }

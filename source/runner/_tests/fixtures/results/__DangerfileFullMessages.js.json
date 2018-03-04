@@ -14,6 +14,10 @@
       "message": "this is a message"
     }
   ],
-  "markdowns": ["this is a *markdown*"],
+  "markdowns": [
+    {
+      "message": "this is a *markdown*"
+    }
+  ],
   "scheduled": []
 }

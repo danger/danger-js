@@ -14,6 +14,10 @@
       "message": "Asynchronous Message"
     }
   ],
-  "markdowns": ["Asynchronous Markdown"],
+  "markdowns": [
+    {
+      "message": "Asynchronous Markdown"
+    }
+  ],
   "scheduled": [{}, {}, {}, {}]
 }
