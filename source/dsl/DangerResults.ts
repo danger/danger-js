@@ -80,34 +80,34 @@ export const emptyDangerResults = {
 }
 
 export function inlineResults(results: DangerResults): DangerResults {
-  return sortResults({
+  return {
     fails: results.fails.filter(m => isInline(m)),
     warnings: results.warnings.filter(m => isInline(m)),
     messages: results.messages.filter(m => isInline(m)),
     markdowns: results.markdowns.filter(m => isInline(m)),
-  })
+  }
 }
 
 export function regularResults(results: DangerResults): DangerResults {
-  return sortResults({
+  return {
     fails: results.fails.filter(m => !isInline(m)),
     warnings: results.warnings.filter(m => !isInline(m)),
     messages: results.messages.filter(m => !isInline(m)),
     markdowns: results.markdowns.filter(m => !isInline(m)),
-  })
+  }
 }
 
 export function mergeResults(results1: DangerResults, results2: DangerResults): DangerResults {
-  return sortResults({
+  return {
     fails: results1.fails.concat(results2.fails),
     warnings: results1.warnings.concat(results2.warnings),
     messages: results1.messages.concat(results2.messages),
     markdowns: results1.markdowns.concat(results2.markdowns),
-  })
+  }
 }
 
 export function sortResults(results: DangerResults): DangerResults {
-  let sortByFile = (a: Violation, b: Violation): number => {
+  const sortByFile = (a: Violation, b: Violation): number => {
     if (a.file === undefined) {
       return -1
     }
@@ -148,16 +148,16 @@ export function sortResults(results: DangerResults): DangerResults {
 }
 
 export function resultsIntoInlineResults(results: DangerResults): DangerInlineResults[] {
-  let dangerInlineResults: DangerInlineResults[] = []
+  const dangerInlineResults: DangerInlineResults[] = []
 
-  let violationsIntoInlineResults = (kind: string) => {
+  const violationsIntoInlineResults = (kind: string) => {
     for (let violation of results[kind]) {
       if (violation.file && violation.line) {
-        let findInlineResult = dangerInlineResults.find(r => r.file == violation.file && r.line == violation.line)
+        const findInlineResult = dangerInlineResults.find(r => r.file == violation.file && r.line == violation.line)
         if (findInlineResult) {
           findInlineResult[kind].push(violation.message)
         } else {
-          let inlineResult = {
+          const inlineResult = {
             file: violation.file,
             line: violation.line,
             fails: [],
@@ -177,7 +177,7 @@ export function resultsIntoInlineResults(results: DangerResults): DangerInlineRe
 }
 
 export function inlineResultsIntoResults(inlineResults: DangerInlineResults): DangerResults {
-  let messageToViolation = (message: string): Violation => {
+  const messageToViolation = (message: string): Violation => {
     return { message: message, file: inlineResults.file, line: inlineResults.line }
   }
 

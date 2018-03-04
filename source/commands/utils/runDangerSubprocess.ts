@@ -68,7 +68,7 @@ const runDangerSubprocess = (subprocessName: string[], dslJSON: DangerDSLJSONTyp
       }
     }
     const danger = await jsonToDSL(dslJSON)
-    await exec.handleResults(results, danger)
+    await exec.handleResults(results, danger.git)
   })
 }
 

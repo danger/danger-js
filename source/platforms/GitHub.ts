@@ -129,7 +129,6 @@ export class GitHub implements Platform {
     let commitId = git.commits[git.commits.length - 1].sha
 
     return this.findPositionForInlineComment(git, line, path).then(position => {
-      console.log("position: " + position + ", file: " + path + ", line: " + line)
       return this.api.postInlinePRComment(comment, commitId, path, position)
     })
   }
@@ -158,9 +157,6 @@ export class GitHub implements Platform {
       })
     })
   }
-
-  // In Danger RB we support a danger_id property,
-  // this should be handled at some point
 
   /**
    * Deletes the main Danger comment, used when you have

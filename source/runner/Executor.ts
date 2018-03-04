@@ -1,5 +1,4 @@
 import { contextForDanger, DangerContext } from "./Dangerfile"
-import { DangerDSL, DangerDSLType } from "../dsl/DangerDSL"
 import { CISource } from "../ci_source/ci_source"
 import { Platform } from "../platforms/platform"
 import {
@@ -11,6 +10,7 @@ import {
   resultsIntoInlineResults,
   emptyDangerResults,
   inlineResultsIntoResults,
+  sortResults,
 } from "../dsl/DangerResults"
 import { template as githubResultsTemplate } from "./templates/githubIssueTemplate"
 import { template as bitbucketServerTemplate } from "./templates/bitbucketServerTemplate"
@@ -23,6 +23,7 @@ import { DangerRunner } from "./runners/runner"
 import { jsonToDSL } from "./jsonToDSL"
 import { jsonDSLGenerator } from "./dslGenerator"
 import { GitDSL } from "../dsl/GitDSL"
+import { DangerDSL } from "../dsl/DangerDSL"
 
 // This is still badly named, maybe it really should just be runner?
 
@@ -87,7 +88,7 @@ export class Executor {
       results = this.resultsForError(error)
     }
 
-    await this.handleResults(results, runtime.danger)
+    await this.handleResults(results, runtime.danger.git)
     return results
   }
 
@@ -107,12 +108,12 @@ export class Executor {
    *
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    */
-  async handleResults(results: DangerResults, danger: DangerDSLType) {
+  async handleResults(results: DangerResults, git: GitDSL) {
     this.d(`Got Results back, current settings`, this.options)
     if (this.options.stdoutOnly || this.options.jsonOnly) {
       await this.handleResultsPostingToSTDOUT(results)
     } else {
-      await this.handleResultsPostingToPlatform(results, danger)
+      await this.handleResultsPostingToPlatform(results, git)
     }
   }
   /**
@@ -173,7 +174,7 @@ export class Executor {
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    */
   // TODO: Instead of danger, pass gitDSL
-  async handleResultsPostingToPlatform(results: DangerResults, danger: DangerDSLType) {
+  async handleResultsPostingToPlatform(results: DangerResults, git: GitDSL) {
     // Delete the message if there's nothing to say
     const { fails, warnings, messages, markdowns } = results
 
@@ -208,9 +209,9 @@ export class Executor {
         console.log("Found only messages, passing those to review.")
       }
       const inline = inlineResults(results)
-      const inlineLeftovers = await this.sendInlineComments(inline, danger.git)
+      const inlineLeftovers = await this.sendInlineComments(inline, git)
       const regular = regularResults(results)
-      const mergedResults = mergeResults(regular, inlineLeftovers)
+      const mergedResults = sortResults(mergeResults(regular, inlineLeftovers))
       const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
         ? bitbucketServerTemplate(dangerID, mergedResults)
         : githubResultsTemplate(dangerID, mergedResults)
@@ -233,17 +234,11 @@ export class Executor {
   sendInlineComments(results: DangerResults, git: GitDSL): Promise<DangerResults> {
     // TODO: Get current inline comments, if any of the old ones is not present
     // in the new ones - delete.
-    let inlineResults = resultsIntoInlineResults(results)
-    let promises = inlineResults.map(inlineResult => {
+    const inlineResults = resultsIntoInlineResults(results)
+    const promises = inlineResults.map(inlineResult => {
       return this.sendInlineComment(git, inlineResult)
-        .then(response => {
-          console.log("response from inline comment: " + JSON.stringify(response, null, 4))
-          return emptyDangerResults
-        })
-        .catch(error => {
-          console.log("error from inline comment: " + JSON.stringify(error, null, 4))
-          return inlineResultsIntoResults(inlineResult)
-        })
+        .then(_r => emptyDangerResults)
+        .catch(_e => inlineResultsIntoResults(inlineResult))
     })
     return Promise.all(promises).then(dangerResults => {
       return new Promise<DangerResults>(resolve => {
@@ -253,7 +248,7 @@ export class Executor {
   }
 
   async sendInlineComment(git: GitDSL, inlineResults: DangerInlineResults): Promise<any> {
-    let template = githubResultsTemplate(this.options.dangerID, inlineResultsIntoResults(inlineResults))
+    const template = githubResultsTemplate(this.options.dangerID, inlineResultsIntoResults(inlineResults))
     return await this.platform.createInlineComment(git, template, inlineResults.file, inlineResults.line)
   }
 

@@ -100,7 +100,7 @@ describe("API testing", () => {
 
   it("postInlinePRComment success", async () => {
     api.fetch = fetchJSON
-    let expectedJSON = {
+    const expectedJSON = {
       api: "https://api.github.com/repos/artsy/emission/pulls/1/comments",
       headers: {
         Authorization: "token ABCDE",
@@ -115,7 +115,7 @@ describe("API testing", () => {
 
   it("postInlinePRComment error", async () => {
     api.fetch = fetchErrorJSON
-    let expectedJSON = {
+    const expectedJSON = {
       api: "https://api.github.com/repos/artsy/emission/pulls/1/comments",
       headers: {
         Authorization: "token ABCDE",

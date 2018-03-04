@@ -146,12 +146,12 @@ describe("the dangerfile gitDSL", async () => {
   })
 
   it("finds the position of file/line for inline comment with one chunk", async () => {
-    let position = await github.findPositionForInlineComment(gitDSL, 9, "tsconfig.json")
+    const position = await github.findPositionForInlineComment(gitDSL, 9, "tsconfig.json")
     expect(position).toBe(6)
   })
 
   it("finds the position of file/line for inline comment with two chunks", async () => {
-    let position = await github.findPositionForInlineComment(gitDSL, 28, "lib/containers/gene.js")
+    const position = await github.findPositionForInlineComment(gitDSL, 28, "lib/containers/gene.js")
     expect(position).toBe(19)
   })
 
