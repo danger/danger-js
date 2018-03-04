@@ -79,7 +79,7 @@ ${buildSummaryMessage(dangerID, results)}
 ${table("Fails", "no_entry_sign", results.fails)}
 ${table("Warnings", "warning", results.warnings)}
 ${table("Messages", "book", results.messages)}
-${results.markdowns.join("\n\n")}
+${results.markdowns.map(v => v.message).join("\n\n")}
 <p align="right">
   ${dangerSignaturePostfix}
 </p>

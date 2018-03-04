@@ -2,7 +2,15 @@ import { contextForDanger, DangerContext } from "./Dangerfile"
 import { DangerDSL, DangerDSLType } from "../dsl/DangerDSL"
 import { CISource } from "../ci_source/ci_source"
 import { Platform } from "../platforms/platform"
-import { DangerResults } from "../dsl/DangerResults"
+import {
+  inlineResults,
+  regularResults,
+  mergeResults,
+  DangerResults,
+  DangerInlineResults,
+  resultsIntoInlineResults,
+  emptyDangerResults,
+} from "../dsl/DangerResults"
 import { template as githubResultsTemplate } from "./templates/githubIssueTemplate"
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
@@ -12,7 +20,8 @@ import { sentence, href } from "./DangerUtils"
 import { DangerRunner } from "./runners/runner"
 import { jsonToDSL } from "./jsonToDSL"
 import { jsonDSLGenerator } from "./dslGenerator"
-import { Violation, isInline as isInlineViolation } from "../dsl/Violation"
+import { Violation } from "../dsl/Violation"
+import { GitDSL } from "../dsl/GitDSL"
 
 // This is still badly named, maybe it really should just be runner?
 
@@ -100,9 +109,9 @@ export class Executor {
   async handleResults(results: DangerResults, danger: DangerDSLType) {
     this.d(`Got Results back, current settings`, this.options)
     if (this.options.stdoutOnly || this.options.jsonOnly) {
-      this.handleResultsPostingToSTDOUT(results)
+      await this.handleResultsPostingToSTDOUT(results)
     } else {
-      this.handleResultsPostingToPlatform(results, danger)
+      await this.handleResultsPostingToPlatform(results, danger)
     }
   }
   /**
@@ -198,37 +207,12 @@ export class Executor {
         console.log("Found only messages, passing those to review.")
       }
 
-      let inlineResults: DangerResults = {
-        warnings: results.warnings.filter(m => isInlineViolation(m)),
-        fails: results.fails.filter(m => isInlineViolation(m)),
-        messages: results.messages.filter(m => isInlineViolation(m)),
-        markdowns: [],
-      }
-      // TODO: Get current inline comments, if any of the old ones is not present
-      // in the new ones - delete.
-      let sendViolation = (violation: Violation, kind: string): void => {
-        let file = violation.file
-        let line = violation.line
-        if (file && line) {
-          let commit = danger.github.pr.head
-          console.log("Creating comment. Commit: " + commit.sha + ', file: "' + file + '", line: ' + line)
-          this.platform.createInlineComment(danger.git, kind + ": " + violation.message, file, line)
-        }
-      }
-      // TODO: Check if any of the inline comments were not accepted
-      // add them to regular comments instead.
-      inlineResults.warnings.forEach(v => sendViolation(v, "warnings"))
-      inlineResults.fails.forEach(v => sendViolation(v, "fails"))
-      inlineResults.messages.forEach(v => sendViolation(v, "messages"))
+      let inline = inlineResults(results)
+      let inlineLeftovers = await this.sendInlineComments(inline, danger.git)
+      let regular = regularResults(results)
+      let mergedResults = mergeResults(regular, inlineLeftovers)
 
-      let regularResults: DangerResults = {
-        warnings: results.warnings.filter(m => !isInlineViolation(m)),
-        fails: results.fails.filter(m => !isInlineViolation(m)),
-        messages: results.messages.filter(m => !isInlineViolation(m)),
-        markdowns: results.markdowns,
-      }
-
-      const comment = githubResultsTemplate(dangerID, regularResults)
+      const comment = githubResultsTemplate(dangerID, mergedResults)
       await this.platform.updateOrCreateComment(dangerID, comment)
     }
 
@@ -236,6 +220,36 @@ export class Executor {
     if (this.options.verbose) {
       await this.handleResultsPostingToSTDOUT(results)
     }
+  }
+
+  /**
+   * Send inline comments
+   * Returns these violations that didn't pass the validation (e.g. incorrect file/line)
+   *
+   * @param results Results with inline violations
+   */
+  sendInlineComments(results: DangerResults, git: GitDSL): Promise<DangerResults> {
+    // TODO: Get current inline comments, if any of the old ones is not present
+    // in the new ones - delete.
+    return resultsIntoInlineResults(results).then(inlineResults => {
+      let promises: Promise<DangerResults>[] = inlineResults.map(inlineResult => {
+        return this.sendInlineComment(git, inlineResult)
+          .then(_ => emptyDangerResults)
+          .catch(_ => {
+            return inlineResult.results
+          })
+      })
+      return Promise.all(promises).then(results => {
+        return new Promise<DangerResults>(resolve => {
+          resolve(results.reduce((acc, r) => mergeResults(acc, r), emptyDangerResults))
+        })
+      })
+    })
+  }
+
+  async sendInlineComment(git: GitDSL, inlineResults: DangerInlineResults): Promise<any> {
+    let template = githubResultsTemplate(this.options.dangerID, inlineResults.results)
+    return await this.platform.createInlineComment(git, template, inlineResults.file, inlineResults.line)
   }
 
   /**
@@ -250,7 +264,7 @@ export class Executor {
       fails: [{ message: "Running your Dangerfile has Failed" }],
       warnings: [],
       messages: [],
-      markdowns: [exceptionRaisedTemplate(error)],
+      markdowns: [{ message: exceptionRaisedTemplate(error) }],
     }
   }
 }

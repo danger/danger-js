@@ -54,7 +54,7 @@ export interface DangerContext {
    *
    * @param {MarkdownString} message the String to output
    */
-  markdown(message: MarkdownString): void
+  markdown(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * The root Danger object. This contains all of the metadata you
@@ -97,7 +97,8 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
   const warn = (message: MarkdownString, file?: string, line?: number) => results.warnings.push({ message, file, line })
   const message = (message: MarkdownString, file?: string, line?: number) =>
     results.messages.push({ message, file, line })
-  const markdown = (message: MarkdownString) => results.markdowns.push(message)
+  const markdown = (message: MarkdownString, file?: string, line?: number) =>
+    results.markdowns.push({ message, file, line })
 
   return {
     schedule,

@@ -11,7 +11,7 @@ export const resultsWithFailure = (failure: string, moreMarkdown?: string): Dang
     warnings: [],
     messages: [],
     fails: [fail],
-    markdowns: moreMarkdown ? [moreMarkdown] : [],
+    markdowns: moreMarkdown ? [{ message: moreMarkdown }] : [],
   }
 }
 

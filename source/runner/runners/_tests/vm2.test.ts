@@ -92,7 +92,7 @@ runners.forEach(run => {
 
         expect(results).toEqual({
           fails: [{ message: "this is a failure" }],
-          markdowns: ["this is a *markdown*"],
+          markdowns: [{ message: "this is a *markdown*" }],
           messages: [{ message: "this is a message" }],
           warnings: [{ message: "this is a warning" }],
         })
@@ -108,7 +108,7 @@ runners.forEach(run => {
         )
 
         expect(results.fails[0].message).toContain("Danger failed to run")
-        expect(results.markdowns[0]).toContain("hello is not defined")
+        expect(results.markdowns[0].message).toContain("hello is not defined")
       })
 
       it("handles relative imports correctly in Babel", async () => {
@@ -148,7 +148,7 @@ runners.forEach(run => {
         expect(results).toEqual({
           fails: [{ message: "Asynchronous Failure" }],
           messages: [{ message: "Asynchronous Message" }],
-          markdowns: ["Asynchronous Markdown"],
+          markdowns: [{ message: "Asynchronous Markdown" }],
           warnings: [{ message: "Asynchronous Warning" }],
         })
       })
@@ -261,7 +261,7 @@ runners.forEach(run => {
         )
 
         expect(results.fails[0].message).toContain("Danger failed to run")
-        expect(results.markdowns[0]).toContain("Error: failure")
+        expect(results.markdowns[0].message).toContain("Error: failure")
       })
     })
   })
