@@ -5,10 +5,11 @@ import GitHubUtils from "./github/GitHubUtils"
 import gitDSLForGitHub from "./github/GitHubGit"
 
 import * as NodeGitHub from "@octokit/rest"
+import { Platform } from "./platform"
 
 /** Handles conforming to the Platform Interface for GitHub, API work is handle by GitHubAPI */
 
-export class GitHub {
+export class GitHub implements Platform {
   name: string
 
   constructor(public readonly api: GitHubAPI) {
@@ -70,8 +71,10 @@ export class GitHub {
    * @returns {Promise<GitHubDSL>} JSON response of the DSL
    */
   getPlatformDSLRepresentation = async (): Promise<GitHubJSONDSL> => {
-    const pr = await this.getReviewInfo()
-    if (pr === {}) {
+    let pr: GitHubPRDSL
+    try {
+      pr = await this.getReviewInfo()
+    } catch {
       process.exitCode = 1
       throw `
         Could not find pull request information,

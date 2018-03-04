@@ -14,6 +14,7 @@
 ## Master
 
 * Update the PR DSL to include bots. [@orta][]
+* Add BitBucket server support. [@azz][]
 
 ## 3.1.7
 
@@ -906,3 +907,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@wizardishungry]: https://github.com/wizardishungry
 [@hongrich]: https://github.com/hongrich
 [@peterjgrainger]: https://github.com/peterjgrainger
+[@azz]: https://github.com/azz

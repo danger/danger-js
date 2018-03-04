@@ -13,6 +13,7 @@ import {
   inlineResultsIntoResults,
 } from "../dsl/DangerResults"
 import { template as githubResultsTemplate } from "./templates/githubIssueTemplate"
+import { template as bitbucketServerTemplate } from "./templates/bitbucketServerTemplate"
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
 import * as debug from "debug"
@@ -98,7 +99,7 @@ export class Executor {
     const git = await this.platform.getPlatformGitRepresentation()
     const platformDSL = await this.platform.getPlatformDSLRepresentation()
     const utils = { sentence, href }
-    return new DangerDSL(platformDSL, git, utils)
+    return new DangerDSL(platformDSL, git, utils, this.platform.name)
   }
 
   /**
@@ -206,13 +207,14 @@ export class Executor {
       } else if (messageCount > 0) {
         console.log("Found only messages, passing those to review.")
       }
+      const inline = inlineResults(results)
+      const inlineLeftovers = await this.sendInlineComments(inline, danger.git)
+      const regular = regularResults(results)
+      const mergedResults = mergeResults(regular, inlineLeftovers)
+      const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
+        ? bitbucketServerTemplate(dangerID, mergedResults)
+        : githubResultsTemplate(dangerID, mergedResults)
 
-      let inline = inlineResults(results)
-      let inlineLeftovers = await this.sendInlineComments(inline, danger.git)
-      let regular = regularResults(results)
-      let mergedResults = mergeResults(regular, inlineLeftovers)
-
-      const comment = githubResultsTemplate(dangerID, mergedResults)
       await this.platform.updateOrCreateComment(dangerID, comment)
     }
 
