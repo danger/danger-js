@@ -56,7 +56,7 @@ ${resultsSection("Fails", "🚫", results.fails)}
 ${resultsSection("Warnings", "⚠️", results.warnings)}
 ${resultsSection("Messages", "📖", results.messages)}
 
-${results.markdowns.join("\n\n")}
+${results.markdowns.map(v => v.message).join("\n\n")}
 
 ${dangerSignaturePostfix}
 

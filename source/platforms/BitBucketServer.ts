@@ -1,4 +1,4 @@
-import { GitJSONDSL } from "../dsl/GitDSL"
+import { GitJSONDSL, GitDSL } from "../dsl/GitDSL"
 import { BitBucketServerPRDSL, BitBucketServerJSONDSL } from "../dsl/BitBucketServerDSL"
 import { BitBucketServerAPI } from "./bitbucket_server/BitBucketServerAPI"
 import gitDSLForBitBucketServer from "./bitbucket_server/BitBucketServerGit"
@@ -85,6 +85,10 @@ export class BitBucketServer implements Platform {
     return true
   }
 
+  supportsInlineComments() {
+    return false
+  }
+
   /**
    * Returns the response for the new comment
    *
@@ -92,6 +96,16 @@ export class BitBucketServer implements Platform {
    * @returns {Promise<any>} JSON response of new comment
    */
   createComment = (comment: string) => this.api.postPRComment(comment)
+
+  /**
+   * Makes an inline comment if possible. If platform can't make an inline comment with given arguments,
+   * it returns `undefined`. (e.g. platform doesn't support inline comments or line was out of diff).
+   *
+   * @returns {Promise<any>} JSON response of new comment
+   */
+  createInlineComment = (_git: GitDSL, _comment: string, _path: string, _line: number): Promise<any> => {
+    return new Promise((_resolve, reject) => reject())
+  }
 
   /**
    * Deletes the main Danger comment, used when you have
