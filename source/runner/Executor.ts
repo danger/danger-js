@@ -20,7 +20,6 @@ import { sentence, href } from "./DangerUtils"
 import { DangerRunner } from "./runners/runner"
 import { jsonToDSL } from "./jsonToDSL"
 import { jsonDSLGenerator } from "./dslGenerator"
-import { Violation } from "../dsl/Violation"
 import { GitDSL } from "../dsl/GitDSL"
 
 // This is still badly named, maybe it really should just be runner?

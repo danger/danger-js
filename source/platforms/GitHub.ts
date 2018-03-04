@@ -118,42 +118,40 @@ export class GitHub {
    *
    * @returns {Promise<any>} JSON response of new comment
    */
-  createInlineComment = (git: GitDSL, comment: string, path: string, line: number): Promise<any | undefined> => {
+  createInlineComment = (git: GitDSL, comment: string, path: string, line: number): Promise<any> => {
     if (!this.supportsInlineComments) {
-      return new Promise(_v => undefined)
+      return new Promise((_resolve, reject) => reject())
     }
 
     let commitId = git.commits[git.commits.length - 1].sha
 
     return this.findPositionForInlineComment(git, line, path).then(position => {
-      if (position !== undefined) {
-        return this.api.postInlinePRComment(comment, commitId, path, position)
-      } else {
-        return undefined
-      }
+      return this.api.postInlinePRComment(comment, commitId, path, position)
     })
   }
 
-  findPositionForInlineComment = (git: GitDSL, line: number, path: string): Promise<number | undefined> => {
+  findPositionForInlineComment = (git: GitDSL, line: number, path: string): Promise<number> => {
     return git.diffForFile(path).then(diff => {
-      if (diff === undefined) {
-        return undefined
-      }
-
-      let fileLine = 0
-      for (let chunk of diff!.chunks) {
-        // Search for a change (that is not a deletion). "ln" is for normal changes, "ln2" for additions,
-        // thus need to check for either of them
-        let index = chunk.changes.findIndex((c: any) => c.type != "del" && (c.ln == line || c.ln2 == line))
-        if (index != -1) {
-          fileLine += index + 1
-          break
-        } else {
-          fileLine += chunk.changes.length + 1
+      return new Promise<number>((resolve, reject) => {
+        if (diff === undefined) {
+          reject()
         }
-      }
 
-      return fileLine
+        let fileLine = 0
+        for (let chunk of diff!.chunks) {
+          // Search for a change (that is not a deletion). "ln" is for normal changes, "ln2" for additions,
+          // thus need to check for either of them
+          let index = chunk.changes.findIndex((c: any) => c.type != "del" && (c.ln == line || c.ln2 == line))
+          if (index != -1) {
+            fileLine += index + 1
+            break
+          } else {
+            fileLine += chunk.changes.length + 1
+          }
+        }
+
+        resolve(fileLine)
+      })
     })
   }
 

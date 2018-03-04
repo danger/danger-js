@@ -47,6 +47,7 @@ describe("setup", () => {
   it("Creates a DangerResults for a raising dangerfile", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
 
     // This is a real error occuring when Danger modifies the Dangerfile
     // as it is given a path of ""
@@ -55,10 +56,10 @@ describe("setup", () => {
       message: "ENOENT: no such file or directory",
     }
 
-    const results = await exec.runDanger("", {} as any)
+    const results = await exec.runDanger("", { danger: dsl } as any)
     expect(results.fails.length).toBeGreaterThan(0)
 
-    const markdown = results.markdowns[0]
+    const markdown = results.markdowns[0].message
     expect(markdown).toMatch(error.name)
     expect(markdown).toMatch(error.message)
   })
