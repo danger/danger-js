@@ -6,6 +6,7 @@ import inlineRunner from "../runners/inline"
 import { jsonDSLGenerator } from "../dslGenerator"
 import { jsonToDSL } from "../jsonToDSL"
 import { DangerDSLType } from "../../dsl/DangerDSL"
+import { singleViolationSingleFileResults } from "../../dsl/_tests/fixtures/ExampleDangerResults"
 
 const defaultConfig = {
   stdoutOnly: false,
@@ -92,6 +93,17 @@ describe("setup", () => {
 
     await exec.handleResults(warnResults, dsl)
     expect(platform.updateOrCreateComment).toBeCalled()
+  })
+
+  it("Sends inline comments and returns regular results for failures", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    const apiFailureMock = jest.fn().mockReturnValue(new Promise<any>((resolve, reject) => reject()))
+    platform.createInlineComment = apiFailureMock
+
+    let results = await exec.sendInlineComments(singleViolationSingleFileResults, dsl.git)
+    expect(results).toEqual(singleViolationSingleFileResults)
   })
 
   it("Creates an inline comment for warning", async () => {
