@@ -10,6 +10,7 @@ import {
   DangerInlineResults,
   resultsIntoInlineResults,
   emptyDangerResults,
+  inlineResultsIntoResults,
 } from "../dsl/DangerResults"
 import { template as githubResultsTemplate } from "./templates/githubIssueTemplate"
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
@@ -230,24 +231,21 @@ export class Executor {
   sendInlineComments(results: DangerResults, git: GitDSL): Promise<DangerResults> {
     // TODO: Get current inline comments, if any of the old ones is not present
     // in the new ones - delete.
-    return resultsIntoInlineResults(results).then(inlineResults => {
-      let promises: Promise<DangerResults>[] = inlineResults.map(inlineResult => {
-        return this.sendInlineComment(git, inlineResult)
-          .then(_ => emptyDangerResults)
-          .catch(_ => {
-            return inlineResult.results
-          })
-      })
-      return Promise.all(promises).then(results => {
-        return new Promise<DangerResults>(resolve => {
-          resolve(results.reduce((acc, r) => mergeResults(acc, r), emptyDangerResults))
-        })
+    let inlineResults = resultsIntoInlineResults(results)
+    let promises = inlineResults.map(inlineResult => {
+      return this.sendInlineComment(git, inlineResult)
+        .then(_ => emptyDangerResults)
+        .catch(_ => inlineResultsIntoResults(inlineResult))
+    })
+    return Promise.all(promises).then(dangerResults => {
+      return new Promise<DangerResults>(resolve => {
+        resolve(dangerResults.reduce((acc, r) => mergeResults(acc, r), emptyDangerResults))
       })
     })
   }
 
   async sendInlineComment(git: GitDSL, inlineResults: DangerInlineResults): Promise<any> {
-    let template = githubResultsTemplate(this.options.dangerID, inlineResults.results)
+    let template = githubResultsTemplate(this.options.dangerID, inlineResultsIntoResults(inlineResults))
     return await this.platform.createInlineComment(git, template, inlineResults.file, inlineResults.line)
   }
 
