@@ -13,7 +13,7 @@ const dangerRunToRunnerCLI = (argv: string[]) => {
     // convert
     let newJSFile = argv[1]
     usesProcessSeparationCommands.forEach(name => {
-      newJSFile = newJSFile.replace("-" + name, "-runner")
+      newJSFile = newJSFile.replace("danger-" + name, "danger-runner")
     })
 
     newCommand.push(newJSFile)

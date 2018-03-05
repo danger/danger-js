@@ -13,6 +13,7 @@
 
 ## Master
 
+* Improve path generator for danger-runner.
 * Update the PR DSL to include bots. [@orta][]
 
 ## 3.1.7
@@ -906,3 +907,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@wizardishungry]: https://github.com/wizardishungry
 [@hongrich]: https://github.com/hongrich
 [@peterjgrainger]: https://github.com/peterjgrainger
+[@mifi]: https://github.com/ionutmiftode
