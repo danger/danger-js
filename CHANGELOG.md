@@ -1,14 +1,43 @@
 <!--
 
-// Please add your own contribution below inside the Master section, no need to 
+// Please add your own contribution below inside the Master section, no need to
 // set a version number, that happens during a deploy.
 //
 // These docs are aimed at users rather than danger developers, so please limit technical
 // terminology in here.
 
+// Note: if this is your first PR, you'll need to add your URL to the footnotes
+//       see the bottom of this file
+
 -->
 
 ## Master
+
+* Update the PR DSL to include bots. [@orta][]
+
+## 3.1.7
+
+* Minor error reporting improvements. [@orta][]
+
+## 3.1.6
+
+* Move more code to only live inside functions. [@orta][]
+
+## 3.1.5
+
+* Fix --base options for danger local. [@peterjgrainger][]
+* Fix a minor typo in Semaphore CI setup. [@hongrich][]
+* Fix for capitalized Dangerfiles in CI environment. [@wizardishungry][]
+* Fix `danger local` crashing when comparing master to HEAD with no changes. [@orta][]
+
+## 3.1.4
+
+* Register danger-runner as a package binary. [@urkle][]
+
+## 3.1.2-3.1.3
+
+* Peril typings to the Danger DSL. [@orta][]
+* Reference docs updates for the website. [@orta][]
 
 ## 3.1.1
 
@@ -873,3 +902,7 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@fbartho]: https://github.com/fbartho
 [@tychota]: https://github.com/tychota
 [@adam-moss]: https://github.com/adam-moss
+[@urkle]: https://github.com/urkle
+[@wizardishungry]: https://github.com/wizardishungry
+[@hongrich]: https://github.com/hongrich
+[@peterjgrainger]: https://github.com/peterjgrainger

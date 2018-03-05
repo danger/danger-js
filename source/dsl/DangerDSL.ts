@@ -1,6 +1,7 @@
 import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitHubDSL } from "../dsl/GitHubDSL"
 import { DangerUtilsDSL } from "./DangerUtilsDSL"
+import { CliArgs } from "../runner/cli-args"
 
 /**
  * The shape of the JSON passed between Danger and a subprocess. It's built
@@ -8,6 +9,36 @@ import { DangerUtilsDSL } from "./DangerUtilsDSL"
  */
 export interface DangerJSON {
   danger: DangerDSLJSONType
+}
+
+/**
+ * The available Peril interface, it is possible that this is not
+ * always up to date with true DSL in Peril, but I'll be giving it
+ * a good shot.
+ */
+
+export interface PerilDSL {
+  /**
+   * A set of key:value string based on ENV vars that have
+   * been set to be exposed to your Peril config
+   */
+  env: any
+
+  /**
+   * Allows you to schedule a task declared in your Peril config to run in a certain timeframe,
+   * e.g `runTask("reminder_pr_merge", "in 2 days", { number: 2 })`. For more details on how this
+   * works, see the Peril documentation.
+   * @param taskName the name found in your Peril config
+   * @param time the time interval (uses human-internal module)
+   * @param data data which will be passed through to the script
+   */
+  runTask: (taskName: string, time: string, data: any) => void
+
+  /**
+   * When running a task, the data passed in when the task
+   * was originally scheduled.
+   */
+  data?: any
 }
 
 /**
@@ -41,7 +72,7 @@ export interface DangerDSLJSONType {
      * pass args/opts from the original CLI call through
      * to the process.
      */
-    cliArgs: any
+    cliArgs: CliArgs
   }
 }
 
@@ -62,8 +93,13 @@ export interface DangerDSLType {
    *  GitHub user identities and some useful utility functions
    *  for displaying links to files.
    *
-   *  Also provides an authenticated API so you can work directly
-   *  with the GitHub API. That is an instance of the "github" npm module.
+   *  Provides an authenticated API so you can work directly
+   *  with the GitHub API. This is an instance of the "@ocktokit/rest" npm
+   *  module.
+   *
+   *  Finally, if running through Peril on an event other than a PR
+   *  this is the full JSON from the webhook. You can find the full
+   *  typings for those webhooks [at github-webhook-event-types](https://github.com/orta/github-webhook-event-types).
    */
   readonly github: GitHubDSL
 

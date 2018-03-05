@@ -43,6 +43,36 @@ declare module "danger" {
   }
 
   /**
+   * The available Peril interface, it is possible that this is not
+   * always up to date with true DSL in Peril, but I'll be giving it
+   * a good shot.
+   */
+
+  interface PerilDSL {
+    /**
+     * A set of key:value string based on ENV vars that have
+     * been set to be exposed to your Peril config
+     */
+    env: any
+
+    /**
+     * Allows you to schedule a task declared in your Peril config to run in a certain timeframe,
+     * e.g `runTask("reminder_pr_merge", "in 2 days", { number: 2 })`. For more details on how this
+     * works, see the Peril documentation.
+     * @param taskName the name found in your Peril config
+     * @param time the time interval (uses human-internal module)
+     * @param data data which will be passed through to the script
+     */
+    runTask: (taskName: string, time: string, data: any) => void
+
+    /**
+     * When running a task, the data passed in when the task
+     * was originally scheduled.
+     */
+    data?: any
+  }
+
+  /**
    *  The root of the Danger JSON DSL.
    */
 
@@ -73,7 +103,7 @@ declare module "danger" {
        * pass args/opts from the original CLI call through
        * to the process.
        */
-      cliArgs: any
+      cliArgs: CliArgs
     }
   }
 
@@ -94,8 +124,13 @@ declare module "danger" {
      *  GitHub user identities and some useful utility functions
      *  for displaying links to files.
      *
-     *  Also provides an authenticated API so you can work directly
-     *  with the GitHub API. That is an instance of the "github" npm module.
+     *  Provides an authenticated API so you can work directly
+     *  with the GitHub API. This is an instance of the "@ocktokit/rest" npm
+     *  module.
+     *
+     *  Finally, if running through Peril on an event other than a PR
+     *  this is the full JSON from the webhook. You can find the full
+     *  typings for those webhooks [at github-webhook-event-types](https://github.com/orta/github-webhook-event-types).
      */
     readonly github: GitHubDSL
 
@@ -523,7 +558,7 @@ declare module "danger" {
     /**
      * Whether the user is an org, or a user
      */
-    type: "User" | "Organization"
+    type: "User" | "Organization" | "Bot"
     /**
      * The url for a users's image
      */
@@ -675,7 +710,7 @@ declare module "danger" {
    */
   type Scheduleable = Promise<any> | Promise<void> | CallbackableFn
   /**
-   * A Dangerfile is evaluated as a script, and so async code does not work
+   * A Dangerfile, in Peril, is evaluated as a script, and so async code does not work
    * out of the box. By using the `schedule` function you can now register a
    * section of code to evaluate across multiple tick cycles.
    *
@@ -686,14 +721,15 @@ declare module "danger" {
   function schedule(asyncFunction: Scheduleable): void
 
   /**
-   * Fails a build, outputting a specific reason for failing.
+   * Fails a build, outputting a specific reason for failing into a HTML table.
    *
    * @param {MarkdownString} message the String to output
    */
   function fail(message: MarkdownString): void
 
   /**
-   * Highlights low-priority issues, but does not fail the build.
+   * Highlights low-priority issues, but does not fail the build. Message
+   * is shown inside a HTML table.
    *
    * @param {MarkdownString} message the String to output
    */
@@ -708,7 +744,7 @@ declare module "danger" {
   function message(message: MarkdownString): void
 
   /**
-   * Puts a message inside the Danger table
+   * Adds raw markdown into the Danger comment, under the table
    *
    * @param {MarkdownString} message the String to output
    */
@@ -719,6 +755,13 @@ declare module "danger" {
    * will be looking for in order to generate useful rules.
    */
   const danger: DangerDSLType
+
+  /**
+   * When Peril is running your Dangerfile, the Danger DSL is
+   * extended with additional options.
+   */
+  const peril: PerilDSL
+
   /**
    * The current results of a Danger run, this can be useful if you
    * are wanting to introspect on whether a build has already failed.

@@ -14,7 +14,10 @@ import * as fs from "fs"
 import { resolve } from "path"
 import { jsonToDSL } from "../../jsonToDSL"
 import { jsonDSLGenerator } from "../../dslGenerator"
+import { checkForNodeModules } from "../utils/transpiler"
 const fixtures = resolve(__dirname, "../../_tests/fixtures")
+
+checkForNodeModules()
 
 // const runners = [{ name: "inline", fn: inlineRunner }, { name: "vm2", fn: vm2 }]
 const runners = [{ name: "vm2", fn: vm2 }]

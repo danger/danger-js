@@ -1,5 +1,5 @@
 import { DangerRuntimeContainer } from "../dsl/DangerResults"
-import { DangerDSLType } from "../dsl/DangerDSL"
+import { DangerDSLType, PerilDSL } from "../dsl/DangerDSL"
 import { MarkdownString } from "../dsl/Aliases"
 
 /// Start of Danger DSL definition
@@ -16,7 +16,7 @@ export type Scheduleable = Promise<any> | Promise<void> | CallbackableFn
 
 export interface DangerContext {
   /**
-   * A Dangerfile is evaluated as a script, and so async code does not work
+   * A Dangerfile, in Peril, is evaluated as a script, and so async code does not work
    * out of the box. By using the `schedule` function you can now register a
    * section of code to evaluate across multiple tick cycles.
    *
@@ -27,14 +27,15 @@ export interface DangerContext {
   schedule(asyncFunction: Scheduleable): void
 
   /**
-   * Fails a build, outputting a specific reason for failing.
+   * Fails a build, outputting a specific reason for failing into a HTML table.
    *
    * @param {MarkdownString} message the String to output
    */
   fail(message: MarkdownString): void
 
   /**
-   * Highlights low-priority issues, but does not fail the build.
+   * Highlights low-priority issues, but does not fail the build. Message
+   * is shown inside a HTML table.
    *
    * @param {MarkdownString} message the String to output
    */
@@ -49,7 +50,7 @@ export interface DangerContext {
   message(message: MarkdownString): void
 
   /**
-   * Puts a message inside the Danger table
+   * Adds raw markdown into the Danger comment, under the table
    *
    * @param {MarkdownString} message the String to output
    */
@@ -60,6 +61,13 @@ export interface DangerContext {
    * will be looking for in order to generate useful rules.
    */
   danger: DangerDSLType
+
+  /**
+   * When Peril is running your Dangerfile, the Danger DSL is
+   * extended with additional options.
+   */
+  peril: PerilDSL
+
   /**
    * The current results of a Danger run, this can be useful if you
    * are wanting to introspect on whether a build has already failed.
@@ -98,5 +106,6 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
     markdown,
     results,
     danger: dsl,
+    peril: {} as any,
   }
 }

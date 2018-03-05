@@ -19,5 +19,13 @@ export function dangerfilePath(program: any): string {
     return "dangerfile.js"
   }
 
+  if (existsSync("Dangerfile.ts")) {
+    return "Dangerfile.ts"
+  }
+
+  if (existsSync("Dangerfile.js")) {
+    return "Dangerfile.js"
+  }
+
   throw new Error("Could not find a `dangerfile.js` or `dangerfile.ts` in the current working directory.")
 }
