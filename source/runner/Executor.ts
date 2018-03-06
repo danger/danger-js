@@ -12,8 +12,14 @@ import {
   inlineResultsIntoResults,
   sortResults,
 } from "../dsl/DangerResults"
-import { template as githubResultsTemplate } from "./templates/githubIssueTemplate"
-import { template as bitbucketServerTemplate } from "./templates/bitbucketServerTemplate"
+import {
+  template as githubResultsTemplate,
+  inlineTemplate as githubResultsInlineTemplate,
+} from "./templates/githubIssueTemplate"
+import {
+  template as bitbucketServerTemplate,
+  inlineTemplate as bitbucketServerInlineTemplate,
+} from "./templates/bitbucketServerTemplate"
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
 import * as debug from "debug"
@@ -248,8 +254,15 @@ export class Executor {
   }
 
   async sendInlineComment(git: GitDSL, inlineResults: DangerInlineResults): Promise<any> {
-    const template = githubResultsTemplate(this.options.dangerID, inlineResultsIntoResults(inlineResults))
-    return await this.platform.createInlineComment(git, template, inlineResults.file, inlineResults.line)
+    if (!this.platform.supportsInlineComments) {
+      return
+    }
+
+    const results = inlineResultsIntoResults(inlineResults)
+    const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
+      ? bitbucketServerInlineTemplate(results)
+      : githubResultsInlineTemplate(this.options.dangerID, results)
+    return await this.platform.createInlineComment(git, comment, inlineResults.file, inlineResults.line)
   }
 
   /**
