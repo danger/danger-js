@@ -1,6 +1,6 @@
 import * as v from "voca"
 
-import { DangerResults } from "../../dsl/DangerResults"
+import { DangerResults, DangerInlineResults } from "../../dsl/DangerResults"
 import { Violation } from "../../dsl/Violation"
 
 /**
@@ -84,4 +84,20 @@ ${results.markdowns.map(v => v.message).join("\n\n")}
   ${dangerSignaturePostfix}
 </p>
 `
+}
+
+export function inlineTemplate(dangerID: string, results: DangerResults): string {
+  const printViolation = (emoji: string) => (violation: Violation) => {
+    return `- :${emoji}: ${violation.message}`
+  }
+
+  return `
+<!--
+${buildSummaryMessage(dangerID, results)}
+-->  
+${results.fails.map(printViolation("no_entry_sign"))}
+${results.warnings.map(printViolation("warning"))}
+${results.messages.map(printViolation("book"))}
+${results.markdowns.map(v => v.message).join("\n\n")}
+  `
 }

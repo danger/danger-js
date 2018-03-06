@@ -35,6 +35,20 @@ export const failsResults: DangerResults = {
   markdowns: [],
 }
 
+export const messagesResults: DangerResults = {
+  fails: [],
+  warnings: [],
+  messages: [{ message: "Message" }],
+  markdowns: [],
+}
+
+export const markdownResults: DangerResults = {
+  fails: [],
+  warnings: [],
+  messages: [],
+  markdowns: [{ message: "### Short Markdown Message1" }, { message: "### Short Markdown Message2" }],
+}
+
 export const summaryResults: DangerResults = {
   fails: [{ message: "Failing message Failing message" }],
   warnings: [{ message: "Warning message Warning message" }],

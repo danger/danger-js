@@ -4,8 +4,13 @@ import {
   warnResults,
   failsResults,
   summaryResults,
+  messagesResults,
+  markdownResults,
 } from "../../_tests/fixtures/ExampleDangerResults"
-import { template as githubResultsTemplate } from "../../templates/githubIssueTemplate"
+import {
+  template as githubResultsTemplate,
+  inlineTemplate as githubResultsInlineTemplate,
+} from "../../templates/githubIssueTemplate"
 
 describe("generating messages", () => {
   it("shows no tables for empty results", () => {
@@ -62,5 +67,52 @@ describe("generating messages", () => {
     })
 
     expect(issues).toMatchSnapshot()
+  })
+})
+
+describe("generating inline messages", () => {
+  it("Shows the failing message", () => {
+    const issues = githubResultsInlineTemplate("blankID", failsResults)
+    expect(issues).toContain("- :no_entry_sign: Failing message")
+    expect(issues).not.toContain("- :warning:")
+    expect(issues).not.toContain("- :book:")
+  })
+
+  it("Shows the warning message", () => {
+    const issues = githubResultsInlineTemplate("blankID", warnResults)
+    expect(issues).toContain("- :warning: Warning message")
+    expect(issues).not.toContain("- :no_entry_sign:")
+    expect(issues).not.toContain("- :book:")
+  })
+
+  it("Shows the message", () => {
+    const issues = githubResultsInlineTemplate("blankID", messagesResults)
+    expect(issues).toContain("- :book: Message")
+    expect(issues).not.toContain("- :no_entry_sign:")
+    expect(issues).not.toContain("- :warning:")
+  })
+
+  it("Should include summary on top of message", () => {
+    const issues = githubResultsInlineTemplate("blankID", summaryResults)
+    const expected = `
+<!--
+  1 failure:  Failing message F...
+  1 warning:  Warning message W...
+  1 messages
+  1 markdown notices
+  DangerID: danger-id-blankID;
+-->`
+
+    expect(issues).toContain(expected)
+  })
+
+  it("Shows markdowns one after another", () => {
+    const issues = githubResultsInlineTemplate("blankID", markdownResults)
+    const expected = `
+### Short Markdown Message1
+
+### Short Markdown Message2
+`
+    expect(issues).toContain(expected)
   })
 })
