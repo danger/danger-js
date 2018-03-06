@@ -24,5 +24,5 @@ export interface Violation {
 }
 
 export function isInline(violation: Violation): boolean {
-  return violation.file !== undefined || violation.line !== undefined
+  return violation.file !== undefined && violation.line !== undefined
 }

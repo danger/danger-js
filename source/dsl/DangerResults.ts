@@ -148,6 +148,10 @@ export function sortResults(results: DangerResults): DangerResults {
 }
 
 export function resultsIntoInlineResults(results: DangerResults): DangerInlineResults[] {
+  // Here we iterate through all keys ("fails", "warnings", "messages", "markdowns") and for each violation
+  // in given kind we produce new DangerInlineResult or append a violation to existing result. This is all
+  // happening in a `violationsIntoInlineResults` function that mutates an out-of-scope variable `dangerInlineResults`.
+
   const dangerInlineResults: DangerInlineResults[] = []
 
   const violationsIntoInlineResults = (kind: string) => {

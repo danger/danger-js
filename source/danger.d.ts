@@ -570,6 +570,10 @@ declare module "danger" {
   }
 
   export function resultsIntoInlineResults(results: DangerResults): DangerInlineResults[] {
+    // Here we iterate through all keys ("fails", "warnings", "messages", "markdowns") and for each violation
+    // in given kind we produce new DangerInlineResult or append a violation to existing result. This is all
+    // happening in a `violationsIntoInlineResults` function that mutates an out-of-scope variable `dangerInlineResults`.
+
     const dangerInlineResults: DangerInlineResults[] = []
 
     const violationsIntoInlineResults = (kind: string) => {
@@ -1151,7 +1155,7 @@ declare module "danger" {
   }
 
   export function isInline(violation: Violation): boolean {
-    return violation.file !== undefined || violation.line !== undefined
+    return violation.file !== undefined && violation.line !== undefined
   }
   /** A function with a callback function, which Danger wraps in a Promise */
   type CallbackableFn = (callback: (done: any) => void) => void
@@ -1177,6 +1181,8 @@ declare module "danger" {
    * Fails a build, outputting a specific reason for failing into a HTML table.
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
   function fail(message: MarkdownString, file?: string, line?: number): void
 
@@ -1185,6 +1191,8 @@ declare module "danger" {
    * is shown inside a HTML table.
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
   function warn(message: MarkdownString, file?: string, line?: number): void
 
@@ -1193,6 +1201,8 @@ declare module "danger" {
    * and warn is the emoji which shows in the table.
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
   function message(message: MarkdownString, file?: string, line?: number): void
 
@@ -1200,6 +1210,8 @@ declare module "danger" {
    * Adds raw markdown into the Danger comment, under the table
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
   function markdown(message: MarkdownString, file?: string, line?: number): void
 

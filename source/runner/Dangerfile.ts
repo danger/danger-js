@@ -30,6 +30,8 @@ export interface DangerContext {
    * Fails a build, outputting a specific reason for failing into a HTML table.
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
   fail(message: MarkdownString, file?: string, line?: number): void
 
@@ -38,6 +40,8 @@ export interface DangerContext {
    * is shown inside a HTML table.
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
   warn(message: MarkdownString, file?: string, line?: number): void
 
@@ -46,6 +50,8 @@ export interface DangerContext {
    * and warn is the emoji which shows in the table.
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
   message(message: MarkdownString, file?: string, line?: number): void
 
@@ -53,6 +59,8 @@ export interface DangerContext {
    * Adds raw markdown into the Danger comment, under the table
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
   markdown(message: MarkdownString, file?: string, line?: number): void
 

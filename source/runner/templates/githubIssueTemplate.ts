@@ -1,6 +1,6 @@
 import * as v from "voca"
 
-import { DangerResults, DangerInlineResults } from "../../dsl/DangerResults"
+import { DangerResults } from "../../dsl/DangerResults"
 import { Violation } from "../../dsl/Violation"
 
 /**
