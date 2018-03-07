@@ -353,3 +353,80 @@ Object {
   ],
 }
 `;
+
+exports[`DangerResults operations sorts inline results 1`] = `
+Array [
+  Object {
+    "fails": Array [
+      "B",
+      "B",
+      "C",
+    ],
+    "file": "A.swift",
+    "line": 2,
+    "markdowns": Array [
+      "B",
+      "B",
+      "C",
+    ],
+    "messages": Array [
+      "A",
+      "C",
+      "C",
+    ],
+    "warnings": Array [
+      "A",
+      "C",
+      "D",
+    ],
+  },
+  Object {
+    "fails": Array [
+      "A",
+      "B",
+      "C",
+    ],
+    "file": "B.swift",
+    "line": 1,
+    "markdowns": Array [
+      "A",
+      "B",
+      "C",
+    ],
+    "messages": Array [
+      "A",
+      "B",
+      "C",
+    ],
+    "warnings": Array [
+      "A",
+      "B",
+      "C",
+    ],
+  },
+  Object {
+    "fails": Array [
+      "A",
+      "B",
+      "C",
+    ],
+    "file": "B.swift",
+    "line": 4,
+    "markdowns": Array [
+      "A",
+      "B",
+      "C",
+    ],
+    "messages": Array [
+      "A",
+      "B",
+      "C",
+    ],
+    "warnings": Array [
+      "A",
+      "B",
+      "C",
+    ],
+  },
+]
+`;

@@ -5,6 +5,7 @@ import {
   emptyDangerResults,
   inlineResults,
   regularResults,
+  sortInlineResults,
 } from "../DangerResults"
 import {
   singleViolationSingleFileResults,
@@ -14,6 +15,7 @@ import {
   multipleViolationsInlineResults,
   regularAndInlineViolationsResults,
   emptyDangerInlineResults,
+  unsortedInlineResults,
 } from "./fixtures/ExampleDangerResults"
 
 describe("DangerResults into DangerInlineResults", () => {
@@ -77,6 +79,12 @@ describe("DangerResults operations", () => {
 
   it("filters results to get only regular violations", () => {
     const results = regularResults(regularAndInlineViolationsResults)
+
+    expect(results).toMatchSnapshot()
+  })
+
+  it("sorts inline results", () => {
+    const results = sortInlineResults(unsortedInlineResults)
 
     expect(results).toMatchSnapshot()
   })

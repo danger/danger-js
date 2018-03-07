@@ -102,3 +102,30 @@ export const regularAndInlineViolationsResults: DangerResults = {
     { message: "Markdown message3", file: "Test.swift", line: 10 },
   ],
 }
+
+export const unsortedInlineResults: DangerInlineResults[] = [
+  {
+    file: "B.swift",
+    line: 4,
+    fails: ["C", "A", "B"],
+    warnings: ["C", "A", "B"],
+    messages: ["C", "A", "B"],
+    markdowns: ["C", "A", "B"],
+  },
+  {
+    file: "A.swift",
+    line: 2,
+    fails: ["B", "C", "B"],
+    warnings: ["C", "A", "D"],
+    messages: ["C", "C", "A"],
+    markdowns: ["C", "B", "B"],
+  },
+  {
+    file: "B.swift",
+    line: 1,
+    fails: ["C", "A", "B"],
+    warnings: ["C", "A", "B"],
+    messages: ["C", "A", "B"],
+    markdowns: ["C", "A", "B"],
+  },
+]
