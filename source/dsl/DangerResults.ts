@@ -106,6 +106,36 @@ export function mergeResults(results1: DangerResults, results2: DangerResults): 
   }
 }
 
+export function sortInlineResults(inlineResults: DangerInlineResults[]): DangerInlineResults[] {
+  // First sort messages in every inline result
+  const sortedInlineResults = inlineResults.map(i => {
+    return {
+      file: i.file,
+      line: i.line,
+      fails: i.fails.sort(),
+      warnings: i.warnings.sort(),
+      messages: i.messages.sort(),
+      markdowns: i.markdowns.sort(),
+    }
+  })
+
+  // Then sort a whole array of inline results based on file/line
+  return sortedInlineResults.sort((a, b) => {
+    if (a.file < b.file) {
+      return -1
+    } else if (a.file > b.file) {
+      return 1
+    } else if (a.line < b.line) {
+      return -1
+    } else if (a.line > b.line) {
+      return 1
+    } else {
+      // both file & line are the same
+      return 0
+    }
+  })
+}
+
 export function sortResults(results: DangerResults): DangerResults {
   const sortByFile = (a: Violation, b: Violation): number => {
     if (a.file === undefined) {

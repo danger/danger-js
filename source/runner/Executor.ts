@@ -11,6 +11,7 @@ import {
   emptyDangerResults,
   inlineResultsIntoResults,
   sortResults,
+  sortInlineResults,
 } from "../dsl/DangerResults"
 import {
   template as githubResultsTemplate,
@@ -241,7 +242,8 @@ export class Executor {
     // TODO: Get current inline comments, if any of the old ones is not present
     // in the new ones - delete.
     const inlineResults = resultsIntoInlineResults(results)
-    const promises = inlineResults.map(inlineResult => {
+    const sortedInlineResults = sortInlineResults(inlineResults)
+    const promises = sortedInlineResults.map(inlineResult => {
       return this.sendInlineComment(git, inlineResult)
         .then(_r => emptyDangerResults)
         .catch(_e => inlineResultsIntoResults(inlineResult))
