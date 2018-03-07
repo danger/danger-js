@@ -104,7 +104,7 @@
     "typescript": "^2.6.2"
   },
   "dependencies": {
-    "@octokit/rest": "^14.0.4",
+    "@octokit/rest": "^15.1.7",
     "babel-polyfill": "^6.23.0",
     "chalk": "^2.3.0",
     "commander": "^2.13.0",
