@@ -25,7 +25,7 @@ function table(name: string, emoji: string, violations: Violation[]): string {
   </thead>
   <tbody>${violations
     .map((v: Violation) => {
-      const message = isInline(v) ? `[${v.file!}#${v.line!}](${v.file!}#${v.line!}) - ${v.message}` : v.message
+      const message = isInline(v) ? `**${v.file!}#L${v.line!}** - ${v.message}` : v.message
       return `<tr>
       <td>:${emoji}:</td>
       <td>

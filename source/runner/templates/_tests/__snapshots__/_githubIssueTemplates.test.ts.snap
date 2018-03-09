@@ -22,7 +22,7 @@ exports[`generating inline messages Shows correct messages for inline/regular vi
       <td>:warning:</td>
       <td>
 
-  [File.swift#10](File.swift#10) - Test message
+  **File.swift#L10** - Test message
   </td>
     </tr>
   
