@@ -6,6 +6,7 @@ import {
   summaryResults,
   messagesResults,
   markdownResults,
+  inlineRegularResults,
 } from "../../_tests/fixtures/ExampleDangerResults"
 import {
   template as githubResultsTemplate,
@@ -114,5 +115,11 @@ describe("generating inline messages", () => {
 ### Short Markdown Message2
 `
     expect(issues).toContain(expected)
+  })
+
+  it("Shows correct messages for inline/regular violations", () => {
+    const issues = githubResultsTemplate("blankID", inlineRegularResults)
+
+    expect(issues).toMatchSnapshot()
   })
 })

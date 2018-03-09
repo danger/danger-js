@@ -1,7 +1,7 @@
 import * as v from "voca"
 
 import { DangerResults } from "../../dsl/DangerResults"
-import { Violation } from "../../dsl/Violation"
+import { Violation, isInline } from "../../dsl/Violation"
 
 /**
  * Converts a set of violations into a HTML table
@@ -25,11 +25,12 @@ function table(name: string, emoji: string, violations: Violation[]): string {
   </thead>
   <tbody>${violations
     .map((v: Violation) => {
+      const message = isInline(v) ? `[${v.file!}#${v.line!}](${v.file!}#${v.line!}) - ${v.message}` : v.message
       return `<tr>
       <td>:${emoji}:</td>
       <td>
 
-  ${v.message}
+  ${message}
   </td>
     </tr>
   `
