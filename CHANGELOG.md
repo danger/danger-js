@@ -13,7 +13,7 @@
 
 ## Master
 
-* Add BitBucket Server support. [@azz][]
+* Add BitBucket Server support.
 
   To use Danger JS with BitBucket Server: you'll need to create a new account for Danger to use,
   then set the following environment variables on your CI:
@@ -51,6 +51,8 @@
     /** The activities such as OPENING, CLOSING, MERGING or UPDATING a pull request */
     activities: BitBucketServerPRActivity[]
   ```
+
+  * [@azz][]
 
 - Improve path generator for danger-runner.
 - Update the PR DSL to include bots. [@orta][]
