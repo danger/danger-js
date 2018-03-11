@@ -59,10 +59,6 @@ export class Bitrise implements CISource {
     return this._parseRepoURL()
   }
 
-  get supportedPlatforms(): string[] {
-    return ["github"]
-  }
-
   get ciRunURL() {
     return process.env.BITRISE_PULL_REQUEST
   }

@@ -75,6 +75,10 @@ yarn lint
 The fixers for both tslint and prettier will be applied when you commit, and on a push your code will be verified that
 it compiles.
 
+### How does Danger JS work?
+
+Check the [architecture doc](https://github.com/danger/danger-js/blob/master/docs/architecture.md).
+
 ### What is the TODO?
 
 Check the issues, I try and keep my short term perspective there. Long term is in the [VISION.md](VISION.md).
