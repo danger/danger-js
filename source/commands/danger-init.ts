@@ -34,6 +34,10 @@ const go = async (app: App) => {
   const state = generateInitialState(process)
   const ui: InitUI = createUI(state, app)
 
+  if (!state.isGitHub) {
+    return showNonGitHubWarning(ui)
+  }
+
   const { isOSS } = await showTodoState(ui)
   state.isAnOSSRepo = isOSS
 
@@ -43,6 +47,16 @@ const go = async (app: App) => {
   await addToCI(ui, state)
   await wrapItUp(ui, state)
   await thanks(ui, state)
+}
+
+const showNonGitHubWarning = (ui: InitUI) => {
+  ui.say("Hi, welcome to Danger Init - I'm afraid at the moment this command only works for GitHub projects.")
+  ui.say("\nWe're definitely open to PRs improving this. You can find the code at:")
+  const link = ui.link(
+    "danger/danger-js#/source/commands/danger-init.ts",
+    "https://github.com/danger/danger-js/blob/master/source/commands/danger-init.ts"
+  )
+  ui.say("\n > " + link + "\n")
 }
 
 const showTodoState = async (ui: InitUI) => {
