@@ -13,6 +13,7 @@
 
 ## Master
 
+* Improve path generator for danger-runner.
 * Update the PR DSL to include bots. [@orta][]
 * Add BitBucket server support. [@azz][]
 
@@ -908,3 +909,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@hongrich]: https://github.com/hongrich
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@azz]: https://github.com/azz
+[@mifi]: https://github.com/ionutmiftode
