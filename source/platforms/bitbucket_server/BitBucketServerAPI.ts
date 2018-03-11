@@ -9,9 +9,10 @@ import {
   JIRAIssue,
   BitBucketServerPRActivity,
   BitBucketServerDiff,
+  RepoMetaData,
 } from "../../dsl/BitBucketServerDSL"
 
-import { RepoMetaData, Env } from "../../ci_source/ci_source"
+import { Env } from "../../ci_source/ci_source"
 import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates/bitbucketServerTemplate"
 import { api as fetch } from "../../api/fetch"
 

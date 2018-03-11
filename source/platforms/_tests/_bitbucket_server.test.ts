@@ -45,7 +45,7 @@ import { BitBucketServerAPI } from "../bitbucket_server/BitBucketServerAPI"
 import { GitCommit } from "../../dsl/Commit"
 import { FakeCI } from "../../ci_source/providers/Fake"
 import * as os from "os"
-import { RepoMetaData } from "../../ci_source/ci_source"
+import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 
 const EOL = os.EOL
 

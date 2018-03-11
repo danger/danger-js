@@ -1,4 +1,10 @@
-import { RepoMetaData } from "../ci_source/ci_source"
+/** Key details about a repo */
+export interface RepoMetaData {
+  /** A path like "artsy/eigen" */
+  repoSlug: string
+  /** The ID for the pull/merge request "11" */
+  pullRequestID: string
+}
 
 // This is `danger.bitbucket_server` inside the JSON
 
@@ -26,20 +32,22 @@ export interface BitBucketServerDSL extends BitBucketServerJSONDSL {}
  * This is `danger.bitbucket_server.issues` It refers to the issues that are linked to the Pull Request.
  */
 export interface JIRAIssue {
+  /** The unique key for the issue e.g. JRA-11 */
   key: string
+  /** The user-facing URL for that issue */
   url: string
 }
 
 // This is `danger.bitbucket_server.pr`
+//
+//  References:
+//  -  https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D
+//  - https://docs.atlassian.com/bitbucket-server/javadoc/4.3.2/api/reference/classes.html
 
 /**
  * An exact copy of the PR's reference JSON. This interface has type'd the majority
  * of it for tooling's sake, but any extra metadata which BitBucket Server send
  * will still be inside the JS object.
- *
- * References:
- *  -  https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D
- *  - https://docs.atlassian.com/bitbucket-server/javadoc/4.3.2/api/reference/classes.html
  */
 
 export interface BitBucketServerPRDSL {
@@ -49,7 +57,7 @@ export interface BitBucketServerPRDSL {
   version: number
   /** Title of the pull request. */
   title: string
-  /** */
+  /** The text describing the PR */
   description: string
   /** The pull request's current status. */
   state: "OPEN" | "MERGED" | "DECLINED" | "SUPERSEDED"
@@ -96,7 +104,7 @@ export interface BitBucketServerCommit {
   }
   /** The UNIX timestamp for when the commit was authored */
   authorTimestamp: number
-  /** The author of the commit, assumed to be the person who commit the code into a project. */
+  /** The author of the commit, assumed to be the person who commited/merged the code into a project. */
   committer: {
     /** The id of the commit committer */
     name: string
@@ -217,7 +225,7 @@ export interface BitBucketServerRepo {
   project: {
     /** The project unique id */
     id: number
-    /** The project's human readbale project key */
+    /** The project's human readable project key */
     key: string
     /** Is the project publicly available */
     public: boolean

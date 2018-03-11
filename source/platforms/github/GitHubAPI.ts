@@ -6,9 +6,9 @@ import * as v from "voca"
 
 import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
 
-import { RepoMetaData } from "../../ci_source/ci_source"
 import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates/githubIssueTemplate"
 import { api as fetch } from "../../api/fetch"
+import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 
 // The Handle the API specific parts of the github
 

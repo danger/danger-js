@@ -1,5 +1,10 @@
 import { GitDSL, GitJSONDSL } from "../../dsl/GitDSL"
-import { BitBucketServerCommit, BitBucketServerDSL, BitBucketServerDiff } from "../../dsl/BitBucketServerDSL"
+import {
+  BitBucketServerCommit,
+  BitBucketServerDSL,
+  BitBucketServerDiff,
+  RepoMetaData,
+} from "../../dsl/BitBucketServerDSL"
 import { GitCommit } from "../../dsl/Commit"
 
 import { BitBucketServerAPI } from "../bitbucket_server/BitBucketServerAPI"
@@ -8,7 +13,6 @@ import { GitJSONToGitDSLConfig, gitJSONToGitDSL, GitStructuredDiff } from "../gi
 
 import * as debug from "debug"
 import { EOL } from "os"
-import { RepoMetaData } from "../../ci_source/ci_source"
 const d = debug("danger:BitBucketServerGit")
 
 /**

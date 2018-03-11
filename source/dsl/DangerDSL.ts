@@ -101,11 +101,16 @@ export interface DangerDSLType {
    *  module.
    *
    *  Finally, if running through Peril on an event other than a PR
-   *  this is the full JSON from the webhook. You can find the full
-   *  typings for those webhooks [at github-webhook-event-types](https://github.com/orta/github-webhook-event-types).
+   *  this is the full JSON from the webhook. [github-webhook-event-types](https://github.com/orta/github-webhook-event-types) has the full
+   *  typings for those webhooks.
    */
   readonly github?: GitHubDSL
 
+  /**
+   *  The BitBucket Server metadata. This covers things like PR info,
+   *  comments and reviews on the PR, related issues, commits, comments
+   *  and activities.
+   */
   readonly bitbucket_server?: BitBucketServerDSL
 
   /**
