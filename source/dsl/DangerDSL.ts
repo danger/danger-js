@@ -1,7 +1,9 @@
+// Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
+
 import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitHubDSL } from "../dsl/GitHubDSL"
 import { DangerUtilsDSL } from "./DangerUtilsDSL"
-import { CliArgs } from "../runner/cli-args"
+import { CliArgs } from "../dsl/cli-args"
 
 /**
  * The shape of the JSON passed between Danger and a subprocess. It's built

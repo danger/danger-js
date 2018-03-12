@@ -31,7 +31,7 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
       context: "host",
       builtin: ["*"],
     },
-    sandbox: { ...dangerfileContext, regeneratorRuntime: regeneratorRuntime },
+    sandbox: { ...dangerfileContext, regeneratorRuntime: regeneratorRuntime || {} },
     compiler: compile,
   }
 }

@@ -71,7 +71,7 @@ export class GitHub {
    */
   getPlatformDSLRepresentation = async (): Promise<GitHubJSONDSL> => {
     const pr = await this.getReviewInfo()
-    if (pr === {}) {
+    if ((pr as any) === {}) {
       process.exitCode = 1
       throw `
         Could not find pull request information,
