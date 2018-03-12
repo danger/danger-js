@@ -42,12 +42,4 @@ export class Nevercode implements CISource {
   get ciRunURL() {
     return process.env.NEVERCODE_BUILD_URL
   }
-
-  private get branchName(): string {
-    if (this.isPR) {
-      return this.env.NEVERCODE_PULL_REQUEST_SOURCE
-    } else {
-      return this.env.NEVERCODE_BRANCH
-    }
-  }
 }
