@@ -13,6 +13,10 @@
 
 ## Master
 
+* []
+
+## 3.1.8
+
 * Improvements to the Flow definition file. [@orta][]
 * Improve path generator for danger-runner.
 * Update the PR DSL to include bots. [@orta][]
