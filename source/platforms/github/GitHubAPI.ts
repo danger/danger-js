@@ -83,7 +83,11 @@ export class GitHubAPI {
 
     return allComments
       .filter(comment => v.includes(comment.body, dangerIDMessage))
-      .filter(comment => userID || comment.user.id === userID)
+      .filter(
+        comment =>
+          // When running as a GitHub App, the user ID is not accessible so we skip the check.
+          userID === undefined || comment.user.id === userID
+      )
       .filter(comment => v.includes(comment.body, dangerSignaturePostfix))
       .map(comment => comment.id)
   }
