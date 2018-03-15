@@ -324,6 +324,8 @@ declare module "danger" {
     /** ISO6801 date string */
     date: string
   }
+
+  // Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
   /**
    * The shape of the JSON passed between Danger and a subprocess. It's built
    * to be expanded in the future.
@@ -998,6 +1000,19 @@ declare module "danger" {
      *
      */
     message: string
+  }
+
+  /**
+   * Describes the possible arguments that
+   * could be used when calling the CLI
+   */
+  interface CliArgs {
+    base: string
+    verbose: string
+    externalCiProvider: string
+    textOnly: string
+    dangerfile: string
+    id: string
   }
   /** A function with a callback function, which Danger wraps in a Promise */
   type CallbackableFn = (callback: (done: any) => void) => void

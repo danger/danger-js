@@ -1,6 +1,6 @@
 import { Platform } from "../platforms/platform"
 import { DangerDSLJSONType } from "../dsl/DangerDSL"
-import { CliArgs } from "./cli-args"
+import { CliArgs } from "../dsl/cli-args"
 
 export const jsonDSLGenerator = async (platform: Platform): Promise<DangerDSLJSONType> => {
   const git = await platform.getPlatformGitRepresentation()
