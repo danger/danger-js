@@ -8,6 +8,6 @@ export const getRepoSlug = () => {
     return null
   }
 
-  const ghData = possibleRemotes.map(r => parseGithubURL(r.url))[0]
-  return ghData.repo
+  const ghData = possibleRemotes.map(r => parseGithubURL(r.url))
+  return ghData.length ? ghData[0].repo : undefined
 }

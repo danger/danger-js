@@ -18,6 +18,7 @@ export interface InitState {
 
   repoSlug: string | null
   ciType: "travis" | "circle" | "unknown"
+  isGitHub: boolean
 }
 
 export interface InitUI {

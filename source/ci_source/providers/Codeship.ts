@@ -66,10 +66,6 @@ export class Codeship implements CISource {
     return ""
   }
 
-  get supportedPlatforms(): string[] {
-    return ["github"]
-  }
-
   private get branchName(): string {
     return this.env.CI_BRANCH
   }

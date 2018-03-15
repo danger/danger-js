@@ -26,10 +26,8 @@ export class FakeCI implements CISource {
   get pullRequestID(): string {
     return this.env.pr
   }
+
   get repoSlug(): string {
     return this.env.repo
-  }
-  get supportedPlatforms(): string[] {
-    return ["github"]
   }
 }

@@ -51,10 +51,6 @@ export class Jenkins implements CISource {
     return this.env.ghprbGhRepository
   }
 
-  get supportedPlatforms(): string[] {
-    return ["github"]
-  }
-
   get ciRunURL() {
     return process.env.BUILD_URL
   }

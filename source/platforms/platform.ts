@@ -2,6 +2,8 @@ import { Env, CISource } from "../ci_source/ci_source"
 import { GitJSONDSL } from "../dsl/GitDSL"
 import { GitHub } from "./GitHub"
 import { GitHubAPI } from "./github/GitHubAPI"
+import { BitBucketServer } from "./BitBucketServer"
+import { BitBucketServerAPI, bitbucketServerRepoCredentialsFromEnv } from "./bitbucket_server/BitBucketServerAPI"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any
@@ -55,15 +57,35 @@ export interface Platform {
  * @param {CISource} source The existing source, to ensure they can run against each other
  * @returns {Platform} returns a platform if it can be supported
  */
-export function getPlatformForEnv(env: Env, source: CISource): Platform {
-  const token = env["DANGER_GITHUB_API_TOKEN"]
-  if (!token) {
-    console.error("The DANGER_GITHUB_API_TOKEN environmental variable is missing")
-    console.error("Without an api token, danger will be unable to comment on a PR")
-    throw new Error("Cannot use authenticated API requests.")
+export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true): Platform {
+  // BitBucket Server
+  const bbsHost = env["DANGER_BITBUCKETSERVER_HOST"]
+  if (bbsHost) {
+    const api = new BitBucketServerAPI(
+      {
+        pullRequestID: source.pullRequestID,
+        repoSlug: source.repoSlug,
+      },
+      bitbucketServerRepoCredentialsFromEnv(env)
+    )
+    const bbs = new BitBucketServer(api)
+    return bbs
   }
 
-  const api = new GitHubAPI(source, token)
-  const github = new GitHub(api)
-  return github
+  // GitHub
+  const ghToken = env["DANGER_GITHUB_API_TOKEN"]
+  if (ghToken || !requireAuth) {
+    if (!ghToken) {
+      console.log("You don't have a DANGER_GITHUB_API_TOKEN set up, this is optional, but TBH, you want to do this")
+      console.log("Check out: http://danger.systems/js/guides/the_dangerfile.html#working-on-your-dangerfile")
+    }
+
+    const api = new GitHubAPI(source, ghToken)
+    const github = new GitHub(api)
+    return github
+  }
+
+  console.error("The DANGER_GITHUB_API_TOKEN/DANGER_BITBUCKETSERVER_HOST environmental variable is missing")
+  console.error("Without an api token, danger will be unable to comment on a PR")
+  throw new Error("Cannot use authenticated API requests.")
 }
