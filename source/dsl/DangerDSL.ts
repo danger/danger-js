@@ -98,6 +98,10 @@ export interface DangerDSLType {
    *  GitHub user identities and some useful utility functions
    *  for displaying links to files.
    *
+   * Strictly speaking, `github` is a nullable type, if you are not using
+   * GitHub then it will be undefined. For the DSL convience sake though, it
+   * is classed as non-nullable
+   *
    *  Provides an authenticated API so you can work directly
    *  with the GitHub API. This is an instance of the "@ocktokit/rest" npm
    *  module.
@@ -106,14 +110,18 @@ export interface DangerDSLType {
    *  this is the full JSON from the webhook. [github-webhook-event-types](https://github.com/orta/github-webhook-event-types) has the full
    *  typings for those webhooks.
    */
-  readonly github?: GitHubDSL
+  readonly github: GitHubDSL
 
   /**
    *  The BitBucket Server metadata. This covers things like PR info,
    *  comments and reviews on the PR, related issues, commits, comments
    *  and activities.
+   *
+   *  Strictly speaking, `bitbucket_server` is a nullable type, if you are using
+   *  GitHub then it will be undefined. For the DSL convience sake though, it
+   *  is classed as non-nullable
    */
-  readonly bitbucket_server?: BitBucketServerDSL
+  readonly bitbucket_server: BitBucketServerDSL
 
   /**
    * Functions which are globally useful in most Dangerfiles. Right
