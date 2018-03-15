@@ -58,6 +58,8 @@
     activities: BitBucketServerPRActivity[]
   ```
 
+  You can see more in the docs for [Danger + BitBucket Server](http://danger.systems/js/usage/bitbucket_server.html).
+
   * [@azz][]
 
 * Don't check for same user ID on comment when running as a GitHub App. [@tibdex][]

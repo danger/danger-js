@@ -31,8 +31,11 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType): Promise<DangerDSLType> 
 
   return {
     git,
-    github,
-    bitbucket_server,
+    // Strictly speaking, this is a lie. Only one of these will _ever_ exist, but
+    // otherwise everyone would need to have a check for GitHub/BBS in every Dangerfile
+    // which just doesn't feel right.
+    github: github!,
+    bitbucket_server: bitbucket_server!,
     utils: {
       sentence,
       href,
