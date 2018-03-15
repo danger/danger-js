@@ -39,8 +39,4 @@ export class BuddyBuild implements CISource {
   get repoSlug(): string {
     return this.env.BUDDYBUILD_REPO_SLUG
   }
-
-  get supportedPlatforms(): Array<string> {
-    return ["github"]
-  }
 }

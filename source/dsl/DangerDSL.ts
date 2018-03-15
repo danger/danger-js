@@ -2,6 +2,7 @@
 
 import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitHubDSL } from "../dsl/GitHubDSL"
+import { BitBucketServerDSL, BitBucketServerJSONDSL } from "../dsl/BitBucketServerDSL"
 import { DangerUtilsDSL } from "./DangerUtilsDSL"
 import { CliArgs } from "../dsl/cli-args"
 
@@ -51,7 +52,9 @@ export interface DangerDSLJSONType {
   /** The data only version of Git DSL */
   git: GitJSONDSL
   /** The data only version of GitHub DSL */
-  github: GitHubDSL
+  github?: GitHubDSL
+  /** The data only version of BitBucket Server DSL */
+  bitbucket_server?: BitBucketServerJSONDSL
   /**
    * Used in the Danger JSON DSL to pass metadata between
    * processes. It will be undefined when used inside the Danger DSL
@@ -100,10 +103,17 @@ export interface DangerDSLType {
    *  module.
    *
    *  Finally, if running through Peril on an event other than a PR
-   *  this is the full JSON from the webhook. You can find the full
-   *  typings for those webhooks [at github-webhook-event-types](https://github.com/orta/github-webhook-event-types).
+   *  this is the full JSON from the webhook. [github-webhook-event-types](https://github.com/orta/github-webhook-event-types) has the full
+   *  typings for those webhooks.
    */
-  readonly github: GitHubDSL
+  readonly github?: GitHubDSL
+
+  /**
+   *  The BitBucket Server metadata. This covers things like PR info,
+   *  comments and reviews on the PR, related issues, commits, comments
+   *  and activities.
+   */
+  readonly bitbucket_server?: BitBucketServerDSL
 
   /**
    * Functions which are globally useful in most Dangerfiles. Right
@@ -116,10 +126,16 @@ export interface DangerDSLType {
 /// End of Danger DSL definition
 
 export class DangerDSL {
-  public readonly github: GitHubDSL
+  public readonly github?: GitHubDSL
+  public readonly bitbucket_server?: BitBucketServerDSL
 
-  constructor(platformDSL: any, public readonly git: GitJSONDSL, public readonly utils: DangerUtilsDSL) {
-    // As GitLab etc support is added this will need to be changed
-    this.github = platformDSL
+  constructor(platformDSL: any, public readonly git: GitJSONDSL, public readonly utils: DangerUtilsDSL, name: string) {
+    switch (name) {
+      case "GitHub":
+      case "Fake": // Testing only
+        this.github = platformDSL
+      case "BitBucketServer":
+        this.bitbucket_server = platformDSL
+    }
   }
 }

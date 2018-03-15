@@ -19,4 +19,18 @@ describe("parsing urls", () => {
       repo: "artsy/emission",
     })
   })
+
+  it("handles bitbucket server PRs", () => {
+    expect(pullRequestParser("http://localhost:7990/projects/PROJ/repos/repo/pull-requests/1")).toEqual({
+      pullRequestNumber: "1",
+      repo: "projects/PROJ/repos/repo",
+    })
+  })
+
+  it("handles bitbucket server PRs (overview)", () => {
+    expect(pullRequestParser("http://localhost:7990/projects/PROJ/repos/repo/pull-requests/1/overview")).toEqual({
+      pullRequestNumber: "1",
+      repo: "projects/PROJ/repos/repo",
+    })
+  })
 })

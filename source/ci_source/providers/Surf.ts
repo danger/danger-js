@@ -35,8 +35,4 @@ export class Surf implements CISource {
   get repoSlug(): string {
     return this.env["SURF_NWO"]
   }
-
-  get supportedPlatforms(): string[] {
-    return ["github"]
-  }
 }

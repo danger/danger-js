@@ -5,10 +5,11 @@ import GitHubUtils from "./github/GitHubUtils"
 import gitDSLForGitHub from "./github/GitHubGit"
 
 import * as NodeGitHub from "@octokit/rest"
+import { Platform } from "./platform"
 
 /** Handles conforming to the Platform Interface for GitHub, API work is handle by GitHubAPI */
 
-export class GitHub {
+export class GitHub implements Platform {
   name: string
 
   constructor(public readonly api: GitHubAPI) {
@@ -70,8 +71,10 @@ export class GitHub {
    * @returns {Promise<GitHubDSL>} JSON response of the DSL
    */
   getPlatformDSLRepresentation = async (): Promise<GitHubJSONDSL> => {
-    const pr = await this.getReviewInfo()
-    if ((pr as any) === {}) {
+    let pr: GitHubPRDSL
+    try {
+      pr = await this.getReviewInfo()
+    } catch {
       process.exitCode = 1
       throw `
         Could not find pull request information,
@@ -107,9 +110,6 @@ export class GitHub {
    * @returns {Promise<any>} JSON response of new comment
    */
   createComment = (comment: string) => this.api.postPRComment(comment)
-
-  // In Danger RB we support a danger_id property,
-  // this should be handled at some point
 
   /**
    * Deletes the main Danger comment, used when you have

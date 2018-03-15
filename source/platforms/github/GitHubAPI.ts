@@ -6,9 +6,9 @@ import * as v from "voca"
 
 import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
 
-import { RepoMetaData } from "../../ci_source/ci_source"
 import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates/githubIssueTemplate"
 import { api as fetch } from "../../api/fetch"
+import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 
 // The Handle the API specific parts of the github
 
@@ -83,7 +83,11 @@ export class GitHubAPI {
 
     return allComments
       .filter(comment => v.includes(comment.body, dangerIDMessage))
-      .filter(comment => userID || comment.user.id === userID)
+      .filter(
+        comment =>
+          // When running as a GitHub App, the user ID is not accessible so we skip the check.
+          userID === undefined || comment.user.id === userID
+      )
       .filter(comment => v.includes(comment.body, dangerSignaturePostfix))
       .map(comment => comment.id)
   }
