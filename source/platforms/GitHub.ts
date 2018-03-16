@@ -1,5 +1,5 @@
 import { GitJSONDSL, GitDSL } from "../dsl/GitDSL"
-import { GitHubPRDSL, GitHubDSL, GitHubIssue, GitHubAPIPR, GitHubJSONDSL } from "../dsl/GitHubDSL"
+import { GitHubPRDSL, GitHubDSL, GitHubIssue, GitHubAPIPR, GitHubJSONDSL, GitHubComment } from "../dsl/GitHubDSL"
 import { GitHubAPI } from "./github/GitHubAPI"
 import GitHubUtils from "./github/GitHubUtils"
 import gitDSLForGitHub from "./github/GitHubGit"
@@ -38,6 +38,17 @@ export class GitHub implements Platform {
     const issue = await this.api.getIssue()
     return issue || { labels: [] }
   }
+
+  /**
+   * Gets inline comments for current PR
+   */
+  getInlineComments = async (): Promise<GitHubComment[]> =>
+    this.api.getPullRequestInlineComments().then(v => {
+      return v.map(i => {
+        // End user doesn't really need more than id/userId/body right now
+        return { id: i.id, userId: i.user.id, body: i.body }
+      })
+    })
 
   /**
    * Fails the current build, if status setting succeeds
@@ -172,6 +183,14 @@ export class GitHub implements Platform {
 
     return commentIDs.length > 0
   }
+
+  /**
+   * Deletes an inline comment, used when you have
+   * fixed all your failures.
+   *
+   * @returns {Promise<boolean>} did it work?
+   */
+  deleteInlineComment = async (id: number): Promise<boolean> => this.api.deleteInlineCommentWithID(id)
 
   /**
    * Either updates an existing comment, or makes a new one

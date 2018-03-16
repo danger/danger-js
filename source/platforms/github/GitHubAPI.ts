@@ -109,6 +109,14 @@ export class GitHubAPI {
     return Promise.resolve(res.status === 204)
   }
 
+  deleteInlineCommentWithID = async (id: number): Promise<boolean> => {
+    const repo = this.repoMetadata.repoSlug
+    const res = await this.api(`repos/${repo}/pulls/comments/${id}`, {}, {}, "DELETE")
+
+    //https://developer.github.com/v3/pulls/comments/#response-5
+    return Promise.resolve(res.status === 204)
+  }
+
   getUserID = async (): Promise<number | undefined> => {
     if (process.env["DANGER_GITHUB_APP"]) {
       return
@@ -237,6 +245,12 @@ export class GitHubAPI {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     return await this.getAllOfResource(`repos/${repo}/issues/${prID}/comments`)
+  }
+
+  getPullRequestInlineComments = async (): Promise<any[]> => {
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
+    return await this.getAllOfResource(`repos/${repo}/pulls/${prID}/comments`)
   }
 
   getPullRequestDiff = async () => {
