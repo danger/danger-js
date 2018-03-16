@@ -55,7 +55,7 @@ Assuming that your local file-system matches up to that branch on GitHub, this w
 
 ## Working with files
 
-Over time, we've found it easier to create up-front arrays of files you are be interested in - then you can work with these potential arrays of files. For example:
+Over time, we've found it easier to create up-front arrays of files you are interested in - then you can work with these potential arrays of files. For example:
 
 ```js
 import { danger } from "danger"
