@@ -368,14 +368,3 @@ export interface GitHubAPIPR {
   /** The PR number */
   number: number
 }
-
-export interface GitHubComment {
-  /** The identifying number of this comment */
-  id: number
-
-  /** The identifying number of this comment's author */
-  userId: number
-
-  /** Body of this comment in a text form */
-  body: string
-}

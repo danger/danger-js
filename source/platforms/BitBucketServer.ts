@@ -2,7 +2,7 @@ import { GitJSONDSL, GitDSL } from "../dsl/GitDSL"
 import { BitBucketServerPRDSL, BitBucketServerJSONDSL } from "../dsl/BitBucketServerDSL"
 import { BitBucketServerAPI } from "./bitbucket_server/BitBucketServerAPI"
 import gitDSLForBitBucketServer from "./bitbucket_server/BitBucketServerGit"
-import { Platform } from "./platform"
+import { Platform, Comment } from "./platform"
 
 /** Handles conforming to the Platform Interface for BitBucketServer, API work is handle by BitBucketServerAPI */
 
@@ -26,6 +26,11 @@ export class BitBucketServer implements Platform {
    * @returns {Promise<GitDSL>} the git DSL
    */
   getPlatformGitRepresentation = (): Promise<GitJSONDSL> => gitDSLForBitBucketServer(this.api)
+
+  /**
+   * Gets inline comments for current PR
+   */
+  getInlineComments = async (): Promise<Comment[]> => new Promise<Comment[]>((_resolve, reject) => reject())
 
   /**
    * Fails the current build, if status setting succeeds
@@ -99,13 +104,21 @@ export class BitBucketServer implements Platform {
 
   /**
    * Makes an inline comment if possible. If platform can't make an inline comment with given arguments,
-   * it returns `undefined`. (e.g. platform doesn't support inline comments or line was out of diff).
+   * it returns a promise rejection. (e.g. platform doesn't support inline comments or line was out of diff).
    *
    * @returns {Promise<any>} JSON response of new comment
    */
-  createInlineComment = (_git: GitDSL, _comment: string, _path: string, _line: number): Promise<any> => {
-    return new Promise((_resolve, reject) => reject())
-  }
+  createInlineComment = (_git: GitDSL, _comment: string, _path: string, _line: number): Promise<any> =>
+    new Promise((_resolve, reject) => reject())
+
+  /**
+   * Updates an inline comment if possible. If platform can't update an inline comment,
+   * it returns a promise rejection. (e.g. platform doesn't support inline comments or line was out of diff).
+   *
+   * @returns {Promise<any>} JSON response of new comment
+   */
+  updateInlineComment = (_comment: string, _commentId: string): Promise<any> =>
+    new Promise((_resolve, reject) => reject())
 
   /**
    * Deletes the main Danger comment, used when you have

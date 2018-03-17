@@ -1,11 +1,11 @@
 import { GitJSONDSL, GitDSL } from "../dsl/GitDSL"
-import { GitHubPRDSL, GitHubDSL, GitHubIssue, GitHubAPIPR, GitHubJSONDSL, GitHubComment } from "../dsl/GitHubDSL"
+import { GitHubPRDSL, GitHubDSL, GitHubIssue, GitHubAPIPR, GitHubJSONDSL } from "../dsl/GitHubDSL"
 import { GitHubAPI } from "./github/GitHubAPI"
 import GitHubUtils from "./github/GitHubUtils"
 import gitDSLForGitHub from "./github/GitHubGit"
 
 import * as NodeGitHub from "@octokit/rest"
-import { Platform } from "./platform"
+import { Platform, Comment } from "./platform"
 
 /** Handles conforming to the Platform Interface for GitHub, API work is handle by GitHubAPI */
 
@@ -42,13 +42,7 @@ export class GitHub implements Platform {
   /**
    * Gets inline comments for current PR
    */
-  getInlineComments = async (): Promise<GitHubComment[]> =>
-    this.api.getPullRequestInlineComments().then(v => {
-      return v.map(i => {
-        // End user doesn't really need more than id/userId/body right now
-        return { id: i.id, userId: i.user.id, body: i.body }
-      })
-    })
+  getInlineComments = async (): Promise<Comment[]> => this.api.getPullRequestInlineComments()
 
   /**
    * Fails the current build, if status setting succeeds
@@ -128,7 +122,7 @@ export class GitHub implements Platform {
 
   /**
    * Makes an inline comment if possible. If platform can't make an inline comment with given arguments,
-   * it returns `undefined`. (e.g. platform doesn't support inline comments or line was out of diff).
+   * it returns a promise rejection. (e.g. platform doesn't support inline comments or line was out of diff).
    *
    * @returns {Promise<any>} JSON response of new comment
    */
@@ -144,6 +138,26 @@ export class GitHub implements Platform {
     })
   }
 
+  /**
+   * Updates an inline comment if possible. If platform can't update an inline comment,
+   * it returns a promise rejection. (e.g. platform doesn't support inline comments or line was out of diff).
+   *
+   * @returns {Promise<any>} JSON response of new comment
+   */
+  updateInlineComment = (comment: string, commentId: string): Promise<any> => {
+    if (!this.supportsInlineComments) {
+      return new Promise((_resolve, reject) => reject())
+    }
+
+    return this.api.updateInlinePRComment(comment, commentId)
+  }
+
+  /**
+   * Finds a position in given diff. This is needed for GitHub API, more on the position finder
+   * can be found here: https://developer.github.com/v3/pulls/comments/#create-a-comment
+   *
+   * @returns {Promise<number>} A number with given position
+   */
   findPositionForInlineComment = (git: GitDSL, line: number, path: string): Promise<number> => {
     return git.diffForFile(path).then(diff => {
       return new Promise<number>((resolve, reject) => {

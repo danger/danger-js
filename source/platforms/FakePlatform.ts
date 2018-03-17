@@ -1,6 +1,6 @@
 import { GitDSL } from "../dsl/GitDSL"
 import { CISource } from "../ci_source/ci_source"
-import { Platform } from "./platform"
+import { Platform, Comment } from "./platform"
 import { readFileSync } from "fs-extra"
 
 export class FakePlatform implements Platform {
@@ -36,6 +36,10 @@ export class FakePlatform implements Platform {
     }
   }
 
+  async getInlineComments(): Promise<Comment[]> {
+    return []
+  }
+
   supportsCommenting() {
     return true
   }
@@ -53,6 +57,10 @@ export class FakePlatform implements Platform {
   }
 
   async createInlineComment(_git: GitDSL, _comment: string, _path: string, _line: number): Promise<any> {
+    return true
+  }
+
+  async updateInlineComment(_comment: string, _commentId: string): Promise<any> {
     return true
   }
 

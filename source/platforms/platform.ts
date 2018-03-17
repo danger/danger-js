@@ -37,6 +37,8 @@ export interface Platform {
   getPlatformDSLRepresentation: () => Promise<any>
   /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
   getPlatformGitRepresentation: () => Promise<GitJSONDSL>
+  /** Gets inline comments for current PR */
+  getInlineComments: () => Promise<Comment[]>
   /** Can it update comments? */
   supportsCommenting: () => boolean
   /** Does the platform support inline comments? */
@@ -47,6 +49,8 @@ export interface Platform {
   // Here we pass GitDSL because platforms have different endpoints for inline comments
   // Wasn't sure if passing the dsl is the best way of achieving this, though
   createInlineComment: (git: GitDSL, comment: string, path: string, line: number) => Promise<any>
+  /** Updates an inline comment with given id */
+  updateInlineComment: (comment: string, commentId: string) => Promise<any>
   /** Delete the main Danger comment */
   deleteMainComment: (dangerID: string) => Promise<boolean>
   /** Replace the main Danger comment */

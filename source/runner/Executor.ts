@@ -1,6 +1,6 @@
 import { contextForDanger, DangerContext } from "./Dangerfile"
 import { CISource } from "../ci_source/ci_source"
-import { Platform } from "../platforms/platform"
+import { Platform, Comment } from "../platforms/platform"
 import {
   inlineResults,
   regularResults,
@@ -16,6 +16,7 @@ import {
 import {
   template as githubResultsTemplate,
   inlineTemplate as githubResultsInlineTemplate,
+  fileLineToString,
 } from "./templates/githubIssueTemplate"
 import {
   template as bitbucketServerTemplate,
@@ -215,8 +216,9 @@ export class Executor {
       } else if (messageCount > 0) {
         console.log("Found only messages, passing those to review.")
       }
+      const previousComments = await this.platform.getInlineComments()
       const inline = inlineResults(results)
-      const inlineLeftovers = await this.sendInlineComments(inline, git)
+      const inlineLeftovers = await this.sendInlineComments(inline, git, previousComments)
       const regular = regularResults(results)
       const mergedResults = sortResults(mergeResults(regular, inlineLeftovers))
       const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
@@ -238,17 +240,37 @@ export class Executor {
    *
    * @param results Results with inline violations
    */
-  sendInlineComments(results: DangerResults, git: GitDSL): Promise<DangerResults> {
-    // TODO: Get current inline comments, if any of the old ones is not present
-    // in the new ones - delete.
+  sendInlineComments(results: DangerResults, git: GitDSL, previousComments: Comment[]): Promise<DangerResults> {
+    if (!this.platform.supportsInlineComments) {
+      return new Promise(resolve => resolve(results))
+    }
+
     const inlineResults = resultsIntoInlineResults(results)
     const sortedInlineResults = sortInlineResults(inlineResults)
-    const promises = sortedInlineResults.map(inlineResult => {
-      return this.sendInlineComment(git, inlineResult)
-        .then(_r => emptyDangerResults)
-        .catch(_e => inlineResultsIntoResults(inlineResult))
-    })
-    return Promise.all(promises).then(dangerResults => {
+
+    // For every inline result check if there is a comment already
+    // if there is - update it and remove comment from deleteComments array (comments prepared for deletion)
+    // if there isn't - create a new comment
+    // Leftovers in deleteComments array should all be deleted afterwards
+    let deleteComments = previousComments.filter(c => c.ownedByDanger)
+    let commentPromises: Promise<any>[] = []
+    for (let inlineResult of sortedInlineResults) {
+      const index = deleteComments.findIndex(p =>
+        p.body.includes(fileLineToString(inlineResult.file, inlineResult.line))
+      )
+      let promise: Promise<any>
+      if (index != -1) {
+        let previousComment = deleteComments[index]
+        delete deleteComments[index]
+        promise = this.updateInlineComment(inlineResult, previousComment)
+      } else {
+        promise = this.sendInlineComment(git, inlineResult)
+      }
+      commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => inlineResultsIntoResults(inlineResult)))
+    }
+    // TODO: Remove leftovers from deleteComments array
+
+    return Promise.all(commentPromises).then(dangerResults => {
       return new Promise<DangerResults>(resolve => {
         resolve(dangerResults.reduce((acc, r) => mergeResults(acc, r), emptyDangerResults))
       })
@@ -256,19 +278,31 @@ export class Executor {
   }
 
   async sendInlineComment(git: GitDSL, inlineResults: DangerInlineResults): Promise<any> {
-    if (!this.platform.supportsInlineComments) {
-      return
-    }
-
-    const results = inlineResultsIntoResults(inlineResults)
-    const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
-      ? bitbucketServerInlineTemplate(results)
-      : githubResultsInlineTemplate(this.options.dangerID, results)
+    const comment = this.inlineCommentTemplate(inlineResults)
     return await this.platform.createInlineComment(git, comment, inlineResults.file, inlineResults.line)
   }
 
+  async updateInlineComment(inlineResults: DangerInlineResults, previousComment: Comment): Promise<any> {
+    const body = this.inlineCommentTemplate(inlineResults)
+    // If generated body is exactly the same as current comment we don't send an API request
+    if (body == previousComment.body) {
+      return
+    }
+
+    return await this.platform.updateInlineComment(body, previousComment.id)
+  }
+
+  inlineCommentTemplate(inlineResults: DangerInlineResults): string {
+    const results = inlineResultsIntoResults(inlineResults)
+    const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
+      ? bitbucketServerInlineTemplate(results)
+      : githubResultsInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
+
+    return comment
+  }
+
   /**
-   * Takes an error (maybe a bad eval) and provides a DangerResults compatible object
+   * Takes an error (maybe a bad eval) and provides a DangerResults compatible object3ehguh.l;/////////////
    * @param error Any JS error
    */
   resultsForError(error: Error) {

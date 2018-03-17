@@ -9,6 +9,7 @@ import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
 import { RepoMetaData } from "../../ci_source/ci_source"
 import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates/githubIssueTemplate"
 import { api as fetch } from "../../api/fetch"
+import { Comment } from "../platform"
 
 // The Handle the API specific parts of the github
 
@@ -159,6 +160,22 @@ export class GitHubAPI {
     }
   }
 
+  updateInlinePRComment = async (comment: string, commentId: string) => {
+    const repo = this.repoMetadata.repoSlug
+    const res = await this.patch(
+      `repos/${repo}/pulls/comments/${commentId}`,
+      {},
+      {
+        body: comment,
+      }
+    )
+    if (res.ok) {
+      return res.json()
+    } else {
+      throw await res.json()
+    }
+  }
+
   getPullRequestInfo = async (): Promise<GitHubPRDSL> => {
     if (this.pr) {
       return this.pr
@@ -247,10 +264,15 @@ export class GitHubAPI {
     return await this.getAllOfResource(`repos/${repo}/issues/${prID}/comments`)
   }
 
-  getPullRequestInlineComments = async (): Promise<any[]> => {
+  getPullRequestInlineComments = async (): Promise<Comment[]> => {
+    const userID = await this.getUserID()
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
-    return await this.getAllOfResource(`repos/${repo}/pulls/${prID}/comments`)
+    return await this.getAllOfResource(`repos/${repo}/pulls/${prID}/comments`).then(v => {
+      return v.map((i: any) => {
+        return { id: i.id, ownedByDanger: i.user.id == userID, body: i.body }
+      })
+    })
   }
 
   getPullRequestDiff = async () => {

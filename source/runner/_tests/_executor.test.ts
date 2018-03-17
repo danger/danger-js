@@ -71,7 +71,7 @@ describe("setup", () => {
     const dsl = await defaultDsl(platform)
     platform.deleteMainComment = jest.fn()
 
-    await exec.handleResults(emptyResults, dsl)
+    await exec.handleResults(emptyResults, dsl.git)
     expect(platform.deleteMainComment).toBeCalled()
   })
 
@@ -81,7 +81,7 @@ describe("setup", () => {
     const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
 
-    await exec.handleResults(warnResults, dsl)
+    await exec.handleResults(warnResults, dsl.git)
     expect(platform.updateOrCreateComment).toBeCalled()
   })
 
@@ -91,7 +91,7 @@ describe("setup", () => {
     const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
 
-    await exec.handleResults(warnResults, dsl)
+    await exec.handleResults(warnResults, dsl.git)
     expect(platform.updateOrCreateComment).toBeCalled()
   })
 
@@ -102,7 +102,7 @@ describe("setup", () => {
     const apiFailureMock = jest.fn().mockReturnValue(new Promise<any>((resolve, reject) => reject()))
     platform.createInlineComment = apiFailureMock
 
-    let results = await exec.sendInlineComments(singleViolationSingleFileResults, dsl.git)
+    let results = await exec.sendInlineComments(singleViolationSingleFileResults, dsl.git, [])
     expect(results).toEqual(singleViolationSingleFileResults)
   })
 
@@ -113,7 +113,7 @@ describe("setup", () => {
     platform.createInlineComment = jest.fn()
     platform.updateOrCreateComment = jest.fn()
 
-    await exec.handleResults(inlineWarnResults, dsl)
+    await exec.handleResults(inlineWarnResults, dsl.git)
     expect(platform.createInlineComment).toBeCalled()
   })
 
@@ -124,7 +124,7 @@ describe("setup", () => {
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 
-    await exec.handleResults(warnResults, dsl)
+    await exec.handleResults(warnResults, dsl.git)
     expect(platform.updateStatus).toBeCalledWith(
       true,
       "⚠️ Danger found some issues. Don't worry, everything is fixable.",
@@ -139,7 +139,7 @@ describe("setup", () => {
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 
-    await exec.handleResults(failsResults, dsl)
+    await exec.handleResults(failsResults, dsl.git)
     expect(platform.updateStatus).toBeCalledWith(
       false,
       "⚠️ Danger found some issues. Don't worry, everything is fixable.",
@@ -157,7 +157,7 @@ describe("setup", () => {
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 
-    await exec.handleResults(failsResults, dsl)
+    await exec.handleResults(failsResults, dsl.git)
     expect(platform.updateStatus).toBeCalledWith(expect.anything(), expect.anything(), ci.ciRunURL)
   })
 })

@@ -60,6 +60,8 @@ function buildSummaryMessage(dangerID: string, results: DangerResults): string {
 }
 
 export const dangerIDToString = (id: string) => `DangerID: danger-id-${id};`
+export const fileLineToString = (file: string, line: number) => `  File: ${file};
+  Line: ${line};`
 
 /**
  * Postfix signature to be attached comment generated / updated by danger.
@@ -87,7 +89,7 @@ ${results.markdowns.map(v => v.message).join("\n\n")}
 `
 }
 
-export function inlineTemplate(dangerID: string, results: DangerResults): string {
+export function inlineTemplate(dangerID: string, results: DangerResults, file: string, line: number): string {
   const printViolation = (emoji: string) => (violation: Violation) => {
     return `- :${emoji}: ${violation.message}`
   }
@@ -95,6 +97,7 @@ export function inlineTemplate(dangerID: string, results: DangerResults): string
   return `
 <!--
 ${buildSummaryMessage(dangerID, results)}
+${fileLineToString(file, line)}
 -->  
 ${results.fails.map(printViolation("no_entry_sign"))}
 ${results.warnings.map(printViolation("warning"))}

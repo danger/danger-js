@@ -73,28 +73,28 @@ describe("generating messages", () => {
 
 describe("generating inline messages", () => {
   it("Shows the failing message", () => {
-    const issues = githubResultsInlineTemplate("blankID", failsResults)
+    const issues = githubResultsInlineTemplate("blankID", failsResults, "File.swift", 10)
     expect(issues).toContain("- :no_entry_sign: Failing message")
     expect(issues).not.toContain("- :warning:")
     expect(issues).not.toContain("- :book:")
   })
 
   it("Shows the warning message", () => {
-    const issues = githubResultsInlineTemplate("blankID", warnResults)
+    const issues = githubResultsInlineTemplate("blankID", warnResults, "File.swift", 10)
     expect(issues).toContain("- :warning: Warning message")
     expect(issues).not.toContain("- :no_entry_sign:")
     expect(issues).not.toContain("- :book:")
   })
 
   it("Shows the message", () => {
-    const issues = githubResultsInlineTemplate("blankID", messagesResults)
+    const issues = githubResultsInlineTemplate("blankID", messagesResults, "File.swift", 10)
     expect(issues).toContain("- :book: Message")
     expect(issues).not.toContain("- :no_entry_sign:")
     expect(issues).not.toContain("- :warning:")
   })
 
   it("Should include summary on top of message", () => {
-    const issues = githubResultsInlineTemplate("blankID", summaryResults)
+    const issues = githubResultsInlineTemplate("blankID", summaryResults, "File.swift", 10)
     const expected = `
 <!--
   1 failure:  Failing message F...
@@ -102,13 +102,15 @@ describe("generating inline messages", () => {
   1 messages
   1 markdown notices
   DangerID: danger-id-blankID;
+  File: File.swift;
+  Line: 10;
 -->`
 
     expect(issues).toContain(expected)
   })
 
   it("Shows markdowns one after another", () => {
-    const issues = githubResultsInlineTemplate("blankID", markdownResults)
+    const issues = githubResultsInlineTemplate("blankID", markdownResults, "File.swift", 10)
     const expected = `
 ### Short Markdown Message1
 
