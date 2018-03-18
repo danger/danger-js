@@ -1,14 +1,6 @@
 /** A json object that represents the outer ENV */
 export type Env = any
 
-/** Key details about a repo */
-export interface RepoMetaData {
-  /** A path like "artsy/eigen" */
-  repoSlug: string
-  /** The ID for the pull/merge request "11" */
-  pullRequestID: string
-}
-
 /** The shape of an object that represents an individual CI */
 export interface CISource {
   /** The project name, mainly for showing errors */
@@ -22,10 +14,6 @@ export interface CISource {
 
   /** What is the reference slug for this environment? */
   readonly repoSlug: string
-
-  /** What platforms can this CI communicate with? */
-  readonly supportedPlatforms: string[]
-
   /** What unique id can be found for the code review platform's PR */
   readonly pullRequestID: string
 

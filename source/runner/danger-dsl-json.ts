@@ -1,7 +1,7 @@
 import { DangerDSLJSONType } from "../dsl/DangerDSL"
 import { GitJSONDSL } from "../dsl/GitDSL"
 import { GitHubDSL } from "../dsl/GitHubDSL"
-import { CliArgs } from "./cli-args"
+import { CliArgs } from "../dsl/cli-args"
 
 /**
  * Using the input JSON create an DangerDSL

@@ -6,6 +6,15 @@ import * as GitHub from "@octokit/rest"
 
 declare module "danger" {
   type MarkdownString = string
+
+  /** Key details about a repo */
+  interface RepoMetaData {
+    /** A path like "artsy/eigen" */
+    repoSlug: string
+    /** The ID for the pull/merge request "11" */
+    pullRequestID: string
+  }
+
   // This is `danger.bitbucket_server` inside the JSON
 
   interface BitBucketServerJSONDSL {
@@ -32,20 +41,22 @@ declare module "danger" {
    * This is `danger.bitbucket_server.issues` It refers to the issues that are linked to the Pull Request.
    */
   interface JIRAIssue {
+    /** The unique key for the issue e.g. JRA-11 */
     key: string
+    /** The user-facing URL for that issue */
     url: string
   }
 
   // This is `danger.bitbucket_server.pr`
+  //
+  //  References:
+  //  -  https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D
+  //  - https://docs.atlassian.com/bitbucket-server/javadoc/4.3.2/api/reference/classes.html
 
   /**
    * An exact copy of the PR's reference JSON. This interface has type'd the majority
    * of it for tooling's sake, but any extra metadata which BitBucket Server send
    * will still be inside the JS object.
-   *
-   * References:
-   *  -  https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D
-   *  - https://docs.atlassian.com/bitbucket-server/javadoc/4.3.2/api/reference/classes.html
    */
 
   interface BitBucketServerPRDSL {
@@ -55,7 +66,7 @@ declare module "danger" {
     version: number
     /** Title of the pull request. */
     title: string
-    /** */
+    /** The text describing the PR */
     description: string
     /** The pull request's current status. */
     state: "OPEN" | "MERGED" | "DECLINED" | "SUPERSEDED"
@@ -102,7 +113,7 @@ declare module "danger" {
     }
     /** The UNIX timestamp for when the commit was authored */
     authorTimestamp: number
-    /** The author of the commit, assumed to be the person who commit the code into a project. */
+    /** The author of the commit, assumed to be the person who commited/merged the code into a project. */
     committer: {
       /** The id of the commit committer */
       name: string
@@ -223,7 +234,7 @@ declare module "danger" {
     project: {
       /** The project unique id */
       id: number
-      /** The project's human readbale project key */
+      /** The project's human readable project key */
       key: string
       /** Is the project publicly available */
       public: boolean
@@ -313,6 +324,8 @@ declare module "danger" {
     /** ISO6801 date string */
     date: string
   }
+
+  // Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
   /**
    * The shape of the JSON passed between Danger and a subprocess. It's built
    * to be expanded in the future.
@@ -405,17 +418,30 @@ declare module "danger" {
      *  GitHub user identities and some useful utility functions
      *  for displaying links to files.
      *
+     * Strictly speaking, `github` is a nullable type, if you are not using
+     * GitHub then it will be undefined. For the DSL convience sake though, it
+     * is classed as non-nullable
+     *
      *  Provides an authenticated API so you can work directly
      *  with the GitHub API. This is an instance of the "@ocktokit/rest" npm
      *  module.
      *
      *  Finally, if running through Peril on an event other than a PR
-     *  this is the full JSON from the webhook. You can find the full
-     *  typings for those webhooks [at github-webhook-event-types](https://github.com/orta/github-webhook-event-types).
+     *  this is the full JSON from the webhook. [github-webhook-event-types](https://github.com/orta/github-webhook-event-types) has the full
+     *  typings for those webhooks.
      */
-    readonly github?: GitHubDSL
+    readonly github: GitHubDSL
 
-    readonly bitbucket_server?: BitBucketServerDSL
+    /**
+     *  The BitBucket Server metadata. This covers things like PR info,
+     *  comments and reviews on the PR, related issues, commits, comments
+     *  and activities.
+     *
+     *  Strictly speaking, `bitbucket_server` is a nullable type, if you are using
+     *  GitHub then it will be undefined. For the DSL convience sake though, it
+     *  is classed as non-nullable
+     */
+    readonly bitbucket_server: BitBucketServerDSL
 
     /**
      * Functions which are globally useful in most Dangerfiles. Right
@@ -1186,6 +1212,19 @@ declare module "danger" {
 
   export function isInline(violation: Violation): boolean {
     return violation.file !== undefined && violation.line !== undefined
+  }
+
+  /**
+   * Describes the possible arguments that
+   * could be used when calling the CLI
+   */
+  interface CliArgs {
+    base: string
+    verbose: string
+    externalCiProvider: string
+    textOnly: string
+    dangerfile: string
+    id: string
   }
   /** A function with a callback function, which Danger wraps in a Promise */
   type CallbackableFn = (callback: (done: any) => void) => void

@@ -42,10 +42,8 @@ export class Drone implements CISource {
   get pullRequestID(): string {
     return this.env.DRONE_PULL_REQUEST
   }
+
   get repoSlug(): string {
     return this.env.DRONE_REPO
-  }
-  get supportedPlatforms(): string[] {
-    return ["github"]
   }
 }

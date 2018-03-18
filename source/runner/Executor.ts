@@ -217,6 +217,7 @@ export class Executor {
         console.log("Found only messages, passing those to review.")
       }
       const previousComments = await this.platform.getInlineComments()
+      console.log("Previous comments:\n" + JSON.stringify(previousComments))
       const inline = inlineResults(results)
       const inlineLeftovers = await this.sendInlineComments(inline, git, previousComments)
       const regular = regularResults(results)

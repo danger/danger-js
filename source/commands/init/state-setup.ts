@@ -39,6 +39,8 @@ export const generateInitialState = (osProcess: NodeJS.Process): InitState => {
   const hasTravis = fs.existsSync(".travis.yml")
   const hasCircle = fs.existsSync("circle.yml")
   const ciType = hasTravis ? "travis" : hasCircle ? "circle" : "unknown"
+  const repoSlug = getRepoSlug()
+  const isGitHub = !!repoSlug
 
   return {
     isMac,
@@ -47,13 +49,14 @@ export const generateInitialState = (osProcess: NodeJS.Process): InitState => {
     isBabel,
     isAnOSSRepo: true,
     supportsHLinks: supportsHyperlinks.stdout,
-    filename: isTypeScript ? "Dangerfile.ts" : "Dangerfile.js",
+    filename: isTypeScript ? "dangerfile.ts" : "dangerfile.js",
     botName: folderName + "Bot",
     hasSetUpAccount: false,
     hasCreatedDangerfile: false,
     hasSetUpAccountToken: false,
-    repoSlug: getRepoSlug(),
+    repoSlug,
     ciType,
+    isGitHub,
   }
 }
 

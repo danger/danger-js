@@ -28,7 +28,4 @@ export class LocalRepo implements CISource {
   get repoSlug(): string {
     return this.env.repo
   }
-  get supportedPlatforms(): string[] {
-    return ["git"]
-  }
 }

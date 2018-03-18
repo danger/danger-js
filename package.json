@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "3.1.7",
+  "version": "3.2.0",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -42,11 +42,13 @@
     "test:watch": "jest --watch",
     "lint": "tslint \"source/**/*.ts\"",
     "lint:fix": "tslint \"source/**/*.ts\" --fix",
-    "prepublishOnly": "yarn build && yarn declarations && yarn build:flow-types",
+    "prepublishOnly": "yarn build && yarn declarations && yarn build:flow-types && yarn build:pretty-types",
     "build": "shx rm -rf ./distribution && tsc -p tsconfig.production.json && madge ./distribution --circular",
     "build:fast": "tsc -p tsconfig.production.json",
     "build:flow-types":
-      "cp source/danger.d.ts source/_danger.d.ts; sed -ie 's/api: GitHub/api: any/g' source/_danger.d.ts; npx flowgen source/_danger.d.ts -o distribution/danger.js.flow; node scripts/update_flow_types.js",
+      "cp source/danger.d.ts source/_danger.d.ts && sed -ie 's/api: GitHub/api: any/g' source/_danger.d.ts && npx flowgen source/_danger.d.ts -o distribution/danger.js.flow && node scripts/update_flow_types.js",
+    "build:pretty-types":
+      "yarn prettier --write distribution/danger.d.ts; yarn prettier --parser flow distribution/danger.js.flow --write",
     "build:watch": "tsc -w",
     "link": "yarn run build && chmod +x distribution/commands/danger.js && npm link",
     "declarations": "ts-node ./scripts/create-danger-dts.ts",
@@ -89,6 +91,7 @@
     "danger-plugin-jest": "^1.0.1",
     "danger-plugin-yarn": "^1.2.1",
     "date-fns": "^1.29.0",
+    "flow-bin": "^0.66.0",
     "husky": "^0.14.0",
     "jest": "22.1.4",
     "jest-json-reporter": "^1.2.2",
