@@ -204,7 +204,7 @@ export class GitHub implements Platform {
    *
    * @returns {Promise<boolean>} did it work?
    */
-  deleteInlineComment = async (id: number): Promise<boolean> => this.api.deleteInlineCommentWithID(id)
+  deleteInlineComment = async (id: string): Promise<boolean> => this.api.deleteInlineCommentWithID(id)
 
   /**
    * Either updates an existing comment, or makes a new one

@@ -121,6 +121,14 @@ export class BitBucketServer implements Platform {
     new Promise((_resolve, reject) => reject())
 
   /**
+   * Deletes an inline comment, used when you have
+   * fixed all your failures.
+   *
+   * @returns {Promise<boolean>} did it work?
+   */
+  deleteInlineComment = async (_id: string): Promise<boolean> => new Promise<boolean>((_resolve, reject) => reject())
+
+  /**
    * Deletes the main Danger comment, used when you have
    * fixed all your failures.
    *

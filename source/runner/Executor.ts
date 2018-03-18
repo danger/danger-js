@@ -202,6 +202,10 @@ export class Executor {
     if (failureCount + messageCount === 0) {
       console.log("No issues or messages were sent. Removing any existing messages.")
       await this.platform.deleteMainComment(dangerID)
+      const previousComments = await this.platform.getInlineComments()
+      for (const comment of previousComments) {
+        await this.deleteInlineComment(comment)
+      }
     } else {
       if (fails.length > 0) {
         const s = fails.length === 1 ? "" : "s"
@@ -217,7 +221,6 @@ export class Executor {
         console.log("Found only messages, passing those to review.")
       }
       const previousComments = await this.platform.getInlineComments()
-      console.log("Previous comments:\n" + JSON.stringify(previousComments))
       const inline = inlineResults(results)
       const inlineLeftovers = await this.sendInlineComments(inline, git, previousComments)
       const regular = regularResults(results)
@@ -269,7 +272,10 @@ export class Executor {
       }
       commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => inlineResultsIntoResults(inlineResult)))
     }
-    // TODO: Remove leftovers from deleteComments array
+    deleteComments.forEach(comment => {
+      let promise = this.deleteInlineComment(comment)
+      commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => emptyDangerResults))
+    })
 
     return Promise.all(commentPromises).then(dangerResults => {
       return new Promise<DangerResults>(resolve => {
@@ -291,6 +297,10 @@ export class Executor {
     }
 
     return await this.platform.updateInlineComment(body, previousComment.id)
+  }
+
+  async deleteInlineComment(comment: Comment): Promise<any> {
+    return await this.platform.deleteInlineComment(comment.id)
   }
 
   inlineCommentTemplate(inlineResults: DangerInlineResults): string {

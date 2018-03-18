@@ -114,7 +114,7 @@ export class GitHubAPI {
     return Promise.resolve(res.status === 204)
   }
 
-  deleteInlineCommentWithID = async (id: number): Promise<boolean> => {
+  deleteInlineCommentWithID = async (id: string): Promise<boolean> => {
     const repo = this.repoMetadata.repoSlug
     const res = await this.api(`repos/${repo}/pulls/comments/${id}`, {}, {}, "DELETE")
 

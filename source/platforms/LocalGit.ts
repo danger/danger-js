@@ -87,6 +87,10 @@ export class LocalGit implements Platform {
     return true
   }
 
+  async deleteInlineComment(_id: string): Promise<boolean> {
+    return true
+  }
+
   async deleteMainComment(): Promise<boolean> {
     return true
   }

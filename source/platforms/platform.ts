@@ -49,8 +49,10 @@ export interface Platform {
   // Here we pass GitDSL because platforms have different endpoints for inline comments
   // Wasn't sure if passing the dsl is the best way of achieving this, though
   createInlineComment: (git: GitDSL, comment: string, path: string, line: number) => Promise<any>
-  /** Updates an inline comment with given id */
+  /** Updates an inline comment */
   updateInlineComment: (comment: string, commentId: string) => Promise<any>
+  /** Delete an inline comment */
+  deleteInlineComment: (commentId: string) => Promise<boolean>
   /** Delete the main Danger comment */
   deleteMainComment: (dangerID: string) => Promise<boolean>
   /** Replace the main Danger comment */
