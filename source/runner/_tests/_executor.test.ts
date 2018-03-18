@@ -1,12 +1,23 @@
 import { Executor } from "../Executor"
 import { FakeCI } from "../../ci_source/providers/Fake"
 import { FakePlatform } from "../../platforms/FakePlatform"
-import { emptyResults, warnResults, inlineWarnResults, failsResults } from "./fixtures/ExampleDangerResults"
+import {
+  emptyResults,
+  warnResults,
+  inlineWarnResults,
+  failsResults,
+  inlineRegularResults,
+  inlineFailResults,
+  inlineMessageResults,
+} from "./fixtures/ExampleDangerResults"
 import inlineRunner from "../runners/inline"
 import { jsonDSLGenerator } from "../dslGenerator"
 import { jsonToDSL } from "../jsonToDSL"
 import { DangerDSLType } from "../../dsl/DangerDSL"
 import { singleViolationSingleFileResults } from "../../dsl/_tests/fixtures/ExampleDangerResults"
+import { Comment } from "../../platforms/platform"
+import { inlineTemplate } from "../templates/githubIssueTemplate"
+import { resultsIntoInlineResults } from "../../dsl/DangerResults"
 
 const defaultConfig = {
   stdoutOnly: false,
@@ -116,6 +127,72 @@ describe("setup", () => {
     await exec.handleResults(inlineWarnResults, dsl.git)
     expect(platform.createInlineComment).toBeCalled()
   })
+
+  it("Updates an inline comment as the new one was different than the old", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    const previousResults = inlineWarnResults
+    const newResults = inlineFailResults
+    const inlineResults = resultsIntoInlineResults(previousResults)[0]
+    const comment = inlineTemplate(defaultConfig.dangerID, inlineWarnResults, inlineResults.file, inlineResults.line)
+    const previousComments = [{ id: 1234, body: comment, ownedByDanger: true }]
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.updateInlineComment = jest.fn()
+    platform.createInlineComment = jest.fn()
+
+    await exec.handleResults(newResults, dsl.git)
+    expect(platform.updateInlineComment).toBeCalled()
+    expect(platform.createInlineComment).not.toBeCalled()
+  })
+
+  it("Doesn't update/create an inline comment as the old was the same as the new", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    const previousResults = inlineWarnResults
+    const newResults = previousResults
+    const inlineResults = resultsIntoInlineResults(previousResults)[0]
+    const comment = inlineTemplate(defaultConfig.dangerID, inlineWarnResults, inlineResults.file, inlineResults.line)
+    const previousComments = [{ id: 1234, body: comment, ownedByDanger: true }]
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.updateInlineComment = jest.fn()
+    platform.createInlineComment = jest.fn()
+
+    await exec.handleResults(newResults, dsl.git)
+    expect(platform.updateInlineComment).not.toBeCalled()
+    expect(platform.createInlineComment).not.toBeCalled()
+  })
+
+  it("Creates new inline comment as none of the old ones was for this file/line", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    const previousResults = inlineWarnResults
+    const newResults = inlineMessageResults
+    const inlineResults = resultsIntoInlineResults(previousResults)[0]
+    const comment = inlineTemplate(defaultConfig.dangerID, inlineWarnResults, inlineResults.file, inlineResults.line)
+    const previousComments = [{ id: 1234, body: comment, ownedByDanger: true }]
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.updateInlineComment = jest.fn()
+    platform.createInlineComment = jest.fn()
+
+    await exec.handleResults(newResults, dsl.git)
+    expect(platform.updateInlineComment).not.toBeCalled()
+    expect(platform.createInlineComment).toBeCalled()
+  })
+
+  // it("Deletes all old inline comments because new results are all clear", async () => {
+  //   // old results: [warnings: [{"1", file: "1.swift", line: 1}, {"2", file: "2.swift", line: 2}], fails: [], messages: [], markdowns: []]
+  //   // new results: [warnings: [], fails: [], messages: [], markdowns: []]
+  //   // check for 2 deletions
+  // })
+
+  // it("Deletes old inline comment when not applicable in new results", async () => {
+  //   // old results: [warnings: [{"1", file: "1.swift", line: 1}, {"2", file: "2.swift", line: 2}], fails: [], messages: [], markdowns: []]
+  //   // new results: [warnings: [{"1", file: "1.swift", line: 2}, {"2", file: "2.swift", line: 3}], fails: [], messages: [], markdowns: []]
+  //   // check for 2 deletions and 2 creations
+  // })
 
   it("Updates the status with success for a passed results", async () => {
     const platform = new FakePlatform()
