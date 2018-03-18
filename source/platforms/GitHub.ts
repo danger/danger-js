@@ -159,7 +159,7 @@ export class GitHub implements Platform {
    * @returns {Promise<number>} A number with given position
    */
   findPositionForInlineComment = (git: GitDSL, line: number, path: string): Promise<number> => {
-    return git.diffForFile(path).then(diff => {
+    return git.structuredDiffForFile(path).then(diff => {
       return new Promise<number>((resolve, reject) => {
         if (diff === undefined) {
           reject()

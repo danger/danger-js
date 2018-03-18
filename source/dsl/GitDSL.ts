@@ -2,10 +2,6 @@ import { GitCommit } from "./Commit"
 
 /** All Text diff values will be this shape */
 export interface TextDiff {
-  /** Git diff chunks */
-  // Not sure if this is the right place for this one, but few methods needs both chunks & text diffs and I didn't want to parse two times the same file
-  // We could rename the interface, but couldn't find a good one
-  chunks: any[]
   /** The value before the PR's applied changes */
   before: string
   /** The value after the PR's applied changes */
@@ -16,6 +12,12 @@ export interface TextDiff {
   added: string
   /** A string containing just the removed lines */
   removed: string
+}
+
+/** Git diff sliced into chunks */
+export interface StructuredDiff {
+  /** Git diff chunks */
+  chunks: any[]
 }
 
 /** The results of running a JSON patch */
@@ -95,6 +97,13 @@ export interface GitDSL extends GitJSONDSL {
    * @param {string} filename the path to the json file
    */
   diffForFile(filename: string): Promise<TextDiff | null>
+
+  /**
+   * Offers the structured diff for a specific file
+   *
+   * @param {string} filename the path to the json file
+   */
+  structuredDiffForFile(filename: string): Promise<StructuredDiff | null>
 
   /**
    * Provides a JSON patch (rfc6902) between the two versions of a JSON file,
