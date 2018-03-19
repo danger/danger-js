@@ -46,7 +46,7 @@ export interface Platform {
   /** Replace the main Danger comment */
   updateOrCreateComment: (dangerID: string, newComment: string) => Promise<any>
   /** Sets the current PR's status */
-  updateStatus: (passed: boolean, message: string, url?: string) => Promise<boolean>
+  updateStatus: (passed: boolean | "pending", message: string, url?: string) => Promise<boolean>
   /** Get the contents of a file at a path */
   getFileContents: (path: string, slug?: string, ref?: string) => Promise<string>
 }
