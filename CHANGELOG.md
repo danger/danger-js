@@ -13,7 +13,7 @@
 
 ## Master
 
-* []
+* Fix `committer` field issue - missing in Stash API. [@zdenektopic][]
 
 ## 3.2.0
 
