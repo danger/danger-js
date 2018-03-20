@@ -11,7 +11,8 @@
     "danger-process": "distribution/commands/danger-process.js",
     "danger-ci": "distribution/commands/danger-ci.js",
     "danger-init": "distribution/commands/danger-init.js",
-    "danger-local": "distribution/commands/danger-local.js"
+    "danger-local": "distribution/commands/danger-local.js",
+    "danger-reset-status": "distribution/commands/danger-reset-status.js"
   },
   "jest": {
     "transform": {

@@ -44,7 +44,7 @@ export class GitHub implements Platform {
    * then return true.
    */
 
-  updateStatus = async (passed: boolean, message: string, url?: string): Promise<boolean> => {
+  updateStatus = async (passed: boolean | "pending", message: string, url?: string): Promise<boolean> => {
     const ghAPI = this.api.getExternalAPI()
 
     const prJSON = await this.api.getPullRequestInfo()
