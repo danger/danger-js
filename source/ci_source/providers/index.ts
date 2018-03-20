@@ -10,6 +10,7 @@ import { Jenkins } from "./Jenkins"
 import { Nevercode } from "./Nevercode"
 import { Semaphore } from "./Semaphore"
 import { Surf } from "./Surf"
+import { TeamCity } from "./TeamCity"
 import { Travis } from "./Travis"
 import { VSTS } from "./VSTS"
 
@@ -28,6 +29,7 @@ const providers = [
   BuddyBuild,
   VSTS,
   Bitrise,
+  TeamCity,
 ]
 
 // Mainly used for Dangerfile linting
@@ -44,6 +46,7 @@ const realProviders = [
   Buildkite,
   BuddyBuild,
   VSTS,
+  TeamCity,
 ]
 
 export { providers, realProviders }
