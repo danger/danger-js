@@ -13,6 +13,8 @@
 
 ## Master
 
+* Adds support for TeamCity as a CI provider. [@fwal][]
+
 ## 3.3.0
 
 * Fix `committer` field issue - missing in Stash API by using commit author instead. [@zdenektopic][]
