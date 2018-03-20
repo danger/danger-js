@@ -13,6 +13,7 @@
 
 ## Master
 
+* Fix `committer` field issue - missing in Stash API. [@zdenektopic][]
 * Add `reset-status` command [@mxstbr][]
 
 ## 3.2.0
