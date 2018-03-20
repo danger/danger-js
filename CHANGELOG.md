@@ -13,8 +13,16 @@
 
 ## Master
 
-* Fix `committer` field issue - missing in Stash API. [@zdenektopic][]
-* Add `reset-status` command [@mxstbr][]
+## 3.3.0
+
+* Fix `committer` field issue - missing in Stash API by using commit author instead. [@zdenektopic][]
+* Adds a new command: `reset-status`
+
+  This command is for setting the CI build status in advance of running Danger. If your Danger build relies
+  on running tests/linters, then you might want to set the PR status (the red/green/yellow dots) to pending
+  at the start of your build. You can do this by running `yarn danger reset-status`.
+
+  [@mxstbr][]
 
 ## 3.2.0
 
