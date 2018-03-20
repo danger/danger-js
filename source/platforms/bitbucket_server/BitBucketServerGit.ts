@@ -35,7 +35,7 @@ function bitBucketServerCommitToGitCommit(
       name: bbsCommit.author.name,
       date: new Date(bbsCommit.authorTimestamp).toISOString(),
     },
-    committer: bbsCommit.committe ? {
+    committer: bbsCommit.committer ? {
       email: bbsCommit.committer.emailAddress,
       name: bbsCommit.committer.name,
       date: new Date(bbsCommit.committerTimestamp).toISOString(),
