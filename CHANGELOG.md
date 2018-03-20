@@ -13,7 +13,7 @@
 
 ## Master
 
-* []
+* Add `reset-status` command [@mxstbr][]
 
 ## 3.2.0
 
@@ -963,4 +963,5 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@azz]: https://github.com/azz
 [@mifi]: https://github.com/ionutmiftode
+[@mxstbr]: https://github.com/mxstbr
 [ref]: http://danger.systems/js/reference.html

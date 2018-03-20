@@ -19,6 +19,7 @@ program
   .command("pr", "Runs your local Dangerfile against an existing GitHub PR. Will not post on the PR")
   .command("runner", "Runs a dangerfile against a DSL passed in via STDIN [You probably don't need this]")
   .command("local", "Runs danger standalone on a repo, useful for git hooks")
+  .command("reset-status", "Set the status of a PR to pending when a new CI run starts")
   .on("--help", () => {
     console.log("\n")
     console.log("  Docs:")
