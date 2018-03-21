@@ -13,6 +13,8 @@
 
 ## Master
 
+## 3.3.2
+
 * Adds support for TeamCity as a CI provider. [@fwal][]
 
 ## 3.3.1
@@ -980,4 +982,5 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@mifi]: https://github.com/ionutmiftode
 [@mxstbr]: https://github.com/mxstbr
 [@happylinks]: https://github.com/happylinks
+[@fwal]: https://github.com/fwal
 [ref]: http://danger.systems/js/reference.html
