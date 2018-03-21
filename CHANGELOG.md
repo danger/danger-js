@@ -13,6 +13,10 @@
 
 ## Master
 
+* Fixed Babel 7 breaking because of sourceFileName being defined wrong.
+
+  [@happylinks][]
+
 ## 3.3.0
 
 * Fix `committer` field issue - missing in Stash API by using commit author instead. [@zdenektopic][]
@@ -973,4 +977,5 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@azz]: https://github.com/azz
 [@mifi]: https://github.com/ionutmiftode
 [@mxstbr]: https://github.com/mxstbr
+[@happylinks]: https://github.com/happylinks
 [ref]: http://danger.systems/js/reference.html
