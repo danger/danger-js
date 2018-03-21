@@ -13,9 +13,9 @@
 
 ## Master
 
-* Fixed Babel 7 breaking because of sourceFileName being defined wrong.
+## 3.3.1
 
-  [@happylinks][]
+* Fixed Babel 7 breaking because of sourceFileName being defined wrong. [@happylinks][]
 
 ## 3.3.0
 
