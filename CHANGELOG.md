@@ -13,6 +13,8 @@
 
 ## Master
 
+* Adds support for TeamCity as a CI provider. [@fwal][]
+
 ## 3.3.1
 
 * Fixed Babel 7 breaking because of sourceFileName being defined wrong. [@happylinks][]
