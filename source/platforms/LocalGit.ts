@@ -59,7 +59,7 @@ export class LocalGit implements Platform {
     return gitJSONToGitDSL(gitJSON, config)
   }
 
-  async getInlineComments(): Promise<Comment[]> {
+  async getInlineComments(_: string): Promise<Comment[]> {
     return []
   }
 

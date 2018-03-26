@@ -30,7 +30,7 @@ export class BitBucketServer implements Platform {
   /**
    * Gets inline comments for current PR
    */
-  getInlineComments = async (): Promise<Comment[]> => new Promise<Comment[]>((_resolve, reject) => reject())
+  getInlineComments = async (_: string): Promise<Comment[]> => new Promise<Comment[]>((_resolve, reject) => reject())
 
   /**
    * Fails the current build, if status setting succeeds

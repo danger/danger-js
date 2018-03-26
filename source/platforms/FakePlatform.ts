@@ -37,7 +37,7 @@ export class FakePlatform implements Platform {
     }
   }
 
-  async getInlineComments(): Promise<Comment[]> {
+  async getInlineComments(_: string): Promise<Comment[]> {
     return []
   }
 

@@ -100,7 +100,7 @@ describe("getPlatformDSLRepresentation", () => {
   })
 
   it("should get the inline comments for this PR", async () => {
-    const comments = await github.getInlineComments()
+    const comments = await github.getInlineComments("danger-id")
     expect(comments[0].id).toEqual(81345954)
     expect(comments[0].body).toEqual("needed to update the schema for description\n")
     expect(comments.length).toEqual(6)

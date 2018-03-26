@@ -268,13 +268,13 @@ export class GitHubAPI {
     return await this.getAllOfResource(`repos/${repo}/issues/${prID}/comments`)
   }
 
-  getPullRequestInlineComments = async (): Promise<Comment[]> => {
+  getPullRequestInlineComments = async (dangerID: string): Promise<Comment[]> => {
     const userID = await this.getUserID()
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     return await this.getAllOfResource(`repos/${repo}/pulls/${prID}/comments`).then(v => {
       return v.map((i: any) => {
-        return { id: i.id, ownedByDanger: i.user.id == userID, body: i.body }
+        return { id: i.id, ownedByDanger: i.user.id == userID && i.body.includes(dangerID), body: i.body }
       })
     })
   }

@@ -202,7 +202,7 @@ export class Executor {
     if (failureCount + messageCount === 0) {
       console.log("No issues or messages were sent. Removing any existing messages.")
       await this.platform.deleteMainComment(dangerID)
-      const previousComments = await this.platform.getInlineComments()
+      const previousComments = await this.platform.getInlineComments(dangerID)
       for (const comment of previousComments) {
         await this.deleteInlineComment(comment)
       }
@@ -220,7 +220,7 @@ export class Executor {
       } else if (messageCount > 0) {
         console.log("Found only messages, passing those to review.")
       }
-      const previousComments = await this.platform.getInlineComments()
+      const previousComments = await this.platform.getInlineComments(dangerID)
       const inline = inlineResults(results)
       const inlineLeftovers = await this.sendInlineComments(inline, git, previousComments)
       const regular = regularResults(results)

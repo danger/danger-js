@@ -38,7 +38,7 @@ export interface Platform {
   /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
   getPlatformGitRepresentation: () => Promise<GitJSONDSL>
   /** Gets inline comments for current PR */
-  getInlineComments: () => Promise<Comment[]>
+  getInlineComments: (dangerID: string) => Promise<Comment[]>
   /** Can it update comments? */
   supportsCommenting: () => boolean
   /** Does the platform support inline comments? */

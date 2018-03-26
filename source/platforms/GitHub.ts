@@ -42,7 +42,7 @@ export class GitHub implements Platform {
   /**
    * Gets inline comments for current PR
    */
-  getInlineComments = async (): Promise<Comment[]> => this.api.getPullRequestInlineComments()
+  getInlineComments = async (dangerID: string): Promise<Comment[]> => this.api.getPullRequestInlineComments(dangerID)
 
   /**
    * Fails the current build, if status setting succeeds
