@@ -180,8 +180,8 @@ export class Executor {
    * Handle showing results inside a code review platform
    *
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
+   * @param {GitDSL} git a reference to a git implementation so that inline comments find diffs to work with
    */
-  // TODO: Instead of danger, pass gitDSL
   async handleResultsPostingToPlatform(results: DangerResults, git: GitDSL) {
     // Delete the message if there's nothing to say
     const { fails, warnings, messages, markdowns } = results

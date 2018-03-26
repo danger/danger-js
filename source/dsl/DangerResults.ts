@@ -2,9 +2,7 @@ import { Violation, isInline } from "../dsl/Violation"
 
 /**
  * The representation of what running a Dangerfile generates.
- *
- * In the future I'd like this to be cross process, so please
- * do not add functions, only data to this interface.
+ * This needs to be passed between processes, so data only please.
  */
 export interface DangerResults {
   /**
@@ -38,17 +36,12 @@ export interface DangerRuntimeContainer extends DangerResults {
 export interface DangerInlineResults {
   /**
    * Path to the file
-   *
-   * @type {string}
    */
   file: string
 
   /**
    * Line in the file
-   *
-   * @type {string}
    */
-
   line: number
 
   /**
@@ -72,6 +65,8 @@ export interface DangerInlineResults {
   markdowns: string[]
 }
 
+/// End of Danger DSL definition
+
 export const emptyDangerResults = {
   fails: [],
   warnings: [],
@@ -79,6 +74,7 @@ export const emptyDangerResults = {
   markdowns: [],
 }
 
+/** Returns only the inline violations from Danger results */
 export function inlineResults(results: DangerResults): DangerResults {
   return {
     fails: results.fails.filter(m => isInline(m)),
@@ -88,6 +84,7 @@ export function inlineResults(results: DangerResults): DangerResults {
   }
 }
 
+/** Returns only the main-comment commentsviolations from Danger results */
 export function regularResults(results: DangerResults): DangerResults {
   return {
     fails: results.fails.filter(m => !isInline(m)),
@@ -97,6 +94,7 @@ export function regularResults(results: DangerResults): DangerResults {
   }
 }
 
+/** Concat all the violations into a new results */
 export function mergeResults(results1: DangerResults, results2: DangerResults): DangerResults {
   return {
     fails: results1.fails.concat(results2.fails),
@@ -106,6 +104,7 @@ export function mergeResults(results1: DangerResults, results2: DangerResults): 
   }
 }
 
+/** Sorts all of the results according to their files and lines */
 export function sortInlineResults(inlineResults: DangerInlineResults[]): DangerInlineResults[] {
   // First sort messages in every inline result
   const sortedInlineResults = inlineResults.map(i => {

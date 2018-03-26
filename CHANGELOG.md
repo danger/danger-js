@@ -13,11 +13,40 @@
 
 ## Master
 
-* []
+## 3.3.0
+
+* Adds support for inline comments when using GitHub.
+
+  This is one of those "massive under the hood" changes, that has a tiny user DSL surface. From this point onwards
+  `fail`, `warn`, `message` and `markdown` all take an extra two optional params: `file?: string` and `line?: number`.
+
+  Adding `file` and `line` to the call of any exported communication function will trigger one of two things:
+
+  * Danger will create a new comment inline inside your PR with your warning/message/fail/markdown
+  * Danger will append a in the main Danger comment with your warning/message/fail/markdown
+
+  Inline messages are edited/created/deleted with each subsequent run of `danger ci` in the same way the main
+  comment does. This is really useful for: linters, test runners uotput and basically anything that relies on
+  the contents of a file itself.
+
+  If you're using `danger process` to communicate with an external process, you can return JSON like:
+
+  ```json
+  {
+    "markdowns": [
+      {
+        "file": "package.swift",
+        "line": 3,
+        "message": "Needs more base"
+      }
+    ]
+    // [...]
+  }
+  ```
+
+  -- [@sunshinejr][]
 
 ## 3.2.0
-
-=======
 
 * Add BitBucket Server support.
 
@@ -60,7 +89,7 @@
 
   You can see more in the docs for [Danger + BitBucket Server](http://danger.systems/js/usage/bitbucket_server.html).
 
-  * [@azz][]
+  -- [@azz][]
 
 * Don't check for same user ID on comment when running as a GitHub App. [@tibdex][]
 
@@ -963,4 +992,5 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@azz]: https://github.com/azz
 [@mifi]: https://github.com/ionutmiftode
+[@sunshinejr]: https://github.com/sunshinejr
 [ref]: http://danger.systems/js/reference.html
