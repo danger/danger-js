@@ -19,7 +19,7 @@ This provides another logical step in your process, through which Danger can hel
 You can use Danger to codify your teams norms, leaving humans to think about harder problems.
 
 Danger JS currently works with GitHub or BitBucket Server and Travis CI, Circle CI, Semaphore, Jenkins, Docker Cloud, Bitrise, surf-build,
-Codeship, Drone, Buildkite, Nevercode, buddybuild or Visual Studio Team Services.
+Codeship, Drone, Buildkite, Nevercode, buddybuild, Visual Studio Team Services or TeamCity.
 
 [![npm](https://img.shields.io/npm/v/danger.svg)](https://www.npmjs.com/package/danger) [![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=master)](https://travis-ci.org/danger/danger-js) [![Build Status](https://ci.appveyor.com/api/projects/status/ep5hgeox3lbc5c7f?svg=true)](https://ci.appveyor.com/project/orta/danger-js/branch/master) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/danger)
 

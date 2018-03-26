@@ -13,8 +13,6 @@
 
 ## Master
 
-## 3.3.0
-
 * Adds support for inline comments when using GitHub.
 
   This is one of those "massive under the hood" changes, that has a tiny user DSL surface. From this point onwards
@@ -45,6 +43,25 @@
   ```
 
   -- [@sunshinejr][]
+
+## 3.3.2
+
+* Adds support for TeamCity as a CI provider. [@fwal][]
+
+## 3.3.1
+
+* Fixed Babel 7 breaking because of sourceFileName being defined wrong. [@happylinks][]
+
+## 3.3.0
+
+* Fix `committer` field issue - missing in Stash API by using commit author instead. [@zdenektopic][]
+* Adds a new command: `reset-status`
+
+  This command is for setting the CI build status in advance of running Danger. If your Danger build relies
+  on running tests/linters, then you might want to set the PR status (the red/green/yellow dots) to pending
+  at the start of your build. You can do this by running `yarn danger reset-status`.
+
+  [@mxstbr][]
 
 ## 3.2.0
 
@@ -992,5 +1009,13 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@azz]: https://github.com/azz
 [@mifi]: https://github.com/ionutmiftode
+
+<<<<<<< HEAD
 [@sunshinejr]: https://github.com/sunshinejr
-[ref]: http://danger.systems/js/reference.html
+=======
+[@mxstbr]: https://github.com/mxstbr
+[@happylinks]: https://github.com/happylinks
+[@fwal]: https://github.com/fwal
+
+> > > > > > > 2cdbc6f1ffed5253c40639fc7ed7bd299347f949
+> > > > > > > [ref]: http://danger.systems/js/reference.html
