@@ -1009,13 +1009,7 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@azz]: https://github.com/azz
 [@mifi]: https://github.com/ionutmiftode
-
-<<<<<<< HEAD
 [@sunshinejr]: https://github.com/sunshinejr
-=======
 [@mxstbr]: https://github.com/mxstbr
 [@happylinks]: https://github.com/happylinks
 [@fwal]: https://github.com/fwal
-
-> > > > > > > 2cdbc6f1ffed5253c40639fc7ed7bd299347f949
-> > > > > > > [ref]: http://danger.systems/js/reference.html
