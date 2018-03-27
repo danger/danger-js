@@ -116,7 +116,7 @@ export class GitHubAPI {
 
   deleteInlineCommentWithID = async (id: string): Promise<boolean> => {
     const repo = this.repoMetadata.repoSlug
-    const res = await this.api(`repos/${repo}/pulls/comments/${id}`, {}, {}, "DELETE")
+    const res = await this.api(`repos/${repo}/pulls/comments/${id}`, {}, {}, "DELETE", false)
 
     //https://developer.github.com/v3/pulls/comments/#response-5
     return Promise.resolve(res.status === 204)
@@ -155,7 +155,8 @@ export class GitHubAPI {
         commit_id: commitId,
         path: path,
         position: position,
-      }
+      },
+      false
     )
     if (res.ok) {
       return res.json()
@@ -171,7 +172,8 @@ export class GitHubAPI {
       {},
       {
         body: comment,
-      }
+      },
+      false
     )
     if (res.ok) {
       return res.json()
@@ -186,6 +188,7 @@ export class GitHubAPI {
     }
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
+    console.log("repoSlug: " + repo + ", prID: " + prID)
     const res = await this.get(`repos/${repo}/pulls/${prID}`)
     const prDSL = (await res.json()) as GitHubPRDSL
     this.pr = prDSL
@@ -282,6 +285,7 @@ export class GitHubAPI {
   getPullRequestDiff = async () => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
+    console.log("diff repoSlug: " + repo + ", id: " + prID)
     const res = await this.get(`repos/${repo}/pulls/${prID}`, {
       Accept: "application/vnd.github.v3.diff",
     })
@@ -386,6 +390,6 @@ export class GitHubAPI {
   post = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
     this.api(path, headers, JSON.stringify(body), "POST", suppressErrors)
 
-  patch = (path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> =>
-    this.api(path, headers, JSON.stringify(body), "PATCH")
+  patch = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
+    this.api(path, headers, JSON.stringify(body), "PATCH", suppressErrors)
 }

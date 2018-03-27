@@ -132,7 +132,7 @@ export class GitHub implements Platform {
     }
 
     let commitId = git.commits[git.commits.length - 1].sha
-
+    console.log("Sending inline comment. Commit: " + commitId)
     return this.findPositionForInlineComment(git, line, path).then(position => {
       return this.api.postInlinePRComment(comment, commitId, path, position)
     })
@@ -148,6 +148,7 @@ export class GitHub implements Platform {
     if (!this.supportsInlineComments) {
       return new Promise((_resolve, reject) => reject())
     }
+    console.log("Updating inline comment. CommentId: " + commentId + "comment: " + comment)
 
     return this.api.updateInlinePRComment(comment, commentId)
   }
@@ -159,12 +160,22 @@ export class GitHub implements Platform {
    * @returns {Promise<number>} A number with given position
    */
   findPositionForInlineComment = (git: GitDSL, line: number, path: string): Promise<number> => {
+    console.log("Finding position for inline comment." + path + "#" + line)
     return git.structuredDiffForFile(path).then(diff => {
       return new Promise<number>((resolve, reject) => {
         if (diff === undefined) {
+          console.log("Diff not found for inline comment." + path + "#" + line + ". Diff: " + JSON.stringify(diff))
           reject()
         }
 
+        console.log(
+          "Diff found for inline comment, now getting a position." +
+            path +
+            "#" +
+            line +
+            ". Diff: " +
+            JSON.stringify(diff)
+        )
         let fileLine = 0
         for (let chunk of diff!.chunks) {
           // Search for a change (that is not a deletion). "ln" is for normal changes, "ln2" for additions,
@@ -177,7 +188,7 @@ export class GitHub implements Platform {
             fileLine += chunk.changes.length + 1
           }
         }
-
+        console.log("Position found for inline comment: " + fileLine + "." + path + "#" + line)
         resolve(fileLine)
       })
     })
