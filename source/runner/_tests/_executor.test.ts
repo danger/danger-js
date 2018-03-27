@@ -29,7 +29,11 @@ const defaultConfig = {
 const defaultDsl = (platform): Promise<DangerDSLType> => {
   return jsonDSLGenerator(platform).then(jsonDSL => {
     jsonDSL.github = {
-      pr: { number: 1, base: { sha: "321" }, head: { sha: "123", repo: { full_name: "123" } } },
+      pr: {
+        number: 1,
+        base: { sha: "321", repo: { full_name: "321" } },
+        head: { sha: "123", repo: { full_name: "123" } },
+      },
     } as any
     return jsonToDSL(jsonDSL)
   })

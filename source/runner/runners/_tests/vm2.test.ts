@@ -52,7 +52,13 @@ runners.forEach(run => {
       exec = new Executor(new FakeCI({}), platform, run.fn, config)
 
       const dsl = await jsonDSLGenerator(platform)
-      dsl.github = { pr: { number: 1, base: { sha: "321" }, head: { sha: "123", repo: { full_name: "123" } } } } as any
+      dsl.github = {
+        pr: {
+          number: 1,
+          base: { sha: "321", repo: { full_name: "321" } },
+          head: { sha: "123", repo: { full_name: "123" } },
+        },
+      } as any
       const realDSL = await jsonToDSL(dsl)
       return contextForDanger(realDSL)
     }
