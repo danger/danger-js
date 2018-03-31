@@ -7,9 +7,12 @@ import gitDSLForGitHub from "./github/GitHubGit"
 import * as NodeGitHub from "@octokit/rest"
 import { Platform, Comment } from "./platform"
 
+import * as debug from "debug"
+
 /** Handles conforming to the Platform Interface for GitHub, API work is handle by GitHubAPI */
 
 export class GitHub implements Platform {
+  private readonly d = debug("danger:GitHub")
   name: string
 
   constructor(public readonly api: GitHubAPI) {
@@ -132,7 +135,7 @@ export class GitHub implements Platform {
     }
 
     let commitId = git.commits[git.commits.length - 1].sha
-    console.log("Sending inline comment. Commit: " + commitId)
+    this.d("Creating inline comment. Commit: " + commitId)
     return this.findPositionForInlineComment(git, line, path).then(position => {
       return this.api.postInlinePRComment(comment, commitId, path, position)
     })
@@ -148,7 +151,7 @@ export class GitHub implements Platform {
     if (!this.supportsInlineComments) {
       return new Promise((_resolve, reject) => reject())
     }
-    console.log("Updating inline comment. CommentId: " + commentId + "comment: " + comment)
+    this.d("Updating inline comment. CommentId: " + commentId + "comment: " + comment)
 
     return this.api.updateInlinePRComment(comment, commentId)
   }
@@ -160,15 +163,15 @@ export class GitHub implements Platform {
    * @returns {Promise<number>} A number with given position
    */
   findPositionForInlineComment = (git: GitDSL, line: number, path: string): Promise<number> => {
-    console.log("Finding position for inline comment." + path + "#" + line)
+    this.d("Finding position for inline comment." + path + "#" + line)
     return git.structuredDiffForFile(path).then(diff => {
       return new Promise<number>((resolve, reject) => {
         if (diff === undefined) {
-          console.log("Diff not found for inline comment." + path + "#" + line + ". Diff: " + JSON.stringify(diff))
+          this.d("Diff not found for inline comment." + path + "#" + line + ". Diff: " + JSON.stringify(diff))
           reject()
         }
 
-        console.log(
+        this.d(
           "Diff found for inline comment, now getting a position." +
             path +
             "#" +
@@ -188,7 +191,7 @@ export class GitHub implements Platform {
             fileLine += chunk.changes.length + 1
           }
         }
-        console.log("Position found for inline comment: " + fileLine + "." + path + "#" + line)
+        this.d("Position found for inline comment: " + fileLine + "." + path + "#" + line)
         resolve(fileLine)
       })
     })
@@ -203,6 +206,7 @@ export class GitHub implements Platform {
   deleteMainComment = async (dangerID: string): Promise<boolean> => {
     const commentIDs = await this.api.getDangerCommentIDs(dangerID)
     for (let commentID of commentIDs) {
+      this.d(`Deleting comment ${commentID}`)
       await this.api.deleteCommentWithID(commentID)
     }
 
@@ -228,15 +232,18 @@ export class GitHub implements Platform {
 
     if (commentIDs.length) {
       // Edit the first comment
+      this.d(`Updating comment ${commentIDs[0]}`)
       await this.api.updateCommentWithID(commentIDs[0], newComment)
 
       // Delete any dupes
       for (let commentID of commentIDs) {
         if (commentID !== commentIDs[0]) {
+          this.d(`Deleting comment ${commentID}`)
           await this.api.deleteCommentWithID(commentID)
         }
       }
     } else {
+      this.d(`Creating new comment`)
       await this.createComment(newComment)
     }
 
