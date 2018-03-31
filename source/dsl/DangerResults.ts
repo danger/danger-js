@@ -74,6 +74,38 @@ export const emptyDangerResults = {
   markdowns: [],
 }
 
+export function validateResults(results: DangerResults) {
+  // The data we get back is JSON sent by STDIN that can come from many
+  // consumers, let's take the time to ensure the data is how we think it is.
+  const { fails, warnings, messages, markdowns } = results
+  const props = { fails, warnings, messages, markdowns }
+  Object.keys(props).forEach(name => {
+    //
+    // Must include the key 4 types
+    if (!props[name]) {
+      throw new Error(`Results passed to Danger JS did not include ${name}.\n\n${JSON.stringify(results, null, "  ")}`)
+    }
+
+    const violations: Violation[] = props[name]
+    violations.forEach(v => {
+      // They should always have a message
+      if (!v.message) {
+        throw new Error(
+          `A violation passed to Danger JS in ${name} did not include \`message\`.\n\n${JSON.stringify(v, null, "  ")}`
+        )
+      }
+      // Warn if anything other than the initial API is on a violation
+      const officialAPI = ["message", "line", "file"]
+      const keys = Object.keys(v).filter(f => !officialAPI.includes(f))
+      if (keys.length) {
+        console.warn(
+          `Recieved unexpected key in Violation, expected only ${officialAPI} but recieved ${Object.keys(v)}`
+        )
+      }
+    })
+  })
+}
+
 /** Returns only the inline violations from Danger results */
 export function inlineResults(results: DangerResults): DangerResults {
   return {
