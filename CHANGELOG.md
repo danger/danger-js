@@ -13,6 +13,10 @@
 
 ## Master
 
+* Item. [@name][]
+
+## 3.4.0
+
 * Adds support for inline comments when using GitHub.
 
   This is one of those "massive under the hood" changes, that has a tiny user DSL surface. From this point onwards
@@ -23,9 +27,9 @@
   * Danger will create a new comment inline inside your PR with your warning/message/fail/markdown
   * Danger will append a in the main Danger comment with your warning/message/fail/markdown
 
-  Inline messages are edited/created/deleted with each subsequent run of `danger ci` in the same way the main
-  comment does. This is really useful for: linters, test runners uotput and basically anything that relies on
-  the contents of a file itself.
+  Inline messages are edited/created/deleted with each subsequent run of `danger ci` in the same way the main comment
+  does. This is really useful for: linters, test runners uotput and basically anything that relies on the contents of a
+  file itself.
 
   If you're using `danger process` to communicate with an external process, you can return JSON like:
 
@@ -59,9 +63,9 @@
 * Fix `committer` field issue - missing in Stash API by using commit author instead. [@zdenektopic][]
 * Adds a new command: `reset-status`
 
-  This command is for setting the CI build status in advance of running Danger. If your Danger build relies
-  on running tests/linters, then you might want to set the PR status (the red/green/yellow dots) to pending
-  at the start of your build. You can do this by running `yarn danger reset-status`.
+  This command is for setting the CI build status in advance of running Danger. If your Danger build relies on running
+  tests/linters, then you might want to set the PR status (the red/green/yellow dots) to pending at the start of your
+  build. You can do this by running `yarn danger reset-status`.
 
   [@mxstbr][]
 
@@ -69,15 +73,14 @@
 
 * Add BitBucket Server support.
 
-  To use Danger JS with BitBucket Server: you'll need to create a new account for Danger to use,
-  then set the following environment variables on your CI:
+  To use Danger JS with BitBucket Server: you'll need to create a new account for Danger to use, then set the following
+  environment variables on your CI:
 
   * `DANGER_BITBUCKETSERVER_HOST` = The root URL for your server, e.g. `https://bitbucket.mycompany.com`.
   * `DANGER_BITBUCKETSERVER_USERNAME` = The username for the account used to comment.
   * `DANGER_BITBUCKETSERVER_PASSWORD` = The password for the account used to comment.
 
-  Then you will have a fully fleshed out `danger.bitbucket_server` object in your Dangerfile to work with,
-  for example:
+  Then you will have a fully fleshed out `danger.bitbucket_server` object in your Dangerfile to work with, for example:
 
   ```ts
   import { danger, warn } from "danger"
@@ -87,8 +90,7 @@
   }
   ```
 
-  The DSL is fully fleshed out, you can see all the details inside the [Danger JS Reference][ref],
-  but the summary is:
+  The DSL is fully fleshed out, you can see all the details inside the [Danger JS Reference][ref], but the summary is:
 
   ```ts
   danger.bitbucket_server.
@@ -144,22 +146,20 @@
 
 ## 3.1.1
 
-* Allows `danger runner` (the hidden command which runs the process) to accept
-  unknown command flags (such as ones passed to it via `danger local`.) - [@adam-moss][]/[@orta][]
+* Allows `danger runner` (the hidden command which runs the process) to accept unknown command flags (such as ones
+  passed to it via `danger local`.) - [@adam-moss][]/[@orta][]
 
 ## 3.1.0
 
 * Adds a new command `danger local`.
 
-  This command will look between the current branch and master
-  and use that to evaluate a dangerfile. This is aimed specifically at
-  tools like git commit hooks, and for people who don't do code review.
+  This command will look between the current branch and master and use that to evaluate a dangerfile. This is aimed
+  specifically at tools like git commit hooks, and for people who don't do code review.
 
-  `danger.github` will be falsy in this context, so you could share a dangerfile
-  between `danger local` and `danger ci`.
+  `danger.github` will be falsy in this context, so you could share a dangerfile between `danger local` and `danger ci`.
 
-  When I thought about how to use it on Danger JS, I opted to make another Dangerfile and import it at the end of
-  the main Dangerfile. This new Dangerfile only contains rules which can run with just `danger.git`, e.g. CHANGELOG/README
+  When I thought about how to use it on Danger JS, I opted to make another Dangerfile and import it at the end of the
+  main Dangerfile. This new Dangerfile only contains rules which can run with just `danger.git`, e.g. CHANGELOG/README
   checks. I called it `dangerfile.lite.ts`.
 
   Our setup looks like:
@@ -173,10 +173,10 @@
 
 You'll need to have [husky](https://www.npmjs.com/package/husky) installed for this to work. - [@orta][]
 
-* STDOUT formatting has been improved, which is the terminal only version of
-  Danger's typical GitHub comment style system. It's used in `danger pr`, `danger ci --stdout`
-  and `danger local`. - [@orta][]
-* Exposed a get file contents for the platform abstraction so that Peril can work on many platforms in the future - [@orta][]
+* STDOUT formatting has been improved, which is the terminal only version of Danger's typical GitHub comment style
+  system. It's used in `danger pr`, `danger ci --stdout` and `danger local`. - [@orta][]
+* Exposed a get file contents for the platform abstraction so that Peril can work on many platforms in the future -
+  [@orta][]
 
 ### 3.0.5
 
@@ -200,8 +200,8 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 
 ### 3.0.1
 
-* Bug fixes and debug improvements. If you're interested run danger with `DEBUG="*" yarn danger [etc]`
-  and you'll get a _lot_ of output. This should make it much easier to understand what's going on. - [@orta][]
+* Bug fixes and debug improvements. If you're interested run danger with `DEBUG="*" yarn danger [etc]` and you'll get a
+  _lot_ of output. This should make it much easier to understand what's going on. - [@orta][]
 
 ### 3.0.0
 
@@ -209,8 +209,8 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 
   **TLDR** - change `yarn danger` to `yarn danger ci`.
 
-  Danger JS has been fighting an uphill battle for a while with respects to CLI naming, and
-  duplication of work. So, now it's been simplified. There are four user facing commands:
+  Danger JS has been fighting an uphill battle for a while with respects to CLI naming, and duplication of work. So, now
+  it's been simplified. There are four user facing commands:
 
   * `danger init` - Helps you get started with Danger
   * `danger ci` - Runs Danger on CI
@@ -219,8 +219,9 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 
   This release deprecates running `danger` on it's own, so if you have `yarn danger` then move that be `yarn danger ci`.
 
-  Each command name is now much more obvious in it intentions, I've heard many times that people aren't sure what commands do
-  and it's _is_ still even worse in Danger ruby. I figure now is as good a time as any a good time to call it a clean slate.
+  Each command name is now much more obvious in it intentions, I've heard many times that people aren't sure what
+  commands do and it's _is_ still even worse in Danger ruby. I figure now is as good a time as any a good time to call
+  it a clean slate.
 
   On a positive note, I gave all of the help screens an update and tried to improve language where I could.
 
@@ -256,8 +257,8 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 
 ### 2.1.4
 
-* Adds a CLI option for a unique Danger ID per run to `danger` and `danger process`,
-  so you can have multiple Danger comments on the same PR. - [@orta][]
+* Adds a CLI option for a unique Danger ID per run to `danger` and `danger process`, so you can have multiple Danger
+  comments on the same PR. - [@orta][]
 
 ### 2.1.1 - 2.1.2 - 2.1.3
 
@@ -489,8 +490,8 @@ Hello readers! This represents a general stability for Danger. It is mainly a do
 to <http://danger.systems/js/> being generally available. I made the initial commit back in 20 Aug 2016 and now it's
 30th June 2017. It's awesome to look back through the CHANGELOG and see how things have changed.
 
-You can find out a lot more about the 1.0, and Danger's history on my [Artsy blog post on the Danger
-1.0](https://artsy.github.io/blog/2017/06/30/danger-one-oh-again/).
+You can find out a lot more about the 1.0, and Danger's history on my
+[Artsy blog post on the Danger 1.0](https://artsy.github.io/blog/2017/06/30/danger-one-oh-again/).
 
 * Adds inline docs for all CI providers - [@orta][]
 
@@ -652,9 +653,9 @@ If these files are supposed to not exist, please update your PR body to include 
 
 * TypeScript Dangerfiles are now support in Danger - [@orta][]
 
-  We use TypeScript in Danger, and a lot of my work in Artsy now uses TypeScript (see: [JS2017 at
-  Artsy](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#TypeScrip1t)), so I wanted to
-  explore using TypeScript in Dangerfiles.
+  We use TypeScript in Danger, and a lot of my work in Artsy now uses TypeScript (see:
+  [JS2017 at Artsy](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#TypeScrip1t)), so I
+  wanted to explore using TypeScript in Dangerfiles.
 
   This is built on top of Jest's custom transformers, so if you are already using Jest with TypeScript, then you can
   change the `dangerfile.js` to `dangerfile.ts` and nothing should need changing ( except that you might have new
@@ -924,7 +925,8 @@ if (changelogDiff && changelogDiff.indexOf(contributorName) === -1) {
 * `danger.pr` -> `danger.github.pr`, I've also created interfaces for them - [@orta][]
 * `warn`, `message`, `markdown` are all ported over to DangerJS - [@orta][]
 * Shows a HTML table for Danger message - [@orta][]
-* Now offers a Flow-typed definition file, it's not shipped to their repo yet, you can make it by `npm run export-flowtype` - [@orta][]
+* Now offers a Flow-typed definition file, it's not shipped to their repo yet, you can make it by
+  `npm run export-flowtype` - [@orta][]
 * Started turning this into a real project by adding tests - [@orta][]
 
 ### 0.0.5-0.0.10
@@ -950,8 +952,8 @@ You can run by doing:
 danger
 ```
 
-Make sure you set a `DANGER_GITHUB_API_TOKEN` on your CI - [see the Ruby
-guide](http://danger.systems/guides/getting_started.html#setting-up-danger-to-run-on-your-ci) for that.
+Make sure you set a `DANGER_GITHUB_API_TOKEN` on your CI -
+[see the Ruby guide](http://danger.systems/guides/getting_started.html#setting-up-danger-to-run-on-your-ci) for that.
 
 Then you can make a `dangerfile.js` (has to be lowercase, deal with it.) It has access to a whopping 2 DSL attributes.
 
@@ -962,9 +964,9 @@ fail(message: string)
 ```
 
 `pr` _probably_ won't be sticking around for the long run, but if you're using a `0.0.2` release, you should be OK with
-that. It's the full metadata of the PR, so [this JSON
-file](https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/github_api/pr_response.json). `git` currently
-has:
+that. It's the full metadata of the PR, so
+[this JSON file](https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/github_api/pr_response.json).
+`git` currently has:
 
 ```sh
 git.modified_file

@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "3.3.2",
+  "version": "3.4.0",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -34,7 +34,8 @@
     "semi": false,
     "singleQuote": false,
     "trailingComma": "es5",
-    "bracketSpacing": true
+    "bracketSpacing": true,
+    "proseWrap": "always"
   },
   "scripts": {
     "precommit": "lint-staged",
