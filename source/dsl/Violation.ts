@@ -23,6 +23,8 @@ export interface Violation {
   line?: number
 }
 
+/// End of Danger DSL definition
+
 export function isInline(violation: Violation): boolean {
   return violation.file !== undefined && violation.line !== undefined
 }

@@ -1061,11 +1061,6 @@ declare module "danger" {
      */
     line?: number
   }
-
-  export function isInline(violation: Violation): boolean {
-    return violation.file !== undefined && violation.line !== undefined
-  }
-
   /**
    * Describes the possible arguments that
    * could be used when calling the CLI
