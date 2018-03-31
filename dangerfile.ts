@@ -13,11 +13,6 @@ declare function warn(message: string, file?: string, line?: number): void
 // declare function schedule(promise: () => Promise<any | void>): void
 // declare function schedule(callback: (resolve: any) => void): void
 
-warn("Hello0", "CHANGELOG.md", 6)
-warn("Hello1", "CHANGELOG.md", 10)
-warn("Hello2", "CHANGELOG.md", 18)
-warn("Hello3", "CHANGELOG.md", 26)
-
 const checkREADME = async () => {
   if (!danger.github) {
     return
