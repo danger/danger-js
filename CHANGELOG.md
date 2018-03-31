@@ -15,6 +15,10 @@
 
 * Item. [@name][]
 
+## 3.4.1
+
+* Protection against nulls in the inline comment data [@orta][]
+
 ## 3.4.0
 
 * Adds support for inline comments when using GitHub.

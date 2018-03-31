@@ -275,7 +275,7 @@ export class GitHubAPI {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     return await this.getAllOfResource(`repos/${repo}/pulls/${prID}/comments`).then(v => {
-      return v.map((i: any) => {
+      return v.filter(Boolean).map((i: any) => {
         return { id: i.id, ownedByDanger: i.user.id == userID && i.body.includes(dangerID), body: i.body }
       })
     })
