@@ -28,7 +28,7 @@
   * Danger will append a in the main Danger comment with your warning/message/fail/markdown
 
   Inline messages are edited/created/deleted with each subsequent run of `danger ci` in the same way the main comment
-  does. This is really useful for: linters, test runners uotput and basically anything that relies on the contents of a
+  does. This is really useful for: linters, test runners and basically anything that relies on the contents of a
   file itself.
 
   If you're using `danger process` to communicate with an external process, you can return JSON like:
