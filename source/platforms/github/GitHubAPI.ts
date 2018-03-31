@@ -8,6 +8,7 @@ import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
 
 import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates/githubIssueTemplate"
 import { api as fetch } from "../../api/fetch"
+import { Comment } from "../platform"
 import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 
 // The Handle the API specific parts of the github
@@ -113,6 +114,14 @@ export class GitHubAPI {
     return Promise.resolve(res.status === 204)
   }
 
+  deleteInlineCommentWithID = async (id: string): Promise<boolean> => {
+    const repo = this.repoMetadata.repoSlug
+    const res = await this.api(`repos/${repo}/pulls/comments/${id}`, {}, {}, "DELETE", false)
+
+    //https://developer.github.com/v3/pulls/comments/#response-5
+    return Promise.resolve(res.status === 204)
+  }
+
   getUserID = async (): Promise<number | undefined> => {
     if (process.env["DANGER_GITHUB_APP"]) {
       return
@@ -133,6 +142,44 @@ export class GitHubAPI {
     )
 
     return res.json()
+  }
+
+  postInlinePRComment = async (comment: string, commitId: string, path: string, position: number) => {
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
+    const res = await this.post(
+      `repos/${repo}/pulls/${prID}/comments`,
+      {},
+      {
+        body: comment,
+        commit_id: commitId,
+        path: path,
+        position: position,
+      },
+      false
+    )
+    if (res.ok) {
+      return res.json()
+    } else {
+      throw await res.json()
+    }
+  }
+
+  updateInlinePRComment = async (comment: string, commentId: string) => {
+    const repo = this.repoMetadata.repoSlug
+    const res = await this.patch(
+      `repos/${repo}/pulls/comments/${commentId}`,
+      {},
+      {
+        body: comment,
+      },
+      false
+    )
+    if (res.ok) {
+      return res.json()
+    } else {
+      throw await res.json()
+    }
   }
 
   getPullRequestInfo = async (): Promise<GitHubPRDSL> => {
@@ -221,6 +268,17 @@ export class GitHubAPI {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     return await this.getAllOfResource(`repos/${repo}/issues/${prID}/comments`)
+  }
+
+  getPullRequestInlineComments = async (dangerID: string): Promise<Comment[]> => {
+    const userID = await this.getUserID()
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
+    return await this.getAllOfResource(`repos/${repo}/pulls/${prID}/comments`).then(v => {
+      return v.map((i: any) => {
+        return { id: i.id, ownedByDanger: i.user.id == userID && i.body.includes(dangerID), body: i.body }
+      })
+    })
   }
 
   getPullRequestDiff = async () => {
@@ -330,6 +388,6 @@ export class GitHubAPI {
   post = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
     this.api(path, headers, JSON.stringify(body), "POST", suppressErrors)
 
-  patch = (path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> =>
-    this.api(path, headers, JSON.stringify(body), "PATCH")
+  patch = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
+    this.api(path, headers, JSON.stringify(body), "PATCH", suppressErrors)
 }

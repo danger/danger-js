@@ -1,5 +1,5 @@
 import { GitDSL } from "../dsl/GitDSL"
-import { Platform } from "./platform"
+import { Platform, Comment } from "./platform"
 import { gitJSONToGitDSL, GitJSONToGitDSLConfig } from "./git/gitJSONToGitDSL"
 import { diffToGitJSONDSL } from "./git/diffToGitJSONDSL"
 import { GitCommit } from "../dsl/Commit"
@@ -59,8 +59,16 @@ export class LocalGit implements Platform {
     return gitJSONToGitDSL(gitJSON, config)
   }
 
+  async getInlineComments(_: string): Promise<Comment[]> {
+    return []
+  }
+
   supportsCommenting() {
     return false
+  }
+
+  supportsInlineComments() {
+    return true
   }
 
   async updateOrCreateComment(_newComment: string): Promise<boolean> {
@@ -68,6 +76,18 @@ export class LocalGit implements Platform {
   }
 
   async createComment(_comment: string): Promise<any> {
+    return true
+  }
+
+  async createInlineComment(_git: GitDSL, _comment: string, _path: string, _line: number): Promise<any> {
+    return true
+  }
+
+  async updateInlineComment(_comment: string, _commentId: string): Promise<any> {
+    return true
+  }
+
+  async deleteInlineComment(_id: string): Promise<boolean> {
     return true
   }
 

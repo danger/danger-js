@@ -1,7 +1,7 @@
 import * as v from "voca"
 
 import { DangerResults } from "../../dsl/DangerResults"
-import { Violation } from "../../dsl/Violation"
+import { Violation, isInline } from "../../dsl/Violation"
 
 /**
  * Converts a set of violations into a HTML table
@@ -25,11 +25,12 @@ function table(name: string, emoji: string, violations: Violation[]): string {
   </thead>
   <tbody>${violations
     .map((v: Violation) => {
+      const message = isInline(v) ? `**${v.file!}#L${v.line!}** - ${v.message}` : v.message
       return `<tr>
       <td>:${emoji}:</td>
       <td>
 
-  ${v.message}
+  ${message}
   </td>
     </tr>
   `
@@ -59,6 +60,8 @@ function buildSummaryMessage(dangerID: string, results: DangerResults): string {
 }
 
 export const dangerIDToString = (id: string) => `DangerID: danger-id-${id};`
+export const fileLineToString = (file: string, line: number) => `  File: ${file};
+  Line: ${line};`
 
 /**
  * Postfix signature to be attached comment generated / updated by danger.
@@ -79,9 +82,26 @@ ${buildSummaryMessage(dangerID, results)}
 ${table("Fails", "no_entry_sign", results.fails)}
 ${table("Warnings", "warning", results.warnings)}
 ${table("Messages", "book", results.messages)}
-${results.markdowns.join("\n\n")}
+${results.markdowns.map(v => v.message).join("\n\n")}
 <p align="right">
   ${dangerSignaturePostfix}
 </p>
 `
+}
+
+export function inlineTemplate(dangerID: string, results: DangerResults, file: string, line: number): string {
+  const printViolation = (emoji: string) => (violation: Violation) => {
+    return `- :${emoji}: ${violation.message}`
+  }
+
+  return `
+<!--
+${buildSummaryMessage(dangerID, results)}
+${fileLineToString(file, line)}
+-->  
+${results.fails.map(printViolation("no_entry_sign"))}
+${results.warnings.map(printViolation("warning"))}
+${results.messages.map(printViolation("book"))}
+${results.markdowns.map(v => v.message).join("\n\n")}
+  `
 }

@@ -9,4 +9,20 @@ export interface Violation {
    * @type {string}
    */
   message: string
+
+  /**
+   * Optional path to the file
+   * @type {string}
+   */
+  file?: string
+
+  /**
+   * Optional line in the file
+   * @type {string}
+   */
+  line?: number
+}
+
+export function isInline(violation: Violation): boolean {
+  return violation.file !== undefined && violation.line !== undefined
 }

@@ -22,6 +22,11 @@ class mockGitHubAPI /*tslint:disable-line*/ {
     return await fixtures()
   }
 
+  async getPullRequestInlineComments() {
+    const fixtures = await requestWithFixturedJSON("github_inline_comments.json")
+    return await fixtures()
+  }
+
   async getReviews() {
     const fixtures = await requestWithFixturedJSON("reviews.json")
     return await fixtures()
@@ -52,7 +57,7 @@ import { GitHubAPI } from "../github/GitHubAPI"
 import { GitCommit } from "../../dsl/Commit"
 import { FakeCI } from "../../ci_source/providers/Fake"
 import * as os from "os"
-import { RepoMetaData } from "../../ci_source/ci_source"
+import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 
 const EOL = os.EOL
 
@@ -92,6 +97,13 @@ describe("getPlatformDSLRepresentation", () => {
   it("should get the pull request informations", async () => {
     const { pr } = await github.getPlatformDSLRepresentation()
     expect(pr.number).toEqual(327)
+  })
+
+  it("should get the inline comments for this PR", async () => {
+    const comments = await github.getInlineComments("danger-id")
+    expect(comments[0].id).toEqual(81345954)
+    expect(comments[0].body).toEqual("needed to update the schema for description\n")
+    expect(comments.length).toEqual(6)
   })
 
   it("should set thisPR correct", async () => {

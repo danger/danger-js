@@ -5,7 +5,7 @@
 import { DangerDSLType } from "./source/dsl/DangerDSL"
 declare var danger: DangerDSLType
 // declare var results: any
-declare function warn(params: string): void
+declare function warn(message: string, file?: string, line?: number): void
 // declare function fail(params: string): void
 // declare function message(params: string): void
 // declare function markdown(params: string): void

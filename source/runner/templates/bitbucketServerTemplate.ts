@@ -56,10 +56,23 @@ ${resultsSection("Fails", "🚫", results.fails)}
 ${resultsSection("Warnings", "⚠️", results.warnings)}
 ${resultsSection("Messages", "📖", results.messages)}
 
-${results.markdowns.join("\n\n")}
+${results.markdowns.map(v => v.message).join("\n\n")}
 
 ${dangerSignaturePostfix}
 
 [](http://${dangerIDToString(dangerID)})
 `
+}
+
+export function inlineTemplate(results: DangerResults): string {
+  const printViolation = (emoji: string) => (violation: Violation) => {
+    return `- :${emoji}: ${violation.message}`
+  }
+
+  return `
+${results.fails.map(printViolation("no_entry_sign"))}
+${results.warnings.map(printViolation("warning"))}
+${results.messages.map(printViolation("book"))}
+${results.markdowns.map(v => v.message).join("\n\n")}
+  `
 }

@@ -452,9 +452,7 @@ declare module "danger" {
   }
   /**
    * The representation of what running a Dangerfile generates.
-   *
-   * In the future I'd like this to be cross process, so please
-   * do not add functions, only data to this interface.
+   * This needs to be passed between processes, so data only please.
    */
   interface DangerResults {
     /**
@@ -475,7 +473,7 @@ declare module "danger" {
     /**
      * Markdown messages to attach at the bottom of the comment
      */
-    markdowns: MarkdownString[]
+    markdowns: Violation[]
   }
 
   interface DangerRuntimeContainer extends DangerResults {
@@ -485,6 +483,37 @@ declare module "danger" {
     scheduled?: any[]
   }
 
+  interface DangerInlineResults {
+    /**
+     * Path to the file
+     */
+    file: string
+
+    /**
+     * Line in the file
+     */
+    line: number
+
+    /**
+     * Failed messages
+     */
+    fails: string[]
+
+    /**
+     * Messages for info
+     */
+    warnings: string[]
+
+    /**
+     * A set of messages to show inline
+     */
+    messages: string[]
+
+    /**
+     * Markdown messages to attach at the bottom of the comment
+     */
+    markdowns: string[]
+  }
   /**
    * The Danger Utils DSL contains utility functions
    * that are specific to universal Danger use-cases.
@@ -524,6 +553,12 @@ declare module "danger" {
     added: string
     /** A string containing just the removed lines */
     removed: string
+  }
+
+  /** Git diff sliced into chunks */
+  interface StructuredDiff {
+    /** Git diff chunks */
+    chunks: any[]
   }
 
   /** The results of running a JSON patch */
@@ -600,6 +635,13 @@ declare module "danger" {
      * @param {string} filename the path to the json file
      */
     diffForFile(filename: string): Promise<TextDiff | null>
+
+    /**
+     * Offers the structured diff for a specific file
+     *
+     * @param {string} filename the path to the json file
+     */
+    structuredDiffForFile(filename: string): Promise<StructuredDiff | null>
 
     /**
      * Provides a JSON patch (rfc6902) between the two versions of a JSON file,
@@ -1008,6 +1050,20 @@ declare module "danger" {
      *
      */
     message: string
+
+    /**
+     * Optional path to the file
+     */
+    file?: string
+
+    /**
+     * Optional line in the file
+     */
+    line?: number
+  }
+
+  export function isInline(violation: Violation): boolean {
+    return violation.file !== undefined && violation.line !== undefined
   }
 
   /**
@@ -1046,31 +1102,39 @@ declare module "danger" {
    * Fails a build, outputting a specific reason for failing into a HTML table.
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
-  function fail(message: MarkdownString): void
+  function fail(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * Highlights low-priority issues, but does not fail the build. Message
    * is shown inside a HTML table.
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
-  function warn(message: MarkdownString): void
+  function warn(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * Adds a message to the Danger table, the only difference between this
    * and warn is the emoji which shows in the table.
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
-  function message(message: MarkdownString): void
+  function message(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * Adds raw markdown into the Danger comment, under the table
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
-  function markdown(message: MarkdownString): void
+  function markdown(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * The root Danger object. This contains all of the metadata you

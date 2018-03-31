@@ -4,6 +4,18 @@ import { requestWithFixturedJSON } from "../../_tests/_github.test"
 
 const fetchJSON = (api, params): Promise<any> => {
   return Promise.resolve({
+    ok: true,
+    json: () =>
+      Promise.resolve({
+        api,
+        ...params,
+      }),
+  })
+}
+
+const fetchErrorJSON = (api, params): Promise<any> => {
+  return Promise.resolve({
+    ok: false,
     json: () =>
       Promise.resolve({
         api,
@@ -84,6 +96,36 @@ describe("API testing", () => {
         "Content-Type": "application/json",
       },
     })
+  })
+
+  it("postInlinePRComment success", async () => {
+    api.fetch = fetchJSON
+    const expectedJSON = {
+      api: "https://api.github.com/repos/artsy/emission/pulls/1/comments",
+      headers: {
+        Authorization: "token ABCDE",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: '{"body":"","commit_id":"","path":"","position":0}',
+    }
+    expect.assertions(1)
+    await expect(api.postInlinePRComment("", "", "", 0)).resolves.toMatchObject(expectedJSON)
+  })
+
+  it("postInlinePRComment error", async () => {
+    api.fetch = fetchErrorJSON
+    const expectedJSON = {
+      api: "https://api.github.com/repos/artsy/emission/pulls/1/comments",
+      headers: {
+        Authorization: "token ABCDE",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: '{"body":"","commit_id":"","path":"","position":0}',
+    }
+    expect.assertions(1)
+    await expect(api.postInlinePRComment("", "", "", 0)).rejects.toEqual(expectedJSON)
   })
 })
 

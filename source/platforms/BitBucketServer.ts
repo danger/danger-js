@@ -1,8 +1,8 @@
-import { GitJSONDSL } from "../dsl/GitDSL"
+import { GitJSONDSL, GitDSL } from "../dsl/GitDSL"
 import { BitBucketServerPRDSL, BitBucketServerJSONDSL } from "../dsl/BitBucketServerDSL"
 import { BitBucketServerAPI } from "./bitbucket_server/BitBucketServerAPI"
 import gitDSLForBitBucketServer from "./bitbucket_server/BitBucketServerGit"
-import { Platform } from "./platform"
+import { Platform, Comment } from "./platform"
 
 /** Handles conforming to the Platform Interface for BitBucketServer, API work is handle by BitBucketServerAPI */
 
@@ -26,6 +26,11 @@ export class BitBucketServer implements Platform {
    * @returns {Promise<GitDSL>} the git DSL
    */
   getPlatformGitRepresentation = (): Promise<GitJSONDSL> => gitDSLForBitBucketServer(this.api)
+
+  /**
+   * Gets inline comments for current PR
+   */
+  getInlineComments = async (_: string): Promise<Comment[]> => new Promise<Comment[]>((_resolve, reject) => reject())
 
   /**
    * Fails the current build, if status setting succeeds
@@ -85,6 +90,10 @@ export class BitBucketServer implements Platform {
     return true
   }
 
+  supportsInlineComments() {
+    return false
+  }
+
   /**
    * Returns the response for the new comment
    *
@@ -92,6 +101,32 @@ export class BitBucketServer implements Platform {
    * @returns {Promise<any>} JSON response of new comment
    */
   createComment = (comment: string) => this.api.postPRComment(comment)
+
+  /**
+   * Makes an inline comment if possible. If platform can't make an inline comment with given arguments,
+   * it returns a promise rejection. (e.g. platform doesn't support inline comments or line was out of diff).
+   *
+   * @returns {Promise<any>} JSON response of new comment
+   */
+  createInlineComment = (_git: GitDSL, _comment: string, _path: string, _line: number): Promise<any> =>
+    new Promise((_resolve, reject) => reject())
+
+  /**
+   * Updates an inline comment if possible. If platform can't update an inline comment,
+   * it returns a promise rejection. (e.g. platform doesn't support inline comments or line was out of diff).
+   *
+   * @returns {Promise<any>} JSON response of new comment
+   */
+  updateInlineComment = (_comment: string, _commentId: string): Promise<any> =>
+    new Promise((_resolve, reject) => reject())
+
+  /**
+   * Deletes an inline comment, used when you have
+   * fixed all your failures.
+   *
+   * @returns {Promise<boolean>} did it work?
+   */
+  deleteInlineComment = async (_id: string): Promise<boolean> => new Promise<boolean>((_resolve, reject) => reject())
 
   /**
    * Deletes the main Danger comment, used when you have

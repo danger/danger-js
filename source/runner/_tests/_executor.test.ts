@@ -1,14 +1,54 @@
 import { Executor } from "../Executor"
 import { FakeCI } from "../../ci_source/providers/Fake"
 import { FakePlatform } from "../../platforms/FakePlatform"
-import { emptyResults, warnResults, failsResults } from "./fixtures/ExampleDangerResults"
+import {
+  emptyResults,
+  warnResults,
+  inlineWarnResults,
+  failsResults,
+  inlineRegularResults,
+  inlineFailResults,
+  inlineMessageResults,
+} from "./fixtures/ExampleDangerResults"
 import inlineRunner from "../runners/inline"
+import { jsonDSLGenerator } from "../dslGenerator"
+import { jsonToDSL } from "../jsonToDSL"
+import { DangerDSLType } from "../../dsl/DangerDSL"
+import { singleViolationSingleFileResults } from "../../dsl/_tests/fixtures/ExampleDangerResults"
+import { Comment } from "../../platforms/platform"
+import { inlineTemplate } from "../templates/githubIssueTemplate"
+import { resultsIntoInlineResults, DangerResults, inlineResultsIntoResults } from "../../dsl/DangerResults"
 
 const defaultConfig = {
   stdoutOnly: false,
   verbose: false,
   jsonOnly: false,
   dangerID: "123",
+}
+
+const defaultDsl = (platform): Promise<DangerDSLType> => {
+  return jsonDSLGenerator(platform).then(jsonDSL => {
+    jsonDSL.github = {
+      pr: {
+        number: 1,
+        base: { sha: "321", repo: { full_name: "321" } },
+        head: { sha: "123", repo: { full_name: "123" } },
+      },
+    } as any
+    return jsonToDSL(jsonDSL)
+  })
+}
+
+const mockPayloadForResults = (results: DangerResults): any => {
+  return resultsIntoInlineResults(results).map(inlineResult => {
+    const comment = inlineTemplate(
+      defaultConfig.dangerID,
+      inlineResultsIntoResults(inlineResult),
+      inlineResult.file,
+      inlineResult.line
+    )
+    return { id: 1234, body: comment, ownedByDanger: true }
+  })
 }
 
 describe("setup", () => {
@@ -35,6 +75,7 @@ describe("setup", () => {
   it("Creates a DangerResults for a raising dangerfile", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
 
     // This is a real error occuring when Danger modifies the Dangerfile
     // as it is given a path of ""
@@ -43,10 +84,10 @@ describe("setup", () => {
       message: "ENOENT: no such file or directory",
     }
 
-    const results = await exec.runDanger("", {} as any)
+    const results = await exec.runDanger("", { danger: dsl } as any)
     expect(results.fails.length).toBeGreaterThan(0)
 
-    const markdown = results.markdowns[0]
+    const markdown = results.markdowns[0].message
     expect(markdown).toMatch(error.name)
     expect(markdown).toMatch(error.message)
   })
@@ -54,37 +95,170 @@ describe("setup", () => {
   it("Deletes a post when there are no messages", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
     platform.deleteMainComment = jest.fn()
 
-    await exec.handleResults(emptyResults)
+    await exec.handleResults(emptyResults, dsl.git)
     expect(platform.deleteMainComment).toBeCalled()
   })
 
   it("Updates or Creates comments for warnings", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
 
-    await exec.handleResults(warnResults)
+    await exec.handleResults(warnResults, dsl.git)
     expect(platform.updateOrCreateComment).toBeCalled()
   })
 
   it("Updates or Creates comments for warnings", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
 
-    await exec.handleResults(warnResults)
+    await exec.handleResults(warnResults, dsl.git)
     expect(platform.updateOrCreateComment).toBeCalled()
+  })
+
+  it("Sends inline comments and returns regular results for failures", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    const apiFailureMock = jest.fn().mockReturnValue(new Promise<any>((resolve, reject) => reject()))
+    platform.createInlineComment = apiFailureMock
+
+    let results = await exec.sendInlineComments(singleViolationSingleFileResults, dsl.git, [])
+    expect(results).toEqual(singleViolationSingleFileResults)
+  })
+
+  it("Creates an inline comment for warning", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    platform.createInlineComment = jest.fn()
+    platform.updateOrCreateComment = jest.fn()
+
+    await exec.handleResults(inlineWarnResults, dsl.git)
+    expect(platform.createInlineComment).toBeCalled()
+  })
+
+  it("Updates an inline comment as the new one was different than the old", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    const previousResults = inlineWarnResults
+    const newResults = inlineFailResults
+    const inlineResults = resultsIntoInlineResults(previousResults)[0]
+    const comment = inlineTemplate(defaultConfig.dangerID, previousResults, inlineResults.file, inlineResults.line)
+    const previousComments = [{ id: 1234, body: comment, ownedByDanger: true }]
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.updateInlineComment = jest.fn()
+    platform.createInlineComment = jest.fn()
+
+    await exec.handleResults(newResults, dsl.git)
+    expect(platform.updateInlineComment).toBeCalled()
+    expect(platform.createInlineComment).not.toBeCalled()
+  })
+
+  it("Doesn't update/create an inline comment as the old was the same as the new", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    const previousResults = inlineWarnResults
+    const newResults = previousResults
+    const inlineResults = resultsIntoInlineResults(previousResults)[0]
+    const comment = inlineTemplate(defaultConfig.dangerID, previousResults, inlineResults.file, inlineResults.line)
+    const previousComments = [{ id: 1234, body: comment, ownedByDanger: true }]
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.updateInlineComment = jest.fn()
+    platform.createInlineComment = jest.fn()
+
+    await exec.handleResults(newResults, dsl.git)
+    expect(platform.updateInlineComment).not.toBeCalled()
+    expect(platform.createInlineComment).not.toBeCalled()
+  })
+
+  it("Creates new inline comment as none of the old ones was for this file/line", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    const previousResults = inlineWarnResults
+    const newResults = inlineMessageResults
+    const inlineResults = resultsIntoInlineResults(previousResults)[0]
+    const comment = inlineTemplate(defaultConfig.dangerID, previousResults, inlineResults.file, inlineResults.line)
+    const previousComments = [{ id: 1234, body: comment, ownedByDanger: true }]
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.updateInlineComment = jest.fn()
+    platform.createInlineComment = jest.fn()
+
+    await exec.handleResults(newResults, dsl.git)
+    expect(platform.updateInlineComment).not.toBeCalled()
+    expect(platform.createInlineComment).toBeCalled()
+  })
+
+  it("Deletes all old inline comments because new results are all clear", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    const previousResults = {
+      fails: [],
+      warnings: [{ message: "1", file: "1.swift", line: 1 }, { message: "2", file: "2.swift", line: 2 }],
+      messages: [],
+      markdowns: [],
+    }
+    const previousComments = mockPayloadForResults(previousResults)
+    const newResults = emptyResults
+
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.updateInlineComment = jest.fn()
+    platform.createInlineComment = jest.fn()
+    platform.deleteInlineComment = jest.fn()
+
+    await exec.handleResults(newResults, dsl.git)
+    expect(platform.updateInlineComment).not.toBeCalled()
+    expect(platform.createInlineComment).not.toBeCalled()
+    expect(platform.deleteInlineComment).toHaveBeenCalledTimes(2)
+  })
+
+  it("Deletes old inline comment when not applicable in new results", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    const previousResults = {
+      fails: [],
+      warnings: [{ message: "1", file: "1.swift", line: 1 }, { message: "2", file: "2.swift", line: 2 }],
+      messages: [],
+      markdowns: [],
+    }
+    const newResults = {
+      fails: [],
+      warnings: [{ message: "1", file: "1.swift", line: 2 }, { message: "2", file: "2.swift", line: 3 }],
+      messages: [],
+      markdowns: [],
+    }
+    const previousComments = mockPayloadForResults(previousResults)
+
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.updateInlineComment = jest.fn()
+    platform.createInlineComment = jest.fn()
+    platform.deleteInlineComment = jest.fn()
+
+    await exec.handleResults(newResults, dsl.git)
+    expect(platform.updateInlineComment).not.toBeCalled()
+    expect(platform.createInlineComment).toHaveBeenCalledTimes(2)
+    expect(platform.deleteInlineComment).toHaveBeenCalledTimes(2)
   })
 
   it("Updates the status with success for a passed results", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 
-    await exec.handleResults(warnResults)
+    await exec.handleResults(warnResults, dsl.git)
     expect(platform.updateStatus).toBeCalledWith(
       true,
       "⚠️ Danger found some issues. Don't worry, everything is fixable.",
@@ -95,10 +269,11 @@ describe("setup", () => {
   it("Updates the status with success for failing results", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 
-    await exec.handleResults(failsResults)
+    await exec.handleResults(failsResults, dsl.git)
     expect(platform.updateStatus).toBeCalledWith(
       false,
       "⚠️ Danger found some issues. Don't worry, everything is fixable.",
@@ -112,10 +287,11 @@ describe("setup", () => {
     ci.ciRunURL = "https://url.com"
 
     const exec = new Executor(ci, platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 
-    await exec.handleResults(failsResults)
+    await exec.handleResults(failsResults, dsl.git)
     expect(platform.updateStatus).toBeCalledWith(expect.anything(), expect.anything(), ci.ciRunURL)
   })
 })

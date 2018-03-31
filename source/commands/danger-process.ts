@@ -74,14 +74,13 @@ getRuntimeCISource(app).then(source => {
       }
 
       jsonDSLGenerator(platform).then(dangerJSONDSL => {
-        const processInput = prepareDangerDSL(dangerJSONDSL)
-
         if (!subprocessName) {
           //  Just pipe it out to the CLI
+          const processInput = prepareDangerDSL(dangerJSONDSL)
           process.stdout.write(processInput)
         } else {
           const exec = new Executor(source, platform, inlineRunner, config)
-          runDangerSubprocess([subprocessName], processInput, exec)
+          runDangerSubprocess([subprocessName], dangerJSONDSL, exec)
         }
       })
     }

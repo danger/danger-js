@@ -21,6 +21,34 @@ export const warnResults: DangerResults = {
   markdowns: [],
 }
 
+export const inlineWarnResults: DangerResults = {
+  messages: [],
+  warnings: [{ message: "Test message", file: "File.swift", line: 10 }],
+  fails: [],
+  markdowns: [],
+}
+
+export const inlineFailResults: DangerResults = {
+  messages: [],
+  warnings: [],
+  fails: [{ message: "Test message", file: "File.swift", line: 10 }],
+  markdowns: [],
+}
+
+export const inlineMessageResults: DangerResults = {
+  messages: [{ message: "Test message", file: "File1.swift", line: 10 }],
+  warnings: [],
+  fails: [],
+  markdowns: [],
+}
+
+export const inlineRegularResults: DangerResults = {
+  messages: [],
+  warnings: [{ message: "Test message", file: "File.swift", line: 10 }, { message: "Warning message" }],
+  fails: [],
+  markdowns: [],
+}
+
 export const failsResults: DangerResults = {
   fails: [{ message: "Failing message" }],
   warnings: [],
@@ -28,11 +56,25 @@ export const failsResults: DangerResults = {
   markdowns: [],
 }
 
+export const messagesResults: DangerResults = {
+  fails: [],
+  warnings: [],
+  messages: [{ message: "Message" }],
+  markdowns: [],
+}
+
+export const markdownResults: DangerResults = {
+  fails: [],
+  warnings: [],
+  messages: [],
+  markdowns: [{ message: "### Short Markdown Message1" }, { message: "### Short Markdown Message2" }],
+}
+
 export const summaryResults: DangerResults = {
   fails: [{ message: "Failing message Failing message" }],
   warnings: [{ message: "Warning message Warning message" }],
   messages: [{ message: "message" }],
-  markdowns: ["markdown"],
+  markdowns: [{ message: "markdown" }],
 }
 
 export const asyncResults: DangerResults = {

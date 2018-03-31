@@ -4,8 +4,14 @@ import {
   warnResults,
   failsResults,
   summaryResults,
+  messagesResults,
+  markdownResults,
+  inlineRegularResults,
 } from "../../_tests/fixtures/ExampleDangerResults"
-import { template as githubResultsTemplate } from "../../templates/githubIssueTemplate"
+import {
+  template as githubResultsTemplate,
+  inlineTemplate as githubResultsInlineTemplate,
+} from "../../templates/githubIssueTemplate"
 
 describe("generating messages", () => {
   it("shows no tables for empty results", () => {
@@ -58,8 +64,63 @@ describe("generating messages", () => {
       fails: [{ message: "**Failure:** Something failed!" }],
       warnings: [{ message: "_Maybe you meant to run `yarn install`?_" }],
       messages: [{ message: "```ts\nfunction add(a: number, b: number): number {\n  return a + b\n}\n```" }],
-      markdowns: ["List of things:\n\n* one\n* two\n* three\n"],
+      markdowns: [{ message: "List of things:\n\n* one\n* two\n* three\n" }],
     })
+
+    expect(issues).toMatchSnapshot()
+  })
+})
+
+describe("generating inline messages", () => {
+  it("Shows the failing message", () => {
+    const issues = githubResultsInlineTemplate("blankID", failsResults, "File.swift", 10)
+    expect(issues).toContain("- :no_entry_sign: Failing message")
+    expect(issues).not.toContain("- :warning:")
+    expect(issues).not.toContain("- :book:")
+  })
+
+  it("Shows the warning message", () => {
+    const issues = githubResultsInlineTemplate("blankID", warnResults, "File.swift", 10)
+    expect(issues).toContain("- :warning: Warning message")
+    expect(issues).not.toContain("- :no_entry_sign:")
+    expect(issues).not.toContain("- :book:")
+  })
+
+  it("Shows the message", () => {
+    const issues = githubResultsInlineTemplate("blankID", messagesResults, "File.swift", 10)
+    expect(issues).toContain("- :book: Message")
+    expect(issues).not.toContain("- :no_entry_sign:")
+    expect(issues).not.toContain("- :warning:")
+  })
+
+  it("Should include summary on top of message", () => {
+    const issues = githubResultsInlineTemplate("blankID", summaryResults, "File.swift", 10)
+    const expected = `
+<!--
+  1 failure:  Failing message F...
+  1 warning:  Warning message W...
+  1 messages
+  1 markdown notices
+  DangerID: danger-id-blankID;
+  File: File.swift;
+  Line: 10;
+-->`
+
+    expect(issues).toContain(expected)
+  })
+
+  it("Shows markdowns one after another", () => {
+    const issues = githubResultsInlineTemplate("blankID", markdownResults, "File.swift", 10)
+    const expected = `
+### Short Markdown Message1
+
+### Short Markdown Message2
+`
+    expect(issues).toContain(expected)
+  })
+
+  it("Shows correct messages for inline/regular violations", () => {
+    const issues = githubResultsTemplate("blankID", inlineRegularResults)
 
     expect(issues).toMatchSnapshot()
   })

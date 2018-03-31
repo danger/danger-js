@@ -1,10 +1,27 @@
 import { contextForDanger, DangerContext } from "./Dangerfile"
-import { DangerDSL } from "../dsl/DangerDSL"
 import { CISource } from "../ci_source/ci_source"
-import { Platform } from "../platforms/platform"
-import { DangerResults } from "../dsl/DangerResults"
-import { template as githubResultsTemplate } from "./templates/githubIssueTemplate"
-import { template as bitbucketServerTemplate } from "./templates/bitbucketServerTemplate"
+import { Platform, Comment } from "../platforms/platform"
+import {
+  inlineResults,
+  regularResults,
+  mergeResults,
+  DangerResults,
+  DangerInlineResults,
+  resultsIntoInlineResults,
+  emptyDangerResults,
+  inlineResultsIntoResults,
+  sortResults,
+  sortInlineResults,
+} from "../dsl/DangerResults"
+import {
+  template as githubResultsTemplate,
+  inlineTemplate as githubResultsInlineTemplate,
+  fileLineToString,
+} from "./templates/githubIssueTemplate"
+import {
+  template as bitbucketServerTemplate,
+  inlineTemplate as bitbucketServerInlineTemplate,
+} from "./templates/bitbucketServerTemplate"
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
 import * as debug from "debug"
@@ -13,6 +30,8 @@ import { sentence, href } from "./DangerUtils"
 import { DangerRunner } from "./runners/runner"
 import { jsonToDSL } from "./jsonToDSL"
 import { jsonDSLGenerator } from "./dslGenerator"
+import { GitDSL } from "../dsl/GitDSL"
+import { DangerDSL } from "../dsl/DangerDSL"
 
 // This is still badly named, maybe it really should just be runner?
 
@@ -77,7 +96,7 @@ export class Executor {
       results = this.resultsForError(error)
     }
 
-    await this.handleResults(results)
+    await this.handleResults(results, runtime.danger.git)
     return results
   }
 
@@ -97,12 +116,12 @@ export class Executor {
    *
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    */
-  async handleResults(results: DangerResults) {
+  async handleResults(results: DangerResults, git: GitDSL) {
     this.d(`Got Results back, current settings`, this.options)
     if (this.options.stdoutOnly || this.options.jsonOnly) {
-      this.handleResultsPostingToSTDOUT(results)
+      await this.handleResultsPostingToSTDOUT(results)
     } else {
-      this.handleResultsPostingToPlatform(results)
+      await this.handleResultsPostingToPlatform(results, git)
     }
   }
   /**
@@ -161,8 +180,9 @@ export class Executor {
    * Handle showing results inside a code review platform
    *
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
+   * @param {GitDSL} git a reference to a git implementation so that inline comments find diffs to work with
    */
-  async handleResultsPostingToPlatform(results: DangerResults) {
+  async handleResultsPostingToPlatform(results: DangerResults, git: GitDSL) {
     // Delete the message if there's nothing to say
     const { fails, warnings, messages, markdowns } = results
 
@@ -182,6 +202,10 @@ export class Executor {
     if (failureCount + messageCount === 0) {
       console.log("No issues or messages were sent. Removing any existing messages.")
       await this.platform.deleteMainComment(dangerID)
+      const previousComments = await this.platform.getInlineComments(dangerID)
+      for (const comment of previousComments) {
+        await this.deleteInlineComment(comment)
+      }
     } else {
       if (fails.length > 0) {
         const s = fails.length === 1 ? "" : "s"
@@ -196,9 +220,15 @@ export class Executor {
       } else if (messageCount > 0) {
         console.log("Found only messages, passing those to review.")
       }
+      const previousComments = await this.platform.getInlineComments(dangerID)
+      const inline = inlineResults(results)
+      const inlineLeftovers = await this.sendInlineComments(inline, git, previousComments)
+      const regular = regularResults(results)
+      const mergedResults = sortResults(mergeResults(regular, inlineLeftovers))
       const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
-        ? bitbucketServerTemplate(dangerID, results)
-        : githubResultsTemplate(dangerID, results)
+        ? bitbucketServerTemplate(dangerID, mergedResults)
+        : githubResultsTemplate(dangerID, mergedResults)
+
       await this.platform.updateOrCreateComment(dangerID, comment)
     }
 
@@ -209,7 +239,81 @@ export class Executor {
   }
 
   /**
-   * Takes an error (maybe a bad eval) and provides a DangerResults compatible object
+   * Send inline comments
+   * Returns these violations that didn't pass the validation (e.g. incorrect file/line)
+   *
+   * @param results Results with inline violations
+   */
+  sendInlineComments(results: DangerResults, git: GitDSL, previousComments: Comment[]): Promise<DangerResults> {
+    if (!this.platform.supportsInlineComments) {
+      return new Promise(resolve => resolve(results))
+    }
+
+    const inlineResults = resultsIntoInlineResults(results)
+    const sortedInlineResults = sortInlineResults(inlineResults)
+
+    // For every inline result check if there is a comment already
+    // if there is - update it and remove comment from deleteComments array (comments prepared for deletion)
+    // if there isn't - create a new comment
+    // Leftovers in deleteComments array should all be deleted afterwards
+    let deleteComments = previousComments.filter(c => c.ownedByDanger)
+    let commentPromises: Promise<any>[] = []
+    for (let inlineResult of sortedInlineResults) {
+      const index = deleteComments.findIndex(p =>
+        p.body.includes(fileLineToString(inlineResult.file, inlineResult.line))
+      )
+      let promise: Promise<any>
+      if (index != -1) {
+        let previousComment = deleteComments[index]
+        delete deleteComments[index]
+        promise = this.updateInlineComment(inlineResult, previousComment)
+      } else {
+        promise = this.sendInlineComment(git, inlineResult)
+      }
+      commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => inlineResultsIntoResults(inlineResult)))
+    }
+    deleteComments.forEach(comment => {
+      let promise = this.deleteInlineComment(comment)
+      commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => emptyDangerResults))
+    })
+
+    return Promise.all(commentPromises).then(dangerResults => {
+      return new Promise<DangerResults>(resolve => {
+        resolve(dangerResults.reduce((acc, r) => mergeResults(acc, r), emptyDangerResults))
+      })
+    })
+  }
+
+  async sendInlineComment(git: GitDSL, inlineResults: DangerInlineResults): Promise<any> {
+    const comment = this.inlineCommentTemplate(inlineResults)
+    return await this.platform.createInlineComment(git, comment, inlineResults.file, inlineResults.line)
+  }
+
+  async updateInlineComment(inlineResults: DangerInlineResults, previousComment: Comment): Promise<any> {
+    const body = this.inlineCommentTemplate(inlineResults)
+    // If generated body is exactly the same as current comment we don't send an API request
+    if (body == previousComment.body) {
+      return
+    }
+
+    return await this.platform.updateInlineComment(body, previousComment.id)
+  }
+
+  async deleteInlineComment(comment: Comment): Promise<any> {
+    return await this.platform.deleteInlineComment(comment.id)
+  }
+
+  inlineCommentTemplate(inlineResults: DangerInlineResults): string {
+    const results = inlineResultsIntoResults(inlineResults)
+    const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
+      ? bitbucketServerInlineTemplate(results)
+      : githubResultsInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
+
+    return comment
+  }
+
+  /**
+   * Takes an error (maybe a bad eval) and provides a DangerResults compatible object3ehguh.l;/////////////
    * @param error Any JS error
    */
   resultsForError(error: Error) {
@@ -220,7 +324,7 @@ export class Executor {
       fails: [{ message: "Running your Dangerfile has Failed" }],
       warnings: [],
       messages: [],
-      markdowns: [exceptionRaisedTemplate(error)],
+      markdowns: [{ message: exceptionRaisedTemplate(error) }],
     }
   }
 }

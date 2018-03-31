@@ -1,5 +1,5 @@
 import { Env, CISource } from "../ci_source/ci_source"
-import { GitJSONDSL } from "../dsl/GitDSL"
+import { GitJSONDSL, GitDSL } from "../dsl/GitDSL"
 import { GitHub } from "./GitHub"
 import { GitHubAPI } from "./github/GitHubAPI"
 import { BitBucketServer } from "./BitBucketServer"
@@ -37,10 +37,22 @@ export interface Platform {
   getPlatformDSLRepresentation: () => Promise<any>
   /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
   getPlatformGitRepresentation: () => Promise<GitJSONDSL>
+  /** Gets inline comments for current PR */
+  getInlineComments: (dangerID: string) => Promise<Comment[]>
   /** Can it update comments? */
   supportsCommenting: () => boolean
+  /** Does the platform support inline comments? */
+  supportsInlineComments: () => boolean
   /** Creates a comment on the PR */
   createComment: (dangerID: string, body: string) => Promise<any>
+  /** Creates an inline comment on the PR if possible */
+  // Here we pass GitDSL because platforms have different endpoints for inline comments
+  // Wasn't sure if passing the dsl is the best way of achieving this, though
+  createInlineComment: (git: GitDSL, comment: string, path: string, line: number) => Promise<any>
+  /** Updates an inline comment */
+  updateInlineComment: (comment: string, commentId: string) => Promise<any>
+  /** Delete an inline comment */
+  deleteInlineComment: (commentId: string) => Promise<boolean>
   /** Delete the main Danger comment */
   deleteMainComment: (dangerID: string) => Promise<boolean>
   /** Replace the main Danger comment */

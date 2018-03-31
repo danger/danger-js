@@ -30,31 +30,39 @@ export interface DangerContext {
    * Fails a build, outputting a specific reason for failing into a HTML table.
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
-  fail(message: MarkdownString): void
+  fail(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * Highlights low-priority issues, but does not fail the build. Message
    * is shown inside a HTML table.
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
-  warn(message: MarkdownString): void
+  warn(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * Adds a message to the Danger table, the only difference between this
    * and warn is the emoji which shows in the table.
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
-  message(message: MarkdownString): void
+  message(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * Adds raw markdown into the Danger comment, under the table
    *
    * @param {MarkdownString} message the String to output
+   * @param {string | undefined} file a file which this message should be attached to
+   * @param {number | undefined} line the line which this message should be attached to
    */
-  markdown(message: MarkdownString): void
+  markdown(message: MarkdownString, file?: string, line?: number): void
 
   /**
    * The root Danger object. This contains all of the metadata you
@@ -93,10 +101,12 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
   }
 
   const schedule = (fn: any) => results.scheduled && results.scheduled.push(fn)
-  const fail = (message: MarkdownString) => results.fails.push({ message })
-  const warn = (message: MarkdownString) => results.warnings.push({ message })
-  const message = (message: MarkdownString) => results.messages.push({ message })
-  const markdown = (message: MarkdownString) => results.markdowns.push(message)
+  const fail = (message: MarkdownString, file?: string, line?: number) => results.fails.push({ message, file, line })
+  const warn = (message: MarkdownString, file?: string, line?: number) => results.warnings.push({ message, file, line })
+  const message = (message: MarkdownString, file?: string, line?: number) =>
+    results.messages.push({ message, file, line })
+  const markdown = (message: MarkdownString, file?: string, line?: number) =>
+    results.markdowns.push({ message, file, line })
 
   return {
     schedule,

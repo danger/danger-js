@@ -8,7 +8,7 @@ import * as keys from "lodash.keys"
 import * as jsonDiff from "rfc6902"
 import * as jsonpointer from "jsonpointer"
 
-import { GitDSL, JSONPatchOperation, GitJSONDSL } from "../../dsl/GitDSL"
+import { GitDSL, JSONPatchOperation, GitJSONDSL, StructuredDiff } from "../../dsl/GitDSL"
 
 /*
  * As Danger JS bootstraps from JSON like all `danger process` commands
@@ -151,7 +151,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
    *
    * @param filename File path for the diff
    */
-  const diffForFile = async (filename: string) => {
+  const structuredDiffForFile = async (filename: string): Promise<StructuredDiff | null> => {
     let fileDiffs: GitStructuredDiff
 
     if (config.getFullStructuredDiff) {
@@ -161,6 +161,20 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
       fileDiffs = parseDiff(diff)
     }
     const structuredDiff = fileDiffs.find(diff => diff.from === filename || diff.to === filename)
+    if (structuredDiff !== undefined) {
+      return { chunks: structuredDiff.chunks }
+    } else {
+      return null
+    }
+  }
+
+  /**
+   * Gets the git-style diff for a single file.
+   *
+   * @param filename File path for the diff
+   */
+  const diffForFile = async (filename: string) => {
+    const structuredDiff = await structuredDiffForFile(filename)
 
     if (!structuredDiff) {
       return null
@@ -194,6 +208,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     deleted_files: gitJSONRep.deleted_files,
     commits: gitJSONRep.commits,
     diffForFile,
+    structuredDiffForFile,
     JSONPatchForFile,
     JSONDiffForFile,
   }
