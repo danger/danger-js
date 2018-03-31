@@ -6,6 +6,7 @@ import {
   inlineResults,
   regularResults,
   sortInlineResults,
+  validateResults,
 } from "../DangerResults"
 import {
   singleViolationSingleFileResults,
@@ -87,5 +88,29 @@ describe("DangerResults operations", () => {
     const results = sortInlineResults(unsortedInlineResults)
 
     expect(results).toMatchSnapshot()
+  })
+})
+
+describe("validation", () => {
+  it("validates the presence of all result types", () => {
+    const badResults = { fails: [], markdowns: [], other: [] }
+
+    expect(() => {
+      validateResults(badResults as any)
+    }).toThrowErrorMatchingSnapshot()
+  })
+
+  it("validates the presence of message in a violation result types", () => {
+    const badResults = { fails: [{}], markdowns: [], warnings: [], messages: [] }
+
+    expect(() => {
+      validateResults(badResults as any)
+    }).toThrowErrorMatchingSnapshot()
+  })
+
+  it("does not throw for correct results", () => {
+    expect(() => {
+      validateResults(singleViolationSingleFileResults)
+    }).not.toThrow()
   })
 })

@@ -46,8 +46,6 @@ export interface Platform {
   /** Creates a comment on the PR */
   createComment: (dangerID: string, body: string) => Promise<any>
   /** Creates an inline comment on the PR if possible */
-  // Here we pass GitDSL because platforms have different endpoints for inline comments
-  // Wasn't sure if passing the dsl is the best way of achieving this, though
   createInlineComment: (git: GitDSL, comment: string, path: string, line: number) => Promise<any>
   /** Updates an inline comment */
   updateInlineComment: (comment: string, commentId: string) => Promise<any>

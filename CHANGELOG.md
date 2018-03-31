@@ -44,6 +44,8 @@
 
   -- [@sunshinejr][]
 
+* Adds a data validation step when Danger gets results back from a process . [@orta][]
+
 ## 3.3.2
 
 * Adds support for TeamCity as a CI provider. [@fwal][]

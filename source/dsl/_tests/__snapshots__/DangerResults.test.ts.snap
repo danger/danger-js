@@ -430,3 +430,19 @@ Array [
   },
 ]
 `;
+
+exports[`validation validates the presence of all result types 1`] = `
+"Results passed to Danger JS did not include warnings.
+
+{
+  \\"fails\\": [],
+  \\"markdowns\\": [],
+  \\"other\\": []
+}"
+`;
+
+exports[`validation validates the presence of message in a violation result types 1`] = `
+"A violation passed to Danger JS in fails did not include \`message\`.
+
+{}"
+`;

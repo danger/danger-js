@@ -12,6 +12,7 @@ import {
   inlineResultsIntoResults,
   sortResults,
   sortInlineResults,
+  validateResults,
 } from "../dsl/DangerResults"
 import {
   template as githubResultsTemplate,
@@ -117,6 +118,8 @@ export class Executor {
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    */
   async handleResults(results: DangerResults, git: GitDSL) {
+    validateResults(results)
+
     this.d(`Got Results back, current settings`, this.options)
     if (this.options.stdoutOnly || this.options.jsonOnly) {
       await this.handleResultsPostingToSTDOUT(results)
