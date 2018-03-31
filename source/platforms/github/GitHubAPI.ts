@@ -188,7 +188,6 @@ export class GitHubAPI {
     }
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
-    console.log("repoSlug: " + repo + ", prID: " + prID)
     const res = await this.get(`repos/${repo}/pulls/${prID}`)
     const prDSL = (await res.json()) as GitHubPRDSL
     this.pr = prDSL
@@ -285,7 +284,6 @@ export class GitHubAPI {
   getPullRequestDiff = async () => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
-    console.log("diff repoSlug: " + repo + ", id: " + prID)
     const res = await this.get(`repos/${repo}/pulls/${prID}`, {
       Accept: "application/vnd.github.v3.diff",
     })
