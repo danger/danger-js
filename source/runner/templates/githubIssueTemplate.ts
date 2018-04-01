@@ -99,9 +99,9 @@ export function inlineTemplate(dangerID: string, results: DangerResults, file: s
 ${buildSummaryMessage(dangerID, results)}
 ${fileLineToString(file, line)}
 -->  
-${results.fails.map(printViolation("no_entry_sign"))}
-${results.warnings.map(printViolation("warning"))}
-${results.messages.map(printViolation("book"))}
+${results.fails.map(printViolation("no_entry_sign")).join("\n")}
+${results.warnings.map(printViolation("warning")).join("\n")}
+${results.messages.map(printViolation("book")).join("\n")}
 ${results.markdowns.map(v => v.message).join("\n\n")}
   `
 }

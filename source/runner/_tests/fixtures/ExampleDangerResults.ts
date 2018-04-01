@@ -49,6 +49,25 @@ export const inlineRegularResults: DangerResults = {
   markdowns: [],
 }
 
+export const inlineRegularResultsForTheSameLine: DangerResults = {
+  messages: [
+    { message: "Test message", file: "File.swift", line: 10 },
+    { message: "Warning message", file: "File.swift", line: 10 },
+  ],
+  warnings: [
+    { message: "Test message", file: "File.swift", line: 10 },
+    { message: "Warning message", file: "File.swift", line: 10 },
+  ],
+  fails: [
+    { message: "Test message", file: "File.swift", line: 10 },
+    { message: "Warning message", file: "File.swift", line: 10 },
+  ],
+  markdowns: [
+    { message: "Test message", file: "File.swift", line: 10 },
+    { message: "Warning message", file: "File.swift", line: 10 },
+  ],
+}
+
 export const failsResults: DangerResults = {
   fails: [{ message: "Failing message" }],
   warnings: [],

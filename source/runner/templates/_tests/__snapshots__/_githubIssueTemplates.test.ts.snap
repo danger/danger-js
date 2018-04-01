@@ -1,5 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`generating inline messages Shows correct message for multiple inline violations for the same file and line 1`] = `
+"
+<!--
+  2 failure:  Test message, Warning message
+  2 warning:  Test message, Warning message
+  2 messages
+  2 markdown notices
+  DangerID: danger-id-blankID;
+  File: File.swift;
+  Line: 10;
+-->  
+- :no_entry_sign: Test message
+- :no_entry_sign: Warning message
+- :warning: Test message
+- :warning: Warning message
+- :book: Test message
+- :book: Warning message
+Test message
+
+Warning message
+  "
+`;
+
 exports[`generating inline messages Shows correct messages for inline/regular violations 1`] = `
 "
 <!--
