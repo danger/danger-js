@@ -13,7 +13,7 @@
 
 ## Master
 
-* Item. [@name][]
+* Fixed a bug where updating multiple inline comments caused a Javascript error [@sunshinejr][]
 
 ## 3.4.2
 

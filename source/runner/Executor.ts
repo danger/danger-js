@@ -268,7 +268,7 @@ export class Executor {
       let promise: Promise<any>
       if (index != -1) {
         let previousComment = deleteComments[index]
-        delete deleteComments[index]
+        deleteComments.splice(index, 1)
         promise = this.updateInlineComment(inlineResult, previousComment)
       } else {
         promise = this.sendInlineComment(git, inlineResult)

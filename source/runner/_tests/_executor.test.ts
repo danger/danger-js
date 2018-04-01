@@ -9,6 +9,8 @@ import {
   inlineRegularResults,
   inlineFailResults,
   inlineMessageResults,
+  inlineMultipleWarnResults,
+  inlineMultipleWarnResults2,
 } from "./fixtures/ExampleDangerResults"
 import inlineRunner from "../runners/inline"
 import { jsonDSLGenerator } from "../dslGenerator"
@@ -160,6 +162,24 @@ describe("setup", () => {
     await exec.handleResults(newResults, dsl.git)
     expect(platform.updateInlineComment).toBeCalled()
     expect(platform.createInlineComment).not.toBeCalled()
+  })
+
+  it("Updates multiple inline comments", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    const previousResults = inlineMultipleWarnResults
+    const newResults = inlineMultipleWarnResults2
+    const previousComments = mockPayloadForResults(previousResults)
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.updateInlineComment = jest.fn()
+    platform.createInlineComment = jest.fn()
+    platform.deleteInlineComment = jest.fn()
+
+    await exec.handleResults(newResults, dsl.git)
+    expect(platform.updateInlineComment).toHaveBeenCalledTimes(3)
+    expect(platform.createInlineComment).not.toBeCalled()
+    expect(platform.deleteInlineComment).not.toBeCalled()
   })
 
   it("Doesn't update/create an inline comment as the old was the same as the new", async () => {
