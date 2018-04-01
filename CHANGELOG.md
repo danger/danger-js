@@ -15,6 +15,10 @@
 
 * Item. [@name][]
 
+## 3.4.2
+
+* Improving reporting when multiple violations are o nthe same line of a file [@sunshinejr][]
+
 ## 3.4.1
 
 * Protection against nulls in the inline comment data [@orta][]
@@ -32,8 +36,8 @@
   * Danger will append a in the main Danger comment with your warning/message/fail/markdown
 
   Inline messages are edited/created/deleted with each subsequent run of `danger ci` in the same way the main comment
-  does. This is really useful for: linters, test runners and basically anything that relies on the contents of a
-  file itself.
+  does. This is really useful for: linters, test runners and basically anything that relies on the contents of a file
+  itself.
 
   If you're using `danger process` to communicate with an external process, you can return JSON like:
 
