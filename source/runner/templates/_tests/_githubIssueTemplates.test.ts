@@ -7,6 +7,7 @@ import {
   messagesResults,
   markdownResults,
   inlineRegularResults,
+  inlineRegularResultsForTheSameLine,
 } from "../../_tests/fixtures/ExampleDangerResults"
 import {
   template as githubResultsTemplate,
@@ -121,6 +122,12 @@ describe("generating inline messages", () => {
 
   it("Shows correct messages for inline/regular violations", () => {
     const issues = githubResultsTemplate("blankID", inlineRegularResults)
+
+    expect(issues).toMatchSnapshot()
+  })
+
+  it("Shows correct message for multiple inline violations for the same file and line", () => {
+    const issues = githubResultsInlineTemplate("blankID", inlineRegularResultsForTheSameLine, "File.swift", 10)
 
     expect(issues).toMatchSnapshot()
   })
