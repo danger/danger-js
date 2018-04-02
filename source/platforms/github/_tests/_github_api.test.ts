@@ -1,6 +1,7 @@
 import { FakeCI } from "../../../ci_source/providers/Fake"
 import { GitHubAPI } from "../GitHubAPI"
 import { requestWithFixturedJSON } from "../../_tests/_github.test"
+import { Comment } from "../../platform"
 
 const fetchJSON = (api, params): Promise<any> => {
   return Promise.resolve({
@@ -96,6 +97,25 @@ describe("API testing", () => {
         "Content-Type": "application/json",
       },
     })
+  })
+
+  it("getPullRequestInlineComment gets only comments for given DangerId", async () => {
+    api.getAllOfResource = await requestWithFixturedJSON("github_inline_comments_with_danger.json")
+    api.getUserID = () => new Promise<number>(r => r(20229914))
+
+    const comments = await api.getPullRequestInlineComments("danger-id-default")
+
+    expect(comments.length).toEqual(1)
+    expect(comments[0].ownedByDanger).toBeTruthy()
+  })
+
+  it("getPullRequestInlineComment doesn't get comments as the DangerId is different", async () => {
+    api.getAllOfResource = await requestWithFixturedJSON("github_inline_comments_with_danger.json")
+    api.getUserID = () => new Promise<number>(r => r(123))
+
+    const comments = await api.getPullRequestInlineComments("danger-id-default")
+
+    expect(comments.length).toEqual(0)
   })
 
   it("postInlinePRComment success", async () => {

@@ -13,6 +13,9 @@
 
 ## Master
 
+* Fixed a bug where Danger would get access to _all_ inline comments, thus deleting comments posted by other people
+  [@sunshinejr][]
+
 ## 3.4.3
 
 * Fixed a bug where updating multiple inline comments caused a Javascript error [@sunshinejr][]
