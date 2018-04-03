@@ -13,6 +13,10 @@
 
 ## Master
 
+## 3.4.5
+
+* Don't print error for commit status when there was no error [@sunshinejr][]
+
 ## 3.4.4
 
 * Fixed a bug where Danger would get access to _all_ inline comments, thus deleting comments posted by other people
