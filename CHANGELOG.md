@@ -13,6 +13,8 @@
 
 ## Master
 
+* Fixed Babel 7 breaking due to invalid sourceFileName configuration [@kesne][]
+
 ## 3.4.5
 
 * Don't print error for commit status when there was no error [@sunshinejr][]
