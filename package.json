@@ -117,7 +117,7 @@
     "get-stdin": "^5.0.1",
     "hyperlinker": "^1.0.0",
     "jsome": "^2.3.25",
-    "json5": "^0.5.1",
+    "json5": "^1.0.0",
     "jsonpointer": "^4.0.1",
     "lodash.find": "^4.6.0",
     "lodash.includes": "^4.3.0",
