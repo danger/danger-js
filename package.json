@@ -114,7 +114,7 @@
     "chalk": "^2.3.0",
     "commander": "^2.13.0",
     "debug": "^3.1.0",
-    "get-stdin": "^5.0.1",
+    "get-stdin": "^6.0.0",
     "hyperlinker": "^1.0.0",
     "jsome": "^2.3.25",
     "json5": "^1.0.0",
