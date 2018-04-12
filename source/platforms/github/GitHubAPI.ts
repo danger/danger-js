@@ -385,16 +385,11 @@ export class GitHubAPI {
     )
   }
 
-  get = (path: string, headers: any = {}, body: any = undefined): Promise<node_fetch.Response> =>
-    this.api(path, headers, body, "GET")
+  get = (path: string, headers: any = {}): Promise<node_fetch.Response> => this.api(path, headers, null, "GET")
 
   post = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
     this.api(path, headers, JSON.stringify(body), "POST", suppressErrors)
 
-  patch = (
-    path: string,
-    headers: any = {},
-    body: any = undefined,
-    suppressErrors?: boolean
-  ): Promise<node_fetch.Response> => this.api(path, headers, JSON.stringify(body), "PATCH", suppressErrors)
+  patch = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
+    this.api(path, headers, JSON.stringify(body), "PATCH", suppressErrors)
 }
