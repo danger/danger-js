@@ -13,6 +13,8 @@
 
 ## Master
 
+## 3.4.6
+
 * Fixed Babel 7 breaking due to invalid sourceFileName configuration [@kesne][]
 
 ## 3.4.5
