@@ -34,13 +34,4 @@ program
     console.log("       http://danger.systems/js/reference.html")
   })
 
-// Commander mutates process.argv
-const originalProcessArgV = process.argv
 program.parse(process.argv)
-
-const showUpgradeNotice =
-  process.env.CI && ["init", "ci", "process", "pr", "local", "--help"].some(cmd => originalProcessArgV.includes(cmd))
-
-if (showUpgradeNotice) {
-  console.error("You may have updated from Danger 2.x -> 3.x without updating from `danger` to `danger ci`.")
-}
