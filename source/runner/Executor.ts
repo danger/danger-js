@@ -162,20 +162,25 @@ export class Executor {
         console.log(row.messages.join(chalk.bold("\n-\n")))
       })
 
+      const tick = chalk.bold.greenBright("✓")
+      const cross = chalk.bold.redBright("ⅹ")
+
       if (fails.length > 0) {
         const s = fails.length === 1 ? "" : "s"
         const are = fails.length === 1 ? "is" : "are"
         const message = chalk.underline.red("Failing the build")
-        console.log(`Danger: ${message}, there ${are} ${fails.length} fail${s}.`)
+        console.log(`Danger: ${cross} ${message}, there ${are} ${fails.length} fail${s}.`)
         process.exitCode = 1
       } else if (warnings.length > 0) {
         const message = chalk.underline("not failing the build")
-        console.log(`Danger: Found only warnings, ${message}`)
+        console.log(`Danger: ${tick} found only warnings, ${message}`)
       } else if (messages.length > 0) {
-        console.log("Danger: Passed, found only messages.")
+        console.log(`Danger: ${tick} passed, found only messages.`)
       } else if (!messages.length && !fails.length && !messages.length && !warnings.length) {
-        console.log("Danger: Passed review, received no feedback.")
+        console.log(`Danger: ${tick} passed review, received no feedback.`)
       }
+      // An empty blank line for visual spacing
+      console.log("")
     }
   }
 
