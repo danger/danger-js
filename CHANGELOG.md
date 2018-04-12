@@ -13,6 +13,8 @@
 
 ## Master
 
+* Update dependencies [@orta][]
+
 ## 3.4.6
 
 * Fixed Babel 7 breaking due to invalid sourceFileName configuration [@kesne][]

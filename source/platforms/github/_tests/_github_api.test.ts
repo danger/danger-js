@@ -164,7 +164,7 @@ describe("Peril", () => {
     expect(api.fetch).toHaveBeenCalledWith(
       "https://api.github.com/user",
       {
-        body: {},
+        body: null,
         headers: {
           Authorization: "token ABCDE",
           CUSTOM: "HEADER",
@@ -186,7 +186,7 @@ describe("Peril", () => {
     expect(api.fetch).toHaveBeenCalledWith(
       "https://api.github.com/user",
       {
-        body: {},
+        body: null,
         headers: {
           Accept: "application/vnd.github.machine-man-preview+json, application/vnd.github.v3.diff",
           Authorization: "token ABCDE",

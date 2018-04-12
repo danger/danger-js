@@ -42,7 +42,7 @@ export class GitHubAPI {
   getExternalAPI = (): GitHubNodeAPI => {
     const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || undefined
     const api = new GitHubNodeAPI({
-      host: baseUrl,
+      baseUrl,
       headers: {
         ...this.additionalHeaders,
       },
@@ -385,8 +385,7 @@ export class GitHubAPI {
     )
   }
 
-  get = (path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> =>
-    this.api(path, headers, body, "GET")
+  get = (path: string, headers: any = {}): Promise<node_fetch.Response> => this.api(path, headers, null, "GET")
 
   post = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
     this.api(path, headers, JSON.stringify(body), "POST", suppressErrors)
