@@ -13,6 +13,8 @@
 
 ## Master
 
+## 3.4.7
+
 * Update dependencies [@orta][]
 
 ## 3.4.6
