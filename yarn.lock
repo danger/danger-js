@@ -2232,6 +2232,12 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
+expand-tilde@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/expand-tilde/-/expand-tilde-2.0.2.tgz#97e801aa052df02454de46b02bf621642cdc8502"
+  dependencies:
+    homedir-polyfill "^1.0.1"
+
 expect@^22.4.3:
   version "22.4.3"
   resolved "https://registry.yarnpkg.com/expect/-/expect-22.4.3.tgz#d5a29d0a0e1fb2153557caef2674d4547e914674"
@@ -2815,7 +2821,7 @@ home-or-tmp@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/home-or-tmp/-/home-or-tmp-3.0.0.tgz#57a8fe24cf33cdd524860a15821ddc25c86671fb"
 
-homedir-polyfill@^1.0.0:
+homedir-polyfill@^1.0.0, homedir-polyfill@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/homedir-polyfill/-/homedir-polyfill-1.0.1.tgz#4c2bbc8a758998feebf5ed68580f76d46768b4bc"
   dependencies:
@@ -2954,7 +2960,7 @@ inherits@2, inherits@2.0.3, inherits@^2.0.1, inherits@~2.0.0, inherits@~2.0.1, i
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
 
-ini@^1.3.4:
+ini@^1.3.5:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
 
@@ -4649,18 +4655,17 @@ package-json@^4.0.0:
     registry-url "^3.0.3"
     semver "^5.1.0"
 
-parse-diff@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/parse-diff/-/parse-diff-0.4.0.tgz#9ce35bcce8fc0b7c58f46d71113394fc0b4982dd"
+parse-diff@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/parse-diff/-/parse-diff-0.4.2.tgz#b173390e916564e8c70ccd37756047941e5b3ef2"
 
-parse-git-config@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/parse-git-config/-/parse-git-config-1.1.1.tgz#d3a9984317132f57398712bba438e129590ddf8c"
+parse-git-config@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/parse-git-config/-/parse-git-config-2.0.2.tgz#9f3154b069aefa747b199cbf95fefd2e749f7b36"
   dependencies:
-    extend-shallow "^2.0.1"
-    fs-exists-sync "^0.1.0"
+    expand-tilde "^2.0.2"
     git-config-path "^1.0.1"
-    ini "^1.3.4"
+    ini "^1.3.5"
 
 parse-github-url@^1.0.2:
   version "1.0.2"
