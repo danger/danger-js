@@ -28,6 +28,6 @@ exports[`the dangerfile gitDSL - BitBucket Server should include \`after\` text 
 
 exports[`the dangerfile gitDSL - BitBucket Server should include \`before\` text content of the file 1`] = `"{\\"path\\":\\".gitignore\\",\\"repoSlug\\":\\"projects/PROJ/repos/repo\\",\\"ref\\":\\"d6725486c38d46a33e76f622cf24b9a388c8d13d\\"}"`;
 
-exports[`the dangerfile gitDSL - BitBucket Server should include \`removed\` text content of the file 1`] = `"node_modules*.log/test.py/.vscode.DS_Storecoverage.idea__pycache__/*.pyc*.swp"`;
+exports[`the dangerfile gitDSL - BitBucket Server should include \`removed\` text content of the file 1`] = `""`;
 
 exports[`the dangerfile gitDSL - BitBucket Server shows the diff for a specific file 1`] = `"node_modules*.log/test.py/.vscode.DS_Storecoverage.idea__pycache__/*.pyc*.swp"`;

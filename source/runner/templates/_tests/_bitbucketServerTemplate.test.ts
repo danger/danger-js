@@ -43,28 +43,28 @@ describe("generating messages for BitBucket server", () => {
 
 describe("generating inline messages", () => {
   it("Shows the failing message", () => {
-    const issues = inlineTemplate(failsResults)
+    const issues = inlineTemplate("blankID", failsResults, "File.swift", 5)
     expect(issues).toContain("- :no_entry_sign: Failing message")
     expect(issues).not.toContain("- :warning:")
     expect(issues).not.toContain("- :book:")
   })
 
   it("Shows the warning message", () => {
-    const issues = inlineTemplate(warnResults)
+    const issues = inlineTemplate("blankID", warnResults, "File.swift", 5)
     expect(issues).toContain("- :warning: Warning message")
     expect(issues).not.toContain("- :no_entry_sign:")
     expect(issues).not.toContain("- :book:")
   })
 
   it("Shows the message", () => {
-    const issues = inlineTemplate(messagesResults)
+    const issues = inlineTemplate("blankID", messagesResults, "File.swift", 5)
     expect(issues).toContain("- :book: Message")
     expect(issues).not.toContain("- :no_entry_sign:")
     expect(issues).not.toContain("- :warning:")
   })
 
   it("Shows markdowns one after another", () => {
-    const issues = inlineTemplate(markdownResults)
+    const issues = inlineTemplate("blankID", markdownResults, "File.swift", 5)
     const expected = `
 ### Short Markdown Message1
 

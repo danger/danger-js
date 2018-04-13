@@ -35,7 +35,7 @@ describe("API testing - BitBucket Server", () => {
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests` +
         `?at=refs/heads/branch&withProperties=false&withAttributes=false`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult.values)
@@ -47,7 +47,7 @@ describe("API testing - BitBucket Server", () => {
 
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult)
@@ -59,7 +59,7 @@ describe("API testing - BitBucket Server", () => {
 
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/commits`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult.values)
@@ -73,7 +73,7 @@ describe("API testing - BitBucket Server", () => {
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/compare/diff` +
         //
         `?withComments=false&from=BASE&to=HEAD`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult.diffs)
@@ -87,7 +87,7 @@ describe("API testing - BitBucket Server", () => {
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/diff` +
         //
         `?withComments=false`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult.diffs)
@@ -101,7 +101,7 @@ describe("API testing - BitBucket Server", () => {
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities` +
         //
         `?fromType=COMMENT`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult.values)
@@ -115,7 +115,7 @@ describe("API testing - BitBucket Server", () => {
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities` +
         //
         `?fromType=ACTIVITY`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult.values)
@@ -127,7 +127,7 @@ describe("API testing - BitBucket Server", () => {
 
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/jira/1.0/projects/FOO/repos/BAR/pull-requests/1/issues`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult)
@@ -161,7 +161,7 @@ describe("API testing - BitBucket Server", () => {
 
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities?fromType=COMMENT`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual([jsonResult.values[0].comment])
@@ -173,7 +173,7 @@ describe("API testing - BitBucket Server", () => {
 
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/projects/FOO/repos/BAR/raw/path/to/foo.txt?at=master`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       true
     )
     expect(result).toEqual(textResult)
