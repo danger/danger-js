@@ -89,6 +89,7 @@ export class Executor {
   async runDanger(file: string, runtime: DangerContext) {
     let results = {} as DangerResults
 
+    console.log("--> Can you see me <--")
     // If an eval of the Dangerfile fails, we should generate a
     // message that can go back to the CI
     try {
@@ -314,7 +315,7 @@ export class Executor {
   inlineCommentTemplate(inlineResults: DangerInlineResults): string {
     const results = inlineResultsIntoResults(inlineResults)
     const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
-      ? bitbucketServerInlineTemplate(results)
+      ? bitbucketServerInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
       : githubResultsInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
 
     return comment
