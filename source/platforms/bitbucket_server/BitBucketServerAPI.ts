@@ -11,6 +11,7 @@ import {
   BitBucketServerDiff,
   RepoMetaData,
 } from "../../dsl/BitBucketServerDSL"
+import { Comment } from "../platform"
 
 import { Env } from "../../ci_source/ci_source"
 import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates/bitbucketServerTemplate"
@@ -131,6 +132,31 @@ export class BitBucketServerAPI {
       .filter(comment => v.includes(comment!.text, dangerSignaturePostfix))
   }
 
+  getDangerInlineComments = async (dangerID: string): Promise<Comment[]> => {
+    const username = this.repoCredentials.username
+    const activities = await this.getPullRequestComments()
+    const dangerIDMessage = dangerIDToString(dangerID)
+
+    const comments = activities
+      .filter(activity => activity.commentAnchor)
+      .map(activity => activity.comment)
+      .filter(Boolean) as BitBucketServerPRComment[]
+
+    return new Promise<Comment[]>(resolve => {
+      resolve(
+        comments
+          .map((i: any) => {
+            return {
+              id: i.id,
+              ownedByDanger: i.author.name === username && i.text.includes(dangerIDMessage),
+              body: i.text,
+            }
+          })
+          .filter((i: any) => i.ownedByDanger)
+      )
+    })
+  }
+
   getFileContents = async (filePath: string, repoSlug: string, refspec: string) => {
     const path = `${repoSlug}/` + `raw/${filePath}` + `?at=${refspec}`
     const res = await this.get(path, undefined, true)
@@ -162,6 +188,31 @@ export class BitBucketServerAPI {
     return await res.json()
   }
 
+  postInlinePRComment = async (comment: string, line: number, type: string, filePath: string) => {
+    const path = `${this.getPRBasePath()}/comments`
+    const t = { add: "ADDED", normal: "CONTEXT", del: "REMOVED" }[type]
+    console.log("\n\n\n inline ---> postinline pr coment type " + JSON.stringify(t) + "type " + JSON.stringify(type))
+
+    const res = await this.post(
+      path,
+      {},
+      {
+        text: comment,
+        anchor: {
+          line: line,
+          lineType: t,
+          fileType: "TO",
+          path: filePath,
+        },
+      }
+    )
+    if (res.ok) {
+      return res.json()
+    } else {
+      throw await res.json()
+    }
+  }
+
   deleteComment = async ({ id, version }: BitBucketServerPRComment) => {
     const path = `${this.getPRBasePath()}/comments/${id}?version=${version}`
     const res = await this.delete(path)
@@ -180,7 +231,11 @@ export class BitBucketServerAPI {
         version,
       }
     )
-    return await res.json()
+    if (res.ok) {
+      return res.json()
+    } else {
+      throw await res.json()
+    }
   }
 
   // API implementation
@@ -193,7 +248,7 @@ export class BitBucketServerAPI {
     }
 
     const url = `${this.repoCredentials.host}/${path}`
-    this.d(`${method} ${url}`)
+    this.d(`\n\n\n inline ---> ${method} ${url} \n body -> ${body} \n headers -> ${JSON.stringify(headers)}`)
     return this.fetch(
       url,
       {
@@ -209,7 +264,7 @@ export class BitBucketServerAPI {
   }
 
   get = (path: string, headers: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
-    this.api(path, headers, undefined, "GET", suppressErrors)
+    this.api(path, headers, null, "GET", suppressErrors)
 
   post = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
     this.api(path, headers, JSON.stringify(body), "POST", suppressErrors)
