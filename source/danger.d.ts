@@ -171,7 +171,7 @@ declare module "danger" {
   interface BitBucketServerSegment {
     lines: BitBucketServerLine[]
     truncated: boolean
-    type: "ADDED" | "REMOVED"
+    type: "ADDED" | "REMOVED" | "CONTEXT"
   }
 
   interface BitBucketServerLine {
