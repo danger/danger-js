@@ -89,7 +89,6 @@ export class Executor {
   async runDanger(file: string, runtime: DangerContext) {
     let results = {} as DangerResults
 
-    console.log("--> Can you see me <--")
     // If an eval of the Dangerfile fails, we should generate a
     // message that can go back to the CI
     try {

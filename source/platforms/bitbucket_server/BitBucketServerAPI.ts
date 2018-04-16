@@ -141,7 +141,6 @@ export class BitBucketServerAPI {
       .filter(activity => activity.commentAnchor)
       .map(activity => activity.comment)
       .filter(Boolean) as BitBucketServerPRComment[]
-
     return new Promise<Comment[]>(resolve => {
       resolve(
         comments
@@ -191,7 +190,6 @@ export class BitBucketServerAPI {
   postInlinePRComment = async (comment: string, line: number, type: string, filePath: string) => {
     const path = `${this.getPRBasePath()}/comments`
     const t = { add: "ADDED", normal: "CONTEXT", del: "REMOVED" }[type]
-    console.log("\n\n\n inline ---> postinline pr coment type " + JSON.stringify(t) + "type " + JSON.stringify(type))
 
     const res = await this.post(
       path,
@@ -248,7 +246,7 @@ export class BitBucketServerAPI {
     }
 
     const url = `${this.repoCredentials.host}/${path}`
-    this.d(`\n\n\n inline ---> ${method} ${url} \n body -> ${body} \n headers -> ${JSON.stringify(headers)}`)
+    this.d(`${method} ${url}`)
     return this.fetch(
       url,
       {

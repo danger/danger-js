@@ -126,29 +126,24 @@ export class BitBucketServer implements Platform {
    * @returns {Promise<string>} A string with type of line
    */
   findTypeOfLine = (git: GitDSL, line: number, path: string): Promise<string> => {
-    console.log("\n\n\n inline ---> Finding position for inline comment." + path + "#" + line)
     return git.structuredDiffForFile(path).then(diff => {
       return new Promise<string>((resolve, reject) => {
         if (diff === undefined) {
           this.d("Diff not found for inline comment." + path + "#" + line + ". Diff: " + JSON.stringify(diff))
           reject()
         }
-        this.d(
-          "Diff found for inline comment, now getting a position." +
-            path +
-            "#" +
-            line +
-            ". Diff: " +
-            JSON.stringify(diff)
-        )
         let change
         for (let chunk of diff!.chunks) {
           // Search for a change (that is not a deletion) and with given line. We want to look only for destination lines of a change
           change = chunk.changes.find((c: any) => c.type != "del" && c.destinationLine == line)
           break
         }
-        this.d("Type found for inline comment: " + JSON.stringify(change) + "." + path + "#" + line)
-        resolve(change.type)
+        if (change === undefined) {
+          this.d("change not found for inline comment line " + path + "#" + line + ".")
+          reject()
+        } else {
+          resolve(change.type)
+        }
       })
     })
   }
@@ -170,13 +165,6 @@ export class BitBucketServer implements Platform {
       .filter(Boolean)
       .find(comment => comment!.id.toString() == commentId)
 
-    this.d(
-      "\n\n\n inline ---> Updating inline comment. CommentId: " +
-        JSON.stringify(commentId) +
-        "updateComment: " +
-        JSON.stringify(updateComment)
-    )
-
     return this.api.updateComment(updateComment!, comment)
   }
 
@@ -196,13 +184,6 @@ export class BitBucketServer implements Platform {
       .map(activity => activity.comment)
       .filter(Boolean)
       .find(comment => comment!.id.toString() == id)
-
-    this.d(
-      "\n\n\n inline ---> deleting inline comment. CommentId: " +
-        JSON.stringify(id) +
-        "deletecomment: " +
-        JSON.stringify(deleteComment)
-    )
 
     return this.api.deleteComment(deleteComment!)
   }
