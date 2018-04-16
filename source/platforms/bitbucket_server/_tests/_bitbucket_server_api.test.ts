@@ -167,6 +167,34 @@ describe("API testing - BitBucket Server", () => {
     expect(result).toEqual([jsonResult.values[0].comment])
   })
 
+  it("getDangerInlineComments", async () => {
+    jsonResult = {
+      values: [
+        {
+          comment: {
+            text:
+              "\n[//]: # (danger-id-default;)\n[//]: # (  File: README.md;\n  Line: 5;)\n\n- :warning: Hello updates\n\n\n  ",
+            author: {
+              name: "username",
+            },
+          },
+          commentAnchor: {
+            line: 5,
+            lineType: "ADDED",
+          },
+        },
+      ],
+    }
+    const comments = await api.getDangerInlineComments("default")
+    expect(api.fetch).toHaveBeenCalledWith(
+      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities?fromType=COMMENT`,
+      { method: "GET", body: null, headers: expectedJSONHeaders },
+      undefined
+    )
+    expect(comments.length).toEqual(1)
+    expect(comments[0].ownedByDanger).toBeTruthy()
+  })
+
   it("getFileContents", async () => {
     textResult = "contents..."
     const result = await api.getFileContents("path/to/foo.txt", "projects/FOO/repos/BAR", "master")
@@ -203,6 +231,20 @@ describe("API testing - BitBucket Server", () => {
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/comments`,
       { method: "POST", body: JSON.stringify({ text: comment }), headers: expectedJSONHeaders },
+      undefined
+    )
+  })
+
+  it("postInlinePRComment", async () => {
+    const comment = "comment..."
+    await api.postInlinePRComment(comment, 5, "add", "dangerfile.ts")
+    expect(api.fetch).toHaveBeenCalledWith(
+      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/comments`,
+      {
+        method: "POST",
+        body: '{"text":"comment...","anchor":{"line":5,"lineType":"ADDED","fileType":"TO","path":"dangerfile.ts"}}',
+        headers: expectedJSONHeaders,
+      },
       undefined
     )
   })
