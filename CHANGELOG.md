@@ -14,6 +14,7 @@
 ## Master
 
 * fix bug when commiting .png files on BitBucket [@Mifi][]
+* Adds support for inline comments for bitbucket server. [@codestergit][]
 
 ## 3.4.7
 
@@ -1046,3 +1047,5 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@mxstbr]: https://github.com/mxstbr
 [@happylinks]: https://github.com/happylinks
 [@fwal]: https://github.com/fwal
+[@codestergit]: https://github.com/codestergit
+
