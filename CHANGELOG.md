@@ -13,6 +13,8 @@
 
 ## Master
 
+## 3.5.0
+
 * Fixed a bug where Danger posts empty main comment when it have one or more inline comments to post [@codestergit][]
 * fix bug when commiting .png files on BitBucket [@Mifi][]
 
@@ -1042,7 +1044,7 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@hongrich]: https://github.com/hongrich
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@azz]: https://github.com/azz
-[@Mifi]: https://github.com/ionutmiftode
+[@mifi]: https://github.com/ionutmiftode
 [@sunshinejr]: https://github.com/sunshinejr
 [@mxstbr]: https://github.com/mxstbr
 [@happylinks]: https://github.com/happylinks
