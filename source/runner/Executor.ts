@@ -13,6 +13,7 @@ import {
   sortResults,
   sortInlineResults,
   validateResults,
+  isEmpty,
 } from "../dsl/DangerResults"
 import {
   template as githubResultsTemplate,
@@ -233,11 +234,16 @@ export class Executor {
       const inlineLeftovers = await this.sendInlineComments(inline, git, previousComments)
       const regular = regularResults(results)
       const mergedResults = sortResults(mergeResults(regular, inlineLeftovers))
-      const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
-        ? bitbucketServerTemplate(dangerID, mergedResults)
-        : githubResultsTemplate(dangerID, mergedResults)
 
-      await this.platform.updateOrCreateComment(dangerID, comment)
+      // If danger have no comments other than inline to update. Just delete previous main comment.
+      if (isEmpty(mergedResults)) {
+        this.platform.deleteMainComment(dangerID)
+      } else {
+        const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
+          ? bitbucketServerTemplate(dangerID, mergedResults)
+          : githubResultsTemplate(dangerID, mergedResults)
+        await this.platform.updateOrCreateComment(dangerID, comment)
+      }
     }
 
     // More info, is more info.

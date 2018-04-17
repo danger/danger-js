@@ -7,6 +7,7 @@ import {
   regularResults,
   sortInlineResults,
   validateResults,
+  isEmpty,
 } from "../DangerResults"
 import {
   singleViolationSingleFileResults,
@@ -88,6 +89,18 @@ describe("DangerResults operations", () => {
     const results = sortInlineResults(unsortedInlineResults)
 
     expect(results).toMatchSnapshot()
+  })
+
+  it("find empty results", () => {
+    const result = isEmpty(emptyDangerResults)
+
+    expect(result).toEqual(true)
+  })
+
+  it("find empty results", () => {
+    const result = isEmpty(multipleViolationSingleFileResults)
+
+    expect(result).toEqual(false)
   })
 })
 

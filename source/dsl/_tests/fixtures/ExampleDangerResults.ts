@@ -53,6 +53,13 @@ export const multipleViolationsMultipleFilesResults: DangerResults = {
   ],
 }
 
+export const emptyDangerResults: DangerResults = {
+  fails: [],
+  warnings: [],
+  messages: [],
+  markdowns: [],
+}
+
 export const emptyDangerInlineResults: DangerInlineResults = {
   file: "",
   line: 0,
