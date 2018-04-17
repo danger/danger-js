@@ -93,7 +93,7 @@
     "danger-plugin-jest": "^1.0.1",
     "danger-plugin-yarn": "^1.2.1",
     "date-fns": "^1.29.0",
-    "flow-bin": "^0.69.0",
+    "flow-bin": "^0.70.0",
     "husky": "^0.14.0",
     "jest": "22.4.3",
     "jest-json-reporter": "^1.2.2",
