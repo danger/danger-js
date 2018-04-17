@@ -13,6 +13,10 @@
 
 ## Master
 
+.
+
+* Fixed a bug where Danger posts empty main comment when it have one or more inline comments to post [@codestergit][]
+
 ## 3.4.7
 
 * Update dependencies [@orta][]
