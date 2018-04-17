@@ -4,9 +4,12 @@ import { BitBucketServerAPI } from "./bitbucket_server/BitBucketServerAPI"
 import gitDSLForBitBucketServer from "./bitbucket_server/BitBucketServerGit"
 import { Platform, Comment } from "./platform"
 
+import * as debug from "debug"
+
 /** Handles conforming to the Platform Interface for BitBucketServer, API work is handle by BitBucketServerAPI */
 
 export class BitBucketServer implements Platform {
+  private readonly d = debug("danger:BitBucketServer")
   name: string
 
   constructor(public readonly api: BitBucketServerAPI) {
@@ -30,7 +33,7 @@ export class BitBucketServer implements Platform {
   /**
    * Gets inline comments for current PR
    */
-  getInlineComments = async (_: string): Promise<Comment[]> => new Promise<Comment[]>((_resolve, reject) => reject())
+  getInlineComments = async (dangerID: string): Promise<Comment[]> => this.api.getDangerInlineComments(dangerID)
 
   /**
    * Fails the current build, if status setting succeeds
@@ -91,7 +94,7 @@ export class BitBucketServer implements Platform {
   }
 
   supportsInlineComments() {
-    return false
+    return true
   }
 
   /**
@@ -108,8 +111,42 @@ export class BitBucketServer implements Platform {
    *
    * @returns {Promise<any>} JSON response of new comment
    */
-  createInlineComment = (_git: GitDSL, _comment: string, _path: string, _line: number): Promise<any> =>
-    new Promise((_resolve, reject) => reject())
+  createInlineComment = (git: GitDSL, comment: string, path: string, line: number): Promise<any> => {
+    if (!this.supportsInlineComments) {
+      return new Promise((_resolve, reject) => reject())
+    }
+    return this.findTypeOfLine(git, line, path).then(type => {
+      return this.api.postInlinePRComment(comment, line, type, path)
+    })
+  }
+
+  /**
+   * Finds type of line in given diff. This is needed for Bitbucket Server API
+   *
+   * @returns {Promise<string>} A string with type of line
+   */
+  findTypeOfLine = (git: GitDSL, line: number, path: string): Promise<string> => {
+    return git.structuredDiffForFile(path).then(diff => {
+      return new Promise<string>((resolve, reject) => {
+        if (diff === undefined) {
+          this.d("Diff not found for inline comment." + path + "#" + line + ". Diff: " + JSON.stringify(diff))
+          reject()
+        }
+        let change
+        for (let chunk of diff!.chunks) {
+          // Search for a change (that is not a deletion) and with given line. We want to look only for destination lines of a change
+          change = chunk.changes.find((c: any) => c.type != "del" && c.destinationLine == line)
+          break
+        }
+        if (change === undefined) {
+          this.d("change not found for inline comment line " + path + "#" + line + ".")
+          reject()
+        } else {
+          resolve(change.type)
+        }
+      })
+    })
+  }
 
   /**
    * Updates an inline comment if possible. If platform can't update an inline comment,
@@ -117,8 +154,19 @@ export class BitBucketServer implements Platform {
    *
    * @returns {Promise<any>} JSON response of new comment
    */
-  updateInlineComment = (_comment: string, _commentId: string): Promise<any> =>
-    new Promise((_resolve, reject) => reject())
+  updateInlineComment = async (comment: string, commentId: string): Promise<any> => {
+    if (!this.supportsInlineComments) {
+      return new Promise((_resolve, reject) => reject())
+    }
+    const activities = await this.api.getPullRequestComments()
+    const updateComment = activities
+      .filter(activity => activity.commentAnchor)
+      .map(activity => activity.comment)
+      .filter(Boolean)
+      .find(comment => comment!.id.toString() == commentId)
+
+    return this.api.updateComment(updateComment!, comment)
+  }
 
   /**
    * Deletes an inline comment, used when you have
@@ -126,7 +174,19 @@ export class BitBucketServer implements Platform {
    *
    * @returns {Promise<boolean>} did it work?
    */
-  deleteInlineComment = async (_id: string): Promise<boolean> => new Promise<boolean>((_resolve, reject) => reject())
+  deleteInlineComment = async (id: string): Promise<any> => {
+    if (!this.supportsInlineComments) {
+      return new Promise<boolean>((_resolve, reject) => reject())
+    }
+    const activities = await this.api.getPullRequestComments()
+    const deleteComment = activities
+      .filter(activity => activity.commentAnchor)
+      .map(activity => activity.comment)
+      .filter(Boolean)
+      .find(comment => comment!.id.toString() == id)
+
+    return this.api.deleteComment(deleteComment!)
+  }
 
   /**
    * Deletes the main Danger comment, used when you have

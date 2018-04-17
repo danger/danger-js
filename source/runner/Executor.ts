@@ -320,7 +320,7 @@ export class Executor {
   inlineCommentTemplate(inlineResults: DangerInlineResults): string {
     const results = inlineResultsIntoResults(inlineResults)
     const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
-      ? bitbucketServerInlineTemplate(results)
+      ? bitbucketServerInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
       : githubResultsInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
 
     return comment

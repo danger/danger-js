@@ -34,7 +34,8 @@ function resultsSection(name: string, emoji: string, violations: Violation[]): s
 }
 
 export const dangerIDToString = (id: string) => `danger-id-${id};`
-
+export const fileLineToString = (file: string, line: number) => `  File: ${file};
+  Line: ${line};`
 /**
  * Postfix signature to be attached comment generated / updated by danger.
  */
@@ -64,15 +65,17 @@ ${dangerSignaturePostfix}
 `
 }
 
-export function inlineTemplate(results: DangerResults): string {
+export function inlineTemplate(dangerID: string, results: DangerResults, file: string, line: number): string {
   const printViolation = (emoji: string) => (violation: Violation) => {
-    return `- :${emoji}: ${violation.message}`
+    return `- ${emoji} ${violation.message}`
   }
 
   return `
-${results.fails.map(printViolation("no_entry_sign")).join("\n")}
-${results.warnings.map(printViolation("warning")).join("\n")}
-${results.messages.map(printViolation("book")).join("\n")}
+[//]: # (${dangerIDToString(dangerID)})
+[//]: # (${fileLineToString(file, line)})
+${results.fails.map(printViolation("🚫")).join("\n")}
+${results.warnings.map(printViolation("⚠️")).join("\n")}
+${results.messages.map(printViolation("📖")).join("\n")}
 ${results.markdowns.map(v => v.message).join("\n\n")}
   `
 }

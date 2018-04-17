@@ -44,7 +44,7 @@ export interface Chunk {
   changes: Changes
 }
 
-export type Changes = { type: "add" | "del"; content: string }[]
+export type Changes = { type: "add" | "del" | "normal"; content: string }[]
 
 export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLConfig): GitDSL => {
   /**

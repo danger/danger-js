@@ -95,9 +95,8 @@ describe("the dangerfile gitDSL - BitBucket Server", async () => {
     expect(stripWhitespaceForSnapshot(added)).toMatchSnapshot()
   })
 
-  it("should include `removed` text content of the file", async () => {
+  it("should not include `removed` text content of the file", async () => {
     const { removed } = await gitDSL.diffForFile(".gitignore")
-
     expect(stripWhitespaceForSnapshot(removed)).toMatchSnapshot()
   })
 
@@ -109,5 +108,35 @@ describe("the dangerfile gitDSL - BitBucket Server", async () => {
 
   it("sets up commit data correctly", async () => {
     expect(gitDSL.commits[0]).toMatchSnapshot()
+  })
+
+  it("shows the structured diff for a specific file", async () => {
+    const { chunks } = await gitDSL.structuredDiffForFile(".gitignore")
+    expect(chunks).toMatchSnapshot()
+  })
+
+  it("should have `normal` type of line for inline comment for modified file", async () => {
+    const type = await bbs.findTypeOfLine(gitDSL, 3, ".gitignore")
+    expect(type).toBe("normal")
+  })
+
+  it("should have `add` type of line for inline comment for modified file", async () => {
+    const type = await bbs.findTypeOfLine(gitDSL, 10, ".gitignore")
+    expect(type).toBe("add")
+  })
+
+  it("should have `add` type of line for inline comment for added file", async () => {
+    const type = await bbs.findTypeOfLine(gitDSL, 1, "banana")
+    expect(type).toBe("add")
+  })
+
+  it("checks promise rejection for line not in the diff for inline comment", async () => {
+    const promise = bbs.findTypeOfLine(gitDSL, 2, "banana")
+    await expect(promise).rejects
+  })
+
+  it("checks promise rejection for `del` line for inline comment for deleted file", async () => {
+    const promise = bbs.findTypeOfLine(gitDSL, 0, "jest.eslint.config.js")
+    await expect(promise).rejects
   })
 })

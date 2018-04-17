@@ -35,7 +35,7 @@ describe("API testing - BitBucket Server", () => {
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests` +
         `?at=refs/heads/branch&withProperties=false&withAttributes=false`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult.values)
@@ -47,7 +47,7 @@ describe("API testing - BitBucket Server", () => {
 
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult)
@@ -59,7 +59,7 @@ describe("API testing - BitBucket Server", () => {
 
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/commits`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult.values)
@@ -73,7 +73,7 @@ describe("API testing - BitBucket Server", () => {
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/compare/diff` +
         //
         `?withComments=false&from=BASE&to=HEAD`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult.diffs)
@@ -87,7 +87,7 @@ describe("API testing - BitBucket Server", () => {
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/diff` +
         //
         `?withComments=false`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult.diffs)
@@ -101,7 +101,7 @@ describe("API testing - BitBucket Server", () => {
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities` +
         //
         `?fromType=COMMENT`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult.values)
@@ -115,7 +115,7 @@ describe("API testing - BitBucket Server", () => {
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities` +
         //
         `?fromType=ACTIVITY`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult.values)
@@ -127,7 +127,7 @@ describe("API testing - BitBucket Server", () => {
 
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/jira/1.0/projects/FOO/repos/BAR/pull-requests/1/issues`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual(jsonResult)
@@ -161,10 +161,38 @@ describe("API testing - BitBucket Server", () => {
 
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities?fromType=COMMENT`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     expect(result).toEqual([jsonResult.values[0].comment])
+  })
+
+  it("getDangerInlineComments", async () => {
+    jsonResult = {
+      values: [
+        {
+          comment: {
+            text:
+              "\n[//]: # (danger-id-default;)\n[//]: # (  File: README.md;\n  Line: 5;)\n\n- :warning: Hello updates\n\n\n  ",
+            author: {
+              name: "username",
+            },
+          },
+          commentAnchor: {
+            line: 5,
+            lineType: "ADDED",
+          },
+        },
+      ],
+    }
+    const comments = await api.getDangerInlineComments("default")
+    expect(api.fetch).toHaveBeenCalledWith(
+      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities?fromType=COMMENT`,
+      { method: "GET", body: null, headers: expectedJSONHeaders },
+      undefined
+    )
+    expect(comments.length).toEqual(1)
+    expect(comments[0].ownedByDanger).toBeTruthy()
   })
 
   it("getFileContents", async () => {
@@ -173,7 +201,7 @@ describe("API testing - BitBucket Server", () => {
 
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/projects/FOO/repos/BAR/raw/path/to/foo.txt?at=master`,
-      { method: "GET", body: {}, headers: expectedJSONHeaders },
+      { method: "GET", body: null, headers: expectedJSONHeaders },
       true
     )
     expect(result).toEqual(textResult)
@@ -203,6 +231,20 @@ describe("API testing - BitBucket Server", () => {
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/comments`,
       { method: "POST", body: JSON.stringify({ text: comment }), headers: expectedJSONHeaders },
+      undefined
+    )
+  })
+
+  it("postInlinePRComment", async () => {
+    const comment = "comment..."
+    await api.postInlinePRComment(comment, 5, "add", "dangerfile.ts")
+    expect(api.fetch).toHaveBeenCalledWith(
+      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/comments`,
+      {
+        method: "POST",
+        body: '{"text":"comment...","anchor":{"line":5,"lineType":"ADDED","fileType":"TO","path":"dangerfile.ts"}}',
+        headers: expectedJSONHeaders,
+      },
       undefined
     )
   })
