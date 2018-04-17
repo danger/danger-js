@@ -13,7 +13,7 @@ import {
   sortResults,
   sortInlineResults,
   validateResults,
-  isEmpty,
+  isEmptyResults,
 } from "../dsl/DangerResults"
 import {
   template as githubResultsTemplate,
@@ -236,7 +236,7 @@ export class Executor {
       const mergedResults = sortResults(mergeResults(regular, inlineLeftovers))
 
       // If danger have no comments other than inline to update. Just delete previous main comment.
-      if (isEmpty(mergedResults)) {
+      if (isEmptyResults(mergedResults)) {
         this.platform.deleteMainComment(dangerID)
       } else {
         const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]

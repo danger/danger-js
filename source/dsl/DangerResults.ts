@@ -208,7 +208,7 @@ export function sortResults(results: DangerResults): DangerResults {
   }
 }
 
-export function isEmpty(results: DangerResults): boolean {
+export function isEmptyResults(results: DangerResults): boolean {
   return [...results.fails, ...results.warnings, ...results.messages, ...results.markdowns].length === 0
 }
 

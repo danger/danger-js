@@ -7,7 +7,7 @@ import {
   regularResults,
   sortInlineResults,
   validateResults,
-  isEmpty,
+  isEmptyResults,
 } from "../DangerResults"
 import {
   singleViolationSingleFileResults,
@@ -92,13 +92,13 @@ describe("DangerResults operations", () => {
   })
 
   it("find empty results", () => {
-    const result = isEmpty(emptyDangerResults)
+    const result = isEmptyResults(emptyDangerResults)
 
     expect(result).toEqual(true)
   })
 
   it("find empty results", () => {
-    const result = isEmpty(multipleViolationSingleFileResults)
+    const result = isEmptyResults(multipleViolationSingleFileResults)
 
     expect(result).toEqual(false)
   })
