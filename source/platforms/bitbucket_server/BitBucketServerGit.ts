@@ -37,15 +37,15 @@ function bitBucketServerCommitToGitCommit(
     },
     committer: bbsCommit.committer
       ? {
-          email: bbsCommit.committer.emailAddress,
-          name: bbsCommit.committer.name,
-          date: new Date(bbsCommit.committerTimestamp).toISOString(),
-        }
+        email: bbsCommit.committer.emailAddress,
+        name: bbsCommit.committer.name,
+        date: new Date(bbsCommit.committerTimestamp).toISOString(),
+      }
       : {
-          email: bbsCommit.author.emailAddress,
-          name: bbsCommit.author.name,
-          date: new Date(bbsCommit.authorTimestamp).toISOString(),
-        },
+        email: bbsCommit.author.emailAddress,
+        name: bbsCommit.author.name,
+        date: new Date(bbsCommit.authorTimestamp).toISOString(),
+      },
     message: bbsCommit.message,
     tree: null,
     url,
@@ -101,7 +101,7 @@ const bitBucketServerDiffToGitStructuredDiff = (diffs: BitBucketServerDiff[]): G
   return diffs.map(diff => ({
     from: diff.source && diff.source.toString,
     to: diff.destination && diff.destination.toString,
-    chunks: diff.hunks.map(hunk => ({
+    chunks: diff.hunks && diff.hunks.map(hunk => ({
       changes: hunk.segments.map(segment => ({
         type: segment.type === "ADDED" ? ("add" as "add") : ("del" as "del"),
         content: segment.lines.map(({ line }) => line).join(EOL),
