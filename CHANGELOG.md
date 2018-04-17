@@ -13,6 +13,8 @@
 
 ## Master
 
+* fix bug when commiting .png files on BitBucket [@Mifi][]
+
 ## 3.4.7
 
 * Update dependencies [@orta][]
@@ -144,7 +146,7 @@
 ## 3.1.8
 
 * Improvements to the Flow definition file. [@orta][]
-* Improve path generator for danger-runner.
+* Improve path generator for danger-runner. [@Mifi][]
 * Update the PR DSL to include bots. [@orta][]
 
 ## 3.1.7
@@ -1039,7 +1041,7 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@hongrich]: https://github.com/hongrich
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@azz]: https://github.com/azz
-[@mifi]: https://github.com/ionutmiftode
+[@Mifi]: https://github.com/ionutmiftode
 [@sunshinejr]: https://github.com/sunshinejr
 [@mxstbr]: https://github.com/mxstbr
 [@happylinks]: https://github.com/happylinks
