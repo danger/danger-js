@@ -13,6 +13,8 @@
 
 ## Master
 
+* Changes the order of the text output in verbose, or when STDOUT is the only option [@orta][]
+
 ## 3.5.0 - 3.5.1
 
 * Fixed a bug where Danger posts empty main comment when it have one or more inline comments to post [@codestergit][]

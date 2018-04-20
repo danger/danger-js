@@ -148,21 +148,6 @@ export class Executor {
       this.d("Writing to STDOUT:", results)
       // Human-readable format
 
-      const table = [
-        fails.length && { name: "Failures", messages: fails.map(f => f.message) },
-        warnings.length && { name: "Warnings", messages: warnings.map(w => w.message) },
-        messages.length && { name: "Messages", messages: messages.map(m => m.message) },
-        markdowns.length && { name: "Markdowns", messages: markdowns },
-      ].filter(r => r !== 0) as { name: string; messages: string[] }[]
-
-      // Consider looking at getting the terminal width, and making it 60%
-      // if over a particular size
-
-      table.forEach(row => {
-        console.log(`## ${chalk.bold(row.name)}`)
-        console.log(row.messages.join(chalk.bold("\n-\n")))
-      })
-
       const tick = chalk.bold.greenBright("✓")
       const cross = chalk.bold.redBright("ⅹ")
 
@@ -180,6 +165,25 @@ export class Executor {
       } else if (!messages.length && !fails.length && !messages.length && !warnings.length) {
         console.log(`Danger: ${tick} passed review, received no feedback.`)
       }
+
+      // An empty blank line for visual spacing
+      console.log("")
+
+      const table = [
+        fails.length && { name: "Failures", messages: fails.map(f => f.message) },
+        warnings.length && { name: "Warnings", messages: warnings.map(w => w.message) },
+        messages.length && { name: "Messages", messages: messages.map(m => m.message) },
+        markdowns.length && { name: "Markdowns", messages: markdowns },
+      ].filter(r => r !== 0) as { name: string; messages: string[] }[]
+
+      // Consider looking at getting the terminal width, and making it 60%
+      // if over a particular size
+
+      table.forEach(row => {
+        console.log(`## ${chalk.bold(row.name)}`)
+        console.log(row.messages.join(chalk.bold("\n-\n")))
+      })
+
       // An empty blank line for visual spacing
       console.log("")
     }
