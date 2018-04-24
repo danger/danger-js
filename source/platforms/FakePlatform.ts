@@ -49,8 +49,8 @@ export class FakePlatform implements Platform {
     return true
   }
 
-  async updateOrCreateComment(_newComment: string): Promise<boolean> {
-    return true
+  async updateOrCreateComment(_dangerID: string, _newComment: string): Promise<string> {
+    return "https://github.com/orta/github-pages-with-jekyll/pull/5#issuecomment-383402256"
   }
 
   async createComment(_comment: string): Promise<any> {

@@ -202,11 +202,6 @@ export class Executor {
 
     const dangerID = this.options.dangerID
     const failed = fails.length > 0
-    const successPosting = await this.platform.updateStatus(!failed, messageForResults(results), this.ciSource.ciRunURL)
-    if (!successPosting && this.options.verbose) {
-      console.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
-      console.log("If the build fails, then danger will use a failing exit code.")
-    }
 
     if (failureCount + messageCount === 0) {
       console.log("No issues or messages were sent. Removing any existing messages.")
@@ -220,21 +215,19 @@ export class Executor {
         const s = fails.length === 1 ? "" : "s"
         const are = fails.length === 1 ? "is" : "are"
         console.log(`Failing the build, there ${are} ${fails.length} fail${s}.`)
-        if (!successPosting) {
-          this.d("Failing the build due to handleResultsPostingToPlatform not successfully setting a commit status")
-          process.exitCode = 1
-        }
       } else if (warnings.length > 0) {
         console.log("Found only warnings, not failing the build.")
       } else if (messageCount > 0) {
         console.log("Found only messages, passing those to review.")
       }
+
       const previousComments = await this.platform.getInlineComments(dangerID)
       const inline = inlineResults(results)
       const inlineLeftovers = await this.sendInlineComments(inline, git, previousComments)
       const regular = regularResults(results)
       const mergedResults = sortResults(mergeResults(regular, inlineLeftovers))
 
+      let issueURL = undefined
       // If danger have no comments other than inline to update. Just delete previous main comment.
       if (isEmptyResults(mergedResults)) {
         this.platform.deleteMainComment(dangerID)
@@ -242,7 +235,21 @@ export class Executor {
         const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
           ? bitbucketServerTemplate(dangerID, mergedResults)
           : githubResultsTemplate(dangerID, mergedResults)
-        await this.platform.updateOrCreateComment(dangerID, comment)
+
+        issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
+        console.log(`Feedback: ${issueURL}`)
+      }
+
+      const urlForInfo = issueURL || this.ciSource.ciRunURL
+      const successPosting = await this.platform.updateStatus(!failed, messageForResults(results), urlForInfo)
+      if (!successPosting && this.options.verbose) {
+        console.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
+        console.log("If the build fails, then danger will use a failing exit code.")
+      }
+
+      if (!successPosting && failed) {
+        this.d("Failing the build due to handleResultsPostingToPlatform not successfully setting a commit status")
+        process.exitCode = 1
       }
     }
 
