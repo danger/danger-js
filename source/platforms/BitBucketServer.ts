@@ -206,15 +206,17 @@ export class BitBucketServer implements Platform {
   /**
    * Either updates an existing comment, or makes a new one
    *
+   * @param {string} dangerID the UUID for the run
    * @param {string} newComment string value of comment
-   * @returns {Promise<boolean>} success of posting comment
+   * @returns {Promise<string>} the URL for the comment
    */
-  async updateOrCreateComment(dangerID: string, newComment: string): Promise<boolean> {
+  async updateOrCreateComment(dangerID: string, newComment: string): Promise<string | undefined> {
     const comments = await this.api.getDangerComments(dangerID)
+    let issue = null
 
     if (comments.length) {
       // Edit the first comment
-      await this.api.updateComment(comments[0], newComment)
+      issue = await this.api.updateComment(comments[0], newComment)
 
       // Delete any dupes
       for (let comment of comments) {
@@ -223,10 +225,15 @@ export class BitBucketServer implements Platform {
         }
       }
     } else {
-      await this.createComment(newComment)
+      issue = await this.createComment(newComment)
     }
 
-    return true
+    // We want to make a URL like:
+    // https://bitbucket.org/atlassian/jiraconnect-ios/pull-requests/4/crash-groups/diff#comment-426
+    // But I don't see
+
+    const prURL = this.api.getPRBasePath()
+    return issue && issue.id && `${prURL}/diff#comment-${issue.id}`
   }
 
   getFileContents = this.api.getFileContents
