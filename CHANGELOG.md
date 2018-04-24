@@ -13,6 +13,8 @@
 
 ## Master
 
+* Prints a link to the comment in the build log [@orta][]
+
 ## 3.5.0 - 3.5.1
 
 * Fixed a bug where Danger posts empty main comment when it have one or more inline comments to post [@codestergit][]

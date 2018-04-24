@@ -230,7 +230,7 @@ export class BitBucketServer implements Platform {
 
     // We want to make a URL like:
     // https://bitbucket.org/atlassian/jiraconnect-ios/pull-requests/4/crash-groups/diff#comment-426
-    // But I don't see
+    // So take the PR and attack the comment, I think :D
 
     const prURL = this.api.getPRBasePath()
     return issue && issue.id && `${prURL}/diff#comment-${issue.id}`
