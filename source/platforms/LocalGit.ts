@@ -71,8 +71,8 @@ export class LocalGit implements Platform {
     return true
   }
 
-  async updateOrCreateComment(_newComment: string): Promise<boolean> {
-    return true
+  async updateOrCreateComment(_dangerID: string, _newComment: string): Promise<string | undefined> {
+    return undefined
   }
 
   async createComment(_comment: string): Promise<any> {

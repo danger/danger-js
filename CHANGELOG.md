@@ -13,7 +13,9 @@
 
 ## Master
 
+* A Dangerfile can return a default export, and then Danger will handle the execution of that code [@orta][]
 * Changes the order of the text output in verbose, or when STDOUT is the only option [@orta][]
+* Prints a link to the comment in the build log [@orta][]
 
 ## 3.5.0 - 3.5.1
 

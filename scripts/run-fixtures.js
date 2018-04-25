@@ -1,5 +1,5 @@
 // Note: Keep this ES6 only, want to be able to run this directly via node
-// to ensur that something like ts-node doesn't mess up paths etc
+// to ensure that something like ts-node doesn't mess up paths etc
 
 // yarn build; cat source/_tests/fixtures/danger-js-pr-395.json | env DANGER_FAKE_CI="YEP" DANGER_TEST_REPO='danger/danger-js' DANGER_TEST_PR='395' node --inspect distribution/commands/danger-runner.js --text-only --dangerfile /Users/orta/dev/projects/danger/danger-js/source/runner/_tests/fixtures/__DangerfileAsync.js
 

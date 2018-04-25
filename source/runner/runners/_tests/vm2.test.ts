@@ -269,6 +269,38 @@ runners.forEach(run => {
         expect(results.fails[0].message).toContain("Danger failed to run")
         expect(results.markdowns[0].message).toContain("Error: failure")
       })
+
+      it("handles running default export code", async () => {
+        const context = await setupDangerfileContext()
+        const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
+        const results = await exec.runner.runDangerfileEnvironment(
+          resolve(fixtures, "__DangerfileDefaultExport.js"),
+          undefined,
+          runtime
+        )
+        expect(results).toEqual({
+          fails: [],
+          messages: [],
+          markdowns: [],
+          warnings: [{ message: "Synchronous Warning" }],
+        })
+      })
+
+      it("handles running default export async code", async () => {
+        const context = await setupDangerfileContext()
+        const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
+        const results = await exec.runner.runDangerfileEnvironment(
+          resolve(fixtures, "__DangerfileDefaultExportAsync.js"),
+          undefined,
+          runtime
+        )
+        expect(results).toEqual({
+          fails: [],
+          messages: [],
+          markdowns: [],
+          warnings: [{ message: "Asynchronous Warning" }],
+        })
+      })
     })
   })
 })

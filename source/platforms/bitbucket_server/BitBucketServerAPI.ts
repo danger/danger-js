@@ -51,7 +51,7 @@ export class BitBucketServerAPI {
     this.fetch = fetch
   }
 
-  private getPRBasePath(service = "api") {
+  getPRBasePath(service = "api") {
     const { repoSlug, pullRequestID } = this.repoMetadata
     return `rest/${service}/1.0/${repoSlug}/pull-requests/${pullRequestID}`
   }

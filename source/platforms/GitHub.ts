@@ -227,13 +227,14 @@ export class GitHub implements Platform {
    * @param {string} newComment string value of comment
    * @returns {Promise<boolean>} success of posting comment
    */
-  async updateOrCreateComment(dangerID: string, newComment: string): Promise<boolean> {
+  async updateOrCreateComment(dangerID: string, newComment: string): Promise<string | undefined> {
     const commentIDs = await this.api.getDangerCommentIDs(dangerID)
+    let issue = null
 
     if (commentIDs.length) {
       // Edit the first comment
       this.d(`Updating comment ${commentIDs[0]}`)
-      await this.api.updateCommentWithID(commentIDs[0], newComment)
+      issue = await this.api.updateCommentWithID(commentIDs[0], newComment)
 
       // Delete any dupes
       for (let commentID of commentIDs) {
@@ -244,10 +245,10 @@ export class GitHub implements Platform {
       }
     } else {
       this.d(`Creating new comment`)
-      await this.createComment(newComment)
+      issue = await this.createComment(newComment)
     }
 
-    return true
+    return issue && issue.html_url
   }
 
   /**

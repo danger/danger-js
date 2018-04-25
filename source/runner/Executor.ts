@@ -150,30 +150,38 @@ export class Executor {
 
       const tick = chalk.bold.greenBright("✓")
       const cross = chalk.bold.redBright("ⅹ")
+      let output = ""
 
       if (fails.length > 0) {
         const s = fails.length === 1 ? "" : "s"
         const are = fails.length === 1 ? "is" : "are"
         const message = chalk.underline.red("Failing the build")
-        console.log(`Danger: ${cross} ${message}, there ${are} ${fails.length} fail${s}.`)
+        output = `Danger: ${cross} ${message}, there ${are} ${fails.length} fail${s}.`
         process.exitCode = 1
       } else if (warnings.length > 0) {
         const message = chalk.underline("not failing the build")
-        console.log(`Danger: ${tick} found only warnings, ${message}`)
+        output = `Danger: ${tick} found only warnings, ${message}`
       } else if (messages.length > 0) {
-        console.log(`Danger: ${tick} passed, found only messages.`)
+        output = `Danger: ${tick} passed, found only messages.`
       } else if (!messages.length && !fails.length && !messages.length && !warnings.length) {
-        console.log(`Danger: ${tick} passed review, received no feedback.`)
+        output = `Danger: ${tick} passed review, received no feedback.`
       }
 
-      // An empty blank line for visual spacing
-      console.log("")
+      const allMessages = [...fails, ...warnings, ...messages, ...markdowns].map(m => m.message)
+      const oneMessage = allMessages.join("\n")
+      const longMessage = oneMessage.split("\n").length > 30
+
+      // For a short message, show the log at the top
+      if (!longMessage) {
+        // An empty blank line for visual spacing
+        console.log(output)
+      }
 
       const table = [
         fails.length && { name: "Failures", messages: fails.map(f => f.message) },
         warnings.length && { name: "Warnings", messages: warnings.map(w => w.message) },
         messages.length && { name: "Messages", messages: messages.map(m => m.message) },
-        markdowns.length && { name: "Markdowns", messages: markdowns },
+        markdowns.length && { name: "Markdowns", messages: markdowns.map(m => m.message) },
       ].filter(r => r !== 0) as { name: string; messages: string[] }[]
 
       // Consider looking at getting the terminal width, and making it 60%
@@ -183,6 +191,12 @@ export class Executor {
         console.log(`## ${chalk.bold(row.name)}`)
         console.log(row.messages.join(chalk.bold("\n-\n")))
       })
+
+      // For a long message show the results at the bottom
+      if (longMessage) {
+        console.log("")
+        console.log(output)
+      }
 
       // An empty blank line for visual spacing
       console.log("")
@@ -206,11 +220,6 @@ export class Executor {
 
     const dangerID = this.options.dangerID
     const failed = fails.length > 0
-    const successPosting = await this.platform.updateStatus(!failed, messageForResults(results), this.ciSource.ciRunURL)
-    if (!successPosting && this.options.verbose) {
-      console.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
-      console.log("If the build fails, then danger will use a failing exit code.")
-    }
 
     if (failureCount + messageCount === 0) {
       console.log("No issues or messages were sent. Removing any existing messages.")
@@ -224,21 +233,19 @@ export class Executor {
         const s = fails.length === 1 ? "" : "s"
         const are = fails.length === 1 ? "is" : "are"
         console.log(`Failing the build, there ${are} ${fails.length} fail${s}.`)
-        if (!successPosting) {
-          this.d("Failing the build due to handleResultsPostingToPlatform not successfully setting a commit status")
-          process.exitCode = 1
-        }
       } else if (warnings.length > 0) {
         console.log("Found only warnings, not failing the build.")
       } else if (messageCount > 0) {
         console.log("Found only messages, passing those to review.")
       }
+
       const previousComments = await this.platform.getInlineComments(dangerID)
       const inline = inlineResults(results)
       const inlineLeftovers = await this.sendInlineComments(inline, git, previousComments)
       const regular = regularResults(results)
       const mergedResults = sortResults(mergeResults(regular, inlineLeftovers))
 
+      let issueURL = undefined
       // If danger have no comments other than inline to update. Just delete previous main comment.
       if (isEmptyResults(mergedResults)) {
         this.platform.deleteMainComment(dangerID)
@@ -246,7 +253,21 @@ export class Executor {
         const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
           ? bitbucketServerTemplate(dangerID, mergedResults)
           : githubResultsTemplate(dangerID, mergedResults)
-        await this.platform.updateOrCreateComment(dangerID, comment)
+
+        issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
+        console.log(`Feedback: ${issueURL}`)
+      }
+
+      const urlForInfo = issueURL || this.ciSource.ciRunURL
+      const successPosting = await this.platform.updateStatus(!failed, messageForResults(results), urlForInfo)
+      if (!successPosting && this.options.verbose) {
+        console.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
+        console.log("If the build fails, then danger will use a failing exit code.")
+      }
+
+      if (!successPosting && failed) {
+        this.d("Failing the build due to handleResultsPostingToPlatform not successfully setting a commit status")
+        process.exitCode = 1
       }
     }
 

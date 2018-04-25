@@ -13,6 +13,11 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  * [GitHub pull request builder plugin](https://wiki.jenkins.io/display/JENKINS/GitHub+pull+request+builder+plugin)
  * in order to ensure that you have the build environment set up for PR integration.
  *
+ * ### BitBucket Server
+ * If using Bitbucket Server, make sure to provide both `ghprbGhRepository` and `ghprbPullId` as environment variables.
+ * `ghprbGhRepository` is the path to your repository, e.g. `projects/team/repos/repositoryname`, while `ghprbPullId`
+ * provides the id of a pull request (usually `env.CHANGE_ID`). Danger will skip execution if this id is not provided.
+ *
  * With that set up, you can edit your job to add `yarn danger ci` at the build action.
  *
  * ### Pipeline

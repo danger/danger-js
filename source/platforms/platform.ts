@@ -53,8 +53,8 @@ export interface Platform {
   deleteInlineComment: (commentId: string) => Promise<boolean>
   /** Delete the main Danger comment */
   deleteMainComment: (dangerID: string) => Promise<boolean>
-  /** Replace the main Danger comment */
-  updateOrCreateComment: (dangerID: string, newComment: string) => Promise<any>
+  /** Replace the main Danger comment, returning the URL to the issue */
+  updateOrCreateComment: (dangerID: string, newComment: string) => Promise<string | undefined>
   /** Sets the current PR's status */
   updateStatus: (passed: boolean | "pending", message: string, url?: string) => Promise<boolean>
   /** Get the contents of a file at a path */

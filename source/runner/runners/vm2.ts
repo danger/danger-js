@@ -39,7 +39,8 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
 export async function runDangerfileEnvironment(
   filename: string,
   originalContents: string | undefined,
-  environment: NodeVMOptions
+  environment: NodeVMOptions,
+  injectedObjectToExport: any | undefined = undefined
 ) {
   const vm = new NodeVM(environment)
 
@@ -48,7 +49,10 @@ export async function runDangerfileEnvironment(
   let content = cleanDangerfile(originalContents)
 
   try {
-    vm.run(content, filename)
+    const optionalExport = vm.run(content, filename)
+    if (typeof optionalExport.default === "function") {
+      await optionalExport.default(injectedObjectToExport)
+    }
 
     const results = environment.sandbox!.results!
     await Promise.all(
