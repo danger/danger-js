@@ -29,17 +29,20 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
  * The values inside a Danger context are applied as globals to the Dangerfiles runtime.
  *
  * @param {string} filename the file path for the dangerfile
- * @param {any} environment the results of createDangerfileRuntimeEnvironment
+ * @param {string} originalContents optional, the JS pre-compiled
+ * @param {DangerContext} environment the results of createDangerfileRuntimeEnvironment
+ * @param {any | undefined} injectedObjectToExport an optional object for passing into default exports
  * @returns {DangerResults} the results of the run
  */
 export async function runDangerfileEnvironment(
   filename: string,
   originalContents: string | undefined,
-  environment: DangerContext
+  environment: DangerContext,
+  injectedObjectToExport: any | undefined = undefined
 ): Promise<DangerResults> {
   // We need to change the local runtime to support running JavaScript
-  // and TypeScript through babel first. This is a simple implmentation
-  // and if we need more nuance, then we can look at other implementations
+  // and TypeScript through babel first. This is a simple implementation
+  // and if we need more nuance, then we can look at other options
   const customModuleHandler = (module: any, filename: string) => {
     if (!filename.includes("node_modules")) {
       d("Handling custom module: ", filename)
@@ -70,7 +73,12 @@ export async function runDangerfileEnvironment(
     }
 
     d("Started parsing Dangerfile: ", filename)
-    _require(compiled, filename, {})
+    const optionalExport = _require(compiled, filename, {})
+
+    if (typeof optionalExport.default === "function") {
+      d("Running default export from Dangerfile", filename)
+      await optionalExport.default(injectedObjectToExport)
+    }
     d("Finished running dangerfile: ", filename)
     // Don't stop all current async code from breaking,
     // however new code (without Peril support) can run

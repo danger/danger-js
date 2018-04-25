@@ -7,14 +7,16 @@ export interface DangerRunner {
    * The values inside a Danger context are applied as globals to the Dangerfiles runtime.
    *
    * @param {string} filename the file path for the dangerfile
-   * @param {string | undefined} originalContents the contents of the Dangerfile, or undefined to use fs.readFileSync
-   * @param {any} environment the resuts of createDangerfileRuntimeEnvironment
+   * @param {string} originalContents optional, the JS pre-compiled
+   * @param {DangerContext} environment the results of createDangerfileRuntimeEnvironment
+   * @param {any | undefined} injectedObjectToExport an optional object for passing into default exports
    * @returns {DangerResults} the results of the run
    */
   runDangerfileEnvironment: (
     filename: string,
     originalContents: string | undefined,
-    environment: any
+    environment: any,
+    injectedObjectToExport?: any
   ) => Promise<DangerResults>
 
   /**
