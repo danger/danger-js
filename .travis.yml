@@ -29,7 +29,7 @@ matrix:
      - node scripts/run-fixtures.js
 
   # Does the real danger run
-  - node_js: node
+  - node_js: '9'
     script:
     - yarn jest --outputFile test-results.json --json --runInBand
     - yarn run link
