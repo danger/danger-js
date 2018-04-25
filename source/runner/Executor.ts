@@ -148,11 +148,40 @@ export class Executor {
       this.d("Writing to STDOUT:", results)
       // Human-readable format
 
+      const tick = chalk.bold.greenBright("✓")
+      const cross = chalk.bold.redBright("ⅹ")
+      let output = ""
+
+      if (fails.length > 0) {
+        const s = fails.length === 1 ? "" : "s"
+        const are = fails.length === 1 ? "is" : "are"
+        const message = chalk.underline.red("Failing the build")
+        output = `Danger: ${cross} ${message}, there ${are} ${fails.length} fail${s}.`
+        process.exitCode = 1
+      } else if (warnings.length > 0) {
+        const message = chalk.underline("not failing the build")
+        output = `Danger: ${tick} found only warnings, ${message}`
+      } else if (messages.length > 0) {
+        output = `Danger: ${tick} passed, found only messages.`
+      } else if (!messages.length && !fails.length && !messages.length && !warnings.length) {
+        output = `Danger: ${tick} passed review, received no feedback.`
+      }
+
+      const allMessages = [...fails, ...warnings, ...messages, ...markdowns].map(m => m.message)
+      const oneMessage = allMessages.join("\n")
+      const longMessage = oneMessage.split("\n").length > 30
+
+      // For a short message, show the log at the top
+      if (!longMessage) {
+        // An empty blank line for visual spacing
+        console.log(output)
+      }
+
       const table = [
         fails.length && { name: "Failures", messages: fails.map(f => f.message) },
         warnings.length && { name: "Warnings", messages: warnings.map(w => w.message) },
         messages.length && { name: "Messages", messages: messages.map(m => m.message) },
-        markdowns.length && { name: "Markdowns", messages: markdowns },
+        markdowns.length && { name: "Markdowns", messages: markdowns.map(m => m.message) },
       ].filter(r => r !== 0) as { name: string; messages: string[] }[]
 
       // Consider looking at getting the terminal width, and making it 60%
@@ -163,23 +192,12 @@ export class Executor {
         console.log(row.messages.join(chalk.bold("\n-\n")))
       })
 
-      const tick = chalk.bold.greenBright("✓")
-      const cross = chalk.bold.redBright("ⅹ")
-
-      if (fails.length > 0) {
-        const s = fails.length === 1 ? "" : "s"
-        const are = fails.length === 1 ? "is" : "are"
-        const message = chalk.underline.red("Failing the build")
-        console.log(`Danger: ${cross} ${message}, there ${are} ${fails.length} fail${s}.`)
-        process.exitCode = 1
-      } else if (warnings.length > 0) {
-        const message = chalk.underline("not failing the build")
-        console.log(`Danger: ${tick} found only warnings, ${message}`)
-      } else if (messages.length > 0) {
-        console.log(`Danger: ${tick} passed, found only messages.`)
-      } else if (!messages.length && !fails.length && !messages.length && !warnings.length) {
-        console.log(`Danger: ${tick} passed review, received no feedback.`)
+      // For a long message show the results at the bottom
+      if (longMessage) {
+        console.log("")
+        console.log(output)
       }
+
       // An empty blank line for visual spacing
       console.log("")
     }
