@@ -41,11 +41,15 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
         repo: repoSlug.split("/")[1],
         owner: repoSlug.split("/")[0],
       }
-      const response = await api.repos.getContent(opts)
-      if (response && response.data && response.data.type === "file") {
-        const buffer = new Buffer(response.data.content, response.data.encoding)
-        return buffer.toString()
-      } else {
+      try {
+        const response = await api.repos.getContent(opts)
+        if (response && response.data && response.data.type === "file") {
+          const buffer = new Buffer(response.data.content, response.data.encoding)
+          return buffer.toString()
+        } else {
+          return ""
+        }
+      } catch {
         return ""
       }
     },

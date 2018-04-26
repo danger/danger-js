@@ -13,6 +13,8 @@
 
 ## Master
 
+* Catch the github api error thrown from @octokit/rest [@Teamop][]
+
 # 3.6.0
 
 * A Dangerfile can return a default export, and then Danger will handle the execution of that code [@orta][]
