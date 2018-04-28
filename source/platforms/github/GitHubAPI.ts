@@ -309,7 +309,7 @@ export class GitHubAPI {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}/requested_reviewers`, {
-      Accept: "application/vnd.github.black-cat-preview+json",
+      Accept: "application/vnd.github.v3+json",
     })
 
     return res.ok ? res.json() : []
@@ -319,7 +319,7 @@ export class GitHubAPI {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}/reviews`, {
-      Accept: "application/vnd.github.black-cat-preview+json",
+      Accept: "application/vnd.github.v3+json",
     })
 
     return res.ok ? res.json() : []

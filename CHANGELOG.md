@@ -14,6 +14,7 @@
 ## Master
 
 * Catch the github api error thrown from @octokit/rest [@Teamop][]
+* Replace preview media type of github pull request reviews api [@Teamop][]
 
 # 3.6.0
 
