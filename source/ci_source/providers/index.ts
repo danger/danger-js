@@ -13,6 +13,7 @@ import { Surf } from "./Surf"
 import { TeamCity } from "./TeamCity"
 import { Travis } from "./Travis"
 import { VSTS } from "./VSTS"
+import { Screwdriver } from "./Screwdriver"
 
 const providers = [
   Travis,
@@ -30,6 +31,7 @@ const providers = [
   VSTS,
   Bitrise,
   TeamCity,
+  Screwdriver,
 ]
 
 // Mainly used for Dangerfile linting
@@ -47,6 +49,7 @@ const realProviders = [
   BuddyBuild,
   VSTS,
   TeamCity,
+  Screwdriver,
 ]
 
 export { providers, realProviders }
