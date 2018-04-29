@@ -15,6 +15,7 @@
 
 * Catch the github api error thrown from @octokit/rest [@Teamop][]
 * Replace preview media type of github pull request reviews api [@Teamop][]
+* Add support for [Screwdriver CI](http://screwdriver.cd) [@dbgrandi][]
 
 # 3.6.0
 
