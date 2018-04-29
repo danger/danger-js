@@ -20,11 +20,6 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *
  * Add the `DANGER_GITHUB_API_TOKEN` to your pipeline env as a
  * [build secret](https://docs.screwdriver.cd/user-guide/configuration/secrets)
- *
- * #### GitHub
- *
- * As this is self-hosted, you will need to add the `DANGER_GITHUB_API_TOKEN` to your build user's ENV. The  alternative
- * is to pass in the token as a prefix to the command `DANGER_GITHUB_API_TOKEN="123" yarn danger ci`.
  */
 export class Screwdriver implements CISource {
   constructor(private readonly env: Env) {}
