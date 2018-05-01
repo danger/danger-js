@@ -79,6 +79,7 @@
     "@types/json5": "^0.0.29",
     "@types/lodash.includes": "^4.3.3",
     "@types/node-fetch": "^1.6.6",
+    "@types/p-limit": "^1.1.2",
     "@types/readline-sync": "^1.4.2",
     "@types/voca": "^1.3.0",
     "babel-cli": "7.0.0-alpha.19",
@@ -110,7 +111,6 @@
   },
   "dependencies": {
     "@octokit/rest": "^15.2.6",
-    "@types/p-limit": "^1.1.2",
     "babel-polyfill": "^6.23.0",
     "chalk": "^2.3.0",
     "commander": "^2.13.0",
