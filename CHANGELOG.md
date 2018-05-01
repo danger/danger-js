@@ -13,6 +13,8 @@
 
 ## Master
 
+* Automatically rate limit concurrent GitHub API calls to avoid hitting GitHub rate limits [@mxstbr][]
+
 # 3.6.1
 
 * Catch the github api error thrown from @octokit/rest [@Teamop][]
