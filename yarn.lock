@@ -87,6 +87,10 @@
   version "8.0.46"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.46.tgz#6e1766b2d0ed06631d5b5f87bb8e72c8dbb6888e"
 
+"@types/p-limit@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@types/p-limit/-/p-limit-1.1.2.tgz#2af70c9f80fc85ab7502ca92091be0b8f401a774"
+
 "@types/readline-sync@^1.4.2":
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/@types/readline-sync/-/readline-sync-1.4.2.tgz#516b5f4f250534062b6bb08ae8367a088dcf739f"
