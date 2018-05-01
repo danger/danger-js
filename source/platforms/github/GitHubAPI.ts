@@ -3,6 +3,7 @@ import * as debug from "debug"
 import * as node_fetch from "node-fetch"
 import * as parse from "parse-link-header"
 import * as v from "voca"
+import * as pLimit from "p-limit"
 
 import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
 
@@ -14,6 +15,8 @@ import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 // The Handle the API specific parts of the github
 
 export type APIToken = string
+
+const limit = pLimit(25)
 
 // Note that there are parts of this class which don't seem to be
 // used by Danger, they are exposed for Peril support.
@@ -369,19 +372,21 @@ export class GitHubAPI {
       // e.g. https://gist.github.com/LTe/5270348
       customAccept = { Accept: `${this.additionalHeaders.Accept}, ${headers.Accept}` }
     }
-    return this.fetch(
-      url,
-      {
-        method: method,
-        body: body,
-        headers: {
-          "Content-Type": "application/json",
-          ...headers,
-          ...this.additionalHeaders,
-          ...customAccept,
+    return limit(() =>
+      this.fetch(
+        url,
+        {
+          method: method,
+          body: body,
+          headers: {
+            "Content-Type": "application/json",
+            ...headers,
+            ...this.additionalHeaders,
+            ...customAccept,
+          },
         },
-      },
-      suppressErrors
+        suppressErrors
+      )
     )
   }
 
