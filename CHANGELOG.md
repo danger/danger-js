@@ -13,6 +13,8 @@
 
 ## Master
 
+# 3.6.2
+
 * Automatically rate limit concurrent GitHub API calls to avoid hitting GitHub rate limits [@mxstbr][]
 
 # 3.6.1
