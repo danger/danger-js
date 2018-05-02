@@ -13,6 +13,8 @@
 
 ## Master
 
+# 3.6.3
+
 * Fix running Danger on issues with no comments [@mxstbr][]
 
 # 3.6.2
