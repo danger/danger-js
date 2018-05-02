@@ -295,7 +295,7 @@ export class Executor {
     // if there is - update it and remove comment from deleteComments array (comments prepared for deletion)
     // if there isn't - create a new comment
     // Leftovers in deleteComments array should all be deleted afterwards
-    let deleteComments = previousComments ? previousComments.filter(c => c.ownedByDanger) : []
+    let deleteComments = Array.isArray(previousComments) ? previousComments.filter(c => c.ownedByDanger) : []
     let commentPromises: Promise<any>[] = []
     for (let inlineResult of sortedInlineResults) {
       const index = deleteComments.findIndex(p =>
