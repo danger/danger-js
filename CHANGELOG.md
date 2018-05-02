@@ -13,6 +13,8 @@
 
 ## Master
 
+* Fix running Danger on issues with no comments [@mxstbr][]
+
 # 3.6.2
 
 * Automatically rate limit concurrent GitHub API calls to avoid hitting GitHub rate limits [@mxstbr][]

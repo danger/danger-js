@@ -283,7 +283,7 @@ export class Executor {
    *
    * @param results Results with inline violations
    */
-  sendInlineComments(results: DangerResults, git: GitDSL, previousComments: Comment[]): Promise<DangerResults> {
+  sendInlineComments(results: DangerResults, git: GitDSL, previousComments: Comment[] | null): Promise<DangerResults> {
     if (!this.platform.supportsInlineComments) {
       return new Promise(resolve => resolve(results))
     }
@@ -295,7 +295,7 @@ export class Executor {
     // if there is - update it and remove comment from deleteComments array (comments prepared for deletion)
     // if there isn't - create a new comment
     // Leftovers in deleteComments array should all be deleted afterwards
-    let deleteComments = previousComments.filter(c => c.ownedByDanger)
+    let deleteComments = previousComments ? previousComments.filter(c => c.ownedByDanger) : []
     let commentPromises: Promise<any>[] = []
     for (let inlineResult of sortedInlineResults) {
       const index = deleteComments.findIndex(p =>
