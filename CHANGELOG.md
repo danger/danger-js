@@ -13,6 +13,8 @@
 
 ## Master
 
+* Fix setting the status url on bitbucket [@orta][]
+
 # 3.6.4
 
 * Fix running Danger on issues with no comments for real [@mxstbr][]

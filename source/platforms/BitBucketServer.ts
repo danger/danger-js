@@ -232,8 +232,9 @@ export class BitBucketServer implements Platform {
     // https://bitbucket.org/atlassian/jiraconnect-ios/pull-requests/4/crash-groups/diff#comment-426
     // So take the PR and attack the comment, I think :D
 
+    const host = this.api.repoCredentials.host
     const prURL = this.api.getPRBasePath()
-    return issue && issue.id && `${prURL}/diff#comment-${issue.id}`
+    return issue && issue.id && `${host}${prURL}/diff#comment-${issue.id}`
   }
 
   getFileContents = this.api.getFileContents
