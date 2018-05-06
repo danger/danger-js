@@ -14,6 +14,7 @@
 ## Master
 
 * Fix setting the status url on bitbucket [@orta][]
+* Adds more logs to `danger process` [@orta][]
 
 # 3.6.4
 
