@@ -13,6 +13,10 @@
 
 ## Master
 
+# 3.6.6
+
+* Updates vm2 to be an npm published version [@orta][]
+
 # 3.6.5
 
 * Fix setting the status url on bitbucket [@orta][]
