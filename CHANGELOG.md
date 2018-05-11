@@ -13,6 +13,9 @@
 
 ## Master
 
+* Adds support for the GH Checks API [notes to come][@orta][]
+* JSON diffs use the JSON5 parser, so can now ignore comments in JSON etc [@orta][]
+
 # 3.6.5
 
 * Fix setting the status url on bitbucket [@orta][]
