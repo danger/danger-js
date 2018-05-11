@@ -91,7 +91,7 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
     }
 
     const api = new GitHubAPI(source, ghToken)
-    const github = new GitHub(api)
+    const github = GitHub(api)
     return github
   }
 
