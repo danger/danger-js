@@ -1,52 +1,43 @@
-import { GitDSL } from "../../dsl/GitDSL"
-import { GitHubAPI } from "./GitHubAPI"
+import { GitDSL } from "../../../dsl/GitDSL"
+import { GitHubAPI } from "../GitHubAPI"
 import * as debug from "debug"
-import { Comment } from "../platform"
+import { Comment, PlatformCommunicator } from "../../platform"
 
-const d = debug("danger:GitHub::Issue")
+// See https://github.com/auth0/node-jsonwebtoken/issues/162
+const JWT_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/
 
-/**
- * Finds a position in given diff. This is needed for GitHub API, more on the position finder
- * can be found here: https://developer.github.com/v3/pulls/comments/#create-a-comment
- *
- * @returns {Promise<number>} A number with given position
- */
-const findPositionForInlineComment = (git: GitDSL, line: number, path: string): Promise<number> => {
-  d("Finding position for inline comment." + path + "#" + line)
-  return git.structuredDiffForFile(path).then(diff => {
-    return new Promise<number>((resolve, reject) => {
-      if (diff === undefined) {
-        d("Diff not found for inline comment." + path + "#" + line + ". Diff: " + JSON.stringify(diff))
-        reject()
-      }
+const d = debug("danger:GitHub::Checks")
 
-      d(
-        "Diff found for inline comment, now getting a position." + path + "#" + line + ". Diff: " + JSON.stringify(diff)
-      )
-      let fileLine = 0
-      for (let chunk of diff!.chunks) {
-        // Search for a change (that is not a deletion). "ln" is for normal changes, "ln2" for additions,
-        // thus need to check for either of them
-        let index = chunk.changes.findIndex((c: any) => c.type != "del" && (c.ln == line || c.ln2 == line))
-        if (index != -1) {
-          fileLine += index + 1
-          break
-        } else {
-          fileLine += chunk.changes.length + 1
-        }
-      }
-      d("Position found for inline comment: " + fileLine + "." + path + "#" + line)
-      resolve(fileLine)
-    })
-  })
+export const getCheckAuthFromEnv = () => {
+  const appID = process.env.DANGER_GITHUB_APP_ID || process.env.PERIL_INTEGRATION_ID
+  const key = process.env.DANGER_GITHUB_APP_PRIVATE_SIGNING_KEY || process.env.PRIVATE_GITHUB_SIGNING_KEY
+  const installID = process.env.DANGER_GITHUB_APP_INSTALL_ID || process.env.PERIL_ORG_INSTALLATION_ID
+
+  return {
+    appID,
+    key,
+    installID,
+  }
+}
+
+const canUseChecks = (token: string | undefined) => {
+  // Is it a JWT from Peril, basically?
+  if (token && token.match(JWT_REGEX)) {
+    return true
+  } else {
+    const auth = getCheckAuthFromEnv()
+    return auth.appID && auth.key && auth.installID
+  }
 }
 
 /**
  * An object whose responsibility is to handle commenting on an issue
  * @param api
  */
-export const GitHubIssueCommenter = (api: GitHubAPI) => {
-  const d = debug("danger:GitHub::Issue")
+export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | undefined => {
+  if (!canUseChecks(api.token)) {
+    return undefined
+  }
 
   return {
     supportsCommenting: () => true,
@@ -61,27 +52,28 @@ export const GitHubIssueCommenter = (api: GitHubAPI) => {
       const ghAPI = api.getExternalAPI()
 
       const prJSON = await api.getPullRequestInfo()
-      const ref = prJSON.head
-      try {
-        await ghAPI.repos.createStatus({
-          repo: ref.repo.name,
-          owner: ref.repo.owner.login,
-          sha: ref.sha,
-          state: passed ? "success" : "failure",
-          context: process.env["PERIL_INTEGRATION_ID"] ? "Peril" : "Danger",
-          target_url: url || "http://danger.systems/js",
-          description: message,
-        })
-        return true
-      } catch (error) {
-        return false
-      }
+      // const ref = prJSON.head
+      // try {
+      //   await ghAPI.repos.createStatus({
+      //     repo: ref.repo.name,
+      //     owner: ref.repo.owner.login,
+      //     sha: ref.sha,
+      //     state: passed ? "success" : "failure",
+      //     context: process.env["PERIL_INTEGRATION_ID"] ? "Peril" : "Danger",
+      //     target_url: url || "http://danger.systems/js",
+      //     description: message,
+      //   })
+      //   return true
+      // } catch (error) {
+      //   return false
+      // }
+      // await ghAPI.checks.
     },
 
     /**
      * Gets inline comments for current PR
      */
-    getInlineComments: async (dangerID: string): Promise<Comment[]> => api.getPullRequestInlineComments(dangerID),
+    getInlineComments: async (dangerID: string): Promise<Comment[]> => () => null,
 
     /**
      * Returns the response for the new comment

@@ -6,7 +6,8 @@ import gitDSLForGitHub from "./github/GitHubGit"
 import * as NodeGitHub from "@octokit/rest"
 import { Platform } from "./platform"
 
-import { GitHubIssueCommenter } from "./github/issueCommenter"
+import { GitHubIssueCommenter } from "./github/comms/issueCommenter"
+import { GitHubChecksCommenter } from "./github/comms/checksCommenter"
 
 /** Handles conforming to the Platform Interface for GitHub, API work is handle by GitHubAPI */
 
@@ -14,8 +15,7 @@ export type GitHubType = Platform & { api: GitHubAPI; findPositionForInlineComme
 
 export const GitHub = (api: GitHubAPI) => {
   // In the future this could also be a commenter for the new checks API
-  const commenter = GitHubIssueCommenter(api)
-
+  const commenter = GitHubChecksCommenter(api) || GitHubIssueCommenter(api)
   /**
    * Converts the PR JSON into something easily used by the Github API client.
    */

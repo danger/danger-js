@@ -30,13 +30,18 @@ export type Comment = {
   ownedByDanger: boolean
 }
 
-export interface Platform {
+export interface Platform extends PlatformCommunicator {
   /** Mainly for logging and error reporting */
   readonly name: string
   /** Pulls in the platform specific metadata for inspection */
   getPlatformDSLRepresentation: () => Promise<any>
   /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
   getPlatformGitRepresentation: () => Promise<GitJSONDSL>
+  /** Get the contents of a file at a path */
+  getFileContents: (path: string, slug?: string, ref?: string) => Promise<string>
+}
+
+export interface PlatformCommunicator {
   /** Gets inline comments for current PR */
   getInlineComments: (dangerID: string) => Promise<Comment[]>
   /** Can it update comments? */
@@ -57,8 +62,6 @@ export interface Platform {
   updateOrCreateComment: (dangerID: string, newComment: string) => Promise<string | undefined>
   /** Sets the current PR's status */
   updateStatus: (passed: boolean | "pending", message: string, url?: string) => Promise<boolean>
-  /** Get the contents of a file at a path */
-  getFileContents: (path: string, slug?: string, ref?: string) => Promise<string>
 }
 
 /**
