@@ -11,7 +11,7 @@ import { GitHubChecksCommenter } from "./github/comms/checksCommenter"
 
 /** Handles conforming to the Platform Interface for GitHub, API work is handle by GitHubAPI */
 
-export type GitHubType = Platform & { api: GitHubAPI; findPositionForInlineComment: any }
+export type GitHubType = Platform & { api: GitHubAPI }
 
 export const GitHub = (api: GitHubAPI) => {
   // In the future this could also be a commenter for the new checks API

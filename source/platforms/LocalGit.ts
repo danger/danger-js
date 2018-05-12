@@ -71,6 +71,10 @@ export class LocalGit implements Platform {
     return true
   }
 
+  supportsHandlingResultsManually() {
+    return false
+  }
+
   async updateOrCreateComment(_dangerID: string, _newComment: string): Promise<string | undefined> {
     return undefined
   }

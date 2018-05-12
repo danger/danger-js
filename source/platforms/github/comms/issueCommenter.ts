@@ -1,7 +1,7 @@
 import { GitDSL } from "../../../dsl/GitDSL"
 import { GitHubAPI } from "../GitHubAPI"
 import * as debug from "debug"
-import { Comment, PlatformCommunicator } from "../../platform"
+import { Comment } from "../../platform"
 
 const d = debug("danger:GitHub::Issue")
 
@@ -169,6 +169,5 @@ export const GitHubIssueCommenter = (api: GitHubAPI) => {
 
       return issue && issue.html_url
     },
-    findPositionForInlineComment,
-  } as PlatformCommunicator
+  }
 }
