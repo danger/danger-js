@@ -1,7 +1,7 @@
 import { GitDSL } from "../../../dsl/GitDSL"
 import { GitHubAPI } from "../GitHubAPI"
 import * as debug from "debug"
-import { Comment } from "../../platform"
+import { Comment, PlatformCommunicator } from "../../platform"
 
 const d = debug("danger:GitHub::Issue")
 
@@ -51,7 +51,7 @@ export const GitHubIssueCommenter = (api: GitHubAPI) => {
   return {
     supportsCommenting: () => true,
     supportsInlineComments: () => true,
-
+    supportsHandlingResultsManually: () => false,
     /**
      * Fails the current build, if status setting succeeds
      * then return true.
@@ -170,5 +170,5 @@ export const GitHubIssueCommenter = (api: GitHubAPI) => {
       return issue && issue.html_url
     },
     findPositionForInlineComment,
-  }
+  } as PlatformCommunicator
 }

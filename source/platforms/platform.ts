@@ -4,6 +4,7 @@ import { GitHub } from "./GitHub"
 import { GitHubAPI } from "./github/GitHubAPI"
 import { BitBucketServer } from "./BitBucketServer"
 import { BitBucketServerAPI, bitbucketServerRepoCredentialsFromEnv } from "./bitbucket_server/BitBucketServerAPI"
+import { DangerResults } from "../dsl/DangerResults"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any
@@ -41,13 +42,21 @@ export interface Platform extends PlatformCommunicator {
   getFileContents: (path: string, slug?: string, ref?: string) => Promise<string>
 }
 
+// This is basically the commenting aspect of a platform, which allow us to
+// separate out the comment handling vs the DSL generation for a platform
 export interface PlatformCommunicator {
-  /** Gets inline comments for current PR */
-  getInlineComments: (dangerID: string) => Promise<Comment[]>
+  /** Basically, should this platform manually handle the posting of an issue itself instead of the Executor */
+  supportsHandlingResultsManually: () => boolean
   /** Can it update comments? */
   supportsCommenting: () => boolean
   /** Does the platform support inline comments? */
   supportsInlineComments: () => boolean
+
+  /** Allows the platform to do whatever it wants, instead of using the default commenting system  */
+  handlePostingResults?: (results: DangerResults) => void
+
+  /** Gets inline comments for current PR */
+  getInlineComments: (dangerID: string) => Promise<Comment[]>
   /** Creates a comment on the PR */
   createComment: (dangerID: string, body: string) => Promise<any>
   /** Creates an inline comment on the PR if possible */

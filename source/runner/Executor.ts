@@ -210,7 +210,13 @@ export class Executor {
    * @param {GitDSL} git a reference to a git implementation so that inline comments find diffs to work with
    */
   async handleResultsPostingToPlatform(results: DangerResults, git: GitDSL) {
-    // Delete the message if there's nothing to say
+    // Allow a platform to say "I can do something special with this" - the example case for this
+    // is the GitHub Checks API. It doesn't have an API that feels like commenting, so
+    // it allows bailing early.
+    if (this.platform.supportsHandlingResultsManually() && this.platform.handlePostingResults) {
+      this.platform.handlePostingResults(results)
+      return
+    }
     const { fails, warnings, messages, markdowns } = results
 
     const failureCount = [...fails, ...warnings].length

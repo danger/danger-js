@@ -42,16 +42,17 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
   return {
     supportsCommenting: () => true,
     supportsInlineComments: () => true,
-
+    supportsHandlingResultsManually: () => true,
     /**
      * Fails the current build, if status setting succeeds
      * then return true.
      */
 
     updateStatus: async (passed: boolean | "pending", message: string, url?: string): Promise<boolean> => {
-      const ghAPI = api.getExternalAPI()
+      return true
+      // const ghAPI = api.getExternalAPI()
 
-      const prJSON = await api.getPullRequestInfo()
+      // const prJSON = await api.getPullRequestInfo()
       // const ref = prJSON.head
       // try {
       //   await ghAPI.repos.createStatus({
@@ -73,7 +74,7 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
     /**
      * Gets inline comments for current PR
      */
-    getInlineComments: async (dangerID: string): Promise<Comment[]> => () => null,
+    getInlineComments: async (dangerID: string): Promise<Comment[]> => Promise.resolve([]),
 
     /**
      * Returns the response for the new comment
@@ -81,7 +82,7 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
      * @param {string} comment you want to post
      * @returns {Promise<any>} JSON response of new comment
      */
-    createComment: (comment: string) => api.postPRComment(comment),
+    createComment: (comment: string) => Promise.resolve({}),
 
     /**
      * Makes an inline comment if possible. If platform can't make an inline comment with given arguments,
@@ -90,11 +91,7 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
      * @returns {Promise<any>} JSON response of new comment
      */
     createInlineComment: (git: GitDSL, comment: string, path: string, line: number): Promise<any> => {
-      let commitId = git.commits[git.commits.length - 1].sha
-      d("Creating inline comment. Commit: " + commitId)
-      return findPositionForInlineComment(git, line, path).then(position => {
-        return api.postInlinePRComment(comment, commitId, path, position)
-      })
+      return Promise.resolve({})
     },
 
     /**
@@ -161,6 +158,6 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
 
       return issue && issue.html_url
     },
-    findPositionForInlineComment,
+    findPositionForInlineComment: () => 1,
   }
 }
