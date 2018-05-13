@@ -185,6 +185,7 @@
 * Improvements to the Flow definition file. [@orta][]
 * Improve path generator for danger-runner. [@Mifi][]
 * Update the PR DSL to include bots. [@orta][]
+* Add utility function to build tables in Markdown [@keplersj][]
 
 ## 3.1.7
 
@@ -1077,6 +1078,7 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@wizardishungry]: https://github.com/wizardishungry
 [@hongrich]: https://github.com/hongrich
 [@peterjgrainger]: https://github.com/peterjgrainger
+[@keplersj]: https://github.com/keplersj
 [@azz]: https://github.com/azz
 [@mifi]: https://github.com/ionutmiftode
 [@sunshinejr]: https://github.com/sunshinejr
