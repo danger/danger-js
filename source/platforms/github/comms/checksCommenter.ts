@@ -1,6 +1,9 @@
 // import * as debug from "debug"
 import { PlatformCommunicator } from "../../platform"
 import { GitHubAPI } from "../GitHubAPI"
+import { DangerResults } from "../../../dsl/DangerResults"
+import { ExecutorOptions } from "../../../runner/Executor"
+import { resultsToCheck } from "./checks/resultsToCheck"
 
 // See https://github.com/auth0/node-jsonwebtoken/issues/162
 const JWT_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/
@@ -42,6 +45,16 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
     supportsCommenting: () => true,
     supportsInlineComments: () => true,
     supportsHandlingResultsManually: () => true,
+
+    handlePostingResults: async (results: DangerResults, options: ExecutorOptions) => {
+      const pr = await api.getPullRequestInfo()
+
+      // TODO, auth correctly!
+      const octokit = api.getExternalAPI()
+
+      // const existingReport = octokit.issues
+      const checkData = resultsToCheck(results, options, pr)
+    },
 
     // These are all NOOPs, because they aren't actually going to be called
     updateStatus: () => Promise.resolve(true),

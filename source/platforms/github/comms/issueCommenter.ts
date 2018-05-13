@@ -11,7 +11,7 @@ const d = debug("danger:GitHub::Issue")
  *
  * @returns {Promise<number>} A number with given position
  */
-const findPositionForInlineComment = (git: GitDSL, line: number, path: string): Promise<number> => {
+export const findPositionForInlineComment = (git: GitDSL, line: number, path: string): Promise<number> => {
   d("Finding position for inline comment." + path + "#" + line)
   return git.structuredDiffForFile(path).then(diff => {
     return new Promise<number>((resolve, reject) => {

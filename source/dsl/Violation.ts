@@ -25,6 +25,4 @@ export interface Violation {
 
 /// End of Danger DSL definition
 
-export function isInline(violation: Violation): boolean {
-  return violation.file !== undefined && violation.line !== undefined
-}
+export const isInline = (violation: Violation): boolean => violation.file !== undefined && violation.line !== undefined

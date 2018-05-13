@@ -35,8 +35,6 @@ import { jsonDSLGenerator } from "./dslGenerator"
 import { GitDSL } from "../dsl/GitDSL"
 import { DangerDSL } from "../dsl/DangerDSL"
 
-// This is still badly named, maybe it really should just be runner?
-
 export interface ExecutorOptions {
   /** Should we do a text-only run? E.g. skipping comments */
   stdoutOnly: boolean
@@ -46,7 +44,10 @@ export interface ExecutorOptions {
   verbose: boolean
   /** A unique ID to handle multiple Danger runs */
   dangerID: string
+  /** Is the access token from a GitHub App, and thus can have access to unique APIs (checks) without work */
+  accessTokenIsGitHubApp?: boolean
 }
+// This is still badly named, maybe it really should just be runner?
 
 export class Executor {
   private readonly d = debug("danger:executor")
@@ -214,7 +215,7 @@ export class Executor {
     // is the GitHub Checks API. It doesn't have an API that feels like commenting, so
     // it allows bailing early.
     if (this.platform.supportsHandlingResultsManually() && this.platform.handlePostingResults) {
-      this.platform.handlePostingResults(results)
+      this.platform.handlePostingResults(results, this.options)
       return
     }
     const { fails, warnings, messages, markdowns } = results

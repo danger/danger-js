@@ -5,6 +5,7 @@ import { GitHubAPI } from "./github/GitHubAPI"
 import { BitBucketServer } from "./BitBucketServer"
 import { BitBucketServerAPI, bitbucketServerRepoCredentialsFromEnv } from "./bitbucket_server/BitBucketServerAPI"
 import { DangerResults } from "../dsl/DangerResults"
+import { ExecutorOptions } from "../runner/Executor"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any
@@ -54,7 +55,7 @@ export interface PlatformCommunicator {
   supportsInlineComments: () => boolean
 
   /** Allows the platform to do whatever it wants, instead of using the default commenting system  */
-  handlePostingResults?: (results: DangerResults) => void
+  handlePostingResults?: (results: DangerResults, options: ExecutorOptions) => void
 
   /** Gets inline comments for current PR */
   getInlineComments: (dangerID: string) => Promise<Comment[]>
