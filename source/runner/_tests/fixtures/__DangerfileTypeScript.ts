@@ -1,3 +1,4 @@
+// @ts-ignore
 /* tslint-disable */
 
 // This doesn't exist in JS-world

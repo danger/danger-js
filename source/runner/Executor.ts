@@ -93,7 +93,7 @@ export class Executor {
     // If an eval of the Dangerfile fails, we should generate a
     // message that can go back to the CI
     try {
-      results = await this.runner.runDangerfileEnvironment(file, undefined, runtime)
+      results = await this.runner.runDangerfileEnvironment([file], [undefined], runtime)
     } catch (error) {
       results = this.resultsForError(error)
     }
@@ -352,12 +352,12 @@ export class Executor {
   }
 
   /**
-   * Takes an error (maybe a bad eval) and provides a DangerResults compatible object3ehguh.l;/////////////
+   * Takes an error (maybe a bad eval) and provides a DangerResults compatible object
    * @param error Any JS error
    */
   resultsForError(error: Error) {
     // Need a failing error, otherwise it won't fail CI.
-    console.error(chalk.red("Danger has errored"))
+    console.error(chalk.red("Danger has failed to run"))
     console.error(error)
     return {
       fails: [{ message: "Running your Dangerfile has Failed" }],

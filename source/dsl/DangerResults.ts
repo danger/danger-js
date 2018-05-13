@@ -208,9 +208,10 @@ export function sortResults(results: DangerResults): DangerResults {
   }
 }
 
-export function isEmptyResults(results: DangerResults): boolean {
-  return [...results.fails, ...results.warnings, ...results.messages, ...results.markdowns].length === 0
-}
+export const emptyResults = (): DangerResults => ({ fails: [], markdowns: [], warnings: [], messages: [] })
+
+export const isEmptyResults = (results: DangerResults): boolean =>
+  [...results.fails, ...results.warnings, ...results.messages, ...results.markdowns].length === 0
 
 export function resultsIntoInlineResults(results: DangerResults): DangerInlineResults[] {
   // Here we iterate through all keys ("fails", "warnings", "messages", "markdowns") and for each violation

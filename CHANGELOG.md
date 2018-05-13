@@ -13,6 +13,11 @@
 
 ## Master
 
+* Allows the synchronous execution of multiple dangerfiles in one single "danger run".
+
+  Not a particularly useful feature for Danger-JS, but it means Peril can combine many runs into a single execution
+  unit. This means people only get 1 message. [@orta][]
+
 # 3.6.6
 
 * Updates vm2 to be an npm published version [@orta][]

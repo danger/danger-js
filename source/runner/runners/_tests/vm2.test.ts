@@ -70,7 +70,7 @@ runners.forEach(run => {
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
         const results = await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfileEmpty.js"),
+          [resolve(fixtures, "__DangerfileEmpty.js")],
           undefined,
           runtime
         )
@@ -91,7 +91,7 @@ runners.forEach(run => {
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
 
         const results = await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfileFullMessages.js"),
+          [resolve(fixtures, "__DangerfileFullMessages.js")],
           undefined,
           runtime
         )
@@ -108,7 +108,7 @@ runners.forEach(run => {
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
         const results = await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfileBadSyntax.js"),
+          [resolve(fixtures, "__DangerfileBadSyntax.js")],
           undefined,
           runtime
         )
@@ -121,7 +121,7 @@ runners.forEach(run => {
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
         await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfileImportRelative.js"),
+          [resolve(fixtures, "__DangerfileImportRelative.js")],
           undefined,
           runtime
         )
@@ -131,7 +131,7 @@ runners.forEach(run => {
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
         const results = await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfileScheduled.js"),
+          [resolve(fixtures, "__DangerfileScheduled.js")],
           undefined,
           runtime
         )
@@ -147,7 +147,7 @@ runners.forEach(run => {
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
         const results = await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfileMultiScheduled.js"),
+          [resolve(fixtures, "__DangerfileMultiScheduled.js")],
           undefined,
           runtime
         )
@@ -163,7 +163,7 @@ runners.forEach(run => {
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
         const results = await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfileAsync.ts"),
+          [resolve(fixtures, "__DangerfileAsync.ts")],
           undefined,
           runtime
         )
@@ -182,7 +182,7 @@ runners.forEach(run => {
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
         const results = await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfileAsync.js"),
+          [resolve(fixtures, "__DangerfileAsync.js")],
           undefined,
           runtime
         )
@@ -201,7 +201,7 @@ runners.forEach(run => {
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
         const results = await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfileAsync.ts"),
+          [resolve(fixtures, "__DangerfileAsync.ts")],
           undefined,
           runtime
         )
@@ -219,7 +219,7 @@ runners.forEach(run => {
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
         const results = await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfileCallback.js"),
+          [resolve(fixtures, "__DangerfileCallback.js")],
           undefined,
           runtime
         )
@@ -234,7 +234,7 @@ runners.forEach(run => {
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
         const results = await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfileTypeScript.ts"),
+          [resolve(fixtures, "__DangerfileTypeScript.ts")],
           undefined,
           runtime
         )
@@ -249,7 +249,7 @@ runners.forEach(run => {
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
         const results = await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfilePlugin.js"),
+          [resolve(fixtures, "__DangerfilePlugin.js")],
           undefined,
           runtime
         )
@@ -261,7 +261,7 @@ runners.forEach(run => {
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
         const results = await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfileThrows.js"),
+          [resolve(fixtures, "__DangerfileThrows.js")],
           undefined,
           runtime
         )
@@ -274,7 +274,7 @@ runners.forEach(run => {
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
         const results = await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfileDefaultExport.js"),
+          [resolve(fixtures, "__DangerfileDefaultExport.js")],
           undefined,
           runtime
         )
@@ -290,7 +290,7 @@ runners.forEach(run => {
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
         const results = await exec.runner.runDangerfileEnvironment(
-          resolve(fixtures, "__DangerfileDefaultExportAsync.js"),
+          [resolve(fixtures, "__DangerfileDefaultExportAsync.js")],
           undefined,
           runtime
         )
@@ -299,6 +299,40 @@ runners.forEach(run => {
           messages: [],
           markdowns: [],
           warnings: [{ message: "Asynchronous Warning" }],
+        })
+      })
+
+      it("handles running multiple local files", async () => {
+        const context = await setupDangerfileContext()
+        const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
+        const results = await exec.runner.runDangerfileEnvironment(
+          [resolve(fixtures, "__DangerfileTypeScript.ts"), resolve(fixtures, "__DangerfileAsync.ts")],
+          undefined,
+          runtime
+        )
+
+        expect(results).toEqual({
+          fails: [],
+          markdowns: [],
+          messages: [{ message: "Honey, we got Types" }],
+          warnings: [{ message: "Async Function" }, { message: "After Async Function" }],
+        })
+      })
+
+      it("handles running multiple dangerfiles with passed in content", async () => {
+        const context = await setupDangerfileContext()
+        const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
+        const results = await exec.runner.runDangerfileEnvironment(
+          [resolve(fixtures, "__MadeUpDangerfileOne.ts"), resolve(fixtures, "__MadeUpDangerfileTwo.ts")],
+          ["markdown('hello')", "markdown('hello2')"],
+          runtime
+        )
+
+        expect(results).toEqual({
+          fails: [],
+          markdowns: [{ message: "hello" }, { message: "hello2" }],
+          messages: [],
+          warnings: [],
         })
       })
     })

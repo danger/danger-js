@@ -47,7 +47,7 @@ const run = async (jsonString: string) => {
   const context = await jsonToContext(jsonString, program)
   runtimeEnv = await inline.createDangerfileRuntimeEnvironment(context)
   d(`Evaluating ${dangerFile}`)
-  await inline.runDangerfileEnvironment(dangerFile, undefined, runtimeEnv)
+  await inline.runDangerfileEnvironment([dangerFile], [undefined], runtimeEnv)
 }
 
 // Wait till the end of the process to print out the results. Will
