@@ -49,7 +49,7 @@ const apiForDSL = (dsl: DangerDSLJSONType): GitHubNodeAPI | BitBucketServerAPI =
   }
 
   const api = new GitHubNodeAPI({
-    baseUrl: dsl.settings.github.baseURL,
+    host: dsl.settings.github.baseURL,
     headers: {
       ...dsl.settings.github.additionalHeaders,
     },

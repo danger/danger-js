@@ -43,9 +43,9 @@ export class GitHubAPI {
    * but for now that's just a refactor someone can try.
    */
   getExternalAPI = (): GitHubNodeAPI => {
-    const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || undefined
+    const host = process.env["DANGER_GITHUB_API_BASE_URL"] || undefined
     const api = new GitHubNodeAPI({
-      baseUrl,
+      host,
       headers: {
         ...this.additionalHeaders,
       },
