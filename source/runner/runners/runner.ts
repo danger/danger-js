@@ -6,15 +6,15 @@ export interface DangerRunner {
    * Executes a Dangerfile at a specific path, with a context.
    * The values inside a Danger context are applied as globals to the Dangerfiles runtime.
    *
-   * @param {string} filename the file path for the dangerfile
-   * @param {string} originalContents optional, the JS pre-compiled
+   * @param {string[]} filenames a set of file paths for the dangerfile
+   * @param {string[] | undefined[]} originalContents optional, the JS pre-compiled
    * @param {DangerContext} environment the results of createDangerfileRuntimeEnvironment
    * @param {any | undefined} injectedObjectToExport an optional object for passing into default exports
    * @returns {DangerResults} the results of the run
    */
   runDangerfileEnvironment: (
-    filename: string,
-    originalContents: string | undefined,
+    filenames: string[],
+    originalContents: string[] | undefined[],
     environment: any,
     injectedObjectToExport?: any
   ) => Promise<DangerResults>
