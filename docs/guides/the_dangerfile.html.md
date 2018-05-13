@@ -10,17 +10,20 @@ blurb: Step two on using Danger in your app, how to work locally and nuances aro
 
 The Danger JS DSL is fully typed via TypeScript. These definitions are shipped with the Danger module. If your text editor supports working with type definitions you will get inline-documentation and auto-completion after you import danger in your Dangerfile. Visual Studios Code will do this by default for you.
 
-If you are using Babel in your project, your Dangerfile will use the same transpilation settings. If you're using TypeScript + Jest it will work out of the box too, however, if you don't, you should head over to the [transpilation guide][transpilation_guide]
+If you are using Babel in your project, your Dangerfile will use the same transpilation settings. If you're using TypeScript + Jest it will work out of the box too, however, if you don't, you should head over to the [transpilation guide][transpilation_guide].
 
 ## Working on your Dangerfile
 
 There are two ways to locally work on your Dangerfile. These both rely on using the GitHub API locally, so you may hit the GitHub API rate-limit or need to have authenticated request for private repos. In which case you can use an access token to do authenticated requests by exposing a token to Danger.
 
 ```sh
-export DANGER_GITHUB_API_TOKEN='xxxxxxxxxx'
+export DANGER_GITHUB_API_TOKEN='xxxx'
+
+# or for BitBucket
+export DANGER_BITBUCKETSERVER_HOST='xxxx' DANGER_BITBUCKETSERVER_USERNAME='yyyy' DANGER_BITBUCKETSERVER_PASSWORD='zzzz'
 ```
 
-Then the danger CLI will use these authenticated API calls.
+Then the danger CLI will use authenticated API calls, which don't get this by API limits.
 
 ### Using `danger pr`
 
@@ -28,15 +31,16 @@ The command `danger pr` expects an argument of a PR url, e.g. `yarn danger pr ht
 
 This will use your local Dangerfile against the metadata of the linked PR. Danger will then output the results into your terminal, instead of inside the PR itself.
 
+This _will not_ post comments. It is for locally testing, see `yarn danger pr --help` for more info.
+
 ### Using `danger` and Faking being on a CI
 
-If you create an [appropriately scoped temporary api token](http://danger.systems/guides/getting_started.html#setting-up-an-access-token) for your github account, this can be a good way to see if danger is suitable for you before integrating it into your CI system.
+If you create an [appropriately scoped temporary api token](http://danger.systems/js/guides/getting_started.html#setting-up-an-access-token) for your GitHub account, this can be a good way to see if danger is suitable for you before integrating it into your CI system.
 
 You can manually trigger danger against a pull request on the command line by setting the following environmental variables:
 
 ```bash
 export DANGER_FAKE_CI="YEP"
-export DANGER_GITHUB_API_TOKEN='xxxxxxxxxx'  # a github api token
 export DANGER_TEST_REPO='username/reponame'
 ```
 
@@ -44,14 +48,14 @@ Then you can run against a local branch that is attached to a pull-request, by r
 
 ```bash
 git checkout branch-for-pr-1234
-DANGER_TEST_PR='1234' npm run danger
+DANGER_TEST_PR='1234' yarn danger ci
 ```
 
 Assuming that your local file-system matches up to that branch on GitHub, this will be a good approximation of how danger will work when you integrate it into your CI system. Note: this will leave a comment on the PR.
 
 ## Working with files
 
-Over time, we've found it easier to create up-front arrays of files you are be interested in - then you can work with these potential arrays of files. For example:
+Over time, we've found it easier to create up-front arrays of files you are interested in - then you can work with these potential arrays of files. For example:
 
 ```js
 import { danger } from "danger"

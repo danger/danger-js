@@ -1,6 +1,6 @@
 import { Platform } from "../platforms/platform"
 import { DangerDSLJSONType } from "../dsl/DangerDSL"
-import { CliArgs } from "./cli-args"
+import { CliArgs } from "../dsl/cli-args"
 
 export const jsonDSLGenerator = async (platform: Platform): Promise<DangerDSLJSONType> => {
   const git = await platform.getPlatformGitRepresentation()
@@ -8,7 +8,7 @@ export const jsonDSLGenerator = async (platform: Platform): Promise<DangerDSLJSO
 
   return {
     git,
-    github: platformDSL,
+    [platform.name === "BitBucketServer" ? "bitbucket_server" : "github"]: platformDSL,
     settings: {
       github: {
         accessToken: process.env["DANGER_GITHUB_API_TOKEN"] || "NO_TOKEN",

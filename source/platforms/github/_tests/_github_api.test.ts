@@ -1,9 +1,22 @@
 import { FakeCI } from "../../../ci_source/providers/Fake"
 import { GitHubAPI } from "../GitHubAPI"
 import { requestWithFixturedJSON } from "../../_tests/_github.test"
+import { Comment } from "../../platform"
 
 const fetchJSON = (api, params): Promise<any> => {
   return Promise.resolve({
+    ok: true,
+    json: () =>
+      Promise.resolve({
+        api,
+        ...params,
+      }),
+  })
+}
+
+const fetchErrorJSON = (api, params): Promise<any> => {
+  return Promise.resolve({
+    ok: false,
     json: () =>
       Promise.resolve({
         api,
@@ -85,6 +98,55 @@ describe("API testing", () => {
       },
     })
   })
+
+  it("getPullRequestInlineComment gets only comments for given DangerId", async () => {
+    api.getAllOfResource = await requestWithFixturedJSON("github_inline_comments_with_danger.json")
+    api.getUserID = () => new Promise<number>(r => r(20229914))
+
+    const comments = await api.getPullRequestInlineComments("danger-id-default")
+
+    expect(comments.length).toEqual(1)
+    expect(comments[0].ownedByDanger).toBeTruthy()
+  })
+
+  it("getPullRequestInlineComment doesn't get comments as the DangerId is different", async () => {
+    api.getAllOfResource = await requestWithFixturedJSON("github_inline_comments_with_danger.json")
+    api.getUserID = () => new Promise<number>(r => r(123))
+
+    const comments = await api.getPullRequestInlineComments("danger-id-default")
+
+    expect(comments.length).toEqual(0)
+  })
+
+  it("postInlinePRComment success", async () => {
+    api.fetch = fetchJSON
+    const expectedJSON = {
+      api: "https://api.github.com/repos/artsy/emission/pulls/1/comments",
+      headers: {
+        Authorization: "token ABCDE",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: '{"body":"","commit_id":"","path":"","position":0}',
+    }
+    expect.assertions(1)
+    await expect(api.postInlinePRComment("", "", "", 0)).resolves.toMatchObject(expectedJSON)
+  })
+
+  it("postInlinePRComment error", async () => {
+    api.fetch = fetchErrorJSON
+    const expectedJSON = {
+      api: "https://api.github.com/repos/artsy/emission/pulls/1/comments",
+      headers: {
+        Authorization: "token ABCDE",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: '{"body":"","commit_id":"","path":"","position":0}',
+    }
+    expect.assertions(1)
+    await expect(api.postInlinePRComment("", "", "", 0)).rejects.toEqual(expectedJSON)
+  })
 })
 
 describe("Peril", () => {
@@ -102,7 +164,7 @@ describe("Peril", () => {
     expect(api.fetch).toHaveBeenCalledWith(
       "https://api.github.com/user",
       {
-        body: {},
+        body: null,
         headers: {
           Authorization: "token ABCDE",
           CUSTOM: "HEADER",
@@ -124,7 +186,7 @@ describe("Peril", () => {
     expect(api.fetch).toHaveBeenCalledWith(
       "https://api.github.com/user",
       {
-        body: {},
+        body: null,
         headers: {
           Accept: "application/vnd.github.machine-man-preview+json, application/vnd.github.v3.diff",
           Authorization: "token ABCDE",

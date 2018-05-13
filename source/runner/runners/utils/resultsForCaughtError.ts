@@ -22,7 +22,7 @@ ${error.stack}
 ${code}
 \`\`\`
   `
-  return { fails: [{ message: failure }], warnings: [], markdowns: [errorMD], messages: [] }
+  return { fails: [{ message: failure }], warnings: [], markdowns: [{ message: errorMD }], messages: [] }
 }
 
 export default resultsForCaughtError

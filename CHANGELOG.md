@@ -13,6 +13,177 @@
 
 ## Master
 
+# 3.6.6
+
+* Updates vm2 to be an npm published version [@orta][]
+
+# 3.6.5
+
+* Fix setting the status url on bitbucket [@orta][]
+* Adds more logs to `danger process` [@orta][]
+
+# 3.6.4
+
+* Fix running Danger on issues with no comments for real [@mxstbr][]
+
+# 3.6.3
+
+* Fix running Danger on issues with no comments [@mxstbr][]
+
+# 3.6.2
+
+* Automatically rate limit concurrent GitHub API calls to avoid hitting GitHub rate limits [@mxstbr][]
+
+# 3.6.1
+
+* Catch the github api error thrown from @octokit/rest [@Teamop][]
+* Replace preview media type of github pull request reviews api [@Teamop][]
+* Add support for [Screwdriver CI](http://screwdriver.cd) [@dbgrandi][]
+
+# 3.6.0
+
+* A Dangerfile can return a default export, and then Danger will handle the execution of that code [@orta][]
+* Changes the order of the text output in verbose, or when STDOUT is the only option [@orta][]
+* Prints a link to the comment in the build log [@orta][]
+
+## 3.5.0 - 3.5.1
+
+* Fixed a bug where Danger posts empty main comment when it have one or more inline comments to post [@codestergit][]
+* fix bug when commiting .png files on BitBucket [@Mifi][]
+* Adds support for inline comments for bitbucket server. [@codestergit][]
+
+## 3.4.7
+
+* Update dependencies [@orta][]
+
+## 3.4.6
+
+* Fixed Babel 7 breaking due to invalid sourceFileName configuration [@kesne][]
+
+## 3.4.5
+
+* Don't print error for commit status when there was no error [@sunshinejr][]
+
+## 3.4.4
+
+* Fixed a bug where Danger would get access to _all_ inline comments, thus deleting comments posted by other people
+  [@sunshinejr][]
+
+## 3.4.3
+
+* Fixed a bug where updating multiple inline comments caused a Javascript error [@sunshinejr][]
+
+## 3.4.2
+
+* Improving reporting when multiple violations are o nthe same line of a file [@sunshinejr][]
+
+## 3.4.1
+
+* Protection against nulls in the inline comment data [@orta][]
+
+## 3.4.0
+
+* Adds support for inline comments when using GitHub.
+
+  This is one of those "massive under the hood" changes, that has a tiny user DSL surface. From this point onwards
+  `fail`, `warn`, `message` and `markdown` all take an extra two optional params: `file?: string` and `line?: number`.
+
+  Adding `file` and `line` to the call of any exported communication function will trigger one of two things:
+
+  * Danger will create a new comment inline inside your PR with your warning/message/fail/markdown
+  * Danger will append a in the main Danger comment with your warning/message/fail/markdown
+
+  Inline messages are edited/created/deleted with each subsequent run of `danger ci` in the same way the main comment
+  does. This is really useful for: linters, test runners and basically anything that relies on the contents of a file
+  itself.
+
+  If you're using `danger process` to communicate with an external process, you can return JSON like:
+
+  ```json
+  {
+    "markdowns": [
+      {
+        "file": "package.swift",
+        "line": 3,
+        "message": "Needs more base"
+      }
+    ]
+    // [...]
+  }
+  ```
+
+  -- [@sunshinejr][]
+
+* Adds a data validation step when Danger gets results back from a process . [@orta][]
+
+## 3.3.2
+
+* Adds support for TeamCity as a CI provider. [@fwal][]
+
+## 3.3.1
+
+* Fixed Babel 7 breaking because of sourceFileName being defined wrong. [@happylinks][]
+
+## 3.3.0
+
+* Fix `committer` field issue - missing in Stash API by using commit author instead. [@zdenektopic][]
+* Adds a new command: `reset-status`
+
+  This command is for setting the CI build status in advance of running Danger. If your Danger build relies on running
+  tests/linters, then you might want to set the PR status (the red/green/yellow dots) to pending at the start of your
+  build. You can do this by running `yarn danger reset-status`.
+
+  [@mxstbr][]
+
+## 3.2.0
+
+* Add BitBucket Server support.
+
+  To use Danger JS with BitBucket Server: you'll need to create a new account for Danger to use, then set the following
+  environment variables on your CI:
+
+  * `DANGER_BITBUCKETSERVER_HOST` = The root URL for your server, e.g. `https://bitbucket.mycompany.com`.
+  * `DANGER_BITBUCKETSERVER_USERNAME` = The username for the account used to comment.
+  * `DANGER_BITBUCKETSERVER_PASSWORD` = The password for the account used to comment.
+
+  Then you will have a fully fleshed out `danger.bitbucket_server` object in your Dangerfile to work with, for example:
+
+  ```ts
+  import { danger, warn } from "danger"
+
+  if (danger.bitbucket_server.pr.title.includes("WIP")) {
+    warn("PR is considered WIP")
+  }
+  ```
+
+  The DSL is fully fleshed out, you can see all the details inside the [Danger JS Reference][ref], but the summary is:
+
+  ```ts
+  danger.bitbucket_server.
+    /** The pull request and repository metadata */
+    metadata: RepoMetaData
+    /** The related JIRA issues */
+    issues: JIRAIssue[]
+    /** The PR metadata */
+    pr: BitBucketServerPRDSL
+    /** The commits associated with the pull request */
+    commits: BitBucketServerCommit[]
+    /** The comments on the pull request */
+    comments: BitBucketServerPRActivity[]
+    /** The activities such as OPENING, CLOSING, MERGING or UPDATING a pull request */
+    activities: BitBucketServerPRActivity[]
+  ```
+
+  You can see more in the docs for [Danger + BitBucket Server](http://danger.systems/js/usage/bitbucket_server.html).
+
+  -- [@azz][]
+
+* Don't check for same user ID on comment when running as a GitHub App. [@tibdex][]
+
+## 3.1.8
+
+* Improvements to the Flow definition file. [@orta][]
+* Improve path generator for danger-runner. [@Mifi][]
 * Update the PR DSL to include bots. [@orta][]
 * Add utility function to build tables in Markdown [@keplersj][]
 
@@ -42,22 +213,20 @@
 
 ## 3.1.1
 
-* Allows `danger runner` (the hidden command which runs the process) to accept
-  unknown command flags (such as ones passed to it via `danger local`.) - [@adam-moss][]/[@orta][]
+* Allows `danger runner` (the hidden command which runs the process) to accept unknown command flags (such as ones
+  passed to it via `danger local`.) - [@adam-moss][]/[@orta][]
 
 ## 3.1.0
 
 * Adds a new command `danger local`.
 
-  This command will look between the current branch and master
-  and use that to evaluate a dangerfile. This is aimed specifically at
-  tools like git commit hooks, and for people who don't do code review.
+  This command will look between the current branch and master and use that to evaluate a dangerfile. This is aimed
+  specifically at tools like git commit hooks, and for people who don't do code review.
 
-  `danger.github` will be falsy in this context, so you could share a dangerfile
-  between `danger local` and `danger ci`.
+  `danger.github` will be falsy in this context, so you could share a dangerfile between `danger local` and `danger ci`.
 
-  When I thought about how to use it on Danger JS, I opted to make another Dangerfile and import it at the end of
-  the main Dangerfile. This new Dangerfile only contains rules which can run with just `danger.git`, e.g. CHANGELOG/README
+  When I thought about how to use it on Danger JS, I opted to make another Dangerfile and import it at the end of the
+  main Dangerfile. This new Dangerfile only contains rules which can run with just `danger.git`, e.g. CHANGELOG/README
   checks. I called it `dangerfile.lite.ts`.
 
   Our setup looks like:
@@ -71,10 +240,10 @@
 
 You'll need to have [husky](https://www.npmjs.com/package/husky) installed for this to work. - [@orta][]
 
-* STDOUT formatting has been improved, which is the terminal only version of
-  Danger's typical GitHub comment style system. It's used in `danger pr`, `danger ci --stdout`
-  and `danger local`. - [@orta][]
-* Exposed a get file contents for the platform abstraction so that Peril can work on many platforms in the future - [@orta][]
+* STDOUT formatting has been improved, which is the terminal only version of Danger's typical GitHub comment style
+  system. It's used in `danger pr`, `danger ci --stdout` and `danger local`. - [@orta][]
+* Exposed a get file contents for the platform abstraction so that Peril can work on many platforms in the future -
+  [@orta][]
 
 ### 3.0.5
 
@@ -98,8 +267,8 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 
 ### 3.0.1
 
-* Bug fixes and debug improvements. If you're interested run danger with `DEBUG="*" yarn danger [etc]`
-  and you'll get a _lot_ of output. This should make it much easier to understand what's going on. - [@orta][]
+* Bug fixes and debug improvements. If you're interested run danger with `DEBUG="*" yarn danger [etc]` and you'll get a
+  _lot_ of output. This should make it much easier to understand what's going on. - [@orta][]
 
 ### 3.0.0
 
@@ -107,8 +276,8 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 
   **TLDR** - change `yarn danger` to `yarn danger ci`.
 
-  Danger JS has been fighting an uphill battle for a while with respects to CLI naming, and
-  duplication of work. So, now it's been simplified. There are four user facing commands:
+  Danger JS has been fighting an uphill battle for a while with respects to CLI naming, and duplication of work. So, now
+  it's been simplified. There are four user facing commands:
 
   * `danger init` - Helps you get started with Danger
   * `danger ci` - Runs Danger on CI
@@ -117,8 +286,9 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 
   This release deprecates running `danger` on it's own, so if you have `yarn danger` then move that be `yarn danger ci`.
 
-  Each command name is now much more obvious in it intentions, I've heard many times that people aren't sure what commands do
-  and it's _is_ still even worse in Danger ruby. I figure now is as good a time as any a good time to call it a clean slate.
+  Each command name is now much more obvious in it intentions, I've heard many times that people aren't sure what
+  commands do and it's _is_ still even worse in Danger ruby. I figure now is as good a time as any a good time to call
+  it a clean slate.
 
   On a positive note, I gave all of the help screens an update and tried to improve language where I could.
 
@@ -154,8 +324,8 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 
 ### 2.1.4
 
-* Adds a CLI option for a unique Danger ID per run to `danger` and `danger process`,
-  so you can have multiple Danger comments on the same PR. - [@orta][]
+* Adds a CLI option for a unique Danger ID per run to `danger` and `danger process`, so you can have multiple Danger
+  comments on the same PR. - [@orta][]
 
 ### 2.1.1 - 2.1.2 - 2.1.3
 
@@ -387,8 +557,8 @@ Hello readers! This represents a general stability for Danger. It is mainly a do
 to <http://danger.systems/js/> being generally available. I made the initial commit back in 20 Aug 2016 and now it's
 30th June 2017. It's awesome to look back through the CHANGELOG and see how things have changed.
 
-You can find out a lot more about the 1.0, and Danger's history on my [Artsy blog post on the Danger
-1.0](https://artsy.github.io/blog/2017/06/30/danger-one-oh-again/).
+You can find out a lot more about the 1.0, and Danger's history on my
+[Artsy blog post on the Danger 1.0](https://artsy.github.io/blog/2017/06/30/danger-one-oh-again/).
 
 * Adds inline docs for all CI providers - [@orta][]
 
@@ -550,9 +720,9 @@ If these files are supposed to not exist, please update your PR body to include 
 
 * TypeScript Dangerfiles are now support in Danger - [@orta][]
 
-  We use TypeScript in Danger, and a lot of my work in Artsy now uses TypeScript (see: [JS2017 at
-  Artsy](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#TypeScrip1t)), so I wanted to
-  explore using TypeScript in Dangerfiles.
+  We use TypeScript in Danger, and a lot of my work in Artsy now uses TypeScript (see:
+  [JS2017 at Artsy](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#TypeScrip1t)), so I
+  wanted to explore using TypeScript in Dangerfiles.
 
   This is built on top of Jest's custom transformers, so if you are already using Jest with TypeScript, then you can
   change the `dangerfile.js` to `dangerfile.ts` and nothing should need changing ( except that you might have new
@@ -822,7 +992,8 @@ if (changelogDiff && changelogDiff.indexOf(contributorName) === -1) {
 * `danger.pr` -> `danger.github.pr`, I've also created interfaces for them - [@orta][]
 * `warn`, `message`, `markdown` are all ported over to DangerJS - [@orta][]
 * Shows a HTML table for Danger message - [@orta][]
-* Now offers a Flow-typed definition file, it's not shipped to their repo yet, you can make it by `npm run export-flowtype` - [@orta][]
+* Now offers a Flow-typed definition file, it's not shipped to their repo yet, you can make it by
+  `npm run export-flowtype` - [@orta][]
 * Started turning this into a real project by adding tests - [@orta][]
 
 ### 0.0.5-0.0.10
@@ -848,8 +1019,8 @@ You can run by doing:
 danger
 ```
 
-Make sure you set a `DANGER_GITHUB_API_TOKEN` on your CI - [see the Ruby
-guide](http://danger.systems/guides/getting_started.html#setting-up-danger-to-run-on-your-ci) for that.
+Make sure you set a `DANGER_GITHUB_API_TOKEN` on your CI -
+[see the Ruby guide](http://danger.systems/guides/getting_started.html#setting-up-danger-to-run-on-your-ci) for that.
 
 Then you can make a `dangerfile.js` (has to be lowercase, deal with it.) It has access to a whopping 2 DSL attributes.
 
@@ -860,9 +1031,9 @@ fail(message: string)
 ```
 
 `pr` _probably_ won't be sticking around for the long run, but if you're using a `0.0.2` release, you should be OK with
-that. It's the full metadata of the PR, so [this JSON
-file](https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/github_api/pr_response.json). `git` currently
-has:
+that. It's the full metadata of the PR, so
+[this JSON file](https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/github_api/pr_response.json).
+`git` currently has:
 
 ```sh
 git.modified_file
@@ -908,3 +1079,10 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@hongrich]: https://github.com/hongrich
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@keplersj]: https://github.com/keplersj
+[@azz]: https://github.com/azz
+[@mifi]: https://github.com/ionutmiftode
+[@sunshinejr]: https://github.com/sunshinejr
+[@mxstbr]: https://github.com/mxstbr
+[@happylinks]: https://github.com/happylinks
+[@fwal]: https://github.com/fwal
+[@codestergit]: https://github.com/codestergit

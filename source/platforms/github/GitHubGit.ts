@@ -42,7 +42,7 @@ export const gitHubGitDSL = (github: GitHubDSL, json: GitJSONDSL, githubAPI?: Gi
   const ghAPI =
     githubAPI ||
     new GitHubAPI(
-      { repoSlug: github.pr.head.repo.full_name, pullRequestID: String(github.pr.number) },
+      { repoSlug: github.pr.base.repo.full_name, pullRequestID: String(github.pr.number) },
       process.env["DANGER_GITHUB_API_TOKEN"]
     )
 

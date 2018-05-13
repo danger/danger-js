@@ -12,6 +12,9 @@ import getRuntimeCISource from "./utils/getRuntimeCISource"
 import inlineRunner from "../runner/runners/inline"
 import { jsonDSLGenerator } from "../runner/dslGenerator"
 
+import * as debug from "debug"
+const d = debug("danger:process")
+
 // Given the nature of this command, it can be tricky to test, so I use a command like this:
 //
 // env DANGER_GITHUB_API_TOKEN='xxx' DANGER_FAKE_CI="YEP" DANGER_TEST_REPO='artsy/eigen' DANGER_TEST_PR='2408'
@@ -60,7 +63,7 @@ getRuntimeCISource(app).then(source => {
     if (!platform) {
       console.log(chalk.red(`Could not find a source code hosting platform for ${source.name}.`))
       console.log(
-        `Currently Danger JS only supports GitHub, if you want other platforms, consider the Ruby version or help out.`
+        `Currently Danger JS only supports GitHub and BitBucket Server, if you want other platforms, consider the Ruby version or help out.`
       )
       process.exitCode = 1
     }
@@ -72,16 +75,16 @@ getRuntimeCISource(app).then(source => {
         jsonOnly: false,
         dangerID: app.id || "default",
       }
-
+      d("Config: ", config)
       jsonDSLGenerator(platform).then(dangerJSONDSL => {
-        const processInput = prepareDangerDSL(dangerJSONDSL)
-
         if (!subprocessName) {
           //  Just pipe it out to the CLI
+          const processInput = prepareDangerDSL(dangerJSONDSL)
           process.stdout.write(processInput)
         } else {
+          d(`Sending input To ${subprocessName}: `, dangerJSONDSL)
           const exec = new Executor(source, platform, inlineRunner, config)
-          runDangerSubprocess([subprocessName], processInput, exec)
+          runDangerSubprocess([subprocessName], dangerJSONDSL, exec)
         }
       })
     }

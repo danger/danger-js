@@ -1,0 +1,155 @@
+{
+  "author": {
+    "approved": false,
+    "role": "AUTHOR",
+    "status": "UNAPPROVED",
+    "user": {
+      "active": true,
+      "displayName": "test",
+      "emailAddress": "user@email.com",
+      "id": 1,
+      "links": {
+        "self": [
+          {
+            "href": "http://localhost:7990/users/test"
+          }
+        ]
+      },
+      "name": "test",
+      "slug": "test",
+      "type": "NORMAL"
+    }
+  },
+  "closed": false,
+  "createdDate": 1518863923273,
+  "fromRef": {
+    "displayId": "foo",
+    "id": "refs/heads/foo",
+    "latestCommit": "d6725486c38d46a33e76f622cf24b9a388c8d13d",
+    "repository": {
+      "forkable": true,
+      "id": 1,
+      "links": {
+        "clone": [
+          {
+            "href": "http://test@localhost:7990/scm/proj/repo.git",
+            "name": "http"
+          },
+          {
+            "href": "ssh://git@localhost:7999/proj/repo.git",
+            "name": "ssh"
+          }
+        ],
+        "self": [
+          {
+            "href": "http://localhost:7990/projects/PROJ/repos/repo/browse"
+          }
+        ]
+      },
+      "name": "Repo",
+      "project": {
+        "id": 1,
+        "key": "PROJ",
+        "links": {
+          "self": [
+            {
+              "href": "http://localhost:7990/projects/PROJ"
+            }
+          ]
+        },
+        "name": "Project",
+        "public": false,
+        "type": "NORMAL"
+      },
+      "public": false,
+      "scmId": "git",
+      "slug": "repo",
+      "state": "AVAILABLE",
+      "statusMessage": "Available"
+    }
+  },
+  "id": 1,
+  "links": {
+    "self": [
+      {
+        "href": "http://localhost:7990/projects/PROJ/repos/repo/pull-requests/1"
+      }
+    ]
+  },
+  "locked": false,
+  "open": true,
+  "participants": [
+    {
+      "approved": false,
+      "role": "PARTICIPANT",
+      "status": "UNAPPROVED",
+      "user": {
+        "active": true,
+        "displayName": "DangerCI",
+        "emailAddress": "user@email.com",
+        "id": 2,
+        "links": {
+          "self": [
+            {
+              "href": "http://localhost:7990/users/danger"
+            }
+          ]
+        },
+        "name": "danger",
+        "slug": "danger",
+        "type": "NORMAL"
+      }
+    }
+  ],
+  "reviewers": [],
+  "state": "OPEN",
+  "title": "Pull request title",
+  "toRef": {
+    "displayId": "master",
+    "id": "refs/heads/master",
+    "latestCommit": "8942a1f75e4c95df836f19ef681d20a87da2ee20",
+    "repository": {
+      "forkable": true,
+      "id": 1,
+      "links": {
+        "clone": [
+          {
+            "href": "http://test@localhost:7990/scm/proj/repo.git",
+            "name": "http"
+          },
+          {
+            "href": "ssh://git@localhost:7999/proj/repo.git",
+            "name": "ssh"
+          }
+        ],
+        "self": [
+          {
+            "href": "http://localhost:7990/projects/PROJ/repos/repo/browse"
+          }
+        ]
+      },
+      "name": "Repo",
+      "project": {
+        "id": 1,
+        "key": "PROJ",
+        "links": {
+          "self": [
+            {
+              "href": "http://localhost:7990/projects/PROJ"
+            }
+          ]
+        },
+        "name": "Project",
+        "public": false,
+        "type": "NORMAL"
+      },
+      "public": false,
+      "scmId": "git",
+      "slug": "repo",
+      "state": "AVAILABLE",
+      "statusMessage": "Available"
+    }
+  },
+  "updatedDate": 1519442356495,
+  "version": 2
+}

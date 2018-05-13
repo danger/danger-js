@@ -1,0 +1,291 @@
+[
+  {
+    "url": "https://api.github.com/repos/artsy/emission/pulls/comments/81345954",
+    "pull_request_review_id": 2332973,
+    "id": 81345954,
+    "diff_hunk":
+      "@@ -315,6 +315,8 @@ type ArtworkContextAuction {\n   start_at(format: String, timezone: String, convert_to_utc: Boolean): String",
+    "path": "data/schema.graphql",
+    "position": 1,
+    "original_position": 1,
+    "commit_id": "cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
+    "original_commit_id": "76c122e47ee36170c86739bb6cc665b6114e308c",
+    "user": {
+      "login": "orta",
+      "id": 49038,
+      "avatar_url": "https://avatars2.githubusercontent.com/u/49038?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/orta",
+      "html_url": "https://github.com/orta",
+      "followers_url": "https://api.github.com/users/orta/followers",
+      "following_url": "https://api.github.com/users/orta/following{/other_user}",
+      "gists_url": "https://api.github.com/users/orta/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/orta/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/orta/subscriptions",
+      "organizations_url": "https://api.github.com/users/orta/orgs",
+      "repos_url": "https://api.github.com/users/orta/repos",
+      "events_url": "https://api.github.com/users/orta/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/orta/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "body": "needed to update the schema for description\n",
+    "created_at": "2016-09-30T14:10:57Z",
+    "updated_at": "2016-09-30T15:16:48Z",
+    "html_url": "https://github.com/artsy/emission/pull/327#discussion_r81345954",
+    "pull_request_url": "https://api.github.com/repos/artsy/emission/pulls/327",
+    "author_association": "OWNER",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/artsy/emission/pulls/comments/81345954"
+      },
+      "html": {
+        "href": "https://github.com/artsy/emission/pull/327#discussion_r81345954"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/artsy/emission/pulls/327"
+      }
+    }
+  },
+  {
+    "url": "https://api.github.com/repos/artsy/emission/pulls/comments/81346193",
+    "pull_request_review_id": 2332973,
+    "id": 81346193,
+    "diff_hunk":
+      "@@ -1 +1 @@\n-Subproject commit 1541a0d42480bd95aee87898200a8ad88e086a45\n+Subproject commit 6ecc7b5a8bc124dd807364d102b24e52a51e5ccc",
+    "path": "externals/metaphysics",
+    "position": 2,
+    "original_position": 2,
+    "commit_id": "cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
+    "original_commit_id": "76c122e47ee36170c86739bb6cc665b6114e308c",
+    "user": {
+      "login": "orta",
+      "id": 49038,
+      "avatar_url": "https://avatars2.githubusercontent.com/u/49038?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/orta",
+      "html_url": "https://github.com/orta",
+      "followers_url": "https://api.github.com/users/orta/followers",
+      "following_url": "https://api.github.com/users/orta/following{/other_user}",
+      "gists_url": "https://api.github.com/users/orta/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/orta/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/orta/subscriptions",
+      "organizations_url": "https://api.github.com/users/orta/orgs",
+      "repos_url": "https://api.github.com/users/orta/repos",
+      "events_url": "https://api.github.com/users/orta/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/orta/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "body": "^ just a notice \n",
+    "created_at": "2016-09-30T14:12:15Z",
+    "updated_at": "2016-09-30T15:16:48Z",
+    "html_url": "https://github.com/artsy/emission/pull/327#discussion_r81346193",
+    "pull_request_url": "https://api.github.com/repos/artsy/emission/pulls/327",
+    "author_association": "OWNER",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/artsy/emission/pulls/comments/81346193"
+      },
+      "html": {
+        "href": "https://github.com/artsy/emission/pull/327#discussion_r81346193"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/artsy/emission/pulls/327"
+      }
+    }
+  },
+  {
+    "url": "https://api.github.com/repos/artsy/emission/pulls/comments/81346295",
+    "pull_request_review_id": 2332973,
+    "id": 81346295,
+    "diff_hunk":
+      "@@ -25,7 +25,7 @@ class Gene extends React.Component {\n   };\n \n   componentWillMount() {\n-    this.state = { selectedTabIndex: 0 }\n+    this.state = { selectedTabIndex: 1 }",
+    "path": "lib/containers/gene.js",
+    "position": 19,
+    "original_position": 19,
+    "commit_id": "cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
+    "original_commit_id": "76c122e47ee36170c86739bb6cc665b6114e308c",
+    "user": {
+      "login": "orta",
+      "id": 49038,
+      "avatar_url": "https://avatars2.githubusercontent.com/u/49038?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/orta",
+      "html_url": "https://github.com/orta",
+      "followers_url": "https://api.github.com/users/orta/followers",
+      "following_url": "https://api.github.com/users/orta/following{/other_user}",
+      "gists_url": "https://api.github.com/users/orta/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/orta/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/orta/subscriptions",
+      "organizations_url": "https://api.github.com/users/orta/orgs",
+      "repos_url": "https://api.github.com/users/orta/repos",
+      "events_url": "https://api.github.com/users/orta/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/orta/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "body": "defaults to the about info ATM, as there's no artworks being downloaded\n",
+    "created_at": "2016-09-30T14:12:48Z",
+    "updated_at": "2016-09-30T15:16:48Z",
+    "html_url": "https://github.com/artsy/emission/pull/327#discussion_r81346295",
+    "pull_request_url": "https://api.github.com/repos/artsy/emission/pulls/327",
+    "author_association": "OWNER",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/artsy/emission/pulls/comments/81346295"
+      },
+      "html": {
+        "href": "https://github.com/artsy/emission/pull/327#discussion_r81346295"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/artsy/emission/pulls/327"
+      }
+    }
+  },
+  {
+    "url": "https://api.github.com/repos/artsy/emission/pulls/comments/81357100",
+    "pull_request_review_id": 2343835,
+    "id": 81357100,
+    "diff_hunk":
+      "@@ -7,7 +7,7 @@ import { View, StyleSheet } from 'react-native'\n \n import Biography from './biography'\n import Articles from './articles'\n-import RelatedArtists from './related_artists'\n+import RelatedArtists from '../related_artists'",
+    "path": "lib/components/artist/about.js",
+    "position": 5,
+    "original_position": 5,
+    "commit_id": "cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
+    "original_commit_id": "466bdef69fdbcdceb3b35242370edc328605ae1e",
+    "user": {
+      "login": "orta",
+      "id": 49038,
+      "avatar_url": "https://avatars2.githubusercontent.com/u/49038?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/orta",
+      "html_url": "https://github.com/orta",
+      "followers_url": "https://api.github.com/users/orta/followers",
+      "following_url": "https://api.github.com/users/orta/following{/other_user}",
+      "gists_url": "https://api.github.com/users/orta/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/orta/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/orta/subscriptions",
+      "organizations_url": "https://api.github.com/users/orta/orgs",
+      "repos_url": "https://api.github.com/users/orta/repos",
+      "events_url": "https://api.github.com/users/orta/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/orta/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "body":
+      "now shared between components \n![screen shot 2016-09-30 at 16 07 54](https://cloud.githubusercontent.com/assets/49038/18996384/12fce55a-8728-11e6-8c11-0566f08bae5f.png)\n",
+    "created_at": "2016-09-30T15:08:12Z",
+    "updated_at": "2016-09-30T15:16:48Z",
+    "html_url": "https://github.com/artsy/emission/pull/327#discussion_r81357100",
+    "pull_request_url": "https://api.github.com/repos/artsy/emission/pulls/327",
+    "author_association": "OWNER",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/artsy/emission/pulls/comments/81357100"
+      },
+      "html": {
+        "href": "https://github.com/artsy/emission/pull/327#discussion_r81357100"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/artsy/emission/pulls/327"
+      }
+    }
+  },
+  {
+    "url": "https://api.github.com/repos/artsy/emission/pulls/comments/81357326",
+    "pull_request_review_id": 2344085,
+    "id": 81357326,
+    "diff_hunk":
+      "@@ -17,7 +17,21 @@ it('looks like expected', () => {\n       gene: {\n         id: 'An ID',\n         _id: 'a UUID',\n-        name: 'Example Gene'\n+        name: 'Example Gene',\n+        description: \"Here's some text\",\n+        trending_artists: [\n+          {\n+            id: 'an artist',\n+            name: 'Artist name',\n+            counts: {\n+              for_sale_artworks: 1,\n+              artworks: 2\n+            },\n+            image: {\n+              large_version: ''\n+            }\n+          }\n+        ]",
+    "path": "lib/containers/__tests__/gene-tests.js",
+    "position": 19,
+    "original_position": 19,
+    "commit_id": "cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
+    "original_commit_id": "466bdef69fdbcdceb3b35242370edc328605ae1e",
+    "user": {
+      "login": "orta",
+      "id": 49038,
+      "avatar_url": "https://avatars2.githubusercontent.com/u/49038?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/orta",
+      "html_url": "https://github.com/orta",
+      "followers_url": "https://api.github.com/users/orta/followers",
+      "following_url": "https://api.github.com/users/orta/following{/other_user}",
+      "gists_url": "https://api.github.com/users/orta/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/orta/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/orta/subscriptions",
+      "organizations_url": "https://api.github.com/users/orta/orgs",
+      "repos_url": "https://api.github.com/users/orta/repos",
+      "events_url": "https://api.github.com/users/orta/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/orta/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "body": "need to fill up the data we would get from metaphysics\n",
+    "created_at": "2016-09-30T15:09:27Z",
+    "updated_at": "2016-09-30T15:16:48Z",
+    "html_url": "https://github.com/artsy/emission/pull/327#discussion_r81357326",
+    "pull_request_url": "https://api.github.com/repos/artsy/emission/pulls/327",
+    "author_association": "OWNER",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/artsy/emission/pulls/comments/81357326"
+      },
+      "html": {
+        "href": "https://github.com/artsy/emission/pull/327#discussion_r81357326"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/artsy/emission/pulls/327"
+      }
+    }
+  },
+  {
+    "url": "https://api.github.com/repos/artsy/emission/pulls/comments/81357371",
+    "pull_request_review_id": 2344137,
+    "id": 81357371,
+    "diff_hunk":
+      "@@ -5,6 +5,7 @@\n     \"exclude\": [\n         \"node_modules\",\n         \"Pod/Assets\",\n-        \"Example/Build\"\n+        \"Example/Build\",\n+        \"externals/\"",
+    "path": "tsconfig.json",
+    "position": 6,
+    "original_position": 6,
+    "commit_id": "cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
+    "original_commit_id": "466bdef69fdbcdceb3b35242370edc328605ae1e",
+    "user": {
+      "login": "orta",
+      "id": 49038,
+      "avatar_url": "https://avatars2.githubusercontent.com/u/49038?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/orta",
+      "html_url": "https://github.com/orta",
+      "followers_url": "https://api.github.com/users/orta/followers",
+      "following_url": "https://api.github.com/users/orta/following{/other_user}",
+      "gists_url": "https://api.github.com/users/orta/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/orta/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/orta/subscriptions",
+      "organizations_url": "https://api.github.com/users/orta/orgs",
+      "repos_url": "https://api.github.com/users/orta/repos",
+      "events_url": "https://api.github.com/users/orta/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/orta/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "body": "no getting type data from metaphysics\n",
+    "created_at": "2016-09-30T15:09:43Z",
+    "updated_at": "2016-09-30T15:16:48Z",
+    "html_url": "https://github.com/artsy/emission/pull/327#discussion_r81357371",
+    "pull_request_url": "https://api.github.com/repos/artsy/emission/pulls/327",
+    "author_association": "OWNER",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/artsy/emission/pulls/comments/81357371"
+      },
+      "html": {
+        "href": "https://github.com/artsy/emission/pull/327#discussion_r81357371"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/artsy/emission/pulls/327"
+      }
+    }
+  }
+]

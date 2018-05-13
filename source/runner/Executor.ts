@@ -1,9 +1,29 @@
 import { contextForDanger, DangerContext } from "./Dangerfile"
-import { DangerDSL } from "../dsl/DangerDSL"
 import { CISource } from "../ci_source/ci_source"
-import { Platform } from "../platforms/platform"
-import { DangerResults } from "../dsl/DangerResults"
-import { template as githubResultsTemplate } from "./templates/githubIssueTemplate"
+import { Platform, Comment } from "../platforms/platform"
+import {
+  inlineResults,
+  regularResults,
+  mergeResults,
+  DangerResults,
+  DangerInlineResults,
+  resultsIntoInlineResults,
+  emptyDangerResults,
+  inlineResultsIntoResults,
+  sortResults,
+  sortInlineResults,
+  validateResults,
+  isEmptyResults,
+} from "../dsl/DangerResults"
+import {
+  template as githubResultsTemplate,
+  inlineTemplate as githubResultsInlineTemplate,
+  fileLineToString,
+} from "./templates/githubIssueTemplate"
+import {
+  template as bitbucketServerTemplate,
+  inlineTemplate as bitbucketServerInlineTemplate,
+} from "./templates/bitbucketServerTemplate"
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
 import * as debug from "debug"
@@ -12,6 +32,8 @@ import { sentence, href } from "./DangerUtils"
 import { DangerRunner } from "./runners/runner"
 import { jsonToDSL } from "./jsonToDSL"
 import { jsonDSLGenerator } from "./dslGenerator"
+import { GitDSL } from "../dsl/GitDSL"
+import { DangerDSL } from "../dsl/DangerDSL"
 
 // This is still badly named, maybe it really should just be runner?
 
@@ -76,7 +98,7 @@ export class Executor {
       results = this.resultsForError(error)
     }
 
-    await this.handleResults(results)
+    await this.handleResults(results, runtime.danger.git)
     return results
   }
 
@@ -88,7 +110,7 @@ export class Executor {
     const git = await this.platform.getPlatformGitRepresentation()
     const platformDSL = await this.platform.getPlatformDSLRepresentation()
     const utils = { sentence, href }
-    return new DangerDSL(platformDSL, git, utils)
+    return new DangerDSL(platformDSL, git, utils, this.platform.name)
   }
 
   /**
@@ -96,12 +118,14 @@ export class Executor {
    *
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    */
-  async handleResults(results: DangerResults) {
+  async handleResults(results: DangerResults, git: GitDSL) {
+    validateResults(results)
+
     this.d(`Got Results back, current settings`, this.options)
     if (this.options.stdoutOnly || this.options.jsonOnly) {
-      this.handleResultsPostingToSTDOUT(results)
+      await this.handleResultsPostingToSTDOUT(results)
     } else {
-      this.handleResultsPostingToPlatform(results)
+      await this.handleResultsPostingToPlatform(results, git)
     }
   }
   /**
@@ -124,11 +148,40 @@ export class Executor {
       this.d("Writing to STDOUT:", results)
       // Human-readable format
 
+      const tick = chalk.bold.greenBright("✓")
+      const cross = chalk.bold.redBright("ⅹ")
+      let output = ""
+
+      if (fails.length > 0) {
+        const s = fails.length === 1 ? "" : "s"
+        const are = fails.length === 1 ? "is" : "are"
+        const message = chalk.underline.red("Failing the build")
+        output = `Danger: ${cross} ${message}, there ${are} ${fails.length} fail${s}.`
+        process.exitCode = 1
+      } else if (warnings.length > 0) {
+        const message = chalk.underline("not failing the build")
+        output = `Danger: ${tick} found only warnings, ${message}`
+      } else if (messages.length > 0) {
+        output = `Danger: ${tick} passed, found only messages.`
+      } else if (!messages.length && !fails.length && !messages.length && !warnings.length) {
+        output = `Danger: ${tick} passed review, received no feedback.`
+      }
+
+      const allMessages = [...fails, ...warnings, ...messages, ...markdowns].map(m => m.message)
+      const oneMessage = allMessages.join("\n")
+      const longMessage = oneMessage.split("\n").length > 30
+
+      // For a short message, show the log at the top
+      if (!longMessage) {
+        // An empty blank line for visual spacing
+        console.log(output)
+      }
+
       const table = [
         fails.length && { name: "Failures", messages: fails.map(f => f.message) },
         warnings.length && { name: "Warnings", messages: warnings.map(w => w.message) },
         messages.length && { name: "Messages", messages: messages.map(m => m.message) },
-        markdowns.length && { name: "Markdowns", messages: markdowns },
+        markdowns.length && { name: "Markdowns", messages: markdowns.map(m => m.message) },
       ].filter(r => r !== 0) as { name: string; messages: string[] }[]
 
       // Consider looking at getting the terminal width, and making it 60%
@@ -139,20 +192,14 @@ export class Executor {
         console.log(row.messages.join(chalk.bold("\n-\n")))
       })
 
-      if (fails.length > 0) {
-        const s = fails.length === 1 ? "" : "s"
-        const are = fails.length === 1 ? "is" : "are"
-        const message = chalk.underline.red("Failing the build")
-        console.log(`Danger: ${message}, there ${are} ${fails.length} fail${s}.`)
-        process.exitCode = 1
-      } else if (warnings.length > 0) {
-        const message = chalk.underline("not failing the build")
-        console.log(`Danger: Found only warnings, ${message}`)
-      } else if (messages.length > 0) {
-        console.log("Danger: Passed, found only messages.")
-      } else if (!messages.length && !fails.length && !messages.length && !warnings.length) {
-        console.log("Danger: Passed review, received no feedback.")
+      // For a long message show the results at the bottom
+      if (longMessage) {
+        console.log("")
+        console.log(output)
       }
+
+      // An empty blank line for visual spacing
+      console.log("")
     }
   }
 
@@ -160,8 +207,9 @@ export class Executor {
    * Handle showing results inside a code review platform
    *
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
+   * @param {GitDSL} git a reference to a git implementation so that inline comments find diffs to work with
    */
-  async handleResultsPostingToPlatform(results: DangerResults) {
+  async handleResultsPostingToPlatform(results: DangerResults, git: GitDSL) {
     // Delete the message if there's nothing to say
     const { fails, warnings, messages, markdowns } = results
 
@@ -172,31 +220,55 @@ export class Executor {
 
     const dangerID = this.options.dangerID
     const failed = fails.length > 0
-    const successPosting = await this.platform.updateStatus(!failed, messageForResults(results), this.ciSource.ciRunURL)
-    if (this.options.verbose) {
-      console.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
-      console.log("If the build fails, then danger will use a failing exit code.")
-    }
 
     if (failureCount + messageCount === 0) {
       console.log("No issues or messages were sent. Removing any existing messages.")
       await this.platform.deleteMainComment(dangerID)
+      const previousComments = await this.platform.getInlineComments(dangerID)
+      for (const comment of previousComments) {
+        await this.deleteInlineComment(comment)
+      }
     } else {
       if (fails.length > 0) {
         const s = fails.length === 1 ? "" : "s"
         const are = fails.length === 1 ? "is" : "are"
         console.log(`Failing the build, there ${are} ${fails.length} fail${s}.`)
-        if (!successPosting) {
-          this.d("Failing the build due to handleResultsPostingToPlatform not successfully setting a commit status")
-          process.exitCode = 1
-        }
       } else if (warnings.length > 0) {
         console.log("Found only warnings, not failing the build.")
       } else if (messageCount > 0) {
         console.log("Found only messages, passing those to review.")
       }
-      const comment = githubResultsTemplate(dangerID, results)
-      await this.platform.updateOrCreateComment(dangerID, comment)
+
+      const previousComments = await this.platform.getInlineComments(dangerID)
+      const inline = inlineResults(results)
+      const inlineLeftovers = await this.sendInlineComments(inline, git, previousComments)
+      const regular = regularResults(results)
+      const mergedResults = sortResults(mergeResults(regular, inlineLeftovers))
+
+      let issueURL = undefined
+      // If danger have no comments other than inline to update. Just delete previous main comment.
+      if (isEmptyResults(mergedResults)) {
+        this.platform.deleteMainComment(dangerID)
+      } else {
+        const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
+          ? bitbucketServerTemplate(dangerID, mergedResults)
+          : githubResultsTemplate(dangerID, mergedResults)
+
+        issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
+        console.log(`Feedback: ${issueURL}`)
+      }
+
+      const urlForInfo = issueURL || this.ciSource.ciRunURL
+      const successPosting = await this.platform.updateStatus(!failed, messageForResults(results), urlForInfo)
+      if (!successPosting && this.options.verbose) {
+        console.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
+        console.log("If the build fails, then danger will use a failing exit code.")
+      }
+
+      if (!successPosting && failed) {
+        this.d("Failing the build due to handleResultsPostingToPlatform not successfully setting a commit status")
+        process.exitCode = 1
+      }
     }
 
     // More info, is more info.
@@ -206,7 +278,81 @@ export class Executor {
   }
 
   /**
-   * Takes an error (maybe a bad eval) and provides a DangerResults compatible object
+   * Send inline comments
+   * Returns these violations that didn't pass the validation (e.g. incorrect file/line)
+   *
+   * @param results Results with inline violations
+   */
+  sendInlineComments(results: DangerResults, git: GitDSL, previousComments: Comment[] | null): Promise<DangerResults> {
+    if (!this.platform.supportsInlineComments) {
+      return new Promise(resolve => resolve(results))
+    }
+
+    const inlineResults = resultsIntoInlineResults(results)
+    const sortedInlineResults = sortInlineResults(inlineResults)
+
+    // For every inline result check if there is a comment already
+    // if there is - update it and remove comment from deleteComments array (comments prepared for deletion)
+    // if there isn't - create a new comment
+    // Leftovers in deleteComments array should all be deleted afterwards
+    let deleteComments = Array.isArray(previousComments) ? previousComments.filter(c => c.ownedByDanger) : []
+    let commentPromises: Promise<any>[] = []
+    for (let inlineResult of sortedInlineResults) {
+      const index = deleteComments.findIndex(p =>
+        p.body.includes(fileLineToString(inlineResult.file, inlineResult.line))
+      )
+      let promise: Promise<any>
+      if (index != -1) {
+        let previousComment = deleteComments[index]
+        deleteComments.splice(index, 1)
+        promise = this.updateInlineComment(inlineResult, previousComment)
+      } else {
+        promise = this.sendInlineComment(git, inlineResult)
+      }
+      commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => inlineResultsIntoResults(inlineResult)))
+    }
+    deleteComments.forEach(comment => {
+      let promise = this.deleteInlineComment(comment)
+      commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => emptyDangerResults))
+    })
+
+    return Promise.all(commentPromises).then(dangerResults => {
+      return new Promise<DangerResults>(resolve => {
+        resolve(dangerResults.reduce((acc, r) => mergeResults(acc, r), emptyDangerResults))
+      })
+    })
+  }
+
+  async sendInlineComment(git: GitDSL, inlineResults: DangerInlineResults): Promise<any> {
+    const comment = this.inlineCommentTemplate(inlineResults)
+    return await this.platform.createInlineComment(git, comment, inlineResults.file, inlineResults.line)
+  }
+
+  async updateInlineComment(inlineResults: DangerInlineResults, previousComment: Comment): Promise<any> {
+    const body = this.inlineCommentTemplate(inlineResults)
+    // If generated body is exactly the same as current comment we don't send an API request
+    if (body == previousComment.body) {
+      return
+    }
+
+    return await this.platform.updateInlineComment(body, previousComment.id)
+  }
+
+  async deleteInlineComment(comment: Comment): Promise<any> {
+    return await this.platform.deleteInlineComment(comment.id)
+  }
+
+  inlineCommentTemplate(inlineResults: DangerInlineResults): string {
+    const results = inlineResultsIntoResults(inlineResults)
+    const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
+      ? bitbucketServerInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
+      : githubResultsInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
+
+    return comment
+  }
+
+  /**
+   * Takes an error (maybe a bad eval) and provides a DangerResults compatible object3ehguh.l;/////////////
    * @param error Any JS error
    */
   resultsForError(error: Error) {
@@ -217,7 +363,7 @@ export class Executor {
       fails: [{ message: "Running your Dangerfile has Failed" }],
       warnings: [],
       messages: [],
-      markdowns: [exceptionRaisedTemplate(error)],
+      markdowns: [{ message: exceptionRaisedTemplate(error) }],
     }
   }
 }

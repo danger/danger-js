@@ -10,8 +10,10 @@ import { Jenkins } from "./Jenkins"
 import { Nevercode } from "./Nevercode"
 import { Semaphore } from "./Semaphore"
 import { Surf } from "./Surf"
+import { TeamCity } from "./TeamCity"
 import { Travis } from "./Travis"
 import { VSTS } from "./VSTS"
+import { Screwdriver } from "./Screwdriver"
 
 const providers = [
   Travis,
@@ -28,6 +30,8 @@ const providers = [
   BuddyBuild,
   VSTS,
   Bitrise,
+  TeamCity,
+  Screwdriver,
 ]
 
 // Mainly used for Dangerfile linting
@@ -44,6 +48,8 @@ const realProviders = [
   Buildkite,
   BuddyBuild,
   VSTS,
+  TeamCity,
+  Screwdriver,
 ]
 
 export { providers, realProviders }

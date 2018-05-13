@@ -43,8 +43,4 @@ export class VSTS implements CISource {
   get repoSlug(): string {
     return this.env.BUILD_REPOSITORY_NAME
   }
-
-  get supportedPlatforms(): string[] {
-    return ["github"]
-  }
 }

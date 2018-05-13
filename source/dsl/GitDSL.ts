@@ -14,6 +14,12 @@ export interface TextDiff {
   removed: string
 }
 
+/** Git diff sliced into chunks */
+export interface StructuredDiff {
+  /** Git diff chunks */
+  chunks: any[]
+}
+
 /** The results of running a JSON patch */
 export interface JSONPatch {
   /** The JSON in a file at the PR merge base */
@@ -91,6 +97,13 @@ export interface GitDSL extends GitJSONDSL {
    * @param {string} filename the path to the json file
    */
   diffForFile(filename: string): Promise<TextDiff | null>
+
+  /**
+   * Offers the structured diff for a specific file
+   *
+   * @param {string} filename the path to the json file
+   */
+  structuredDiffForFile(filename: string): Promise<StructuredDiff | null>
 
   /**
    * Provides a JSON patch (rfc6902) between the two versions of a JSON file,

@@ -1,4 +1,4 @@
-import { CliArgs } from "./cli-args"
+import { CliArgs } from "../dsl/cli-args"
 import { jsonToDSL } from "./jsonToDSL"
 import { contextForDanger, DangerContext } from "./Dangerfile"
 import { DangerDSLJSON } from "./danger-dsl-json"

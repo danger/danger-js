@@ -33,10 +33,8 @@ export class Semaphore implements CISource {
   get pullRequestID(): string {
     return this.env.PULL_REQUEST_NUMBER
   }
+
   get repoSlug(): string {
     return this.env.SEMAPHORE_REPO_SLUG
-  }
-  get supportedPlatforms(): string[] {
-    return ["github"]
   }
 }

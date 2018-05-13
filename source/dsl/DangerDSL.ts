@@ -1,7 +1,10 @@
+// Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
+
 import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitHubDSL } from "../dsl/GitHubDSL"
+import { BitBucketServerDSL, BitBucketServerJSONDSL } from "../dsl/BitBucketServerDSL"
 import { DangerUtilsDSL } from "./DangerUtilsDSL"
-import { CliArgs } from "../runner/cli-args"
+import { CliArgs } from "../dsl/cli-args"
 
 /**
  * The shape of the JSON passed between Danger and a subprocess. It's built
@@ -49,7 +52,9 @@ export interface DangerDSLJSONType {
   /** The data only version of Git DSL */
   git: GitJSONDSL
   /** The data only version of GitHub DSL */
-  github: GitHubDSL
+  github?: GitHubDSL
+  /** The data only version of BitBucket Server DSL */
+  bitbucket_server?: BitBucketServerJSONDSL
   /**
    * Used in the Danger JSON DSL to pass metadata between
    * processes. It will be undefined when used inside the Danger DSL
@@ -93,15 +98,30 @@ export interface DangerDSLType {
    *  GitHub user identities and some useful utility functions
    *  for displaying links to files.
    *
+   * Strictly speaking, `github` is a nullable type, if you are not using
+   * GitHub then it will be undefined. For the DSL convience sake though, it
+   * is classed as non-nullable
+   *
    *  Provides an authenticated API so you can work directly
    *  with the GitHub API. This is an instance of the "@ocktokit/rest" npm
    *  module.
    *
    *  Finally, if running through Peril on an event other than a PR
-   *  this is the full JSON from the webhook. You can find the full
-   *  typings for those webhooks [at github-webhook-event-types](https://github.com/orta/github-webhook-event-types).
+   *  this is the full JSON from the webhook. [github-webhook-event-types](https://github.com/orta/github-webhook-event-types) has the full
+   *  typings for those webhooks.
    */
   readonly github: GitHubDSL
+
+  /**
+   *  The BitBucket Server metadata. This covers things like PR info,
+   *  comments and reviews on the PR, related issues, commits, comments
+   *  and activities.
+   *
+   *  Strictly speaking, `bitbucket_server` is a nullable type, if you are using
+   *  GitHub then it will be undefined. For the DSL convience sake though, it
+   *  is classed as non-nullable
+   */
+  readonly bitbucket_server: BitBucketServerDSL
 
   /**
    * Functions which are globally useful in most Dangerfiles. Right
@@ -114,10 +134,16 @@ export interface DangerDSLType {
 /// End of Danger DSL definition
 
 export class DangerDSL {
-  public readonly github: GitHubDSL
+  public readonly github?: GitHubDSL
+  public readonly bitbucket_server?: BitBucketServerDSL
 
-  constructor(platformDSL: any, public readonly git: GitJSONDSL, public readonly utils: DangerUtilsDSL) {
-    // As GitLab etc support is added this will need to be changed
-    this.github = platformDSL
+  constructor(platformDSL: any, public readonly git: GitJSONDSL, public readonly utils: DangerUtilsDSL, name: string) {
+    switch (name) {
+      case "GitHub":
+      case "Fake": // Testing only
+        this.github = platformDSL
+      case "BitBucketServer":
+        this.bitbucket_server = platformDSL
+    }
   }
 }

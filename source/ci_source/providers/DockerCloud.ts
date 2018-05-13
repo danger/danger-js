@@ -74,7 +74,4 @@ export class DockerCloud implements CISource {
   get repoURL(): string {
     return this.env.SOURCE_REPOSITORY_URL
   }
-  get supportedPlatforms(): string[] {
-    return ["github"]
-  }
 }

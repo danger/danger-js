@@ -27,4 +27,11 @@ exportedLines.forEach(line => {
   const newLine = "declare export " + line
   flowDef = flowDef.replace(find, newLine)
 })
-fs.writeFileSync("distribution/danger.js.flow", flowDef)
+
+const prefix = `
+// This is generated in danger/danger-js/scripts/update_flow_types.js
+
+import type { GitHub } from "@octokit/rest"
+`
+
+fs.writeFileSync("distribution/danger.js.flow", prefix + flowDef)

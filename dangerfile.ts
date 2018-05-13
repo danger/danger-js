@@ -5,8 +5,8 @@
 import { DangerDSLType } from "./source/dsl/DangerDSL"
 declare var danger: DangerDSLType
 // declare var results: any
-declare function warn(params: string): void
-declare function fail(params: string): void
+declare function warn(message: string, file?: string, line?: number): void
+// declare function fail(params: string): void
 // declare function message(params: string): void
 // declare function markdown(params: string): void
 // declare function schedule(promise: Promise<any | void>): void
@@ -14,13 +14,17 @@ declare function fail(params: string): void
 // declare function schedule(callback: (resolve: any) => void): void
 
 const checkREADME = async () => {
+  if (!danger.github) {
+    return
+  }
+
   // Request a CHANGELOG entry if not declared #trivial
   const hasChangelog = danger.git.modified_files.includes("CHANGELOG.md")
   const isTrivial = (danger.github.pr.body + danger.github.pr.title).includes("#trivial")
-  const isGreenkeeper = danger.github.pr.user.login === "greenkeeper"
+  const isUser = danger.github!.pr.user.type === "User"
 
   // Politely ask for their name on the entry too
-  if (!hasChangelog && !isTrivial && !isGreenkeeper) {
+  if (!hasChangelog && !isTrivial && !isUser) {
     const changelogDiff = await danger.git.diffForFile("CHANGELOG.md")
     const contributorName = danger.github.pr.user.login
     if (changelogDiff && changelogDiff.diff.includes(contributorName)) {

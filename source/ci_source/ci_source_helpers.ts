@@ -1,7 +1,12 @@
-import { Env, RepoMetaData } from "./ci_source"
+import { Env } from "./ci_source"
 import { GitHubAPI } from "../platforms/github/GitHubAPI"
 import { GitHubPRDSL } from "../dsl/GitHubDSL"
 import * as find from "lodash.find"
+import {
+  BitBucketServerAPI,
+  bitbucketServerRepoCredentialsFromEnv,
+} from "../platforms/bitbucket_server/BitBucketServerAPI"
+import { RepoMetaData } from "../dsl/BitBucketServerDSL"
 
 /**
  * Validates that all ENV keys exist and have a length
@@ -41,13 +46,22 @@ export function ensureEnvKeysAreInt(env: Env, keys: string[]): boolean {
 }
 
 /**
- * Retrieves the current pull request open for this branch from the GitHub API
+ * Retrieves the current pull request open for this branch from an API
  * @param {Env} env The environment
  * @param {string} branch The branch to find pull requests for
  * @returns {number} The pull request ID, if any.  Otherwise 0 (Github starts from #1).
  * If there are multiple pull requests open for a branch, returns the first.
  */
 export async function getPullRequestIDForBranch(metadata: RepoMetaData, env: Env, branch: string): Promise<number> {
+  if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
+    const api = new BitBucketServerAPI(metadata, bitbucketServerRepoCredentialsFromEnv(env))
+    const prs = await api.getPullRequestsFromBranch(branch)
+    if (prs.length) {
+      return prs[0].id
+    }
+    return 0
+  }
+
   const token = env["DANGER_GITHUB_API_TOKEN"]
   if (!token) {
     return 0

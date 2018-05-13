@@ -1,0 +1,448 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DangerInlineResults into DangerResults transforms empty inlineResults into results 1`] = `
+Object {
+  "fails": Array [],
+  "markdowns": Array [],
+  "messages": Array [],
+  "warnings": Array [],
+}
+`;
+
+exports[`DangerInlineResults into DangerResults transforms multiple-violation inlineResults into results 1`] = `
+Object {
+  "fails": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 13,
+      "message": "Fail message1",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 13,
+      "message": "Fail message2",
+    },
+  ],
+  "markdowns": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 13,
+      "message": "Markdown message1",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 13,
+      "message": "Markdown message2",
+    },
+  ],
+  "messages": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 13,
+      "message": "Message message1",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 13,
+      "message": "Message message2",
+    },
+  ],
+  "warnings": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 13,
+      "message": "Warning message1",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 13,
+      "message": "Warning message2",
+    },
+  ],
+}
+`;
+
+exports[`DangerInlineResults into DangerResults transforms single-violation inlineResults into results 1`] = `
+Object {
+  "fails": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 13,
+      "message": "Fail message",
+    },
+  ],
+  "markdowns": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 13,
+      "message": "Markdown message",
+    },
+  ],
+  "messages": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 13,
+      "message": "Message message",
+    },
+  ],
+  "warnings": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 13,
+      "message": "Warning message",
+    },
+  ],
+}
+`;
+
+exports[`DangerResults into DangerInlineResults transforms empty results into empty inlineResults 1`] = `Array []`;
+
+exports[`DangerResults into DangerInlineResults transforms multiple-violation results into multiple inlineResults within one file 1`] = `
+Array [
+  Object {
+    "fails": Array [
+      "Fail message1",
+    ],
+    "file": "Test.swift",
+    "line": 11,
+    "markdowns": Array [
+      "Markdown message1",
+      "Markdown message2",
+    ],
+    "messages": Array [
+      "Message message1",
+      "Message message3",
+    ],
+    "warnings": Array [
+      "Warnings message2",
+      "Warnings message3",
+    ],
+  },
+  Object {
+    "fails": Array [
+      "Fail message2",
+      "Fail message3",
+    ],
+    "file": "Test.swift",
+    "line": 12,
+    "markdowns": Array [
+      "Markdown message3",
+    ],
+    "messages": Array [
+      "Message message2",
+    ],
+    "warnings": Array [
+      "Warnings message1",
+    ],
+  },
+]
+`;
+
+exports[`DangerResults into DangerInlineResults transforms multiple-violation results into one inlineResults 1`] = `
+Array [
+  Object {
+    "fails": Array [
+      "Fail message1",
+      "Fail message2",
+      "Fail message3",
+    ],
+    "file": "Test.swift",
+    "line": 10,
+    "markdowns": Array [
+      "Markdown message1",
+      "Markdown message2",
+      "Markdown message3",
+    ],
+    "messages": Array [
+      "Message message1",
+      "Message message2",
+      "Message message3",
+    ],
+    "warnings": Array [
+      "Warnings message1",
+      "Warnings message2",
+      "Warnings message3",
+    ],
+  },
+]
+`;
+
+exports[`DangerResults into DangerInlineResults transforms single-violation results into one inlineResults 1`] = `
+Array [
+  Object {
+    "fails": Array [
+      "Fail message",
+    ],
+    "file": "Test.swift",
+    "line": 10,
+    "markdowns": Array [
+      "Markdown message",
+    ],
+    "messages": Array [
+      "Message message",
+    ],
+    "warnings": Array [
+      "Warnings message",
+    ],
+  },
+]
+`;
+
+exports[`DangerResults operations filters results to get only inline violations 1`] = `
+Object {
+  "fails": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Fail message1",
+    },
+  ],
+  "markdowns": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Markdown message1",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Markdown message2",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Markdown message3",
+    },
+  ],
+  "messages": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Message message3",
+    },
+  ],
+  "warnings": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Warnings message2",
+    },
+  ],
+}
+`;
+
+exports[`DangerResults operations filters results to get only regular violations 1`] = `
+Object {
+  "fails": Array [
+    Object {
+      "message": "Fail message2",
+    },
+    Object {
+      "message": "Fail message3",
+    },
+  ],
+  "markdowns": Array [],
+  "messages": Array [
+    Object {
+      "message": "Message message1",
+    },
+    Object {
+      "message": "Message message2",
+    },
+  ],
+  "warnings": Array [
+    Object {
+      "message": "Warnings message1",
+    },
+    Object {
+      "message": "Warnings message3",
+    },
+  ],
+}
+`;
+
+exports[`DangerResults operations merges two results correcly 1`] = `
+Object {
+  "fails": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Fail message",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Fail message1",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Fail message2",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Fail message3",
+    },
+  ],
+  "markdowns": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Markdown message",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Markdown message1",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Markdown message2",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Markdown message3",
+    },
+  ],
+  "messages": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Message message",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Message message1",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Message message2",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Message message3",
+    },
+  ],
+  "warnings": Array [
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Warnings message",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Warnings message1",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Warnings message2",
+    },
+    Object {
+      "file": "Test.swift",
+      "line": 10,
+      "message": "Warnings message3",
+    },
+  ],
+}
+`;
+
+exports[`DangerResults operations sorts inline results 1`] = `
+Array [
+  Object {
+    "fails": Array [
+      "B",
+      "B",
+      "C",
+    ],
+    "file": "A.swift",
+    "line": 2,
+    "markdowns": Array [
+      "B",
+      "B",
+      "C",
+    ],
+    "messages": Array [
+      "A",
+      "C",
+      "C",
+    ],
+    "warnings": Array [
+      "A",
+      "C",
+      "D",
+    ],
+  },
+  Object {
+    "fails": Array [
+      "A",
+      "B",
+      "C",
+    ],
+    "file": "B.swift",
+    "line": 1,
+    "markdowns": Array [
+      "A",
+      "B",
+      "C",
+    ],
+    "messages": Array [
+      "A",
+      "B",
+      "C",
+    ],
+    "warnings": Array [
+      "A",
+      "B",
+      "C",
+    ],
+  },
+  Object {
+    "fails": Array [
+      "A",
+      "B",
+      "C",
+    ],
+    "file": "B.swift",
+    "line": 4,
+    "markdowns": Array [
+      "A",
+      "B",
+      "C",
+    ],
+    "messages": Array [
+      "A",
+      "B",
+      "C",
+    ],
+    "warnings": Array [
+      "A",
+      "B",
+      "C",
+    ],
+  },
+]
+`;
+
+exports[`validation validates the presence of all result types 1`] = `
+"Results passed to Danger JS did not include warnings.
+
+{
+  \\"fails\\": [],
+  \\"markdowns\\": [],
+  \\"other\\": []
+}"
+`;
+
+exports[`validation validates the presence of message in a violation result types 1`] = `
+"A violation passed to Danger JS in fails did not include \`message\`.
+
+{}"
+`;

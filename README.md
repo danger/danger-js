@@ -9,19 +9,24 @@
     <a href="#this-thing-is-broken-i-should-help-improve-it">Helping Out</a> &bull;
     <a href="http://danger.systems/js/usage/extending-danger.html">Plugin Development</a>
 </p>
-  
+
 ## What is Danger JS?
 
 Danger runs after your CI, automating your team's conventions surrounding code review.
 
-This provides another logical step in your process, through which Danger can help lint your rote tasks in daily code review.
+This provides another logical step in your process, through which Danger can help lint your rote tasks in daily code
+review.
 
 You can use Danger to codify your teams norms, leaving humans to think about harder problems.
 
-Danger JS currently works with GitHub and Travis CI, Circle CI, Semaphore, Jenkins, Docker Cloud, Bitrise, surf-build,
-Codeship, Drone, Buildkite, Nevercode, buddybuild or Visual Studio Team Services.
+Danger JS currently works with GitHub or BitBucket Server and Travis CI, Circle CI, Semaphore, Jenkins, Docker Cloud,
+Bitrise, surf-build, Codeship, Drone, Buildkite, Nevercode, buddybuild, Visual Studio Team Services, TeamCity or
+Screwdriver.
 
-[![npm](https://img.shields.io/npm/v/danger.svg)](https://www.npmjs.com/package/danger) [![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=master)](https://travis-ci.org/danger/danger-js) [![Build Status](https://ci.appveyor.com/api/projects/status/ep5hgeox3lbc5c7f?svg=true)](https://ci.appveyor.com/project/orta/danger-js/branch/master) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/danger)
+[![npm](https://img.shields.io/npm/v/danger.svg)](https://www.npmjs.com/package/danger)
+[![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=master)](https://travis-ci.org/danger/danger-js)
+[![Build Status](https://ci.appveyor.com/api/projects/status/ep5hgeox3lbc5c7f?svg=true)](https://ci.appveyor.com/project/orta/danger-js/branch/master)
+[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/danger)
 
 ## For example?
 
@@ -74,6 +79,10 @@ yarn lint
 
 The fixers for both tslint and prettier will be applied when you commit, and on a push your code will be verified that
 it compiles.
+
+### How does Danger JS work?
+
+Check the [architecture doc](https://github.com/danger/danger-js/blob/master/docs/architecture.md).
 
 ### What is the TODO?
 

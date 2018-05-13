@@ -35,19 +35,7 @@ export class Nevercode implements CISource {
     return this.env.NEVERCODE_REPO_SLUG
   }
 
-  get supportedPlatforms(): string[] {
-    return ["github"]
-  }
-
   get ciRunURL() {
     return process.env.NEVERCODE_BUILD_URL
-  }
-
-  private get branchName(): string {
-    if (this.isPR) {
-      return this.env.NEVERCODE_PULL_REQUEST_SOURCE
-    } else {
-      return this.env.NEVERCODE_BRANCH
-    }
   }
 }

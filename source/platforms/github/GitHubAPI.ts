@@ -3,16 +3,20 @@ import * as debug from "debug"
 import * as node_fetch from "node-fetch"
 import * as parse from "parse-link-header"
 import * as v from "voca"
+import * as pLimit from "p-limit"
 
 import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
 
-import { RepoMetaData } from "../../ci_source/ci_source"
 import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates/githubIssueTemplate"
 import { api as fetch } from "../../api/fetch"
+import { Comment } from "../platform"
+import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 
 // The Handle the API specific parts of the github
 
 export type APIToken = string
+
+const limit = pLimit(25)
 
 // Note that there are parts of this class which don't seem to be
 // used by Danger, they are exposed for Peril support.
@@ -41,7 +45,7 @@ export class GitHubAPI {
   getExternalAPI = (): GitHubNodeAPI => {
     const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || undefined
     const api = new GitHubNodeAPI({
-      host: baseUrl,
+      baseUrl,
       headers: {
         ...this.additionalHeaders,
       },
@@ -83,7 +87,11 @@ export class GitHubAPI {
 
     return allComments
       .filter(comment => v.includes(comment.body, dangerIDMessage))
-      .filter(comment => userID || comment.user.id === userID)
+      .filter(
+        comment =>
+          // When running as a GitHub App, the user ID is not accessible so we skip the check.
+          userID === undefined || comment.user.id === userID
+      )
       .filter(comment => v.includes(comment.body, dangerSignaturePostfix))
       .map(comment => comment.id)
   }
@@ -109,6 +117,14 @@ export class GitHubAPI {
     return Promise.resolve(res.status === 204)
   }
 
+  deleteInlineCommentWithID = async (id: string): Promise<boolean> => {
+    const repo = this.repoMetadata.repoSlug
+    const res = await this.api(`repos/${repo}/pulls/comments/${id}`, {}, {}, "DELETE", false)
+
+    //https://developer.github.com/v3/pulls/comments/#response-5
+    return Promise.resolve(res.status === 204)
+  }
+
   getUserID = async (): Promise<number | undefined> => {
     if (process.env["DANGER_GITHUB_APP"]) {
       return
@@ -129,6 +145,44 @@ export class GitHubAPI {
     )
 
     return res.json()
+  }
+
+  postInlinePRComment = async (comment: string, commitId: string, path: string, position: number) => {
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
+    const res = await this.post(
+      `repos/${repo}/pulls/${prID}/comments`,
+      {},
+      {
+        body: comment,
+        commit_id: commitId,
+        path: path,
+        position: position,
+      },
+      false
+    )
+    if (res.ok) {
+      return res.json()
+    } else {
+      throw await res.json()
+    }
+  }
+
+  updateInlinePRComment = async (comment: string, commentId: string) => {
+    const repo = this.repoMetadata.repoSlug
+    const res = await this.patch(
+      `repos/${repo}/pulls/comments/${commentId}`,
+      {},
+      {
+        body: comment,
+      },
+      false
+    )
+    if (res.ok) {
+      return res.json()
+    } else {
+      throw await res.json()
+    }
   }
 
   getPullRequestInfo = async (): Promise<GitHubPRDSL> => {
@@ -219,6 +273,20 @@ export class GitHubAPI {
     return await this.getAllOfResource(`repos/${repo}/issues/${prID}/comments`)
   }
 
+  getPullRequestInlineComments = async (dangerID: string): Promise<Comment[]> => {
+    const userID = await this.getUserID()
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
+    return await this.getAllOfResource(`repos/${repo}/pulls/${prID}/comments`).then(v => {
+      return v
+        .filter(Boolean)
+        .map((i: any) => {
+          return { id: i.id, ownedByDanger: i.user.id == userID && i.body.includes(dangerID), body: i.body }
+        })
+        .filter((i: any) => i.ownedByDanger)
+    })
+  }
+
   getPullRequestDiff = async () => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
@@ -244,7 +312,7 @@ export class GitHubAPI {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}/requested_reviewers`, {
-      Accept: "application/vnd.github.black-cat-preview+json",
+      Accept: "application/vnd.github.v3+json",
     })
 
     return res.ok ? res.json() : []
@@ -254,7 +322,7 @@ export class GitHubAPI {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     const res = await this.get(`repos/${repo}/pulls/${prID}/reviews`, {
-      Accept: "application/vnd.github.black-cat-preview+json",
+      Accept: "application/vnd.github.v3+json",
     })
 
     return res.ok ? res.json() : []
@@ -304,28 +372,29 @@ export class GitHubAPI {
       // e.g. https://gist.github.com/LTe/5270348
       customAccept = { Accept: `${this.additionalHeaders.Accept}, ${headers.Accept}` }
     }
-    return this.fetch(
-      url,
-      {
-        method: method,
-        body: body,
-        headers: {
-          "Content-Type": "application/json",
-          ...headers,
-          ...this.additionalHeaders,
-          ...customAccept,
+    return limit(() =>
+      this.fetch(
+        url,
+        {
+          method: method,
+          body: body,
+          headers: {
+            "Content-Type": "application/json",
+            ...headers,
+            ...this.additionalHeaders,
+            ...customAccept,
+          },
         },
-      },
-      suppressErrors
+        suppressErrors
+      )
     )
   }
 
-  get = (path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> =>
-    this.api(path, headers, body, "GET")
+  get = (path: string, headers: any = {}): Promise<node_fetch.Response> => this.api(path, headers, null, "GET")
 
   post = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
     this.api(path, headers, JSON.stringify(body), "POST", suppressErrors)
 
-  patch = (path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> =>
-    this.api(path, headers, JSON.stringify(body), "PATCH")
+  patch = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
+    this.api(path, headers, JSON.stringify(body), "PATCH", suppressErrors)
 }

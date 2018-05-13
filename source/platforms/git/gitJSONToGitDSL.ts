@@ -8,7 +8,7 @@ import * as keys from "lodash.keys"
 import * as jsonDiff from "rfc6902"
 import * as jsonpointer from "jsonpointer"
 
-import { GitDSL, JSONPatchOperation, GitJSONDSL } from "../../dsl/GitDSL"
+import { GitDSL, JSONPatchOperation, GitJSONDSL, StructuredDiff } from "../../dsl/GitDSL"
 
 /*
  * As Danger JS bootstraps from JSON like all `danger process` commands
@@ -30,8 +30,21 @@ export interface GitJSONToGitDSLConfig {
   /** A promise which will return the string content of a file at a sha */
   getFileContents: (path: string, repo: string | undefined, sha: string) => Promise<string>
   /** A promise which will return the diff string content for a file between shas */
-  getFullDiff: (base: string, head: string) => Promise<string>
+  getFullDiff?: (base: string, head: string) => Promise<string>
+  getFullStructuredDiff?: (base: string, head: string) => Promise<GitStructuredDiff>
 }
+
+export type GitStructuredDiff = {
+  from?: string
+  to?: string
+  chunks: Chunk[]
+}[]
+
+export interface Chunk {
+  changes: Changes
+}
+
+export type Changes = { type: "add" | "del" | "normal"; content: string }[]
 
 export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLConfig): GitDSL => {
   /**
@@ -133,7 +146,27 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
   const byType = (t: string) => ({ type }: { type: string }) => type === t
   const getContent = ({ content }: { content: string }) => content
 
-  type Changes = { type: string; content: string }[]
+  /**
+   * Gets the git-style diff for a single file.
+   *
+   * @param filename File path for the diff
+   */
+  const structuredDiffForFile = async (filename: string): Promise<StructuredDiff | null> => {
+    let fileDiffs: GitStructuredDiff
+
+    if (config.getFullStructuredDiff) {
+      fileDiffs = await config.getFullStructuredDiff(config.baseSHA, config.headSHA)
+    } else {
+      const diff = await config.getFullDiff!(config.baseSHA, config.headSHA)
+      fileDiffs = parseDiff(diff)
+    }
+    const structuredDiff = fileDiffs.find(diff => diff.from === filename || diff.to === filename)
+    if (structuredDiff !== undefined) {
+      return { chunks: structuredDiff.chunks }
+    } else {
+      return null
+    }
+  }
 
   /**
    * Gets the git-style diff for a single file.
@@ -141,10 +174,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
    * @param filename File path for the diff
    */
   const diffForFile = async (filename: string) => {
-    const diff = await config.getFullDiff(config.baseSHA, config.headSHA)
-
-    const fileDiffs: any[] = parseDiff(diff)
-    const structuredDiff = fileDiffs.find((diff: any) => diff.from === filename || diff.to === filename)
+    const structuredDiff = await structuredDiffForFile(filename)
 
     if (!structuredDiff) {
       return null
@@ -178,6 +208,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     deleted_files: gitJSONRep.deleted_files,
     commits: gitJSONRep.commits,
     diffForFile,
+    structuredDiffForFile,
     JSONPatchForFile,
     JSONDiffForFile,
   }

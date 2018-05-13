@@ -19,6 +19,7 @@ program
   .command("pr", "Runs your local Dangerfile against an existing GitHub PR. Will not post on the PR")
   .command("runner", "Runs a dangerfile against a DSL passed in via STDIN [You probably don't need this]")
   .command("local", "Runs danger standalone on a repo, useful for git hooks")
+  .command("reset-status", "Set the status of a PR to pending when a new CI run starts")
   .on("--help", () => {
     console.log("\n")
     console.log("  Docs:")
@@ -33,13 +34,4 @@ program
     console.log("       http://danger.systems/js/reference.html")
   })
 
-// Commander mutates process.argv
-const originalProcessArgV = process.argv
 program.parse(process.argv)
-
-const showUpgradeNotice =
-  process.env.CI && ["init", "ci", "process", "pr", "local", "--help"].some(cmd => originalProcessArgV.includes(cmd))
-
-if (showUpgradeNotice) {
-  console.error("You may have updated from Danger 2.x -> 3.x without updating from `danger` to `danger ci`.")
-}
