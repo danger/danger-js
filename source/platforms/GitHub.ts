@@ -37,7 +37,6 @@ export const GitHub = (api: GitHubAPI) => {
     name: "GitHub",
 
     api,
-    getReviewInfo: api.getPullRequestInfo,
     getPlatformGitRepresentation: () => gitDSLForGitHub(api),
 
     getPlatformDSLRepresentation: async () => {

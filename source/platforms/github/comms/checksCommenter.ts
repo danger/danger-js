@@ -4,6 +4,7 @@ import { GitHubAPI } from "../GitHubAPI"
 import { DangerResults } from "../../../dsl/DangerResults"
 import { ExecutorOptions } from "../../../runner/Executor"
 import { resultsToCheck } from "./checks/resultsToCheck"
+import { getAccessTokenForInstallation } from "./checks/githubAppSupport"
 
 // See https://github.com/auth0/node-jsonwebtoken/issues/162
 const JWT_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/
@@ -47,13 +48,26 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
     supportsHandlingResultsManually: () => true,
 
     handlePostingResults: async (results: DangerResults, options: ExecutorOptions) => {
+      console.log("Using Checks")
       const pr = await api.getPullRequestInfo()
 
-      // TODO, auth correctly!
-      const octokit = api.getExternalAPI()
+      let octokit
+      if (options.accessTokenIsGitHubApp) {
+        octokit = api.getExternalAPI()
+      } else {
+        const auth = getCheckAuthFromEnv()
+        const generatedJWT = await getAccessTokenForInstallation(auth.appID!, parseInt(auth.installID!), auth.key!)
+        octokit = api.getExternalAPI(generatedJWT)
+      }
 
-      // const existingReport = octokit.issues
+      if (!octokit) {
+        console.error("No octokit generated for the checks commentor")
+        return
+      }
+
       const checkData = resultsToCheck(results, options, pr)
+      await octokit.checks.create(checkData)
+      // const existingReport = octokit.issues
     },
 
     // These are all NOOPs, because they aren't actually going to be called

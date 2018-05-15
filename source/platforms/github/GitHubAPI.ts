@@ -42,7 +42,7 @@ export class GitHubAPI {
    * I wouldn't have a problem with moving this to use this API under the hood
    * but for now that's just a refactor someone can try.
    */
-  getExternalAPI = (): GitHubNodeAPI => {
+  getExternalAPI = (JWTForGithubApp?: string): GitHubNodeAPI => {
     const host = process.env["DANGER_GITHUB_API_BASE_URL"] || undefined
     const api = new GitHubNodeAPI({
       host,
@@ -51,7 +51,10 @@ export class GitHubAPI {
       },
     })
 
-    if (this.token) {
+    if (JWTForGithubApp) {
+      // I sent a PR for this: https://github.com/octokit/rest.js/pull/873
+      api.authenticate({ type: "app", token: JWTForGithubApp } as any)
+    } else if (this.token) {
       api.authenticate({ type: "token", token: this.token })
     }
     return api

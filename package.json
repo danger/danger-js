@@ -111,7 +111,7 @@
     "typescript": "^2.6.2"
   },
   "dependencies": {
-    "@octokit/rest": "^14.0.3",
+    "@octokit/rest": "^15.5.0",
     "babel-polyfill": "^6.23.0",
     "chalk": "^2.3.0",
     "commander": "^2.13.0",
@@ -134,8 +134,8 @@
     "parse-github-url": "^1.0.2",
     "parse-link-header": "^1.0.1",
     "pinpoint": "^1.1.0",
-    "readline-sync": "^1.4.7",
-    "require-from-string": "^2.0.1",
+    "readline-sync": "^1.4.9",
+    "require-from-string": "^2.0.2",
     "rfc6902": "^2.2.2",
     "supports-hyperlinks": "^1.0.1",
     "vm2": "patriksimek/vm2#custom_files",
