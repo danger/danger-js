@@ -34,7 +34,11 @@ const checkREADME = async () => {
 }
 checkREADME()
 
-import yarn from "danger-plugin-yarn"
+warn("a warning", "dangerfile.ts", 3)
+
+warn("another warning", "source/runner/runners/vm2.ts", 3)
+
+import yarn, { message } from "danger-plugin-yarn"
 yarn()
 
 import jest from "danger-plugin-jest"
