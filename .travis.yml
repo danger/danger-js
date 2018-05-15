@@ -7,9 +7,10 @@ cache:
 
 matrix:
   include:
-  # Only normal CI test run :D
+  # Normal CI test runs :D
   - node_js: '6'
-  
+  - node_js: '10'
+
   - node_js: '8'
     after_script:
     - rm -rf node_modules/@types/babel-*
