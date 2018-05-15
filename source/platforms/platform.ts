@@ -36,6 +36,7 @@ export interface Platform extends PlatformCommunicator {
   /** Mainly for logging and error reporting */
   readonly name: string
 
+  getReviewInfo: () => Promise<any>
   /** Pulls in the platform specific metadata for inspection */
   getPlatformDSLRepresentation: () => Promise<any>
   /** Pulls in the Code Review Diff, and offers a succinct user-API for it */

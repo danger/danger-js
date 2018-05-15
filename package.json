@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "3.6.5",
+  "version": "3.6.6",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -138,7 +138,7 @@
     "require-from-string": "^2.0.2",
     "rfc6902": "^2.2.2",
     "supports-hyperlinks": "^1.0.1",
-    "vm2": "patriksimek/vm2#custom_files",
+    "vm2": "^3.6.0",
     "voca": "^1.4.0"
   },
   "optionalDependencies": {}

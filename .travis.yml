@@ -7,9 +7,10 @@ cache:
 
 matrix:
   include:
-  # Only normal CI test run :D
+  # Normal CI test runs :D
   - node_js: '6'
-  
+  - node_js: '10'
+
   - node_js: '8'
     after_script:
     - rm -rf node_modules/@types/babel-*
@@ -35,14 +36,17 @@ matrix:
     - yarn run link
 
     # If the PR is odd then run using issue commenting, else use checks
-    - if [ $(($TRAVIS_PULL_REQUEST % 2)) -eq 0 ]
-      then
-        echo "This is the real `danger ci` run on this repo, using issues"
-        DEBUG="*" danger ci --verbose
-      else
-        echo "This is the real `danger ci` run on this repo, using github checks"
-        DEBUG="*" DANGER_GITHUB_APP_ID=12229 danger ci --verbose
-      fi
+    # - |
+    #   if [ $(($TRAVIS_PULL_REQUEST % 2)) -eq 0 ];
+    #   then
+    #     echo "This is the real `danger ci` run on this repo, using issues";
+    #     DEBUG="*" danger ci --verbose;
+    #   else
+    #     echo "This is the real `danger ci` run on this repo, using github checks";
+    #     DEBUG="*" DANGER_GITHUB_APP_ID=12229 danger ci --verbose;
+    #   fi
+
+    - DEBUG="*" DANGER_GITHUB_APP_ID=12229 danger ci --verbose;
 
     - echo "Validating that danger pr works as expected"
     - DEBUG="*" danger pr https://github.com/danger/danger-js/pull/465 --dangerfile dangerfile.circle.js --verbose
@@ -53,7 +57,7 @@ matrix:
   - node_js: '7'
     script:
       - echo "This is only for Integration tests on two blank projects"
-      - yarn build
+getReviewInfo = (): Promise<GitHubPRDSL> => this.api.getPullRequestInfo()      - yarn build
       - mkdir danger_blank_test
       - cd danger_blank_test
       - yarn init --yes

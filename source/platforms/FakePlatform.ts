@@ -11,6 +11,10 @@ export class FakePlatform implements Platform {
     this.name = "Fake"
   }
 
+  async getReviewInfo(): Promise<any> {
+    return {}
+  }
+
   async getPlatformDSLRepresentation(): Promise<any> {
     return {}
   }

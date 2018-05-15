@@ -108,4 +108,8 @@ export class LocalGit implements Platform {
   }
 
   getFileContents = (path: string) => new Promise<string>(res => res(readFileSync(path, "utf8")))
+
+  async getReviewInfo(): Promise<any> {
+    return {}
+  }
 }

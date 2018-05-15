@@ -45,7 +45,7 @@ export class GitHubAPI {
   getExternalAPI = (JWTForGithubApp?: string): GitHubNodeAPI => {
     const host = process.env["DANGER_GITHUB_API_BASE_URL"] || undefined
     const api = new GitHubNodeAPI({
-      host,
+      baseUrl: host,
       headers: {
         ...this.additionalHeaders,
       },
