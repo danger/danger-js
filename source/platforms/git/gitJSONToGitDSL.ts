@@ -7,6 +7,7 @@ import * as keys from "lodash.keys"
 
 import * as jsonDiff from "rfc6902"
 import * as jsonpointer from "jsonpointer"
+import * as JSON5 from "json5"
 
 import { GitDSL, JSONPatchOperation, GitJSONDSL, StructuredDiff } from "../../dsl/GitDSL"
 
@@ -66,8 +67,8 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
 
     // Parse JSON. `fileContents` returns empty string for files that are
     // missing in one of the refs, ie. when the file is created or deleted.
-    const baseJSON = baseFile === "" ? {} : JSON.parse(baseFile)
-    const headJSON = headFile === "" ? {} : JSON.parse(headFile)
+    const baseJSON = baseFile === "" ? {} : JSON5.parse(baseFile)
+    const headJSON = headFile === "" ? {} : JSON5.parse(headFile)
 
     // Tiny bit of hand-waving here around the types. JSONPatchOperation is
     // a simpler version of all operations inside the rfc6902 d.ts. Users

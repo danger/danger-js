@@ -4,6 +4,8 @@ import { GitHub } from "./GitHub"
 import { GitHubAPI } from "./github/GitHubAPI"
 import { BitBucketServer } from "./BitBucketServer"
 import { BitBucketServerAPI, bitbucketServerRepoCredentialsFromEnv } from "./bitbucket_server/BitBucketServerAPI"
+import { DangerResults } from "../dsl/DangerResults"
+import { ExecutorOptions } from "../runner/Executor"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any
@@ -30,19 +32,34 @@ export type Comment = {
   ownedByDanger: boolean
 }
 
-export interface Platform {
+export interface Platform extends PlatformCommunicator {
   /** Mainly for logging and error reporting */
   readonly name: string
+
+  getReviewInfo: () => Promise<any>
   /** Pulls in the platform specific metadata for inspection */
   getPlatformDSLRepresentation: () => Promise<any>
   /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
   getPlatformGitRepresentation: () => Promise<GitJSONDSL>
-  /** Gets inline comments for current PR */
-  getInlineComments: (dangerID: string) => Promise<Comment[]>
+  /** Get the contents of a file at a path */
+  getFileContents: (path: string, slug?: string, ref?: string) => Promise<string>
+}
+
+// This is basically the commenting aspect of a platform, which allow us to
+// separate out the comment handling vs the DSL generation for a platform
+export interface PlatformCommunicator {
+  /** Basically, should this platform manually handle the posting of an issue itself instead of the Executor */
+  supportsHandlingResultsManually: () => boolean
   /** Can it update comments? */
   supportsCommenting: () => boolean
   /** Does the platform support inline comments? */
   supportsInlineComments: () => boolean
+
+  /** Allows the platform to do whatever it wants, instead of using the default commenting system  */
+  handlePostingResults?: (results: DangerResults, options: ExecutorOptions) => void
+
+  /** Gets inline comments for current PR */
+  getInlineComments: (dangerID: string) => Promise<Comment[]>
   /** Creates a comment on the PR */
   createComment: (dangerID: string, body: string) => Promise<any>
   /** Creates an inline comment on the PR if possible */
@@ -57,8 +74,6 @@ export interface Platform {
   updateOrCreateComment: (dangerID: string, newComment: string) => Promise<string | undefined>
   /** Sets the current PR's status */
   updateStatus: (passed: boolean | "pending", message: string, url?: string) => Promise<boolean>
-  /** Get the contents of a file at a path */
-  getFileContents: (path: string, slug?: string, ref?: string) => Promise<string>
 }
 
 /**
@@ -91,7 +106,7 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
     }
 
     const api = new GitHubAPI(source, ghToken)
-    const github = new GitHub(api)
+    const github = GitHub(api)
     return github
   }
 

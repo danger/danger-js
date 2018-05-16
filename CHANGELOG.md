@@ -13,6 +13,37 @@
 
 ## Master
 
+* Adds support for the GH Checks API.
+
+  This brings some interesting architectural changes inside Danger, but more important to you dear reader, is that using
+  the Checks API has some API restrictions. This makes in infeasible to re-use the user access token which we've
+  previously been recommending for setup.
+
+  Instead there are two options:
+
+  * Use a GitHub app owned by Danger: https://github.com/apps/danger-js
+  * Use your own GitHub app.
+
+  The security model of the GitHub app means it's totally safe to use our GitHub app, it can only read/write to checks
+  and has no access to code or organizational data. It's arguably safer than the previous issue-based comment.
+
+  To use it, you need to hit the above link, install the app on the org of your choice and then get the install ID from
+  the URL you're redirected to. Set that in your CI's ENV to be `DANGER_JS_APP_INSTALL_ID` and you're good to go.
+
+  If you want to run your own GitHub App, you'll need to set up a few ENV vars instead:
+
+  * `DANGER_GITHUB_APP_ID` - The app id, you can get this from your app's overview page at the bottom
+  * `DANGER_GITHUB_APP_PRIVATE_SIGNING_KEY` - The whole of the private key as a string with `\n` instead of newlines
+  * `DANGER_GITHUB_APP_INSTALL_ID` - The installation id after you've installed your app on an org
+
+  Checks support is still a bit of a WIP, because it's a whole new type of thing. I don't forsee a need for Danger to be
+  deprecating the issue based commenting (we use that same infra with bitbucket).
+
+  So now there are three ways to set up communications with GitHub, I'm not looking forwards to documenting that.
+
+  [@orta][]
+
+* JSON diffs use the JSON5 parser, so can now ignore comments in JSON etc [@orta][]
 * Allows the synchronous execution of multiple dangerfiles in one single "danger run".
 
   Not a particularly useful feature for Danger-JS, but it means Peril can combine many runs into a single execution

@@ -11,6 +11,10 @@ export class FakePlatform implements Platform {
     this.name = "Fake"
   }
 
+  async getReviewInfo(): Promise<any> {
+    return {}
+  }
+
   async getPlatformDSLRepresentation(): Promise<any> {
     return {}
   }
@@ -47,6 +51,10 @@ export class FakePlatform implements Platform {
 
   supportsInlineComments() {
     return true
+  }
+
+  supportsHandlingResultsManually() {
+    return false
   }
 
   async updateOrCreateComment(_dangerID: string, _newComment: string): Promise<string> {

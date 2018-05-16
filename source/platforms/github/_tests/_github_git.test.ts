@@ -1,4 +1,4 @@
-import { GitHub, githubJSONToGitHubDSL } from "../../GitHub"
+import { GitHub, githubJSONToGitHubDSL, GitHubType } from "../../GitHub"
 import { GitHubAPI } from "../GitHubAPI"
 
 import { GitCommit } from "../../../dsl/Commit"
@@ -11,6 +11,7 @@ import { gitHubGitDSL as gitJSONToGitDSL } from "../GitHubGit"
 import * as NodeGitHub from "@octokit/rest"
 import { GitHubDSL } from "../../../dsl/GitHubDSL"
 import { GitDSL, GitJSONDSL } from "../../../dsl/GitDSL"
+import { Platform } from "../../platform"
 
 const fixtures = resolve(__dirname, "..", "..", "_tests", "fixtures")
 
@@ -41,7 +42,7 @@ const pullRequestInfoFilename = "github_pr.json"
 const masterSHA = JSON.parse(readFileSync(pathJoin(fixtures, pullRequestInfoFilename), {}).toString()).base.sha
 
 describe("the dangerfile gitDSL", async () => {
-  let github: GitHub = {} as any
+  let github: GitHubType = {} as any
   let nodeGitHubAPI: NodeGitHub = {} as any
   let gitJSONDSL: GitJSONDSL = {} as any
 
@@ -50,7 +51,7 @@ describe("the dangerfile gitDSL", async () => {
 
   beforeEach(async () => {
     const api = new GitHubAPI(new FakeCI({}))
-    github = new GitHub(api)
+    github = GitHub(api)
 
     // Unused, but needed for DSL generation
     api.getIssue = () => Promise.resolve({})
@@ -143,16 +144,6 @@ describe("the dangerfile gitDSL", async () => {
     const result = await gitDSL.diffForFile("fuhqmahgads.json")
 
     expect(result).toBeNull()
-  })
-
-  it("finds the position of file/line for inline comment with one chunk", async () => {
-    const position = await github.findPositionForInlineComment(gitDSL, 9, "tsconfig.json")
-    expect(position).toBe(6)
-  })
-
-  it("finds the position of file/line for inline comment with two chunks", async () => {
-    const position = await github.findPositionForInlineComment(gitDSL, 28, "lib/containers/gene.js")
-    expect(position).toBe(19)
   })
 
   it("sets up commit data correctly", async () => {

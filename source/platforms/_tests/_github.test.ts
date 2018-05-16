@@ -65,17 +65,12 @@ describe("getPlatformDSLRepresentation", () => {
   let github: GitHub
 
   beforeEach(() => {
-    github = new GitHub(new GitHubAPI({} as RepoMetaData))
+    github = GitHub(new GitHubAPI({} as RepoMetaData))
   })
 
   it("should return the correct review title from getReviewInfo", async () => {
     const info = await github.getReviewInfo()
     expect(info.title).toEqual("Adds support for showing the metadata and trending Artists to a Gene VC")
-  })
-
-  it("should get the issue label", async () => {
-    const issue = await github.getIssue()
-    expect(issue.labels[0].name).toEqual("bug")
   })
 
   it("should get the commits of the pull request", async () => {
@@ -94,7 +89,7 @@ describe("getPlatformDSLRepresentation", () => {
     expect(requested_reviewers[0].id).toEqual(12397828)
   })
 
-  it("should get the pull request informations", async () => {
+  it("should get the pull request information", async () => {
     const { pr } = await github.getPlatformDSLRepresentation()
     expect(pr.number).toEqual(327)
   })

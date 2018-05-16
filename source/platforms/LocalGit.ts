@@ -71,6 +71,10 @@ export class LocalGit implements Platform {
     return true
   }
 
+  supportsHandlingResultsManually() {
+    return false
+  }
+
   async updateOrCreateComment(_dangerID: string, _newComment: string): Promise<string | undefined> {
     return undefined
   }
@@ -104,4 +108,8 @@ export class LocalGit implements Platform {
   }
 
   getFileContents = (path: string) => new Promise<string>(res => res(readFileSync(path, "utf8")))
+
+  async getReviewInfo(): Promise<any> {
+    return {}
+  }
 }

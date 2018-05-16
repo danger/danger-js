@@ -22,5 +22,6 @@
   "spellchecker.ignoreRegExp": [],
   "spellchecker.ignoreFileExtensions": [],
   "spellchecker.checkInterval": 5000,
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "cSpell.words": ["PRDSL", "bitbucket"]
 }
