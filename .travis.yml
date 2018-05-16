@@ -42,8 +42,11 @@ matrix:
     #     echo "This is the real `danger ci` run on this repo, using issues";
     #     DEBUG="*" danger ci --verbose;
     #   else
-    #     echo "This is the real `danger ci` run on this repo, using github checks";
+    #     echo "This is the real `danger ci` run on this repo, using github checks with a custom app";
     #     DEBUG="*" DANGER_GITHUB_APP_ID=12229 danger ci --verbose;
+    #
+    #     echo "This is the real `danger ci` run on this repo, using github checks with the danger app";
+    #     DEBUG="*" DANGER_JS_APP_INSTALL_ID=177994 danger ci --verbose;
     #   fi
 
     - DEBUG="*" DANGER_GITHUB_APP_ID=12229 danger ci --verbose;
