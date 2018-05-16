@@ -12,6 +12,7 @@ import {
   template as githubResultsTemplate,
   inlineTemplate as githubResultsInlineTemplate,
 } from "../../../../runner/templates/githubIssueTemplate"
+import * as GitHubNodeAPI from "@octokit/rest"
 
 export interface CheckImages {
   alt: string
@@ -53,7 +54,12 @@ export interface CheckOptions {
   }
 }
 
-export const resultsToCheck = (results: DangerResults, options: ExecutorOptions, pr: GitHubPRDSL): CheckOptions => {
+export const resultsToCheck = async (
+  results: DangerResults,
+  options: ExecutorOptions,
+  pr: GitHubPRDSL,
+  api: GitHubNodeAPI
+): Promise<CheckOptions> => {
   const repo = pr.base.repo
   const hasFails = results.fails.length > 0
   const hasWarnings = results.warnings.length > 0
@@ -62,6 +68,18 @@ export const resultsToCheck = (results: DangerResults, options: ExecutorOptions,
   const annotationResults = inlineResults(results)
 
   const mainBody = githubResultsTemplate(options.dangerID, mainResults)
+
+  const getBlobUrlForPath = async (path: string) => {
+    try {
+      const { data } = await api.repos.getContent({ repo: pr.head.repo.name, owner: pr.head.repo.owner.login, path })
+      // https://developer.github.com/v3/checks/runs/#example-of-completed-conclusion
+      // e.g.  "blob_href": "http://github.com/octocat/Hello-World/blob/837db83be4137ca555d9a5598d0a1ea2987ecfee/README.md",
+      return `${pr.head.repo.html_url}/blob/${data.sha}/${data.path}`
+    } catch (error) {
+      console.error(`An error was raised in getting the blob path for ${path} - ${error}`)
+      return ""
+    }
+  }
 
   return {
     name: "Danger",
@@ -82,28 +100,42 @@ export const resultsToCheck = (results: DangerResults, options: ExecutorOptions,
     output: {
       title: "Title, figure out what to put here",
       summary: mainBody,
-      annotations: inlineResultsToAnnotations(annotationResults, options),
+      annotations: await inlineResultsToAnnotations(annotationResults, options, getBlobUrlForPath),
     },
   }
 }
 
-const inlineResultsToAnnotations = (results: DangerResults, options: ExecutorOptions): CheckAnnotation[] => {
+const inlineResultsToAnnotations = async (
+  results: DangerResults,
+  options: ExecutorOptions,
+  getBlobUrlForPath: any
+): Promise<CheckAnnotation[]> => {
   // Basically coalesces violations based on file and line
   const inlineResults = resultsIntoInlineResults(results)
 
-  return inlineResults.map(perFileResults => ({
-    filename: perFileResults.file,
-    blob_href: "", //TODO, this will be trick, today we should do the dumbest thing, but maybe in the future this can use the tree API to get the blobs for many files at once
-    warning_level: warningLevelForInlineResults(perFileResults),
-    message: githubResultsInlineTemplate(
-      options.dangerID,
-      inlineResultsIntoResults(perFileResults),
-      perFileResults.file,
-      perFileResults.line
-    ),
-    start_line: perFileResults.line || 0,
-    end_line: perFileResults.line || 0,
-  }))
+  // Make a list of annotations, because we use async it's
+  // a bit of faffing
+  const annotations: CheckAnnotation[] = []
+
+  for (const perFileResults of inlineResults) {
+    const annotation: CheckAnnotation = {
+      filename: perFileResults.file,
+      blob_href: await getBlobUrlForPath(perFileResults.file),
+      warning_level: warningLevelForInlineResults(perFileResults),
+      message: githubResultsInlineTemplate(
+        options.dangerID,
+        inlineResultsIntoResults(perFileResults),
+        perFileResults.file,
+        perFileResults.line
+      ),
+      start_line: perFileResults.line || 0,
+      end_line: perFileResults.line || 0,
+    }
+
+    annotations.push(annotation)
+  }
+
+  return annotations
 }
 
 const warningLevelForInlineResults = (results: DangerInlineResults): "notice" | "warning" | "failure" => {

@@ -91,7 +91,7 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
         return
       }
 
-      const checkData = resultsToCheck(results, options, pr)
+      const checkData = await resultsToCheck(results, options, pr, octokit)
       await octokit.checks.create(checkData)
       // const existingReport = octokit.issues
     },
