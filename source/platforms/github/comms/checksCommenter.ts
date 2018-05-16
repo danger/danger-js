@@ -1,15 +1,9 @@
-// import * as debug from "debug"
 import { PlatformCommunicator } from "../../platform"
 import { GitHubAPI } from "../GitHubAPI"
 import { DangerResults } from "../../../dsl/DangerResults"
 import { ExecutorOptions } from "../../../runner/Executor"
 import { resultsToCheck } from "./checks/resultsToCheck"
 import { getAccessTokenForInstallation } from "./checks/githubAppSupport"
-
-// See https://github.com/auth0/node-jsonwebtoken/issues/162
-const JWT_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/
-
-// const d = debug("danger:GitHub::Checks")
 
 export const getAuthWhenUsingDangerJSApp = () => {
   const appID = "12316"
@@ -37,8 +31,8 @@ export const getCustomAppAuthFromEnv = () => {
 }
 
 const canUseChecks = (token: string | undefined) => {
-  // Is it a JWT from Peril, basically?
-  if (token && token.match(JWT_REGEX)) {
+  // An access token for an app looks like: v1.a06e8953d69edf05f06d61ab016ee80ab4b088ca
+  if (token && token.startsWith("v1.")) {
     return true
   }
   // Are you using a custom GH app manually?
@@ -70,7 +64,6 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
     supportsHandlingResultsManually: () => true,
 
     handlePostingResults: async (results: DangerResults, options: ExecutorOptions) => {
-      console.log("Using Checks")
       const pr = await api.getPullRequestInfo()
 
       let octokit

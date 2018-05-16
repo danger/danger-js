@@ -13,6 +13,8 @@
 
 ## Master
 
+# 3.7.0
+
 * Adds support for the GH Checks API.
 
   This brings some interesting architectural changes inside Danger, but more important to you dear reader, is that using
