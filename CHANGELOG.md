@@ -13,6 +13,10 @@
 
 ## Master
 
+# 3.7.2
+
+* Debugging when using the GitHub OctoKit - orta
+
 # 3.7.1
 
 * Improve checks support for Danger - orta

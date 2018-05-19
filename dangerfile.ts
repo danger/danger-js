@@ -34,10 +34,6 @@ const checkREADME = async () => {
 }
 checkREADME()
 
-warn("a warning", "dangerfile.ts", 3)
-
-warn("another warning", "source/runner/runners/vm2.ts", 3)
-
 import yarn, { message } from "danger-plugin-yarn"
 yarn()
 
