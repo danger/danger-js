@@ -13,6 +13,10 @@
 
 ## Master
 
+# 3.7.1
+
+* Improve checks support for Danger - orta
+
 # 3.7.0
 
 * Adds support for the GH Checks API.

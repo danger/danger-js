@@ -60,7 +60,7 @@ matrix:
   - node_js: '7'
     script:
       - echo "This is only for Integration tests on two blank projects"
-getReviewInfo = (): Promise<GitHubPRDSL> => this.api.getPullRequestInfo()      - yarn build
+      - yarn build
       - mkdir danger_blank_test
       - cd danger_blank_test
       - yarn init --yes

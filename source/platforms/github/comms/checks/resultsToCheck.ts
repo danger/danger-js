@@ -98,7 +98,7 @@ export const resultsToCheck = async (
     // The rest of the vars, need to see this in prod to really make a
     // nuanced take on what it should look like
     output: {
-      title: "Title, figure out what to put here",
+      title: "",
       summary: mainBody,
       annotations: await inlineResultsToAnnotations(annotationResults, options, getBlobUrlForPath),
     },
