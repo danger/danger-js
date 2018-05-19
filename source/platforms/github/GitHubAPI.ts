@@ -44,12 +44,14 @@ export class GitHubAPI {
    */
   getExternalAPI = (JWTForGithubApp?: string): GitHubNodeAPI => {
     const host = process.env["DANGER_GITHUB_API_BASE_URL"] || undefined
-    const api = new GitHubNodeAPI({
+    const options: GitHubNodeAPI.Options & { debug: boolean } = {
+      debug: !!process.env.LOG_FETCH_REQUESTS,
       baseUrl: host,
       headers: {
         ...this.additionalHeaders,
       },
-    })
+    }
+    const api = new GitHubNodeAPI(options)
 
     if (JWTForGithubApp) {
       // I sent a PR for this: https://github.com/octokit/rest.js/pull/873
