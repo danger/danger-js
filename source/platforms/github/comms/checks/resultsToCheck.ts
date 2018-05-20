@@ -13,6 +13,9 @@ import {
   inlineTemplate as githubResultsInlineTemplate,
 } from "../../../../runner/templates/githubIssueTemplate"
 import * as GitHubNodeAPI from "@octokit/rest"
+import { debug } from "../../../../debug"
+
+const d = debug("GitHub::ResultsToCheck")
 
 export interface CheckImages {
   alt: string
@@ -72,6 +75,7 @@ export const resultsToCheck = async (
   const getBlobUrlForPath = async (path: string) => {
     try {
       const { data } = await api.repos.getContent({ repo: pr.head.repo.name, owner: pr.head.repo.owner.login, path })
+      d("Got content data for: ", path)
       // https://developer.github.com/v3/checks/runs/#example-of-completed-conclusion
       // e.g.  "blob_href": "http://github.com/octocat/Hello-World/blob/837db83be4137ca555d9a5598d0a1ea2987ecfee/README.md",
       return `${pr.head.repo.html_url}/blob/${data.sha}/${data.path}`
@@ -80,7 +84,10 @@ export const resultsToCheck = async (
       return ""
     }
   }
+  d("Generating inline annotations")
+  const annotations = await inlineResultsToAnnotations(annotationResults, options, getBlobUrlForPath)
 
+  d("Returning check")
   return {
     name: "Danger",
     status: "completed",
@@ -100,7 +107,7 @@ export const resultsToCheck = async (
     output: {
       title: "",
       summary: mainBody,
-      annotations: await inlineResultsToAnnotations(annotationResults, options, getBlobUrlForPath),
+      annotations,
     },
   }
 }

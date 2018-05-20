@@ -95,9 +95,10 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
         number: parseInt(api.repoMetadata.pullRequestID),
       })
 
-      d("Got PR:", JSON.stringify(prResponse.data))
+      d("Got PR:\n", JSON.stringify(prResponse.data))
 
       const checkData = await resultsToCheck(results, options, prResponse.data, octokit)
+      d("Sending check:\n", JSON.stringify(checkData))
       const response = await octokit.checks.create(checkData)
       d("Got response on the check API")
       d(JSON.stringify(response))

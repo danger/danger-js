@@ -13,7 +13,7 @@
 
 ## Master
 
-# 3.7.2-8
+# 3.7.2-9
 
 * Improved debugging when using the GitHub OctoKit - orta
 
