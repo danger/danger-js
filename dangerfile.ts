@@ -34,11 +34,13 @@ const checkREADME = async () => {
 }
 checkREADME()
 
-import yarn, { message } from "danger-plugin-yarn"
+import yarn from "danger-plugin-yarn"
 yarn()
 
 import jest from "danger-plugin-jest"
 jest()
+
+warn("I should be in the checks")
 
 // Re-run the git push hooks
 import "./dangerfile.lite"

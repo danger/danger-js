@@ -70,8 +70,6 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
     handlePostingResults: async (results: DangerResults, options: ExecutorOptions) => {
       d("Getting PR details for checks")
 
-      const pr = await api.getPullRequestInfo()
-
       let octokit
       if (options.accessTokenIsGitHubApp) {
         d("Using the default GH API for Checks")
@@ -88,7 +86,18 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
         return
       }
 
-      const checkData = await resultsToCheck(results, options, pr, octokit)
+      // Use octokit to grab the checks data
+      const owner = api.repoMetadata.repoSlug.split("/")[0]
+      const repo = api.repoMetadata.repoSlug.split("/")[1]
+      const prResponse = await octokit.pullRequests.get({
+        repo,
+        owner,
+        number: parseInt(api.repoMetadata.pullRequestID),
+      })
+
+      d("Got PR:", JSON.stringify(prResponse.data))
+
+      const checkData = await resultsToCheck(results, options, prResponse.data, octokit)
       const response = await octokit.checks.create(checkData)
       d("Got response on the check API")
       d(JSON.stringify(response))
