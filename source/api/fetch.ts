@@ -1,7 +1,7 @@
-import * as debug from "debug"
+import { debug } from "../debug"
 import * as node_fetch from "node-fetch"
 
-const d = debug("danger:networking")
+const d = debug("networking")
 declare const global: any
 
 /**

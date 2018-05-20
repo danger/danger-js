@@ -1,5 +1,5 @@
 import * as GitHubNodeAPI from "@octokit/rest"
-import * as debug from "debug"
+import { debug } from "../../debug"
 import * as node_fetch from "node-fetch"
 import * as parse from "parse-link-header"
 import * as v from "voca"
@@ -26,7 +26,7 @@ const limit = pLimit(25)
 export class GitHubAPI {
   fetch: typeof fetch
   additionalHeaders: any
-  private readonly d = debug("danger:GitHubAPI")
+  private readonly d = debug("GitHubAPI")
 
   private pr: GitHubPRDSL
 

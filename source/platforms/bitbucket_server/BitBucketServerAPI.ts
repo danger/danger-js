@@ -1,4 +1,4 @@
-import * as debug from "debug"
+import { debug } from "../../debug"
 import * as node_fetch from "node-fetch"
 import * as v from "voca"
 
@@ -41,7 +41,7 @@ export function bitbucketServerRepoCredentialsFromEnv(env: Env): BitBucketRepoCr
 
 export class BitBucketServerAPI {
   fetch: typeof fetch
-  private readonly d = debug("danger:BitBucketServerAPI")
+  private readonly d = debug("BitBucketServerAPI")
 
   private pr: BitBucketServerPRDSL
 

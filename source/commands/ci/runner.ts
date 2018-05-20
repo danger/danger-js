@@ -1,5 +1,5 @@
 import chalk from "chalk"
-import * as debug from "debug"
+import { debug } from "../../debug"
 
 import { getPlatformForEnv, Platform } from "../../platforms/platform"
 import { Executor, ExecutorOptions } from "../../runner/Executor"
@@ -12,7 +12,7 @@ import { jsonDSLGenerator } from "../../runner/dslGenerator"
 import dangerRunToRunnerCLI from "../utils/dangerRunToRunnerCLI"
 import { CISource } from "../../ci_source/ci_source"
 
-const d = debug("danger:process_runner")
+const d = debug("process_runner")
 
 export interface RunnerConfig {
   source?: CISource

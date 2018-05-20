@@ -1,9 +1,9 @@
 import { GitDSL } from "../../../dsl/GitDSL"
 import { GitHubAPI } from "../GitHubAPI"
-import * as debug from "debug"
+import { debug } from "../../../debug"
 import { Comment } from "../../platform"
 
-const d = debug("danger:GitHub::Issue")
+const d = debug("GitHub::Issue")
 
 /**
  * Finds a position in given diff. This is needed for GitHub API, more on the position finder
@@ -46,7 +46,7 @@ export const findPositionForInlineComment = (git: GitDSL, line: number, path: st
  * @param api
  */
 export const GitHubIssueCommenter = (api: GitHubAPI) => {
-  const d = debug("danger:GitHub::Issue")
+  const d = debug("GitHub::Issue")
 
   return {
     supportsCommenting: () => true,

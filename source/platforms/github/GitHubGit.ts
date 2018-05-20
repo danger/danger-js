@@ -7,8 +7,8 @@ import { GitHubAPI } from "../github/GitHubAPI"
 import { diffToGitJSONDSL } from "../git/diffToGitJSONDSL"
 import { GitJSONToGitDSLConfig, gitJSONToGitDSL } from "../git/gitJSONToGitDSL"
 
-import * as debug from "debug"
-const d = debug("danger:GitHubGit")
+import { debug } from "../../debug"
+const d = debug("GitHubGit")
 
 /**
  * Returns the response for the new comment

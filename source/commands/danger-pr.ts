@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 import * as program from "commander"
-import * as debug from "debug"
+import { debug } from "../debug"
 import * as jsome from "jsome"
 
 import { FakeCI } from "../ci_source/providers/Fake"
@@ -16,7 +16,7 @@ import { Platform, getPlatformForEnv } from "../platforms/platform"
 
 // yarn build; cat source/_tests/fixtures/danger-js-pr-384.json |  node --inspect  --inspect-brk distribution/commands/danger-runner.js --text-only
 
-const d = debug("danger:pr")
+const d = debug("pr")
 const log = console.log
 
 interface App extends SharedCLI {

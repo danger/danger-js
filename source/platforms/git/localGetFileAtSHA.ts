@@ -1,7 +1,7 @@
-import * as debug from "debug"
+import { debug } from "../../debug"
 import { exec } from "child_process"
 
-const d = debug("danger:localGetFileAtSHA")
+const d = debug("localGetFileAtSHA")
 
 export const localGetFileAtSHA = (path: string, _repo: string | undefined, sha: string) =>
   new Promise<string>(done => {

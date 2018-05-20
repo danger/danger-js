@@ -1,4 +1,4 @@
-import * as debug from "debug"
+import { debug } from "../../debug"
 import * as path from "path"
 import { spawn } from "child_process"
 
@@ -7,7 +7,7 @@ import { Executor } from "../../runner/Executor"
 import { jsonToDSL } from "../../runner/jsonToDSL"
 import { markdownCode, resultsWithFailure, mergeResults } from "./reporting"
 
-const d = debug("danger:runDangerSubprocess")
+const d = debug("runDangerSubprocess")
 
 // Sanitizes the DSL so for sending via STDOUT
 export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {

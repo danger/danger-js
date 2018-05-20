@@ -4,7 +4,7 @@ import setSharedArgs from "./utils/sharedDangerfileArgs"
 import * as nodeCleanup from "node-cleanup"
 
 import * as program from "commander"
-import * as debug from "debug"
+import { debug } from "../debug"
 import * as getSTDIN from "get-stdin"
 import chalk from "chalk"
 
@@ -12,7 +12,7 @@ import inline from "../runner/runners/inline"
 import { dangerfilePath } from "./utils/file-utils"
 import { jsonToContext } from "../runner/json-to-context"
 
-const d = debug("danger:runner")
+const d = debug("runner")
 
 // Given the nature of this command, it can be tricky to test, so I use a command like this:
 //

@@ -12,8 +12,8 @@ import getRuntimeCISource from "./utils/getRuntimeCISource"
 import inlineRunner from "../runner/runners/inline"
 import { jsonDSLGenerator } from "../runner/dslGenerator"
 
-import * as debug from "debug"
-const d = debug("danger:process")
+import { debug } from "../debug"
+const d = debug("process")
 
 // Given the nature of this command, it can be tricky to test, so I use a command like this:
 //

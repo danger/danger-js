@@ -1,7 +1,7 @@
 import * as fs from "fs"
 import * as path from "path"
 import * as JSON5 from "json5"
-import * as debug from "debug"
+import { debug } from "../../../debug"
 
 let hasNativeTypeScript = false
 let hasBabel = false
@@ -9,7 +9,7 @@ let hasBabelTypeScript = false
 let hasFlow = false
 let hasChecked = false
 
-const d = debug("danger:transpiler:setup")
+const d = debug("transpiler:setup")
 
 // Yes, lots of linter disables, but I want to support TS/Babel/Neither correctly
 export const checkForNodeModules = () => {

@@ -1,7 +1,7 @@
-import * as debug from "debug"
+import { debug } from "../../debug"
 import { exec } from "child_process"
 
-const d = debug("danger:localGetDiff")
+const d = debug("localGetDiff")
 
 export const localGetDiff = (base: string, head: string) =>
   new Promise<string>(done => {
