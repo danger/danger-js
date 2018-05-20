@@ -216,7 +216,7 @@ export class Executor {
     // it allows bailing early.
     if (this.platform.supportsHandlingResultsManually() && this.platform.handlePostingResults) {
       this.d("Posting via handlePostingResults")
-      this.platform.handlePostingResults(results, this.options)
+      await this.platform.handlePostingResults(results, this.options)
       return
     }
     const { fails, warnings, messages, markdowns } = results
