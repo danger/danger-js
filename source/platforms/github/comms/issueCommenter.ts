@@ -149,7 +149,6 @@ export const GitHubIssueCommenter = (api: GitHubAPI) => {
     updateOrCreateComment: async (dangerID: string, newComment: string): Promise<string | undefined> => {
       const commentIDs = await api.getDangerCommentIDs(dangerID)
       let issue = null
-
       if (commentIDs.length) {
         // Edit the first comment
         d(`Updating comment ${commentIDs[0]}`)

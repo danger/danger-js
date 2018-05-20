@@ -4,6 +4,9 @@ import { DangerResults } from "../../../dsl/DangerResults"
 import { ExecutorOptions } from "../../../runner/Executor"
 import { resultsToCheck } from "./checks/resultsToCheck"
 import { getAccessTokenForInstallation } from "./checks/githubAppSupport"
+import { debug } from "../../../debug"
+
+const d = debug("GitHub::Checks")
 
 export const getAuthWhenUsingDangerJSApp = () => {
   const appID = "12316"
@@ -46,6 +49,7 @@ const canUseChecks = (token: string | undefined) => {
     return true
   }
 
+  d("Not using the checks API for GitHub")
   return false
 }
 
@@ -64,32 +68,30 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
     supportsHandlingResultsManually: () => true,
 
     handlePostingResults: async (results: DangerResults, options: ExecutorOptions) => {
+      d("Getting PR details for checks")
+
       const pr = await api.getPullRequestInfo()
 
       let octokit
       if (options.accessTokenIsGitHubApp) {
+        d("Using the default GH API for Checks")
         octokit = api.getExternalAPI()
       } else {
         const custom = process.env.DANGER_JS_APP_INSTALL_ID ? getAuthWhenUsingDangerJSApp() : getCustomAppAuthFromEnv()
-        const generatedJWT = await getAccessTokenForInstallation(
-          custom.appID!,
-          parseInt(custom.installID!),
-          custom.key!
-        )
-        octokit = api.getExternalAPI(generatedJWT)
+        const accessToken = await getAccessTokenForInstallation(custom.appID!, parseInt(custom.installID!), custom.key!)
+        d(`Created a new new token with ${[custom.appID!, parseInt(custom.installID!), custom.key!, accessToken]}`)
+        octokit = api.getExternalAPI(accessToken)
       }
 
       if (!octokit) {
-        console.error("No octokit generated for the checks commentor")
+        console.error("No octokit generated for the checks commenter")
         return
       }
 
       const checkData = await resultsToCheck(results, options, pr, octokit)
       const response = await octokit.checks.create(checkData)
-      if (process.env.LOG_FETCH_REQUESTS) {
-        console.log("Got response on the check API")
-        console.log(JSON.stringify(response))
-      }
+      d("Got response on the check API")
+      d(JSON.stringify(response))
     },
 
     // These are all NOOPs, because they aren't actually going to be called

@@ -215,6 +215,7 @@ export class Executor {
     // is the GitHub Checks API. It doesn't have an API that feels like commenting, so
     // it allows bailing early.
     if (this.platform.supportsHandlingResultsManually() && this.platform.handlePostingResults) {
+      this.d("Posting via handlePostingResults")
       this.platform.handlePostingResults(results, this.options)
       return
     }
