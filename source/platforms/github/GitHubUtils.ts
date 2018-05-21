@@ -32,56 +32,66 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
 
   return {
     fileLinks,
-    fileContents: async (path: string, repoSlug?: string, ref?: string): Promise<string> => {
-      // Use the current state of PR if no repo/ref is passed
-      if (!repoSlug || !ref) {
-        repoSlug = pr.head.repo.full_name
-        ref = pr.head.ref
-      }
-      const opts = {
-        ref,
-        path,
-        repo: repoSlug.split("/")[1],
-        owner: repoSlug.split("/")[0],
-      }
-      try {
-        const response = await api.repos.getContent(opts)
-        if (response && response.data && response.data.type === "file") {
-          const buffer = new Buffer(response.data.content, response.data.encoding)
-          return buffer.toString()
-        } else {
-          return ""
-        }
-      } catch {
-        return ""
-      }
-    },
-    createUpdatedIssueWithID: async (
-      id: string,
-      content: string,
-      settings: { title: string; open: boolean; owner: string; repo: string }
-    ) => {
-      // Could also scope:
-      //   by author
-      //   by label
-      //   by repo
-      const uniqueHeader = `Danger-ID: ${id.replace(/ /g, "_")}`
-      const { data: searchResults } = await api.search.issues({ q: uniqueHeader })
-      d(`Got ${searchResults.total_count} for ${uniqueHeader}`)
+    fileContents: fileContentsGenerator(api, pr.head.repo.full_name, pr.head.ref),
+    createUpdatedIssueWithID: createUpdatedIssueWithIDGenerator(api),
+  }
+}
 
-      const body = `${content}\n\n${uniqueHeader}`
-      const { repo, owner, title } = settings
-      const state = settings.open ? "open" : "closed"
+/** Generates the fileContents function, needed so that Peril can re-create this func for an event */
+export const fileContentsGenerator = (api: GitHub, defaultRepoSlug: string, defaultRef: string) => async (
+  path: string,
+  repoSlug?: string,
+  ref?: string
+): Promise<string> => {
+  // Use the current state of PR if no repo/ref is passed
+  if (!repoSlug || !ref) {
+    repoSlug = defaultRepoSlug
+    ref = defaultRef
+  }
+  const opts = {
+    ref,
+    path,
+    repo: repoSlug.split("/")[1],
+    owner: repoSlug.split("/")[0],
+  }
+  try {
+    const response = await api.repos.getContent(opts)
+    if (response && response.data && response.data.type === "file") {
+      const buffer = new Buffer(response.data.content, response.data.encoding)
+      return buffer.toString()
+    } else {
+      return ""
+    }
+  } catch {
+    return ""
+  }
+}
 
-      if (searchResults.total_count > 0 && searchResults.items[0]) {
-        const issueToUpdate = searchResults.items[0]
-        const { data: issue } = await api.issues.edit({ body, owner, repo, title, number: issueToUpdate.number, state })
-        return issue.html_url
-      } else {
-        const { data: issue } = await api.issues.create({ body, owner, repo, title })
-        return issue.html_url
-      }
-    },
+/** Generates the createUpdatedIssueWithID function, needed so that Peril can re-create this func for an event */
+export const createUpdatedIssueWithIDGenerator = (api: GitHub) => async (
+  id: string,
+  content: string,
+  settings: { title: string; open: boolean; owner: string; repo: string }
+) => {
+  // Could also scope:
+  //   by author
+  //   by label
+  //   by repo
+  const uniqueHeader = `Danger-ID: ${id.replace(/ /g, "_")}`
+  const { data: searchResults } = await api.search.issues({ q: uniqueHeader })
+  d(`Got ${searchResults.total_count} for ${uniqueHeader}`)
+
+  const body = `${content}\n\n${uniqueHeader}`
+  const { repo, owner, title } = settings
+  const state = settings.open ? "open" : "closed"
+
+  if (searchResults.total_count > 0 && searchResults.items[0]) {
+    const issueToUpdate = searchResults.items[0]
+    const { data: issue } = await api.issues.edit({ body, owner, repo, title, number: issueToUpdate.number, state })
+    return issue.html_url
+  } else {
+    const { data: issue } = await api.issues.create({ body, owner, repo, title })
+    return issue.html_url
   }
 }
 

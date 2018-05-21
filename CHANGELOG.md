@@ -13,6 +13,10 @@
 
 ## Master
 
+# 3.7.14
+
+* Minor refactoring in GitHubUtils to allow Peril to re-create some of the util functions - [@orta][]
+
 # 3.7.13
 
 * Updates type declarations to use top-level exports instead of a module augmentation - [@DanielRosenwasser][]
