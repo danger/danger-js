@@ -1,10 +1,10 @@
-import * as debug from "debug"
+import { debug } from "../../debug"
 import * as JSON5 from "json5"
 
 import { exec } from "child_process"
 import { GitCommit } from "../../dsl/Commit"
 
-const d = debug("danger:localGetDiff")
+const d = debug("localGetDiff")
 
 const sha = "%H"
 const parents = "%p"

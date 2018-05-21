@@ -39,7 +39,8 @@ export interface PerilDSL {
 
   /**
    * When running a task, the data passed in when the task
-   * was originally scheduled.
+   * was originally scheduled, you can also get this as the first
+   * argument in a default function.
    */
   data?: any
 }

@@ -48,13 +48,15 @@ const apiForDSL = (dsl: DangerDSLJSONType): GitHubNodeAPI | BitBucketServerAPI =
     return new BitBucketServerAPI(dsl.bitbucket_server!.metadata, bitbucketServerRepoCredentialsFromEnv(process.env))
   }
 
-  const api = new GitHubNodeAPI({
+  const options: GitHubNodeAPI.Options & { debug: boolean } = {
+    debug: !!process.env.LOG_FETCH_REQUESTS,
     baseUrl: dsl.settings.github.baseURL,
     headers: {
       ...dsl.settings.github.additionalHeaders,
     },
-  })
+  }
 
+  const api = new GitHubNodeAPI(options)
   if (dsl.settings.github && dsl.settings.github.accessToken) {
     api.authenticate({ type: "token", token: dsl.settings.github.accessToken })
   }

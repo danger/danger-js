@@ -43,13 +43,13 @@ matrix:
     #     DEBUG="*" danger ci --verbose;
     #   else
     #     echo "This is the real `danger ci` run on this repo, using github checks with a custom app";
-    #     DEBUG="*" DANGER_GITHUB_APP_ID=12229 danger ci --verbose;
+    #     DEBUG="*" DANGER_GITHUB_APP_ID=12482 danger ci --verbose;
     #
     #     echo "This is the real `danger ci` run on this repo, using github checks with the danger app";
     #     DEBUG="*" DANGER_JS_APP_INSTALL_ID=177994 danger ci --verbose;
     #   fi
 
-    - DEBUG="*" DANGER_GITHUB_APP_ID=12229 danger ci --verbose;
+    - DEBUG="*" DANGER_GITHUB_APP_ID=12482 danger ci --verbose;
 
     - echo "Validating that danger pr works as expected"
     - DEBUG="*" danger pr https://github.com/danger/danger-js/pull/465 --dangerfile dangerfile.circle.js --verbose

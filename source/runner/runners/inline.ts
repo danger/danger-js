@@ -1,6 +1,6 @@
 import * as fs from "fs"
 
-import * as debug from "debug"
+import { debug } from "../../debug"
 import * as _require from "require-from-string"
 
 import { DangerResults, DangerRuntimeContainer } from "../../dsl/DangerResults"
@@ -12,7 +12,7 @@ import compile from "./utils/transpiler"
 import cleanDangerfile from "./utils/cleanDangerfile"
 import resultsForCaughtError from "./utils/resultsForCaughtError"
 
-const d = debug("danger:inline_runner")
+const d = debug("inline_runner")
 
 /**
  * Executes a Dangerfile at a specific path, with a context.

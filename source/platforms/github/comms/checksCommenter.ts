@@ -4,6 +4,9 @@ import { DangerResults } from "../../../dsl/DangerResults"
 import { ExecutorOptions } from "../../../runner/Executor"
 import { resultsToCheck } from "./checks/resultsToCheck"
 import { getAccessTokenForInstallation } from "./checks/githubAppSupport"
+import { debug } from "../../../debug"
+
+const d = debug("GitHub::Checks")
 
 export const getAuthWhenUsingDangerJSApp = () => {
   const appID = "12316"
@@ -46,6 +49,7 @@ const canUseChecks = (token: string | undefined) => {
     return true
   }
 
+  d("Not using the checks API for GitHub")
   return false
 }
 
@@ -64,29 +68,24 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
     supportsHandlingResultsManually: () => true,
 
     handlePostingResults: async (results: DangerResults, options: ExecutorOptions) => {
-      const pr = await api.getPullRequestInfo()
-
-      let octokit
-      if (options.accessTokenIsGitHubApp) {
-        octokit = api.getExternalAPI()
-      } else {
+      let token = api.token
+      if (!options.accessTokenIsGitHubApp) {
         const custom = process.env.DANGER_JS_APP_INSTALL_ID ? getAuthWhenUsingDangerJSApp() : getCustomAppAuthFromEnv()
-        const generatedJWT = await getAccessTokenForInstallation(
-          custom.appID!,
-          parseInt(custom.installID!),
-          custom.key!
-        )
-        octokit = api.getExternalAPI(generatedJWT)
+        token = await getAccessTokenForInstallation(custom.appID!, parseInt(custom.installID!), custom.key!)
+        d("Created a custom access token: ", [custom.appID!, parseInt(custom.installID!), custom.key!, token])
       }
 
-      if (!octokit) {
-        console.error("No octokit generated for the checks commentor")
-        return
+      d("Getting PR details for checks")
+      const pr = await api.getPullRequestInfo()
+      const checkData = await resultsToCheck(results, options, pr, api.getExternalAPI())
+      try {
+        const response = await api.postCheck(checkData, token!)
+        d("Got response on the check API")
+        d(JSON.stringify(response))
+      } catch (error) {
+        d("Check Creation failed with:")
+        d(JSON.stringify(error))
       }
-
-      const checkData = await resultsToCheck(results, options, pr, octokit)
-      await octokit.checks.create(checkData)
-      // const existingReport = octokit.issues
     },
 
     // These are all NOOPs, because they aren't actually going to be called

@@ -4,12 +4,12 @@ import { BitBucketServerAPI } from "./bitbucket_server/BitBucketServerAPI"
 import gitDSLForBitBucketServer from "./bitbucket_server/BitBucketServerGit"
 import { Platform, Comment } from "./platform"
 
-import * as debug from "debug"
+import { debug } from "../debug"
 
 /** Handles conforming to the Platform Interface for BitBucketServer, API work is handle by BitBucketServerAPI */
 
 export class BitBucketServer implements Platform {
-  private readonly d = debug("danger:BitBucketServer")
+  private readonly d = debug("BitBucketServer")
   name: string
 
   constructor(public readonly api: BitBucketServerAPI) {

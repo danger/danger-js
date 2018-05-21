@@ -1,5 +1,5 @@
 import * as GitHubNodeAPI from "@octokit/rest"
-import * as debug from "debug"
+import { debug } from "../../debug"
 import * as node_fetch from "node-fetch"
 import * as parse from "parse-link-header"
 import * as v from "voca"
@@ -11,6 +11,7 @@ import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates
 import { api as fetch } from "../../api/fetch"
 import { Comment } from "../platform"
 import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
+import { CheckOptions } from "./comms/checks/resultsToCheck"
 
 // The Handle the API specific parts of the github
 
@@ -26,7 +27,7 @@ const limit = pLimit(25)
 export class GitHubAPI {
   fetch: typeof fetch
   additionalHeaders: any
-  private readonly d = debug("danger:GitHubAPI")
+  private readonly d = debug("GitHubAPI")
 
   private pr: GitHubPRDSL
 
@@ -42,7 +43,7 @@ export class GitHubAPI {
    * I wouldn't have a problem with moving this to use this API under the hood
    * but for now that's just a refactor someone can try.
    */
-  getExternalAPI = (JWTForGithubApp?: string): GitHubNodeAPI => {
+  getExternalAPI = (accessTokenForApp?: string): GitHubNodeAPI => {
     const host = process.env["DANGER_GITHUB_API_BASE_URL"] || undefined
     const options: GitHubNodeAPI.Options & { debug: boolean } = {
       debug: !!process.env.LOG_FETCH_REQUESTS,
@@ -51,14 +52,12 @@ export class GitHubAPI {
         ...this.additionalHeaders,
       },
     }
-    const api = new GitHubNodeAPI(options)
+    // A token should have been set by this point
+    const token = accessTokenForApp || this.token!
 
-    if (JWTForGithubApp) {
-      // I sent a PR for this: https://github.com/octokit/rest.js/pull/873
-      api.authenticate({ type: "app", token: JWTForGithubApp } as any)
-    } else if (this.token) {
-      api.authenticate({ type: "token", token: this.token })
-    }
+    const api = new GitHubNodeAPI(options)
+    api.authenticate({ type: "token", token: token })
+
     return api
   }
 
@@ -360,10 +359,27 @@ export class GitHubAPI {
     return res.ok
   }
 
+  postCheck = async (check: CheckOptions, token: string) => {
+    const repo = this.repoMetadata.repoSlug
+    const res = await this.post(
+      `repos/${repo}/check-runs`,
+      {
+        Accept: "application/vnd.github.antiope-preview+json,application/vnd.github.machine-man-preview+json",
+        Authorization: `token ${token}`,
+      },
+      check
+    )
+    if (res.ok) {
+      return res.json()
+    } else {
+      throw await res.json()
+    }
+  }
+
   // API Helpers
 
   private api = (path: string, headers: any = {}, body: any = {}, method: string, suppressErrors?: boolean) => {
-    if (this.token) {
+    if (this.token && !headers["Authorization"]) {
       headers["Authorization"] = `token ${this.token}`
     }
 
@@ -375,20 +391,30 @@ export class GitHubAPI {
     if (headers.Accept && this.additionalHeaders.Accept) {
       // We need to merge the accepts which are comma separated according to the HTML spec
       // e.g. https://gist.github.com/LTe/5270348
-      customAccept = { Accept: `${this.additionalHeaders.Accept}, ${headers.Accept}` }
+
+      // But make sure it doesn't already include it
+      if (headers.Accept.includes(this.additionalHeaders.Accept)) {
+        // If it's already a subset, ignore
+        customAccept = { Accept: headers.Accept }
+      } else {
+        customAccept = { Accept: `${this.additionalHeaders.Accept}, ${headers.Accept}` }
+      }
     }
+    const finalHeaders = {
+      "Content-Type": "application/json",
+      ...headers,
+      ...this.additionalHeaders,
+      ...customAccept,
+    }
+
+    this.d("Sending: ", url, finalHeaders)
     return limit(() =>
       this.fetch(
         url,
         {
-          method: method,
-          body: body,
-          headers: {
-            "Content-Type": "application/json",
-            ...headers,
-            ...this.additionalHeaders,
-            ...customAccept,
-          },
+          method,
+          body,
+          headers: finalHeaders,
         },
         suppressErrors
       )

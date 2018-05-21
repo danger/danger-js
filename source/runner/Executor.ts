@@ -26,7 +26,7 @@ import {
 } from "./templates/bitbucketServerTemplate"
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
-import * as debug from "debug"
+import { debug } from "../debug"
 import chalk from "chalk"
 import { sentence, href } from "./DangerUtils"
 import { DangerRunner } from "./runners/runner"
@@ -50,7 +50,7 @@ export interface ExecutorOptions {
 // This is still badly named, maybe it really should just be runner?
 
 export class Executor {
-  private readonly d = debug("danger:executor")
+  private readonly d = debug("executor")
 
   constructor(
     public readonly ciSource: CISource,
@@ -215,7 +215,8 @@ export class Executor {
     // is the GitHub Checks API. It doesn't have an API that feels like commenting, so
     // it allows bailing early.
     if (this.platform.supportsHandlingResultsManually() && this.platform.handlePostingResults) {
-      this.platform.handlePostingResults(results, this.options)
+      this.d("Posting via handlePostingResults")
+      await this.platform.handlePostingResults(results, this.options)
       return
     }
     const { fails, warnings, messages, markdowns } = results

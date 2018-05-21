@@ -11,8 +11,8 @@ import { BitBucketServerAPI } from "../bitbucket_server/BitBucketServerAPI"
 
 import { GitJSONToGitDSLConfig, gitJSONToGitDSL, GitStructuredDiff } from "../git/gitJSONToGitDSL"
 
-import * as debug from "debug"
-const d = debug("danger:BitBucketServerGit")
+import { debug } from "../../debug"
+const d = debug("BitBucketServerGit")
 
 /**
  * Returns the response for the new comment

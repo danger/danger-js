@@ -1,5 +1,5 @@
 import chalk from "chalk"
-import * as debug from "debug"
+import { debug } from "../../debug"
 
 import { getPlatformForEnv } from "../../platforms/platform"
 import { SharedCLI } from "../utils/sharedDangerfileArgs"
@@ -7,7 +7,7 @@ import getRuntimeCISource from "../utils/getRuntimeCISource"
 
 import { RunnerConfig } from "./runner"
 
-const d = debug("danger:reset-status")
+const d = debug("reset-status")
 
 export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
   d(`Starting sub-process run with ${app.args}`)
