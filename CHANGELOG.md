@@ -13,7 +13,7 @@
 
 ## Master
 
-# 3.7.2-11
+# 3.7.2-12
 
 * Improved debugging when using the GitHub OctoKit - [@orta][]
 * Added `danger.github.utils.createUpdatedIssueWithID` which can be used to have danger continually update a single
