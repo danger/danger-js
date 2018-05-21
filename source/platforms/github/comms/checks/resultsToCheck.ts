@@ -86,8 +86,9 @@ export const resultsToCheck = async (
   }
   d("Generating inline annotations")
   const annotations = await inlineResultsToAnnotations(annotationResults, options, getBlobUrlForPath)
+  const isEmpty =
+    !results.fails.length && !results.markdowns.length && !results.warnings.length && !results.messages.length
 
-  d("Returning check")
   return {
     name: "Danger",
     status: "completed",
@@ -105,7 +106,7 @@ export const resultsToCheck = async (
     // The rest of the vars, need to see this in prod to really make a
     // nuanced take on what it should look like
     output: {
-      title: "",
+      title: isEmpty ? "All good" : "",
       summary: mainBody,
       annotations,
     },

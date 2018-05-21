@@ -40,15 +40,13 @@ export default async () => {
   await jest()
 
   // The thing I'm testing
-  await danger.github.utils.createUpdatedIssueWithID("TestID", "Hello World 32", {
+  await danger.github.utils.createUpdatedIssueWithID("TestID", `Last PR ${danger.github.pr.number}`, {
     title: "My First Issue",
     open: true,
     repo: "sandbox",
     owner: "PerilTest",
   })
 }
-
-warn("I should be in the checks")
 
 // Re-run the git push hooks
 import "./dangerfile.lite"

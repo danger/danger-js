@@ -73,8 +73,8 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
       const { repo, owner, title } = settings
       const state = settings.open ? "open" : "closed"
 
-      if (searchResults.total_count > 0 && searchResults[0]) {
-        const issueToUpdate = searchResults[0]
+      if (searchResults.total_count > 0 && searchResults.items[0]) {
+        const issueToUpdate = searchResults.items[0]
         const { data: issue } = await api.issues.edit({ body, owner, repo, title, number: issueToUpdate.number, state })
         return issue.html_url
       } else {
