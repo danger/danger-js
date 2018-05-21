@@ -13,10 +13,8 @@ const createDTS = () => {
 
 import * as GitHub from "@octokit/rest"
 
-declare module "danger" {
 `
-  const footer = `}
-`
+  const footer = ``
 
   let fileOutput = ""
 
@@ -80,7 +78,7 @@ declare module "danger" {
   const noRedundantExports = trimmedWhitespaceLines
     .replace(/export interface/g, "interface")
     .replace(/export type/g, "type")
-  const indentedBody = mapLines(noRedundantExports, line => (line.length ? `  ${line}` : ""))
+  const indentedBody = mapLines(noRedundantExports, line => (line.length ? line : ""))
   return header + indentedBody + footer
 }
 
