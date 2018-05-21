@@ -68,39 +68,16 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
     supportsHandlingResultsManually: () => true,
 
     handlePostingResults: async (results: DangerResults, options: ExecutorOptions) => {
-      d("Getting PR details for checks")
-
       let token = api.token
-      let octokit
-      if (options.accessTokenIsGitHubApp) {
-        d("Using the default GH API for Checks")
-        octokit = api.getExternalAPI()
-      } else {
+      if (!options.accessTokenIsGitHubApp) {
         const custom = process.env.DANGER_JS_APP_INSTALL_ID ? getAuthWhenUsingDangerJSApp() : getCustomAppAuthFromEnv()
-        const accessToken = await getAccessTokenForInstallation(custom.appID!, parseInt(custom.installID!), custom.key!)
-        token = accessToken
-        d(`Created a new new token with ${[custom.appID!, parseInt(custom.installID!), custom.key!, accessToken]}`)
-        octokit = api.getExternalAPI(accessToken)
+        token = await getAccessTokenForInstallation(custom.appID!, parseInt(custom.installID!), custom.key!)
+        d("Created a custom access token: ", [custom.appID!, parseInt(custom.installID!), custom.key!, token])
       }
 
-      if (!octokit) {
-        console.error("No octokit generated for the checks commenter")
-        return
-      }
-
-      // Use octokit to grab the checks data
-      const owner = api.repoMetadata.repoSlug.split("/")[0]
-      const repo = api.repoMetadata.repoSlug.split("/")[1]
-      const prResponse = await octokit.pullRequests.get({
-        repo,
-        owner,
-        number: parseInt(api.repoMetadata.pullRequestID),
-      })
-
-      d("Got PR:\n", JSON.stringify(prResponse.data))
-
-      const checkData = await resultsToCheck(results, options, prResponse.data, octokit)
-      d("Sending check:\n", JSON.stringify(checkData))
+      d("Getting PR details for checks")
+      const pr = await api.getPullRequestInfo()
+      const checkData = await resultsToCheck(results, options, pr, api.getExternalAPI())
       try {
         const response = await api.postCheck(checkData, token!)
         d("Got response on the check API")

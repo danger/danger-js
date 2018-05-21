@@ -40,7 +40,7 @@ export default async () => {
   await jest()
 
   // The thing I'm testing
-  await danger.github.utils.createUpdatedIssueWithID("TestID", "Hello World 2", {
+  await danger.github.utils.createUpdatedIssueWithID("TestID", "Hello World 32", {
     title: "My First Issue",
     open: true,
     repo: "sandbox",

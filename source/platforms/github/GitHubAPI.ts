@@ -379,7 +379,7 @@ export class GitHubAPI {
   // API Helpers
 
   private api = (path: string, headers: any = {}, body: any = {}, method: string, suppressErrors?: boolean) => {
-    if (this.token) {
+    if (this.token && !headers["Authorization"]) {
       headers["Authorization"] = `token ${this.token}`
     }
 
@@ -391,20 +391,30 @@ export class GitHubAPI {
     if (headers.Accept && this.additionalHeaders.Accept) {
       // We need to merge the accepts which are comma separated according to the HTML spec
       // e.g. https://gist.github.com/LTe/5270348
-      customAccept = { Accept: `${this.additionalHeaders.Accept}, ${headers.Accept}` }
+
+      // But make sure it doesn't already include it
+      if (headers.Accept.includes(this.additionalHeaders.Accept)) {
+        // If it's already a subset, ignore
+        customAccept = { Accept: headers.Accept }
+      } else {
+        customAccept = { Accept: `${this.additionalHeaders.Accept}, ${headers.Accept}` }
+      }
     }
+    const finalHeaders = {
+      "Content-Type": "application/json",
+      ...headers,
+      ...this.additionalHeaders,
+      ...customAccept,
+    }
+
+    this.d("Sending: ", url, finalHeaders)
     return limit(() =>
       this.fetch(
         url,
         {
-          method: method,
-          body: body,
-          headers: {
-            "Content-Type": "application/json",
-            ...headers,
-            ...this.additionalHeaders,
-            ...customAccept,
-          },
+          method,
+          body,
+          headers: finalHeaders,
         },
         suppressErrors
       )
