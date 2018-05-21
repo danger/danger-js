@@ -99,9 +99,14 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
 
       const checkData = await resultsToCheck(results, options, prResponse.data, octokit)
       d("Sending check:\n", JSON.stringify(checkData))
-      const response = await octokit.checks.create(checkData)
-      d("Got response on the check API")
-      d(JSON.stringify(response))
+      try {
+        const response = await api.postCheck(checkData)
+        d("Got response on the check API")
+        d(JSON.stringify(response))
+      } catch (error) {
+        d("Check Creation failed with:")
+        d(JSON.stringify(error))
+      }
     },
 
     // These are all NOOPs, because they aren't actually going to be called

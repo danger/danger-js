@@ -11,6 +11,7 @@ import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates
 import { api as fetch } from "../../api/fetch"
 import { Comment } from "../platform"
 import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
+import { CheckOptions } from "./comms/checks/resultsToCheck"
 
 // The Handle the API specific parts of the github
 
@@ -356,6 +357,20 @@ export class GitHubAPI {
     )
 
     return res.ok
+  }
+
+  postCheck = async (check: CheckOptions) => {
+    const repo = this.repoMetadata.repoSlug
+    const res = await this.post(
+      `repos/${repo}/check-runs`,
+      { Accept: "application/vnd.github.antiope-preview+json" },
+      check
+    )
+    if (res.ok) {
+      return res.json()
+    } else {
+      throw await res.json()
+    }
   }
 
   // API Helpers

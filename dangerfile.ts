@@ -2,6 +2,9 @@
 // This means we can re-use the type infra from the app, without having to
 // fake the import.
 
+import yarn from "danger-plugin-yarn"
+import jest from "danger-plugin-jest"
+
 import { DangerDSLType } from "./source/dsl/DangerDSL"
 declare var danger: DangerDSLType
 // declare var results: any
@@ -13,7 +16,7 @@ declare function warn(message: string, file?: string, line?: number): void
 // declare function schedule(promise: () => Promise<any | void>): void
 // declare function schedule(callback: (resolve: any) => void): void
 
-const checkREADME = async () => {
+export default async () => {
   if (!danger.github) {
     return
   }
@@ -31,14 +34,19 @@ const checkREADME = async () => {
       warn("Please add your GitHub name to the changelog entry, so we can attribute you correctly.")
     }
   }
+
+  // Some libraries
+  await yarn()
+  await jest()
+
+  // The thing I'm testing
+  await danger.github.utils.createUpdatedIssueWithID("TestID", "Hello World", {
+    title: "My First Issue",
+    open: true,
+    repo: "sandbox",
+    owner: "PerilTest",
+  })
 }
-checkREADME()
-
-import yarn from "danger-plugin-yarn"
-yarn()
-
-import jest from "danger-plugin-jest"
-jest()
 
 warn("I should be in the checks")
 

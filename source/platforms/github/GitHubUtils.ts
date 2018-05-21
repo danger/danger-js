@@ -1,6 +1,9 @@
 import { basename } from "path"
 import { sentence, href } from "../../runner/DangerUtils"
 import { GitHubPRDSL, GitHubUtilsDSL } from "./../../dsl/GitHubDSL"
+import { debug } from "../../debug"
+
+const d = debug("GitHub::Utils")
 
 import * as GitHub from "@octokit/rest"
 
@@ -51,6 +54,32 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
         }
       } catch {
         return ""
+      }
+    },
+    createUpdatedIssueWithID: async (
+      id: string,
+      content: string,
+      settings: { title: string; open: boolean; owner: string; repo: string }
+    ) => {
+      // Could also scope:
+      //   by author
+      //   by label
+      //   by repo
+      const uniqueHeader = `Danger-ID: ${id.replace(/ /g, "_")}`
+      const { data: searchResults } = await api.search.issues({ q: uniqueHeader })
+      d(`Got ${searchResults.total_count} for ${uniqueHeader}`)
+
+      const body = `${content}\n\n`
+      const { repo, owner, title } = settings
+      const state = open ? "open" : "closed"
+
+      if (searchResults.total_count) {
+        const issueToUpdate = searchResults[0]
+        const { data: issue } = await api.issues.edit({ body, owner, repo, title, number: issueToUpdate.number, state })
+        return issue.html_url
+      } else {
+        const { data: issue } = await api.issues.create({ body, owner, repo, title })
+        return issue.html_url
       }
     },
   }

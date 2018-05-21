@@ -56,6 +56,22 @@ export interface GitHubUtilsDSL {
    * @param {string} ref An optional reference to a branch/sha
    */
   fileContents(path: string, repoSlug?: string, ref?: string): Promise<string>
+
+  /**
+   * An API for creating, updating and closing an issue. Basically
+   * this is really useful for reporting back via a separate
+   * issue that you may want to keep up to date at all times.
+   *
+   * @param {string} id The unique ID for the message to create, close
+   * @param {string} content the content of the message
+   * @param {any} config settings for the issue
+   * @returns {string} A HTML string of <a>'s built as a sentence.
+   */
+  createUpdatedIssueWithID: (
+    id: string,
+    content: string,
+    config: { title: string; open: boolean; owner: string; repo: string }
+  ) => Promise<string>
 }
 
 /**

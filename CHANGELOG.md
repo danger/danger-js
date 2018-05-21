@@ -13,9 +13,22 @@
 
 ## Master
 
-# 3.7.2-9
+# 3.7.2-11
 
-* Improved debugging when using the GitHub OctoKit - orta
+* Improved debugging when using the GitHub OctoKit - [@orta][]
+* Added `danger.github.utils.createUpdatedIssueWithID` which can be used to have danger continually update a single
+  issue in a repo, for example:
+
+  ```ts
+  await danger.github.utils.createUpdatedIssueWithID("TestID", "Hello World", {
+    title: "My First Issue",
+    open: true,
+    repo: "sandbox",
+    owner: "PerilTest",
+  })
+  ```
+
+  Will first create, then update that issue with a new body. - [@orta][]
 
 # 3.7.1
 
