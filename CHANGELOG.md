@@ -13,6 +13,8 @@
 
 ## Master
 
+* Updates type declarations to use top-level exports instead of a module augmentation - [@DanielRosenwasser][]
+
 # 3.7.2-11
 
 * Improved debugging when using the GitHub OctoKit - [@orta][]
