@@ -359,11 +359,14 @@ export class GitHubAPI {
     return res.ok
   }
 
-  postCheck = async (check: CheckOptions) => {
+  postCheck = async (check: CheckOptions, token: string) => {
     const repo = this.repoMetadata.repoSlug
     const res = await this.post(
       `repos/${repo}/check-runs`,
-      { Accept: "application/vnd.github.antiope-preview+json" },
+      {
+        Accept: "application/vnd.github.antiope-preview+json,application/vnd.github.machine-man-preview+json",
+        Authorization: `token ${token}`,
+      },
       check
     )
     if (res.ok) {

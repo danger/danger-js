@@ -69,11 +69,11 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
       const { data: searchResults } = await api.search.issues({ q: uniqueHeader })
       d(`Got ${searchResults.total_count} for ${uniqueHeader}`)
 
-      const body = `${content}\n\n`
+      const body = `${content}\n\n${uniqueHeader}`
       const { repo, owner, title } = settings
-      const state = open ? "open" : "closed"
+      const state = settings.open ? "open" : "closed"
 
-      if (searchResults.total_count) {
+      if (searchResults.total_count > 0 && searchResults[0]) {
         const issueToUpdate = searchResults[0]
         const { data: issue } = await api.issues.edit({ body, owner, repo, title, number: issueToUpdate.number, state })
         return issue.html_url

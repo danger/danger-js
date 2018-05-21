@@ -70,6 +70,7 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
     handlePostingResults: async (results: DangerResults, options: ExecutorOptions) => {
       d("Getting PR details for checks")
 
+      let token = api.token
       let octokit
       if (options.accessTokenIsGitHubApp) {
         d("Using the default GH API for Checks")
@@ -77,6 +78,7 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
       } else {
         const custom = process.env.DANGER_JS_APP_INSTALL_ID ? getAuthWhenUsingDangerJSApp() : getCustomAppAuthFromEnv()
         const accessToken = await getAccessTokenForInstallation(custom.appID!, parseInt(custom.installID!), custom.key!)
+        token = accessToken
         d(`Created a new new token with ${[custom.appID!, parseInt(custom.installID!), custom.key!, accessToken]}`)
         octokit = api.getExternalAPI(accessToken)
       }
@@ -100,7 +102,7 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
       const checkData = await resultsToCheck(results, options, prResponse.data, octokit)
       d("Sending check:\n", JSON.stringify(checkData))
       try {
-        const response = await api.postCheck(checkData)
+        const response = await api.postCheck(checkData, token!)
         d("Got response on the check API")
         d(JSON.stringify(response))
       } catch (error) {
