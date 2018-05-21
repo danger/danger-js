@@ -13,9 +13,12 @@
 
 ## Master
 
-* Updates type declarations to use top-level exports instead of a module augmentation - [@DanielRosenwasser][]
+# 3.7.13
 
-# 3.7.2-11
+* Updates type declarations to use top-level exports instead of a module augmentation - [@DanielRosenwasser][]
+* Bug fixes for `danger.github.utils.createUpdatedIssueWithID` - [@orta][]
+
+# 3.7.2-12
 
 * Improved debugging when using the GitHub OctoKit - [@orta][]
 * Added `danger.github.utils.createUpdatedIssueWithID` which can be used to have danger continually update a single
@@ -1147,3 +1150,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@happylinks]: https://github.com/happylinks
 [@fwal]: https://github.com/fwal
 [@codestergit]: https://github.com/codestergit
+[@danielrosenwasser]: https://github.com/DanielRosenwasser
