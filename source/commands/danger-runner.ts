@@ -48,6 +48,8 @@ const run = async (jsonString: string) => {
   runtimeEnv = await inline.createDangerfileRuntimeEnvironment(context)
   d(`Evaluating ${dangerFile}`)
   await inline.runDangerfileEnvironment([dangerFile], [undefined], runtimeEnv)
+
+  process.stdout.write(JSON.stringify(runtimeEnv.results, null, 2))
 }
 
 // Wait till the end of the process to print out the results. Will
@@ -55,9 +57,6 @@ const run = async (jsonString: string) => {
 // host process to create a message from the logs.
 nodeCleanup((exitCode: number, signal: string) => {
   d(`Process has finished with ${exitCode} ${signal}, sending the results back to the host process`)
-  if (foundDSL) {
-    process.stdout.write(JSON.stringify(runtimeEnv.results, null, 2))
-  }
 })
 
 // Add a timeout so that CI doesn't run forever if something has broken.
