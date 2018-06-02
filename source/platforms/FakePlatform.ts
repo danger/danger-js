@@ -81,7 +81,7 @@ export class FakePlatform implements Platform {
     return true
   }
 
-  async updateStatus(_success: boolean, _message: string): Promise<boolean> {
+  async updateStatus(): Promise<boolean> {
     return true
   }
 
