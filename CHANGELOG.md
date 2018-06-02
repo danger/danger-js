@@ -16,6 +16,8 @@
 * Turns on the strict mode in the typescript compiler, this only gave build errors, so I was basically there anyway.
   This is so that the type defs will always pass inside environments where strict is already enabled. - [@orta][]
 
+* Updates to TypeScript 2.9. - [@orta][]
+
 # 3.7.14
 
 * Minor refactoring in GitHubUtils to allow Peril to re-create some of the util functions - [@orta][]

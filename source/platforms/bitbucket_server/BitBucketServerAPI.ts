@@ -43,7 +43,7 @@ export class BitBucketServerAPI {
   fetch: typeof fetch
   private readonly d = debug("BitBucketServerAPI")
 
-  private pr: BitBucketServerPRDSL
+  private pr: BitBucketServerPRDSL | undefined
 
   constructor(public readonly repoMetadata: RepoMetaData, public readonly repoCredentials: BitBucketRepoCredentials) {
     // This allows Peril to DI in a new Fetch function
