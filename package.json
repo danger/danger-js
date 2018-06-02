@@ -75,7 +75,7 @@
   "devDependencies": {
     "@types/debug": "0.0.30",
     "@types/get-stdin": "^5.0.1",
-    "@types/jest": "^22.2.3",
+    "@types/jest": "^23.0.0",
     "@types/json5": "^0.0.29",
     "@types/jsonwebtoken": "^7.2.7",
     "@types/lodash.includes": "^4.3.3",
