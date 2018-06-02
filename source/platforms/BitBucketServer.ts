@@ -39,8 +39,7 @@ export class BitBucketServer implements Platform {
    * Fails the current build, if status setting succeeds
    * then return true.
    */
-
-  updateStatus = async (passed: boolean, message: string, url?: string): Promise<boolean> => {
+  updateStatus = async (passed: boolean | "pending", message: string, url?: string): Promise<boolean> => {
     const pr = await this.api.getPullRequestInfo()
     const { latestCommit } = pr.fromRef
     try {

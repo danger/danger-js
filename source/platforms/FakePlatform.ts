@@ -1,11 +1,9 @@
 import { GitDSL } from "../dsl/GitDSL"
-import { CISource } from "../ci_source/ci_source"
 import { Platform, Comment } from "./platform"
 import { readFileSync } from "fs-extra"
 
 export class FakePlatform implements Platform {
   public readonly name: string
-  public readonly ciSource: CISource
 
   constructor() {
     this.name = "Fake"
@@ -81,7 +79,7 @@ export class FakePlatform implements Platform {
     return true
   }
 
-  async updateStatus(_success: boolean, _message: string): Promise<boolean> {
+  async updateStatus(): Promise<boolean> {
     return true
   }
 

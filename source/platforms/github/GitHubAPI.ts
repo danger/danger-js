@@ -29,7 +29,7 @@ export class GitHubAPI {
   additionalHeaders: any
   private readonly d = debug("GitHubAPI")
 
-  private pr: GitHubPRDSL
+  private pr: GitHubPRDSL | undefined
 
   constructor(public readonly repoMetadata: RepoMetaData, public readonly token?: APIToken) {
     // This allows Peril to DI in a new Fetch function

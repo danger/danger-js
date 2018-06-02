@@ -43,7 +43,7 @@ export class BitBucketServerAPI {
   fetch: typeof fetch
   private readonly d = debug("BitBucketServerAPI")
 
-  private pr: BitBucketServerPRDSL
+  private pr: BitBucketServerPRDSL | undefined
 
   constructor(public readonly repoMetadata: RepoMetaData, public readonly repoCredentials: BitBucketRepoCredentials) {
     // This allows Peril to DI in a new Fetch function
@@ -156,7 +156,8 @@ export class BitBucketServerAPI {
     })
   }
 
-  getFileContents = async (filePath: string, repoSlug: string, refspec: string) => {
+  // The last two are "optional" in the protocol, but not really optional WRT the BBSAPI
+  getFileContents = async (filePath: string, repoSlug?: string, refspec?: string) => {
     const path = `${repoSlug}/` + `raw/${filePath}` + `?at=${refspec}`
     const res = await this.get(path, undefined, true)
     if (res.status === 404) {

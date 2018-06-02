@@ -9,8 +9,14 @@ import { CliArgs } from "../dsl/cli-args"
  * @see DangerDSLJSONType for more detailed definition
  */
 export class DangerDSLJSON implements DangerDSLJSONType {
+  // Prettier + `git!` do not work yet
+  // and this class uses runtime hackery
+
+  // @ts-ignore
   git: GitJSONDSL
+  // @ts-ignore
   github: GitHubDSL
+  // @ts-ignore
   settings: {
     github: {
       accessToken: string
@@ -30,6 +36,8 @@ export class DangerDSLJSON implements DangerDSLJSONType {
   constructor(JSONString: string, cliArgs: CliArgs) {
     const parsedString = JSON.parse(JSONString)
     Object.assign(this, parsedString.danger)
+
+    // @ts-ignore
     this.settings.cliArgs = cliArgs
   }
 }

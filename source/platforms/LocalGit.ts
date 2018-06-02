@@ -15,7 +15,7 @@ export interface LocalGitOptions {
 
 export class LocalGit implements Platform {
   public readonly name: string
-  private gitDiff: string
+  private gitDiff: string | undefined
 
   constructor(public readonly options: LocalGitOptions) {
     this.name = "local git"
@@ -103,7 +103,7 @@ export class LocalGit implements Platform {
     return true
   }
 
-  async updateStatus(_success: boolean, _message: string): Promise<boolean> {
+  async updateStatus(): Promise<boolean> {
     return true
   }
 
