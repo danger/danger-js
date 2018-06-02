@@ -13,6 +13,8 @@
 
 ## Master
 
+# 3.7.15
+
 * Turns on the strict mode in the typescript compiler, this only gave build errors, so I was basically there anyway.
   This is so that the type defs will always pass inside environments where strict is already enabled. - [@orta][]
 
