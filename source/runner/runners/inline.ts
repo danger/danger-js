@@ -108,7 +108,7 @@ export const runDangerfileEnvironment = async (
       // without the scheduler
       await runAllScheduledTasks(environment.results)
     } catch (error) {
-      console.error("Unable to evaluate the Dangerfile\n", error)
+      console.log("Unable to evaluate the Dangerfile\n", error)
       d("Got a parse error: ", error)
 
       // Call the internal functions to fail the build

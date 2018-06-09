@@ -76,9 +76,9 @@ export const createUpdatedIssueWithIDGenerator = (api: GitHub) => async (
   // Could also scope:
   //   by author
   //   by label
-  //   by repo
-  const uniqueHeader = `Danger-ID: ${id.replace(/ /g, "_")}`
-  const { data: searchResults } = await api.search.issues({ q: uniqueHeader })
+  const uniqueHeader = `Danger-Issue-ID-${id.replace(/ /g, "_")}`
+  const q = `user:${settings.owner} repo:${settings.repo} ${uniqueHeader}`
+  const { data: searchResults } = await api.search.issues({ q })
   d(`Got ${searchResults.total_count} for ${uniqueHeader}`)
 
   const body = `${content}\n\n${uniqueHeader}`
@@ -87,6 +87,7 @@ export const createUpdatedIssueWithIDGenerator = (api: GitHub) => async (
 
   if (searchResults.total_count > 0 && searchResults.items[0]) {
     const issueToUpdate = searchResults.items[0]
+    d(`Found: ${issueToUpdate}`)
     const { data: issue } = await api.issues.edit({ body, owner, repo, title, number: issueToUpdate.number, state })
     return issue.html_url
   } else {

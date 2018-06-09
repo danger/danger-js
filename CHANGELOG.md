@@ -13,6 +13,10 @@
 
 ## Master
 
+# 3.7.16
+
+* More work on `danger.github.utils.createUpdatedIssueWithID`. - [@orta][]
+
 # 3.7.15
 
 * Turns on the strict mode in the typescript compiler, this only gave build errors, so I was basically there anyway.
