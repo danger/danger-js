@@ -1,5 +1,6 @@
 import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist } from "../ci_source_helpers"
+import { pullRequestParser } from "../../platforms/pullRequestParser"
 
 /**
  *
@@ -35,25 +36,23 @@ export class TeamCity implements CISource {
     return ensureEnvKeysExist(this.env, mustHave)
   }
 
-  private _prParseURL(): { owner?: string; reponame?: string; id?: string } {
-    const prUrl = this.env.PULL_REQUEST_URL || ""
-    const splitSlug = prUrl.split("/")
-    if (splitSlug.length === 7) {
-      const owner = splitSlug[3]
-      const reponame = splitSlug[4]
-      const id = splitSlug[6]
-      return { owner, reponame, id }
-    }
-    return {}
-  }
-
   get pullRequestID(): string {
-    const { id } = this._prParseURL()
-    return id || ""
+    const parts = pullRequestParser(this.env.PULL_REQUEST_URL || "")
+
+    if (parts === null) {
+      return ""
+    }
+
+    return parts.pullRequestNumber
   }
 
   get repoSlug(): string {
-    const { owner, reponame } = this._prParseURL()
-    return owner && reponame ? `${owner}/${reponame}` : ""
+    const parts = pullRequestParser(this.env.PULL_REQUEST_URL || "")
+
+    if (parts === null) {
+      return ""
+    }
+
+    return parts.repo
   }
 }
