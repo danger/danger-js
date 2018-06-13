@@ -58,11 +58,27 @@ describe(".pullRequestID", () => {
     })
     expect(teamcity.pullRequestID).toEqual("541")
   })
+
+  it("pulls it out of the env for Bitbucket Server", () => {
+    const teamcity = new TeamCity({
+      PULL_REQUEST_URL: "https://stash.test.com/projects/POR/repos/project/pull-requests/32304/overview",
+    })
+
+    expect(teamcity.pullRequestID).toEqual("32304")
+  })
 })
 
 describe(".repoSlug", () => {
   it("derives it from the PR Url", () => {
     const teamcity = new TeamCity(correctEnv)
     expect(teamcity.repoSlug).toEqual("danger/danger-js")
+  })
+
+  it("derives it from the PR Url for Bitbucket Server", () => {
+    const teamcity = new TeamCity({
+      PULL_REQUEST_URL: "https://stash.test.com/projects/POR/repos/project/pull-requests/32304/overview",
+    })
+
+    expect(teamcity.repoSlug).toEqual("projects/POR/repos/project")
   })
 })
