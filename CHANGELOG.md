@@ -13,6 +13,10 @@
 
 ## Master
 
+# 3.7.17
+
+* Improvements to PR detection on Team City - @markelog
+
 # 3.7.16
 
 * More work on `danger.github.utils.createUpdatedIssueWithID`. - [@orta][]
