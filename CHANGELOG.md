@@ -13,6 +13,10 @@
 
 ## Master
 
+# 3.7.18
+
+* Report the error in a commit status update when in verbose - [@orta][]
+
 # 3.7.17
 
 * Improvements to PR detection on Team City - @markelog

@@ -74,6 +74,10 @@ export const GitHubIssueCommenter = (api: GitHubAPI) => {
         })
         return true
       } catch (error) {
+        // @ts-ignore
+        if (global.verbose) {
+          console.log("Got an error with creating a commit status", error)
+        }
         return false
       }
     },
