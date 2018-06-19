@@ -90,7 +90,7 @@ export const resultsToCheck = async (
     !results.fails.length && !results.markdowns.length && !results.warnings.length && !results.messages.length
 
   return {
-    name: "Danger",
+    name: options.dangerID,
     status: "completed",
     completed_at: new Date().toISOString(),
 
