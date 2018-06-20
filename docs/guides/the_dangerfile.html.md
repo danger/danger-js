@@ -104,7 +104,7 @@ Some TypeScript examples:
 [emiss]: https://github.com/artsy/emission/blob/master/dangerfile.ts
 [danger-js]: https://github.com/danger/danger-js/blob/master/dangerfile.ts
 [meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
-[rn]: https://github.com/facebook/react-native/blob/master/danger/dangerfile.js
+[rn]: https://github.com/facebook/react-native/blob/master/bots/dangerfile.js
 [r]: https://github.com/facebook/react/blob/master/dangerfile.js
 [sc]: https://github.com/styled-components/styled-components/blob/master/dangerfile.js
 [rxjs]: https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js
