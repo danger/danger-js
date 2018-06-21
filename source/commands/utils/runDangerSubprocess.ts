@@ -23,7 +23,6 @@ export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
 const runDangerSubprocess = (subprocessName: string[], dslJSON: DangerDSLJSONType, exec: Executor) => {
   let processName = subprocessName[0]
   let args = subprocessName
-  let results = {} as any
   args.shift() // mutate and remove the first element
 
   const processDisplayName = path.basename(processName)
@@ -36,15 +35,7 @@ const runDangerSubprocess = (subprocessName: string[], dslJSON: DangerDSLJSONTyp
   child.stdin.end()
 
   child.stdout.on("data", async data => {
-    data = data.toString()
-    const trimmed = data.trim()
-    if (trimmed.startsWith("{") && trimmed.endsWith("}") && trimmed.includes("markdowns")) {
-      d("Got JSON results from STDOUT")
-      results = JSON.parse(trimmed)
-    } else {
-      console.log(`${data}`)
-      allLogs += data
-    }
+    allLogs += data.toString()
   })
 
   child.stderr.on("data", data => {
@@ -55,6 +46,17 @@ const runDangerSubprocess = (subprocessName: string[], dslJSON: DangerDSLJSONTyp
 
   child.on("close", async code => {
     d(`child process exited with code ${code}`)
+
+    let results = {} as any
+
+    const trimmed = allLogs.trim()
+    if (trimmed.startsWith("{") && trimmed.endsWith("}") && trimmed.includes("markdowns")) {
+      d("Got JSON results from STDOUT")
+      results = JSON.parse(trimmed)
+    } else {
+      console.log(`${allLogs}`)
+    }
+
     // Submit an error back to the PR
     if (code) {
       d(`Handling fail from subprocess`)
