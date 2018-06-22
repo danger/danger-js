@@ -1,7 +1,7 @@
 import { debug } from "../../debug"
 import * as JSON5 from "json5"
 
-import { exec } from "child_process"
+import { spawn } from "child_process"
 import { GitCommit } from "../../dsl/Commit"
 
 const d = debug("localGetDiff")
@@ -24,20 +24,24 @@ export const localGetCommits = (base: string, head: string) =>
   new Promise<GitCommit[]>(done => {
     const call = `git log ${base}...${head} --pretty=format:'${formatJSON}'`
     d(call)
+    const child = spawn(call)
 
-    exec(call, (err, stdout, _stderr) => {
-      if (err) {
-        console.error(`Could not get commits from git between ${base} and ${head}`)
-        console.error(err)
-        return
-      }
+    child.stdout.on("data", async data => {
+      data = data.toString()
+
       // remove trailing comma, and wrap into an array
-      const asJSONString = `[${stdout.substring(0, stdout.length - 1)}]`
+      const asJSONString = `[${data.substring(0, data.length - 1)}]`
       const commits = JSON5.parse(asJSONString)
       const realCommits = commits.map((c: any) => ({
         ...c,
         parents: c.parents.split(" "),
       }))
+
       done(realCommits)
+    })
+
+    child.stderr.on("data", data => {
+      console.error(`Could not get commits from git between ${base} and ${head}`)
+      throw new Error(data.toString())
     })
   })
