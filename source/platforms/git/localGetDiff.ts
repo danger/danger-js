@@ -1,20 +1,22 @@
 import { debug } from "../../debug"
-import { exec } from "child_process"
+import { spawn } from "child_process"
 
 const d = debug("localGetDiff")
 
 export const localGetDiff = (base: string, head: string) =>
   new Promise<string>(done => {
-    const call = `git diff ${base}...${head}`
-    d(call)
+    const args = ["diff", `${base}...${head}`]
 
-    exec(call, (err, stdout, _stderr) => {
-      if (err) {
-        console.error(`Could not get diff from git between ${base} and ${head}`)
-        console.error(err)
-        return
-      }
+    const child = spawn("git", args, { env: process.env })
+    d("> git", args.join(" "))
 
-      done(stdout)
+    child.stdout.on("data", async data => {
+      data = data.toString()
+      done(data)
+    })
+
+    child.stderr.on("data", data => {
+      console.error(`Could not get diff from git between ${base} and ${head}`)
+      throw new Error(data.toString())
     })
   })

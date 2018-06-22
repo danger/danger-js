@@ -22,10 +22,9 @@ export const formatJSON = `{ "sha": "${sha}", "parents": "${parents}", ${author}
 
 export const localGetCommits = (base: string, head: string) =>
   new Promise<GitCommit[]>(done => {
-    const call = `git log ${base}...${head} --pretty=format:'${formatJSON}'`
-    d(call)
-    const child = spawn(call)
-
+    const args = ["log", `${base}...${head}`, `--pretty=format:${formatJSON}`]
+    const child = spawn("git", args, { env: process.env })
+    d("> git", args.join(" "))
     child.stdout.on("data", async data => {
       data = data.toString()
 

@@ -16,7 +16,6 @@ interface App extends SharedCLI {
 
 program
   .usage("[options]")
-  .option("-b, --base  [base]", "Choose the base commit to work against.")
   // TODO: this option
   // .option("-s, --staging", "Just use staged changes.")
   .description("Runs danger without PR metadata, useful for git hooks.")
