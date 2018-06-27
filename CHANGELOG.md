@@ -13,7 +13,10 @@
 
 ## Master
 
-* Convert the `exec` in `danger local` to a `spawn` hopefully unblocking large diffs from going through it - [@orta][]
+# 3.7.19
+
+* Convert the `exec` in `danger local` to a `spawn` hopefully unblocking large diffs from going through it -
+  [@joshacheson][] [@orta][]
 
 # 3.7.18
 
@@ -1176,3 +1179,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@fwal]: https://github.com/fwal
 [@codestergit]: https://github.com/codestergit
 [@danielrosenwasser]: https://github.com/DanielRosenwasser
+[@joshacheson]: https://github.com/joshacheson
