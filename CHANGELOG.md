@@ -13,6 +13,8 @@
 
 ## Master
 
+* Convert the `exec` in `danger local` to a `spawn` hopefully unblocking large diffs from going through it - [@orta][]
+
 # 3.7.18
 
 * Report the error in a commit status update when in verbose - [@orta][]
