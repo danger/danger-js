@@ -14,7 +14,7 @@ const authorDate = "%ai"
 const committerName = "%cn"
 const committerEmail = "%ce"
 const committerDate = "%ci"
-const message = "%s" // this is subject, not message, so it'll only be one line
+const message = "%f" // this is subject, not message, so it'll only be one line
 
 const author = `"author": {"name": "${authorName}", "email": "${authorEmail}", "date": "${authorDate}" }`
 const committer = `"committer": {"name": "${committerName}", "email": "${committerEmail}", "date": "${committerDate}" }`
