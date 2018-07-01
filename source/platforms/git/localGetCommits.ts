@@ -19,10 +19,17 @@ const message = "%f" // this is subject, not message, so it'll only be one line
 const author = `"author": {"name": "${authorName}", "email": "${authorEmail}", "date": "${authorDate}" }`
 const committer = `"committer": {"name": "${committerName}", "email": "${committerEmail}", "date": "${committerDate}" }`
 export const formatJSON = `{ "sha": "${sha}", "parents": "${parents}", ${author}, ${committer}, "message": "${message}"},`
+export type localCommitOptions = {
+  filePath?: string
+  timeAgo?: string // e.g. 3.weeks
+}
 
-export const localGetCommits = (base: string, head: string) =>
+export const localGetCommits = (base: string, head: string, options: localCommitOptions = {}) =>
   new Promise<GitCommit[]>(done => {
-    const args = ["log", `${base}...${head}`, `--pretty=format:${formatJSON}`]
+    const { filePath, timeAgo } = options
+    const commitsFrom = filePath ? `-- ${filePath}` : `${base}...${head}`
+    const sinceWhen = timeAgo ? `--since=${timeAgo}` : ""
+    const args = ["log", commitsFrom, `--pretty=format:${formatJSON}`, sinceWhen].filter(arg => arg && arg.length)
     const child = spawn("git", args, { env: process.env })
     d("> git", args.join(" "))
     child.stdout.on("data", async data => {
@@ -40,7 +47,7 @@ export const localGetCommits = (base: string, head: string) =>
     })
 
     child.stderr.on("data", data => {
-      console.error(`Could not get commits from git between ${base} and ${head}`)
+      console.error(`Could not get commits from git from ${commitsFrom}`)
       throw new Error(data.toString())
     })
   })
