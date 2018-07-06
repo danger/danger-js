@@ -65,7 +65,6 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
   return {
     supportsCommenting: () => true,
     supportsInlineComments: () => true,
-    supportsHandlingResultsManually: () => true,
 
     handlePostingResults: async (results: DangerResults, options: ExecutorOptions) => {
       let token = api.token

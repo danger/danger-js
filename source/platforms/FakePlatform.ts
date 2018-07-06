@@ -51,10 +51,6 @@ export class FakePlatform implements Platform {
     return true
   }
 
-  supportsHandlingResultsManually() {
-    return false
-  }
-
   async updateOrCreateComment(_dangerID: string, _newComment: string): Promise<string> {
     return "https://github.com/orta/github-pages-with-jekyll/pull/5#issuecomment-383402256"
   }

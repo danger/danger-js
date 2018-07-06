@@ -48,8 +48,6 @@ export interface Platform extends PlatformCommunicator {
 // This is basically the commenting aspect of a platform, which allow us to
 // separate out the comment handling vs the DSL generation for a platform
 export interface PlatformCommunicator {
-  /** Basically, should this platform manually handle the posting of an issue itself instead of the Executor */
-  supportsHandlingResultsManually: () => boolean
   /** Can it update comments? */
   supportsCommenting: () => boolean
   /** Does the platform support inline comments? */

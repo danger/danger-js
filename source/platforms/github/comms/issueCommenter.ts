@@ -51,7 +51,6 @@ export const GitHubIssueCommenter = (api: GitHubAPI) => {
   return {
     supportsCommenting: () => true,
     supportsInlineComments: () => true,
-    supportsHandlingResultsManually: () => false,
     /**
      * Fails the current build, if status setting succeeds
      * then return true.
