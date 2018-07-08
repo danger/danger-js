@@ -11,6 +11,7 @@ import chalk from "chalk"
 import inline from "../runner/runners/inline"
 import { dangerfilePath } from "./utils/file-utils"
 import { jsonToContext } from "../runner/json-to-context"
+import { DangerResults } from "../dsl/DangerResults"
 
 const d = debug("runner")
 
@@ -54,9 +55,15 @@ const run = async (jsonString: string) => {
 // only post the results when the process has succeeded, leaving the
 // host process to create a message from the logs.
 nodeCleanup((exitCode: number, signal: string) => {
+  const results: DangerResults = runtimeEnv.results
   d(`Process has finished with ${exitCode} ${signal}, sending the results back to the host process`)
+  d(
+    `Got md ${results.markdowns.length} w ${results.warnings.length} f ${results.fails.length} m ${
+      results.messages.length
+    }`
+  )
   if (foundDSL) {
-    process.stdout.write(JSON.stringify(runtimeEnv.results, null, 2))
+    process.stdout.write(JSON.stringify(results, null, 2))
   }
 })
 

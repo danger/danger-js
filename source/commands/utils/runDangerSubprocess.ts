@@ -38,8 +38,14 @@ const runDangerSubprocess = (subprocessName: string[], dslJSON: DangerDSLJSONTyp
   child.stdout.on("data", async data => {
     data = data.toString()
     const trimmed = data.trim()
-    if (trimmed.startsWith("{") && trimmed.endsWith("}") && trimmed.includes("markdowns")) {
-      d("Got JSON results from STDOUT")
+    if (
+      trimmed.startsWith("{") &&
+      trimmed.endsWith("}") &&
+      trimmed.includes("markdowns") &&
+      trimmed.includes("fails") &&
+      trimmed.includes("warnings")
+    ) {
+      d("Got JSON results from STDOUT, results: \n" + trimmed)
       results = JSON.parse(trimmed)
     } else {
       console.log(`${data}`)

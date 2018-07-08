@@ -98,9 +98,7 @@ export function validateResults(results: DangerResults) {
       const officialAPI = ["message", "line", "file"]
       const keys = Object.keys(v).filter(f => !officialAPI.includes(f))
       if (keys.length) {
-        console.warn(
-          `Recieved unexpected key in Violation, expected only ${officialAPI} but recieved ${Object.keys(v)}`
-        )
+        console.warn(`Received unexpected key in Violation, expected only ${officialAPI} but got ${Object.keys(v)}`)
       }
     })
   })
@@ -116,7 +114,7 @@ export function inlineResults(results: DangerResults): DangerResults {
   }
 }
 
-/** Returns only the main-comment commentsviolations from Danger results */
+/** Returns only the main-comment comments violations from Danger results */
 export function regularResults(results: DangerResults): DangerResults {
   return {
     fails: results.fails.filter(m => !isInline(m)),

@@ -13,6 +13,10 @@
 
 ## Master
 
+# 3.7.20
+
+* Logging / verification improvements for the subprocess - [@orta][]
+
 # 3.7.19
 
 * Convert the `exec` in `danger local` to a `spawn` hopefully unblocking large diffs from going through it -
