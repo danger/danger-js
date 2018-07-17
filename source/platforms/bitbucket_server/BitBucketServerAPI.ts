@@ -255,12 +255,7 @@ export class BitBucketServerAPI {
     // Remember that to avoid the error "Error: self signed certificate in certificate chain"
     // you should also do: "export NODE_TLS_REJECT_UNAUTHORIZED=0". See: https://github.com/request/request/issues/2061
     let agent: Agent | undefined = undefined
-    let proxy: string | undefined = undefined
-    if (process.env.https_proxy) {
-      proxy = `https://${process.env.https_proxy}`
-    } else if (process.env.http_proxy) {
-      proxy = `http://${process.env.http_proxy}`
-    }
+    let proxy = process.env.http_proxy || process.env.https_proxy
     if (proxy) {
       agent = new HttpsProxyAgent(proxy)
     }
