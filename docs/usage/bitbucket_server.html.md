@@ -6,8 +6,8 @@ order: 4
 blurb: An overview of using Danger with BitBucket Server, and some examples
 ---
 
-To use Danger JS with BitBucket Server: you'll need to create a new account for Danger to use, then set the following
-environment variables on your CI:
+To use Danger JS with BitBucket Server: you'll need to create a new account for Danger to use,
+then set the following environment variables on your CI:
 
 * `DANGER_BITBUCKETSERVER_HOST` = The root URL for your server, e.g. `https://bitbucket.mycompany.com`.
 * `DANGER_BITBUCKETSERVER_USERNAME` = The username for the account used to comment.
@@ -23,7 +23,8 @@ if (danger.bitbucket_server.pr.title.includes("WIP")) {
 }
 ```
 
-The DSL is expansive, you can see all the details inside the [Danger JS Reference][ref], but the TLDR is:
+The DSL is expansive, you can see all the details inside the [Danger JS Reference][ref],
+but the TLDR is:
 
 ```ts
 danger.bitbucket_server.
@@ -71,19 +72,6 @@ if (hasGIF) {
 }
 ```
 
-Plus any other example you can find that uses GitHub, will probably work in BitBucket Server, with a bit of DSL
-translation.
+Plus any other example you can find that uses GitHub, will probably work in BitBucket Server, with a bit of DSL translation.
 
-Our BitBucket Server support is still pretty new, so we'd love to see improvements and PRs to help make it work for
-everyone.
-
-In addition, it is possible to specify a proxy to be used for the requests using environmental variables. This is useful
-for debugging:
-
-```ts
-export NODE_TLS_REJECT_UNAUTHORIZED=0 # Avoid certificate error
-
-export http_proxy=http://127.0.0.1:8080
-or
-export https_proxy=https://127.0.0.1:8080
-```
+Our BitBucket Server support is still pretty new, so we'd love to see improvements and PRs to help make it work for everyone.
