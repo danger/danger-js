@@ -14,7 +14,7 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *        commands:
  *          - ...
  *          - yarn danger ci
- *   ``` co
+ *   ```
  *
  *  ### Token Setup
  *
