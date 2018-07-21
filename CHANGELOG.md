@@ -13,6 +13,8 @@
 
 ## Master
 
+# 3.8.0
+
 - Fixes a crash if lodash isn't a transitive dependency in your node_modules - [@orta][]
 - Using the Checks API will now post a summary comment on a PR - [@orta][]
 
