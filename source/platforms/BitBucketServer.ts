@@ -96,10 +96,6 @@ export class BitBucketServer implements Platform {
     return true
   }
 
-  supportsHandlingResultsManually() {
-    return false
-  }
-
   /**
    * Returns the response for the new comment
    *

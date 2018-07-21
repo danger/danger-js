@@ -48,16 +48,14 @@ export interface Platform extends PlatformCommunicator {
 // This is basically the commenting aspect of a platform, which allow us to
 // separate out the comment handling vs the DSL generation for a platform
 export interface PlatformCommunicator {
-  /** Basically, should this platform manually handle the posting of an issue itself instead of the Executor */
-  supportsHandlingResultsManually: () => boolean
+  /** Basically, should a chance for async platform side-effects before passing the results into the comment section of danger issue create/update/deleter */
+  platformResultsPreMapper?: (results: DangerResults, options: ExecutorOptions) => Promise<DangerResults>
   /** Can it update comments? */
   supportsCommenting: () => boolean
   /** Does the platform support inline comments? */
   supportsInlineComments: () => boolean
-
   /** Allows the platform to do whatever it wants, instead of using the default commenting system  */
   handlePostingResults?: (results: DangerResults, options: ExecutorOptions) => void
-
   /** Gets inline comments for current PR */
   getInlineComments: (dangerID: string) => Promise<Comment[]>
   /** Creates a comment on the PR */

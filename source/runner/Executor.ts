@@ -210,15 +210,16 @@ export class Executor {
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    * @param {GitDSL} git a reference to a git implementation so that inline comments find diffs to work with
    */
-  async handleResultsPostingToPlatform(results: DangerResults, git: GitDSL) {
+  async handleResultsPostingToPlatform(originalResults: DangerResults, git: GitDSL) {
     // Allow a platform to say "I can do something special with this" - the example case for this
     // is the GitHub Checks API. It doesn't have an API that feels like commenting, so
-    // it allows bailing early.
-    if (this.platform.supportsHandlingResultsManually() && this.platform.handlePostingResults) {
-      this.d("Posting via handlePostingResults")
-      await this.platform.handlePostingResults(results, this.options)
-      return
+    // it allows transforming the results after doing its work.
+    let results = originalResults
+    if (this.platform.platformResultsPreMapper) {
+      this.d("Running platformResultsPreMapper")
+      results = await this.platform.platformResultsPreMapper(results, this.options)
     }
+
     const { fails, warnings, messages, markdowns } = results
 
     const failureCount = [...fails, ...warnings].length

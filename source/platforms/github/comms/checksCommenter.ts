@@ -1,10 +1,10 @@
-import { PlatformCommunicator } from "../../platform"
 import { GitHubAPI } from "../GitHubAPI"
 import { DangerResults } from "../../../dsl/DangerResults"
 import { ExecutorOptions } from "../../../runner/Executor"
 import { resultsToCheck } from "./checks/resultsToCheck"
 import { getAccessTokenForInstallation } from "./checks/githubAppSupport"
 import { debug } from "../../../debug"
+import { sentence } from "../../../runner/DangerUtils"
 
 const d = debug("GitHub::Checks")
 
@@ -57,17 +57,13 @@ const canUseChecks = (token: string | undefined) => {
  * An object whose responsibility is to handle commenting on an issue
  * @param api
  */
-export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | undefined => {
+export const GitHubChecksCommenter = (api: GitHubAPI) => {
   if (!canUseChecks(api.token)) {
     return undefined
   }
 
   return {
-    supportsCommenting: () => true,
-    supportsInlineComments: () => true,
-    supportsHandlingResultsManually: () => true,
-
-    handlePostingResults: async (results: DangerResults, options: ExecutorOptions) => {
+    platformResultsPreMapper: async (results: DangerResults, options: ExecutorOptions): Promise<DangerResults> => {
       let token = api.token
       if (!options.accessTokenIsGitHubApp) {
         const custom = process.env.DANGER_JS_APP_INSTALL_ID ? getAuthWhenUsingDangerJSApp() : getCustomAppAuthFromEnv()
@@ -75,27 +71,49 @@ export const GitHubChecksCommenter = (api: GitHubAPI): PlatformCommunicator | un
         d("Created a custom access token: ", [custom.appID!, parseInt(custom.installID!), custom.key!, token])
       }
 
+      let returnedResults = results
       d("Getting PR details for checks")
       const pr = await api.getPullRequestInfo()
       const checkData = await resultsToCheck(results, options, pr, api.getExternalAPI())
       try {
+        // If Danger succeeds at creating a checks API call, then we switch out
+        // the results which go through to the issue commenter with a summary version.
         const response = await api.postCheck(checkData, token!)
-        d("Got response on the check API")
+        returnedResults = tweetSizedResultsFromResults(results, response)
+        d("Got response on the checks API")
         d(JSON.stringify(response))
       } catch (error) {
         d("Check Creation failed with:")
         d(JSON.stringify(error))
       }
-    },
 
-    // These are all NOOPs, because they aren't actually going to be called
-    updateStatus: () => Promise.resolve(true),
-    getInlineComments: () => Promise.resolve([]),
-    createComment: () => Promise.resolve({}),
-    createInlineComment: () => Promise.resolve({}),
-    updateInlineComment: () => Promise.resolve({}),
-    deleteMainComment: () => Promise.resolve(true),
-    deleteInlineComment: () => Promise.resolve(true),
-    updateOrCreateComment: () => Promise.resolve("NOOP"),
+      return returnedResults
+    },
   }
+}
+
+export const tweetSizedResultsFromResults = (results: DangerResults, checksResponse: any): DangerResults => ({
+  warnings: [],
+  messages: [],
+  fails: [],
+  markdowns: [
+    {
+      message:
+        "Danger run resulted in " +
+        messageFromResults(results) +
+        ` - to find out more, see the [checks page](${checksResponse.html_url}).`,
+    },
+  ],
+})
+
+const messageFromResults = (results: DangerResults): string => {
+  const appendS = (arr: any[]) => (arr.length === 1 ? "" : "s")
+  const makeString = (name: string, arr: any[]) =>
+    arr.length ? `${arr.length} ${name.substring(0, name.length - 1)}${appendS(arr)}` : null
+
+  const newMessageComponents = Object.keys(results)
+    .map(key => makeString(key, results[key]))
+    .filter(Boolean) as any[]
+
+  return sentence(newMessageComponents)
 }
