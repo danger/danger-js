@@ -14,3 +14,11 @@ env
 jsconfig.json
 coverage
 .jest
+types
+tsconfig
+test-results.json
+test.json
+yarn-error.log
+dangerfile.circle.js
+dangerfile.flow.js
+dangerfile.lite.ts
