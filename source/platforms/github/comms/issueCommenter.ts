@@ -51,7 +51,6 @@ export const GitHubIssueCommenter = (api: GitHubAPI) => {
   return {
     supportsCommenting: () => true,
     supportsInlineComments: () => true,
-    supportsHandlingResultsManually: () => false,
     /**
      * Fails the current build, if status setting succeeds
      * then return true.
@@ -68,7 +67,7 @@ export const GitHubIssueCommenter = (api: GitHubAPI) => {
           owner: ref.repo.owner.login,
           sha: ref.sha,
           state: passed ? "success" : "failure",
-          context: process.env["PERIL_INTEGRATION_ID"] ? "Peril" : "Danger",
+          context: process.env["PERIL_BOT_USER_ID"] ? "Peril" : "Danger",
           target_url: url || "http://danger.systems/js",
           description: message,
         })

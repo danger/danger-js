@@ -14,8 +14,6 @@ import { GitHubChecksCommenter } from "./github/comms/checksCommenter"
 export type GitHubType = Platform & { api: GitHubAPI }
 
 export const GitHub = (api: GitHubAPI) => {
-  // In the future this could also be a commenter for the new checks API
-  const commenter = GitHubChecksCommenter(api) || GitHubIssueCommenter(api)
   /**
    * Converts the PR JSON into something easily used by the Github API client.
    */
@@ -69,8 +67,8 @@ export const GitHub = (api: GitHubAPI) => {
       }
     },
 
-    // An object whose job is to handle the comment faff parts of the Platform
-    ...commenter,
+    ...GitHubIssueCommenter(api),
+    ...(GitHubChecksCommenter(api) || {}),
 
     getFileContents: api.fileContents,
   } as GitHubType
