@@ -101,7 +101,7 @@ export const tweetSizedResultsFromResults = (results: DangerResults, checksRespo
       message:
         "Danger run resulted in " +
         messageFromResults(results) +
-        ` - to find out more, see the [checks page](${checksResponse.html_url}).`,
+        `; to find out more, see the [checks page](${checksResponse.html_url}).`,
     },
   ],
 })
