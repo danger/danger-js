@@ -13,6 +13,8 @@
 
 ## Master
 
+* Fixes a crash if lodash isn't a transitive dependency in your node_modules - [@orta][]
+
 # 3.7.20
 
 * Logging / verification improvements for the subprocess - [@orta][]
