@@ -56,10 +56,10 @@ import * as GitHub from "@octokit/rest"
       return line
     }
     if (line.includes("(")) {
-      return "function " + line.trim()
+      return "declare function " + line.trim()
     }
     if (line.includes(":")) {
-      return "const " + line.trim()
+      return "declare const " + line.trim()
     }
     return ""
   })

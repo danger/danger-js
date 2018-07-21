@@ -1107,7 +1107,7 @@ type Scheduleable = Promise<any> | Promise<void> | CallbackableFn
  *
  * @param {Function} asyncFunction the function to run asynchronously
  */
-function schedule(asyncFunction: Scheduleable): void
+declare function schedule(asyncFunction: Scheduleable): void
 
 /**
  * Fails a build, outputting a specific reason for failing into a HTML table.
@@ -1116,7 +1116,7 @@ function schedule(asyncFunction: Scheduleable): void
  * @param {string | undefined} file a file which this message should be attached to
  * @param {number | undefined} line the line which this message should be attached to
  */
-function fail(message: MarkdownString, file?: string, line?: number): void
+declare function fail(message: MarkdownString, file?: string, line?: number): void
 
 /**
  * Highlights low-priority issues, but does not fail the build. Message
@@ -1126,7 +1126,7 @@ function fail(message: MarkdownString, file?: string, line?: number): void
  * @param {string | undefined} file a file which this message should be attached to
  * @param {number | undefined} line the line which this message should be attached to
  */
-function warn(message: MarkdownString, file?: string, line?: number): void
+declare function warn(message: MarkdownString, file?: string, line?: number): void
 
 /**
  * Adds a message to the Danger table, the only difference between this
@@ -1136,7 +1136,7 @@ function warn(message: MarkdownString, file?: string, line?: number): void
  * @param {string | undefined} file a file which this message should be attached to
  * @param {number | undefined} line the line which this message should be attached to
  */
-function message(message: MarkdownString, file?: string, line?: number): void
+declare function message(message: MarkdownString, file?: string, line?: number): void
 
 /**
  * Adds raw markdown into the Danger comment, under the table
@@ -1145,22 +1145,22 @@ function message(message: MarkdownString, file?: string, line?: number): void
  * @param {string | undefined} file a file which this message should be attached to
  * @param {number | undefined} line the line which this message should be attached to
  */
-function markdown(message: MarkdownString, file?: string, line?: number): void
+declare function markdown(message: MarkdownString, file?: string, line?: number): void
 
 /**
  * The root Danger object. This contains all of the metadata you
  * will be looking for in order to generate useful rules.
  */
-const danger: DangerDSLType
+declare const danger: DangerDSLType
 
 /**
  * When Peril is running your Dangerfile, the Danger DSL is
  * extended with additional options.
  */
-const peril: PerilDSL
+declare const peril: PerilDSL
 
 /**
  * The current results of a Danger run, this can be useful if you
  * are wanting to introspect on whether a build has already failed.
  */
-const results: DangerRuntimeContainer
+declare const results: DangerRuntimeContainer
