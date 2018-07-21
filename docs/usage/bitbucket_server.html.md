@@ -75,3 +75,13 @@ if (hasGIF) {
 Plus any other example you can find that uses GitHub, will probably work in BitBucket Server, with a bit of DSL translation.
 
 Our BitBucket Server support is still pretty new, so we'd love to see improvements and PRs to help make it work for everyone.
+
+In addition, it is possible to specify a proxy to be used for the requests using environmental variables. This is useful for debugging:
+
+```ts
+export NODE_TLS_REJECT_UNAUTHORIZED=0 # Avoid certificate error
+
+export http_proxy=http://127.0.0.1:8080
+or
+export https_proxy=https://127.0.0.1:8080
+```

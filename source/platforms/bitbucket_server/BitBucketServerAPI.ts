@@ -1,5 +1,7 @@
 import { debug } from "../../debug"
 import * as node_fetch from "node-fetch"
+import { Agent } from "http"
+import * as HttpsProxyAgent from "https-proxy-agent"
 import * as v from "voca"
 
 import {
@@ -248,6 +250,16 @@ export class BitBucketServerAPI {
 
     const url = `${this.repoCredentials.host}/${path}`
     this.d(`${method} ${url}`)
+
+    // Allow using a proxy configured through environmental variables
+    // Remember that to avoid the error "Error: self signed certificate in certificate chain"
+    // you should also do: "export NODE_TLS_REJECT_UNAUTHORIZED=0". See: https://github.com/request/request/issues/2061
+    let agent: Agent | undefined = undefined
+    let proxy = process.env.http_proxy || process.env.https_proxy
+    if (proxy) {
+      agent = new HttpsProxyAgent(proxy)
+    }
+
     return this.fetch(
       url,
       {
@@ -257,6 +269,7 @@ export class BitBucketServerAPI {
           "Content-Type": "application/json",
           ...headers,
         },
+        agent,
       },
       suppressErrors
     )
