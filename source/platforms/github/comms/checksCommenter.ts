@@ -1,5 +1,5 @@
 import { GitHubAPI } from "../GitHubAPI"
-import { DangerResults, isEmptyResults, emptyResults } from "../../../dsl/DangerResults"
+import { DangerResults, isEmptyResults, isMarkdownOnlyResults } from "../../../dsl/DangerResults"
 import { ExecutorOptions } from "../../../runner/Executor"
 import { resultsToCheck } from "./checks/resultsToCheck"
 import { getAccessTokenForInstallation } from "./checks/githubAppSupport"
@@ -92,22 +92,28 @@ export const GitHubChecksCommenter = (api: GitHubAPI) => {
   }
 }
 
-export const tweetSizedResultsFromResults = (results: DangerResults, checksResponse: any): DangerResults =>
-  isEmptyResults(results)
-    ? emptyResults()
-    : {
-        warnings: [],
-        messages: [],
-        fails: [],
-        markdowns: [
-          {
-            message:
-              "Danger run resulted in " +
-              messageFromResults(results) +
-              `; to find out more, see the [checks page](${checksResponse.html_url}).`,
-          },
-        ],
-      }
+export const tweetSizedResultsFromResults = (results: DangerResults, checksResponse: any): DangerResults => {
+  const allowMarkdowns = isMarkdownOnlyResults(results)
+  const isEmpty = isEmptyResults(results)
+
+  if (allowMarkdowns || isEmpty) {
+    return results
+  }
+
+  return {
+    warnings: [],
+    messages: [],
+    fails: [],
+    markdowns: [
+      {
+        message:
+          "Danger run resulted in " +
+          messageFromResults(results) +
+          `; to find out more, see the [checks page](${checksResponse.html_url}).`,
+      },
+    ],
+  }
+}
 
 const messageFromResults = (results: DangerResults): string => {
   const appendS = (arr: any[]) => (arr.length === 1 ? "" : "s")

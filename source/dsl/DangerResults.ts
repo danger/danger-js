@@ -211,6 +211,9 @@ export const emptyResults = (): DangerResults => ({ fails: [], markdowns: [], wa
 export const isEmptyResults = (results: DangerResults): boolean =>
   [...results.fails, ...results.warnings, ...results.messages, ...results.markdowns].length === 0
 
+export const isMarkdownOnlyResults = (results: DangerResults): boolean =>
+  results.markdowns.length > 0 && [...results.fails, ...results.warnings, ...results.messages].length === 0
+
 export function resultsIntoInlineResults(results: DangerResults): DangerInlineResults[] {
   // Here we iterate through all keys ("fails", "warnings", "messages", "markdowns") and for each violation
   // in given kind we produce new DangerInlineResult or append a violation to existing result. This is all

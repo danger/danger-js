@@ -29,11 +29,9 @@ it("deals with warnings", () => {
   )
 })
 
-it("deals with markdowns", () => {
+it("deals with *just* markdowns by returning the markdowns", () => {
   const newResults = tweetSizedResultsFromResults(markdownResults, checksResults)
-  expect(newResults.markdowns[0].message).toMatchInlineSnapshot(
-    `"Danger run resulted in 2 markdowns; to find out more, see the [checks page](https://gh.com/a)."`
-  )
+  expect(newResults.markdowns[0].message).toMatchInlineSnapshot(`"### Short Markdown Message1"`)
 })
 
 it("handles singular results", () => {
