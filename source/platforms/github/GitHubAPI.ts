@@ -88,7 +88,8 @@ export class GitHubAPI {
     const userID = await this.getUserID()
     const allComments: any[] = await this.getPullRequestComments()
     const dangerIDMessage = dangerIDToString(dangerID)
-
+    this.d(`User ID: ${userID}`)
+    this.d(`Looking at ${allComments.length} comments for ${dangerIDMessage}`)
     return allComments
       .filter(comment => v.includes(comment.body, dangerIDMessage))
       .filter(
