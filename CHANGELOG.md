@@ -13,6 +13,8 @@
 
 ## Master
 
+# 3.8.1
+
 - Adds additional logging to handleResultsPostingToPlatform - [@ashfurrow][]
 
 # 3.8.0
