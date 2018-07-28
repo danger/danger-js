@@ -216,8 +216,9 @@ export class Executor {
     // it allows transforming the results after doing its work.
     let results = originalResults
     if (this.platform.platformResultsPreMapper) {
-      this.d("Running platformResultsPreMapper")
+      this.d("Running platformResultsPreMapper:", this.platform.platformResultsPreMapper)
       results = await this.platform.platformResultsPreMapper(results, this.options)
+      this.d("Received results from platformResultsPreMapper:", results)
     }
 
     const { fails, warnings, messages, markdowns } = results
