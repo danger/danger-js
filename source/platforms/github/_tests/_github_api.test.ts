@@ -198,17 +198,18 @@ describe("Peril", () => {
     )
   })
 
-  describe("Allows setting DANGER_GITHUB_APP env variable", () => {
+  describe("Allows setting PERIL_BOT_USER_ID env variable", () => {
     beforeEach(() => {
-      process.env.DANGER_GITHUB_APP = "1"
+      process.env.PERIL_BOT_USER_ID = "1"
     })
 
     afterEach(() => {
-      delete process.env.DANGER_GITHUB_APP
+      delete process.env.PERIL_BOT_USER_ID
     })
 
     it("Makes getUserId return undefined", async () => {
-      expect(await api.getUserID()).toBeUndefined()
+      const userID = await api.getUserID()
+      expect(userID).toBe(1)
     })
   })
 })

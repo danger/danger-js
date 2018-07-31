@@ -91,14 +91,10 @@ export class GitHubAPI {
     this.d(`User ID: ${userID}`)
     this.d(`Looking at ${allComments.length} comments for ${dangerIDMessage}`)
     return allComments
-      .filter(comment => v.includes(comment.body, dangerIDMessage))
-      .filter(
-        comment =>
-          // When running as a GitHub App, the user ID is not accessible so we skip the check.
-          userID === undefined || comment.user.id === userID
-      )
-      .filter(comment => v.includes(comment.body, dangerSignaturePostfix))
-      .map(comment => comment.id)
+      .filter(comment => v.includes(comment.body, dangerIDMessage)) // does it contain the right danger ID?
+      .filter(comment => comment.user.id === userID) // Does it have the right user ID?
+      .filter(comment => v.includes(comment.body, dangerSignaturePostfix)) // Does it look like a danger message?
+      .map(comment => comment.id) // only return IDs
   }
 
   updateCommentWithID = async (id: number, comment: string): Promise<any> => {
@@ -131,9 +127,11 @@ export class GitHubAPI {
   }
 
   getUserID = async (): Promise<number | undefined> => {
-    if (process.env["DANGER_GITHUB_APP"]) {
-      return
+    const perilID = process.env["PERIL_BOT_USER_ID"]
+    if (perilID) {
+      return parseInt(perilID)
     }
+
     const info = await this.getUserInfo()
     return info.id
   }
