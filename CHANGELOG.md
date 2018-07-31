@@ -13,6 +13,10 @@
 
 ## Master
 
+# 3.8.2
+
+- Use the Peril Bot ID for the comment lookup checks - [@orta][]
+
 # 3.8.1
 
 - Adds additional logging to handleResultsPostingToPlatform - [@ashfurrow][]
