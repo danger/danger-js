@@ -48,23 +48,23 @@ describe("generating messages for BitBucket server", () => {
 describe("generating inline messages", () => {
   it("Shows the failing message", () => {
     const issues = inlineTemplate("blankID", failsResults, "File.swift", 5)
-    expect(issues).toContain("- ${noEntryEmoji} Failing message")
-    expect(issues).not.toContain("- ${warningEmoji}")
-    expect(issues).not.toContain("- ${messageEmoji}")
+    expect(issues).toContain(`- ${noEntryEmoji} Failing message`)
+    expect(issues).not.toContain(`- ${warningEmoji}`)
+    expect(issues).not.toContain(`- ${messageEmoji}`)
   })
 
   it("Shows the warning message", () => {
     const issues = inlineTemplate("blankID", warnResults, "File.swift", 5)
-    expect(issues).toContain("- ${warningEmoji} Warning message")
-    expect(issues).not.toContain("- ${noEntryEmoji}")
-    expect(issues).not.toContain("- ${messageEmoji}")
+    expect(issues).toContain(`- ${warningEmoji} Warning message`)
+    expect(issues).not.toContain(`- ${noEntryEmoji}`)
+    expect(issues).not.toContain(`- ${messageEmoji}`)
   })
 
   it("Shows the message", () => {
     const issues = inlineTemplate("blankID", messagesResults, "File.swift", 5)
-    expect(issues).toContain("- ${messageEmoji} Message")
-    expect(issues).not.toContain("- ${noEntryEmoji}")
-    expect(issues).not.toContain("- ${warningEmoji}")
+    expect(issues).toContain(`- ${messageEmoji} Message`)
+    expect(issues).not.toContain(`- ${noEntryEmoji}`)
+    expect(issues).not.toContain(`- ${warningEmoji}`)
   })
 
   it("Shows markdowns one after another", () => {
