@@ -232,8 +232,8 @@ export class BitBucketServer implements Platform {
     // So take the PR and attack the comment, I think :D
 
     const host = this.api.repoCredentials.host
-    const prURL = this.api.getPRBasePath()
-    return issue && issue.id && `${host}${prURL}/diff#comment-${issue.id}`
+    const { repoSlug, pullRequestID } = this.api.repoMetadata
+    return issue && issue.id && `${host}/${repoSlug}/pull-requests/${pullRequestID}/overview?commentId=${issue.id}`
   }
 
   getFileContents = this.api.getFileContents
