@@ -281,7 +281,7 @@ describe("setup", () => {
     await exec.handleResults(warnResults, dsl.git)
     expect(platform.updateStatus).toBeCalledWith(
       true,
-      "⚠️ Danger found some issues. Don't worry, everything is fixable.",
+      ":warning: Danger found some issues. Don't worry, everything is fixable.",
       undefined
     )
   })
@@ -296,7 +296,7 @@ describe("setup", () => {
     await exec.handleResults(failsResults, dsl.git)
     expect(platform.updateStatus).toBeCalledWith(
       false,
-      "⚠️ Danger found some issues. Don't worry, everything is fixable.",
+      ":warning: Danger found some issues. Don't worry, everything is fixable.",
       undefined
     )
   })
