@@ -19,10 +19,12 @@ import {
   template as githubResultsTemplate,
   inlineTemplate as githubResultsInlineTemplate,
   fileLineToString,
+  messageForResultWithIssues as githubMessageForResultWithIssues,
 } from "./templates/githubIssueTemplate"
 import {
   template as bitbucketServerTemplate,
   inlineTemplate as bitbucketServerInlineTemplate,
+  messageForResultWithIssues as bitbucketMessageForResultWithIssues,
 } from "./templates/bitbucketServerTemplate"
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
@@ -387,6 +389,8 @@ const messageForResults = (results: DangerResults) => {
   if (!results.fails.length && !results.warnings.length) {
     return `All green. ${compliment()}`
   } else {
-    return "⚠️ Danger found some issues. Don't worry, everything is fixable."
+    return process.env["DANGER_BITBUCKETSERVER_HOST"]
+      ? bitbucketMessageForResultWithIssues
+      : githubMessageForResultWithIssues
   }
 }
