@@ -13,6 +13,12 @@
 
 ## Master
 
+# 3.8.3
+
+- Fix error when trying to obtain a response json when the response code is 204 (which means that there is no response).
+  Fix link of the PR status, so it opens the web version of the PR, pointing to the Danger comment
+  [646](https://github.com/danger/danger-js/pull/646) - [@acecilia](https://github.com/acecilia)
+
 # 3.8.2
 
 - Use the Peril Bot ID for the comment lookup checks - [@orta][]
