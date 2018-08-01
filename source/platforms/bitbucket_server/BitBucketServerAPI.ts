@@ -181,7 +181,10 @@ export class BitBucketServerAPI {
   ) => {
     const res = await this.post(`rest/build-status/1.0/commits/${commitId}`, {}, payload)
     throwIfNotOk(res)
-    return await res.json()
+    // If the response status does not contain anything (error code === 204), do not return anything. Otherwise return the json response (seems like bitbucket server v4.10.1 returns 204 with empty response after setting the status)
+    if (res.status !== 204) {
+      return await res.json()
+    }
   }
 
   postPRComment = async (comment: string) => {
