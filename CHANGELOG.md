@@ -13,6 +13,11 @@
 
 ## Master
 
+# 3.8.3
+
+- Adapt emoji for Bitbucket server to fix "Database error has occurred"
+  [645](https://github.com/danger/danger-js/pull/645) - [@acecilia](https://github.com/acecilia)
+
 # 3.8.2
 
 - Use the Peril Bot ID for the comment lookup checks - [@orta][]
@@ -789,12 +794,12 @@ If these files are supposed to not exist, please update your PR body to include 
 
   ```js
   // In danger 0.16.0:
-  const fullDiff = danger.git.diffForFile('foo.js')
-  const addedLines = danger.git.diffForFile('foo.js', ['add'])
-  const removedLines = danger.git.diffForFile('foo.js', ['del'])
+  const fullDiff = danger.git.diffForFile("foo.js")
+  const addedLines = danger.git.diffForFile("foo.js", ["add"])
+  const removedLines = danger.git.diffForFile("foo.js", ["del"])
 
   // In the latest version:
-  const diff = await danger.git.diffForFile('foo.js')
+  const diff = await danger.git.diffForFile("foo.js")
   const fullDiff = diff.diff
   const addedLines = diff.added
   const removedLines = diff.removed
@@ -876,10 +881,10 @@ If these files are supposed to not exist, please update your PR body to include 
     if (packageDiff.dependencies) {
       const deps = packageDiff.dependencies
 
-      deps.added   // ["chalk"],
+      deps.added // ["chalk"],
       deps.removed // []
-      deps.after   // { "babel-polyfill": "^6.20.0", "chalk": "^1.1.1", "commander": "^2.9.0", "debug": "^2.6.0" }
-      deps.before  // { "babel-polyfill": "^6.20.0", "commander": "^2.9.0", "debug": "^2.6.0" }
+      deps.after // { "babel-polyfill": "^6.20.0", "chalk": "^1.1.1", "commander": "^2.9.0", "debug": "^2.6.0" }
+      deps.before // { "babel-polyfill": "^6.20.0", "commander": "^2.9.0", "debug": "^2.6.0" }
     }
     ```
 
