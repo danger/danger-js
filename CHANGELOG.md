@@ -13,6 +13,10 @@
 
 ## Master
 
+# 3.8.4
+
+- Exposes some internals on module resolution to Peril - [@orta][]
+
 # 3.8.3
 
 - Fix bitbucket error when trying to obtain a response json when the response code is 204 (which means that there is no
