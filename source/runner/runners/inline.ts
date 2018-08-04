@@ -51,13 +51,15 @@ const runAllScheduledTasks = async (results: DangerRuntimeContainer) => {
  * @param {string} originalContents optional, the JS pre-compiled
  * @param {DangerContext} environment the results of createDangerfileRuntimeEnvironment
  * @param {any | undefined} injectedObjectToExport an optional object for passing into default exports
+ * @param {func | undefined} moduleHandler an optional func for handling module resolution
  * @returns {DangerResults} the results of the run
  */
 export const runDangerfileEnvironment = async (
   filenames: string[],
   originalContents: (string | undefined)[],
   environment: DangerContext,
-  injectedObjectToExport?: any
+  injectedObjectToExport?: any,
+  moduleHandler?: (module: any, filename: string) => string | Promise<any>
 ): Promise<DangerResults> => {
   // We need to change the local runtime to support running JavaScript
   // and TypeScript through babel first. This is a simple implementation
@@ -71,11 +73,13 @@ export const runDangerfileEnvironment = async (
     module._compile(compiled, filename)
   }
 
+  const customRequire = moduleHandler || customModuleHandler
+
   // Tell all these filetypes to ge the custom compilation
-  require.extensions[".ts"] = customModuleHandler
-  require.extensions[".tsx"] = customModuleHandler
-  require.extensions[".js"] = customModuleHandler
-  require.extensions[".jsx"] = customModuleHandler
+  require.extensions[".ts"] = customRequire
+  require.extensions[".tsx"] = customRequire
+  require.extensions[".js"] = customRequire
+  require.extensions[".jsx"] = customRequire
 
   // Loop through all files and their potential contents, they edit
   // results inside the env, so no need to keep track ourselves
