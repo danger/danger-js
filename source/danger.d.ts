@@ -744,6 +744,19 @@ interface GitHubUtilsDSL {
     content: string,
     config: { title: string; open: boolean; owner: string; repo: string }
   ) => Promise<string>
+
+  /**
+   * An API for creating, or setting a label to an issue. Usable from Peril
+   * by adding an additional param for settings about a repo.
+   *
+   * @param {obj} labelConfig The config for the label
+   * @param {obj | undefined} Optional: the config for the issue
+   * @returns {Promise<undefined>} No return value.
+   */
+  createOrAddLabel: (
+    labelConfig: { name: string; color: string; description: string },
+    repoConfig?: { owner: string; repo: string; id: number }
+  ) => Promise<void>
 }
 
 /**

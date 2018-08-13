@@ -13,6 +13,9 @@
 
 ## Master
 
+- Adds a function to handle creating or adding a label on a PR/Issue. Works with both Danger and Peril:
+  `danger.github.createOrAddLabel` - [@orta][]
+
 # 3.8.4
 
 - Exposes some internals on module resolution to Peril - [@orta][]
