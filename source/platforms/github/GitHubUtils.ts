@@ -30,10 +30,41 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
     return sentence(hrefs)
   }
 
+  const createOrAddLabel = async (
+    labelConfig: { name: string; color: string; description: string },
+    repoConfig?: { owner: string; repo: string; id: number }
+  ) => {
+    // Create or re-use an existing label
+    const config = repoConfig || { owner: pr.base.repo.owner.login, repo: pr.base.repo.name, id: pr.number }
+
+    const existingLabels = await api.issues.getLabels({ owner: config.owner, repo: config.repo })
+    const mergeOnGreen = existingLabels.data.find((l: any) => l.name == labelConfig.name)
+
+    // Create the label if it doesn't exist yet
+    if (!mergeOnGreen) {
+      await api.issues.createLabel({
+        owner: config.owner,
+        repo: config.repo,
+        name: labelConfig.name,
+        color: labelConfig.color,
+        description: labelConfig.description,
+      })
+    }
+
+    // Then add the label
+    await api.issues.addLabels({
+      owner: config.owner,
+      repo: config.owner,
+      number: config.id,
+      labels: [labelConfig.name],
+    })
+  }
+
   return {
     fileLinks,
     fileContents: fileContentsGenerator(api, pr.head.repo.full_name, pr.head.ref),
     createUpdatedIssueWithID: createUpdatedIssueWithIDGenerator(api),
+    createOrAddLabel,
   }
 }
 
