@@ -139,7 +139,7 @@
     "https-proxy-agent": "^2.2.1",
     "hyperlinker": "^1.0.0",
     "jsome": "^2.3.25",
-    "json5": "^1.0.0",
+    "json5": "^2.0.0",
     "jsonpointer": "^4.0.1",
     "jsonwebtoken": "^8.2.1",
     "lodash.find": "^4.6.0",
