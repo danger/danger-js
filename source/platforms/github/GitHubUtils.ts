@@ -37,11 +37,18 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
     // Create or re-use an existing label
     const config = repoConfig || { owner: pr.base.repo.owner.login, repo: pr.base.repo.name, id: pr.number }
 
-    const existingLabels = await api.issues.getLabels({ owner: config.owner, repo: config.repo })
-    const mergeOnGreen = existingLabels.data.find((l: any) => l.name == labelConfig.name)
+    d("Checking for existing labels")
+    let label: any = null
+    try {
+      const existingLabels = await api.issues.getLabels({ owner: config.owner, repo: config.repo })
+      label = existingLabels.data.find((l: any) => l.name == labelConfig.name)
+    } catch (e) {
+      d("api.issues.getLabels gave an error", e)
+    }
 
     // Create the label if it doesn't exist yet
-    if (!mergeOnGreen) {
+    if (!label) {
+      d("no label found, creating a new one for this repo")
       await api.issues.createLabel({
         owner: config.owner,
         repo: config.repo,
@@ -51,10 +58,11 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
       })
     }
 
+    d("adding a label to this pr")
     // Then add the label
     await api.issues.addLabels({
       owner: config.owner,
-      repo: config.owner,
+      repo: config.repo,
       number: config.id,
       labels: [labelConfig.name],
     })

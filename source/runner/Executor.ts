@@ -61,29 +61,6 @@ export class Executor {
     public readonly options: ExecutorOptions
   ) {}
 
-  /** TODO: Next two functions aren't used in Danger, are they used in Peril? */
-
-  /** Mainly just a dumb helper because I can't do
-   * async functions in danger-run.js
-   * @param {string} file the path to run Danger from
-   * @returns {Promise<DangerResults>} The results of the Danger run
-   */
-  async setupAndRunDanger(file: string) {
-    const runtimeEnv = await this.setupDanger()
-    return await this.runDanger(file, runtimeEnv)
-  }
-
-  /**
-   *  Runs all of the operations for a running just Danger
-   * @returns {DangerfileRuntimeEnv} A runtime environment to run Danger in
-   */
-  async setupDanger(): Promise<DangerContext> {
-    const dsl = await jsonDSLGenerator(this.platform)
-    const realDSL = await jsonToDSL(dsl)
-    const context = contextForDanger(realDSL)
-    return await this.runner.createDangerfileRuntimeEnvironment(context)
-  }
-
   /**
    *  Runs all of the operations for a running just Danger
    * @param {string} file the filepath to the Dangerfile
@@ -124,7 +101,9 @@ export class Executor {
   async handleResults(results: DangerResults, git: GitDSL) {
     validateResults(results)
 
-    this.d(`Got Results back, current settings`, this.options)
+    this.d("Got results back:", results)
+    this.d(`Evaluator settings`, this.options)
+
     if (this.options.stdoutOnly || this.options.jsonOnly) {
       await this.handleResultsPostingToSTDOUT(results)
     } else {
