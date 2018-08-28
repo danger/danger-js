@@ -1,4 +1,4 @@
-import { contextForDanger, DangerContext } from "./Dangerfile"
+import { DangerContext } from "./Dangerfile"
 import { CISource } from "../ci_source/ci_source"
 import { Platform, Comment } from "../platforms/platform"
 import {
@@ -32,8 +32,6 @@ import { debug } from "../debug"
 import chalk from "chalk"
 import { sentence, href } from "./DangerUtils"
 import { DangerRunner } from "./runners/runner"
-import { jsonToDSL } from "./jsonToDSL"
-import { jsonDSLGenerator } from "./dslGenerator"
 import { GitDSL } from "../dsl/GitDSL"
 import { DangerDSL } from "../dsl/DangerDSL"
 
