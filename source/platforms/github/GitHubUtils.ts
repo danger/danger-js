@@ -30,49 +30,11 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
     return sentence(hrefs)
   }
 
-  const createOrAddLabel = async (
-    labelConfig: { name: string; color: string; description: string },
-    repoConfig?: { owner: string; repo: string; id: number }
-  ) => {
-    // Create or re-use an existing label
-    const config = repoConfig || { owner: pr.base.repo.owner.login, repo: pr.base.repo.name, id: pr.number }
-
-    d("Checking for existing labels")
-    let label: any = null
-    try {
-      const existingLabels = await api.issues.getLabels({ owner: config.owner, repo: config.repo })
-      label = existingLabels.data.find((l: any) => l.name == labelConfig.name)
-    } catch (e) {
-      d("api.issues.getLabels gave an error", e)
-    }
-
-    // Create the label if it doesn't exist yet
-    if (!label) {
-      d("no label found, creating a new one for this repo")
-      await api.issues.createLabel({
-        owner: config.owner,
-        repo: config.repo,
-        name: labelConfig.name,
-        color: labelConfig.color,
-        description: labelConfig.description,
-      })
-    }
-
-    d("adding a label to this pr")
-    // Then add the label
-    await api.issues.addLabels({
-      owner: config.owner,
-      repo: config.repo,
-      number: config.id,
-      labels: [labelConfig.name],
-    })
-  }
-
   return {
     fileLinks,
     fileContents: fileContentsGenerator(api, pr.head.repo.full_name, pr.head.ref),
     createUpdatedIssueWithID: createUpdatedIssueWithIDGenerator(api),
-    createOrAddLabel,
+    createOrAddLabel: createOrAddLabel(pr, api),
   }
 }
 
@@ -136,3 +98,45 @@ export const createUpdatedIssueWithIDGenerator = (api: GitHub) => async (
 }
 
 export default utils
+
+export const createOrAddLabel = (pr: GitHubPRDSL | undefined, api: GitHub) => async (
+  labelConfig: { name: string; color: string; description: string },
+  repoConfig?: { owner: string; repo: string; id: number }
+) => {
+  // Create or re-use an existing label
+  if (!repoConfig && !pr) {
+    throw new Error("To use createOrAddLabel without a PR you need to add a repoConfig arg")
+  }
+
+  const config = repoConfig || (pr && { owner: pr.base.repo.owner.login, repo: pr.base.repo.name, id: pr.number })!
+
+  d("Checking for existing labels")
+  let label: any = null
+  try {
+    const existingLabels = await api.issues.getLabels({ owner: config.owner, repo: config.repo })
+    label = existingLabels.data.find((l: any) => l.name == labelConfig.name)
+  } catch (e) {
+    d("api.issues.getLabels gave an error", e)
+  }
+
+  // Create the label if it doesn't exist yet
+  if (!label) {
+    d("no label found, creating a new one for this repo")
+    await api.issues.createLabel({
+      owner: config.owner,
+      repo: config.repo,
+      name: labelConfig.name,
+      color: labelConfig.color,
+      description: labelConfig.description,
+    })
+  }
+
+  d("adding a label to this pr")
+  // Then add the label
+  await api.issues.addLabels({
+    owner: config.owner,
+    repo: config.repo,
+    number: config.id,
+    labels: [labelConfig.name],
+  })
+}
