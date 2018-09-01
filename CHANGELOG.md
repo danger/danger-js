@@ -13,6 +13,10 @@
 
 ## Master
 
+# 3.8.9
+
+- Adds debug logs to the vm2 runner used in Peril - [@orta][]
+
 # 3.8.5 - 3.8.8
 
 - Adds a function to handle creating or adding a label on a PR/Issue. Works with both Danger and Peril:
