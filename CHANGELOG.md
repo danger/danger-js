@@ -13,6 +13,8 @@
 
 ## Master
 
+- Adds CI integration for Concourse - [@cwright017][]
+
 # 3.8.9
 
 - Adds debug logs to the vm2 runner used in Peril - [@orta][]
@@ -1223,3 +1225,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@codestergit]: https://github.com/codestergit
 [@danielrosenwasser]: https://github.com/DanielRosenwasser
 [@joshacheson]: https://github.com/joshacheson
+[@cwright017]: https://github.com/Cwright017
