@@ -3,6 +3,7 @@ import { BuddyBuild } from "./BuddyBuild"
 import { Buildkite } from "./Buildkite"
 import { Circle } from "./Circle"
 import { Codeship } from "./Codeship"
+import { Concourse } from "./Concourse"
 import { DockerCloud } from "./DockerCloud"
 import { Drone } from "./Drone"
 import { FakeCI } from "./Fake"
@@ -32,6 +33,7 @@ const providers = [
   Bitrise,
   TeamCity,
   Screwdriver,
+  Concourse,
 ]
 
 // Mainly used for Dangerfile linting
@@ -50,6 +52,7 @@ const realProviders = [
   VSTS,
   TeamCity,
   Screwdriver,
+  Concourse,
 ]
 
 export { providers, realProviders }
