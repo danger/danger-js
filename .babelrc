@@ -1,4 +1,4 @@
 {
-  "presets": ["es2015", "stage-3"],
-  "plugins": ["syntax-async-functions", "transform-regenerator", "transform-flow-strip-types"]
+  "presets": [["@babel/preset-env", { "targets": { "node": "6" }, "useBuiltIns": "usage" }]],
+  "plugins": ["@babel/plugin-transform-flow-strip-types"]
 }

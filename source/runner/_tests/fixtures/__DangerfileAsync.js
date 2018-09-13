@@ -1,5 +1,3 @@
-import "babel-polyfill"
-
 const asyncAction = () =>
 	new Promise(res => {
 		setTimeout(() => {
