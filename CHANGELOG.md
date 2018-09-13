@@ -13,6 +13,15 @@
 
 ## Master
 
+# 4.0.0
+
+- Updates Danger's runtime to work with Babel 7 - [@adamnoakes][]
+
+  **Breaking:** 3.9.0 was the last version to support inline transpilation via Babel 6. Danger doesn't specify babel in
+  its dependencies, so this warning won't show anywhere else.
+
+# 3.9.0
+
 - Adds CI integration for Concourse - [@cwright017][]
 
 # 3.8.9
@@ -1226,3 +1235,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@danielrosenwasser]: https://github.com/DanielRosenwasser
 [@joshacheson]: https://github.com/joshacheson
 [@cwright017]: https://github.com/Cwright017
+[@adamnoakes]: https://github.com/adamnoakes
