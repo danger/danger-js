@@ -20,6 +20,8 @@
   **Breaking:** 3.9.0 was the last version to support inline transpilation via Babel 6. Danger doesn't specify babel in
   its dependencies, so this warning won't show anywhere else.
 
+- Fixed a bug where Danger was throwing an error when removing any existing messages [@stefanbuck][]
+
 # 3.9.0
 
 - Adds CI integration for Concourse - [@cwright017][]

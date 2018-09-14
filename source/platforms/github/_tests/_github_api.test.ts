@@ -147,6 +147,42 @@ describe("API testing", () => {
     expect.assertions(1)
     await expect(api.postInlinePRComment("", "", "", 0)).rejects.toEqual(expectedJSON)
   })
+
+  it("deleteCommentWithID", async () => {
+    api.fetch = jest.fn().mockReturnValue({ status: 204 })
+    await api.deleteCommentWithID(123)
+
+    expect(api.fetch).toHaveBeenCalledWith(
+      "https://api.github.com/repos/artsy/emission/issues/comments/123",
+      {
+        body: null,
+        headers: {
+          Authorization: "token ABCDE",
+          "Content-Type": "application/json",
+        },
+        method: "DELETE",
+      },
+      undefined
+    )
+  })
+
+  it("deleteInlineCommentWithID", async () => {
+    api.fetch = jest.fn().mockReturnValue({ status: 204 })
+    await api.deleteInlineCommentWithID("123")
+
+    expect(api.fetch).toHaveBeenCalledWith(
+      "https://api.github.com/repos/artsy/emission/pulls/comments/123",
+      {
+        body: null,
+        headers: {
+          Authorization: "token ABCDE",
+          "Content-Type": "application/json",
+        },
+        method: "DELETE",
+      },
+      false
+    )
+  })
 })
 
 describe("Peril", () => {
