@@ -13,14 +13,16 @@
 
 ## Master
 
+# 4.0.1
+
+- Fixed a bug where Danger was throwing an error when removing any existing messages [@stefanbuck][]
+
 # 4.0.0
 
 - Updates Danger's runtime to work with Babel 7 - [@adamnoakes][]
 
   **Breaking:** 3.9.0 was the last version to support inline transpilation via Babel 6. Danger doesn't specify babel in
   its dependencies, so this warning won't show anywhere else.
-
-- Fixed a bug where Danger was throwing an error when removing any existing messages [@stefanbuck][]
 
 # 3.9.0
 
