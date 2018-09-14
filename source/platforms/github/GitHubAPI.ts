@@ -112,7 +112,7 @@ export class GitHubAPI {
 
   deleteCommentWithID = async (id: number): Promise<boolean> => {
     const repo = this.repoMetadata.repoSlug
-    const res = await this.api(`repos/${repo}/issues/comments/${id}`, {}, {}, "DELETE")
+    const res = await this.api(`repos/${repo}/issues/comments/${id}`, {}, null, "DELETE")
 
     //https://developer.github.com/v3/issues/comments/#response-5
     return Promise.resolve(res.status === 204)
@@ -120,7 +120,7 @@ export class GitHubAPI {
 
   deleteInlineCommentWithID = async (id: string): Promise<boolean> => {
     const repo = this.repoMetadata.repoSlug
-    const res = await this.api(`repos/${repo}/pulls/comments/${id}`, {}, {}, "DELETE", false)
+    const res = await this.api(`repos/${repo}/pulls/comments/${id}`, {}, null, "DELETE", false)
 
     //https://developer.github.com/v3/pulls/comments/#response-5
     return Promise.resolve(res.status === 204)
