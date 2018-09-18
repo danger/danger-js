@@ -155,7 +155,7 @@
     "pinpoint": "^1.1.0",
     "readline-sync": "^1.4.9",
     "require-from-string": "^2.0.2",
-    "rfc6902": "^2.2.2",
+    "rfc6902": "^3.0.0",
     "supports-hyperlinks": "^1.0.1",
     "vm2": "^3.6.0",
     "voca": "^1.4.0"
