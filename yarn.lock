@@ -6849,9 +6849,9 @@ retry@0.10.1:
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/retry/-/retry-0.10.1.tgz#e76388d217992c252750241d3d3956fed98d8ff4"
 
-rfc6902@^2.2.2:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/rfc6902/-/rfc6902-2.4.0.tgz#da188888602ce4fa0c36a5202b26b71a5184422a"
+rfc6902@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/rfc6902/-/rfc6902-3.0.0.tgz#87d0791c181ffef792dd95622c16fdd64e6262e6"
 
 right-align@^0.1.1:
   version "0.1.3"
