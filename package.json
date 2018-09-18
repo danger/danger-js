@@ -96,7 +96,7 @@
     "@babel/cli": "7.1.0",
     "@babel/core": "7.1.0",
     "@babel/plugin-transform-flow-strip-types": "7.0.0",
-    "@babel/plugin-transform-typescript": "7.0.0",
+    "@babel/plugin-transform-typescript": "7.1.0",
     "@babel/preset-env": "7.0.0",
     "@babel/traverse": "7.0.0",
     "@types/debug": "0.0.30",
