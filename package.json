@@ -93,7 +93,7 @@
   },
   "homepage": "https://github.com/danger/danger-js#readme",
   "devDependencies": {
-    "@babel/cli": "7.0.0",
+    "@babel/cli": "7.1.0",
     "@babel/core": "7.0.0",
     "@babel/plugin-transform-flow-strip-types": "7.0.0",
     "@babel/plugin-transform-typescript": "7.0.0",
