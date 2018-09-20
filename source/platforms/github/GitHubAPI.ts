@@ -1,9 +1,9 @@
-import * as GitHubNodeAPI from "@octokit/rest"
+import GitHubNodeAPI from "@octokit/rest"
 import { debug } from "../../debug"
 import * as node_fetch from "node-fetch"
 import * as parse from "parse-link-header"
 import * as v from "voca"
-import * as pLimit from "p-limit"
+import pLimit from "p-limit"
 
 import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
 

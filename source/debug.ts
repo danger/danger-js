@@ -1,4 +1,4 @@
-import * as debugModule from "debug"
+import debugModule from "debug"
 
 export const debug = (value: string) => {
   const d = debugModule(`danger:${value}`)

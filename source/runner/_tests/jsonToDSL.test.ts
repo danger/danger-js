@@ -1,6 +1,5 @@
 import { jsonToDSL } from "../jsonToDSL"
 import { DangerDSLJSONType } from "../../dsl/DangerDSL"
-import { GitDSL } from "../../dsl/GitDSL"
 
 /**
  * Mock everything that calls externaly
@@ -18,7 +17,7 @@ const foo = require("../../platforms/git/localGetDiff")
 foo.localGetDiff = jest.fn(() => Promise.resolve({}))
 
 describe("runner/jsonToDSL", () => {
-  let dsl
+  let dsl: any
   beforeEach(() => {
     dsl = {
       settings: {
@@ -40,7 +39,7 @@ describe("runner/jsonToDSL", () => {
   })
 
   it("should call LocalGit with correct base", async () => {
-    const outputDsl = await jsonToDSL(dsl as DangerDSLJSONType)
+    await jsonToDSL(dsl as DangerDSLJSONType)
     expect(foo.localGetDiff).toHaveBeenLastCalledWith("develop", "HEAD")
   })
 })

@@ -1,7 +1,7 @@
 import { Env } from "./ci_source"
 import { GitHubAPI } from "../platforms/github/GitHubAPI"
 import { GitHubPRDSL } from "../dsl/GitHubDSL"
-import * as find from "lodash.find"
+import find from "lodash.find"
 import {
   BitBucketServerAPI,
   bitbucketServerRepoCredentialsFromEnv,

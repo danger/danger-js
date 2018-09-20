@@ -12,8 +12,8 @@ interface ResponseMock {
 class TestServer {
   private port = 30001
   private hostname = "localhost"
-  private response: ResponseMock = null
-  private router = (req, res) => {
+  private response: ResponseMock = null as any
+  private router = (_req: any, res: any) => {
     res.statusCode = this.response && this.response.statusCode ? this.response.statusCode : 200
     res.setHeader(
       "Content-Type",
@@ -26,13 +26,13 @@ class TestServer {
   start = async (response: ResponseMock): Promise<void> => {
     this.response = response
     return new Promise<void>((resolve, reject) => {
-      this.server.listen(this.port, this.hostname, err => (err ? reject(err) : resolve()))
+      this.server.listen(this.port, this.hostname, (err: any) => (err ? reject(err) : resolve()))
     })
   }
   stop = async (): Promise<void> => {
-    this.response = null
+    this.response = null as any
     return new Promise<void>((resolve, reject) => {
-      this.server.close(err => (err ? reject(err) : resolve()))
+      this.server.close((err: any) => (err ? reject(err) : resolve()))
     })
   }
 }

@@ -1,4 +1,4 @@
-import * as pinpoint from "pinpoint"
+import pinpoint from "pinpoint"
 import { DangerResults } from "../../../dsl/DangerResults"
 
 /** Returns Markdown results to post if an exception is raised during the danger run */

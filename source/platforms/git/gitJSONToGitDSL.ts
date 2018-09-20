@@ -1,9 +1,9 @@
 import * as os from "os"
-import * as parseDiff from "parse-diff"
+import parseDiff from "parse-diff"
 
-import * as includes from "lodash.includes"
-import * as isobject from "lodash.isobject"
-import * as keys from "lodash.keys"
+import includes from "lodash.includes"
+import isobject from "lodash.isobject"
+import keys from "lodash.keys"
 
 import * as jsonDiff from "rfc6902"
 import * as jsonpointer from "jsonpointer"

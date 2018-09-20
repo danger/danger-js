@@ -42,7 +42,7 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
 
 export const runDangerfileEnvironment = async (
   filenames: string[],
-  originalContents: string[] | undefined[],
+  originalContents: string[] | undefined[] | undefined,
   environment: any,
   injectedObjectToExport?: any
 ): Promise<DangerResults> => {

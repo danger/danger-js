@@ -1,5 +1,5 @@
 let mockDangerfilePath = ""
-jest.mock("fs", () => ({ existsSync: p => p === mockDangerfilePath }))
+jest.mock("fs", () => ({ existsSync: (p: any) => p === mockDangerfilePath }))
 
 import { dangerfilePath } from "../file-utils"
 

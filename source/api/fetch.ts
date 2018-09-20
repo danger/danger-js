@@ -57,7 +57,7 @@ export function api(
 
     d(output.join(" "))
   }
-  const originalFetch: any = node_fetch
+  const originalFetch = node_fetch.default
   return originalFetch(url, init).then(async (response: node_fetch.Response) => {
     // Handle failing errors
     if (!suppressErrorReporting && !response.ok) {

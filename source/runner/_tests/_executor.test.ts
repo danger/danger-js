@@ -6,7 +6,6 @@ import {
   warnResults,
   inlineWarnResults,
   failsResults,
-  inlineRegularResults,
   inlineFailResults,
   inlineMessageResults,
   inlineMultipleWarnResults,
@@ -17,7 +16,6 @@ import { jsonDSLGenerator } from "../dslGenerator"
 import { jsonToDSL } from "../jsonToDSL"
 import { DangerDSLType } from "../../dsl/DangerDSL"
 import { singleViolationSingleFileResults } from "../../dsl/_tests/fixtures/ExampleDangerResults"
-import { Comment } from "../../platforms/platform"
 import { inlineTemplate } from "../templates/githubIssueTemplate"
 import { resultsIntoInlineResults, DangerResults, inlineResultsIntoResults } from "../../dsl/DangerResults"
 
@@ -28,7 +26,7 @@ const defaultConfig = {
   dangerID: "123",
 }
 
-const defaultDsl = (platform): Promise<DangerDSLType> => {
+const defaultDsl = (platform: any): Promise<DangerDSLType> => {
   return jsonDSLGenerator(platform).then(jsonDSL => {
     jsonDSL.github = {
       pr: {
@@ -128,7 +126,7 @@ describe("setup", () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
     const dsl = await defaultDsl(platform)
-    const apiFailureMock = jest.fn().mockReturnValue(new Promise<any>((resolve, reject) => reject()))
+    const apiFailureMock = jest.fn().mockReturnValue(new Promise<any>((_, reject) => reject()))
     platform.createInlineComment = apiFailureMock
 
     let results = await exec.sendInlineComments(singleViolationSingleFileResults, dsl.git, [])

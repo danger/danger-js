@@ -1,5 +1,5 @@
-import * as parseDiff from "parse-diff"
-import * as includes from "lodash.includes"
+import parseDiff from "parse-diff"
+import includes from "lodash.includes"
 import { GitCommit } from "../../dsl/Commit"
 import { GitJSONDSL } from "../../dsl/GitDSL"
 

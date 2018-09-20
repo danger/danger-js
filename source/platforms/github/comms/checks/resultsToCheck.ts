@@ -12,7 +12,7 @@ import {
   template as githubResultsTemplate,
   inlineTemplate as githubResultsInlineTemplate,
 } from "../../../../runner/templates/githubIssueTemplate"
-import * as GitHubNodeAPI from "@octokit/rest"
+import GitHubNodeAPI from "@octokit/rest"
 import { debug } from "../../../../debug"
 
 const d = debug("GitHub::ResultsToCheck")
