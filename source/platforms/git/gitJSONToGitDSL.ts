@@ -6,8 +6,8 @@ import isobject from "lodash.isobject"
 import keys from "lodash.keys"
 
 import * as jsonDiff from "rfc6902"
-import * as jsonpointer from "jsonpointer"
-import * as JSON5 from "json5"
+import jsonpointer from "jsonpointer"
+import JSON5 from "json5"
 
 import { GitDSL, JSONPatchOperation, GitJSONDSL, StructuredDiff } from "../../dsl/GitDSL"
 

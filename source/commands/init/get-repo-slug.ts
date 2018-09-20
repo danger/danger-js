@@ -1,5 +1,5 @@
-import * as parseGitConfig from "parse-git-config"
-import * as parseGithubURL from "parse-github-url"
+import parseGitConfig from "parse-git-config"
+import parseGithubURL from "parse-github-url"
 
 export const getRepoSlug = () => {
   const config = parseGitConfig.sync()

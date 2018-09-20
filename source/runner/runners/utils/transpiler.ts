@@ -1,6 +1,6 @@
 import * as fs from "fs"
 import * as path from "path"
-import * as JSON5 from "json5"
+import JSON5 from "json5"
 import { debug } from "../../../debug"
 
 let hasNativeTypeScript = false
