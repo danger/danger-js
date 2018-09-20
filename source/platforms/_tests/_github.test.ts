@@ -51,18 +51,13 @@ jest.mock("../github/GitHubAPI", () => {
   return { GitHubAPI: mockGitHubAPI }
 })
 
-import { GitHub } from "../GitHub"
+import { GitHub, GitHubType } from "../GitHub"
 import { GitHubAPI } from "../github/GitHubAPI"
 
-import { GitCommit } from "../../dsl/Commit"
-import { FakeCI } from "../../ci_source/providers/Fake"
-import * as os from "os"
 import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 
-const EOL = os.EOL
-
 describe("getPlatformDSLRepresentation", () => {
-  let github: GitHub
+  let github: GitHubType
 
   beforeEach(() => {
     github = GitHub(new GitHubAPI({} as RepoMetaData))

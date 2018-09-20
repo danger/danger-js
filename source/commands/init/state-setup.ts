@@ -1,6 +1,6 @@
-import * as readlineSync from "readline-sync"
-import * as supportsHyperlinks from "supports-hyperlinks"
-import * as hyperLinker from "hyperlinker"
+import readlineSync from "readline-sync"
+import supportsHyperlinks from "supports-hyperlinks"
+import hyperLinker from "hyperlinker"
 import chalk from "chalk"
 
 import { basename } from "path"

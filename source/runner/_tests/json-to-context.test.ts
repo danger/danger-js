@@ -1,4 +1,3 @@
-import { DangerContext } from "../Dangerfile"
 import { jsonToContext } from "../json-to-context"
 
 jest.mock("../jsonToDSL.ts")
@@ -17,9 +16,9 @@ const jsonToDSLMock = require("../jsonToDSL")
 const bar = require("../Dangerfile")
 
 describe("runner/json-to-context", () => {
-  let jsonString
-  let program
-  let context
+  let jsonString: any
+  let program: any
+  let context: any
   beforeEach(async () => {
     jsonToDSLMock.jsonToDSL = jest.fn(() => Promise.resolve({ danger: "" }))
     bar.contextForDanger = jest.fn(() => Promise.resolve({ danger: "" }))

@@ -2,7 +2,7 @@ import { href, sentence } from "../DangerUtils"
 
 describe("sentence()", () => {
   it("handles falsy input", () => {
-    expect(sentence(null)).toEqual("")
+    expect(sentence(null as any)).toEqual("")
   })
   it("handles empty array", () => {
     expect(sentence([])).toEqual("")

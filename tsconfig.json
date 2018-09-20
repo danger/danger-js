@@ -11,6 +11,7 @@
     "noUnusedLocals": true,
     "noImplicitThis": true,
     "noUnusedParameters": true,
+    "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "pretty": true,

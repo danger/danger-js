@@ -4,7 +4,7 @@ import { readFileSync } from "fs"
 import { resolve } from "path"
 
 const fixtures = resolve(__dirname, "..", "..", "_tests", "fixtures")
-const fixuredData = path => JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString())
+const fixuredData = (path: string) => JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString())
 const pr = fixuredData("github_pr.json")
 const apiFake = {
   repos: {

@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 import chalk from "chalk"
-import * as program from "commander"
+import program from "commander"
 
 import { getPlatformForEnv } from "../platforms/platform"
 import { Executor, ExecutorOptions } from "../runner/Executor"

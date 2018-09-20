@@ -1,7 +1,7 @@
 import * as fs from "fs"
 
 import { debug } from "../../debug"
-import * as _require from "require-from-string"
+import _require from "require-from-string"
 
 import { DangerResults, DangerRuntimeContainer } from "../../dsl/DangerResults"
 import { DangerContext } from "../../runner/Dangerfile"
@@ -56,7 +56,7 @@ const runAllScheduledTasks = async (results: DangerRuntimeContainer) => {
  */
 export const runDangerfileEnvironment = async (
   filenames: string[],
-  originalContents: (string | undefined)[],
+  originalContents: (string | undefined)[] | undefined,
   environment: DangerContext,
   injectedObjectToExport?: any,
   moduleHandler?: (module: any, filename: string) => string | Promise<any>

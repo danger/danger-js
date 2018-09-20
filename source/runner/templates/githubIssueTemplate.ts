@@ -1,4 +1,4 @@
-import * as v from "voca"
+import v from "voca"
 
 import { DangerResults } from "../../dsl/DangerResults"
 import { Violation, isInline } from "../../dsl/Violation"

@@ -1,5 +1,5 @@
 import { debug } from "../../debug"
-import * as JSON5 from "json5"
+import JSON5 from "json5"
 
 import { spawn } from "child_process"
 import { GitCommit } from "../../dsl/Commit"

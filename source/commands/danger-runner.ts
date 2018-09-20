@@ -1,11 +1,11 @@
 #! /usr/bin/env node
 
 import setSharedArgs from "./utils/sharedDangerfileArgs"
-import * as nodeCleanup from "node-cleanup"
+import nodeCleanup from "node-cleanup"
 
-import * as program from "commander"
+import program from "commander"
 import { debug } from "../debug"
-import * as getSTDIN from "get-stdin"
+import getSTDIN from "get-stdin"
 import chalk from "chalk"
 
 import inline from "../runner/runners/inline"

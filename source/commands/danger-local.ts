@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-import * as program from "commander"
+import program from "commander"
 
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import { runRunner } from "./ci/runner"

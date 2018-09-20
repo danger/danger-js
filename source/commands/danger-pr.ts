@@ -1,8 +1,8 @@
 #! /usr/bin/env node
 
-import * as program from "commander"
+import program from "commander"
 import { debug } from "../debug"
-import * as jsome from "jsome"
+import jsome from "jsome"
 
 import { FakeCI } from "../ci_source/providers/Fake"
 import { pullRequestParser } from "../platforms/pullRequestParser"

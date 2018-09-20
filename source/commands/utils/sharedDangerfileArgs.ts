@@ -1,4 +1,4 @@
-import * as program from "commander"
+import program from "commander"
 import chalk from "chalk"
 
 process.on("unhandledRejection", function(reason: string, _p: any) {

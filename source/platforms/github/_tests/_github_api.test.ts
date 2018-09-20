@@ -1,9 +1,8 @@
 import { FakeCI } from "../../../ci_source/providers/Fake"
 import { GitHubAPI } from "../GitHubAPI"
 import { requestWithFixturedJSON } from "../../_tests/_github.test"
-import { Comment } from "../../platform"
 
-const fetchJSON = (api, params): Promise<any> => {
+const fetchJSON = (api: any, params: any): Promise<any> => {
   return Promise.resolve({
     ok: true,
     json: () =>
@@ -14,7 +13,7 @@ const fetchJSON = (api, params): Promise<any> => {
   })
 }
 
-const fetchErrorJSON = (api, params): Promise<any> => {
+const fetchErrorJSON = (api: any, params: any): Promise<any> => {
   return Promise.resolve({
     ok: false,
     json: () =>
@@ -25,7 +24,7 @@ const fetchErrorJSON = (api, params): Promise<any> => {
   })
 }
 
-const fetchText = (api, params): Promise<any> => {
+const fetchText = (api: any, params: any): Promise<any> => {
   return Promise.resolve({
     ok: true,
     text: () =>
@@ -38,7 +37,7 @@ const fetchText = (api, params): Promise<any> => {
   })
 }
 
-const fetch = (api, params): Promise<any> => {
+const fetch = (api: any, params: any): Promise<any> => {
   return Promise.resolve({
     api,
     ...params,
@@ -196,7 +195,7 @@ describe("Peril", () => {
   })
 
   it("Allows setting additional headers", async () => {
-    const request = await api.get("user")
+    await api.get("user")
     expect(api.fetch).toHaveBeenCalledWith(
       "https://api.github.com/user",
       {
@@ -215,7 +214,7 @@ describe("Peril", () => {
   it("Merges two Accept headers", async () => {
     api.additionalHeaders = { Accept: "application/vnd.github.machine-man-preview+json" }
 
-    const request = await api.get("user", {
+    await api.get("user", {
       Accept: "application/vnd.github.v3.diff",
     })
 
