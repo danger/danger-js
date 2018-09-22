@@ -13,6 +13,8 @@
 
 ## Master
 
+# 4.0.1
+
 - Fixed a bug where Danger would fail to update status when there are no failures or messages [@johansteffner][]
 
 # 4.0.1
