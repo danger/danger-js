@@ -210,6 +210,8 @@ export class Executor {
     const dangerID = this.options.dangerID
     const failed = fails.length > 0
 
+    let issueURL = undefined
+
     if (failureCount + messageCount === 0) {
       console.log("No issues or messages were sent. Removing any existing messages.")
       await this.platform.deleteMainComment(dangerID)
@@ -234,7 +236,6 @@ export class Executor {
       const regular = regularResults(results)
       const mergedResults = sortResults(mergeResults(regular, inlineLeftovers))
 
-      let issueURL = undefined
       // If danger have no comments other than inline to update. Just delete previous main comment.
       if (isEmptyResults(mergedResults)) {
         this.platform.deleteMainComment(dangerID)
@@ -246,18 +247,18 @@ export class Executor {
         issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
         console.log(`Feedback: ${issueURL}`)
       }
+    }
 
-      const urlForInfo = issueURL || this.ciSource.ciRunURL
-      const successPosting = await this.platform.updateStatus(!failed, messageForResults(results), urlForInfo)
-      if (!successPosting && this.options.verbose) {
-        console.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
-        console.log("If the build fails, then danger will use a failing exit code.")
-      }
+    const urlForInfo = issueURL || this.ciSource.ciRunURL
+    const successPosting = await this.platform.updateStatus(!failed, messageForResults(results), urlForInfo)
+    if (!successPosting && this.options.verbose) {
+      console.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
+      console.log("If the build fails, then danger will use a failing exit code.")
+    }
 
-      if (!successPosting && failed) {
-        this.d("Failing the build due to handleResultsPostingToPlatform not successfully setting a commit status")
-        process.exitCode = 1
-      }
+    if (!successPosting && failed) {
+      this.d("Failing the build due to handleResultsPostingToPlatform not successfully setting a commit status")
+      process.exitCode = 1
     }
 
     // More info, is more info.

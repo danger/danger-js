@@ -269,6 +269,17 @@ describe("setup", () => {
     expect(platform.deleteInlineComment).toHaveBeenCalledTimes(2)
   })
 
+  it("Updates the status with success for a passed empty results", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    platform.updateOrCreateComment = jest.fn()
+    platform.updateStatus = jest.fn()
+
+    await exec.handleResults(emptyResults, dsl.git)
+    expect(platform.updateStatus).toBeCalledWith(true, jasmine.any(String), undefined)
+  })
+
   it("Updates the status with success for a passed results", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
