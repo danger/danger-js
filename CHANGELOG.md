@@ -13,6 +13,8 @@
 
 ## Master
 
+- Fixed a bug where Danger would fail to update status when there are no failures or messages [@johansteffner][]
+
 # 4.0.1
 
 - Fixed a bug where Danger was throwing an error when removing any existing messages [@stefanbuck][]
@@ -1240,3 +1242,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@joshacheson]: https://github.com/joshacheson
 [@cwright017]: https://github.com/Cwright017
 [@adamnoakes]: https://github.com/adamnoakes
+[@johansteffner]: https://github.com/johansteffner
