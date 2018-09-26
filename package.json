@@ -39,6 +39,9 @@
       "git add"
     ]
   },
+  "pkg": {
+    "scripts": "distribution/**/*.js"
+  },
   "prettier": {
     "printWidth": 120,
     "semi": false,
@@ -60,6 +63,7 @@
     "build:pretty-types": "yarn prettier --write distribution/danger.d.ts; yarn prettier --parser flow distribution/danger.js.flow --write",
     "build:watch": "tsc -w",
     "link": "yarn run build && chmod +x distribution/commands/danger.js && npm link",
+    "package": "yarn run build; yarn run pkg . --output brew-distribution/danger; zip -j danger-macos.zip brew-distribution/danger; shasum -a 256 danger-macos.zip",
     "declarations": "ts-node ./scripts/create-danger-dts.ts",
     "docs:cp_defs": "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/@octokit/rest/index.d.ts docs/docs_generate/github.d.ts",
     "docs": "yarn run docs:cp_defs; yarn typedoc --ignoreCompilerErrors --mode modules --json docs/js_ref_dsl_docs.json --includeDeclarations source",
@@ -108,6 +112,8 @@
     "lint-staged": "^7.3.0",
     "madge": "^3.2.0",
     "prettier": "^1.14.3",
+    "pkg": "^4.3.4",
+    "prettier": "^1.14.2",
     "release-it": "^7.6.1",
     "shx": "^0.3.2",
     "ts-jest": "^23.10.3",

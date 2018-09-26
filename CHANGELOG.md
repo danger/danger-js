@@ -13,6 +13,8 @@
 
 ## Master
 
+- Supports installation using Homebrew [@thii][]
+
 # 4.2.1
 
 - Adds a fallback to `GITHUB_TOKEN` if it's in the ENV - orta
