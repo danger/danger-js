@@ -1,0 +1,6 @@
+{
+  "github": {
+    "release": true,
+    "assets": "brew-distribution/*.zip"
+  }
+}
