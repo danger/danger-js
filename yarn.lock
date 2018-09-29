@@ -6051,9 +6051,9 @@ package-json@^4.0.0:
     registry-url "^3.0.3"
     semver "^5.1.0"
 
-parse-diff@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/parse-diff/-/parse-diff-0.4.2.tgz#b173390e916564e8c70ccd37756047941e5b3ef2"
+parse-diff@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/parse-diff/-/parse-diff-0.5.0.tgz#decdfc4f48cb7694e2ee1c3b8fe00a2f46c8960e"
 
 parse-git-config@^2.0.2:
   version "2.0.2"
