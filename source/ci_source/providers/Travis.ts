@@ -19,8 +19,6 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *
  *  You need to add the `DANGER_GITHUB_API_TOKEN` environment variable, to do this,
  *  go to your repo's settings, which should look like: `https://travis-ci.org/[user]/[repo]/settings`.
- *
- *  If you have an open source project, you should ensure "Display value in build log" enabled, so that PRs from forks work.
  */
 export class Travis implements CISource {
   constructor(private readonly env: Env) {}
