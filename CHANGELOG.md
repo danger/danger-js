@@ -12,6 +12,7 @@
 -->
 
 ## Master
+- Remove suggestion from docs and init tool to display GitHub API token in travis build logs [@mcomella][]
 
 # 4.0.1
 
@@ -1245,3 +1246,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@cwright017]: https://github.com/Cwright017
 [@adamnoakes]: https://github.com/adamnoakes
 [@johansteffner]: https://github.com/johansteffner
+[@mcomella]: https://github.com/mcomella/
