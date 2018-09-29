@@ -139,7 +139,7 @@
     "node-cleanup": "^2.1.2",
     "node-fetch": "^2.1.2",
     "p-limit": "^1.2.0",
-    "parse-diff": "^0.4.2",
+    "parse-diff": "^0.5.0",
     "parse-git-config": "^2.0.2",
     "parse-github-url": "^1.0.2",
     "parse-link-header": "^1.0.1",
