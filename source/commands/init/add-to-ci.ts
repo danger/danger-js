@@ -20,9 +20,6 @@ export const travis = async (ui: InitUI, state: InitState) => {
       highlight("DANGER_GITHUB_API_TOKEN") +
       " and the value is the GitHub Personal Access Token you just created."
   )
-  if (state.isAnOSSRepo) {
-    ui.say('As you have an OSS repo - make sure to have "Display value in build log" enabled.')
-  }
 
   ui.say("Next, you need to edit your `.travis.yml` to include `yarn danger ci`. If you already have")
   ui.say(
