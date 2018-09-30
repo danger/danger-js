@@ -757,6 +757,25 @@ interface GitHubUtilsDSL {
     labelConfig: { name: string; color: string; description: string },
     repoConfig?: { owner: string; repo: string; id: number }
   ) => Promise<void>
+  createOrUpdatePR: (
+    config: {
+      /** PR title */
+      title: string
+      /** PR body */
+      body: string
+      /** The danger in danger/danger-js - defaults to the PR base name if undefined */
+      owner?: string
+      /** The danger-js in danger/danger-js - defaults to the PR base repo if undefined */
+      repo?: string
+      /** A message for the commit */
+      commitMessage: string
+      /** The name of the branch on the repo */
+      newBranchName: string
+      /** Base branch for the new branch e.g. what should Danger create the new branch from */
+      baseBranch: string
+    },
+    fileMap: any
+  ) => Promise<any>
 }
 
 /**

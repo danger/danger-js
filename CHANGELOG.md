@@ -13,6 +13,47 @@
 
 ## Master
 
+- Adds the ability to send a PR from a Dangerfile easily.
+
+  ```ts
+  import { danger } from "danger"
+
+  export default async () => {
+    // This is a map of file to contents for things to change in the PR
+    const welcomePR = {
+      LICENSE: "[the MIT license]",
+      "README.md": "[The README content]",
+    }
+
+    // Creates a new branch called `welcome`, from `master`. Creates a commit with
+    // the changes above and the message "Sets up ...". Then sends a PR to `orta/new-repo`
+    // with the title "Welcome to ..." and the body "Here is ...".
+    await danger.github.utils.createOrUpdatePR(
+      {
+        title: "Welcome to [org]",
+        body: "Here is your new repo template files",
+        owner: "orta",
+        repo: "new-repo",
+        baseBranch: "master",
+        newBranchName: "welcome",
+        commitMessage: "Sets up the welcome package",
+      },
+      welcomePR
+    )
+  }
+  ```
+
+  OK, so this one is cool. This function will create/update an existing PR. You pass in a config object that defines;
+  the commit, the branch and the PR metadata and then this function will go and set all that up for you.
+
+  The second argument is a fileMap, this is an object like `{ "README.md": "[the content]" }` and it defines what files
+  should change in the commit. The files are completely changed to the content in the fileMap, so if you're making a
+  single line change - you need to submit the enfile file.
+
+  This is all based on my module
+  [memfs-or-file-map-to-github-branch](https://www.npmjs.com/package/memfs-or-file-map-to-github-branch) so if you need
+  a set of lower level APIs for PR/branch needs, `import` that and use it.
+
 # 4.0.1
 
 - Fixed a bug where Danger would fail to update status when there are no failures or messages [@johansteffner][]

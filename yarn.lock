@@ -625,7 +625,7 @@
     node-fetch "^2.1.1"
     url-template "^2.0.8"
 
-"@octokit/rest@^15.12.1":
+"@octokit/rest@15.12.1", "@octokit/rest@^15.12.1":
   version "15.12.1"
   resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-15.12.1.tgz#f0dc169f336f8fd05ae8d8c83371b2f0c0dd8de1"
   dependencies:
@@ -5407,6 +5407,12 @@ mem@^1.1.0:
   dependencies:
     mimic-fn "^1.0.0"
 
+memfs-or-file-map-to-github-branch@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/memfs-or-file-map-to-github-branch/-/memfs-or-file-map-to-github-branch-1.1.0.tgz#3ef5bec3a85ce4ae1bcfa7f33e27887d55d522fc"
+  dependencies:
+    "@octokit/rest" "15.12.1"
+
 memory-fs@^0.4.0:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/memory-fs/-/memory-fs-0.4.1.tgz#3a9a20b8462523e447cfbc7e8bb80ed667bfc552"
@@ -7028,7 +7034,7 @@ semver@5.4.1, semver@^5.0.3, semver@^5.1.0, semver@^5.3.0, semver@^5.4.1:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
 
-semver@5.5.1, semver@5.x, semver@^5.0.1:
+semver@5.5.1, semver@^5.0.1, semver@^5.5:
   version "5.5.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.5.1.tgz#7dfdd8814bdb7cabc7be0fb1d734cfb66c940477"
 
@@ -7686,9 +7692,9 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
-ts-jest@^23.10.2:
-  version "23.10.2"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-23.10.2.tgz#10212ec4aba3cb6c75578b09460589ee80cf527a"
+ts-jest@^23.10.3:
+  version "23.10.3"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-23.10.3.tgz#f42de669888dfd2795b1491016b1813230d553fa"
   dependencies:
     bs-logger "0.x"
     buffer-from "1.x"
@@ -7696,7 +7702,7 @@ ts-jest@^23.10.2:
     json5 "2.x"
     make-error "1.x"
     mkdirp "0.x"
-    semver "5.x"
+    semver "^5.5"
     yargs-parser "10.x"
 
 ts-node@^7.0.1:
