@@ -13,6 +13,8 @@
 
 ## Master
 
+# 4.1.0
+
 - Adds the ability to send a PR from a Dangerfile easily.
 
   ```ts
@@ -52,14 +54,11 @@
 
   This is all based on my module
   [memfs-or-file-map-to-github-branch](https://www.npmjs.com/package/memfs-or-file-map-to-github-branch) so if you need
-  a set of lower level APIs for PR/branch needs, `import` that and use it.
+  a set of lower level APIs for PR/branch needs, `import` that and use it. - [@orta][]
 
 # 4.0.1
 
 - Fixed a bug where Danger would fail to update status when there are no failures or messages [@johansteffner][]
-
-# 4.0.1
-
 - Fixed a bug where Danger was throwing an error when removing any existing messages [@stefanbuck][]
 
 # 4.0.0
