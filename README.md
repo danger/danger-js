@@ -96,7 +96,7 @@ Following [this commit](https://github.com/danger/danger-js/commit/a26ac3b3bd4f0
   `git pull`.
 - Modify `changelog.md`, adding a new `# [version]` heading under the `### Master` heading at the top of the file.
 - Commit both changes with the commit message **Version bump**.
-- Publish - `npm release [major/patch/minor]`.
+- Publish - `yarn release [major/patch/minor]`.
 
 :ship:
 
