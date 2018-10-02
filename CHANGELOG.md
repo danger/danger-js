@@ -13,6 +13,11 @@
 
 ## Master
 
+# 4.2.1
+
+- Adds a fallback to `GITHUB_TOKEN` if it's in the ENV - orta
+- There was some versioning faffing going on
+
 # 4.1.0
 
 - Adds the ability to send a PR from a Dangerfile easily.

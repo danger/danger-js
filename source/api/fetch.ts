@@ -31,7 +31,7 @@ export function api(
     }
 
     const showToken = process.env["DANGER_VERBOSE_SHOW_TOKEN"]
-    const token = process.env["DANGER_GITHUB_API_TOKEN"]
+    const token = process.env["DANGER_GITHUB_API_TOKEN"] || process.env["GITHUB_TOKEN"]
 
     if (init.headers) {
       for (const prop in init.headers) {
