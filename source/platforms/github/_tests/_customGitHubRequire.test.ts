@@ -1,4 +1,9 @@
-import { customGitHubResolveRequest, dangerPrefix, shouldUseGitHubOverride } from "../customGitHubRequire"
+import {
+  customGitHubResolveRequest,
+  dangerPrefix,
+  shouldUseGitHubOverride,
+  dangerRepresentationForPath,
+} from "../customGitHubRequire"
 
 jest.mock("../../../api/fetch")
 import { api } from "../../../api/fetch"
@@ -51,5 +56,47 @@ describe("customGitHubResolveRequest", () => {
 
     // It should return the transpiled module
     expect(result).toEqual({ hello: "world" })
+  })
+})
+
+describe("dangerRepresentationforPath", () => {
+  it("returns just the path with master and no repo with just a path", () => {
+    const path = "dangerfile.ts"
+    expect(dangerRepresentationForPath(path)).toEqual({
+      branch: "master",
+      dangerfilePath: "dangerfile.ts",
+      referenceString: "dangerfile.ts",
+      repoSlug: undefined,
+    })
+  })
+
+  it("returns the path and repo", () => {
+    const path = "orta/eigen/dangerfile.ts"
+    expect(dangerRepresentationForPath(path)).toEqual({
+      branch: "master",
+      dangerfilePath: "dangerfile.ts",
+      referenceString: "orta/eigen/dangerfile.ts",
+      repoSlug: "orta/eigen",
+    })
+  })
+
+  it("returns just the path when there is no repo reference", () => {
+    const path = "orta/eigen/dangerfile.ts@branch"
+    expect(dangerRepresentationForPath(path)).toEqual({
+      branch: "branch",
+      dangerfilePath: "dangerfile.ts",
+      referenceString: "orta/eigen/dangerfile.ts@branch",
+      repoSlug: "orta/eigen",
+    })
+  })
+
+  it("handles a branch with no repo ref", () => {
+    const path = "dangerfile.ts@branch"
+    expect(dangerRepresentationForPath(path)).toEqual({
+      branch: "branch",
+      dangerfilePath: "dangerfile.ts",
+      referenceString: "dangerfile.ts@branch",
+      repoSlug: undefined,
+    })
   })
 })

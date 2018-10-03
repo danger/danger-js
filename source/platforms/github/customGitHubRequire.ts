@@ -25,11 +25,16 @@ export interface RepresentationForURL {
  * for strings like: artsy/peril-settings/settings.json@branch
  */
 export const dangerRepresentationForPath = (value: string): RepresentationForURL => {
-  const [owner, repo, ...pathComponents] = value.split("@")[0].split("/")
+  const hasManySlashes = value.split("/").length > 2
+
+  const [owner, repo, ...pathComponents] = hasManySlashes
+    ? value.split("@")[0].split("/")
+    : [undefined, undefined, ...value.split("@")[0].split("/")]
+
   return {
     branch: value.includes("@") ? value.split("@")[1] : "master",
     dangerfilePath: pathComponents.join("/"),
-    repoSlug: `${owner}/${repo}`,
+    repoSlug: owner ? `${owner}/${repo}` : undefined,
     referenceString: value,
   }
 }
