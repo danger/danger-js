@@ -22,4 +22,7 @@ export interface CISource {
 
   /** Optional URL for the CI run, for a status update link */
   readonly ciRunURL?: string
+
+  /** Supports running without a Pull Request  */
+  readonly supportsSkippingPRDSL?: boolean
 }

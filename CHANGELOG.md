@@ -19,6 +19,8 @@
   `orta/peril-settings/file.ts` which grabs `file.ts` from `orta/peril-settings`.
 - Adds support for taking a GitHub Actions event JSON and exposing it in the `default export` function in the same way
   that Peril does it.
+- Adds a GitHubActions CI provider - it declares that it can skip the PR DSL so that Danger can also run against
+  issues/other events
 
 # 4.3.0
 
