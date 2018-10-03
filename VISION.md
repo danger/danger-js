@@ -1,6 +1,6 @@
 # Danger for JS
 
-Danger JS is a tool to creating complex per-project rules, and messages in Code Review. One of it's key aims is to be
+Danger JS is a tool to creating complex per-project rules, and messages in Code Review. One of its key aims is to be
 able to run on a server, and not need direct access to the filesystem to do its work.
 
 It was started in mid-2016, and has fleshed out into a considerable set of useful tools.
