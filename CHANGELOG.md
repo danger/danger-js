@@ -13,6 +13,9 @@
 
 ## Master
 
+- Adds support for running remote GitHub files via the `--dangerfile` argument. It supports urls like:
+  `orta/peril-settings/file.ts` which grabs `file.ts` from `orta/peril-settings`.
+
 # 4.2.1
 
 - Adds a fallback to `GITHUB_TOKEN` if it's in the ENV - orta

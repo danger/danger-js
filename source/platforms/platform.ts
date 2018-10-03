@@ -6,6 +6,7 @@ import { BitBucketServer } from "./BitBucketServer"
 import { BitBucketServerAPI, bitbucketServerRepoCredentialsFromEnv } from "./bitbucket_server/BitBucketServerAPI"
 import { DangerResults } from "../dsl/DangerResults"
 import { ExecutorOptions } from "../runner/Executor"
+import { DangerRunner } from "../runner/runners/runner"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any
@@ -43,6 +44,12 @@ export interface Platform extends PlatformCommunicator {
   getPlatformGitRepresentation: () => Promise<GitJSONDSL>
   /** Get the contents of a file at a path */
   getFileContents: (path: string, slug?: string, ref?: string) => Promise<string>
+  /** Optional: Wrap the danger evaluation with some of your code */
+  executeRuntimeEnvironment?: (
+    start: DangerRunner["runDangerfileEnvironment"],
+    dangerfilePath: string,
+    environment: any
+  ) => Promise<void>
 }
 
 // This is basically the commenting aspect of a platform, which allow us to

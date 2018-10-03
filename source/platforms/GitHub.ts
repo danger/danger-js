@@ -71,6 +71,7 @@ export const GitHub = (api: GitHubAPI) => {
     ...(GitHubChecksCommenter(api) || {}),
 
     getFileContents: api.fileContents,
+    executeRuntimeEnvironment,
   } as GitHubType
 }
 
@@ -81,4 +82,37 @@ export const githubJSONToGitHubDSL = (gh: GitHubJSONDSL, api: NodeGitHub): GitHu
     api,
     utils: GitHubUtils(gh.pr, api),
   }
+}
+
+import * as overrideRequire from "override-require"
+import { customGitHubResolveRequest, dangerPrefix, shouldUseGitHubOverride } from "./github/customGitHubRequire"
+import { DangerRunner } from "../runner/runners/runner"
+import { existsSync, readFileSync } from "fs"
+
+const executeRuntimeEnvironment = async (
+  start: DangerRunner["runDangerfileEnvironment"],
+  dangerfilePath: string,
+  environment: any
+) => {
+  const token = process.env["DANGER_GITHUB_API_TOKEN"] || process.env["GITHUB_TOKEN"]!
+  // Use custom module resolution to handle github urls instead of just fs access
+  const restoreOriginalModuleLoader = overrideRequire(shouldUseGitHubOverride, customGitHubResolveRequest(token))
+
+  // We need to validate that the
+  // dangerfile comes from the web, and do all the prefixing etc
+
+  let path: string
+  let content: string
+  if (existsSync(dangerfilePath)) {
+    path = dangerfilePath
+    content = readFileSync(dangerfilePath, "utf8")
+  } else {
+    path = dangerPrefix + dangerfilePath
+    content = await customGitHubResolveRequest(token)(dangerfilePath, { filename: dangerfilePath })
+  }
+
+  await start([path], [content], environment)
+
+  // Undo the runtime
+  restoreOriginalModuleLoader()
 }

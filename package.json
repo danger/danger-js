@@ -137,6 +137,7 @@
     "memfs-or-file-map-to-github-branch": "^1.1.0",
     "node-cleanup": "^2.1.2",
     "node-fetch": "^2.2.0",
+    "override-require": "^1.1.1",
     "p-limit": "^2.0.0",
     "parse-diff": "^0.5.1",
     "parse-git-config": "^2.0.3",

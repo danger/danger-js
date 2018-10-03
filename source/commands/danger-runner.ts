@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-import setSharedArgs from "./utils/sharedDangerfileArgs"
+import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import nodeCleanup from "node-cleanup"
 
 import program from "commander"
@@ -12,6 +12,9 @@ import inline from "../runner/runners/inline"
 import { dangerfilePath } from "./utils/file-utils"
 import { jsonToContext } from "../runner/json-to-context"
 import { DangerResults } from "../dsl/DangerResults"
+
+import getRuntimeCISource from "./utils/getRuntimeCISource"
+import { getPlatformForEnv, Platform } from "../platforms/platform"
 
 const d = debug("runner")
 
@@ -34,12 +37,16 @@ program
 
 const argvClone = process.argv.slice(0)
 setSharedArgs(program).parse(argvClone)
+
 d(`Started Danger runner with ${program.args}`)
 
 let foundDSL = false
 let runtimeEnv = {} as any
 
-const run = async (jsonString: string) => {
+const run = (config: SharedCLI) => async (jsonString: string) => {
+  const source = (config && config.source) || (await getRuntimeCISource(config))
+  const platform: Platform = (config && config.platform) || getPlatformForEnv(process.env, source)
+
   d("Got STDIN for Danger Run")
   foundDSL = true
   const dangerFile = dangerfilePath(program)
@@ -48,7 +55,13 @@ const run = async (jsonString: string) => {
   const context = await jsonToContext(jsonString, program)
   runtimeEnv = await inline.createDangerfileRuntimeEnvironment(context)
   d(`Evaluating ${dangerFile}`)
-  await inline.runDangerfileEnvironment([dangerFile], [undefined], runtimeEnv)
+
+  // Allow platforms to hook into the runtime environment instead
+  if (platform.executeRuntimeEnvironment) {
+    await platform.executeRuntimeEnvironment(inline.runDangerfileEnvironment, dangerFile, runtimeEnv)
+  } else {
+    await inline.runDangerfileEnvironment([dangerFile], [undefined], runtimeEnv)
+  }
 }
 
 // Wait till the end of the process to print out the results. Will
@@ -77,4 +90,4 @@ setTimeout(() => {
 }, 1000)
 
 // Start waiting on STDIN for the DSL
-getSTDIN().then(run)
+getSTDIN().then(run(program as any))
