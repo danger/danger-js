@@ -100,7 +100,6 @@ const executeRuntimeEnvironment = async (
 
   // We need to validate that the
   // dangerfile comes from the web, and do all the prefixing etc
-
   let path: string
   let content: string
   if (existsSync(dangerfilePath)) {
@@ -111,7 +110,16 @@ const executeRuntimeEnvironment = async (
     content = await customGitHubResolveRequest(token)(dangerfilePath, { filename: dangerfilePath })
   }
 
-  await start([path], [content], environment)
+  // If there's an event.json - we should always pass it inside the default export
+  // For PRs, people will probably ignore it because of `danger.github.pr` but
+  // it can't hurt to have the consistency.
+  let defaultExport = {}
+  if (existsSync("/github/workflow/event.json")) {
+    defaultExport = JSON.parse(readFileSync("/github/workflow/event.json", "utf8"))
+  }
+
+  // Actually start up[ the runtime evaluation
+  await start([path], [content], environment, defaultExport)
 
   // Undo the runtime
   restoreOriginalModuleLoader()

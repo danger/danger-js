@@ -13,10 +13,14 @@
 
 ## Master
 
+# 4.3.1
+
 - Adds support for running remote GitHub files via the `--dangerfile` argument. It supports urls like:
   `orta/peril-settings/file.ts` which grabs `file.ts` from `orta/peril-settings`.
+- Adds support for taking a GitHub Actions event JSON and exposing it in the `default export` function in the same way
+  that Peril does it.
 
-# 4.2.1
+# 4.3.0
 
 - Adds a fallback to `GITHUB_TOKEN` if it's in the ENV - orta
 - There was some versioning faffing going on
