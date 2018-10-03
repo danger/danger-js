@@ -42,9 +42,12 @@ describe("customGitHubResolveRequest", () => {
     const result = await resolver(module, parent)
 
     // It should make the right API call to
-    expect(apiGH).toBeCalledWith("repos/orta/peril-settings/contents/myapp/peril-resolver.js?ref=master", {
-      headers: { Authorization: "token 1231231231" },
-    })
+    expect(apiGH).toBeCalledWith(
+      "https://api.github.com/repos/orta/peril-settings/contents/myapp/peril-resolver.js?ref=master",
+      {
+        headers: { Authorization: "bearer 1231231231" },
+      }
+    )
 
     // It should return the transpiled module
     expect(result).toEqual({ hello: "world" })
