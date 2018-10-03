@@ -84,7 +84,7 @@ export const githubJSONToGitHubDSL = (gh: GitHubJSONDSL, api: NodeGitHub): GitHu
   }
 }
 
-import * as overrideRequire from "override-require"
+import overrideRequire from "override-require"
 import { customGitHubResolveRequest, dangerPrefix, shouldUseGitHubOverride } from "./github/customGitHubRequire"
 import { DangerRunner } from "../runner/runners/runner"
 import { existsSync, readFileSync } from "fs"
