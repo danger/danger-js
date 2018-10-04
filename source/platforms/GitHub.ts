@@ -85,9 +85,17 @@ export const githubJSONToGitHubDSL = (gh: GitHubJSONDSL, api: NodeGitHub): GitHu
 }
 
 import overrideRequire from "override-require"
-import { customGitHubResolveRequest, dangerPrefix, shouldUseGitHubOverride } from "./github/customGitHubRequire"
+import {
+  customGitHubResolveRequest,
+  dangerPrefix,
+  shouldUseGitHubOverride,
+  getGitHubFileContentsFromLocation,
+  dangerRepresentationForPath,
+} from "./github/customGitHubRequire"
 import { DangerRunner } from "../runner/runners/runner"
 import { existsSync, readFileSync } from "fs"
+import cleanDangerfile from "../runner/runners/utils/cleanDangerfile"
+import transpiler from "../runner/runners/utils/transpiler"
 
 const executeRuntimeEnvironment = async (
   start: DangerRunner["runDangerfileEnvironment"],
@@ -107,7 +115,24 @@ const executeRuntimeEnvironment = async (
     content = readFileSync(dangerfilePath, "utf8")
   } else {
     path = dangerPrefix + dangerfilePath
-    content = await customGitHubResolveRequest(token)(dangerfilePath, { filename: dangerfilePath })
+
+    const rep = dangerRepresentationForPath(dangerfilePath)
+    if (!rep.repoSlug) {
+      const msg = `if it is local, perhaps you have a typo? If it's using a remote file, it doesn't have a repo reference.`
+      throw new Error(`Could not find the Dangerfile at ${dangerfilePath} - ${msg}`)
+    }
+
+    const dangerfileContent = await getGitHubFileContentsFromLocation(token, rep, rep.repoSlug)
+    if (!dangerfileContent) {
+      const msg = `does a file exist at ${rep.dangerfilePath} in ${rep.repoSlug}?.`
+      throw new Error(`Could not find the Dangerfile at ${dangerfilePath} - ${msg}`)
+    }
+
+    // Chop off the danger import
+    const newDangerfile = cleanDangerfile(dangerfileContent)
+
+    // Cool, transpile it into something we can run
+    content = transpiler(newDangerfile, dangerfilePath)
   }
 
   // If there's an event.json - we should always pass it inside the default export

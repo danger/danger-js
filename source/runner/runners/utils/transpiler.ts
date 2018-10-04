@@ -49,7 +49,15 @@ export const checkForNodeModules = () => {
 
 export const typescriptify = (content: string): string => {
   const ts = require("typescript") // tslint:disable-line
-  const compilerOptions = JSON5.parse(fs.readFileSync("tsconfig.json", "utf8"))
+
+  // Support custom TSC options, but also fallback to defaults
+  let compilerOptions: any
+  if (fs.existsSync("tsconfig.json")) {
+    compilerOptions = JSON5.parse(fs.readFileSync("tsconfig.json", "utf8"))
+  } else {
+    compilerOptions = ts.getDefaultCompilerOptions()
+  }
+
   let result = ts.transpileModule(content, sanitizeTSConfig(compilerOptions))
   return result.outputText
 }

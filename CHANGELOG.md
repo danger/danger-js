@@ -21,6 +21,9 @@
   that Peril does it.
 - Adds a GitHubActions CI provider - it declares that it can skip the PR DSL so that Danger can also run against
   issues/other events
+- Handle remote transpilation of the initial Dangerfile correctly
+- Adds support for not include a tsconfig for typescript projects, danger will use the default config if it can't find
+  one in your project
 
 # 4.3.0
 
