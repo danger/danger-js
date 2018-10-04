@@ -65,7 +65,8 @@ export const GitHubChecksCommenter = (api: GitHubAPI) => {
   return {
     platformResultsPreMapper: async (results: DangerResults, options: ExecutorOptions): Promise<DangerResults> => {
       let token = api.token
-      if (!options.accessTokenIsGitHubApp) {
+      // Either it doesn't exist, or is a personal access token
+      if (!token || !token.startsWith("v1.")) {
         const custom = process.env.DANGER_JS_APP_INSTALL_ID ? getAuthWhenUsingDangerJSApp() : getCustomAppAuthFromEnv()
         token = await getAccessTokenForInstallation(custom.appID!, parseInt(custom.installID!), custom.key!)
         d("Created a custom access token: ", [custom.appID!, parseInt(custom.installID!), custom.key!, token])

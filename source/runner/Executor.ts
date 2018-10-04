@@ -44,8 +44,6 @@ export interface ExecutorOptions {
   verbose: boolean
   /** A unique ID to handle multiple Danger runs */
   dangerID: string
-  /** Is the access token from a GitHub App, and thus can have access to unique APIs (checks) without work */
-  accessTokenIsGitHubApp?: boolean
 }
 // This is still badly named, maybe it really should just be runner?
 
@@ -195,7 +193,7 @@ export class Executor {
     // it allows transforming the results after doing its work.
     let results = originalResults
     if (this.platform.platformResultsPreMapper) {
-      this.d("Running platformResultsPreMapper:", this.platform.platformResultsPreMapper)
+      this.d("Running platformResultsPreMapper:")
       results = await this.platform.platformResultsPreMapper(results, this.options)
       this.d("Received results from platformResultsPreMapper:", results)
     }
