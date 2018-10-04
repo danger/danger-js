@@ -79,7 +79,7 @@ export const GitHubChecksCommenter = (api: GitHubAPI) => {
       try {
         // If Danger succeeds at creating a checks API call, then we switch out
         // the results which go through to the issue commenter with a summary version.
-        const response = await api.postCheck(checkData, token!)
+        const response = await api.postCheckRun(checkData, token!)
         returnedResults = tweetSizedResultsFromResults(results, response)
         d("Got response on the checks API")
         d(JSON.stringify(response))

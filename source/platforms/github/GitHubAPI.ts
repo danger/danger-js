@@ -358,7 +358,7 @@ export class GitHubAPI {
     return res.ok
   }
 
-  postCheck = async (check: CheckOptions, token: string) => {
+  postCheckRun = async (check: CheckOptions, token: string) => {
     const repo = this.repoMetadata.repoSlug
     const res = await this.post(
       `repos/${repo}/check-runs`,
