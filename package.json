@@ -87,7 +87,7 @@
     "@babel/plugin-transform-typescript": "7.1.0",
     "@babel/preset-env": "7.1.0",
     "@babel/traverse": "7.1.0",
-    "@types/debug": "0.0.30",
+    "@types/debug": "0.0.31",
     "@types/get-stdin": "^5.0.1",
     "@types/jest": "^23.3.2",
     "@types/json5": "^0.0.30",
