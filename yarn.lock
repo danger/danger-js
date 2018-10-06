@@ -625,9 +625,23 @@
     node-fetch "^2.1.1"
     url-template "^2.0.8"
 
-"@octokit/rest@15.12.1", "@octokit/rest@^15.12.1":
+"@octokit/rest@15.12.1":
   version "15.12.1"
   resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-15.12.1.tgz#f0dc169f336f8fd05ae8d8c83371b2f0c0dd8de1"
+  dependencies:
+    before-after-hook "^1.1.0"
+    btoa-lite "^1.0.0"
+    debug "^3.1.0"
+    http-proxy-agent "^2.1.0"
+    https-proxy-agent "^2.2.0"
+    lodash "^4.17.4"
+    node-fetch "^2.1.1"
+    universal-user-agent "^2.0.0"
+    url-template "^2.0.8"
+
+"@octokit/rest@^15.13.0":
+  version "15.13.0"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-15.13.0.tgz#078262de2f1d1b02ead7a00c4a3870f517528bcb"
   dependencies:
     before-after-hook "^1.1.0"
     btoa-lite "^1.0.0"
