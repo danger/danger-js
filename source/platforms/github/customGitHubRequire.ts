@@ -62,7 +62,7 @@ export async function getGitHubFileContents(
   const refString = ref ? `?ref=${ref}` : ""
   const containsBase = path.startsWith("http")
   const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || "https://api.github.com"
-  const URLPath = `repos/${repoSlug}/contents${path}${refString}`
+  const URLPath = `repos/${repoSlug}/contents/${path}${refString}`
   const url = containsBase ? URLPath : `${baseUrl}/${URLPath}`
 
   // I'm wary that this doesn't include github apps auth

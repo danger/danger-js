@@ -21,9 +21,10 @@ export interface RunnerConfig {
 }
 
 export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
-  d(`Starting sub-process run with ${app.args}`)
+  d(`Debug mode on for Danger`)
+  d(`Starting sub-process run`)
   const source = (config && config.source) || (await getRuntimeCISource(app))
-
+  d(`- 1`)
   // This does not set a failing exit code
   if (source && !source.isPR) {
     console.log("Skipping Danger due to this run not executing on a PR.")
@@ -32,6 +33,7 @@ export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
   // The optimal path
   if (source && source.isPR) {
     const platform = (config && config.platform) || getPlatformForEnv(process.env, source)
+    d(`- 2`)
     if (!platform) {
       console.log(chalk.red(`Could not find a source code hosting platform for ${source.name}.`))
       console.log(
@@ -41,8 +43,9 @@ export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
     }
 
     if (platform) {
-      const dangerJSONDSL = await jsonDSLGenerator(platform)
-
+      d(`- 3`)
+      const dangerJSONDSL = await jsonDSLGenerator(platform, source)
+      d(`- 4`)
       const config: ExecutorOptions = {
         stdoutOnly: !platform.supportsCommenting() || app.textOnly,
         verbose: app.verbose,

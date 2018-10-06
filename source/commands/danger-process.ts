@@ -76,7 +76,7 @@ getRuntimeCISource(app).then(source => {
         dangerID: app.id || "default",
       }
       d("Config: ", config)
-      jsonDSLGenerator(platform).then(dangerJSONDSL => {
+      jsonDSLGenerator(platform, source).then(dangerJSONDSL => {
         if (!subprocessName) {
           //  Just pipe it out to the CLI
           const processInput = prepareDangerDSL(dangerJSONDSL)

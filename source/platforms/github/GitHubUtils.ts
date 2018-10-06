@@ -10,7 +10,7 @@ import GitHub from "@octokit/rest"
 
 // We need to curry in access to the GitHub PR metadata
 
-const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
+const utils = (pr: GitHubPRDSL | undefined, api: GitHub): GitHubUtilsDSL => {
   /**
    * Converts a set of filepaths into a sentence'd set of hrefs for the
    * current PR. Can be configured to just show the name (instead of full filepath), to
@@ -21,9 +21,9 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
     // To support enterprise github, we need to handle custom github domains
     // this can be pulled out of the repo url metadata
 
-    const githubRoot = pr.head.repo.html_url.split(pr.head.repo.owner.login)[0]
-    const slug = repoSlug || pr.head.repo.full_name
-    const ref = branch || pr.head.ref
+    const githubRoot = pr && pr.head.repo.html_url.split(pr.head.repo.owner.login)[0]
+    const slug = repoSlug || (pr && pr.head.repo.full_name)
+    const ref = branch || (pr && pr.head.ref)
 
     const toHref = (path: string) => `${githubRoot}${slug}/blob/${ref}/${path}`
     // As we should only be getting paths we can ignore the nullability
@@ -33,7 +33,7 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
 
   return {
     fileLinks,
-    fileContents: fileContentsGenerator(api, pr.head.repo.full_name, pr.head.ref),
+    fileContents: fileContentsGenerator(api, pr && pr.head.repo.full_name, pr && pr.head.ref),
     createUpdatedIssueWithID: createUpdatedIssueWithIDGenerator(api),
     createOrAddLabel: createOrAddLabel(pr, api),
     createOrUpdatePR: createOrUpdatePR(pr, api),
@@ -41,16 +41,21 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
 }
 
 /** Generates the fileContents function, needed so that Peril can re-create this func for an event */
-export const fileContentsGenerator = (api: GitHub, defaultRepoSlug: string, defaultRef: string) => async (
-  path: string,
-  repoSlug?: string,
-  ref?: string
-): Promise<string> => {
+export const fileContentsGenerator = (
+  api: GitHub,
+  defaultRepoSlug: string | undefined,
+  defaultRef: string | undefined
+) => async (path: string, repoSlug?: string, ref?: string): Promise<string> => {
   // Use the current state of PR if no repo/ref is passed
   if (!repoSlug || !ref) {
     repoSlug = defaultRepoSlug
     ref = defaultRef
   }
+
+  if (!repoSlug) {
+    throw new Error("You used fileContentsGenerator in a non-PR without specifying the repoSlug")
+  }
+
   const opts = {
     ref,
     path,

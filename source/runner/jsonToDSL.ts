@@ -13,12 +13,16 @@ import {
 } from "../platforms/bitbucket_server/BitBucketServerAPI"
 import { CISource } from "../ci_source/ci_source"
 
+import { debug } from "../debug"
+const d = debug("jsonToDSL")
+
 export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promise<DangerDSLType> => {
+  d(`Creating ${source.useEventDSL ? "event" : "pr"} DSL from JSON`)
+
   const api = apiForDSL(dsl)
   const platformExists = [dsl.github, dsl.bitbucket_server].some(p => !!p)
   const github = dsl.github && githubJSONToGitHubDSL(dsl.github, api as GitHubNodeAPI)
   const bitbucket_server = dsl.bitbucket_server
-  // const gitlab = dsl.gitlab && githubJSONToGitLabDSL(dsl.gitlab, api)
 
   let git: GitDSL
   if (!platformExists) {

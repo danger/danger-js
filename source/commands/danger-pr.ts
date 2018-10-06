@@ -13,6 +13,7 @@ import { jsonDSLGenerator } from "../runner/dslGenerator"
 import { prepareDangerDSL } from "./utils/runDangerSubprocess"
 import { runRunner } from "./ci/runner"
 import { Platform, getPlatformForEnv } from "../platforms/platform"
+import { CISource } from "../ci_source/ci_source"
 
 // yarn build; cat source/_tests/fixtures/danger-js-pr-384.json |  node --inspect  --inspect-brk distribution/commands/danger-runner.js --text-only
 
@@ -79,7 +80,7 @@ if (program.args.length === 0) {
 
       if (app.json || app.js) {
         d("getting just the JSON/JS DSL")
-        runHalfProcessJSON(platform)
+        runHalfProcessJSON(platform, source)
       } else {
         d("running process separated Danger")
         // Always post to STDOUT in `danger-pr`
@@ -95,8 +96,8 @@ if (program.args.length === 0) {
 }
 
 // Run the first part of a Danger Process and output the JSON to CLI
-async function runHalfProcessJSON(platform: Platform) {
-  const dangerDSL = await jsonDSLGenerator(platform)
+async function runHalfProcessJSON(platform: Platform, source: CISource) {
+  const dangerDSL = await jsonDSLGenerator(platform, source)
   const processInput = prepareDangerDSL(dangerDSL)
   const output = JSON.parse(processInput)
   const dsl = { danger: output }
