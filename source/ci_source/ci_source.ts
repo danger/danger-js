@@ -24,5 +24,5 @@ export interface CISource {
   readonly ciRunURL?: string
 
   /** Supports running without a Pull Request  */
-  readonly supportsSkippingPRDSL?: boolean
+  readonly useEventDSL?: boolean
 }

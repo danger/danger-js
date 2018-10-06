@@ -38,7 +38,7 @@ export const GitHub = (api: GitHubAPI) => {
     getReviewInfo: api.getPullRequestInfo,
     getPlatformGitRepresentation: () => gitDSLForGitHub(api),
 
-    getPlatformDSLRepresentation: async () => {
+    getPlatformReviewDSLRepresentation: async () => {
       let pr: GitHubPRDSL
       try {
         pr = await api.getPullRequestInfo()
@@ -66,6 +66,9 @@ export const GitHub = (api: GitHubAPI) => {
         thisPR,
       }
     },
+
+    // When there's an event we don't need any of ^
+    getPlatformReviewSimpleRepresentation: async () => ({}),
 
     ...GitHubIssueCommenter(api),
     ...(GitHubChecksCommenter(api) || {}),

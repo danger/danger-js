@@ -84,7 +84,16 @@ export class Executor {
    */
   async dslForDanger(): Promise<DangerDSL> {
     const git = await this.platform.getPlatformGitRepresentation()
-    const platformDSL = await this.platform.getPlatformDSLRepresentation()
+
+    // This checks if the CI source, and the platform support running on
+    // an event that's not a PR
+    const useSimpleDSL = this.platform.getPlatformReviewSimpleRepresentation && this.ciSource.useEventDSL
+    const getDSLFunc = useSimpleDSL
+      ? this.platform.getPlatformReviewSimpleRepresentation
+      : this.platform.getPlatformReviewDSLRepresentation
+
+    const platformDSL = await getDSLFunc!()
+
     const utils = { sentence, href }
     return new DangerDSL(platformDSL, git, utils, this.platform.name)
   }

@@ -4,7 +4,7 @@ import { CliArgs } from "../dsl/cli-args"
 
 export const jsonDSLGenerator = async (platform: Platform): Promise<DangerDSLJSONType> => {
   const git = await platform.getPlatformGitRepresentation()
-  const platformDSL = await platform.getPlatformDSLRepresentation()
+  const platformDSL = await platform.getPlatformReviewDSLRepresentation()
 
   return {
     git,

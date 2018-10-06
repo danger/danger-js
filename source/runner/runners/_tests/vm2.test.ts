@@ -33,7 +33,7 @@ runners.forEach(run => {
 
       exec = new Executor(new FakeCI({}), platform, run.fn, config)
       platform.getPlatformGitRepresentation = jest.fn()
-      platform.getPlatformDSLRepresentation = async () => ({
+      platform.getPlatformReviewDSLRepresentation = async () => ({
         pr: {},
       })
       return exec

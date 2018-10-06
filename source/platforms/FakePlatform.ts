@@ -13,7 +13,7 @@ export class FakePlatform implements Platform {
     return {}
   }
 
-  async getPlatformDSLRepresentation(): Promise<any> {
+  async getPlatformReviewDSLRepresentation(): Promise<any> {
     return {}
   }
 

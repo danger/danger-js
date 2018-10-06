@@ -61,7 +61,7 @@ export class BitBucketServer implements Platform {
    *
    * @returns {Promise<BitBucketServerDSL>} JSON response of the DSL
    */
-  getPlatformDSLRepresentation = async (): Promise<BitBucketServerJSONDSL> => {
+  getPlatformReviewDSLRepresentation = async (): Promise<BitBucketServerJSONDSL> => {
     let pr: BitBucketServerPRDSL
     try {
       pr = await this.getReviewInfo()

@@ -44,7 +44,7 @@ import { BitBucketServerAPI } from "../bitbucket_server/BitBucketServerAPI"
 
 import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 
-describe("getPlatformDSLRepresentation", () => {
+describe("getPlatformReviewDSLRepresentation", () => {
   let bbs: BitBucketServer
 
   beforeEach(() => {
@@ -57,27 +57,27 @@ describe("getPlatformDSLRepresentation", () => {
   })
 
   it("should get the commits of the pull request", async () => {
-    const { commits } = await bbs.getPlatformDSLRepresentation()
+    const { commits } = await bbs.getPlatformReviewDSLRepresentation()
     expect(commits).toMatchSnapshot()
   })
 
   it("should get the activities", async () => {
-    const { activities } = await bbs.getPlatformDSLRepresentation()
+    const { activities } = await bbs.getPlatformReviewDSLRepresentation()
     expect(activities).toMatchSnapshot()
   })
 
   it("should get the reviewer comments", async () => {
-    const { comments } = await bbs.getPlatformDSLRepresentation()
+    const { comments } = await bbs.getPlatformReviewDSLRepresentation()
     expect(comments).toMatchSnapshot()
   })
 
   it("should get the pull request information", async () => {
-    const { pr } = await bbs.getPlatformDSLRepresentation()
+    const { pr } = await bbs.getPlatformReviewDSLRepresentation()
     expect(pr).toMatchSnapshot()
   })
 
   it("should get the metadata", async () => {
-    const dsl = await bbs.getPlatformDSLRepresentation()
+    const dsl = await bbs.getPlatformReviewDSLRepresentation()
     expect(dsl.metadata).toMatchSnapshot()
   })
 })

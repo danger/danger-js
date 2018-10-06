@@ -39,8 +39,9 @@ export class GitHubActions implements CISource {
     return true
   }
 
-  get supportsSkippingPRDSL() {
-    return true
+  get useEventDSL() {
+    // Support event based PR runs
+    return this.env.GITHUB_EVENT !== "pull_request"
   }
 
   get pullRequestID(): string {

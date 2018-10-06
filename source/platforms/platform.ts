@@ -38,8 +38,10 @@ export interface Platform extends PlatformCommunicator {
   readonly name: string
 
   getReviewInfo: () => Promise<any>
-  /** Pulls in the platform specific metadata for inspection */
-  getPlatformDSLRepresentation: () => Promise<any>
+  /** Pulls in the platform specific metadata for code review runs */
+  getPlatformReviewDSLRepresentation: () => Promise<any>
+  /** Pulls in the platform specific metadata for event runs */
+  getPlatformReviewSimpleRepresentation?: () => Promise<any>
   /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
   getPlatformGitRepresentation: () => Promise<GitJSONDSL>
   /** Get the contents of a file at a path */
