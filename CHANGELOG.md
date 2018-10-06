@@ -13,7 +13,7 @@
 
 ## Master
 
-# 4.3.1
+# 5.0.0
 
 - Adds support for running remote GitHub files via the `--dangerfile` argument. It supports urls like:
   `orta/peril-settings/file.ts` which grabs `file.ts` from `orta/peril-settings`.
@@ -24,6 +24,8 @@
 - Handle remote transpilation of the initial Dangerfile correctly
 - Adds support for not include a tsconfig for typescript projects, danger will use the default config if it can't find
   one in your project
+- Hardcodes the GitHub Actions userID into danger ( blocked by
+  https://platform.github.community/t/obtaining-the-id-of-the-bot-user/2076 )
 
 # 4.3.0
 
