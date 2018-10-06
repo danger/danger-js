@@ -54,7 +54,7 @@ export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
       d(`Preparing to run: ${runnerCommand}`)
 
       const exec = new Executor(source, platform, inlineRunner, config)
-      runDangerSubprocess(runnerCommand, dangerJSONDSL, exec)
+      runDangerSubprocess(runnerCommand, dangerJSONDSL, exec, app)
     }
   }
 }

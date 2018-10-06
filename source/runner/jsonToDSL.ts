@@ -11,8 +11,9 @@ import {
   BitBucketServerAPI,
   bitbucketServerRepoCredentialsFromEnv,
 } from "../platforms/bitbucket_server/BitBucketServerAPI"
+import { CISource } from "../ci_source/ci_source"
 
-export const jsonToDSL = async (dsl: DangerDSLJSONType): Promise<DangerDSLType> => {
+export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promise<DangerDSLType> => {
   const api = apiForDSL(dsl)
   const platformExists = [dsl.github, dsl.bitbucket_server].some(p => !!p)
   const github = dsl.github && githubJSONToGitHubDSL(dsl.github, api as GitHubNodeAPI)
@@ -26,7 +27,7 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType): Promise<DangerDSLType> 
   } else if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
     git = bitBucketServerGitDSL(bitbucket_server!, dsl.git, api as BitBucketServerAPI)
   } else {
-    git = githubJSONToGitDSL(github!, dsl.git)
+    git = source.useEventDSL ? ({} as any) : githubJSONToGitDSL(github!, dsl.git)
   }
 
   return {

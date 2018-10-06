@@ -6,6 +6,8 @@ import { DangerDSLJSONType, DangerJSON } from "../../dsl/DangerDSL"
 import { Executor } from "../../runner/Executor"
 import { jsonToDSL } from "../../runner/jsonToDSL"
 import { markdownCode, resultsWithFailure, mergeResults } from "./reporting"
+import getRuntimeCISource from "./getRuntimeCISource"
+import { SharedCLI } from "./sharedDangerfileArgs"
 
 const d = debug("runDangerSubprocess")
 
@@ -20,7 +22,7 @@ export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
 }
 
 // Runs the Danger process, can either take a simpl
-const runDangerSubprocess = (subprocessName: string[], dslJSON: DangerDSLJSONType, exec: Executor) => {
+const runDangerSubprocess = (subprocessName: string[], dslJSON: DangerDSLJSONType, exec: Executor, app: SharedCLI) => {
   let processName = subprocessName[0]
   let args = subprocessName
   let results = {} as any
@@ -73,7 +75,8 @@ const runDangerSubprocess = (subprocessName: string[], dslJSON: DangerDSLJSONTyp
         results = failResults
       }
     }
-    const danger = await jsonToDSL(dslJSON)
+    const source = await getRuntimeCISource(app)
+    const danger = await jsonToDSL(dslJSON, source!)
     await exec.handleResults(results, danger.git)
   })
 }

@@ -84,7 +84,7 @@ getRuntimeCISource(app).then(source => {
         } else {
           d(`Sending input To ${subprocessName}: `, dangerJSONDSL)
           const exec = new Executor(source, platform, inlineRunner, config)
-          runDangerSubprocess([subprocessName], dangerJSONDSL, exec)
+          runDangerSubprocess([subprocessName], dangerJSONDSL, exec, app)
         }
       })
     }

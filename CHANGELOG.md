@@ -26,6 +26,7 @@
   one in your project
 - Hardcodes the GitHub Actions userID into danger ( blocked by
   https://platform.github.community/t/obtaining-the-id-of-the-bot-user/2076 )
+- Allows running with a simplified DSL when running on a GitHub action that isn't a PR
 
 # 4.3.0
 

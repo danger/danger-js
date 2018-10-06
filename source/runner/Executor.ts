@@ -34,6 +34,7 @@ import { sentence, href } from "./DangerUtils"
 import { DangerRunner } from "./runners/runner"
 import { GitDSL } from "../dsl/GitDSL"
 import { DangerDSL } from "../dsl/DangerDSL"
+import { emptyGitJSON } from "../platforms/github/GitHubGit"
 
 export interface ExecutorOptions {
   /** Should we do a text-only run? E.g. skipping comments */
@@ -83,11 +84,14 @@ export class Executor {
    * @returns {void} It's a promise, so a void promise
    */
   async dslForDanger(): Promise<DangerDSL> {
-    const git = await this.platform.getPlatformGitRepresentation()
-
     // This checks if the CI source, and the platform support running on
     // an event that's not a PR
     const useSimpleDSL = this.platform.getPlatformReviewSimpleRepresentation && this.ciSource.useEventDSL
+    this.d("Using full Danger DSL:", !useSimpleDSL)
+
+    // Can't use the API to grab git metadata
+    const git = useSimpleDSL ? emptyGitJSON() : await this.platform.getPlatformGitRepresentation()
+
     const getDSLFunc = useSimpleDSL
       ? this.platform.getPlatformReviewSimpleRepresentation
       : this.platform.getPlatformReviewDSLRepresentation
@@ -104,9 +108,9 @@ export class Executor {
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    */
   async handleResults(results: DangerResults, git: GitDSL) {
+    this.d("Got results back:", results)
     validateResults(results)
 
-    this.d("Got results back:", results)
     this.d(`Evaluator settings`, this.options)
 
     if (this.options.stdoutOnly || this.options.jsonOnly) {

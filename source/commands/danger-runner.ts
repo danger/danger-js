@@ -52,7 +52,7 @@ const run = (config: SharedCLI) => async (jsonString: string) => {
   const dangerFile = dangerfilePath(program)
 
   // Set up the runtime env
-  const context = await jsonToContext(jsonString, program)
+  const context = await jsonToContext(jsonString, program, source)
   runtimeEnv = await inline.createDangerfileRuntimeEnvironment(context)
   d(`Evaluating ${dangerFile}`)
 
