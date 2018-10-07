@@ -139,7 +139,7 @@ export const createOrUpdatePR = (pr: GitHubPRDSL | undefined, api: GitHub) => as
   }
 
   const branchSettings: BranchCreationConfig = {
-    fullBaseBranch: `refs/${config.baseBranch}`,
+    fullBaseBranch: `heads/${config.baseBranch}`,
     fullBranchReference: `heads/${config.newBranchName}`,
     message: config.commitMessage,
     owner,
