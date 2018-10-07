@@ -47,8 +47,11 @@ export const fileContentsGenerator = (
   defaultRef: string | undefined
 ) => async (path: string, repoSlug?: string, ref?: string): Promise<string> => {
   // Use the current state of PR if no repo/ref is passed
-  if (!repoSlug || !ref) {
+  if (!repoSlug) {
     repoSlug = defaultRepoSlug
+  }
+
+  if (!ref) {
     ref = defaultRef
   }
 
