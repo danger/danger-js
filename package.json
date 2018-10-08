@@ -121,7 +121,7 @@
     "@babel/polyfill": "^7.0.0",
     "@octokit/rest": "^15.12.1",
     "chalk": "^2.3.0",
-    "commander": "^2.18.0",
+    "commander": "2.18.0",
     "debug": "^4.0.1",
     "get-stdin": "^6.0.0",
     "https-proxy-agent": "^2.2.1",
