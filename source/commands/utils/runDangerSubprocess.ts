@@ -26,7 +26,7 @@ export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
 const runDangerSubprocess = (subprocessName: string[], dslJSON: DangerDSLJSONType, exec: Executor, app: SharedCLI) => {
   let processName = subprocessName[0]
   let args = subprocessName
-  let results = {} as any
+  let results = null as any
   args.shift() // mutate and remove the first element
 
   const processDisplayName = path.basename(processName)
@@ -46,14 +46,14 @@ const runDangerSubprocess = (subprocessName: string[], dslJSON: DangerDSLJSONTyp
     const maybeJSON = getJSONFromSTDOUT(stdout)
     const maybeJSONURL = getJSONURLFromSTDOUT(stdout)
 
-    if (maybeJSON) {
-      d("Got JSON results from STDOUT, results: \n" + maybeJSON)
-      results = JSON.parse(maybeJSON)
-    }
-
-    if (maybeJSONURL) {
+    if (!results && maybeJSONURL) {
       d("Got JSON URL from STDOUT, results are at: \n" + maybeJSONURL)
       results = JSON.parse(readFileSync(maybeJSONURL.replace("danger-results:/", ""), "utf8"))
+    }
+
+    if (!results && maybeJSON) {
+      d("Got JSON results from STDOUT, results: \n" + maybeJSON)
+      results = JSON.parse(maybeJSON)
     }
   })
 
