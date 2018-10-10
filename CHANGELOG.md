@@ -13,7 +13,13 @@
 
 ## Master
 
+# 4.4.0
+
 - Supports installation using Homebrew [@thii][]
+
+# 4.3.x
+
+- Some experimental beta builds which didn't turn out very useful
 
 # 4.2.1
 
