@@ -9,7 +9,6 @@ if [ ! -f ${FILE} ]; then
   exit 1
 fi
 
-BRANCH="releasing-${VERSION}"
 SHA=$(shasum -a 256 ${FILE} | cut -f 1 -d " ")
 echo "$SHA"
 
@@ -17,9 +16,9 @@ echo "$SHA"
 HOMEBREW_TAP_TMPDIR=$(mktemp -d)
 git clone --depth 1 git@github.com:danger/homebrew-tap.git "$HOMEBREW_TAP_TMPDIR"
 cd "$HOMEBREW_TAP_TMPDIR" || exit 1
-git config user.name danger
-git config user.email danger@users.noreply.github.com
-git checkout -b "${BRANCH}"
+
+# git config user.name danger
+# git config user.email danger@users.noreply.github.com
 
 # Write formula
 echo "class DangerJs < Formula" > danger-js.rb
@@ -35,11 +34,4 @@ echo "end" >> danger-js.rb
 # Commit changes
 git add danger-js.rb
 git commit -m "Releasing danger-js version ${VERSION}"
-git push origin "${BRANCH}"
-
-# Open a pull request
-curl -H "Authorization: token ${GITHUB_TOKEN}" \
-     -XPOST -d "{\"title\":\"Release danger-js ${VERSION}\",\"base\":\"master\", \"head\":\"${BRANCH}\"}" \
-     https://api.github.com/repos/danger/homebrew-tap/pulls
-
-rm -rf "$HOMEBREW_TAP_TMPDIR"
+git push origin master
