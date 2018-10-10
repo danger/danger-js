@@ -40,4 +40,13 @@ describe("parsing urls", () => {
       repo: "projects/PROJ/repos/super-repo",
     })
   })
+
+  it("handles bitbucket server PRs (overview) with dashes in name", () => {
+    expect(
+      pullRequestParser("http://localhost:7990/projects/PROJ/repos/super-strong.repo_name/pull-requests/1/overview")
+    ).toEqual({
+      pullRequestNumber: "1",
+      repo: "projects/PROJ/repos/super-strong.repo_name",
+    })
+  })
 })
