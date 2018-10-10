@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "4.3.0",
+  "version": "4.4.0",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -111,9 +111,8 @@
     "jest-json-reporter": "^1.2.2",
     "lint-staged": "^7.3.0",
     "madge": "^3.2.0",
-    "prettier": "^1.14.3",
-    "pkg": "^4.3.4",
     "prettier": "^1.14.2",
+    "pkg": "^4.3.4",
     "release-it": "^7.6.1",
     "shx": "^0.3.2",
     "ts-jest": "^23.10.3",
