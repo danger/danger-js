@@ -50,10 +50,10 @@ export class Jenkins implements CISource {
     const isGitHubPR =
       ensureEnvKeysExist(this.env, ["ghprbPullId", "ghprbGhRepository"]) &&
       ensureEnvKeysAreInt(this.env, ["ghprbPullId"])
-    const isBitBucketServerPR =
+    const isMultiBranchPR =
       ensureEnvKeysExist(this.env, ["CHANGE_ID", "CHANGE_URL"]) && ensureEnvKeysAreInt(this.env, ["CHANGE_ID"])
 
-    return this.isJenkins() && (isBitBucketServerPR || isGitHubPR)
+    return this.isJenkins() && (isMultiBranchPR || isGitHubPR)
   }
 
   get pullRequestID(): string {
