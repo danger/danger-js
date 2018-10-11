@@ -1,22 +1,37 @@
 import { Jenkins } from "../Jenkins"
 import { getCISourceForEnv } from "../../get_ci_source"
 
-const correctEnv = {
-  ghprbGhRepository: "danger/danger-js",
-  ghprbPullId: "50",
-  JENKINS_URL: "https://danger.jenkins",
+const envs = {
+  ghprb: {
+    ghprbGhRepository: "danger/danger-js",
+    ghprbPullId: "50",
+    JENKINS_URL: "https://danger.jenkins",
+  },
+  multibranchGitHub: {
+    CHANGE_URL: "https://github.com/danger/danger-js/pull/50",
+    CHANGE_ID: "50",
+    JENKINS_URL: "https://danger.jenkins",
+  },
+  multibranchBBS: {
+    CHANGE_URL: "https://bitbucket.server/projects/PROJ/repos/REPO/pull-requests/50",
+    CHANGE_ID: "50",
+    JENKINS_URL: "https://danger.jenkins",
+  },
 }
 
+const types = Object.keys(envs)
+
 describe("being found when looking for CI", () => {
-  it("finds Jenkins with the right ENV", () => {
-    const ci = getCISourceForEnv(correctEnv)
+  it.each(types)("%s - finds Jenkins with the right ENV", type => {
+    const env = envs[type]
+    const ci = getCISourceForEnv(env)
     expect(ci).toBeInstanceOf(Jenkins)
   })
 })
 
 describe(".isCI", () => {
-  it("validates when JENKINS_URL is present in environment", () => {
-    const jenkins = new Jenkins(correctEnv)
+  it.each(types)("%s - validates when JENKINS_URL is present in environment", type => {
+    const jenkins = new Jenkins(envs[type])
     expect(jenkins.isCI).toBeTruthy()
   })
 
@@ -27,8 +42,8 @@ describe(".isCI", () => {
 })
 
 describe(".isPR", () => {
-  it("validates when all Jenkins environment variables are set", () => {
-    const jenkins = new Jenkins(correctEnv)
+  it.each(types)("%s - validates when all Jenkins environment variables are set", type => {
+    const jenkins = new Jenkins(envs[type])
     expect(jenkins.isPR).toBeTruthy()
   })
 
@@ -37,23 +52,34 @@ describe(".isPR", () => {
     expect(jenkins.isPR).toBeFalsy()
   })
 
-  const envs = ["JENKINS_URL", "ghprbPullId", "ghprbGhRepository"]
-  envs.forEach((key: string) => {
-    const env = {
-      ...correctEnv,
-      [key]: null,
-    }
+  describe.each(types)("%s", type => {
+    const envVars = Object.keys(envs[type])
+    envVars.forEach((key: string) => {
+      const env = {
+        ...envs[type],
+        [key]: null,
+      }
 
-    it(`does not validate when ${key} is missing`, () => {
-      const jenkins = new Jenkins(env)
-      expect(jenkins.isPR).toBeFalsy()
+      it(`does not validate when ${key} is missing`, () => {
+        const jenkins = new Jenkins(env)
+        expect(jenkins.isPR).toBeFalsy()
+      })
     })
   })
 
-  it("needs to have a PR number", () => {
+  it("ghprb - needs to have a PR number", () => {
     const env = {
-      ...correctEnv,
+      ...envs.ghprb,
       ghprbPullId: "not a number",
+    }
+    const jenkins = new Jenkins(env)
+    expect(jenkins.isPR).toBeFalsy()
+  })
+
+  it("multibranch - needs to have a PR number", () => {
+    const env = {
+      ...envs.multibranchGitHub,
+      CHANGE_ID: "not a number",
     }
     const jenkins = new Jenkins(env)
     expect(jenkins.isPR).toBeFalsy()
@@ -61,15 +87,25 @@ describe(".isPR", () => {
 })
 
 describe(".pullRequestID", () => {
-  it("pulls it out of environment", () => {
-    const jenkins = new Jenkins(correctEnv)
+  it.each(types)("%s - pulls it out of environment", type => {
+    const jenkins = new Jenkins(envs[type])
     expect(jenkins.pullRequestID).toEqual("50")
   })
 })
 
 describe(".repoSlug", () => {
-  it("pulls it out of environment", () => {
-    const jenkins = new Jenkins(correctEnv)
+  it("ghprb - pulls it out of environment", () => {
+    const jenkins = new Jenkins(envs.ghprb)
     expect(jenkins.repoSlug).toEqual("danger/danger-js")
+  })
+
+  it("multibranch-github - pulls it out of environment", () => {
+    const jenkins = new Jenkins(envs.multibranchGitHub)
+    expect(jenkins.repoSlug).toEqual("danger/danger-js")
+  })
+
+  it("multibranch-bb-server - pulls it out of environment", () => {
+    const jenkins = new Jenkins(envs.multibranchBBS)
+    expect(jenkins.repoSlug).toEqual("projects/PROJ/repos/REPO")
   })
 })

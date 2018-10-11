@@ -13,6 +13,8 @@
 
 ## Master
 
+- Jenkins: Respect `CHANGE_URL`/`CHANGE_ID` for GitHub and BitBucket Server [@azz][]
+
 # 4.4.0
 
 - Supports installation using Homebrew [@thii][]
