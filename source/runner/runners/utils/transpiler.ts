@@ -3,6 +3,8 @@ import * as path from "path"
 import JSON5 from "json5"
 import { debug } from "../../../debug"
 
+const disableTranspilation = process.env.DANGER_DISABLE_TRANSPILATION === "true"
+
 let hasNativeTypeScript = false
 let hasBabel = false
 let hasBabelTypeScript = false
@@ -13,6 +15,12 @@ const d = debug("transpiler:setup")
 
 // Yes, lots of linter disables, but I want to support TS/Babel/Neither correctly
 export const checkForNodeModules = () => {
+  if (disableTranspilation) {
+    hasChecked = true
+    d("DANGER_DISABLE_TRANSPILATION environment variable has been set to true, skipping transpilation")
+    return
+  }
+
   try {
     require.resolve("typescript") // tslint:disable-line
     hasNativeTypeScript = true

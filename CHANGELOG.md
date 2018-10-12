@@ -13,6 +13,7 @@
 
 ## Master
 
+- Add logic for "DANGER_DISABLE_TRANSPILATION" env[@markelog][]
 - Jenkins: Respect `CHANGE_URL`/`CHANGE_ID` for GitHub and BitBucket Server [@azz][]
 
 # 4.4.0
