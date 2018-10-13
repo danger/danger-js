@@ -7,6 +7,7 @@ import { BitBucketServerAPI, bitbucketServerRepoCredentialsFromEnv } from "./bit
 import { DangerResults } from "../dsl/DangerResults"
 import { ExecutorOptions } from "../runner/Executor"
 import { DangerRunner } from "../runner/runners/runner"
+import chalk from "chalk"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any
@@ -104,7 +105,16 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
     return bbs
   }
 
-  // GitHub
+  // They need to set the token up for GitHub actions to work
+  if (env["GITHUB_EVENT_TYPE"] && !env["GITHUB_TOKEN"]) {
+    console.error(`You need to add GITHUB_TOKEN to your Danger action in the workflow:
+
+    action "${env["GITHUB_ACTION"]}" {
+    ${chalk.green('+  secrets = ["GITHUB_TOKEN"]"')}
+    }`)
+  }
+
+  // GitHub Platform
   const ghToken = env["DANGER_GITHUB_API_TOKEN"] || env["GITHUB_TOKEN"]
   if (ghToken || !requireAuth) {
     if (!ghToken) {

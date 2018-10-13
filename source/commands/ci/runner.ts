@@ -11,6 +11,8 @@ import inlineRunner from "../../runner/runners/inline"
 import { jsonDSLGenerator } from "../../runner/dslGenerator"
 import dangerRunToRunnerCLI from "../utils/dangerRunToRunnerCLI"
 import { CISource } from "../../ci_source/ci_source"
+import { readFileSync } from "fs"
+import { join } from "path"
 
 const d = debug("process_runner")
 
@@ -21,10 +23,11 @@ export interface RunnerConfig {
 }
 
 export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
-  d(`Debug mode on for Danger`)
+  const appPackageContent = readFileSync(join(__dirname, "../../../package.json"), "utf8")
+  const { version } = JSON.parse(appPackageContent)
+  d(`Debug mode on for Danger v${version}`)
   d(`Starting sub-process run`)
   const source = (config && config.source) || (await getRuntimeCISource(app))
-  d(`- 1`)
   // This does not set a failing exit code
   if (source && !source.isPR) {
     console.log("Skipping Danger due to this run not executing on a PR.")

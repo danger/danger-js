@@ -21,6 +21,8 @@ thoroughly in production.
 This release bring support for GitHub actions. It does this merging in some of the responsibilities that used to live
 inside Peril into Danger.
 
+Notes about Danger JS:
+
 - Adds support for running remote GitHub files via the `--dangerfile` argument. It supports urls like:
   `orta/peril-settings/file.ts` which grabs `file.ts` from `orta/peril-settings`.
 - Adds support for taking a GitHub Actions event JSON and exposing it in the `default export` function in the same way
@@ -33,9 +35,11 @@ inside Peril into Danger.
 - Hardcodes the GitHub Actions userID into danger ( blocked by
   https://platform.github.community/t/obtaining-the-id-of-the-bot-user/2076 )
 - Allows running with a simplified DSL when running on a GitHub action that isn't a PR
-- There is now 2 ways for a subprocess to communicate to Danger JS - prior to 5.x it was expected that a subprocess
-  would pass the entire JSON results back via STDOUT to the host Danger JS process, but sometimes this was unreliable.
-  Now a subprocess can pass a JSON URL for Danger JS by looking in STDOUT for the regex `/danger-results:\/\/*.+json/`.
+- Use new env vars for GitHub Actions
+
+There is now 2 ways for a subprocess to communicate to Danger JS - prior to 5.x it was expected that a subprocess would
+pass the entire JSON results back via STDOUT to the host Danger JS process, but sometimes this was unreliable. Now a
+subprocess can pass a JSON URL for Danger JS by looking in STDOUT for the regex `/danger-results:\/\/*.+json/`.
 
 # 4.3.0
 
