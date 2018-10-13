@@ -48,7 +48,7 @@ describe("customGitHubResolveRequest", () => {
 
     // It should make the right API call to
     expect(apiGH).toBeCalledWith(
-      "https://api.github.com/repos/orta/peril-settings/contents/myapp/peril-resolver.js?ref=master",
+      "https://api.github.com/repos/orta/peril-settings/contents//myapp/peril-resolver.js?ref=master",
       {
         headers: { Authorization: "bearer 1231231231" },
       }

@@ -17,7 +17,7 @@ import { debug } from "../debug"
 const d = debug("jsonToDSL")
 
 export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promise<DangerDSLType> => {
-  d(`Creating ${source.useEventDSL ? "event" : "pr"} DSL from JSON`)
+  d(`Creating ${source && source.useEventDSL ? "event" : "pr"} DSL from JSON`)
 
   const api = apiForDSL(dsl)
   const platformExists = [dsl.github, dsl.bitbucket_server].some(p => !!p)
@@ -31,7 +31,7 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
   } else if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
     git = bitBucketServerGitDSL(bitbucket_server!, dsl.git, api as BitBucketServerAPI)
   } else {
-    git = source.useEventDSL ? ({} as any) : githubJSONToGitDSL(github!, dsl.git)
+    git = source && source.useEventDSL ? ({} as any) : githubJSONToGitDSL(github!, dsl.git)
   }
 
   return {

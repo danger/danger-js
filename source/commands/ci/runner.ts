@@ -17,9 +17,14 @@ import { join } from "path"
 const d = debug("process_runner")
 
 export interface RunnerConfig {
+  /* The CI source that could come from an external source */
   source?: CISource
+  /* A platform which could come for us come from outside */
   platform?: Platform
+  /* Args which should get passed into the subprocess */
   additionalArgs?: string[]
+  /* Replace the default danger-js sub-process runner with something else */
+  process?: string
 }
 
 export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
@@ -36,7 +41,6 @@ export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
   // The optimal path
   if (source && source.isPR) {
     const platform = (config && config.platform) || getPlatformForEnv(process.env, source)
-    d(`- 2`)
     if (!platform) {
       console.log(chalk.red(`Could not find a source code hosting platform for ${source.name}.`))
       console.log(
@@ -46,20 +50,20 @@ export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
     }
 
     if (platform) {
-      d(`- 3`)
       const dangerJSONDSL = await jsonDSLGenerator(platform, source)
-      d(`- 4`)
-      const config: ExecutorOptions = {
+      const execConfig: ExecutorOptions = {
         stdoutOnly: !platform.supportsCommenting() || app.textOnly,
         verbose: app.verbose,
         jsonOnly: false,
         dangerID: app.id || "default",
       }
 
-      const runnerCommand = dangerRunToRunnerCLI(process.argv)
+      // if the host process has used
+      const configProcessArgs = config && config.process && config.process.split(" ")
+      const runnerCommand = configProcessArgs || dangerRunToRunnerCLI(process.argv)
       d(`Preparing to run: ${runnerCommand}`)
 
-      const exec = new Executor(source, platform, inlineRunner, config)
+      const exec = new Executor(source, platform, inlineRunner, execConfig)
       runDangerSubprocess(runnerCommand, dangerJSONDSL, exec, app)
     }
   }

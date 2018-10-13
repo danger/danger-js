@@ -113,7 +113,7 @@ export class Executor {
 
     this.d(`Evaluator settings`, this.options)
 
-    if (this.options.stdoutOnly || this.options.jsonOnly || this.ciSource.useEventDSL) {
+    if (this.options.stdoutOnly || this.options.jsonOnly || (this.ciSource && this.ciSource.useEventDSL)) {
       await this.handleResultsPostingToSTDOUT(results)
     } else {
       await this.handleResultsPostingToPlatform(results, git)

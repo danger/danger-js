@@ -23,5 +23,5 @@
   "spellchecker.ignoreFileExtensions": [],
   "spellchecker.checkInterval": 5000,
   "editor.formatOnSave": true,
-  "cSpell.words": ["APIPR", "Commenter", "PRDSL", "bitbucket", "repo's"]
+  "cSpell.words": ["APIPR", "Commenter", "JSONDSL", "PRDSL", "bitbucket", "repo's"]
 }

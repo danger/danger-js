@@ -22,8 +22,9 @@ const log = console.log
 
 interface App extends SharedCLI {
   /** Should we show the Danger Process PR JSON? */
-  json: boolean
-  js: boolean
+  json?: boolean
+  js?: boolean
+  process?: string
 }
 
 program
@@ -31,6 +32,7 @@ program
   .description("Emulate running Danger against an existing GitHub Pull Request.")
   .option("-J, --json", "Output the raw JSON that would be passed into `danger process` for this PR.")
   .option("-j, --js", "A more human-readable version of the JSON.")
+  .option("-p, --process", "Support evaluation running via a sub-process.")
 
   .on("--help", () => {
     log("\n")
@@ -89,7 +91,7 @@ if (program.args.length === 0) {
         // Can't send these to `danger runner`
         delete app.js
         delete app.json
-        runRunner(app, { source, platform })
+        runRunner(app, { source, platform, process: app.config })
       }
     }
   }

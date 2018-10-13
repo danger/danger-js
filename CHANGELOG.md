@@ -51,6 +51,8 @@ There is now a JSON schema for both directions of the communication for sub-proc
 This can be used for language DSL generation and/or formal verification if you're interested. Or, for just feeling
 completely sure about what is being sent to your process without diving into the Danger JS codebase.
 
+Also, `danger pr` now accepts a `--process` arg.
+
 # 4.3.0
 
 - Adds a fallback to `GITHUB_TOKEN` if it's in the ENV - orta
