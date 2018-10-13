@@ -41,6 +41,16 @@ There is now 2 ways for a subprocess to communicate to Danger JS - prior to 5.x 
 pass the entire JSON results back via STDOUT to the host Danger JS process, but sometimes this was unreliable. Now a
 subprocess can pass a JSON URL for Danger JS by looking in STDOUT for the regex `/danger-results:\/\/*.+json/`.
 
+There is now a JSON schema for both directions of the communication for sub-processes:
+
+- The data Danger sends to the subprocess:
+  [`source/danger-incoming-process-schema.json`](source/danger-incoming-process-schema.json)
+- The data Danger expects from the subprocess:
+  [`source/danger-outgoing-process-schema.json`](source/danger-outgoing-process-schema.json)
+
+This can be used for language DSL generation and/or formal verification if you're interested. Or, for just feeling
+completely sure about what is being sent to your process without diving into the Danger JS codebase.
+
 # 4.3.0
 
 - Adds a fallback to `GITHUB_TOKEN` if it's in the ENV - orta

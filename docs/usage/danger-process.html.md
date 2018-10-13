@@ -40,9 +40,10 @@ danger pr https://github.com/danger/danger-js/pull/395 --json > danger-js-395.ds
 ```
 
 This will work for any open repo, and if you've set up your local shell to include `DANGER_GITHUB_API_TOKEN` then you
-can use this with any private repository too. The JSON schema is documented in Danger JS's types as
-[DangerJSONDSLType][]. I plan to add a full reference for this, similar to the reference for the user's DSL in the
-future in these docs. _Note:_ The JSON will include your access token, so you probably want to sanitze that before
+can use this with any private repository too. You can see the [incoming][] and [outgoing][] JSON schema is documented in
+Danger JS's repo, or you can see the types as (incoming to your process) [DangerJSONDSLType][] and (coming out from your
+process) [DangerResults][], I plan to add a full reference for this, similar to the reference for the user's DSL in the
+future in these docs. _Note:_ The JSON will include your access token, so you probably want to sanitize that before
 commiting it to the repo. I accidentally shipped 2 tokens in writing the feature.
 
 A runner can output anything during the process to STDOUT, and it will be logged to the user. However, Danger JS is
@@ -202,3 +203,6 @@ Finally, let me ([@orta][]) know! I want to keep track of them all on the Danger
 [dangerjsondsltype]: https://github.com/danger/danger-js/blob/master/source/dsl/DangerDSL.ts
 [into nvm]: https://github.com/creationix/nvm
 [@orta]: https://github.com/orta
+[dangerresults]: https://github.com/danger/danger-js/blob/master/source/dsl/DangerResults.ts
+[incoming]: https://github.com/danger/danger-js/blob/master/source/danger-incoming-process-schema.json
+[outgoing]: https://github.com/danger/danger-js/blob/master/source/danger-outgoing-process-schema.json

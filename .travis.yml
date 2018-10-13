@@ -2,105 +2,92 @@ language: node_js
 cache:
   yarn: true
   directories:
-  - node_modules
-  - .jest/cache
+    - node_modules
+    - .jest/cache
 
 matrix:
   include:
-  # Normal CI test runs :D
-  - node_js: '6'
-  - node_js: '10'
+    # Normal CI test runs :D
+    - node_js: "6"
+    - node_js: "10"
 
-  - node_js: '8'
-    after_script:
-    - rm -rf node_modules/@types/babel-*
-    - rm -rf node_modules/@types/babylon
-    - echo "Testing that the Danger d.ts file lints"
-    - yarn docs
-    - yarn add dtslint@0.1.2
-    - yarn dts-lint
-    - echo "Testing Flow definition file"
-    - yarn build:flow-types
-    - yarn flow check
+    - node_js: "8"
+      after_script:
+        - rm -rf node_modules/@types/babel-*
+        - rm -rf node_modules/@types/babylon
+        - echo "Testing that the Danger d.ts file lints"
+        - yarn docs
+        - yarn add dtslint@0.1.2
+        - yarn dts-lint
+        - echo "Testing Flow definition file"
+        - yarn build:flow-types
+        - yarn flow check
 
-  # Checks every example dangerfile can run in `danger runner`.
-  - node_js: '8.4'
-    script:
-     - yarn build
-     - node scripts/run-fixtures.js
+    # Checks every example dangerfile can run in `danger runner`.
+    - node_js: "8.4"
+      script:
+        - yarn build
+        - node scripts/run-fixtures.js
 
-  # Does the real danger run
-  - node_js: '9'
-    script:
-    - yarn jest --outputFile test-results.json --json --runInBand
-    - yarn run link
+    # Does the real danger run
+    - node_js: "9"
+      script:
+        - yarn jest --outputFile test-results.json --json --runInBand
+        - yarn run link
 
-    # If the PR is odd then run using issue commenting, else use checks
-    # - |
-    #   if [ $(($TRAVIS_PULL_REQUEST % 2)) -eq 0 ];
-    #   then
-    #     echo "This is the real `danger ci` run on this repo, using issues";
-    #     DEBUG="*" danger ci --verbose;
-    #   else
-    #     echo "This is the real `danger ci` run on this repo, using github checks with a custom app";
-    #     DEBUG="*" DANGER_GITHUB_APP_ID=12482 danger ci --verbose;
-    #
-    #     echo "This is the real `danger ci` run on this repo, using github checks with the danger app";
-    #     DEBUG="*" DANGER_JS_APP_INSTALL_ID=177994 danger ci --verbose;
-    #   fi
+        # If the PR is odd then run using issue commenting, else use checks
+        # - |
+        #   if [ $(($TRAVIS_PULL_REQUEST % 2)) -eq 0 ];
+        #   then
+        #     echo "This is the real `danger ci` run on this repo, using issues";
+        #     DEBUG="*" danger ci --verbose;
+        #   else
+        #     echo "This is the real `danger ci` run on this repo, using github checks with a custom app";
+        #     DEBUG="*" DANGER_GITHUB_APP_ID=12482 danger ci --verbose;
+        #
+        #     echo "This is the real `danger ci` run on this repo, using github checks with the danger app";
+        #     DEBUG="*" DANGER_JS_APP_INSTALL_ID=177994 danger ci --verbose;
+        #   fi
 
-    - DEBUG="*" DANGER_GITHUB_APP_ID=12482 danger ci --verbose;
+        - DEBUG="*" DANGER_GITHUB_APP_ID=12482 danger ci --verbose;
 
-    - echo "Validating that danger pr works as expected"
-    - DEBUG="*" danger pr https://github.com/danger/danger-js/pull/465 --dangerfile dangerfile.circle.js --verbose
+        - echo "Validating that danger pr works as expected"
+        - DEBUG="*" danger pr https://github.com/danger/danger-js/pull/465 --dangerfile dangerfile.circle.js --verbose
 
-    - echo "Grabbing master so that danger-local can use it for comparison"
-    - git checkout -t origin/master || true
-    - '[ ! -z $TRAVIS_PULL_REQUEST ] && DEBUG="*" danger local --dangerfile source/platforms/git/_tests/local_dangerfile_example.ts || echo "Skipping Danger Local for non PR run"'
+        - echo "Grabbing master so that danger-local can use it for comparison"
+        - git checkout -t origin/master || true
+        - '[ ! -z $TRAVIS_PULL_REQUEST ] && DEBUG="*" danger local --dangerfile
+          source/platforms/git/_tests/local_dangerfile_example.ts || echo "Skipping Danger Local for non PR run"'
 
+    # Create some fake projects at runtime
+    - node_js: "7"
+      script:
+        - echo "This is only for Integration tests on two blank projects"
+        - yarn build
+        - mkdir danger_blank_test
+        - cd danger_blank_test
+        - yarn init --yes
+        - yarn add file:..
+        - echo "warn('I warned you')" > dangerfile.js
+        - echo "Testing a blank Dangerfile on an empty project"
+        - DEBUG="*" yarn danger run --text-only
+        - cd ..
+        - rm -rf danger_blank_test
 
-
-  # Create some fake projects at runtime
-  - node_js: '7'
-    script:
-      - echo "This is only for Integration tests on two blank projects"
-      - yarn build
-      - mkdir danger_blank_test
-      - cd danger_blank_test
-      - yarn init --yes
-      - yarn add file:..
-      - echo "warn('I warned you')" > dangerfile.js
-      - echo "Testing a blank Dangerfile on an empty project"
-      - DEBUG="*" yarn danger run --text-only
-      - cd ..
-      - rm -rf danger_blank_test
-
-      - npm install -g create-react-app
-      - create-react-app danger_babel_test
-      - cd danger_babel_test
-      - yarn add file:..
-      - echo "warn('Expect 2 warnings'); const a = async () => {warn('the other');}; schedule(a)" > dangerfile.js
-      - echo "Testing a blank Dangerfile on a babel CRA project"
-      - DEBUG="*" yarn danger ci --text-only
-      - cd ..
-      - rm -rf danger_babel_test
-
+        - npm install -g create-react-app
+        - create-react-app danger_babel_test
+        - cd danger_babel_test
+        - yarn add file:..
+        - echo "warn('Expect 2 warnings'); const a = async () => {warn('the other');}; schedule(a)" > dangerfile.js
+        - echo "Testing a blank Dangerfile on a babel CRA project"
+        - DEBUG="*" yarn danger ci --text-only
+        - cd ..
+        - rm -rf danger_babel_test
 
 script:
-- yarn lint
-- yarn add jest
-- yarn jest --runInBand
+  - yarn lint
+  - yarn add jest
+  - yarn jest --runInBand
 
 notifications:
   slack: dangergem:9FOZou9EGBV9xO1Ol4bxRPz9
-
-deploy:
-  provider: npm
-  email: orta.therox+dangernpm@gmail.com
-  api_key:
-    secure: MCHGI1GAiqyYsKaA9MGsmHOCAthURv8ECSeYSZJ5UpFng0FSslVBpNZ6xQSu3tETLHfqIb4y0PqS42xH+AsJh8j0z9B3Y9e4NvwCOnJBzw7qJNUm1RM0smYDkwqYDVlqRgjHoh3phi7zPOeEogpz0n+uEGHnpckNA1GpZvdIFef7oaEViRoDKxP0lZj5oV9Isdm7HLSYPXyCYqhgygr7qnHYyFBqd3h0Iw3w2/fg+IBet9Td8oCEpUAHe7WjeUmzgRF0FVKlC2d1kfJVYjx1qGKHh0F5Kmg1GE2xwM/QBwzBlq12XtnSLwi70MLjoUa+Y2m2T+A6vuoLb7OqwDsHp/plTfrfBD5Quqmnc5Hdh71MHWPz/OPtsyZkfLMdutvlM9BmM/7HR46+HrBMe7eNOCj79MsNCWRXdOWpEWrK7BLXtignfDFOUM+renDgBsuxvEaryQ8QxgbIudEqaJ0+kzGIpzHFQGnNXwAXZOz9Q38+CZds2J7mwz7RSTFipNqsyBFZbREmGdupyUgPalXLp0hjxu8y15atVPZAYxuLv2Wt2NXiuyf3HbO9uwwRWbat+nCThF+fmQmcgTrE4BlHvTiy4FIzve5nlBaEiWAOanIMFoSjs4Co9o16sZ0yZZS/1a2SgfLdCuFvYKmvUsqBcCcaypXBpqxvZMwTFA6oPQQ=
-  on:
-    node: 6
-    repo: danger/danger-js
-    tags: true
-    all_branches: true

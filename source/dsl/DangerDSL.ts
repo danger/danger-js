@@ -28,7 +28,7 @@ export interface PerilDSL {
   env: any
 
   /**
-   * Allows you to schedule a task declared in your Peril config to run in a certain timeframe,
+   * Allows you to schedule a task declared in your Peril config to run in a certain time-frame,
    * e.g `runTask("reminder_pr_merge", "in 2 days", { number: 2 })`. For more details on how this
    * works, see the Peril documentation.
    * @param taskName the name found in your Peril config
@@ -40,7 +40,8 @@ export interface PerilDSL {
   /**
    * When running a task, the data passed in when the task
    * was originally scheduled, you can also get this as the first
-   * argument in a default function.
+   * argument in a default function. Deprecated, use a default export
+   * function. I'll remove this sometime.
    */
   data?: any
 }
@@ -62,7 +63,7 @@ export interface DangerDSLJSONType {
    */
   settings: {
     /**
-     * Saves each client re-implmenting logic to grab these vars
+     * Saves each client re-implementing logic to grab these vars
      * for their API clients
      */
     github: {
@@ -100,7 +101,7 @@ export interface DangerDSLType {
    *  for displaying links to files.
    *
    * Strictly speaking, `github` is a nullable type, if you are not using
-   * GitHub then it will be undefined. For the DSL convience sake though, it
+   * GitHub then it will be undefined. For the DSL convenience sake though, it
    * is classed as non-nullable
    *
    *  Provides an authenticated API so you can work directly
@@ -119,7 +120,7 @@ export interface DangerDSLType {
    *  and activities.
    *
    *  Strictly speaking, `bitbucket_server` is a nullable type, if you are using
-   *  GitHub then it will be undefined. For the DSL convience sake though, it
+   *  GitHub then it will be undefined. For the DSL convenience sake though, it
    *  is classed as non-nullable
    */
   readonly bitbucket_server: BitBucketServerDSL

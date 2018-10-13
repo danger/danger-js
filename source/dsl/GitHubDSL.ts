@@ -254,7 +254,7 @@ export interface GitHubPRDSL {
 
 // These are the individual subtypes of objects inside the larger DSL objects above.
 
-/** A GitHub specific implmentation of a git commit, it has GitHub user names instead of an email. */
+/** A GitHub specific implementation of a git commit, it has GitHub user names instead of an email. */
 export interface GitHubCommit {
   /** The raw commit metadata */
   commit: GitCommit

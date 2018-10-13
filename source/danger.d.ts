@@ -73,13 +73,13 @@ interface BitBucketServerPRDSL {
   open: boolean
   /** Is the PR closed? */
   closed: boolean
-  /** Date PR created as number of mili seconds since the unix epoch */
+  /** Date PR created as number of milliseconds since the unix epoch */
   createdDate: number
-  /** Date PR updated as number of mili seconds since the unix epoch */
+  /** Date PR updated as number of milliseconds since the unix epoch */
   updatedDate: number
-  /** The PR submittor's reference */
+  /** The PR submitter's reference */
   fromRef: BitBucketServerMergeRef
-  /** The repo Danger is sunning on */
+  /** The repo Danger is running on */
   toRef: BitBucketServerMergeRef
   /** Was this PR locked? */
   locked: boolean
@@ -95,7 +95,7 @@ interface BitBucketServerPRDSL {
 
 // These are the individual subtypes of objects inside the larger DSL objects above.
 
-/** A BitBucketServer specific implmentation of a git commit. */
+/** A BitBucketServer specific implementation of a git commit. */
 interface BitBucketServerCommit {
   /** The SHA for the commit */
   id: string
@@ -187,7 +187,7 @@ interface BitBucketServerPRParticipant {
   user: BitBucketServerUser
   /** How did they contribute */
   role: "AUTHOR" | "REVIEWER" | "PARTICIPANT"
-  /** Did they approve of the PR */
+  /** Did they approve of the PR? */
   approved: boolean
   /** Their review feedback */
   status: "APPROVED" | "UNAPPROVED" | "NEEDS_WORK"
@@ -225,11 +225,11 @@ interface BitBucketServerRepo {
   scmId: string
   /** Is the repo public? */
   public: boolean
-  /** Can someone fork thie repo? */
+  /** Can someone fork this repo? */
   forkable: boolean
   /** Links for the projects */
   links: BitBucketServerLinks<"self" | "clone">
-  /** An abtraction for grouping repos */
+  /** An abstraction for grouping repos */
   project: {
     /** The project unique id */
     id: number
@@ -347,7 +347,7 @@ interface PerilDSL {
   env: any
 
   /**
-   * Allows you to schedule a task declared in your Peril config to run in a certain timeframe,
+   * Allows you to schedule a task declared in your Peril config to run in a certain time-frame,
    * e.g `runTask("reminder_pr_merge", "in 2 days", { number: 2 })`. For more details on how this
    * works, see the Peril documentation.
    * @param taskName the name found in your Peril config
@@ -359,7 +359,8 @@ interface PerilDSL {
   /**
    * When running a task, the data passed in when the task
    * was originally scheduled, you can also get this as the first
-   * argument in a default function.
+   * argument in a default function. Deprecated, use a default export
+   * function. I'll remove this sometime.
    */
   data?: any
 }
@@ -381,7 +382,7 @@ interface DangerDSLJSONType {
    */
   settings: {
     /**
-     * Saves each client re-implmenting logic to grab these vars
+     * Saves each client re-implementing logic to grab these vars
      * for their API clients
      */
     github: {
@@ -419,7 +420,7 @@ interface DangerDSLType {
    *  for displaying links to files.
    *
    * Strictly speaking, `github` is a nullable type, if you are not using
-   * GitHub then it will be undefined. For the DSL convience sake though, it
+   * GitHub then it will be undefined. For the DSL convenience sake though, it
    * is classed as non-nullable
    *
    *  Provides an authenticated API so you can work directly
@@ -438,7 +439,7 @@ interface DangerDSLType {
    *  and activities.
    *
    *  Strictly speaking, `bitbucket_server` is a nullable type, if you are using
-   *  GitHub then it will be undefined. For the DSL convience sake though, it
+   *  GitHub then it will be undefined. For the DSL convenience sake though, it
    *  is classed as non-nullable
    */
   readonly bitbucket_server: BitBucketServerDSL
@@ -926,7 +927,7 @@ interface GitHubPRDSL {
 
 // These are the individual subtypes of objects inside the larger DSL objects above.
 
-/** A GitHub specific implmentation of a git commit, it has GitHub user names instead of an email. */
+/** A GitHub specific implementation of a git commit, it has GitHub user names instead of an email. */
 interface GitHubCommit {
   /** The raw commit metadata */
   commit: GitCommit

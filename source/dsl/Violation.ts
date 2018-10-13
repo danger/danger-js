@@ -3,23 +3,13 @@
  * expansion later.
  */
 export interface Violation {
-  /**
-   * The string representation
-   *
-   * @type {string}
-   */
+  /** The string representation */
   message: string
 
-  /**
-   * Optional path to the file
-   * @type {string}
-   */
+  /** Optional path to the file */
   file?: string
 
-  /**
-   * Optional line in the file
-   * @type {string}
-   */
+  /** Optional line in the file */
   line?: number
 }
 
