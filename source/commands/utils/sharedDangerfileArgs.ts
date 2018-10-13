@@ -20,6 +20,9 @@ export default (command: any) =>
     .option("-v, --verbose", "Verbose output of files")
     .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")
     .option("-t, --text-only", "Provide an STDOUT only interface, Danger will not post to your PR")
-    .option("-d, --dangerfile [filePath | remote url]", "Specify a custom dangerfile path")
+    .option(
+      "-d, --dangerfile [filePath | remote url]",
+      "Specify a custom dangerfile path, remote urls only work with github"
+    )
     .option("-i, --id [danger_id]", "Specify a unique Danger ID for the Danger run")
     .option("-b, --base [branch_name]", "Base branch")
