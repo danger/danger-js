@@ -1,21 +1,12 @@
+jest.mock("../jsonToDSL", () => ({ jsonToDSL: jest.fn(() => Promise.resolve({ danger: "" })) }))
+jest.mock("../Dangerfile", () => ({ contextForDanger: jest.fn(() => Promise.resolve({ danger: "" })) }))
+
 import { jsonToContext } from "../json-to-context"
 import { CISource } from "../../ci_source/ci_source"
 import { FakeCI } from "../../ci_source/providers/Fake"
 
-jest.mock("../jsonToDSL.ts")
-jest.mock("../Dangerfile")
-
-/**
- * Mock the jsonToDSL function
- */
-// tslint:disable-next-line
-const jsonToDSLMock = require("../jsonToDSL")
-
-/**
- * Mock the context for danger function
- */
-// tslint:disable-next-line
-const bar = require("../Dangerfile")
+import { jsonToDSL } from "../jsonToDSL"
+import { contextForDanger } from "../Dangerfile"
 
 describe("runner/json-to-context", () => {
   let jsonString: any
@@ -23,9 +14,7 @@ describe("runner/json-to-context", () => {
   let context: any
   let source: CISource
 
-  beforeEach(async () => {
-    jsonToDSLMock.jsonToDSL = jest.fn(() => Promise.resolve({ danger: "" }))
-    bar.contextForDanger = jest.fn(() => Promise.resolve({ danger: "" }))
+  beforeEach(() => {
     jsonString = JSON.stringify({
       danger: {
         settings: {
@@ -60,7 +49,7 @@ describe("runner/json-to-context", () => {
   it("should work if no base is set", async () => {
     program.base = undefined
     await jsonToContext(jsonString, program, source)
-    expect(jsonToDSLMock.jsonToDSL).toHaveBeenCalledWith(
+    expect(jsonToDSL).toHaveBeenCalledWith(
       {
         settings: {
           github: {
@@ -75,7 +64,7 @@ describe("runner/json-to-context", () => {
 
   it("should set the base to develop", async () => {
     await jsonToContext(jsonString, program, source)
-    expect(jsonToDSLMock.jsonToDSL).toHaveBeenCalledWith(
+    expect(jsonToDSL).toHaveBeenCalledWith(
       {
         settings: {
           github: {
@@ -92,6 +81,6 @@ describe("runner/json-to-context", () => {
 
   it("should call context for danger with dsl", async () => {
     await jsonToContext(jsonString, program, source)
-    expect(bar.contextForDanger).toHaveBeenCalledWith({ danger: "" })
+    expect(contextForDanger).toHaveBeenCalledWith({ danger: "" })
   })
 })

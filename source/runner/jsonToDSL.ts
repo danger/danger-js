@@ -1,4 +1,4 @@
-import GitHubNodeAPI from "@octokit/rest"
+import OctoKit from "@octokit/rest"
 
 import { DangerDSLJSONType, DangerDSLType } from "../dsl/DangerDSL"
 import { gitHubGitDSL as githubJSONToGitDSL } from "../platforms/github/GitHubGit"
@@ -16,12 +16,16 @@ import { CISource } from "../ci_source/ci_source"
 import { debug } from "../debug"
 const d = debug("jsonToDSL")
 
+/**
+ * Re-hydrates the JSON DSL that is passed from the host process into the full DAnger DSL
+ */
 export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promise<DangerDSLType> => {
+  // In a GitHub Action you could be running on other event types
   d(`Creating ${source && source.useEventDSL ? "event" : "pr"} DSL from JSON`)
 
   const api = apiForDSL(dsl)
   const platformExists = [dsl.github, dsl.bitbucket_server].some(p => !!p)
-  const github = dsl.github && githubJSONToGitHubDSL(dsl.github, api as GitHubNodeAPI)
+  const github = dsl.github && githubJSONToGitHubDSL(dsl.github, api as OctoKit)
   const bitbucket_server = dsl.bitbucket_server
 
   let git: GitDSL
@@ -48,12 +52,12 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
   }
 }
 
-const apiForDSL = (dsl: DangerDSLJSONType): GitHubNodeAPI | BitBucketServerAPI => {
+const apiForDSL = (dsl: DangerDSLJSONType): OctoKit | BitBucketServerAPI => {
   if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
     return new BitBucketServerAPI(dsl.bitbucket_server!.metadata, bitbucketServerRepoCredentialsFromEnv(process.env))
   }
 
-  const options: GitHubNodeAPI.Options & { debug: boolean } = {
+  const options: OctoKit.Options & { debug: boolean } = {
     debug: !!process.env.LOG_FETCH_REQUESTS,
     baseUrl: dsl.settings.github.baseURL,
     headers: {
@@ -61,7 +65,7 @@ const apiForDSL = (dsl: DangerDSLJSONType): GitHubNodeAPI | BitBucketServerAPI =
     },
   }
 
-  const api = new GitHubNodeAPI(options)
+  const api = new OctoKit(options)
   if (dsl.settings.github && dsl.settings.github.accessToken) {
     api.authenticate({ type: "token", token: dsl.settings.github.accessToken })
   }

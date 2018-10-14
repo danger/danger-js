@@ -48,8 +48,12 @@ export interface ExecutorOptions {
 }
 // This is still badly named, maybe it really should just be runner?
 
+const isTests = typeof jest === "object"
+
 export class Executor {
   private readonly d = debug("executor")
+  private readonly log = isTests ? () => "" : console.log
+  private readonly logErr = isTests ? () => "" : console.error
 
   constructor(
     public readonly ciSource: CISource,
@@ -165,7 +169,7 @@ export class Executor {
       // For a short message, show the log at the top
       if (!longMessage) {
         // An empty blank line for visual spacing
-        console.log(output)
+        this.log(output)
       }
 
       const table = [
@@ -179,18 +183,18 @@ export class Executor {
       // if over a particular size
 
       table.forEach(row => {
-        console.log(`## ${chalk.bold(row.name)}`)
-        console.log(row.messages.join(chalk.bold("\n-\n")))
+        this.log(`## ${chalk.bold(row.name)}`)
+        this.log(row.messages.join(chalk.bold("\n-\n")))
       })
 
       // For a long message show the results at the bottom
       if (longMessage) {
-        console.log("")
-        console.log(output)
+        this.log("")
+        this.log(output)
       }
 
       // An empty blank line for visual spacing
-      console.log("")
+      this.log("")
     }
   }
 
@@ -224,7 +228,7 @@ export class Executor {
     let issueURL = undefined
 
     if (failureCount + messageCount === 0) {
-      console.log("No issues or messages were sent. Removing any existing messages.")
+      this.log("No issues or messages were sent. Removing any existing messages.")
       await this.platform.deleteMainComment(dangerID)
       const previousComments = await this.platform.getInlineComments(dangerID)
       for (const comment of previousComments) {
@@ -234,11 +238,11 @@ export class Executor {
       if (fails.length > 0) {
         const s = fails.length === 1 ? "" : "s"
         const are = fails.length === 1 ? "is" : "are"
-        console.log(`Failing the build, there ${are} ${fails.length} fail${s}.`)
+        this.log(`Failing the build, there ${are} ${fails.length} fail${s}.`)
       } else if (warnings.length > 0) {
-        console.log("Found only warnings, not failing the build.")
+        this.log("Found only warnings, not failing the build.")
       } else if (messageCount > 0) {
-        console.log("Found only messages, passing those to review.")
+        this.log("Found only messages, passing those to review.")
       }
 
       const previousComments = await this.platform.getInlineComments(dangerID)
@@ -256,15 +260,15 @@ export class Executor {
           : githubResultsTemplate(dangerID, mergedResults)
 
         issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
-        console.log(`Feedback: ${issueURL}`)
+        this.log(`Feedback: ${issueURL}`)
       }
     }
 
     const urlForInfo = issueURL || this.ciSource.ciRunURL
     const successPosting = await this.platform.updateStatus(!failed, messageForResults(results), urlForInfo)
     if (!successPosting && this.options.verbose) {
-      console.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
-      console.log("If the build fails, then danger will use a failing exit code.")
+      this.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
+      this.log("If the build fails, then danger will use a failing exit code.")
     }
 
     if (!successPosting && failed) {
@@ -358,8 +362,8 @@ export class Executor {
    */
   resultsForError(error: Error) {
     // Need a failing error, otherwise it won't fail CI.
-    console.error(chalk.red("Danger has failed to run"))
-    console.error(error)
+    this.logErr(chalk.red("Danger has failed to run"))
+    this.logErr(error)
     return {
       fails: [{ message: "Running your Dangerfile has Failed" }],
       warnings: [],

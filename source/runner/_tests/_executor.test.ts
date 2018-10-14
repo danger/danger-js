@@ -26,8 +26,10 @@ const defaultConfig = {
   dangerID: "123",
 }
 
+const fakeCI = new FakeCI({})
+
 const defaultDsl = (platform: any): Promise<DangerDSLType> => {
-  return jsonDSLGenerator(platform).then(jsonDSL => {
+  return jsonDSLGenerator(platform, fakeCI).then(jsonDSL => {
     jsonDSL.github = {
       pr: {
         number: 1,
@@ -35,7 +37,7 @@ const defaultDsl = (platform: any): Promise<DangerDSLType> => {
         head: { sha: "123", repo: { full_name: "123" } },
       },
     } as any
-    return jsonToDSL(jsonDSL)
+    return jsonToDSL(jsonDSL, fakeCI)
   })
 }
 

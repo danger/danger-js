@@ -1,10 +1,3 @@
-import {
-  customGitHubResolveRequest,
-  dangerPrefix,
-  shouldUseGitHubOverride,
-  dangerRepresentationForPath,
-} from "../customGitHubRequire"
-
 jest.mock("../../../api/fetch")
 import { api } from "../../../api/fetch"
 const apiGH = api as jest.Mock
@@ -12,6 +5,13 @@ const apiGH = api as jest.Mock
 jest.mock("../../../runner/runners/utils/transpiler")
 import transpiler from "../../../runner/runners/utils/transpiler"
 const mockTranspiler = transpiler as jest.Mock
+
+import {
+  customGitHubResolveRequest,
+  dangerPrefix,
+  shouldUseGitHubOverride,
+  dangerRepresentationForPath,
+} from "../customGitHubRequire"
 
 describe("shouldUseGitHubOverride", () => {
   it("ignores module imports ", () => {

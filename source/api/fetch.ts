@@ -4,6 +4,9 @@ import * as node_fetch from "node-fetch"
 const d = debug("networking")
 declare const global: any
 
+const isJest = typeof jest !== "undefined"
+const warn = isJest ? () => "" : console.warn
+
 /**
  * Adds logging to every fetch request if a global var for `verbose` is set to true
  *
@@ -63,14 +66,14 @@ export function api(
     if (!suppressErrorReporting && !response.ok) {
       // we should not modify the response when an error occur to allow body stream to be read again if needed
       let clonedResponse = response.clone()
-      console.warn(`Request failed [${clonedResponse.status}]: ${clonedResponse.url}`)
+      warn(`Request failed [${clonedResponse.status}]: ${clonedResponse.url}`)
       let responseBody = await clonedResponse.text()
       try {
         // tries to pretty print the JSON response when possible
         const responseJSON = await JSON.parse(responseBody.toString())
-        console.warn(`Response: ${JSON.stringify(responseJSON, null, "  ")}`)
+        warn(`Response: ${JSON.stringify(responseJSON, null, "  ")}`)
       } catch (e) {
-        console.warn(`Response: ${responseBody}`)
+        warn(`Response: ${responseBody}`)
       }
     }
 
