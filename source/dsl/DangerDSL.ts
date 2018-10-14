@@ -105,7 +105,7 @@ export interface DangerDSLType {
    * is classed as non-nullable
    *
    *  Provides an authenticated API so you can work directly
-   *  with the GitHub API. This is an instance of the "@ocktokit/rest" npm
+   *  with the GitHub API. This is an instance of the "@octokit/rest" npm
    *  module.
    *
    *  Finally, if running through Peril on an event other than a PR
@@ -128,7 +128,7 @@ export interface DangerDSLType {
   /**
    * Functions which are globally useful in most Dangerfiles. Right
    * now, these functions are around making sentences of arrays, or
-   * for making hrefs easily.
+   * for making a like of href links easily.
    */
   readonly utils: DangerUtilsDSL
 }

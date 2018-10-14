@@ -59,7 +59,8 @@ export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
       }
 
       // if the host process has used
-      const configProcessArgs = config && config.process && config.process.split(" ")
+      const processName = app.config || (config && config.process)
+      const configProcessArgs = processName && processName.split(" ")
       const runnerCommand = configProcessArgs || dangerRunToRunnerCLI(process.argv)
       d(`Preparing to run: ${runnerCommand}`)
 
