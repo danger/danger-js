@@ -112,5 +112,5 @@ Some TypeScript examples:
 [jest]: https://github.com/facebook/jest
 [transpilation_guide]: /js/tutorials/transpilation.html
 [changelog]: http://danger.systems/js/changelog.html
-[apollo]: https://github.com/apollographql/apollo-client/blob/master/dangerfile.ts
+[apollo]: https://github.com/apollographql/apollo-client/blob/master/config/dangerfile.ts
 [bamlab]: https://github.com/bamlab/dev-standards/blob/master/dangerfile.js
