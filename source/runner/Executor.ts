@@ -217,7 +217,9 @@ export class Executor {
       await this.platform.deleteMainComment(dangerID)
       const previousComments = await this.platform.getInlineComments(dangerID)
       for (const comment of previousComments) {
-        await this.deleteInlineComment(comment)
+        if (comment) {
+          await this.deleteInlineComment(comment)
+        }
       }
     } else {
       if (fails.length > 0) {
