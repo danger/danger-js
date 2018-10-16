@@ -13,6 +13,7 @@
 
 ## Master
 
+- Use require style imports for github [@flovilmart][]
 - Add logic for "DANGER_DISABLE_TRANSPILATION" env[@markelog][]
 - Jenkins: Respect `CHANGE_URL`/`CHANGE_ID` for GitHub and BitBucket Server [@azz][]
 - Docs: Guides - Update link to apollo-client dangerfile.ts example [@andykenward][]
