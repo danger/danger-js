@@ -8,7 +8,7 @@
     "no-empty": true,
     "no-unused-expression": true,
     "no-var-requires": true,
-    "no-require-imports": true
+    "no-require-imports": false
   },
   "array-type": [true, "array-simple"]
 }

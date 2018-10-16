@@ -1,4 +1,4 @@
-import GitHubNodeAPI from "@octokit/rest"
+import GitHubNodeAPI = require("@octokit/rest")
 
 import { DangerDSLJSONType, DangerDSLType } from "../dsl/DangerDSL"
 import { gitHubGitDSL as githubJSONToGitDSL } from "../platforms/github/GitHubGit"
