@@ -1,7 +1,7 @@
 jest.mock("../jsonToDSL", () => ({ jsonToDSL: jest.fn(() => Promise.resolve({ danger: "" })) }))
 jest.mock("../Dangerfile", () => ({ contextForDanger: jest.fn(() => Promise.resolve({ danger: "" })) }))
 
-import { jsonToContext } from "../json-to-context"
+import { jsonToContext } from "../jsonToContext"
 import { CISource } from "../../ci_source/ci_source"
 import { FakeCI } from "../../ci_source/providers/Fake"
 

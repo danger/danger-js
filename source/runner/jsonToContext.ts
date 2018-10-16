@@ -1,7 +1,7 @@
 import { CliArgs } from "../dsl/cli-args"
 import { jsonToDSL } from "./jsonToDSL"
 import { contextForDanger, DangerContext } from "./Dangerfile"
-import { DangerDSLJSON } from "./danger-dsl-json"
+import { DangerDSLJSON } from "./dangerDSLJSON"
 import { CISource } from "../ci_source/ci_source"
 
 /**

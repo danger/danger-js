@@ -6,7 +6,7 @@ import jsome from "jsome"
 
 import { FakeCI } from "../ci_source/providers/Fake"
 import { pullRequestParser } from "../platforms/pullRequestParser"
-import { dangerfilePath } from "./utils/file-utils"
+import { dangerfilePath } from "./utils/fileUtils"
 import validateDangerfileExists from "./utils/validateDangerfileExists"
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import { jsonDSLGenerator } from "../runner/dslGenerator"

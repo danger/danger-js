@@ -9,8 +9,8 @@ import getSTDIN from "get-stdin"
 import chalk from "chalk"
 
 import inline from "../runner/runners/inline"
-import { dangerfilePath } from "./utils/file-utils"
-import { jsonToContext } from "../runner/json-to-context"
+import { dangerfilePath } from "./utils/fileUtils"
+import { jsonToContext } from "../runner/jsonToContext"
 import { DangerResults } from "../dsl/DangerResults"
 
 import getRuntimeCISource from "./utils/getRuntimeCISource"
