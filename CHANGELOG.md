@@ -16,6 +16,7 @@
 - Add logic for "DANGER_DISABLE_TRANSPILATION" env[@markelog][]
 - Jenkins: Respect `CHANGE_URL`/`CHANGE_ID` for GitHub and BitBucket Server [@azz][]
 - Docs: Guides - Update link to apollo-client dangerfile.ts example [@andykenward][]
+- Fix crash that may occur when no message is set on generic event [@flovilmart][]
 
 # 4.4.0
 
