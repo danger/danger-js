@@ -1,5 +1,6 @@
 import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
+import { pullRequestParser } from "../../platforms/pullRequestParser"
 
 // https://jenkins.io/
 // https://wiki.jenkins.io/display/JENKINS/Building+a+software+project#Buildingasoftwareproject-belowJenkinsSetEnvironmentVariables
@@ -14,9 +15,8 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  * in order to ensure that you have the build environment set up for PR integration.
  *
  * ### BitBucket Server
- * If using Bitbucket Server, make sure to provide both `ghprbGhRepository` and `ghprbPullId` as environment variables.
- * `ghprbGhRepository` is the path to your repository, e.g. `projects/team/repos/repositoryname`, while `ghprbPullId`
- * provides the id of a pull request (usually `env.CHANGE_ID`). Danger will skip execution if this id is not provided.
+ * If using Bitbucket Server, ensure you are using Multibranch Pipelines or Organization Folders.
+ * Danger will respect the `CHANGE_URL` and `CHANGE_ID` environment variables.
  *
  * With that set up, you can edit your job to add `yarn danger ci` at the build action.
  *
@@ -34,29 +34,45 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
 export class Jenkins implements CISource {
   constructor(private readonly env: Env) {}
 
+  private isJenkins() {
+    return ensureEnvKeysExist(this.env, ["JENKINS_URL"])
+  }
+
   get name(): string {
     return "Jenkins"
   }
 
   get isCI(): boolean {
-    return ensureEnvKeysExist(this.env, ["JENKINS_URL"])
+    return this.isJenkins()
   }
 
   get isPR(): boolean {
-    const mustHave = ["JENKINS_URL", "ghprbPullId", "ghprbGhRepository"]
-    const mustBeInts = ["ghprbPullId"]
-    return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, mustBeInts)
+    const isGitHubPR =
+      ensureEnvKeysExist(this.env, ["ghprbPullId", "ghprbGhRepository"]) &&
+      ensureEnvKeysAreInt(this.env, ["ghprbPullId"])
+    const isMultiBranchPR =
+      ensureEnvKeysExist(this.env, ["CHANGE_ID", "CHANGE_URL"]) && ensureEnvKeysAreInt(this.env, ["CHANGE_ID"])
+
+    return this.isJenkins() && (isMultiBranchPR || isGitHubPR)
   }
 
   get pullRequestID(): string {
-    return this.env.ghprbPullId
+    return this.env.ghprbPullId || this.env.CHANGE_ID
   }
 
   get repoSlug(): string {
+    if (this.env.CHANGE_URL) {
+      const result = pullRequestParser(this.env.CHANGE_URL)
+      if (!result) {
+        throw new Error(`Unable to get repository path from $CHANGE_URL`)
+      }
+
+      return result.repo
+    }
     return this.env.ghprbGhRepository
   }
 
   get ciRunURL() {
-    return process.env.BUILD_URL
+    return process.env.RUN_DISPLAY_URL || process.env.BUILD_URL
   }
 }

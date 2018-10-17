@@ -53,7 +53,22 @@ completely sure about what is being sent to your process without diving into the
 
 Also, `danger pr` now accepts a `--process` arg.
 
-# 4.3.0
+# 4.4.9
+
+- Add logic for "DANGER_DISABLE_TRANSPILATION" env [@markelog][]
+- Jenkins: Respect `CHANGE_URL`/`CHANGE_ID` for GitHub and BitBucket Server [@azz][]
+- Docs: Guides - Update link to apollo-client dangerfile.ts example [@andykenward][]
+- Fix crash that may occur when no message is set on generic event [@flovilmart][]
+
+# 4.4.0-7
+
+- Supports installation using Homebrew [@thii][]
+
+# 4.3.x
+
+- Some experimental beta builds which didn't turn out very useful
+
+# 4.2.1
 
 - Adds a fallback to `GITHUB_TOKEN` if it's in the ENV - orta
 - There was some versioning faffing going on
