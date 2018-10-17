@@ -124,7 +124,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@octokit/rest": "^15.12.1",
+    "@octokit/rest": "^15.14.0",
     "chalk": "^2.3.0",
     "commander": "^2.18.0",
     "debug": "^4.0.1",
