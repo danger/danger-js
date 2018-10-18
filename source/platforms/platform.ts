@@ -96,7 +96,7 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
   }
 
   // GitHub
-  const ghToken = env["DANGER_GITHUB_API_TOKEN"]
+  const ghToken = env["DANGER_GITHUB_API_TOKEN"] || env["GITHUB_TOKEN"]
   if (ghToken || !requireAuth) {
     if (!ghToken) {
       console.log("You don't have a DANGER_GITHUB_API_TOKEN set up, this is optional, but TBH, you want to do this")

@@ -2,6 +2,7 @@ import { basename } from "path"
 import { sentence, href } from "../../runner/DangerUtils"
 import { GitHubPRDSL, GitHubUtilsDSL } from "./../../dsl/GitHubDSL"
 import { debug } from "../../debug"
+import { filepathContentsMapToUpdateGitHubBranch, BranchCreationConfig } from "memfs-or-file-map-to-github-branch"
 
 const d = debug("GitHub::Utils")
 
@@ -35,6 +36,7 @@ const utils = (pr: GitHubPRDSL, api: GitHub): GitHubUtilsDSL => {
     fileContents: fileContentsGenerator(api, pr.head.repo.full_name, pr.head.ref),
     createUpdatedIssueWithID: createUpdatedIssueWithIDGenerator(api),
     createOrAddLabel: createOrAddLabel(pr, api),
+    createOrUpdatePR: createOrUpdatePR(pr, api),
   }
 }
 
@@ -97,7 +99,73 @@ export const createUpdatedIssueWithIDGenerator = (api: GitHub) => async (
   }
 }
 
-export default utils
+interface PRCreationConfig {
+  /** PR title */
+  title: string
+  /** PR body */
+  body: string
+  /** The danger in danger/danger-js - defaults to the PR base name if undefined */
+  owner?: string
+  /** The danger-js in danger/danger-js - defaults to the PR base repo if undefined */
+  repo?: string
+  /** A message for the commit */
+  commitMessage: string
+  /** The name of the branch on the repo */
+  newBranchName: string
+  /** Base branch for the new branch e.g. what should Danger create the new branch from */
+  baseBranch: string
+}
+
+export const createOrUpdatePR = (pr: GitHubPRDSL | undefined, api: GitHub) => async (
+  config: PRCreationConfig,
+  fileMap: any
+) => {
+  const repo = config.repo || (pr && pr.base.repo.name)
+  if (!repo) {
+    throw new Error("You need to set a `repo` in the config for `createOrUpdatePR`")
+  }
+
+  const owner = config.owner || (pr && pr.base.user.login)
+  if (!owner) {
+    throw new Error("You need to set a `owner` in the config for `createOrUpdatePR`")
+  }
+
+  const branchSettings: BranchCreationConfig = {
+    fullBaseBranch: `refs/${config.baseBranch}`,
+    fullBranchReference: `heads/${config.newBranchName}`,
+    message: config.commitMessage,
+    owner,
+    repo,
+  }
+
+  d("Creating a branch")
+  await filepathContentsMapToUpdateGitHubBranch(api, fileMap, branchSettings)
+
+  d("Getting open PRs")
+  const prs = await api.pullRequests.getAll({ repo, owner, state: "open" })
+  const existingPR = prs.data.find(pr => pr.base.ref === config.newBranchName)
+
+  if (existingPR) {
+    d("Updating existing PR")
+    return await api.pullRequests.update({
+      number: existingPR.number,
+      base: "source",
+      owner: "artsy",
+      repo: "artsy.github.io",
+      title: config.title,
+      body: config.body,
+    })
+  } else {
+    d("Creating a new PR")
+    return await api.pullRequests.create({
+      base: "source",
+      head: config.newBranchName,
+      owner: "artsy",
+      repo: "artsy.github.io",
+      title: config.title,
+    })
+  }
+}
 
 export const createOrAddLabel = (pr: GitHubPRDSL | undefined, api: GitHub) => async (
   labelConfig: { name: string; color: string; description: string },
@@ -140,3 +208,5 @@ export const createOrAddLabel = (pr: GitHubPRDSL | undefined, api: GitHub) => as
     labels: [labelConfig.name],
   })
 }
+
+export default utils

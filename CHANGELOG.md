@@ -13,12 +13,72 @@
 
 ## Master
 
+# 4.4.9
+
+- Add logic for "DANGER_DISABLE_TRANSPILATION" env [@markelog][]
+- Jenkins: Respect `CHANGE_URL`/`CHANGE_ID` for GitHub and BitBucket Server [@azz][]
+- Docs: Guides - Update link to apollo-client dangerfile.ts example [@andykenward][]
+- Fix crash that may occur when no message is set on generic event [@flovilmart][]
+
+# 4.4.0-7
+
+- Supports installation using Homebrew [@thii][]
+
+# 4.3.x
+
+- Some experimental beta builds which didn't turn out very useful
+
+# 4.2.1
+
+- Adds a fallback to `GITHUB_TOKEN` if it's in the ENV - orta
+- There was some versioning faffing going on
+
+# 4.1.0
+
+- Adds the ability to send a PR from a Dangerfile easily.
+
+  ```ts
+  import { danger } from "danger"
+
+  export default async () => {
+    // This is a map of file to contents for things to change in the PR
+    const welcomePR = {
+      LICENSE: "[the MIT license]",
+      "README.md": "[The README content]",
+    }
+
+    // Creates a new branch called `welcome`, from `master`. Creates a commit with
+    // the changes above and the message "Sets up ...". Then sends a PR to `orta/new-repo`
+    // with the title "Welcome to ..." and the body "Here is ...".
+    await danger.github.utils.createOrUpdatePR(
+      {
+        title: "Welcome to [org]",
+        body: "Here is your new repo template files",
+        owner: "orta",
+        repo: "new-repo",
+        baseBranch: "master",
+        newBranchName: "welcome",
+        commitMessage: "Sets up the welcome package",
+      },
+      welcomePR
+    )
+  }
+  ```
+
+  OK, so this one is cool. This function will create/update an existing PR. You pass in a config object that defines;
+  the commit, the branch and the PR metadata and then this function will go and set all that up for you.
+
+  The second argument is a fileMap, this is an object like `{ "README.md": "[the content]" }` and it defines what files
+  should change in the commit. The files are completely changed to the content in the fileMap, so if you're making a
+  single line change - you need to submit the enfile file.
+
+  This is all based on my module
+  [memfs-or-file-map-to-github-branch](https://www.npmjs.com/package/memfs-or-file-map-to-github-branch) so if you need
+  a set of lower level APIs for PR/branch needs, `import` that and use it. - [@orta][]
+
 # 4.0.1
 
 - Fixed a bug where Danger would fail to update status when there are no failures or messages [@johansteffner][]
-
-# 4.0.1
-
 - Fixed a bug where Danger was throwing an error when removing any existing messages [@stefanbuck][]
 
 # 4.0.0

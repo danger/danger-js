@@ -62,7 +62,7 @@ export async function getPullRequestIDForBranch(metadata: RepoMetaData, env: Env
     return 0
   }
 
-  const token = env["DANGER_GITHUB_API_TOKEN"]
+  const token = env["DANGER_GITHUB_API_TOKEN"] || env["GITHUB_TOKEN"]
   if (!token) {
     return 0
   }
