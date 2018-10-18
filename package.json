@@ -93,6 +93,7 @@
     "@babel/traverse": "7.1.0",
     "@types/debug": "0.0.30",
     "@types/get-stdin": "^5.0.1",
+    "@types/http-proxy-agent": "^2.0.1",
     "@types/jest": "^23.3.2",
     "@types/json5": "^0.0.30",
     "@types/jsonwebtoken": "^7.2.8",
@@ -125,7 +126,6 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "@octokit/rest": "^15.12.1",
-    "@types/http-proxy-agent": "^2.0.1",
     "chalk": "^2.3.0",
     "commander": "^2.18.0",
     "debug": "^4.0.1",
