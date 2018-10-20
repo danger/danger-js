@@ -67,7 +67,7 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
         dangerID: app.id || "default",
       }
 
-      const processName = app.config || (config && config.process)
+      const processName = app.process || (config && config.process)
       const configProcessArgs = processName && processName.split(" ")
       const runnerCommand = configProcessArgs || dangerRunToRunnerCLI(process.argv)
       d(`Preparing to run: ${runnerCommand}`)

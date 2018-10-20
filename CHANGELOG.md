@@ -13,10 +13,12 @@
 
 ## Master
 
-# 5.0.1
+# 5.0.1, err. 6.0.0
 
 - Hah, my computer ran out opf power mid-deploy, and now I have to ship another build to make sure the brew versions of
   Danger JS are set up correctly. - orta
+
+- Hah, I managed to run the same 'deploy major' command instead. So... Happy v6! - orta
 
 # 5.0.0
 
