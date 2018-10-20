@@ -45,9 +45,10 @@ runners.forEach(run => {
      */
     async function setupDangerfileContext() {
       const platform = new FakePlatform()
-      exec = new Executor(new FakeCI({}), platform, run.fn, config)
+      const source = new FakeCI({})
+      exec = new Executor(source, platform, run.fn, config)
 
-      const dsl = await jsonDSLGenerator(platform)
+      const dsl = await jsonDSLGenerator(platform, new FakeCI({}))
       dsl.github = {
         pr: {
           number: 1,
@@ -55,7 +56,7 @@ runners.forEach(run => {
           head: { sha: "123", repo: { full_name: "123" } },
         },
       } as any
-      const realDSL = await jsonToDSL(dsl)
+      const realDSL = await jsonToDSL(dsl, source)
       return contextForDanger(realDSL)
     }
 

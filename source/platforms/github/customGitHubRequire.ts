@@ -2,7 +2,7 @@ import requireFromString from "require-from-string"
 
 import cleanDangerfile from "../../runner/runners/utils/cleanDangerfile"
 import transpiler from "../../runner/runners/utils/transpiler"
-import { dirname, extname, resolve } from "path"
+import { dirname, extname, posix } from "path"
 import debug from "debug"
 import { api } from "../../api/fetch"
 
@@ -105,7 +105,7 @@ export const customGitHubResolveRequest = (token: string) => async (request: str
 
   const dangerRep = dangerRepresentationForPath(prefixLessParent)
   // This is the un-prefixed local path for the module requested`./thing`
-  const localPath = resolve(dirname(dangerRep.dangerfilePath), request).replace(resolve(""), "")
+  const localPath = posix.resolve(dirname(dangerRep.dangerfilePath), request).replace(posix.resolve(""), "")
 
   // It's possible that you're jumping between a *.ts and a *.js - it's weird, sure, but I'll allow it
   const extensions = extname(prefixLessParent) === ".ts" ? [".ts", ".js"] : [".js", ".ts"]
