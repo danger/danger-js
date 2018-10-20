@@ -23,7 +23,12 @@ export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
 }
 
 // Runs the Danger process
-const runDangerSubprocess = (subprocessName: string[], dslJSON: DangerDSLJSONType, exec: Executor, app: SharedCLI) => {
+export const runDangerSubprocess = (
+  subprocessName: string[],
+  dslJSON: DangerDSLJSONType,
+  exec: Executor,
+  app: SharedCLI
+) => {
   let processName = subprocessName[0]
   let args = subprocessName
   let results = null as any

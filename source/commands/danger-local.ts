@@ -23,6 +23,7 @@ setSharedArgs(program).parse(process.argv)
 
 const app = (program as any) as App
 const base = app.base || "master"
+
 const localPlatform = new LocalGit({ base, staged: app.staging })
 localPlatform.validateThereAreChanges().then(changes => {
   if (changes) {
