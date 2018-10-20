@@ -1,6 +1,9 @@
 import { debug } from "../debug"
 import * as node_fetch from "node-fetch"
 
+import HttpProxyAgent from "http-proxy-agent"
+import HttpsProxyAgent from "https-proxy-agent"
+
 const d = debug("networking")
 declare const global: any
 
@@ -60,6 +63,15 @@ export function api(
 
     d(output.join(" "))
   }
+
+  let agent = init.agent
+  const proxy = process.env["HTTPS_PROXY"] || process.env["HTTP_PROXY"]
+
+  if (!agent && proxy) {
+    let secure = url.toString().startsWith("https")
+    init.agent = secure ? new HttpsProxyAgent(proxy) : new HttpProxyAgent(proxy)
+  }
+
   const originalFetch = node_fetch.default
   return originalFetch(url, init).then(async (response: node_fetch.Response) => {
     // Handle failing errors
