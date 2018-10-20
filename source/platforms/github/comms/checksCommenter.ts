@@ -65,7 +65,8 @@ export const GitHubChecksCommenter = (api: GitHubAPI) => {
   return {
     platformResultsPreMapper: async (results: DangerResults, options: ExecutorOptions): Promise<DangerResults> => {
       let token = api.token
-      if (!options.accessTokenIsGitHubApp) {
+      // Either it doesn't exist, or is a personal access token
+      if (!token || !token.startsWith("v1.")) {
         const custom = process.env.DANGER_JS_APP_INSTALL_ID ? getAuthWhenUsingDangerJSApp() : getCustomAppAuthFromEnv()
         token = await getAccessTokenForInstallation(custom.appID!, parseInt(custom.installID!), custom.key!)
         d("Created a custom access token: ", [custom.appID!, parseInt(custom.installID!), custom.key!, token])
@@ -78,7 +79,7 @@ export const GitHubChecksCommenter = (api: GitHubAPI) => {
       try {
         // If Danger succeeds at creating a checks API call, then we switch out
         // the results which go through to the issue commenter with a summary version.
-        const response = await api.postCheck(checkData, token!)
+        const response = await api.postCheckRun(checkData, token!)
         returnedResults = tweetSizedResultsFromResults(results, response)
         d("Got response on the checks API")
         d(JSON.stringify(response))

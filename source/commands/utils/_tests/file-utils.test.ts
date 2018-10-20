@@ -1,7 +1,7 @@
 let mockDangerfilePath = ""
 jest.mock("fs", () => ({ existsSync: (p: any) => p === mockDangerfilePath }))
 
-import { dangerfilePath } from "../file-utils"
+import { dangerfilePath } from "../fileUtils"
 
 describe("dangerfilePath", () => {
   it("should return anything passed into the program's dangerfile", () => {

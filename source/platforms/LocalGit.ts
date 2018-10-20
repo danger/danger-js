@@ -37,7 +37,7 @@ export class LocalGit implements Platform {
     return diff.trim().length > 0
   }
 
-  async getPlatformDSLRepresentation(): Promise<any> {
+  async getPlatformReviewDSLRepresentation(): Promise<any> {
     return null
   }
 

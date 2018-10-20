@@ -57,7 +57,7 @@ describe("the dangerfile gitDSL - BitBucket Server", async () => {
     api.getFileContents = async (path, repoSlug, ref) => JSON.stringify({ path, repoSlug, ref })
 
     gitJSONDSL = await bbs.getPlatformGitRepresentation()
-    bbsDSL = await bbs.getPlatformDSLRepresentation()
+    bbsDSL = await bbs.getPlatformReviewDSLRepresentation()
     gitDSL = gitJSONToGitDSL(bbsDSL, gitJSONDSL, bbs.api)
   })
 

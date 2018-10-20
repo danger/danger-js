@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "4.4.10",
+  "version": "5.0.0-beta-24",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -56,10 +56,11 @@
     "test:watch": "jest --watch",
     "lint": "tslint \"source/**/*.ts\"",
     "lint:fix": "tslint \"source/**/*.ts\" --fix",
-    "prepublishOnly": "yarn build && yarn declarations && yarn build:flow-types && yarn build:pretty-types",
+    "prepublishOnly": "yarn build && yarn jest && yarn declarations && yarn build:flow-types && yarn build:pretty-types",
     "build": "shx rm -rf ./distribution && tsc -p tsconfig.production.json && madge ./distribution --circular",
     "build:fast": "tsc -p tsconfig.production.json",
     "build:flow-types": "cp source/danger.d.ts source/_danger.d.ts && sed -ie 's/api: GitHub/api: any/g' source/_danger.d.ts && npx flowgen source/_danger.d.ts -o distribution/danger.js.flow && node scripts/update_flow_types.js",
+    "build:schemas": "typescript-json-schema tsconfig.json DangerJSON > source/danger-incoming-process-schema.json; typescript-json-schema tsconfig.json DangerResults > source/danger-outgoing-process-schema.json; yarn prettier --write source/danger-outgoing-process-schema.json source/danger-incoming-process-schema.json",
     "build:pretty-types": "yarn prettier --write distribution/danger.d.ts; yarn prettier --parser flow distribution/danger.js.flow --write",
     "build:watch": "tsc -w",
     "link": "yarn run build && chmod +x distribution/commands/danger.js && npm link",
@@ -68,7 +69,7 @@
     "docs:cp_defs": "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/@octokit/rest/index.d.ts docs/docs_generate/github.d.ts",
     "docs": "yarn run docs:cp_defs; yarn typedoc --ignoreCompilerErrors --mode modules --json docs/js_ref_dsl_docs.json --includeDeclarations source",
     "dts-lint": "yarn run declarations && yarn dtslint types",
-    "danger:prepush": "node distribution/commands/danger.js local --dangerfile dangerfile.lite.ts"
+    "danger:prepush": "yarn build:fast; node distribution/commands/danger.js local --dangerfile dangerfile.lite.ts"
   },
   "repository": {
     "type": "git",
@@ -121,7 +122,8 @@
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "typedoc": "0.9.0",
-    "typescript": "^3.1.1"
+    "typescript": "^3.1.1",
+    "typescript-json-schema": "^0.32.0"
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
@@ -143,6 +145,7 @@
     "memfs-or-file-map-to-github-branch": "^1.1.0",
     "node-cleanup": "^2.1.2",
     "node-fetch": "^2.2.0",
+    "override-require": "^1.1.1",
     "p-limit": "^2.0.0",
     "parse-diff": "^0.5.1",
     "parse-git-config": "^2.0.3",
@@ -160,7 +163,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn build; yarn danger:prepush"
+      "pre-push": "yarn build; yarn declarations; yarn build:schemas; yarn danger:prepush"
     }
   }
 }

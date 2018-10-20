@@ -23,11 +23,14 @@ setSharedArgs(program).parse(process.argv)
 
 const app = (program as any) as App
 const base = app.base || "master"
+
 const localPlatform = new LocalGit({ base, staged: app.staging })
 localPlatform.validateThereAreChanges().then(changes => {
   if (changes) {
     const fakeSource = new FakeCI(process.env)
-    runRunner(app, { source: fakeSource, platform: localPlatform, additionalArgs: ["--local"] })
+    // By setting the custom env var we can be sure that the runner doesn't
+    // try to find the CI danger is running on and use that.
+    runRunner(app, { source: fakeSource, platform: localPlatform, additionalEnvVars: { DANGER_LOCAL_NO_CI: "yep" } })
   } else {
     console.log("No git changes detected between head and master.")
   }

@@ -1,4 +1,3 @@
-// import * as jest from 'jest';
 import * as http from "http"
 import * as node_fetch from "node-fetch"
 

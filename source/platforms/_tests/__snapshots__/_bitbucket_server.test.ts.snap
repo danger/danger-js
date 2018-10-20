@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getPlatformDSLRepresentation should get the activities 1`] = `
+exports[`getPlatformReviewDSLRepresentation should get the activities 1`] = `
 Array [
   Object {
     "action": "RESCOPED",
@@ -452,7 +452,7 @@ Error:  SyntaxError: Unexpected token o in JSON at position 1
 ]
 `;
 
-exports[`getPlatformDSLRepresentation should get the commits of the pull request 1`] = `
+exports[`getPlatformReviewDSLRepresentation should get the commits of the pull request 1`] = `
 Array [
   Object {
     "author": Object {
@@ -519,9 +519,9 @@ Array [
 ]
 `;
 
-exports[`getPlatformDSLRepresentation should get the metadata 1`] = `undefined`;
+exports[`getPlatformReviewDSLRepresentation should get the metadata 1`] = `undefined`;
 
-exports[`getPlatformDSLRepresentation should get the pull request information 1`] = `
+exports[`getPlatformReviewDSLRepresentation should get the pull request information 1`] = `
 Object {
   "author": Object {
     "approved": false,
@@ -679,7 +679,7 @@ Object {
 }
 `;
 
-exports[`getPlatformDSLRepresentation should get the reviewer comments 1`] = `
+exports[`getPlatformReviewDSLRepresentation should get the reviewer comments 1`] = `
 Array [
   Object {
     "action": "RESCOPED",

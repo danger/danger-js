@@ -1,4 +1,4 @@
-import GitHubNodeAPI from "@octokit/rest"
+import OctoKit from "@octokit/rest"
 
 import { DangerDSLJSONType, DangerDSLType } from "../dsl/DangerDSL"
 import { gitHubGitDSL as githubJSONToGitDSL } from "../platforms/github/GitHubGit"
@@ -11,13 +11,22 @@ import {
   BitBucketServerAPI,
   bitbucketServerRepoCredentialsFromEnv,
 } from "../platforms/bitbucket_server/BitBucketServerAPI"
+import { CISource } from "../ci_source/ci_source"
 
-export const jsonToDSL = async (dsl: DangerDSLJSONType): Promise<DangerDSLType> => {
+import { debug } from "../debug"
+const d = debug("jsonToDSL")
+
+/**
+ * Re-hydrates the JSON DSL that is passed from the host process into the full DAnger DSL
+ */
+export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promise<DangerDSLType> => {
+  // In a GitHub Action you could be running on other event types
+  d(`Creating ${source && source.useEventDSL ? "event" : "pr"} DSL from JSON`)
+
   const api = apiForDSL(dsl)
   const platformExists = [dsl.github, dsl.bitbucket_server].some(p => !!p)
-  const github = dsl.github && githubJSONToGitHubDSL(dsl.github, api as GitHubNodeAPI)
+  const github = dsl.github && githubJSONToGitHubDSL(dsl.github, api as OctoKit)
   const bitbucket_server = dsl.bitbucket_server
-  // const gitlab = dsl.gitlab && githubJSONToGitLabDSL(dsl.gitlab, api)
 
   let git: GitDSL
   if (!platformExists) {
@@ -26,7 +35,7 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType): Promise<DangerDSLType> 
   } else if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
     git = bitBucketServerGitDSL(bitbucket_server!, dsl.git, api as BitBucketServerAPI)
   } else {
-    git = githubJSONToGitDSL(github!, dsl.git)
+    git = source && source.useEventDSL ? ({} as any) : githubJSONToGitDSL(github!, dsl.git)
   }
 
   return {
@@ -43,12 +52,12 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType): Promise<DangerDSLType> 
   }
 }
 
-const apiForDSL = (dsl: DangerDSLJSONType): GitHubNodeAPI | BitBucketServerAPI => {
+const apiForDSL = (dsl: DangerDSLJSONType): OctoKit | BitBucketServerAPI => {
   if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
     return new BitBucketServerAPI(dsl.bitbucket_server!.metadata, bitbucketServerRepoCredentialsFromEnv(process.env))
   }
 
-  const options: GitHubNodeAPI.Options & { debug: boolean } = {
+  const options: OctoKit.Options & { debug: boolean } = {
     debug: !!process.env.LOG_FETCH_REQUESTS,
     baseUrl: dsl.settings.github.baseURL,
     headers: {
@@ -56,7 +65,7 @@ const apiForDSL = (dsl: DangerDSLJSONType): GitHubNodeAPI | BitBucketServerAPI =
     },
   }
 
-  const api = new GitHubNodeAPI(options)
+  const api = new OctoKit(options)
   if (dsl.settings.github && dsl.settings.github.accessToken) {
     api.authenticate({ type: "token", token: dsl.settings.github.accessToken })
   }

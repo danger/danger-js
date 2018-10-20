@@ -6,6 +6,8 @@ import { BitBucketServer } from "./BitBucketServer"
 import { BitBucketServerAPI, bitbucketServerRepoCredentialsFromEnv } from "./bitbucket_server/BitBucketServerAPI"
 import { DangerResults } from "../dsl/DangerResults"
 import { ExecutorOptions } from "../runner/Executor"
+import { DangerRunner } from "../runner/runners/runner"
+import chalk from "chalk"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any
@@ -37,12 +39,20 @@ export interface Platform extends PlatformCommunicator {
   readonly name: string
 
   getReviewInfo: () => Promise<any>
-  /** Pulls in the platform specific metadata for inspection */
-  getPlatformDSLRepresentation: () => Promise<any>
+  /** Pulls in the platform specific metadata for code review runs */
+  getPlatformReviewDSLRepresentation: () => Promise<any>
+  /** Pulls in the platform specific metadata for event runs */
+  getPlatformReviewSimpleRepresentation?: () => Promise<any>
   /** Pulls in the Code Review Diff, and offers a succinct user-API for it */
   getPlatformGitRepresentation: () => Promise<GitJSONDSL>
   /** Get the contents of a file at a path */
   getFileContents: (path: string, slug?: string, ref?: string) => Promise<string>
+  /** Optional: Wrap the danger evaluation with some of your code */
+  executeRuntimeEnvironment?: (
+    start: DangerRunner["runDangerfileEnvironment"],
+    dangerfilePath: string,
+    environment: any
+  ) => Promise<void>
 }
 
 // This is basically the commenting aspect of a platform, which allow us to
@@ -95,7 +105,16 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
     return bbs
   }
 
-  // GitHub
+  // They need to set the token up for GitHub actions to work
+  if (env["GITHUB_EVENT_TYPE"] && !env["GITHUB_TOKEN"]) {
+    console.error(`You need to add GITHUB_TOKEN to your Danger action in the workflow:
+
+    action "${env["GITHUB_ACTION"]}" {
+    ${chalk.green('+  secrets = ["GITHUB_TOKEN"]"')}
+    }`)
+  }
+
+  // GitHub Platform
   const ghToken = env["DANGER_GITHUB_API_TOKEN"] || env["GITHUB_TOKEN"]
   if (ghToken || !requireAuth) {
     if (!ghToken) {

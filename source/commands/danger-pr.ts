@@ -6,23 +6,23 @@ import jsome from "jsome"
 
 import { FakeCI } from "../ci_source/providers/Fake"
 import { pullRequestParser } from "../platforms/pullRequestParser"
-import { dangerfilePath } from "./utils/file-utils"
+import { dangerfilePath } from "./utils/fileUtils"
 import validateDangerfileExists from "./utils/validateDangerfileExists"
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import { jsonDSLGenerator } from "../runner/dslGenerator"
 import { prepareDangerDSL } from "./utils/runDangerSubprocess"
 import { runRunner } from "./ci/runner"
 import { Platform, getPlatformForEnv } from "../platforms/platform"
-
-// yarn build; cat source/_tests/fixtures/danger-js-pr-384.json |  node --inspect  --inspect-brk distribution/commands/danger-runner.js --text-only
+import { CISource } from "../ci_source/ci_source"
 
 const d = debug("pr")
 const log = console.log
 
 interface App extends SharedCLI {
   /** Should we show the Danger Process PR JSON? */
-  json: boolean
-  js: boolean
+  json?: boolean
+  /** Should we show a more human readable for of the PR JSON? */
+  js?: boolean
 }
 
 program
@@ -54,49 +54,57 @@ program
 setSharedArgs(program).parse(process.argv)
 
 const app = (program as any) as App
-
-const dangerFile = dangerfilePath(program)
+const customProcess = !!app.process
 
 if (program.args.length === 0) {
   console.error("Please include a PR URL to run against")
   process.exitCode = 1
 } else {
-  const pr = pullRequestParser(program.args[0])
+  // Allow an ambiguous amount of args to find the PR reference
+  const findGH = program.args.find(a => a.includes("github"))
 
-  if (!pr) {
-    console.error("Could not get a repo and a PR number from your URL, bad copy & paste?")
+  if (!findGH) {
+    console.error(`Could find an arg which mentioned GitHub.`)
     process.exitCode = 1
   } else {
-    // TODO: Use custom `fetch` in GitHub that stores and uses local cache if PR is closed, these PRs
-    //       shouldn't change often and there is a limit on API calls per hour.
+    const pr = pullRequestParser(findGH)
+    if (!pr) {
+      console.error(`Could not get a repo and a PR number from your PR: ${findGH}, bad copy & paste?`)
+      process.exitCode = 1
+    } else {
+      // TODO: Use custom `fetch` in GitHub that stores and uses local cache if PR is closed, these PRs
+      //       shouldn't change often and there is a limit on API calls per hour.
 
-    console.log(`Starting Danger PR on ${pr.repo}#${pr.pullRequestNumber}`)
+      console.log(`Starting Danger PR on ${pr.repo}#${pr.pullRequestNumber}`)
 
-    if (validateDangerfileExists(dangerFile)) {
-      d(`executing dangerfile at ${dangerFile}`)
-      const source = new FakeCI({ DANGER_TEST_REPO: pr.repo, DANGER_TEST_PR: pr.pullRequestNumber })
-      const platform = getPlatformForEnv(process.env, source, /* requireAuth */ false)
+      if (customProcess || validateDangerfileExists(dangerfilePath(program))) {
+        if (!customProcess) {
+          d(`executing dangerfile at ${dangerfilePath(program)}`)
+        }
+        const source = new FakeCI({ DANGER_TEST_REPO: pr.repo, DANGER_TEST_PR: pr.pullRequestNumber })
+        const platform = getPlatformForEnv(process.env, source, /* requireAuth */ false)
 
-      if (app.json || app.js) {
-        d("getting just the JSON/JS DSL")
-        runHalfProcessJSON(platform)
-      } else {
-        d("running process separated Danger")
-        // Always post to STDOUT in `danger-pr`
-        app.textOnly = true
+        if (app.json || app.js) {
+          d("getting just the JSON/JS DSL")
+          runHalfProcessJSON(platform, source)
+        } else {
+          d("running process separated Danger")
+          // Always post to STDOUT in `danger-pr`
+          app.textOnly = true
 
-        // Can't send these to `danger runner`
-        delete app.js
-        delete app.json
-        runRunner(app, { source, platform })
+          // Can't send these to `danger runner`
+          delete app.js
+          delete app.json
+          runRunner(app, { source, platform })
+        }
       }
     }
   }
 }
 
 // Run the first part of a Danger Process and output the JSON to CLI
-async function runHalfProcessJSON(platform: Platform) {
-  const dangerDSL = await jsonDSLGenerator(platform)
+async function runHalfProcessJSON(platform: Platform, source: CISource) {
+  const dangerDSL = await jsonDSLGenerator(platform, source)
   const processInput = prepareDangerDSL(dangerDSL)
   const output = JSON.parse(processInput)
   const dsl = { danger: output }

@@ -65,13 +65,13 @@ export interface BitBucketServerPRDSL {
   open: boolean
   /** Is the PR closed? */
   closed: boolean
-  /** Date PR created as number of mili seconds since the unix epoch */
+  /** Date PR created as number of milliseconds since the unix epoch */
   createdDate: number
-  /** Date PR updated as number of mili seconds since the unix epoch */
+  /** Date PR updated as number of milliseconds since the unix epoch */
   updatedDate: number
-  /** The PR submittor's reference */
+  /** The PR submitter's reference */
   fromRef: BitBucketServerMergeRef
-  /** The repo Danger is sunning on */
+  /** The repo Danger is running on */
   toRef: BitBucketServerMergeRef
   /** Was this PR locked? */
   locked: boolean
@@ -87,7 +87,7 @@ export interface BitBucketServerPRDSL {
 
 // These are the individual subtypes of objects inside the larger DSL objects above.
 
-/** A BitBucketServer specific implmentation of a git commit. */
+/** A BitBucketServer specific implementation of a git commit. */
 export interface BitBucketServerCommit {
   /** The SHA for the commit */
   id: string
@@ -179,7 +179,7 @@ export interface BitBucketServerPRParticipant {
   user: BitBucketServerUser
   /** How did they contribute */
   role: "AUTHOR" | "REVIEWER" | "PARTICIPANT"
-  /** Did they approve of the PR */
+  /** Did they approve of the PR? */
   approved: boolean
   /** Their review feedback */
   status: "APPROVED" | "UNAPPROVED" | "NEEDS_WORK"
@@ -217,11 +217,11 @@ export interface BitBucketServerRepo {
   scmId: string
   /** Is the repo public? */
   public: boolean
-  /** Can someone fork thie repo? */
+  /** Can someone fork this repo? */
   forkable: boolean
   /** Links for the projects */
   links: BitBucketServerLinks<"self" | "clone">
-  /** An abtraction for grouping repos */
+  /** An abstraction for grouping repos */
   project: {
     /** The project unique id */
     id: number

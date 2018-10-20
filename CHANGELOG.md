@@ -13,6 +13,46 @@
 
 ## Master
 
+# 5.0.0
+
+_No breaking changes_ - I'm just bumping it because it's a lot of under-the-hood work, and I've not been able to test it
+thoroughly in production.
+
+This release bring support for GitHub actions. It does this merging in some of the responsibilities that used to live
+inside Peril into Danger.
+
+Notes about Danger JS:
+
+- Adds support for running remote GitHub files via the `--dangerfile` argument. It supports urls like:
+  `orta/peril-settings/file.ts` which grabs `file.ts` from `orta/peril-settings`.
+- Adds support for taking a GitHub Actions event JSON and exposing it in the `default export` function in the same way
+  that Peril does it.
+- Adds a GitHubActions CI provider - it declares that it can skip the PR DSL so that Danger can also run against
+  issues/other events
+- Handle remote transpilation of the initial Dangerfile correctly
+- Adds support for not include a tsconfig for typescript projects, danger will use the default config if it can't find
+  one in your project
+- Hardcodes the GitHub Actions userID into danger ( blocked by
+  https://platform.github.community/t/obtaining-the-id-of-the-bot-user/2076 )
+- Allows running with a simplified DSL when running on a GitHub action that isn't a PR
+- Use new env vars for GitHub Actions
+
+There is now 2 ways for a subprocess to communicate to Danger JS - prior to 5.x it was expected that a subprocess would
+pass the entire JSON results back via STDOUT to the host Danger JS process, but sometimes this was unreliable. Now a
+subprocess can pass a JSON URL for Danger JS by looking in STDOUT for the regex `/danger-results:\/\/*.+json/`.
+
+There is now a JSON schema for both directions of the communication for sub-processes:
+
+- The data Danger sends to the subprocess:
+  [`source/danger-incoming-process-schema.json`](source/danger-incoming-process-schema.json)
+- The data Danger expects from the subprocess:
+  [`source/danger-outgoing-process-schema.json`](source/danger-outgoing-process-schema.json)
+
+This can be used for language DSL generation and/or formal verification if you're interested. Or, for just feeling
+completely sure about what is being sent to your process without diving into the Danger JS codebase.
+
+Also, `danger pr` now accepts a `--process` arg.
+
 # 4.4.9
 
 - Add logic for "DANGER_DISABLE_TRANSPILATION" env [@markelog][]

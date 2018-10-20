@@ -3,7 +3,7 @@
 import program from "commander"
 
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
-import { runRunner } from "./ci/runner"
+import { runRunner } from "./ci/resetStatus"
 
 program.usage("[options]").description("Reset the status of a GitHub PR to pending.")
 setSharedArgs(program).parse(process.argv)

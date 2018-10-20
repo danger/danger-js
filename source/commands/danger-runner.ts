@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-import setSharedArgs from "./utils/sharedDangerfileArgs"
+import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import nodeCleanup from "node-cleanup"
 
 import program from "commander"
@@ -9,9 +9,15 @@ import getSTDIN from "get-stdin"
 import chalk from "chalk"
 
 import inline from "../runner/runners/inline"
-import { dangerfilePath } from "./utils/file-utils"
-import { jsonToContext } from "../runner/json-to-context"
+import { dangerfilePath } from "./utils/fileUtils"
+import { jsonToContext } from "../runner/jsonToContext"
 import { DangerResults } from "../dsl/DangerResults"
+
+import getRuntimeCISource from "./utils/getRuntimeCISource"
+import { getPlatformForEnv } from "../platforms/platform"
+import { tmpdir } from "os"
+import { writeFileSync } from "fs"
+import { join } from "path"
 
 const d = debug("runner")
 
@@ -34,21 +40,31 @@ program
 
 const argvClone = process.argv.slice(0)
 setSharedArgs(program).parse(argvClone)
+
 d(`Started Danger runner with ${program.args}`)
 
 let foundDSL = false
 let runtimeEnv = {} as any
 
-const run = async (jsonString: string) => {
+const run = (config: SharedCLI) => async (jsonString: string) => {
+  const source = (config && config.source) || (await getRuntimeCISource(config))
+  const platform = getPlatformForEnv(process.env, source)
+
   d("Got STDIN for Danger Run")
   foundDSL = true
   const dangerFile = dangerfilePath(program)
 
   // Set up the runtime env
-  const context = await jsonToContext(jsonString, program)
+  const context = await jsonToContext(jsonString, program, source)
   runtimeEnv = await inline.createDangerfileRuntimeEnvironment(context)
   d(`Evaluating ${dangerFile}`)
-  await inline.runDangerfileEnvironment([dangerFile], [undefined], runtimeEnv)
+
+  // Allow platforms to hook into the runtime environment instead
+  if (platform.executeRuntimeEnvironment) {
+    await platform.executeRuntimeEnvironment(inline.runDangerfileEnvironment, dangerFile, runtimeEnv)
+  } else {
+    await inline.runDangerfileEnvironment([dangerFile], [undefined], runtimeEnv)
+  }
 }
 
 // Wait till the end of the process to print out the results. Will
@@ -56,14 +72,17 @@ const run = async (jsonString: string) => {
 // host process to create a message from the logs.
 nodeCleanup((exitCode: number, signal: string) => {
   const results: DangerResults = runtimeEnv.results
-  d(`Process has finished with ${exitCode} ${signal}, sending the results back to the host process`)
+  d(`Process has finished with ${exitCode}, sending the results back to the host process ${signal || ""}`)
   d(
     `Got md ${results.markdowns.length} w ${results.warnings.length} f ${results.fails.length} m ${
       results.messages.length
     }`
   )
   if (foundDSL) {
-    process.stdout.write(JSON.stringify(results, null, 2))
+    const resultsPath = join(tmpdir(), "danger-results.json")
+    d(`Writing results into ${resultsPath}`)
+    writeFileSync(resultsPath, JSON.stringify(results, null, 2), "utf8")
+    process.stdout.write("danger-results:/" + resultsPath)
   }
 })
 
@@ -77,4 +96,4 @@ setTimeout(() => {
 }, 1000)
 
 // Start waiting on STDIN for the DSL
-getSTDIN().then(run)
+getSTDIN().then(run(program as any))

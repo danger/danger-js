@@ -132,6 +132,11 @@ export class GitHubAPI {
       return parseInt(perilID)
     }
 
+    const useGitHubActionsID = process.env["GITHUB_WORKFLOW"]
+    if (useGitHubActionsID) {
+      return 41898282
+    }
+
     const info = await this.getUserInfo()
     return info.id
   }
@@ -358,7 +363,7 @@ export class GitHubAPI {
     return res.ok
   }
 
-  postCheck = async (check: CheckOptions, token: string) => {
+  postCheckRun = async (check: CheckOptions, token: string) => {
     const repo = this.repoMetadata.repoSlug
     const res = await this.post(
       `repos/${repo}/check-runs`,

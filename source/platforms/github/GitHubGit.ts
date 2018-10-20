@@ -61,3 +61,10 @@ export const gitHubGitDSL = (github: GitHubDSL, json: GitJSONDSL, githubAPI?: Gi
   d("Setting up git DSL with: ", config)
   return gitJSONToGitDSL(json, config)
 }
+
+export const emptyGitJSON = (): GitJSONDSL => ({
+  commits: [],
+  created_files: [],
+  deleted_files: [],
+  modified_files: [],
+})

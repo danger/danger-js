@@ -26,8 +26,10 @@ const defaultConfig = {
   dangerID: "123",
 }
 
+const fakeCI = new FakeCI({})
+
 const defaultDsl = (platform: any): Promise<DangerDSLType> => {
-  return jsonDSLGenerator(platform).then(jsonDSL => {
+  return jsonDSLGenerator(platform, fakeCI).then(jsonDSL => {
     jsonDSL.github = {
       pr: {
         number: 1,
@@ -35,7 +37,7 @@ const defaultDsl = (platform: any): Promise<DangerDSLType> => {
         head: { sha: "123", repo: { full_name: "123" } },
       },
     } as any
-    return jsonToDSL(jsonDSL)
+    return jsonToDSL(jsonDSL, fakeCI)
   })
 }
 
@@ -57,11 +59,11 @@ describe("setup", () => {
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
 
     platform.getPlatformGitRepresentation = jest.fn()
-    platform.getPlatformDSLRepresentation = jest.fn()
+    platform.getPlatformReviewDSLRepresentation = jest.fn()
 
     await exec.dslForDanger()
     expect(platform.getPlatformGitRepresentation).toBeCalled()
-    expect(platform.getPlatformDSLRepresentation).toBeCalled()
+    expect(platform.getPlatformReviewDSLRepresentation).toBeCalled()
   })
 
   it("gets diff / pr info / utils in setup", async () => {
@@ -77,7 +79,7 @@ describe("setup", () => {
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
     const dsl = await defaultDsl(platform)
 
-    // This is a real error occuring when Danger modifies the Dangerfile
+    // This is a real error occurring when Danger modifies the Dangerfile
     // as it is given a path of ""
     const error = {
       name: "Error",
