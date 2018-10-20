@@ -17,6 +17,7 @@ import getRuntimeCISource from "./utils/getRuntimeCISource"
 import { getPlatformForEnv } from "../platforms/platform"
 import { tmpdir } from "os"
 import { writeFileSync } from "fs"
+import { join } from "path"
 
 const d = debug("runner")
 
@@ -78,7 +79,7 @@ nodeCleanup((exitCode: number, signal: string) => {
     }`
   )
   if (foundDSL) {
-    const resultsPath = tmpdir() + "danger-results.json"
+    const resultsPath = join(tmpdir(), "danger-results.json")
     d(`Writing results into ${resultsPath}`)
     writeFileSync(resultsPath, JSON.stringify(results, null, 2), "utf8")
     process.stdout.write("danger-results:/" + resultsPath)
