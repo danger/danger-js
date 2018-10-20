@@ -1,7 +1,7 @@
 <!--
 
 // Please add your own contribution below inside the Master section, no need to
-// set a version number, that happens during a deploy.
+// set a version number, that happens during a deploy. Thanks!
 //
 // These docs are aimed at users rather than danger developers, so please limit technical
 // terminology in here.
@@ -12,6 +12,139 @@
 -->
 
 ## Master
+
+# 5.0.0
+
+_No breaking changes_ - I'm just bumping it because it's a lot of under-the-hood work, and I've not been able to test it
+thoroughly in production.
+
+This release bring support for GitHub actions. It does this merging in some of the responsibilities that used to live
+inside Peril into Danger.
+
+Notes about Danger JS:
+
+- Adds support for running remote GitHub files via the `--dangerfile` argument. It supports urls like:
+  `orta/peril-settings/file.ts` which grabs `file.ts` from `orta/peril-settings`.
+- Adds support for taking a GitHub Actions event JSON and exposing it in the `default export` function in the same way
+  that Peril does it.
+- Adds a GitHubActions CI provider - it declares that it can skip the PR DSL so that Danger can also run against
+  issues/other events
+- Handle remote transpilation of the initial Dangerfile correctly
+- Adds support for not include a tsconfig for typescript projects, danger will use the default config if it can't find
+  one in your project
+- Hardcodes the GitHub Actions userID into danger ( blocked by
+  https://platform.github.community/t/obtaining-the-id-of-the-bot-user/2076 )
+- Allows running with a simplified DSL when running on a GitHub action that isn't a PR
+- Use new env vars for GitHub Actions
+
+There is now 2 ways for a subprocess to communicate to Danger JS - prior to 5.x it was expected that a subprocess would
+pass the entire JSON results back via STDOUT to the host Danger JS process, but sometimes this was unreliable. Now a
+subprocess can pass a JSON URL for Danger JS by looking in STDOUT for the regex `/danger-results:\/\/*.+json/`.
+
+There is now a JSON schema for both directions of the communication for sub-processes:
+
+- The data Danger sends to the subprocess:
+  [`source/danger-incoming-process-schema.json`](source/danger-incoming-process-schema.json)
+- The data Danger expects from the subprocess:
+  [`source/danger-outgoing-process-schema.json`](source/danger-outgoing-process-schema.json)
+
+This can be used for language DSL generation and/or formal verification if you're interested. Or, for just feeling
+completely sure about what is being sent to your process without diving into the Danger JS codebase.
+
+Also, `danger pr` now accepts a `--process` arg.
+
+# 4.4.9
+
+- Add logic for "DANGER_DISABLE_TRANSPILATION" env [@markelog][]
+- Jenkins: Respect `CHANGE_URL`/`CHANGE_ID` for GitHub and BitBucket Server [@azz][]
+- Docs: Guides - Update link to apollo-client dangerfile.ts example [@andykenward][]
+- Fix crash that may occur when no message is set on generic event [@flovilmart][]
+- Add support to proxy requests using `HTTP_PROXY` or `HTTPS_PROXY` environment variables [@steprescott][]
+
+# 4.4.0-7
+
+- Supports installation using Homebrew [@thii][]
+
+# 4.3.x
+
+- Some experimental beta builds which didn't turn out very useful
+
+# 4.2.1
+
+- Adds a fallback to `GITHUB_TOKEN` if it's in the ENV - orta
+- There was some versioning faffing going on
+
+# 4.1.0
+
+- Adds the ability to send a PR from a Dangerfile easily.
+
+  ```ts
+  import { danger } from "danger"
+
+  export default async () => {
+    // This is a map of file to contents for things to change in the PR
+    const welcomePR = {
+      LICENSE: "[the MIT license]",
+      "README.md": "[The README content]",
+    }
+
+    // Creates a new branch called `welcome`, from `master`. Creates a commit with
+    // the changes above and the message "Sets up ...". Then sends a PR to `orta/new-repo`
+    // with the title "Welcome to ..." and the body "Here is ...".
+    await danger.github.utils.createOrUpdatePR(
+      {
+        title: "Welcome to [org]",
+        body: "Here is your new repo template files",
+        owner: "orta",
+        repo: "new-repo",
+        baseBranch: "master",
+        newBranchName: "welcome",
+        commitMessage: "Sets up the welcome package",
+      },
+      welcomePR
+    )
+  }
+  ```
+
+  OK, so this one is cool. This function will create/update an existing PR. You pass in a config object that defines;
+  the commit, the branch and the PR metadata and then this function will go and set all that up for you.
+
+  The second argument is a fileMap, this is an object like `{ "README.md": "[the content]" }` and it defines what files
+  should change in the commit. The files are completely changed to the content in the fileMap, so if you're making a
+  single line change - you need to submit the enfile file.
+
+  This is all based on my module
+  [memfs-or-file-map-to-github-branch](https://www.npmjs.com/package/memfs-or-file-map-to-github-branch) so if you need
+  a set of lower level APIs for PR/branch needs, `import` that and use it. - [@orta][]
+
+# 4.0.1
+
+- Fixed a bug where Danger would fail to update status when there are no failures or messages [@johansteffner][]
+- Fixed a bug where Danger was throwing an error when removing any existing messages [@stefanbuck][]
+
+# 4.0.0
+
+- Updates Danger's runtime to work with Babel 7 - [@adamnoakes][]
+
+  **Breaking:** 3.9.0 was the last version to support inline transpilation via Babel 6. Danger doesn't specify babel in
+  its dependencies, so this warning won't show anywhere else.
+
+# 3.9.0
+
+- Adds CI integration for Concourse - [@cwright017][]
+
+# 3.8.9
+
+- Adds debug logs to the vm2 runner used in Peril - [@orta][]
+
+# 3.8.5 - 3.8.8
+
+- Adds a function to handle creating or adding a label on a PR/Issue. Works with both Danger and Peril:
+  `danger.github.createOrAddLabel` - [@orta][]
+
+# 3.8.4
+
+- Exposes some internals on module resolution to Peril - [@orta][]
 
 # 3.8.3
 
@@ -1210,3 +1343,6 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@codestergit]: https://github.com/codestergit
 [@danielrosenwasser]: https://github.com/DanielRosenwasser
 [@joshacheson]: https://github.com/joshacheson
+[@cwright017]: https://github.com/Cwright017
+[@adamnoakes]: https://github.com/adamnoakes
+[@johansteffner]: https://github.com/johansteffner

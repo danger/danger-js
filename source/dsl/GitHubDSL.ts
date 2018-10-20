@@ -1,5 +1,5 @@
 import { GitCommit } from "./Commit"
-import * as GitHub from "@octokit/rest"
+import GitHub from "@octokit/rest"
 
 // This is `danger.github` inside the JSON
 
@@ -72,6 +72,38 @@ export interface GitHubUtilsDSL {
     content: string,
     config: { title: string; open: boolean; owner: string; repo: string }
   ) => Promise<string>
+
+  /**
+   * An API for creating, or setting a label to an issue. Usable from Peril
+   * by adding an additional param for settings about a repo.
+   *
+   * @param {obj} labelConfig The config for the label
+   * @param {obj | undefined} Optional: the config for the issue
+   * @returns {Promise<undefined>} No return value.
+   */
+  createOrAddLabel: (
+    labelConfig: { name: string; color: string; description: string },
+    repoConfig?: { owner: string; repo: string; id: number }
+  ) => Promise<void>
+  createOrUpdatePR: (
+    config: {
+      /** PR title */
+      title: string
+      /** PR body */
+      body: string
+      /** The danger in danger/danger-js - defaults to the PR base name if undefined */
+      owner?: string
+      /** The danger-js in danger/danger-js - defaults to the PR base repo if undefined */
+      repo?: string
+      /** A message for the commit */
+      commitMessage: string
+      /** The name of the branch on the repo */
+      newBranchName: string
+      /** Base branch for the new branch e.g. what should Danger create the new branch from */
+      baseBranch: string
+    },
+    fileMap: any
+  ) => Promise<any>
 }
 
 /**
@@ -222,7 +254,7 @@ export interface GitHubPRDSL {
 
 // These are the individual subtypes of objects inside the larger DSL objects above.
 
-/** A GitHub specific implmentation of a git commit, it has GitHub user names instead of an email. */
+/** A GitHub specific implementation of a git commit, it has GitHub user names instead of an email. */
 export interface GitHubCommit {
   /** The raw commit metadata */
   commit: GitCommit

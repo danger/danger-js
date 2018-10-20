@@ -1,7 +1,8 @@
-// import * as jest from 'jest';
 import * as http from "http"
+import * as node_fetch from "node-fetch"
 
 import { api } from "../fetch"
+import HttpProxyAgent from "http-proxy-agent"
 
 interface ResponseMock {
   body?: any
@@ -12,8 +13,8 @@ interface ResponseMock {
 class TestServer {
   private port = 30001
   private hostname = "localhost"
-  private response: ResponseMock = null
-  private router = (req, res) => {
+  private response: ResponseMock = null as any
+  private router = (_req: any, res: any) => {
     res.statusCode = this.response && this.response.statusCode ? this.response.statusCode : 200
     res.setHeader(
       "Content-Type",
@@ -26,13 +27,37 @@ class TestServer {
   start = async (response: ResponseMock): Promise<void> => {
     this.response = response
     return new Promise<void>((resolve, reject) => {
-      this.server.listen(this.port, this.hostname, err => (err ? reject(err) : resolve()))
+      this.server.listen(this.port, this.hostname, (err: any) => (err ? reject(err) : resolve()))
     })
   }
   stop = async (): Promise<void> => {
-    this.response = null
+    this.response = null as any
     return new Promise<void>((resolve, reject) => {
-      this.server.close(err => (err ? reject(err) : resolve()))
+      this.server.close((err: any) => (err ? reject(err) : resolve()))
+    })
+  }
+}
+
+class TestProxy {
+  isRunning = false
+  private port = 30002
+  private hostname = "localhost"
+  private router = (_req: any, res: any) => {
+    res.statusCode = 200
+    res.end(null)
+  }
+  private server = http.createServer(this.router)
+
+  start = async (): Promise<void> => {
+    return new Promise<void>((resolve, reject) => {
+      this.isRunning = true
+      this.server.listen(this.port, this.hostname, (err: any) => (err ? reject(err) : resolve()))
+    })
+  }
+  stop = async (): Promise<void> => {
+    return new Promise<void>((resolve, reject) => {
+      this.isRunning = false
+      this.server.close((err: any) => (err ? reject(err) : resolve()))
     })
   }
 }
@@ -40,6 +65,7 @@ class TestServer {
 describe("fetch", () => {
   let url: string
   let server = new TestServer()
+  let proxy = new TestProxy()
 
   beforeEach(() => {
     url = "http://localhost:30001/"
@@ -47,6 +73,10 @@ describe("fetch", () => {
 
   afterEach(async () => {
     await server.stop()
+
+    if (proxy.isRunning) {
+      await proxy.stop()
+    }
   })
 
   it("handles json success", async () => {
@@ -86,5 +116,18 @@ describe("fetch", () => {
     expect(response.ok).toBe(false)
     expect(response.status).toBe(500)
     expect(await response.text()).toBe(body)
+  })
+
+  it("sets proxy agent", async () => {
+    const proxyUrl = "http://localhost:30002/"
+    process.env["HTTP_PROXY"] = proxyUrl
+
+    await proxy.start()
+    await server.start({})
+
+    let options: node_fetch.RequestInit = { agent: undefined }
+    await api(url, options)
+    let agent = options.agent as HttpProxyAgent
+    expect(agent.proxy.href).toBe(proxyUrl)
   })
 })

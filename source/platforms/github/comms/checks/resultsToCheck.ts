@@ -12,7 +12,7 @@ import {
   template as githubResultsTemplate,
   inlineTemplate as githubResultsInlineTemplate,
 } from "../../../../runner/templates/githubIssueTemplate"
-import * as GitHubNodeAPI from "@octokit/rest"
+import GitHubNodeAPI from "@octokit/rest"
 import { debug } from "../../../../debug"
 
 const d = debug("GitHub::ResultsToCheck")
@@ -61,7 +61,8 @@ export const resultsToCheck = async (
   results: DangerResults,
   options: ExecutorOptions,
   pr: GitHubPRDSL,
-  api: GitHubNodeAPI
+  api: GitHubNodeAPI,
+  name: string = "Danger"
 ): Promise<CheckOptions> => {
   const repo = pr.base.repo
   const hasFails = results.fails.length > 0
@@ -84,13 +85,14 @@ export const resultsToCheck = async (
       return ""
     }
   }
+
   d("Generating inline annotations")
   const annotations = await inlineResultsToAnnotations(annotationResults, options, getBlobUrlForPath)
   const isEmpty =
     !results.fails.length && !results.markdowns.length && !results.warnings.length && !results.messages.length
 
   return {
-    name: "Danger",
+    name,
     status: "completed",
     completed_at: new Date().toISOString(),
 

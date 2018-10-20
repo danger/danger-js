@@ -1,5 +1,5 @@
 import * as url from "url"
-import * as includes from "lodash.includes"
+import includes from "lodash.includes"
 
 export interface PullRequestParts {
   pullRequestNumber: string
@@ -11,7 +11,7 @@ export function pullRequestParser(address: string): PullRequestParts | null {
 
   if (components && components.path) {
     // shape: http://localhost:7990/projects/PROJ/repos/repo/pull-requests/1/overview
-    const parts = components.path.match(/(projects\/\w+\/repos\/[\w-]+)\/pull-requests\/(\d+)/)
+    const parts = components.path.match(/(projects\/\w+\/repos\/[\w-_.]+)\/pull-requests\/(\d+)/)
     if (parts) {
       return {
         repo: parts[1],

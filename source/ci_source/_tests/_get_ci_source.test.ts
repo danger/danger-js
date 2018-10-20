@@ -1,5 +1,5 @@
 import { FakeCI } from "../providers/Fake"
-import * as DummyCI from "./fixtures/dummy_ci"
+import DummyCI from "./fixtures/dummy_ci"
 import { getCISourceForEnv, getCISourceForExternal } from "../get_ci_source"
 
 describe(".getCISourceForEnv", () => {

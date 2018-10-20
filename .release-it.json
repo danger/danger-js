@@ -1,0 +1,10 @@
+{
+  "github": {
+    "release": true,
+    "assets": "brew-distribution/*.zip"
+  },
+  "buildCommand": "yarn package",
+  "src": {
+    "afterReleaseCommand": "VERSION=${version} scripts/create-homebrew-tap-pr.sh"
+  }
+}

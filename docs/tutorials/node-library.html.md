@@ -3,16 +3,20 @@ title: Danger + Node Library
 subtitle: Danger + Node Library
 layout: guide_js
 order: 1
-blurb: An example where you work on an OSS node library, so you're trying to improve overall contributions from light contributors.
+blurb:
+  An example where you work on an OSS node library, so you're trying to improve overall contributions from light
+  contributors.
 ---
 
 ## Before we get started
 
-This guide continues after "[Getting Started][started]" - so you should have seen Danger comment on your PRs.
+This tutorial continues after "[Getting Started][started]" - so you should have seen Danger comment on your PRs.
 
 ## Keeping on top of your library
 
-End-users want to understand what has changed between versions of your library, and a CHANGELOG is a great way to keep them up to date. However, it can be easy to forget to add a CHANGELOG entry to any changes to a library. So let's add a check that a CHANGELOG entry is added on every PR:
+End-users want to understand what has changed between versions of your library, and a CHANGELOG is a great way to keep
+them up to date. However, it can be easy to forget to add a CHANGELOG entry to any changes to a library. So let's add a
+check that a CHANGELOG entry is added on every PR:
 
 ```js
 import { danger, fail, warn } from "danger"
@@ -26,7 +30,9 @@ if (!hasCHANGELOGChanges) {
 
 We're using lodash's `_.include` function to check if `CHANGELOG.md` is in the list of modified files.
 
-We went with `warn` here because there are a lot of legitimate reasons to not need a CHANGELOG entry (updating typoes, CI and other infrastructure.) We can improve this though, let's _also_ check that there are changes to the source code for our library.
+We went with `warn` here because there are a lot of legitimate reasons to not need a CHANGELOG entry (updating typoes,
+CI and other infrastructure.) We can improve this though, let's _also_ check that there are changes to the source code
+for our library.
 
 ```js
 import { danger, fail, warn } from "danger"
@@ -44,11 +50,14 @@ This is a much more specific rule, now changes to the README won't warrant a CHA
 
 ### Dependencies
 
-Any dependencies that you use are passed on to all of your library consumers, so you should consider using Danger to keep track of those as they evolve. For more information, see the tutorial on [Dependencies][deps]. 
+Any dependencies that you use are passed on to all of your library consumers, so you should consider using Danger to
+keep track of those as they evolve. For more information, see the tutorial on [Dependencies][deps].
 
 ### Keep your README up to date
 
-An example from Danger itself, is that we want to ensure the README always shows what CI providers will work by default with Danger. As both the app, and Danger use JavaScript, we can import code from the app and use that to create a new rule.
+An example from Danger itself, is that we want to ensure the README always shows what CI providers will work by default
+with Danger. As both the app, and Danger use JavaScript, we can import code from the app and use that to create a new
+rule.
 
 ```js
 import { danger, fail, warn } from "danger"
@@ -65,8 +74,10 @@ if (missing.length) {
 }
 ```
 
-Danger also uses a similar check to create our type definition files, if any of the public DSL changes then Danger checks that the type definitions have been updated, and recommends how to do so if not.
+Danger also uses a similar check to create our type definition files, if any of the public DSL changes then Danger
+checks that the type definitions have been updated, and recommends how to do so if not. These are rare chores which are
+really hard to remember to do, and impossible if you're not intimate with the codebase - so providing automated feedback
+here is really useful.
 
 [deps]: /js/tutorials/dependencies.html
-
 [started]: /js/guides/getting_started.html

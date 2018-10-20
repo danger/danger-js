@@ -1,5 +1,6 @@
 jest.mock("fs", () => ({
   readFileSync: jest.fn(),
+  existsSync: jest.fn(),
 }))
 
 import { typescriptify } from "../transpiler"

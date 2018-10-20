@@ -1,8 +1,14 @@
 import { debug } from "../debug"
 import * as node_fetch from "node-fetch"
 
+import HttpProxyAgent from "http-proxy-agent"
+import HttpsProxyAgent from "https-proxy-agent"
+
 const d = debug("networking")
 declare const global: any
+
+const isJest = typeof jest !== "undefined"
+const warn = isJest ? () => "" : console.warn
 
 /**
  * Adds logging to every fetch request if a global var for `verbose` is set to true
@@ -31,7 +37,7 @@ export function api(
     }
 
     const showToken = process.env["DANGER_VERBOSE_SHOW_TOKEN"]
-    const token = process.env["DANGER_GITHUB_API_TOKEN"]
+    const token = process.env["DANGER_GITHUB_API_TOKEN"] || process.env["GITHUB_TOKEN"]
 
     if (init.headers) {
       for (const prop in init.headers) {
@@ -57,20 +63,29 @@ export function api(
 
     d(output.join(" "))
   }
-  const originalFetch: any = node_fetch
+
+  let agent = init.agent
+  const proxy = process.env["HTTPS_PROXY"] || process.env["HTTP_PROXY"]
+
+  if (!agent && proxy) {
+    let secure = url.toString().startsWith("https")
+    init.agent = secure ? new HttpsProxyAgent(proxy) : new HttpProxyAgent(proxy)
+  }
+
+  const originalFetch = node_fetch.default
   return originalFetch(url, init).then(async (response: node_fetch.Response) => {
     // Handle failing errors
     if (!suppressErrorReporting && !response.ok) {
       // we should not modify the response when an error occur to allow body stream to be read again if needed
       let clonedResponse = response.clone()
-      console.warn(`Request failed [${clonedResponse.status}]: ${clonedResponse.url}`)
+      warn(`Request failed [${clonedResponse.status}]: ${clonedResponse.url}`)
       let responseBody = await clonedResponse.text()
       try {
         // tries to pretty print the JSON response when possible
         const responseJSON = await JSON.parse(responseBody.toString())
-        console.warn(`Response: ${JSON.stringify(responseJSON, null, "  ")}`)
+        warn(`Response: ${JSON.stringify(responseJSON, null, "  ")}`)
       } catch (e) {
-        console.warn(`Response: ${responseBody}`)
+        warn(`Response: ${responseBody}`)
       }
     }
 

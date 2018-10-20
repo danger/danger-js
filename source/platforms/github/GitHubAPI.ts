@@ -1,9 +1,9 @@
-import * as GitHubNodeAPI from "@octokit/rest"
+import GitHubNodeAPI from "@octokit/rest"
 import { debug } from "../../debug"
 import * as node_fetch from "node-fetch"
-import * as parse from "parse-link-header"
-import * as v from "voca"
-import * as pLimit from "p-limit"
+import parse from "parse-link-header"
+import v from "voca"
+import pLimit from "p-limit"
 
 import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
 
@@ -112,7 +112,7 @@ export class GitHubAPI {
 
   deleteCommentWithID = async (id: number): Promise<boolean> => {
     const repo = this.repoMetadata.repoSlug
-    const res = await this.api(`repos/${repo}/issues/comments/${id}`, {}, {}, "DELETE")
+    const res = await this.api(`repos/${repo}/issues/comments/${id}`, {}, null, "DELETE")
 
     //https://developer.github.com/v3/issues/comments/#response-5
     return Promise.resolve(res.status === 204)
@@ -120,7 +120,7 @@ export class GitHubAPI {
 
   deleteInlineCommentWithID = async (id: string): Promise<boolean> => {
     const repo = this.repoMetadata.repoSlug
-    const res = await this.api(`repos/${repo}/pulls/comments/${id}`, {}, {}, "DELETE", false)
+    const res = await this.api(`repos/${repo}/pulls/comments/${id}`, {}, null, "DELETE", false)
 
     //https://developer.github.com/v3/pulls/comments/#response-5
     return Promise.resolve(res.status === 204)
@@ -130,6 +130,11 @@ export class GitHubAPI {
     const perilID = process.env["PERIL_BOT_USER_ID"]
     if (perilID) {
       return parseInt(perilID)
+    }
+
+    const useGitHubActionsID = process.env["GITHUB_WORKFLOW"]
+    if (useGitHubActionsID) {
+      return 41898282
     }
 
     const info = await this.getUserInfo()
@@ -358,7 +363,7 @@ export class GitHubAPI {
     return res.ok
   }
 
-  postCheck = async (check: CheckOptions, token: string) => {
+  postCheckRun = async (check: CheckOptions, token: string) => {
     const repo = this.repoMetadata.repoSlug
     const res = await this.post(
       `repos/${repo}/check-runs`,

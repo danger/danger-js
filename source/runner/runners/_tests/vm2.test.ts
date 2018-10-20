@@ -1,15 +1,11 @@
 // Note: This file is ignored by Wallaby.js (but is included in jest runs)
 
 import { contextForDanger } from "../../Dangerfile"
-import inlineRunner from "../inline"
 import vm2 from "../vm2"
 
 import { FakeCI } from "../../../ci_source/providers/Fake"
 import { FakePlatform } from "../../../platforms/FakePlatform"
 import { Executor, ExecutorOptions } from "../../Executor"
-
-import * as os from "os"
-import * as fs from "fs"
 
 import { resolve } from "path"
 import { jsonToDSL } from "../../jsonToDSL"
@@ -37,7 +33,7 @@ runners.forEach(run => {
 
       exec = new Executor(new FakeCI({}), platform, run.fn, config)
       platform.getPlatformGitRepresentation = jest.fn()
-      platform.getPlatformDSLRepresentation = async () => ({
+      platform.getPlatformReviewDSLRepresentation = async () => ({
         pr: {},
       })
       return exec
@@ -49,9 +45,10 @@ runners.forEach(run => {
      */
     async function setupDangerfileContext() {
       const platform = new FakePlatform()
-      exec = new Executor(new FakeCI({}), platform, run.fn, config)
+      const source = new FakeCI({})
+      exec = new Executor(source, platform, run.fn, config)
 
-      const dsl = await jsonDSLGenerator(platform)
+      const dsl = await jsonDSLGenerator(platform, new FakeCI({}))
       dsl.github = {
         pr: {
           number: 1,
@@ -59,7 +56,7 @@ runners.forEach(run => {
           head: { sha: "123", repo: { full_name: "123" } },
         },
       } as any
-      const realDSL = await jsonToDSL(dsl)
+      const realDSL = await jsonToDSL(dsl, source)
       return contextForDanger(realDSL)
     }
 
@@ -86,7 +83,7 @@ runners.forEach(run => {
       it("handles a full set of messages", async () => {
         const exec = makeExecutor()
 
-        const dsl = await exec.dslForDanger()
+        await exec.dslForDanger()
         const context = await setupDangerfileContext()
         const runtime = await exec.runner.createDangerfileRuntimeEnvironment(context)
 

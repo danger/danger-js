@@ -1,8 +1,8 @@
 import { debug } from "../../debug"
 import * as node_fetch from "node-fetch"
 import { Agent } from "http"
-import * as HttpsProxyAgent from "https-proxy-agent"
-import * as v from "voca"
+import HttpsProxyAgent from "https-proxy-agent"
+import v from "voca"
 
 import {
   BitBucketServerPRDSL,

@@ -3,7 +3,7 @@ import { GitHubAPI } from "./github/GitHubAPI"
 import GitHubUtils from "./github/GitHubUtils"
 import gitDSLForGitHub from "./github/GitHubGit"
 
-import * as NodeGitHub from "@octokit/rest"
+import NodeGitHub from "@octokit/rest"
 import { Platform } from "./platform"
 
 import { GitHubIssueCommenter } from "./github/comms/issueCommenter"
@@ -38,7 +38,7 @@ export const GitHub = (api: GitHubAPI) => {
     getReviewInfo: api.getPullRequestInfo,
     getPlatformGitRepresentation: () => gitDSLForGitHub(api),
 
-    getPlatformDSLRepresentation: async () => {
+    getPlatformReviewDSLRepresentation: async () => {
       let pr: GitHubPRDSL
       try {
         pr = await api.getPullRequestInfo()
@@ -67,10 +67,14 @@ export const GitHub = (api: GitHubAPI) => {
       }
     },
 
+    // When there's an event we don't need any of ^
+    getPlatformReviewSimpleRepresentation: async () => ({}),
+
     ...GitHubIssueCommenter(api),
     ...(GitHubChecksCommenter(api) || {}),
 
     getFileContents: api.fileContents,
+    executeRuntimeEnvironment,
   } as GitHubType
 }
 
@@ -81,4 +85,70 @@ export const githubJSONToGitHubDSL = (gh: GitHubJSONDSL, api: NodeGitHub): GitHu
     api,
     utils: GitHubUtils(gh.pr, api),
   }
+}
+
+import overrideRequire from "override-require"
+import {
+  customGitHubResolveRequest,
+  dangerPrefix,
+  shouldUseGitHubOverride,
+  getGitHubFileContentsFromLocation,
+  dangerRepresentationForPath,
+} from "./github/customGitHubRequire"
+import { DangerRunner } from "../runner/runners/runner"
+import { existsSync, readFileSync } from "fs"
+import cleanDangerfile from "../runner/runners/utils/cleanDangerfile"
+import transpiler from "../runner/runners/utils/transpiler"
+
+const executeRuntimeEnvironment = async (
+  start: DangerRunner["runDangerfileEnvironment"],
+  dangerfilePath: string,
+  environment: any
+) => {
+  const token = process.env["DANGER_GITHUB_API_TOKEN"] || process.env["GITHUB_TOKEN"]!
+  // Use custom module resolution to handle github urls instead of just fs access
+  const restoreOriginalModuleLoader = overrideRequire(shouldUseGitHubOverride, customGitHubResolveRequest(token))
+
+  // We need to validate that the
+  // dangerfile comes from the web, and do all the prefixing etc
+  let path: string
+  let content: string
+  if (existsSync(dangerfilePath)) {
+    path = dangerfilePath
+    content = readFileSync(dangerfilePath, "utf8")
+  } else {
+    path = dangerPrefix + dangerfilePath
+
+    const rep = dangerRepresentationForPath(dangerfilePath)
+    if (!rep.repoSlug) {
+      const msg = `if it is local, perhaps you have a typo? If it's using a remote file, it doesn't have a repo reference.`
+      throw new Error(`Could not find the Dangerfile at ${dangerfilePath} - ${msg}`)
+    }
+
+    const dangerfileContent = await getGitHubFileContentsFromLocation(token, rep, rep.repoSlug)
+    if (!dangerfileContent) {
+      const msg = `does a file exist at ${rep.dangerfilePath} in ${rep.repoSlug}?.`
+      throw new Error(`Could not find the Dangerfile at ${dangerfilePath} - ${msg}`)
+    }
+
+    // Chop off the danger import
+    const newDangerfile = cleanDangerfile(dangerfileContent)
+
+    // Cool, transpile it into something we can run
+    content = transpiler(newDangerfile, dangerfilePath)
+  }
+
+  // If there's an event.json - we should always pass it inside the default export
+  // For PRs, people will probably ignore it because of `danger.github.pr` but
+  // it can't hurt to have the consistency.
+  let defaultExport = {}
+  if (existsSync("/github/workflow/event.json")) {
+    defaultExport = JSON.parse(readFileSync("/github/workflow/event.json", "utf8"))
+  }
+
+  // Actually start up[ the runtime evaluation
+  await start([path], [content], environment, defaultExport)
+
+  // Undo the runtime
+  restoreOriginalModuleLoader()
 }

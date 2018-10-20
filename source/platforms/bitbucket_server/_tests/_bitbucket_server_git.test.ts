@@ -1,11 +1,9 @@
 import { BitBucketServer } from "../../BitBucketServer"
 import { BitBucketServerAPI } from "../BitBucketServerAPI"
 
-import { GitCommit } from "../../../dsl/Commit"
 import { FakeCI } from "../../../ci_source/providers/Fake"
 import { readFileSync } from "fs"
 import { resolve, join as pathJoin } from "path"
-import { EOL } from "os"
 import { bitBucketServerGitDSL as gitJSONToGitDSL } from "../BitBucketServerGit"
 
 import { BitBucketServerDSL } from "../../../dsl/BitBucketServerDSL"
@@ -37,8 +35,6 @@ const stripWhitespaceForSnapshot = (str: string) => {
 }
 
 const pullRequestInfoFilename = "bitbucket_server_pr.json"
-const masterSHA = JSON.parse(readFileSync(pathJoin(fixtures, pullRequestInfoFilename), {}).toString()).toRef
-  .latestCommit
 
 describe("the dangerfile gitDSL - BitBucket Server", async () => {
   let bbs: BitBucketServer = {} as any
@@ -61,7 +57,7 @@ describe("the dangerfile gitDSL - BitBucket Server", async () => {
     api.getFileContents = async (path, repoSlug, ref) => JSON.stringify({ path, repoSlug, ref })
 
     gitJSONDSL = await bbs.getPlatformGitRepresentation()
-    bbsDSL = await bbs.getPlatformDSLRepresentation()
+    bbsDSL = await bbs.getPlatformReviewDSLRepresentation()
     gitDSL = gitJSONToGitDSL(bbsDSL, gitJSONDSL, bbs.api)
   })
 
@@ -72,36 +68,36 @@ describe("the dangerfile gitDSL - BitBucket Server", async () => {
   })
 
   it("shows the diff for a specific file", async () => {
-    const { diff } = await gitDSL.diffForFile(".gitignore")
+    const { diff } = (await gitDSL.diffForFile(".gitignore"))!
 
     expect(stripWhitespaceForSnapshot(diff)).toMatchSnapshot()
   })
 
   it("should include `before` text content of the file", async () => {
-    const { before } = await gitDSL.diffForFile(".gitignore")
+    const { before } = (await gitDSL.diffForFile(".gitignore"))!
 
     expect(stripWhitespaceForSnapshot(before)).toMatchSnapshot()
   })
 
   it("should include `after` text content of the file", async () => {
-    const { after } = await gitDSL.diffForFile(".gitignore")
+    const { after } = (await gitDSL.diffForFile(".gitignore"))!
 
     expect(stripWhitespaceForSnapshot(after)).toMatchSnapshot()
   })
 
   it("should include `added` text content of the file", async () => {
-    const { added } = await gitDSL.diffForFile(".gitignore")
+    const { added } = (await gitDSL.diffForFile(".gitignore"))!
 
     expect(stripWhitespaceForSnapshot(added)).toMatchSnapshot()
   })
 
   it("should not include `removed` text content of the file", async () => {
-    const { removed } = await gitDSL.diffForFile(".gitignore")
+    const { removed } = (await gitDSL.diffForFile(".gitignore"))!
     expect(stripWhitespaceForSnapshot(removed)).toMatchSnapshot()
   })
 
   it("resolves to `null` for files not in modified_files", async () => {
-    const result = await gitDSL.diffForFile("fuhqmahgads.json")
+    const result = (await gitDSL.diffForFile("fuhqmahgads.json"))!
 
     expect(result).toBeNull()
   })
@@ -111,7 +107,7 @@ describe("the dangerfile gitDSL - BitBucket Server", async () => {
   })
 
   it("shows the structured diff for a specific file", async () => {
-    const { chunks } = await gitDSL.structuredDiffForFile(".gitignore")
+    const { chunks } = (await gitDSL.structuredDiffForFile(".gitignore"))!
     expect(chunks).toMatchSnapshot()
   })
 

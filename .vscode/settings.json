@@ -1,6 +1,4 @@
 {
-  // Place your settings in this file to overwrite default and user settings.
-  "javascript.validate.enable": false,
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
@@ -13,15 +11,6 @@
     "**/node_modules": true,
     "distribution/": true
   },
-  "files.associations": {
-    "**/*.js": "javascriptreact"
-  },
-  "spellchecker.language": "en_US",
-  "spellchecker.ignoreWordsList": ["GitHub", "repo", "Awesommmmee", "linters", "TODO", "repl"],
-  "spellchecker.documentTypes": ["markdown", "latex", "plaintext"],
-  "spellchecker.ignoreRegExp": [],
-  "spellchecker.ignoreFileExtensions": [],
-  "spellchecker.checkInterval": 5000,
   "editor.formatOnSave": true,
-  "cSpell.words": ["APIPR", "Commenter", "PRDSL", "bitbucket"]
+  "cSpell.words": ["APIPR", "BITBUCKETSERVER", "Commenter", "JSONDSL", "PRDSL", "bitbucket", "jsome", "repo's"]
 }

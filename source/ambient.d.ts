@@ -43,3 +43,5 @@ declare module "supports-hyperlinks"
 
 declare module "parse-git-config"
 declare module "parse-github-url"
+// Basically does one thing
+declare module "override-require"

@@ -19,9 +19,9 @@ review.
 
 You can use Danger to codify your teams norms, leaving humans to think about harder problems.
 
-Danger JS currently works with GitHub or BitBucket Server and Travis CI, Circle CI, Semaphore, Jenkins, Docker Cloud,
-Bitrise, surf-build, Codeship, Drone, Buildkite, Nevercode, buddybuild, Visual Studio Team Services, TeamCity or
-Screwdriver.
+Danger JS works with GitHub or BitBucket Server for code review, then with: Travis CI, Circle CI, GitHub Actions,
+Semaphore, Jenkins, Docker Cloud, Bitrise, surf-build, Codeship, Drone, Buildkite, Nevercode, buddybuild, TeamCity,
+Visual Studio Team Services, Screwdriver or Concourse.
 
 [![npm](https://img.shields.io/npm/v/danger.svg)](https://www.npmjs.com/package/danger)
 [![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=master)](https://travis-ci.org/danger/danger-js)
@@ -32,12 +32,12 @@ Screwdriver.
 
 You can:
 
-* Enforce CHANGELOGs
-* Enforce links to Trello/JIRA in PR/MR bodies
-* Enforce using descriptive labels
-* Look out for common anti-patterns
-* Highlight interesting build artifacts
-* Give warnings when specific files change
+- Enforce CHANGELOGs
+- Enforce links to Trello/JIRA in PR/MR bodies
+- Enforce using descriptive labels
+- Look out for common anti-patterns
+- Highlight interesting build artifacts
+- Give warnings when specific files change
 
 Danger provides the glue to let _you_ build out the rules specific to your team's culture, offering useful metadata and
 a comprehensive plugin system to share common issues.
@@ -51,9 +51,9 @@ We keep all of the end-user documentation at <http://danger.systems/js>.
 
 Some quick links to get you started:
 
-* [Getting Started](http://danger.systems/js/guides/getting_started.html)
-* [Guides Index](http://danger.systems/js/guides.html)
-* [DSL Reference](http://danger.systems/js/reference.html)
+- [Getting Started](http://danger.systems/js/guides/getting_started.html)
+- [Guides Index](http://danger.systems/js/guides.html)
+- [DSL Reference](http://danger.systems/js/reference.html)
 
 ## This thing is broken, I should help improve it!
 
@@ -92,12 +92,11 @@ Check the issues, I try and keep my short term perspective there. Long term is i
 
 Following [this commit](https://github.com/danger/danger-js/commit/a26ac3b3bd4f002acd37f6a363c8e74c9d5039ab) as a model:
 
-* Checkout the `master` branch. Ensure your working tree is clean, and make sure you have the latest changes by running
+- Checkout the `master` branch. Ensure your working tree is clean, and make sure you have the latest changes by running
   `git pull`.
-* Update `package.json` with the new version - for the sake of this example, the new version is **0.21.0**.
-* Modify `changelog.md`, adding a new `### 0.21.0` heading under the `### Master` heading at the top of the file.
-* Commit both changes with the commit message **Version bump**.
-* Publish - `npm publish`.
+- Modify `changelog.md`, adding a new `# [version]` heading under the `### Master` heading at the top of the file.
+- Commit both changes with the commit message **Version bump**.
+- Publish - `npm run release -- [major/patch/minor] --non-interactive`.
 
 :ship:
 

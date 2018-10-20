@@ -1,7 +1,9 @@
 import * as fs from "fs"
 import * as path from "path"
-import * as JSON5 from "json5"
+import JSON5 from "json5"
 import { debug } from "../../../debug"
+
+const disableTranspilation = process.env.DANGER_DISABLE_TRANSPILATION === "true"
 
 let hasNativeTypeScript = false
 let hasBabel = false
@@ -13,6 +15,12 @@ const d = debug("transpiler:setup")
 
 // Yes, lots of linter disables, but I want to support TS/Babel/Neither correctly
 export const checkForNodeModules = () => {
+  if (disableTranspilation) {
+    hasChecked = true
+    d("DANGER_DISABLE_TRANSPILATION environment variable has been set to true, skipping transpilation")
+    return
+  }
+
   try {
     require.resolve("typescript") // tslint:disable-line
     hasNativeTypeScript = true
@@ -21,19 +29,19 @@ export const checkForNodeModules = () => {
   }
 
   try {
-    require.resolve("babel-core") // tslint:disable-line
-    require("babel-polyfill") // tslint:disable-line
+    require.resolve("@babel/core") // tslint:disable-line
+    require("@babel/polyfill") // tslint:disable-line
     hasBabel = true
 
     try {
-      require.resolve("babel-plugin-transform-typescript") // tslint:disable-line
+      require.resolve("@babel/plugin-transform-typescript") // tslint:disable-line
       hasBabelTypeScript = true
     } catch (e) {
       d("Does not have Babel 7 TypeScript set up")
     }
 
     try {
-      require.resolve("babel-plugin-transform-flow-strip-types") // tslint:disable-line
+      require.resolve("@babel/plugin-transform-flow-strip-types") // tslint:disable-line
       hasFlow = true
     } catch (e) {
       d("Does not have Flow set up")
@@ -49,7 +57,15 @@ export const checkForNodeModules = () => {
 
 export const typescriptify = (content: string): string => {
   const ts = require("typescript") // tslint:disable-line
-  const compilerOptions = JSON5.parse(fs.readFileSync("tsconfig.json", "utf8"))
+
+  // Support custom TSC options, but also fallback to defaults
+  let compilerOptions: any
+  if (fs.existsSync("tsconfig.json")) {
+    compilerOptions = JSON5.parse(fs.readFileSync("tsconfig.json", "utf8"))
+  } else {
+    compilerOptions = ts.getDefaultCompilerOptions()
+  }
+
   let result = ts.transpileModule(content, sanitizeTSConfig(compilerOptions))
   return result.outputText
 }
@@ -76,7 +92,7 @@ const sanitizeTSConfig = (config: any) => {
 }
 
 export const babelify = (content: string, filename: string, extraPlugins: string[]): string => {
-  const babel = require("babel-core") // tslint:disable-line
+  const babel = require("@babel/core") // tslint:disable-line
   if (!babel.transform) {
     return content
   }
@@ -113,7 +129,7 @@ export default (code: string, filename: string) => {
   } else if (hasBabel && hasBabelTypeScript && filetype.startsWith(".ts")) {
     result = babelify(code, filename, ["transform-typescript"])
   } else if (hasBabel && filetype.startsWith(".js")) {
-    result = babelify(code, filename, hasFlow ? ["transform-flow-strip-types"] : [])
+    result = babelify(code, filename, hasFlow ? ["@babel/plugin-transform-flow-strip-types"] : [])
   }
 
   return result

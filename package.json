@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "3.8.3",
+  "version": "5.0.0",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -15,22 +15,12 @@
     "danger-reset-status": "distribution/commands/danger-reset-status.js"
   },
   "jest": {
-    "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
+    "preset": "ts-jest",
     "testResultsProcessor": "jest-json-reporter",
-    "testRegex": "(.test)\\.(ts|tsx)$",
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/distribution/",
       "/types/"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "json",
-      "ts",
-      "tsx"
     ],
     "cacheDirectory": ".jest/cache"
   },
@@ -49,6 +39,9 @@
       "git add"
     ]
   },
+  "pkg": {
+    "scripts": "distribution/**/*.js"
+  },
   "prettier": {
     "printWidth": 120,
     "semi": false,
@@ -58,24 +51,25 @@
     "proseWrap": "always"
   },
   "scripts": {
-    "precommit": "lint-staged",
-    "prepush": "yarn build; yarn danger:prepush",
+    "release": "release-it",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "tslint \"source/**/*.ts\"",
     "lint:fix": "tslint \"source/**/*.ts\" --fix",
-    "prepublishOnly": "yarn build && yarn declarations && yarn build:flow-types && yarn build:pretty-types",
+    "prepublishOnly": "yarn build && yarn jest && yarn declarations && yarn build:flow-types && yarn build:pretty-types",
     "build": "shx rm -rf ./distribution && tsc -p tsconfig.production.json && madge ./distribution --circular",
     "build:fast": "tsc -p tsconfig.production.json",
     "build:flow-types": "cp source/danger.d.ts source/_danger.d.ts && sed -ie 's/api: GitHub/api: any/g' source/_danger.d.ts && npx flowgen source/_danger.d.ts -o distribution/danger.js.flow && node scripts/update_flow_types.js",
+    "build:schemas": "typescript-json-schema tsconfig.json DangerJSON > source/danger-incoming-process-schema.json; typescript-json-schema tsconfig.json DangerResults > source/danger-outgoing-process-schema.json; yarn prettier --write source/danger-outgoing-process-schema.json source/danger-incoming-process-schema.json",
     "build:pretty-types": "yarn prettier --write distribution/danger.d.ts; yarn prettier --parser flow distribution/danger.js.flow --write",
     "build:watch": "tsc -w",
     "link": "yarn run build && chmod +x distribution/commands/danger.js && npm link",
+    "package": "yarn run build; yarn run pkg . --output brew-distribution/danger; zip -j brew-distribution/danger-macos.zip brew-distribution/danger; shasum -a 256 brew-distribution/danger-macos.zip",
     "declarations": "ts-node ./scripts/create-danger-dts.ts",
     "docs:cp_defs": "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/@octokit/rest/index.d.ts docs/docs_generate/github.d.ts",
     "docs": "yarn run docs:cp_defs; yarn typedoc --ignoreCompilerErrors --mode modules --json docs/js_ref_dsl_docs.json --includeDeclarations source",
     "dts-lint": "yarn run declarations && yarn dtslint types",
-    "danger:prepush": "node distribution/commands/danger.js local --dangerfile dangerfile.lite.ts"
+    "danger:prepush": "yarn build:fast; node distribution/commands/danger.js local --dangerfile dangerfile.lite.ts"
   },
   "repository": {
     "type": "git",
@@ -92,74 +86,82 @@
   },
   "homepage": "https://github.com/danger/danger-js#readme",
   "devDependencies": {
+    "@babel/cli": "7.1.2",
+    "@babel/core": "7.1.2",
+    "@babel/plugin-transform-flow-strip-types": "7.0.0",
+    "@babel/plugin-transform-typescript": "7.1.0",
+    "@babel/preset-env": "7.1.0",
+    "@babel/traverse": "7.1.0",
     "@types/debug": "0.0.30",
     "@types/get-stdin": "^5.0.1",
-    "@types/jest": "^23.3.0",
-    "@types/json5": "^0.0.29",
+    "@types/http-proxy-agent": "^2.0.1",
+    "@types/jest": "^23.3.2",
+    "@types/json5": "^0.0.30",
     "@types/jsonwebtoken": "^7.2.8",
-    "@types/lodash.includes": "^4.3.3",
+    "@types/lodash.includes": "^4.3.4",
+    "@types/node": "^10.11.3",
     "@types/node-fetch": "^2.1.2",
-    "@types/p-limit": "^1.1.2",
+    "@types/p-limit": "^2.0.0",
     "@types/readline-sync": "^1.4.3",
     "@types/voca": "^1.4.0",
-    "babel-cli": "7.0.0-alpha.19",
-    "babel-core": "7.0.0-alpha.19",
-    "babel-plugin-syntax-async-functions": "7.0.0-alpha.19",
-    "babel-plugin-transform-flow-strip-types": "7.0.0-alpha.19",
-    "babel-plugin-transform-regenerator": "7.0.0-alpha.19",
-    "babel-plugin-transform-typescript": "7.0.0-alpha.19",
-    "babel-preset-es2015": "7.0.0-alpha.19",
-    "babel-preset-stage-3": "7.0.0-alpha.19",
-    "babel-traverse": "7.0.0-alpha.19",
     "danger-plugin-jest": "^1.0.1",
     "danger-plugin-yarn": "^1.3.0",
     "date-fns": "^1.29.0",
     "flow-bin": "^0.78.0",
-    "husky": "^0.14.0",
-    "jest": "23.4.1",
     "jest-json-reporter": "^1.2.2",
-    "lint-staged": "^7.2.0",
+    "lint-staged": "^7.3.0",
     "madge": "^3.2.0",
-    "prettier": "^1.13.7",
+    "pkg": "^4.3.4",
+    "prettier": "^1.14.2",
+    "release-it": "^7.6.1",
     "shx": "^0.3.2",
-    "ts-jest": "^23.0.1",
-    "ts-node": "^7.0.0",
+    "ts-jest": "^23.10.3",
+    "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.14.0",
+    "tslint-config-prettier": "^1.15.0",
     "typedoc": "0.9.0",
-    "typescript": "^2.9.2"
+    "typescript": "^3.1.1",
+    "typescript-json-schema": "^0.32.0"
   },
   "dependencies": {
-    "@octokit/rest": "^15.5.0",
-    "babel-polyfill": "^6.23.0",
+    "@babel/polyfill": "^7.0.0",
+    "@octokit/rest": "^15.12.1",
     "chalk": "^2.3.0",
-    "commander": "^2.13.0",
-    "debug": "^3.1.0",
+    "commander": "^2.18.0",
+    "debug": "^4.0.1",
     "get-stdin": "^6.0.0",
     "https-proxy-agent": "^2.2.1",
     "hyperlinker": "^1.0.0",
     "jsome": "^2.3.25",
-    "json5": "^1.0.0",
+    "json5": "^2.1.0",
     "jsonpointer": "^4.0.1",
     "jsonwebtoken": "^8.2.1",
     "lodash.find": "^4.6.0",
     "lodash.includes": "^4.3.0",
     "lodash.isobject": "^3.0.2",
     "lodash.keys": "^4.0.8",
+    "memfs-or-file-map-to-github-branch": "^1.1.0",
     "node-cleanup": "^2.1.2",
-    "node-fetch": "^2.1.2",
-    "p-limit": "^1.2.0",
-    "parse-diff": "^0.4.2",
-    "parse-git-config": "^2.0.2",
+    "node-fetch": "^2.2.0",
+    "override-require": "^1.1.1",
+    "p-limit": "^2.0.0",
+    "parse-diff": "^0.5.1",
+    "parse-git-config": "^2.0.3",
     "parse-github-url": "^1.0.2",
     "parse-link-header": "^1.0.1",
     "pinpoint": "^1.1.0",
     "readline-sync": "^1.4.9",
     "require-from-string": "^2.0.2",
-    "rfc6902": "^2.2.2",
+    "rfc6902": "^3.0.1",
     "supports-hyperlinks": "^1.0.1",
-    "vm2": "^3.6.0",
+    "vm2": "^3.6.3",
     "voca": "^1.4.0"
   },
-  "optionalDependencies": {}
+  "optionalDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn build; yarn declarations; yarn build:schemas; yarn danger:prepush"
+    }
+  }
 }

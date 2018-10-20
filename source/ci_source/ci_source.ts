@@ -14,6 +14,7 @@ export interface CISource {
 
   /** What is the reference slug for this environment? */
   readonly repoSlug: string
+
   /** What unique id can be found for the code review platform's PR */
   readonly pullRequestID: string
 
@@ -22,4 +23,7 @@ export interface CISource {
 
   /** Optional URL for the CI run, for a status update link */
   readonly ciRunURL?: string
+
+  /** Supports running without a Pull Request  */
+  readonly useEventDSL?: boolean
 }

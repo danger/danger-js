@@ -1,18 +1,15 @@
 import { GitHub, githubJSONToGitHubDSL, GitHubType } from "../../GitHub"
 import { GitHubAPI } from "../GitHubAPI"
 
-import { GitCommit } from "../../../dsl/Commit"
 import { FakeCI } from "../../../ci_source/providers/Fake"
 import { readFileSync } from "fs"
 import { resolve, join as pathJoin } from "path"
-import { EOL } from "os"
 import { gitHubGitDSL as gitJSONToGitDSL } from "../GitHubGit"
 
-import * as NodeGitHub from "@octokit/rest"
+import NodeGitHub from "@octokit/rest"
 import { GitHubDSL } from "../../../dsl/GitHubDSL"
 import { GitDSL, GitJSONDSL } from "../../../dsl/GitDSL"
-import { Platform } from "../../platform"
-import { DangerDSL, DangerDSLType } from "../../../dsl/DangerDSL"
+import { DangerDSLType } from "../../../dsl/DangerDSL"
 
 const fixtures = resolve(__dirname, "..", "..", "_tests", "fixtures")
 
@@ -31,7 +28,7 @@ export const requestWithFixturedContent = async (path: string): Promise<() => Pr
   Promise.resolve(loadFixture(path))
 
 const pullRequestInfoFilename = "github_pr.json"
-const masterSHA = JSON.parse(readFileSync(pathJoin(fixtures, pullRequestInfoFilename), {}).toString()).base.sha
+// const masterSHA = JSON.parse(readFileSync(pathJoin(fixtures, pullRequestInfoFilename), {}).toString()).base.sha
 
 export const fixturedGitHubDSL = async (): Promise<DangerDSLType> => {
   let github: GitHubType = {} as any
@@ -53,23 +50,24 @@ export const fixturedGitHubDSL = async (): Promise<DangerDSLType> => {
   api.getPullRequestInfo = await requestWithFixturedJSON(pullRequestInfoFilename)
   api.getPullRequestDiff = await requestWithFixturedContent("github_diff.diff")
   api.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
-  api.getFileContents = async (path, repoSlug, ref) => (await requestWithFixturedJSON(`static_file.${ref}.json`))()
+  api.getFileContents = async (_path, _repoSlug, ref) => (await requestWithFixturedJSON(`static_file.${ref}.json`))()
 
   //
   nodeGitHubAPI = new NodeGitHub()
   nodeGitHubAPI.repos.getContent = async ({ ref }) => (await requestWithFixturedJSON(`static_file.${ref}.json`))()
 
   gitJSONDSL = await github.getPlatformGitRepresentation()
-  const githubJSONDSL = await github.getPlatformDSLRepresentation()
+  const githubJSONDSL = await github.getPlatformReviewDSLRepresentation()
   githubDSL = githubJSONToGitHubDSL(githubJSONDSL, nodeGitHubAPI)
   gitDSL = gitJSONToGitDSL(githubDSL, gitJSONDSL, github.api)
 
   return {
+    // bitbucket_server: undefined,
     git: gitDSL,
     github: githubDSL,
     utils: {
       href: jest.fn() as any,
       sentence: jest.fn() as any,
     },
-  }
+  } as any
 }

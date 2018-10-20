@@ -36,7 +36,8 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
-distribution  
+distribution
+brew-distribution
 flow-typed
 env/development.env
 
@@ -51,3 +52,4 @@ test-results.json
 # Flowgen stuff
 source/_danger.d.tse
 source/_danger.d.ts
+tests.json

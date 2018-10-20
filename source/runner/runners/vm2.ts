@@ -2,6 +2,7 @@ import { NodeVM, NodeVMOptions } from "vm2"
 import * as fs from "fs"
 
 import { DangerContext } from "../../runner/Dangerfile"
+import { debug } from "../../debug"
 
 import compile from "./utils/transpiler"
 import cleanDangerfile from "./utils/cleanDangerfile"
@@ -10,6 +11,8 @@ import { DangerRunner } from "./runner"
 import { DangerResults } from "../../dsl/DangerResults"
 
 declare const regeneratorRuntime: any
+
+const d = debug("vm2")
 
 // A WIP version of the runner which uses a vm2 based in-process runner, only used by self-hosted
 // heroku instances of Peril.
@@ -39,7 +42,7 @@ export async function createDangerfileRuntimeEnvironment(dangerfileContext: Dang
 
 export const runDangerfileEnvironment = async (
   filenames: string[],
-  originalContents: (string | undefined)[],
+  originalContents: string[] | undefined[] | undefined,
   environment: any,
   injectedObjectToExport?: any
 ): Promise<DangerResults> => {
@@ -49,6 +52,10 @@ export const runDangerfileEnvironment = async (
   for (const filename of filenames) {
     const index = filenames.indexOf(filename)
     const originalContent = (originalContents && originalContents[index]) || fs.readFileSync(filename, "utf8")
+
+    d(`Preparing to evaluate: ${filename}\n\n\n    `)
+    d(originalContent.split("\n").join("\n    "))
+    d(`-`)
 
     const vm = new NodeVM(environment)
 
@@ -88,6 +95,11 @@ export const runDangerfileEnvironment = async (
   }
 
   const results = environment.sandbox!.results!
+  d(
+    `Got md ${results.markdowns.length} w ${results.warnings.length} f ${results.fails.length} m ${
+      results.messages.length
+    }`
+  )
   return {
     fails: results.fails,
     warnings: results.warnings,

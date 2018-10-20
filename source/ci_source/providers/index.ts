@@ -3,19 +3,22 @@ import { BuddyBuild } from "./BuddyBuild"
 import { Buildkite } from "./Buildkite"
 import { Circle } from "./Circle"
 import { Codeship } from "./Codeship"
+import { Concourse } from "./Concourse"
 import { DockerCloud } from "./DockerCloud"
 import { Drone } from "./Drone"
 import { FakeCI } from "./Fake"
+import { GitHubActions } from "./GitHubActions"
 import { Jenkins } from "./Jenkins"
 import { Nevercode } from "./Nevercode"
+import { Screwdriver } from "./Screwdriver"
 import { Semaphore } from "./Semaphore"
 import { Surf } from "./Surf"
 import { TeamCity } from "./TeamCity"
 import { Travis } from "./Travis"
 import { VSTS } from "./VSTS"
-import { Screwdriver } from "./Screwdriver"
 
 const providers = [
+  GitHubActions,
   Travis,
   Circle,
   Semaphore,
@@ -32,10 +35,12 @@ const providers = [
   Bitrise,
   TeamCity,
   Screwdriver,
+  Concourse,
 ]
 
 // Mainly used for Dangerfile linting
 const realProviders = [
+  GitHubActions,
   Travis,
   Circle,
   Semaphore,
@@ -50,6 +55,7 @@ const realProviders = [
   VSTS,
   TeamCity,
   Screwdriver,
+  Concourse,
 ]
 
 export { providers, realProviders }

@@ -6,7 +6,6 @@ import {
   warnResults,
   inlineWarnResults,
   failsResults,
-  inlineRegularResults,
   inlineFailResults,
   inlineMessageResults,
   inlineMultipleWarnResults,
@@ -17,7 +16,6 @@ import { jsonDSLGenerator } from "../dslGenerator"
 import { jsonToDSL } from "../jsonToDSL"
 import { DangerDSLType } from "../../dsl/DangerDSL"
 import { singleViolationSingleFileResults } from "../../dsl/_tests/fixtures/ExampleDangerResults"
-import { Comment } from "../../platforms/platform"
 import { inlineTemplate } from "../templates/githubIssueTemplate"
 import { resultsIntoInlineResults, DangerResults, inlineResultsIntoResults } from "../../dsl/DangerResults"
 
@@ -28,8 +26,10 @@ const defaultConfig = {
   dangerID: "123",
 }
 
-const defaultDsl = (platform): Promise<DangerDSLType> => {
-  return jsonDSLGenerator(platform).then(jsonDSL => {
+const fakeCI = new FakeCI({})
+
+const defaultDsl = (platform: any): Promise<DangerDSLType> => {
+  return jsonDSLGenerator(platform, fakeCI).then(jsonDSL => {
     jsonDSL.github = {
       pr: {
         number: 1,
@@ -37,7 +37,7 @@ const defaultDsl = (platform): Promise<DangerDSLType> => {
         head: { sha: "123", repo: { full_name: "123" } },
       },
     } as any
-    return jsonToDSL(jsonDSL)
+    return jsonToDSL(jsonDSL, fakeCI)
   })
 }
 
@@ -59,11 +59,11 @@ describe("setup", () => {
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
 
     platform.getPlatformGitRepresentation = jest.fn()
-    platform.getPlatformDSLRepresentation = jest.fn()
+    platform.getPlatformReviewDSLRepresentation = jest.fn()
 
     await exec.dslForDanger()
     expect(platform.getPlatformGitRepresentation).toBeCalled()
-    expect(platform.getPlatformDSLRepresentation).toBeCalled()
+    expect(platform.getPlatformReviewDSLRepresentation).toBeCalled()
   })
 
   it("gets diff / pr info / utils in setup", async () => {
@@ -79,7 +79,7 @@ describe("setup", () => {
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
     const dsl = await defaultDsl(platform)
 
-    // This is a real error occuring when Danger modifies the Dangerfile
+    // This is a real error occurring when Danger modifies the Dangerfile
     // as it is given a path of ""
     const error = {
       name: "Error",
@@ -128,7 +128,7 @@ describe("setup", () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
     const dsl = await defaultDsl(platform)
-    const apiFailureMock = jest.fn().mockReturnValue(new Promise<any>((resolve, reject) => reject()))
+    const apiFailureMock = jest.fn().mockReturnValue(new Promise<any>((_, reject) => reject()))
     platform.createInlineComment = apiFailureMock
 
     let results = await exec.sendInlineComments(singleViolationSingleFileResults, dsl.git, [])
@@ -269,6 +269,17 @@ describe("setup", () => {
     expect(platform.updateInlineComment).not.toBeCalled()
     expect(platform.createInlineComment).toHaveBeenCalledTimes(2)
     expect(platform.deleteInlineComment).toHaveBeenCalledTimes(2)
+  })
+
+  it("Updates the status with success for a passed empty results", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const dsl = await defaultDsl(platform)
+    platform.updateOrCreateComment = jest.fn()
+    platform.updateStatus = jest.fn()
+
+    await exec.handleResults(emptyResults, dsl.git)
+    expect(platform.updateStatus).toBeCalledWith(true, jasmine.any(String), undefined)
   })
 
   it("Updates the status with success for a passed results", async () => {

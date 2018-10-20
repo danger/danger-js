@@ -6,7 +6,7 @@ import { ensureEnvKeysExist } from "../ci_source_helpers"
  * ### CI Setup
  *
  * You'll want to add danger to your existing `Dockerfile.test` (or whatever you
- * have choosen as your `sut` Dockerfile.)
+ * have chosen as your `sut` Dockerfile.)
  *
  * ```sh
  * ...
