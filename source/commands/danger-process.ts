@@ -81,7 +81,6 @@ getRuntimeCISource(app).then(source => {
           const runConfig: RunnerConfig = {
             source,
             platform,
-            process: subprocessName,
             additionalEnvVars: {},
           }
 

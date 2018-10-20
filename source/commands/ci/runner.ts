@@ -23,8 +23,6 @@ export interface RunnerConfig {
   platform: Platform
   /** Additional env vars which are passed through to the subprocess */
   additionalEnvVars: object
-  /** Replace the default danger-js sub-process runner with something else */
-  process: string
 }
 
 export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) => {
@@ -67,9 +65,8 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
         dangerID: app.id || "default",
       }
 
-      const processName = app.process || (config && config.process)
-      const configProcessArgs = processName && processName.split(" ")
-      const runnerCommand = configProcessArgs || dangerRunToRunnerCLI(process.argv)
+      const processName = (app.process && app.process.split(" ")) || undefined
+      const runnerCommand = processName || dangerRunToRunnerCLI(process.argv)
       d(`Preparing to run: ${runnerCommand}`)
 
       // Make concrete type for the runner config with a mix of the defaults
@@ -77,7 +74,6 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
       const runConfig: RunnerConfig = {
         source,
         platform,
-        process: runnerCommand,
         additionalEnvVars: (config && config.additionalEnvVars) || {},
       }
 
