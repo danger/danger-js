@@ -4,7 +4,7 @@ import { DangerDSLType } from "../../../dsl/DangerDSL"
 declare var danger: DangerDSLType
 declare function markdown(params: string): void
 
-const showArray = (array: any[], mapFunc?: (any) => any) => {
+const showArray = (array: any[], mapFunc?: (a: any) => any) => {
   const defaultMap = (a: any) => a
   const mapper = mapFunc || defaultMap
   return `\n - ${array.map(mapper).join("\n - ")}\n`
@@ -24,7 +24,7 @@ modified: ${showArray(git.modified_files)}
 deleted: ${showArray(git.deleted_files)}
 commits: ${git.commits.length}
 messages: ${showArray(git.commits, c => c.message)}
-diffForFile keys:${showArray(Object.keys(firstFileDiff))}
+diffForFile keys:${firstFileDiff && showArray(Object.keys(firstFileDiff))}
 jsonDiff keys:${jsonDiffKeys || "no JSON files in the diff"}
 `)
 }
