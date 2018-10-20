@@ -19,6 +19,7 @@
 - Jenkins: Respect `CHANGE_URL`/`CHANGE_ID` for GitHub and BitBucket Server [@azz][]
 - Docs: Guides - Update link to apollo-client dangerfile.ts example [@andykenward][]
 - Fix crash that may occur when no message is set on generic event [@flovilmart][]
+- Add support to proxy requests using `HTTP_PROXY` or `HTTPS_PROXY` environment variables [@steprescott][]
 
 # 4.4.0-7
 
