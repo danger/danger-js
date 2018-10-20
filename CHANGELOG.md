@@ -13,6 +13,11 @@
 
 ## Master
 
+# 5.0.1
+
+- Hah, my computer ran out opf power mid-deploy, and now I have to ship another build to make sure the brew versions of
+  Danger JS are set up correctly. - orta
+
 # 5.0.0
 
 _No breaking changes_ - I'm just bumping it because it's a lot of under-the-hood work, and I've not been able to test it
