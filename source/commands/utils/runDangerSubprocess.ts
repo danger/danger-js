@@ -6,9 +6,8 @@ import { DangerDSLJSONType, DangerJSON } from "../../dsl/DangerDSL"
 import { Executor } from "../../runner/Executor"
 import { jsonToDSL } from "../../runner/jsonToDSL"
 import { markdownCode, resultsWithFailure, mergeResults } from "./reporting"
-import getRuntimeCISource from "./getRuntimeCISource"
-import { SharedCLI } from "./sharedDangerfileArgs"
 import { readFileSync } from "fs"
+import { RunnerConfig } from "../ci/runner"
 
 const d = debug("runDangerSubprocess")
 
@@ -27,7 +26,7 @@ export const runDangerSubprocess = (
   subprocessName: string[],
   dslJSON: DangerDSLJSONType,
   exec: Executor,
-  app: SharedCLI
+  config: RunnerConfig
 ) => {
   let processName = subprocessName[0]
   let args = subprocessName
@@ -37,7 +36,7 @@ export const runDangerSubprocess = (
   const processDisplayName = path.basename(processName)
   const dslJSONString = prepareDangerDSL(dslJSON)
   d(`Running subprocess: ${processDisplayName} - ${args}`)
-  const child = spawn(processName, args, { env: process.env })
+  const child = spawn(processName, args, { env: { ...process.env, ...config.additionalEnvVars } })
   let allLogs = ""
 
   child.stdin.write(dslJSONString)
@@ -64,7 +63,7 @@ export const runDangerSubprocess = (
 
   child.stderr.on("data", data => {
     if (data.toString().trim().length !== 0) {
-      console.log(data)
+      console.log(data.toString())
     }
   })
 
@@ -82,8 +81,7 @@ export const runDangerSubprocess = (
         results = failResults
       }
     }
-    const source = await getRuntimeCISource(app)
-    const danger = await jsonToDSL(dslJSON, source!)
+    const danger = await jsonToDSL(dslJSON, config.source)
     await exec.handleResults(results, danger.git)
   })
 }

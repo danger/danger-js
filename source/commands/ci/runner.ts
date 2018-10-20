@@ -17,17 +17,17 @@ import { join } from "path"
 const d = debug("process_runner")
 
 export interface RunnerConfig {
-  /** The CI source that could come from an external source */
-  source?: CISource
-  /** A platform which could come for us come from outside */
-  platform?: Platform
-  /** Args which should get passed into the subprocess */
-  additionalArgs?: string[]
+  /** The CI source that could come from the command */
+  source: CISource
+  /** A platform which could come for us come from the command */
+  platform: Platform
+  /** Additional env vars which are passed through to the subprocess */
+  additionalEnvVars: object
   /** Replace the default danger-js sub-process runner with something else */
-  process?: string
+  process: string
 }
 
-export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
+export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) => {
   const appPackageContent = readFileSync(join(__dirname, "../../../package.json"), "utf8")
   const { version } = JSON.parse(appPackageContent)
   d(`Debug mode on for Danger v${version}`)
@@ -67,14 +67,23 @@ export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
         dangerID: app.id || "default",
       }
 
-      // if the host process has used
       const processName = app.config || (config && config.process)
       const configProcessArgs = processName && processName.split(" ")
       const runnerCommand = configProcessArgs || dangerRunToRunnerCLI(process.argv)
       d(`Preparing to run: ${runnerCommand}`)
 
+      // Make concrete type for the runner config with a mix of the defaults
+      // and the partial config from the top
+      const runConfig: RunnerConfig = {
+        source,
+        platform,
+        process: runnerCommand,
+        additionalEnvVars: (config && config.additionalEnvVars) || {},
+      }
+
+      // Ship it
       const exec = new Executor(source, platform, inlineRunner, execConfig)
-      runDangerSubprocess(runnerCommand, dangerJSONDSL, exec, app)
+      runDangerSubprocess(runnerCommand, dangerJSONDSL, exec, runConfig)
     }
   }
 }

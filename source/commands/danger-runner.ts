@@ -14,7 +14,7 @@ import { jsonToContext } from "../runner/jsonToContext"
 import { DangerResults } from "../dsl/DangerResults"
 
 import getRuntimeCISource from "./utils/getRuntimeCISource"
-import { getPlatformForEnv, Platform } from "../platforms/platform"
+import { getPlatformForEnv } from "../platforms/platform"
 import { tmpdir } from "os"
 import { writeFileSync } from "fs"
 
@@ -47,7 +47,7 @@ let runtimeEnv = {} as any
 
 const run = (config: SharedCLI) => async (jsonString: string) => {
   const source = (config && config.source) || (await getRuntimeCISource(config))
-  const platform: Platform = (config && config.platform) || getPlatformForEnv(process.env, source)
+  const platform = getPlatformForEnv(process.env, source)
 
   d("Got STDIN for Danger Run")
   foundDSL = true
@@ -71,7 +71,7 @@ const run = (config: SharedCLI) => async (jsonString: string) => {
 // host process to create a message from the logs.
 nodeCleanup((exitCode: number, signal: string) => {
   const results: DangerResults = runtimeEnv.results
-  d(`Process has finished with ${exitCode} ${signal}, sending the results back to the host process`)
+  d(`Process has finished with ${exitCode}, sending the results back to the host process ${signal || ""}`)
   d(
     `Got md ${results.markdowns.length} w ${results.warnings.length} f ${results.fails.length} m ${
       results.messages.length

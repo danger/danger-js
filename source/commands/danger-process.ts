@@ -13,6 +13,7 @@ import inlineRunner from "../runner/runners/inline"
 import { jsonDSLGenerator } from "../runner/dslGenerator"
 
 import { debug } from "../debug"
+import { RunnerConfig } from "./ci/runner"
 const d = debug("process")
 
 // Given the nature of this command, it can be tricky to test, so I use a command like this:
@@ -44,7 +45,7 @@ setSharedArgs(program)
 program.action(process_name => (subprocessName = process_name)).parse(process.argv)
 
 // The dynamic nature of the program means typecasting a lot
-// use this to work with dynamic propeties
+// use this to work with dynamic properties
 const app = (program as any) as SharedCLI
 
 if (process.env["DANGER_VERBOSE"] || app.verbose) {
@@ -69,13 +70,6 @@ getRuntimeCISource(app).then(source => {
     }
 
     if (platform) {
-      const config: ExecutorOptions = {
-        stdoutOnly: app.textOnly,
-        verbose: app.verbose,
-        jsonOnly: false,
-        dangerID: app.id || "default",
-      }
-      d("Config: ", config)
       jsonDSLGenerator(platform, source).then(dangerJSONDSL => {
         if (!subprocessName) {
           //  Just pipe it out to the CLI
@@ -83,8 +77,26 @@ getRuntimeCISource(app).then(source => {
           process.stdout.write(processInput)
         } else {
           d(`Sending input To ${subprocessName}: `, dangerJSONDSL)
-          const exec = new Executor(source, platform, inlineRunner, config)
-          runDangerSubprocess([subprocessName], dangerJSONDSL, exec, app)
+
+          const runConfig: RunnerConfig = {
+            source,
+            platform,
+            process: subprocessName,
+            additionalEnvVars: {},
+          }
+
+          const execConfig: ExecutorOptions = {
+            stdoutOnly: app.textOnly,
+            verbose: app.verbose,
+            jsonOnly: false,
+            dangerID: app.id || "default",
+          }
+
+          d("Exec config: ", execConfig)
+          d("Run config: ", runConfig)
+
+          const exec = new Executor(source, platform, inlineRunner, execConfig)
+          runDangerSubprocess([subprocessName], dangerJSONDSL, exec, runConfig)
         }
       })
     }
