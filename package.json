@@ -95,7 +95,7 @@
     "@types/debug": "0.0.30",
     "@types/get-stdin": "^5.0.1",
     "@types/http-proxy-agent": "^2.0.1",
-    "@types/jest": "^23.3.2",
+    "@types/jest": "^23.3.7",
     "@types/json5": "^0.0.30",
     "@types/jsonwebtoken": "^7.2.8",
     "@types/lodash.includes": "^4.3.4",
