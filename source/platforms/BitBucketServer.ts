@@ -42,9 +42,13 @@ export class BitBucketServer implements Platform {
   updateStatus = async (passed: boolean | "pending", message: string, url?: string): Promise<boolean> => {
     const pr = await this.api.getPullRequestInfo()
     const { latestCommit } = pr.fromRef
+    let state = passed ? "SUCCESSFUL" : "FAILED"
+    if (passed === "pending") {
+      state = "INPROGRESS"
+    }
     try {
       await this.api.postBuildStatus(latestCommit, {
-        state: passed ? "SUCCESSFUL" : "FAILED",
+        state: state,
         key: "danger.systems",
         name: process.env["PERIL_INTEGRATION_ID"] ? "Peril" : "Danger",
         url: url || "http://danger.systems/js",
