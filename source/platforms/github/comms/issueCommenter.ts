@@ -55,31 +55,8 @@ export const GitHubIssueCommenter = (api: GitHubAPI) => {
      * Fails the current build, if status setting succeeds
      * then return true.
      */
-
-    updateStatus: async (passed: boolean | "pending", message: string, url?: string): Promise<boolean> => {
-      const ghAPI = api.getExternalAPI()
-
-      const prJSON = await api.getPullRequestInfo()
-      const ref = prJSON.head
-      try {
-        await ghAPI.repos.createStatus({
-          repo: ref.repo.name,
-          owner: ref.repo.owner.login,
-          sha: ref.sha,
-          state: passed ? "success" : "failure",
-          context: process.env["PERIL_BOT_USER_ID"] ? "Peril" : "Danger",
-          target_url: url || "http://danger.systems/js",
-          description: message,
-        })
-        return true
-      } catch (error) {
-        // @ts-ignore
-        if (global.verbose) {
-          console.log("Got an error with creating a commit status", error)
-        }
-        return false
-      }
-    },
+    updateStatus: async (passed: boolean | "pending", message: string, url?: string): Promise<boolean> =>
+      api.updateStatus(passed, message, url),
 
     /**
      * Gets inline comments for current PR
