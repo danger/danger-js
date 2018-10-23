@@ -13,6 +13,8 @@
 
 ## Master
 
+- Fix handling a `"pending"` status update properly using Bitbucket API - [@sgtcoolguy][]
+
 # 5.0.1, err. 6.0.0
 
 - Hah, my computer ran out opf power mid-deploy, and now I have to ship another build to make sure the brew versions of
