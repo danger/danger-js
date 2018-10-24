@@ -147,6 +147,82 @@ describe("API testing", () => {
     await expect(api.postInlinePRComment("", "", "", 0)).rejects.toEqual(expectedJSON)
   })
 
+  it("updateStatus('pending') success", async () => {
+    api.fetch = jest.fn().mockReturnValue({ ok: true })
+    api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
+
+    await expect(api.updateStatus("pending", "message")).resolves.toEqual(true)
+    expect(api.fetch).toHaveBeenCalledWith(
+      "https://api.github.com/repos/artsy/emission/statuses/cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
+      {
+        headers: {
+          Authorization: "token ABCDE",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: '{"state":"pending","context":"Danger","target_url":"http://danger.systems/js","description":"message"}',
+      },
+      undefined
+    )
+  })
+
+  it("updateStatus(false) success", async () => {
+    api.fetch = jest.fn().mockReturnValue({ ok: true })
+    api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
+
+    await expect(api.updateStatus(false, "message")).resolves.toEqual(true)
+    expect(api.fetch).toHaveBeenCalledWith(
+      "https://api.github.com/repos/artsy/emission/statuses/cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
+      {
+        headers: {
+          Authorization: "token ABCDE",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: '{"state":"failure","context":"Danger","target_url":"http://danger.systems/js","description":"message"}',
+      },
+      undefined
+    )
+  })
+
+  it("updateStatus(true, 'message', 'http://example.org') success", async () => {
+    api.fetch = jest.fn().mockReturnValue({ ok: true })
+    api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
+
+    await expect(api.updateStatus(true, "message", "http://example.org")).resolves.toEqual(true)
+    expect(api.fetch).toHaveBeenCalledWith(
+      "https://api.github.com/repos/artsy/emission/statuses/cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
+      {
+        headers: {
+          Authorization: "token ABCDE",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: '{"state":"success","context":"Danger","target_url":"http://example.org","description":"message"}',
+      },
+      undefined
+    )
+  })
+
+  it("updateStatus(true) failed", async () => {
+    api.fetch = jest.fn().mockReturnValue({ ok: false })
+    api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
+
+    await expect(api.updateStatus(true, "message")).resolves.toEqual(false)
+    expect(api.fetch).toHaveBeenCalledWith(
+      "https://api.github.com/repos/artsy/emission/statuses/cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75",
+      {
+        headers: {
+          Authorization: "token ABCDE",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: '{"state":"success","context":"Danger","target_url":"http://danger.systems/js","description":"message"}',
+      },
+      undefined
+    )
+  })
+
   it("deleteCommentWithID", async () => {
     api.fetch = jest.fn().mockReturnValue({ status: 204 })
     await api.deleteCommentWithID(123)
