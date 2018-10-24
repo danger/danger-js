@@ -14,6 +14,7 @@
 ## Master
 
 - Fix handling a `"pending"` status update properly using Bitbucket API - [@sgtcoolguy][]
+- Fix #614 - Posting status updates to Github using issue workflow broken - [@sgtcoolguy][]
 
 # 5.0.1, err. 6.0.0
 
