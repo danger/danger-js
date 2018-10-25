@@ -898,7 +898,7 @@
         },
         "private": {
           "description": "Is the repo publicly accessible?",
-          "type": "{boolean}"
+          "type": "boolean"
         }
       },
       "type": "object"
@@ -982,15 +982,24 @@
         },
         "created_files": {
           "description": "Newly created filepaths relative to the git root",
-          "type": "{string[]}"
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
         },
         "deleted_files": {
           "description": "Removed filepaths relative to the git root",
-          "type": "{string[]}"
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
         },
         "modified_files": {
           "description": "Filepaths with changes relative to the git root",
-          "type": "{string[]}"
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
         }
       },
       "type": "object"

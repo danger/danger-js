@@ -318,7 +318,6 @@ export interface GitHubRepo {
 
   /**
    * Is the repo publicly accessible?
-   * @type {boolean}
    */
   private: boolean
 
