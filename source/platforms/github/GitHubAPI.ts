@@ -344,17 +344,21 @@ export class GitHubAPI {
     return res.ok ? res.json() : { labels: [] }
   }
 
-  updateStatus = async (passed: boolean, message: string, url?: string): Promise<any> => {
+  updateStatus = async (passed: boolean | "pending", message: string, url?: string): Promise<any> => {
     const repo = this.repoMetadata.repoSlug
 
     const prJSON = await this.getPullRequestInfo()
     const ref = prJSON.head.sha
+    let state = passed ? "success" : "failure"
+    if (passed === "pending") {
+      state = "pending"
+    }
     const res = await this.post(
       `repos/${repo}/statuses/${ref}`,
       {},
       {
-        state: passed ? "success" : "failure",
-        context: process.env["PERIL_INTEGRATION_ID"] ? "Peril" : "Danger",
+        state: state,
+        context: process.env["PERIL_BOT_USER_ID"] ? "Peril" : "Danger",
         target_url: url || "http://danger.systems/js",
         description: message,
       }

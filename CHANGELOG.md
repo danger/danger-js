@@ -13,6 +13,8 @@
 
 ## Master
 
+- Fix #614 - Posting status updates to Github using issue workflow broken - [@sgtcoolguy][]
+
 # 5.0.1, err. 6.0.0
 
 - Hah, my computer ran out opf power mid-deploy, and now I have to ship another build to make sure the brew versions of
