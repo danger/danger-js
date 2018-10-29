@@ -99,7 +99,7 @@
     "@types/json5": "^0.0.30",
     "@types/jsonwebtoken": "^7.2.8",
     "@types/lodash.includes": "^4.3.4",
-    "@types/node": "^10.11.3",
+    "@types/node": "^10.12.1",
     "@types/node-fetch": "^2.1.2",
     "@types/p-limit": "^2.0.0",
     "@types/readline-sync": "^1.4.3",
