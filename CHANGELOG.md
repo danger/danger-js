@@ -13,6 +13,8 @@
 
 ## Master
 
+- Add CI integration for Netlify
+
 # 6.0.7
 
 - Removes an accidental import - [@orta][]
