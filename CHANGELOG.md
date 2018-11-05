@@ -13,6 +13,8 @@
 
 ## Master
 
+- Fix vertical alignment in GitHub issue template - [@patrickkempff][]
+
 # 5.0.1, err. 6.0.0
 
 - Hah, my computer ran out opf power mid-deploy, and now I have to ship another build to make sure the brew versions of
