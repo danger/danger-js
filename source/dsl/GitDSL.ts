@@ -69,19 +69,16 @@ export interface JSONDiff {
 export interface GitJSONDSL {
   /**
    * Filepaths with changes relative to the git root
-   * @type {string[]}
    */
   readonly modified_files: string[]
 
   /**
    * Newly created filepaths relative to the git root
-   * @type {string[]}
    */
   readonly created_files: string[]
 
   /**
    * Removed filepaths relative to the git root
-   * @type {string[]}
    */
   readonly deleted_files: string[]
 
