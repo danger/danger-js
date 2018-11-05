@@ -14,6 +14,7 @@
 ## Master
 
 - Fix #614 - Posting status updates to Github using issue workflow broken - [@sgtcoolguy][]
+- Fix vertical alignment in GitHub issue template - [@patrickkempff][]
 
 # 5.0.1, err. 6.0.0
 
