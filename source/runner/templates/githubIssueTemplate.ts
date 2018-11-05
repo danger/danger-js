@@ -28,10 +28,7 @@ function table(name: string, emoji: string, violations: Violation[]): string {
       const message = isInline(v) ? `**${v.file!}#L${v.line!}** - ${v.message}` : v.message
       return `<tr>
       <td>:${emoji}:</td>
-      <td>
-
-  ${message}
-  </td>
+      <td>${message}</td>
     </tr>
   `
     })
@@ -103,7 +100,7 @@ export function inlineTemplate(dangerID: string, results: DangerResults, file: s
 <!--
 ${buildSummaryMessage(dangerID, results)}
 ${fileLineToString(file, line)}
--->  
+-->
 ${results.fails.map(printViolation("no_entry_sign")).join("\n")}
 ${results.warnings.map(printViolation("warning")).join("\n")}
 ${results.messages.map(printViolation("book")).join("\n")}

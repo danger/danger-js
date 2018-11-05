@@ -10,7 +10,7 @@ exports[`generating inline messages Shows correct message for multiple inline vi
   DangerID: danger-id-blankID;
   File: File.swift;
   Line: 10;
--->  
+-->
 - :no_entry_sign: Test message
 - :no_entry_sign: Warning message
 - :warning: Test message
@@ -43,18 +43,12 @@ exports[`generating inline messages Shows correct messages for inline/regular vi
   </thead>
   <tbody><tr>
       <td>:warning:</td>
-      <td>
-
-  **File.swift#L10** - Test message
-  </td>
+      <td>**File.swift#L10** - Test message</td>
     </tr>
   
 <tr>
       <td>:warning:</td>
-      <td>
-
-  Warning message
-  </td>
+      <td>Warning message</td>
     </tr>
   </tbody>
 </table>
@@ -86,10 +80,7 @@ exports[`generating messages leaves space between <td>s to allow GitHub to rende
   </thead>
   <tbody><tr>
       <td>:no_entry_sign:</td>
-      <td>
-
-  **Failure:** Something failed!
-  </td>
+      <td>**Failure:** Something failed!</td>
     </tr>
   </tbody>
 </table>
@@ -104,10 +95,7 @@ exports[`generating messages leaves space between <td>s to allow GitHub to rende
   </thead>
   <tbody><tr>
       <td>:warning:</td>
-      <td>
-
-  _Maybe you meant to run \`yarn install\`?_
-  </td>
+      <td>_Maybe you meant to run \`yarn install\`?_</td>
     </tr>
   </tbody>
 </table>
@@ -122,14 +110,11 @@ exports[`generating messages leaves space between <td>s to allow GitHub to rende
   </thead>
   <tbody><tr>
       <td>:book:</td>
-      <td>
-
-  \`\`\`ts
+      <td>\`\`\`ts
 function add(a: number, b: number): number {
   return a + b
 }
-\`\`\`
-  </td>
+\`\`\`</td>
     </tr>
   </tbody>
 </table>
