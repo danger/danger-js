@@ -13,6 +13,7 @@
 
 ## Master
 
+- Fix handling a `"pending"` status update properly using Bitbucket API - [@sgtcoolguy][]
 - Fix #614 - Posting status updates to Github using issue workflow broken - [@sgtcoolguy][]
 - Fix vertical alignment in GitHub issue template - [@patrickkempff][]
 
