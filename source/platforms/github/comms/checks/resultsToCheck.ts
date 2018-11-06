@@ -149,7 +149,13 @@ const inlineResultsToAnnotations = async (
       })
     })
 
-    // ignore perFileResults.markdown because it's not supported by Checks API
+    perFileResults.markdowns.forEach(message => {
+      annotations.push({
+        ...fileAnnotation,
+        annotation_level: "notice",
+        message: message,
+      })
+    })
   }
 
   return annotations
