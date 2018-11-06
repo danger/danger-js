@@ -1,17 +1,7 @@
-import {
-  DangerResults,
-  regularResults,
-  inlineResults,
-  resultsIntoInlineResults,
-  inlineResultsIntoResults,
-  DangerInlineResults,
-} from "../../../../dsl/DangerResults"
+import { DangerResults, regularResults, inlineResults, resultsIntoInlineResults } from "../../../../dsl/DangerResults"
 import { GitHubPRDSL } from "../../../../dsl/GitHubDSL"
 import { ExecutorOptions } from "../../../../runner/Executor"
-import {
-  template as githubResultsTemplate,
-  inlineTemplate as githubResultsInlineTemplate,
-} from "../../../../runner/templates/githubIssueTemplate"
+import { template as githubResultsTemplate } from "../../../../runner/templates/githubIssueTemplate"
 import GitHubNodeAPI from "@octokit/rest"
 import { debug } from "../../../../debug"
 
@@ -24,9 +14,9 @@ export interface CheckImages {
 }
 
 export interface CheckAnnotation {
-  filename: string
+  path: string
   blob_href: string
-  warning_level: "notice" | "warning" | "failure"
+  annotation_level: "notice" | "warning" | "failure"
   message: string
   start_line: number
   end_line: number
@@ -117,7 +107,7 @@ export const resultsToCheck = async (
 
 const inlineResultsToAnnotations = async (
   results: DangerResults,
-  options: ExecutorOptions,
+  _options: ExecutorOptions,
   getBlobUrlForPath: any
 ): Promise<CheckAnnotation[]> => {
   // Basically coalesces violations based on file and line
@@ -128,28 +118,39 @@ const inlineResultsToAnnotations = async (
   const annotations: CheckAnnotation[] = []
 
   for (const perFileResults of inlineResults) {
-    const annotation: CheckAnnotation = {
-      filename: perFileResults.file,
+    const fileAnnotation = {
+      path: perFileResults.file,
       blob_href: await getBlobUrlForPath(perFileResults.file),
-      warning_level: warningLevelForInlineResults(perFileResults),
-      message: githubResultsInlineTemplate(
-        options.dangerID,
-        inlineResultsIntoResults(perFileResults),
-        perFileResults.file,
-        perFileResults.line
-      ),
       start_line: perFileResults.line || 0,
       end_line: perFileResults.line || 0,
     }
 
-    annotations.push(annotation)
+    perFileResults.fails.forEach(message => {
+      annotations.push({
+        ...fileAnnotation,
+        annotation_level: "failure",
+        message: message,
+      })
+    })
+
+    perFileResults.warnings.forEach(message => {
+      annotations.push({
+        ...fileAnnotation,
+        annotation_level: "warning",
+        message: message,
+      })
+    })
+
+    perFileResults.messages.forEach(message => {
+      annotations.push({
+        ...fileAnnotation,
+        annotation_level: "notice",
+        message: message,
+      })
+    })
+
+    // ignore perFileResults.markdown because it's not supported by Checks API
   }
 
   return annotations
-}
-
-const warningLevelForInlineResults = (results: DangerInlineResults): "notice" | "warning" | "failure" => {
-  const hasFails = results.fails.length > 0
-  const hasWarnings = results.warnings.length > 0
-  return hasFails ? "failure" : hasWarnings ? "warning" : "notice"
 }
