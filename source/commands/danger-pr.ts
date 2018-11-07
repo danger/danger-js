@@ -95,7 +95,7 @@ if (program.args.length === 0) {
           // Can't send these to `danger runner`
           delete app.js
           delete app.json
-          runRunner(app, { source, platform })
+          runRunner(app, { source, platform, additionalEnvVars: { DANGER_LOCAL_NO_CI: "yep" } })
         }
       }
     }
