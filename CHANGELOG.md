@@ -13,6 +13,8 @@
 
 ## Master
 
+- Fix `danger pr` - [@orta][]
+
 # 6.0.4
 
 - Fix GitHub checks API payload - [@pveyes][]
