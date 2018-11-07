@@ -25,16 +25,12 @@
     "cacheDirectory": ".jest/cache"
   },
   "lint-staged": {
-    "*.json": [
+    "*.@(json|md)": [
       "yarn prettier --write",
       "git add"
     ],
     "*.@(ts|tsx)": [
       "tslint --fix",
-      "yarn prettier --write",
-      "git add"
-    ],
-    "*.md": [
       "yarn prettier --write",
       "git add"
     ]

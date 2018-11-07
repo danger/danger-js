@@ -53,11 +53,12 @@ export const runDangerSubprocess = (
     if (!results && maybeJSONURL) {
       d("Got JSON URL from STDOUT, results are at: \n" + maybeJSONURL)
       results = JSON.parse(readFileSync(maybeJSONURL.replace("danger-results:/", ""), "utf8"))
-    }
-
-    if (!results && maybeJSON) {
+    } else if (!results && maybeJSON) {
       d("Got JSON results from STDOUT, results: \n" + maybeJSON)
       results = JSON.parse(maybeJSON)
+    } else {
+      // Pass it back to the user
+      console.log(data.toString())
     }
   })
 

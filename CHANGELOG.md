@@ -13,6 +13,9 @@
 
 ## Master
 
+# 6.0.3
+
+- Fix passing stdout from the sub-process back to the user - [@orta][]
 - Fix handling a `"pending"` status update properly using Bitbucket API - [@sgtcoolguy][]
 - Fix #614 - Posting status updates to Github using issue workflow broken - [@sgtcoolguy][]
 - Fix vertical alignment in GitHub issue template - [@patrickkempff][]
@@ -1357,3 +1360,5 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@cwright017]: https://github.com/Cwright017
 [@adamnoakes]: https://github.com/adamnoakes
 [@johansteffner]: https://github.com/johansteffner
+[@sgtcoolguy]: https://github.com/sgtcoolguy
+[@patrickkempff]: https://github.com/patrickkempff

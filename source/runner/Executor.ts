@@ -228,7 +228,7 @@ export class Executor {
     let issueURL = undefined
 
     if (failureCount + messageCount === 0) {
-      this.log("No issues or messages were sent. Removing any existing messages.")
+      this.log(`Found no issues or messages from Danger. Removing any existing messages on ${this.platform.name}.`)
       await this.platform.deleteMainComment(dangerID)
       const previousComments = await this.platform.getInlineComments(dangerID)
       for (const comment of previousComments) {
