@@ -13,6 +13,8 @@
 
 ## Master
 
+# 6.0.5
+
 - Fix `danger pr` - [@orta][]
 
 # 6.0.4
