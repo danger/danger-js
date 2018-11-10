@@ -64,6 +64,11 @@ export const GitHubChecksCommenter = (api: GitHubAPI) => {
 
   return {
     platformResultsPreMapper: async (results: DangerResults, options: ExecutorOptions): Promise<DangerResults> => {
+      // Does nothing if you disable checks support
+      if (options.disableGitHubChecksSupport) {
+        return results
+      }
+
       let token = api.token
       // Either it doesn't exist, or is a personal access token
       if (!token || !token.startsWith("v1.")) {

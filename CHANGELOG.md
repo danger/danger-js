@@ -13,6 +13,10 @@
 
 ## Master
 
+# 6.0.6
+
+- Adds an internal flag for disabling checks support when being controller by Peril - [@orta][]
+
 # 6.0.5
 
 - Fix `danger pr` - [@orta][]

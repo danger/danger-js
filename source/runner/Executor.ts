@@ -45,6 +45,8 @@ export interface ExecutorOptions {
   verbose: boolean
   /** A unique ID to handle multiple Danger runs */
   dangerID: string
+  /** Disable Checks support in GitHub */
+  disableGitHubChecksSupport?: boolean
 }
 // This is still badly named, maybe it really should just be runner?
 
