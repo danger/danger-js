@@ -1,6 +1,6 @@
 import { GitDSL } from "../dsl/GitDSL"
 import { Platform, Comment } from "./platform"
-import { readFileSync } from "fs-extra"
+import { readFileSync } from "fs"
 
 export class FakePlatform implements Platform {
   public readonly name: string
