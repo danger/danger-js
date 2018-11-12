@@ -353,18 +353,28 @@ export class GitHubAPI {
     if (passed === "pending") {
       state = "pending"
     }
-    const res = await this.post(
-      `repos/${repo}/statuses/${ref}`,
-      {},
-      {
-        state: state,
-        context: process.env["PERIL_BOT_USER_ID"] ? "Peril" : "Danger",
-        target_url: url || "http://danger.systems/js",
-        description: message,
+    // Suppress errors, because in OSS
+    // this failure could be due to access rights.
+    //
+    // So only error when it's a real message.
+    try {
+      const res = await this.post(
+        `repos/${repo}/statuses/${ref}`,
+        {},
+        {
+          state: state,
+          context: process.env["PERIL_BOT_USER_ID"] ? "Peril" : "Danger",
+          target_url: url || "http://danger.systems/js",
+          description: message,
+        },
+        true
+      )
+      return res.ok
+    } catch (error) {
+      if (prJSON.base.repo.private) {
+        console.log("Could not post a commit status.")
       }
-    )
-
-    return res.ok
+    }
   }
 
   postCheckRun = async (check: CheckOptions, token: string) => {

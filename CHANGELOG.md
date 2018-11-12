@@ -13,6 +13,9 @@
 
 ## Master
 
+- Improves debug logging, messaging on CI about status updates - [@orta][]
+- Better detection of json results: {} from a sub-process- [@orta][]
+
 # 6.1.0
 
 - Add CI integration for Netlify - imorente
