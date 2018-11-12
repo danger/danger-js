@@ -13,7 +13,9 @@
 
 ## Master
 
-- Add CI integration for Netlify
+# 6.1.0
+
+- Add CI integration for Netlify - imorente
 
 # 6.0.7
 
