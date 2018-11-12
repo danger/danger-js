@@ -9,6 +9,7 @@ import { Drone } from "./Drone"
 import { FakeCI } from "./Fake"
 import { GitHubActions } from "./GitHubActions"
 import { Jenkins } from "./Jenkins"
+import { Netlify } from "./Netlify"
 import { Nevercode } from "./Nevercode"
 import { Screwdriver } from "./Screwdriver"
 import { Semaphore } from "./Semaphore"
@@ -36,6 +37,7 @@ const providers = [
   TeamCity,
   Screwdriver,
   Concourse,
+  Netlify,
 ]
 
 // Mainly used for Dangerfile linting
@@ -56,6 +58,7 @@ const realProviders = [
   TeamCity,
   Screwdriver,
   Concourse,
+  Netlify,
 ]
 
 export { providers, realProviders }
