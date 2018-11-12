@@ -16,10 +16,11 @@
 - Improves debug logging, messaging on CI about status updates - [@orta][]
 - Better detection of json results: {} from a sub-process - [@orta][]
 - CLI Args are actually passed to subprocess instead of an empty object - [@orta][]
+- Fix Netlify integration when repo url includes an access token - [@imorente][]
 
 # 6.1.0
 
-- Add CI integration for Netlify - imorente
+- Add CI integration for Netlify - [@imorente][]
 
 # 6.0.7
 
@@ -1386,3 +1387,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@johansteffner]: https://github.com/johansteffner
 [@sgtcoolguy]: https://github.com/sgtcoolguy
 [@patrickkempff]: https://github.com/patrickkempff
+[@imorente]: https://github.com/imorente

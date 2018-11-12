@@ -486,21 +486,27 @@
       "description": "Describes the possible arguments that\ncould be used when calling the CLI",
       "properties": {
         "base": {
+          "description": "The base reference used by danger PR (e.g. not master)",
           "type": "string"
         },
         "dangerfile": {
+          "description": "A custom path for the dangerfile (can also be a remote reference)",
           "type": "string"
         },
         "externalCiProvider": {
+          "description": "Used by danger-js o allow having a custom CI",
           "type": "string"
         },
         "id": {
+          "description": "So you can have many danger runs in one code review",
           "type": "string"
         },
         "textOnly": {
+          "description": "Use SDTOUT instead of posting to the code review side",
           "type": "string"
         },
         "verbose": {
+          "description": "For debugging",
           "type": "string"
         }
       },
