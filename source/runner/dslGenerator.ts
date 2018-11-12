@@ -3,8 +3,13 @@ import { DangerDSLJSONType } from "../dsl/DangerDSL"
 import { CliArgs } from "../dsl/cli-args"
 import { CISource } from "../ci_source/ci_source"
 import { emptyGitJSON } from "../platforms/github/GitHubGit"
+import { CommanderStatic } from "commander"
 
-export const jsonDSLGenerator = async (platform: Platform, source: CISource): Promise<DangerDSLJSONType> => {
+export const jsonDSLGenerator = async (
+  platform: Platform,
+  source: CISource,
+  program: CommanderStatic
+): Promise<DangerDSLJSONType> => {
   const useSimpleDSL = platform.getPlatformReviewSimpleRepresentation && source.useEventDSL
 
   const git = useSimpleDSL ? emptyGitJSON() : await platform.getPlatformGitRepresentation()
@@ -15,6 +20,14 @@ export const jsonDSLGenerator = async (platform: Platform, source: CISource): Pr
 
   const platformDSL = await getDSLFunc!()
 
+  const cliArgs: CliArgs = {
+    base: program.base,
+    dangerfile: program.dangerfile,
+    externalCiProvider: program.externalCiProvider,
+    id: program.id,
+    textOnly: program.textOnly,
+    verbose: program.verbose,
+  }
   return {
     git,
     [platform.name === "BitBucketServer" ? "bitbucket_server" : "github"]: platformDSL,
@@ -24,7 +37,7 @@ export const jsonDSLGenerator = async (platform: Platform, source: CISource): Pr
         additionalHeaders: {},
         baseURL: process.env["DANGER_GITHUB_API_BASE_URL"] || undefined,
       },
-      cliArgs: {} as CliArgs,
+      cliArgs,
     },
   }
 }
