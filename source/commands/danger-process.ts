@@ -25,11 +25,13 @@ const d = debug("process")
 declare const global: any
 
 let subprocessName: string | undefined
+let deprecationWarning = chalk.bold("Semi-deprecated, as ci/pr/local all support --process")
 
 program
   .usage("[options] <process_name>")
   .description(
-    "Does a Danger run, but instead of handling the execution of a Dangerfile it will pass the DSL " +
+    deprecationWarning +
+      "\n\nDoes a Danger run, but instead of handling the execution of a Dangerfile it will pass the DSL " +
       "into another process expecting the process to eventually return results back as JSON. If you don't " +
       "provide another process, then it will output to STDOUT."
   )
