@@ -3,6 +3,7 @@ import { jsonToDSL } from "./jsonToDSL"
 import { contextForDanger, DangerContext } from "./Dangerfile"
 import { DangerDSLJSON } from "./dangerDSLJSON"
 import { CISource } from "../ci_source/ci_source"
+import { CommanderStatic } from "commander"
 
 /**
  * Reads in the JSON string converts to a dsl object and gets the change context
@@ -11,8 +12,12 @@ import { CISource } from "../ci_source/ci_source"
  * @param program {any} commander
  * @returns {Promise<DangerContext>} context for danger
  */
-export async function jsonToContext(JSONString: string, program: any, source: CISource): Promise<DangerContext> {
-  const dslJSON = { danger: new DangerDSLJSON(JSONString, program as CliArgs) }
+export async function jsonToContext(
+  JSONString: string,
+  program: CommanderStatic,
+  source: CISource
+): Promise<DangerContext> {
+  const dslJSON = { danger: new DangerDSLJSON(JSONString, (program as any) as CliArgs) }
   const dsl = await jsonToDSL(dslJSON.danger, source)
   return contextForDanger(dsl)
 }

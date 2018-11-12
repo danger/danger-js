@@ -52,11 +52,12 @@ export const runDangerSubprocess = (
     const maybeJSON = getJSONFromSTDOUT(stdout)
     const maybeJSONURL = getJSONURLFromSTDOUT(stdout)
 
-    // Remove message sent abck to danger-js
-    const withoutURLs = data
+    // Remove message sent back to danger-js
+    const withoutURLs: string = data
       .toString()
       .replace(maybeJSON, "")
-      .replace(maybeJSONURL)
+      .replace(maybeJSONURL, "")
+
     console.log(withoutURLs)
 
     // Pass it back to the user
