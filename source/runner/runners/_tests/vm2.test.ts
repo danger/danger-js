@@ -48,7 +48,7 @@ runners.forEach(run => {
       const source = new FakeCI({})
       exec = new Executor(source, platform, run.fn, config)
 
-      const dsl = await jsonDSLGenerator(platform, new FakeCI({}))
+      const dsl = await jsonDSLGenerator(platform, new FakeCI({}), {} as any)
       dsl.github = {
         pr: {
           number: 1,

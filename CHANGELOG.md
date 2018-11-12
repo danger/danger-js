@@ -14,7 +14,8 @@
 ## Master
 
 - Improves debug logging, messaging on CI about status updates - [@orta][]
-- Better detection of json results: {} from a sub-process- [@orta][]
+- Better detection of json results: {} from a sub-process - [@orta][]
+- CLI Args are actually passed to subprocess instead of an empty object - [@orta][]
 
 # 6.1.0
 
