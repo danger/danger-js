@@ -70,7 +70,7 @@ describe(".pullRequestID", () => {
 
 describe(".repoSlug", () => {
   it("pulls it out of the env", () => {
-    const netlify = new Netlify({ REPOSITORY_URL: "https://github.com/someone/something" })
+    const netlify = new Netlify({ REPOSITORY_URL: "https://x-access-token:v1.9xxx0@github.com/someone/something" })
     expect(netlify.repoSlug).toEqual("someone/something")
   })
 })
