@@ -32,6 +32,6 @@ export class Netlify implements CISource {
   }
 
   get repoSlug(): string {
-    return this.env.REPOSITORY_URL.replace(/^https:\/\/github.com\//, "")
+    return this.env.REPOSITORY_URL.replace(/^https:\/\/[^/]+\//, "")
   }
 }
