@@ -29,6 +29,14 @@ matrix:
         - yarn build
         - node scripts/run-fixtures.js
 
+    # Runs both the CI and PR with a custom process to ensure apps like swift/rust work
+    - node_js: "10.13"
+      script:
+        - yarn build
+        - node distribution/commands/danger-ci.js --process "ruby scripts/danger_runner.rb"
+        - node distribution/commands/danger-pr.js --process "ruby scripts/danger_runner.rb"
+          https://github.com/danger/danger-js/pull/760
+
     # Does the real danger run
     - node_js: "9"
       script:

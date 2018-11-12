@@ -104,7 +104,7 @@ if (program.args.length === 0) {
 
 // Run the first part of a Danger Process and output the JSON to CLI
 async function runHalfProcessJSON(platform: Platform, source: CISource) {
-  const dangerDSL = await jsonDSLGenerator(platform, source)
+  const dangerDSL = await jsonDSLGenerator(platform, source, program)
   const processInput = prepareDangerDSL(dangerDSL)
   const output = JSON.parse(processInput)
   const dsl = { danger: output }

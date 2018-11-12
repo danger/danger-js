@@ -162,7 +162,7 @@ describe("API testing", () => {
         method: "POST",
         body: '{"state":"pending","context":"Danger","target_url":"http://danger.systems/js","description":"message"}',
       },
-      undefined
+      true
     )
   })
 
@@ -181,7 +181,7 @@ describe("API testing", () => {
         method: "POST",
         body: '{"state":"failure","context":"Danger","target_url":"http://danger.systems/js","description":"message"}',
       },
-      undefined
+      true
     )
   })
 
@@ -200,7 +200,7 @@ describe("API testing", () => {
         method: "POST",
         body: '{"state":"success","context":"Danger","target_url":"http://example.org","description":"message"}',
       },
-      undefined
+      true
     )
   })
 
@@ -219,7 +219,7 @@ describe("API testing", () => {
         method: "POST",
         body: '{"state":"success","context":"Danger","target_url":"http://danger.systems/js","description":"message"}',
       },
-      undefined
+      true
     )
   })
 

@@ -12,5 +12,6 @@
     "distribution/": true
   },
   "editor.formatOnSave": true,
+  "debug.node.autoAttach": "on",
   "cSpell.words": ["APIPR", "BITBUCKETSERVER", "Commenter", "JSONDSL", "PRDSL", "bitbucket", "jsome", "repo's"]
 }

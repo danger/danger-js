@@ -29,7 +29,7 @@ const defaultConfig = {
 const fakeCI = new FakeCI({})
 
 const defaultDsl = (platform: any): Promise<DangerDSLType> => {
-  return jsonDSLGenerator(platform, fakeCI).then(jsonDSL => {
+  return jsonDSLGenerator(platform, fakeCI, {} as any).then(jsonDSL => {
     jsonDSL.github = {
       pr: {
         number: 1,

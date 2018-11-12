@@ -37,11 +37,13 @@ export const runDangerSubprocess = (
   const dslJSONString = prepareDangerDSL(dslJSON)
   d(`Running subprocess: ${processDisplayName} - ${args}`)
   const child = spawn(processName, args, { env: { ...process.env, ...config.additionalEnvVars } })
-  let allLogs = ""
 
+  d(`Started passing in STDIN`)
   child.stdin.write(dslJSONString)
   child.stdin.end()
+  d(`Passed in STDIN`)
 
+  let allLogs = ""
   child.stdout.on("data", async data => {
     const stdout = data.toString()
     allLogs += stdout
@@ -50,15 +52,21 @@ export const runDangerSubprocess = (
     const maybeJSON = getJSONFromSTDOUT(stdout)
     const maybeJSONURL = getJSONURLFromSTDOUT(stdout)
 
+    // Remove message sent back to danger-js
+    const withoutURLs: string = data
+      .toString()
+      .replace(maybeJSON, "")
+      .replace(maybeJSONURL, "")
+
+    console.log(withoutURLs)
+
+    // Pass it back to the user
     if (!results && maybeJSONURL) {
       d("Got JSON URL from STDOUT, results are at: \n" + maybeJSONURL)
       results = JSON.parse(readFileSync(maybeJSONURL.replace("danger-results:/", ""), "utf8"))
     } else if (!results && maybeJSON) {
       d("Got JSON results from STDOUT, results: \n" + maybeJSON)
       results = JSON.parse(maybeJSON)
-    } else {
-      // Pass it back to the user
-      console.log(data.toString())
     }
   })
 
@@ -98,14 +106,17 @@ const getJSONURLFromSTDOUT = (stdout: string): string | undefined => {
 
 /** Pulls the JSON directly out, this has proven to be less reliable  */
 const getJSONFromSTDOUT = (stdout: string): string | undefined => {
-  const trimmed = stdout.trim()
-  return trimmed.startsWith("{") &&
-    trimmed.endsWith("}") &&
-    trimmed.includes("markdowns") &&
-    trimmed.includes("fails") &&
-    trimmed.includes("warnings")
-    ? trimmed
-    : undefined
+  const lines = stdout.split("\n")
+  return lines.find(line => {
+    const trimmed = line.trim()
+    return (
+      trimmed.startsWith("{") &&
+      trimmed.endsWith("}") &&
+      trimmed.includes("markdowns") &&
+      trimmed.includes("fails") &&
+      trimmed.includes("warnings")
+    )
+  })
 }
 
 export default runDangerSubprocess
