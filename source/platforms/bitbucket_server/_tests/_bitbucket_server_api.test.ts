@@ -11,21 +11,29 @@ describe("API testing - BitBucket Server", () => {
     Authorization: `Basic ${new Buffer("username:password").toString("base64")}`,
   }
 
-  beforeEach(() => {
-    api = new BitBucketServerAPI(
+  function APIFactory({ password, token }: { password?: string; token?: string }) {
+    const api = new BitBucketServerAPI(
       { repoSlug: "projects/FOO/repos/BAR", pullRequestID: "1" },
       {
         host,
         username: "username",
-        password: "password",
+        password,
+        token,
       }
     )
+
     api.fetch = jest.fn().mockReturnValue({
       status: 200,
       ok: true,
       json: () => jsonResult,
       text: () => textResult,
     })
+
+    return api
+  }
+
+  beforeEach(() => {
+    api = APIFactory({ password: "password" })
   })
 
   it("getPullRequestsFromBranch", async () => {
@@ -268,6 +276,25 @@ describe("API testing - BitBucket Server", () => {
         method: "PUT",
         body: JSON.stringify({ text: "Hello!", version: 11 }),
         headers: expectedJSONHeaders,
+      },
+      undefined
+    )
+  })
+
+  it("use token", async () => {
+    api = APIFactory({ token: "token" })
+
+    await api.get("")
+
+    expect(api.fetch).toHaveBeenCalledWith(
+      `${host}/`,
+      {
+        method: "GET",
+        body: null,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer token",
+        },
       },
       undefined
     )

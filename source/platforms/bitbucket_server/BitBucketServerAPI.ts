@@ -26,6 +26,7 @@ export interface BitBucketRepoCredentials {
   host: string
   username?: string
   password?: string
+  token?: string
 }
 
 export function bitbucketServerRepoCredentialsFromEnv(env: Env): BitBucketRepoCredentials {
@@ -36,6 +37,7 @@ export function bitbucketServerRepoCredentialsFromEnv(env: Env): BitBucketRepoCr
     host: env["DANGER_BITBUCKETSERVER_HOST"],
     username: env["DANGER_BITBUCKETSERVER_USERNAME"],
     password: env["DANGER_BITBUCKETSERVER_PASSWORD"],
+    token: env["DANGER_BITBUCKETSERVER_TOKEN"],
   }
 }
 
@@ -245,7 +247,9 @@ export class BitBucketServerAPI {
   // API implementation
 
   private api = (path: string, headers: any = {}, body: any = {}, method: string, suppressErrors?: boolean) => {
-    if (this.repoCredentials.username) {
+    if (this.repoCredentials.token) {
+      headers["Authorization"] = `Bearer ${this.repoCredentials.token}`
+    } else if (this.repoCredentials.password) {
       headers["Authorization"] = `Basic ${new Buffer(
         this.repoCredentials.username + ":" + this.repoCredentials.password
       ).toString("base64")}`
@@ -295,7 +299,7 @@ function throwIfNotOk(res: node_fetch.Response) {
   if (!res.ok) {
     let message = `${res.status} - ${res.statusText}`
     if (res.status >= 400 && res.status < 500) {
-      message += ` (Have you set DANGER_BITBUCKETSERVER_USERNAME and DANGER_BITBUCKETSERVER_PASSWORD?)`
+      message += ` (Have you set DANGER_BITBUCKETSERVER_USERNAME and DANGER_BITBUCKETSERVER_PASSWORD or DANGER_BITBUCKETSERVER_TOKEN?)`
     }
     throw new Error(message)
   }
