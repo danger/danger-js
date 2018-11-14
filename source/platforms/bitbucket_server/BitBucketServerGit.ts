@@ -4,6 +4,7 @@ import {
   BitBucketServerDSL,
   BitBucketServerDiff,
   RepoMetaData,
+  BitBucketServerChangesValue,
 } from "../../dsl/BitBucketServerDSL"
 import { GitCommit } from "../../dsl/Commit"
 
@@ -53,12 +54,12 @@ function bitBucketServerCommitToGitCommit(
 
 export default async function gitDSLForBitBucketServer(api: BitBucketServerAPI): Promise<GitJSONDSL> {
   // We'll need all this info to be able to generate a working GitDSL object
-  const diff = await api.getPullRequestDiff()
+  const changes = await api.getPullRequestChanges()
   const gitCommits = await api.getPullRequestCommits()
   const commits = gitCommits.map(commit =>
     bitBucketServerCommitToGitCommit(commit, api.repoMetadata, api.repoCredentials.host)
   )
-  return bitBucketServerDiffToGitJSONDSL(diff, commits)
+  return bitBucketServerChangesToGitJSONDSL(changes, commits)
 }
 
 export const bitBucketServerGitDSL = (
@@ -73,8 +74,8 @@ export const bitBucketServerGitDSL = (
     baseSHA: bitBucketServer.pr.fromRef.latestCommit,
     headSHA: bitBucketServer.pr.toRef.latestCommit,
     getFileContents: bitBucketServerAPI.getFileContents,
-    getFullStructuredDiff: async (base: string, head: string) => {
-      const diff = await bitBucketServerAPI.getStructuredDiff(base, head)
+    getStructuredDiffForFile: async (base: string, head: string, filename: string) => {
+      const diff = await bitBucketServerAPI.getStructuredDiffForFile(base, head, filename)
       return bitBucketServerDiffToGitStructuredDiff(diff)
     },
   }
@@ -83,17 +84,45 @@ export const bitBucketServerGitDSL = (
   return gitJSONToGitDSL(json, config)
 }
 
-const bitBucketServerDiffToGitJSONDSL = (diffs: BitBucketServerDiff[], commits: GitCommit[]): GitJSONDSL => {
-  const deleted_files = diffs.filter(diff => diff.source && !diff.destination).map(diff => diff.source!.toString)
-  const created_files = diffs.filter(diff => !diff.source && diff.destination).map(diff => diff.destination!.toString)
-  const modified_files = diffs.filter(diff => diff.source && diff.destination).map(diff => diff.destination!.toString)
-
-  return {
-    modified_files,
-    created_files,
-    deleted_files,
-    commits,
-  }
+const bitBucketServerChangesToGitJSONDSL = (
+  changes: BitBucketServerChangesValue[],
+  commits: GitCommit[]
+): GitJSONDSL => {
+  return changes.reduce<GitJSONDSL>(
+    (git, value) => {
+      switch (value.type) {
+        case "ADD":
+          return {
+            ...git,
+            created_files: [...git.created_files, value.path.toString],
+          }
+        case "MODIFY":
+          return {
+            ...git,
+            modified_files: [...git.modified_files, value.path.toString],
+          }
+        case "MOVE":
+          return {
+            ...git,
+            created_files: [...git.created_files, value.path.toString],
+            deleted_files: [...git.deleted_files, value.srcPath.toString],
+          }
+        case "DELETE":
+          return {
+            ...git,
+            deleted_files: [...git.deleted_files, value.path.toString],
+          }
+        default:
+          throw new Error("Unhandled change type")
+      }
+    },
+    {
+      modified_files: [],
+      created_files: [],
+      deleted_files: [],
+      commits,
+    }
+  )
 }
 
 const bitBucketServerDiffToGitStructuredDiff = (diffs: BitBucketServerDiff[]): GitStructuredDiff => {

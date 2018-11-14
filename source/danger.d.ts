@@ -296,6 +296,30 @@ interface BitBucketServerPRComment {
   }
 }
 
+interface BitBucketServerChanges {
+  nextPageStart: number | null
+  values: BitBucketServerChangesValue[]
+}
+
+interface BitBucketServerChangesValueAddModifyDelete {
+  type: "ADD" | "MODIFY" | "DELETE"
+  path: {
+    toString: string
+  }
+}
+
+interface BitBucketServerChangesValueMove {
+  type: "MOVE"
+  path: {
+    toString: string
+  }
+  srcPath: {
+    toString: string
+  }
+}
+
+type BitBucketServerChangesValue = BitBucketServerChangesValueAddModifyDelete | BitBucketServerChangesValueMove
+
 /** A platform agnostic reference to a Git commit */
 interface GitCommit {
   /** The SHA for the commit */

@@ -13,6 +13,8 @@
 
 ## Master
 
+- Fix `GitJSONDSL` and `diffForFile` for BitBucket Server [@langovoi][]
+
 # 6.1.3
 
 - Add support for personal tokens of BitBucket Server - [@langovoi][]

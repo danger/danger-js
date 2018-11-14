@@ -287,3 +287,27 @@ export interface BitBucketServerPRComment {
     id: number
   }
 }
+
+export interface BitBucketServerChanges {
+  nextPageStart: number | null
+  values: BitBucketServerChangesValue[]
+}
+
+export interface BitBucketServerChangesValueAddModifyDelete {
+  type: "ADD" | "MODIFY" | "DELETE"
+  path: {
+    toString: string
+  }
+}
+
+export interface BitBucketServerChangesValueMove {
+  type: "MOVE"
+  path: {
+    toString: string
+  }
+  srcPath: {
+    toString: string
+  }
+}
+
+export type BitBucketServerChangesValue = BitBucketServerChangesValueAddModifyDelete | BitBucketServerChangesValueMove

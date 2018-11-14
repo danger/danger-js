@@ -1,0 +1,29 @@
+[
+  {
+    "type": "MODIFY",
+    "path": {
+      "toString": ".gitignore"
+    }
+  },
+  {
+    "type": "ADD",
+    "path": {
+      "toString": "banana"
+    }
+  },
+  {
+    "type": "MOVE",
+    "path": {
+      "toString": ".babelrc"
+    },
+    "srcPath": {
+      "toString": ".babelrc.example"
+    }
+  },
+  {
+    "type": "DELETE",
+    "path": {
+      "toString": "jest.eslint.config.js"
+    }
+  }
+]
