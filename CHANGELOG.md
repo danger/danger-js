@@ -13,6 +13,8 @@
 
 ## Master
 
+- Add support for personal tokens of BitBucket Server - [@langovoi][]
+
 # 6.1.2
 
 - Checks for the JSON results file reported by a subprocess before accessing it - [@orta][]
@@ -1394,3 +1396,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@sgtcoolguy]: https://github.com/sgtcoolguy
 [@patrickkempff]: https://github.com/patrickkempff
 [@imorente]: https://github.com/imorente
+[@langovoi]: https://github.com/langovoi

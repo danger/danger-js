@@ -25,8 +25,11 @@ token to do authenticated requests by exposing a token to Danger.
 ```sh
 export DANGER_GITHUB_API_TOKEN='xxxx'
 
-# or for BitBucket
+# or for BitBucket by username and password
 export DANGER_BITBUCKETSERVER_HOST='xxxx' DANGER_BITBUCKETSERVER_USERNAME='yyyy' DANGER_BITBUCKETSERVER_PASSWORD='zzzz'
+
+# or for BitBucket by username and personal access token
+export DANGER_BITBUCKETSERVER_HOST='xxxx' DANGER_BITBUCKETSERVER_USERNAME='yyyy' DANGER_BITBUCKETSERVER_TOKEN='zzzz'
 ```
 
 Then the danger CLI will use authenticated API calls, which don't get this by API limits.
