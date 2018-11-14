@@ -13,7 +13,11 @@
 
 ## Master
 
+# 6.1.3
+
 - Add support for personal tokens of BitBucket Server - [@langovoi][]
+- Ships a command `danger-js` which means other languages could also use the command danger and they won't conflict with
+  the JS version - [@orta][]
 
 # 6.1.2
 

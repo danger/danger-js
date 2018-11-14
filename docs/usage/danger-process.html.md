@@ -8,22 +8,24 @@ blurb: How to use `danger process` to create a Danger runner for any language.
 
 ## Danger Process
 
-In version 2.0.0 and above, Danger comes with a new command: `danger process`. This command should have all the same
-parameters as `danger` and is meant to be an optional replacement. It's idea is that the responsibilities of Danger can
-be split into three steps:
+In version 6.0.0 and above, Danger's commands comes with an optional new argument: `--process`. This argument allows
+another app to handle the evaluation of a Dangerfile.
+
+The core idea is that the responsibilities of Danger can be split into three steps:
 
 - Dangerfile DSL setup.
 - Evaluation of a Dangerfile.
 - Handling the results of the Dangerfile run.
 
-Danger JS will handle the first and the last steps, and another process will handle the second. This means most of the
-really tricky work stays inside Danger, and the other process can only has to worry about translating the DSL into
-something that feels natural in the environment of your app.
+Danger JS will always handle the first and the last steps, and another process will handle the second. In normal Danger
+JS, this will create a sub-process which calls `danger runner`, but there is the ability for another process to handle
+the work instead. This means most of the **really** tricky work stays inside Danger, and the other process only has to
+worry about translating the DSL into something that feels natural in the environment of your app.
 
 ### Implementing a Danger Process Runner
 
-`danger process` expects one argument, the command to trigger the process for Danger JS to run. This command should
-expect the Danger DSL as JSON in STDIN, and it is expected that it would post results to STDOUT via JSON.
+Your sub-process command should expect the Danger DSL to come in as JSON to STDIN, and it is expected that it would post
+results out to STDOUT via JSON or a filepath.
 
 You can preview the DSL which will be sent to your process via `danger pr` with the `--js` and `--json` flags, for
 example:
@@ -32,19 +34,22 @@ example:
 danger pr https://github.com/danger/danger-js/pull/395 --js
 ```
 
-This shows you DSL as a JavaScript object - this is easier to read and syntax highlighted. If you'd like a data fixture,
-use `--json`:
+This shows you the DSL as a JavaScript object - this is easier to read and syntax highlighted. If you'd like a data
+fixture, use `--json`:
 
 ```sh
 danger pr https://github.com/danger/danger-js/pull/395 --json > danger-js-395.dsl.json
 ```
 
 This will work for any open repo, and if you've set up your local shell to include `DANGER_GITHUB_API_TOKEN` then you
-can use this with any private repository too. You can see the [incoming][] and [outgoing][] JSON schema is documented in
-Danger JS's repo, or you can see the types as (incoming to your process) [DangerJSONDSLType][] and (coming out from your
-process) [DangerResults][], I plan to add a full reference for this, similar to the reference for the user's DSL in the
-future in these docs. _Note:_ The JSON will include your access token, so you probably want to sanitize that before
-commiting it to the repo. I accidentally shipped 2 tokens in writing the feature.
+can use this with any private repository too.
+
+The JSON is documented using JSON Schema: [incoming][] and [outgoing][], these live in Danger JS's repo, or you can see
+the types (incoming to your process) [DangerJSONDSLType][] and (coming out from your process) [DangerResults][],
+
+I plan to add a full reference for this, similar to the reference for the user's DSL in the future in these docs.
+_Note:_ The JSON **will include** your access token, so you probably want to sanitize that before commiting it to the
+repo. I accidentally shipped 2 tokens in writing the feature.
 
 A runner can output anything during the process to STDOUT, and it will be logged to the user. However, Danger JS is
 listening for a JSON response in this format:
@@ -58,10 +63,6 @@ listening for a JSON response in this format:
 }
 ```
 
-_Note:_ `"markdowns"` is a string array, everything else is an object with message. I think this will change eventually.
-When Danger supports inline messages, then `"file"` and `"line"` will also be supported in the violation. _Note:_ I'd
-like to add some sort of versioning to this.
-
 ### Some Examples
 
 ### Tiny, and maybe too simple
@@ -73,7 +74,7 @@ The simplest example I can give you, ironically, is a runner using Ruby.
 
 require 'json'
 dsl_json = STDIN.tty? ? 'Cannot read from STDIN' : $stdin.read
-danger = JSON.parse(dsl_json)
+danger = JSON.parse(dsl_json).danger
 results = { warnings: [], messages:[], fails: [], markdowns: [] }
 
 if danger.github.pr.body.include? "Hello world"
@@ -97,7 +98,7 @@ to be honest - what you're probably looking to do.
 
 require 'json'
 dsl_json = STDIN.tty? ? 'Cannot read from STDIN' : $stdin.read
-danger = JSON.parse(dsl_json)
+danger = JSON.parse(dsl_json).danger
 results = { warnings: [], messages:[], fails: [], markdowns: [] }
 filename = "Dangerfile"
 
@@ -170,6 +171,8 @@ To show you how this process works, Danger Swift takes a [JSON][swift-json] docu
 and evaluates][swift-eval] a [Swift file][swift-dangerfile] and then passes the results back to `danger process` via
 [STDOUT][swift-stdout].
 
+There is also [danger-rust][] as a reference work.
+
 ### Things You Probably Have To Do
 
 At least to make it shine:
@@ -206,3 +209,4 @@ Finally, let me ([@orta][]) know! I want to keep track of them all on the Danger
 [dangerresults]: https://github.com/danger/danger-js/blob/master/source/dsl/DangerResults.ts
 [incoming]: https://github.com/danger/danger-js/blob/master/source/danger-incoming-process-schema.json
 [outgoing]: https://github.com/danger/danger-js/blob/master/source/danger-outgoing-process-schema.json
+[danger-rust]: https://github.com/danger/rust
