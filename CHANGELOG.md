@@ -13,6 +13,10 @@
 
 ## Master
 
+# 6.1.2
+
+- Checks for the JSON results file reported by a subprocess before accessing it - [@orta][]
+
 # 6.1.1
 
 - Improves debug logging, messaging on CI about status updates - [@orta][]

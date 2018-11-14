@@ -6,7 +6,7 @@ import { DangerDSLJSONType, DangerJSON } from "../../dsl/DangerDSL"
 import { Executor } from "../../runner/Executor"
 import { jsonToDSL } from "../../runner/jsonToDSL"
 import { markdownCode, resultsWithFailure, mergeResults } from "./reporting"
-import { readFileSync } from "fs"
+import { readFileSync, existsSync } from "fs"
 import { RunnerConfig } from "../ci/runner"
 
 const d = debug("runDangerSubprocess")
@@ -63,7 +63,12 @@ export const runDangerSubprocess = (
     // Pass it back to the user
     if (!results && maybeJSONURL) {
       d("Got JSON URL from STDOUT, results are at: \n" + maybeJSONURL)
-      results = JSON.parse(readFileSync(maybeJSONURL.replace("danger-results:/", ""), "utf8"))
+      const url = maybeJSONURL.replace("danger-results:/", "")
+      if (!existsSync(url)) {
+        // prettier-ignore
+        throw new Error(`Process '${subprocessName.join(" ")}' reported that its JSON results could be found at ${url}, but the file was missing. The STDOUT was: ${stdout}`)
+      }
+      results = JSON.parse(readFileSync(url, "utf8"))
     } else if (!results && maybeJSON) {
       d("Got JSON results from STDOUT, results: \n" + maybeJSON)
       results = JSON.parse(maybeJSON)
