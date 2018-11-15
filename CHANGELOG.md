@@ -13,6 +13,8 @@
 
 ## Master
 
+# 6.1.4
+
 - Fix `GitJSONDSL` and `diffForFile` for BitBucket Server [@langovoi][]
 
 # 6.1.3
