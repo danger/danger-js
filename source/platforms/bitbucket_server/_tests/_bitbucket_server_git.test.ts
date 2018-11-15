@@ -48,8 +48,8 @@ describe("the dangerfile gitDSL - BitBucket Server", async () => {
     bbs = new BitBucketServer(api)
 
     api.getIssues = await requestWithFixturedJSON("bitbucket_server_issues.json")
-    api.getPullRequestDiff = await requestWithFixturedJSON("bitbucket_server_diff.json")
-    api.getStructuredDiff = await requestWithFixturedJSON("bitbucket_server_diff.json")
+    api.getPullRequestChanges = await requestWithFixturedJSON("bitbucket_server_changes.json")
+    api.getStructuredDiffForFile = await requestWithFixturedJSON("bitbucket_server_diff.json")
     api.getPullRequestInfo = await requestWithFixturedJSON(pullRequestInfoFilename)
     api.getPullRequestCommits = await requestWithFixturedJSON("bitbucket_server_commits.json")
     api.getPullRequestComments = await requestWithFixturedJSON("bitbucket_server_comments.json")
@@ -63,8 +63,8 @@ describe("the dangerfile gitDSL - BitBucket Server", async () => {
 
   it("sets the modified/created/deleted", async () => {
     expect(gitJSONDSL.modified_files).toEqual([".gitignore"])
-    expect(gitJSONDSL.created_files).toEqual(["banana"])
-    expect(gitJSONDSL.deleted_files).toEqual(["jest.eslint.config.js"])
+    expect(gitJSONDSL.created_files).toEqual(["banana", ".babelrc"])
+    expect(gitJSONDSL.deleted_files).toEqual([".babelrc.example", "jest.eslint.config.js"])
   })
 
   it("shows the diff for a specific file", async () => {

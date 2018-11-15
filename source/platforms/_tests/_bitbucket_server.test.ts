@@ -24,8 +24,8 @@ class mockBitBucketServerAPI /*tslint:disable-line*/ {
     const fixtures = await requestWithFixturedJSON("bitbucket_server_comments.json")
     return await fixtures()
   }
-  async getPullRequestDiff() {
-    const fixtures = await requestWithFixturedJSON("bitbucket_server_diff.json")
+  async getPullRequestChanges() {
+    const fixtures = await requestWithFixturedJSON("bitbucket_server_changes.json")
     return await fixtures()
   }
   async getPullRequestActivities() {

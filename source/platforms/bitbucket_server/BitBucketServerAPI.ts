@@ -12,6 +12,8 @@ import {
   BitBucketServerPRActivity,
   BitBucketServerDiff,
   RepoMetaData,
+  BitBucketServerChanges,
+  BitBucketServerChangesValue,
 } from "../../dsl/BitBucketServerDSL"
 import { Comment } from "../platform"
 
@@ -87,19 +89,30 @@ export class BitBucketServerAPI {
     return (await res.json()).values
   }
 
-  getStructuredDiff = async (base: string, head: string): Promise<BitBucketServerDiff[]> => {
+  getStructuredDiffForFile = async (base: string, head: string, filename: string): Promise<BitBucketServerDiff[]> => {
     const { repoSlug } = this.repoMetadata
-    const path = `rest/api/1.0/${repoSlug}/compare/diff?withComments=false&from=${base}&to=${head}`
+    const path = `rest/api/1.0/${repoSlug}/compare/diff/${filename}?withComments=false&from=${base}&to=${head}`
     const res = await this.get(path)
     throwIfNotOk(res)
     return (await res.json()).diffs
   }
 
-  getPullRequestDiff = async (): Promise<BitBucketServerDiff[]> => {
-    const path = `${this.getPRBasePath()}/diff?withComments=false`
-    const res = await this.get(path)
-    throwIfNotOk(res)
-    return (await res.json()).diffs
+  getPullRequestChanges = async (): Promise<BitBucketServerChangesValue[]> => {
+    let nextPageStart: null | number = 0
+    let values: BitBucketServerChangesValue[] = []
+
+    do {
+      const path = `${this.getPRBasePath()}/changes?start=${nextPageStart}`
+      const res = await this.get(path)
+      throwIfNotOk(res)
+
+      const data = (await res.json()) as BitBucketServerChanges
+
+      values = values.concat(data.values)
+      nextPageStart = data.nextPageStart
+    } while (nextPageStart !== null)
+
+    return values
   }
 
   getPullRequestComments = async (): Promise<BitBucketServerPRActivity[]> => {

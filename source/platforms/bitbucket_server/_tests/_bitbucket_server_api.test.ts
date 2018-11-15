@@ -3,7 +3,7 @@ import { dangerSignaturePostfix } from "../../../runner/templates/bitbucketServe
 
 describe("API testing - BitBucket Server", () => {
   let api: BitBucketServerAPI
-  let jsonResult: any
+  let jsonResult: () => any
   let textResult: string
   const host = "http://localhost:7990"
   const expectedJSONHeaders = {
@@ -25,7 +25,7 @@ describe("API testing - BitBucket Server", () => {
     api.fetch = jest.fn().mockReturnValue({
       status: 200,
       ok: true,
-      json: () => jsonResult,
+      json: () => jsonResult(),
       text: () => textResult,
     })
 
@@ -37,7 +37,7 @@ describe("API testing - BitBucket Server", () => {
   })
 
   it("getPullRequestsFromBranch", async () => {
-    jsonResult = { values: [1] }
+    jsonResult = () => ({ values: [1] })
     const result = await api.getPullRequestsFromBranch("branch")
 
     expect(api.fetch).toHaveBeenCalledWith(
@@ -46,11 +46,11 @@ describe("API testing - BitBucket Server", () => {
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
-    expect(result).toEqual(jsonResult.values)
+    expect(result).toEqual([1])
   })
 
   it("getPullRequestInfo", async () => {
-    jsonResult = { pr: "info" }
+    jsonResult = () => ({ pr: "info" })
     const result = await api.getPullRequestInfo()
 
     expect(api.fetch).toHaveBeenCalledWith(
@@ -58,11 +58,11 @@ describe("API testing - BitBucket Server", () => {
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
-    expect(result).toEqual(jsonResult)
+    expect(result).toEqual({ pr: "info" })
   })
 
   it("getPullRequestCommits", async () => {
-    jsonResult = { values: ["commit"] }
+    jsonResult = () => ({ values: ["commit"] })
     const result = await api.getPullRequestCommits()
 
     expect(api.fetch).toHaveBeenCalledWith(
@@ -70,39 +70,58 @@ describe("API testing - BitBucket Server", () => {
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
-    expect(result).toEqual(jsonResult.values)
+    expect(result).toEqual(["commit"])
   })
 
-  it("getStructuredDiff", async () => {
-    jsonResult = { diffs: ["diff"] }
-    const result = await api.getStructuredDiff("BASE", "HEAD")
+  it("getStructuredDiffForFile", async () => {
+    jsonResult = () => ({ diffs: ["diff"] })
+    const result = await api.getStructuredDiffForFile("BASE", "HEAD", "filename.txt")
 
     expect(api.fetch).toHaveBeenCalledWith(
-      `${host}/rest/api/1.0/projects/FOO/repos/BAR/compare/diff` +
-        //
+      `${host}/rest/api/1.0/projects/FOO/repos/BAR/compare/diff/` +
+        `filename.txt` +
         `?withComments=false&from=BASE&to=HEAD`,
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
-    expect(result).toEqual(jsonResult.diffs)
+    expect(result).toEqual(["diff"])
   })
 
-  it("getPullRequestDiff", async () => {
-    jsonResult = { diffs: ["diff"] }
-    const result = await api.getPullRequestDiff()
+  it("getPullRequestChanges", async () => {
+    jsonResult = jest
+      .fn()
+      .mockReturnValueOnce({
+        nextPageStart: 1,
+        values: ["1"],
+      })
+      .mockReturnValueOnce({
+        nextPageStart: null,
+        values: ["2"],
+      })
+    const result = await api.getPullRequestChanges()
+
+    expect(api.fetch).toHaveBeenCalledTimes(2)
 
     expect(api.fetch).toHaveBeenCalledWith(
-      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/diff` +
+      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/changes` +
         //
-        `?withComments=false`,
+        `?start=0`,
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
-    expect(result).toEqual(jsonResult.diffs)
+
+    expect(api.fetch).toHaveBeenCalledWith(
+      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/changes` +
+        //
+        `?start=1`,
+      { method: "GET", body: null, headers: expectedJSONHeaders },
+      undefined
+    )
+    expect(result).toEqual(["1", "2"])
   })
 
   it("getPullRequestComments", async () => {
-    jsonResult = { values: ["comment"] }
+    jsonResult = () => ({ values: ["comment"] })
     const result = await api.getPullRequestComments()
 
     expect(api.fetch).toHaveBeenCalledWith(
@@ -112,11 +131,11 @@ describe("API testing - BitBucket Server", () => {
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
-    expect(result).toEqual(jsonResult.values)
+    expect(result).toEqual(["comment"])
   })
 
   it("getPullRequestActivities", async () => {
-    jsonResult = { values: ["activity"] }
+    jsonResult = () => ({ values: ["activity"] })
     const result = await api.getPullRequestActivities()
 
     expect(api.fetch).toHaveBeenCalledWith(
@@ -126,11 +145,11 @@ describe("API testing - BitBucket Server", () => {
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
-    expect(result).toEqual(jsonResult.values)
+    expect(result).toEqual(["activity"])
   })
 
   it("getIssues", async () => {
-    jsonResult = { issue: "key" }
+    jsonResult = () => ({ issue: "key" })
     const result = await api.getIssues()
 
     expect(api.fetch).toHaveBeenCalledWith(
@@ -138,11 +157,11 @@ describe("API testing - BitBucket Server", () => {
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
-    expect(result).toEqual(jsonResult)
+    expect(result).toEqual({ issue: "key" })
   })
 
   it("getDangerComments", async () => {
-    jsonResult = {
+    jsonResult = () => ({
       values: [
         {
           comment: {
@@ -164,7 +183,7 @@ describe("API testing - BitBucket Server", () => {
           },
         },
       ],
-    }
+    })
     const result = await api.getDangerComments("1")
 
     expect(api.fetch).toHaveBeenCalledWith(
@@ -172,11 +191,18 @@ describe("API testing - BitBucket Server", () => {
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
-    expect(result).toEqual([jsonResult.values[0].comment])
+    expect(result).toEqual([
+      {
+        text: `FAIL! danger-id-1; ${dangerSignaturePostfix}`,
+        author: {
+          name: "username",
+        },
+      },
+    ])
   })
 
   it("getDangerInlineComments", async () => {
-    jsonResult = {
+    jsonResult = () => ({
       values: [
         {
           comment: {
@@ -192,7 +218,7 @@ describe("API testing - BitBucket Server", () => {
           },
         },
       ],
-    }
+    })
     const comments = await api.getDangerInlineComments("default")
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities?fromType=COMMENT`,

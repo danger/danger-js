@@ -32,7 +32,7 @@ export interface GitJSONToGitDSLConfig {
   getFileContents: (path: string, repo: string | undefined, sha: string) => Promise<string>
   /** A promise which will return the diff string content for a file between shas */
   getFullDiff?: (base: string, head: string) => Promise<string>
-  getFullStructuredDiff?: (base: string, head: string) => Promise<GitStructuredDiff>
+  getStructuredDiffForFile?: (base: string, head: string, filename: string) => Promise<GitStructuredDiff>
 }
 
 export type GitStructuredDiff = {
@@ -155,8 +155,8 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
   const structuredDiffForFile = async (filename: string): Promise<StructuredDiff | null> => {
     let fileDiffs: GitStructuredDiff
 
-    if (config.getFullStructuredDiff) {
-      fileDiffs = await config.getFullStructuredDiff(config.baseSHA, config.headSHA)
+    if (config.getStructuredDiffForFile) {
+      fileDiffs = await config.getStructuredDiffForFile(config.baseSHA, config.headSHA, filename)
     } else {
       const diff = await config.getFullDiff!(config.baseSHA, config.headSHA)
       fileDiffs = parseDiff(diff)
