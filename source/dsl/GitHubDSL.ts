@@ -250,6 +250,11 @@ export interface GitHubPRDSL {
    * The number of changed files in the PR
    */
   changed_files: number
+
+  /**
+   * The link back to this PR as user-facing
+   */
+  html_url: string
 }
 
 // These are the individual subtypes of objects inside the larger DSL objects above.

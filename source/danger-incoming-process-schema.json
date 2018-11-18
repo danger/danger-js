@@ -820,6 +820,10 @@
           "$ref": "#/definitions/GitHubMergeRef",
           "description": "Merge reference for the _other_ repo."
         },
+        "html_url": {
+          "description": "The link back to this PR as user-facing",
+          "type": "string"
+        },
         "locked": {
           "description": "Has the PR been locked to contributors only?",
           "type": "boolean"
