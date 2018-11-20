@@ -19,13 +19,13 @@ import { Travis } from "./Travis"
 import { VSTS } from "./VSTS"
 
 const providers = [
+  FakeCI,
   GitHubActions,
   Travis,
   Circle,
   Semaphore,
   Nevercode,
   Jenkins,
-  FakeCI,
   Surf,
   DockerCloud,
   Codeship,

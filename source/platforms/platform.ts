@@ -8,6 +8,7 @@ import { DangerResults } from "../dsl/DangerResults"
 import { ExecutorOptions } from "../runner/Executor"
 import { DangerRunner } from "../runner/runners/runner"
 import chalk from "chalk"
+import { FakePlatform } from "./FakePlatform"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any
@@ -121,6 +122,11 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
     const api = new GitHubAPI(source, ghToken)
     const github = GitHub(api)
     return github
+  }
+
+  // Support automatically returning a fake platform if you pass a Fake CI
+  if (source.name === "Fake Testing CI") {
+    return new FakePlatform()
   }
 
   console.error("The DANGER_GITHUB_API_TOKEN/DANGER_BITBUCKETSERVER_HOST environmental variable is missing")

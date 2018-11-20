@@ -19,6 +19,7 @@ export class FakeCI implements CISource {
   get isCI(): boolean {
     return ensureEnvKeysExist(this.env, ["DANGER_FAKE_CI"]) || ensureEnvKeysExist(this.env, ["DANGER_LOCAL_NO_CI"])
   }
+
   get isPR(): boolean {
     return true
   }
