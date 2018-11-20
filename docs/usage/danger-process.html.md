@@ -1,6 +1,6 @@
 ---
 title: Danger in my Language
-subtitle: Using Danger Process
+subtitle: Using --process to build danger runners
 layout: guide_js
 order: 3
 blurb: How to use `danger process` to create a Danger runner for any language.
@@ -86,7 +86,7 @@ STDOUT.write(results.to_json)
 
 As Ruby is duck-typed, it doesn't need any infrastructure. You can parse the incoming JSON into an object, then work
 with the standard library to provide a Dangerfile environment. If you saved this file as `dangerfile.rb`, and
-`chmod +x dangerfile.rb` then you can run `danger process 'dangerfile.rb`.
+`chmod +x dangerfile.rb` then you can run `danger pr --process 'dangerfile.rb`.
 
 ### Tiny, and not too simple
 
@@ -191,6 +191,12 @@ npm install -g danger
 It's pretty likely that your CI already has node, so it can just be `npm install -g danger`. If not, look [into nvm][].
 
 Finally, let me ([@orta][]) know! I want to keep track of them all on the Danger Systems site :+1:.
+
+### Troubleshooting
+
+- If you're having timeout issues on waiting for STDIN from Danger JS, then it's possible that Danger JS is sending the
+  STDIN too soon for your process to catch it. To work around this, have your process print `danger://send-dsl` and
+  Danger JS will re-send the JSON to your process.
 
 [danger-swift]: https://github.com/danger/danger-swift
 [swift-json]: https://github.com/danger/danger-swift/blob/master/fixtures/eidolon_609.json

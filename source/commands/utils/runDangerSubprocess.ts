@@ -11,6 +11,10 @@ import { RunnerConfig } from "../ci/runner"
 
 const d = debug("runDangerSubprocess")
 
+// If a sub-process passes this to stdout then danger-js will pass
+// the DSL back to the process
+const messageToSendDSL = "danger://send-dsl"
+
 // Sanitizes the DSL so for sending via STDOUT
 export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
   if (dangerDSL.github && dangerDSL.github.api) {
@@ -38,17 +42,28 @@ export const runDangerSubprocess = (
   d(`Running subprocess: ${processDisplayName} - ${args}`)
   const child = spawn(processName, args, { env: { ...process.env, ...config.additionalEnvVars } })
 
-  d(`Started passing in STDIN`)
-  child.stdin.write(dslJSONString)
-  child.stdin.end()
-  d(`Passed in STDIN`)
+  const sendDSLToSubprocess = () => {
+    d(`Started passing in STDIN`)
+    child.stdin.write(dslJSONString)
+    child.stdin.end()
+    d(`Passed in STDIN`)
+  }
+
+  // Initial sending of the DSL
+  sendDSLToSubprocess()
 
   let allLogs = ""
   child.stdout.on("data", async data => {
-    const stdout = data.toString()
+    const stdout: string = data.toString()
     allLogs += stdout
 
-    // There are two checks
+    // Provide a way for a process to request the DSL
+    // if they missed the first go.
+    if (stdout.includes(messageToSendDSL)) {
+      sendDSLToSubprocess()
+    }
+
+    // There are two checks for a response
     const maybeJSON = getJSONFromSTDOUT(stdout)
     const maybeJSONURL = getJSONURLFromSTDOUT(stdout)
 
@@ -56,7 +71,10 @@ export const runDangerSubprocess = (
     const withoutURLs: string = data
       .toString()
       .replace(maybeJSON, "")
+      .replace(maybeJSONURL + "\n", "")
       .replace(maybeJSONURL, "")
+      .replace(messageToSendDSL + "\n", "")
+      .replace(messageToSendDSL, "")
 
     console.log(withoutURLs)
 
