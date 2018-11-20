@@ -13,6 +13,8 @@
 
 ## Master
 
+# 6.1.5
+
 - Adds `html_url` to the PR JSON declaration - [@orta][]
 - Adds a way for a sub-process to tell danger-js that it wants a copy of the DSL. This is a potential fix for when you
   have a process that might not be ready to grab the DSL instantly from danger-js. The subprocess can print the message
