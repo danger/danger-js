@@ -14,6 +14,11 @@
 ## Master
 
 - Adds `html_url` to the PR JSON declaration - [@orta][]
+- Adds a way for a sub-process to tell danger-js that it wants a copy of the DSL. This is a potential fix for when you
+  have a process that might not be ready to grab the DSL instantly from danger-js. The subprocess can print the message
+  `danger://send-dsl` to stdout and danger-js will re-send the DSL via STDIN. - [@orta][]
+
+These two are to try and figure out [danger/swift#108](https://github.com/danger/swift/issues/108).
 
 # 6.1.4
 
