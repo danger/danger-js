@@ -115,6 +115,11 @@ export class Executor {
    */
   async handleResults(results: DangerResults, git: GitDSL) {
     this.d("Got results back:", results)
+    if (!results) {
+      throw new Error(
+        "Got no results back from the Dangerfile evaluation, this is likely an issue with a custom sub-process exiting early."
+      )
+    }
     validateResults(results)
 
     this.d(`Evaluator settings`, this.options)
