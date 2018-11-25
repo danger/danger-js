@@ -21,6 +21,8 @@ export interface SharedCLI extends program.CommanderStatic {
   repl?: string
   /** Use a custom file for the CI provider instead of a built-in one */
   process?: string
+  /** Use a URL to send in the DSL instead of just STDIN */
+  passURLForDSL?: boolean
 }
 
 export default (command: any) =>
@@ -32,6 +34,7 @@ export default (command: any) =>
       "Specify a custom dangerfile path, remote urls only work with github"
     )
     .option("-i, --id [danger_id]", "Specify a unique Danger ID for the Danger run")
-    .option("-p, --process [command]", "Runs a custom sub-process instead of the Danger JS runtime")
     .option("-b, --base [branch_name]", "Use a different base branch")
     .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")
+    .option("-p, --process [command]", "[dev] Runs a custom sub-process instead of the Danger JS runtime")
+    .option("-u, --passURLForDSL", "[dev] Use a custom URL to send the Danger DSL into the sub-process")

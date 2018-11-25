@@ -45,6 +45,8 @@ export interface ExecutorOptions {
   verbose: boolean
   /** A unique ID to handle multiple Danger runs */
   dangerID: string
+  /** Don't send the entire JSON via STDIN, instead store it in tmp, and give the paths */
+  passURLForDSL: boolean
   /** Disable Checks support in GitHub */
   disableGitHubChecksSupport?: boolean
 }

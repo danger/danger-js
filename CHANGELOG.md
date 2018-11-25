@@ -13,6 +13,12 @@
 
 ## Master
 
+# 6.1.6
+
+- Adds a CLI flag for custom Danger Runners to be able to request a URL to a JSON file instead of receiving the entire
+  DSL as a big JSON dump. We're exploring using this in Danger Swift with
+  [danger/swift#108](https://github.com/danger/swift/issues/108) - [@orta][]
+
 # 6.1.5
 
 - Adds `html_url` to the PR JSON declaration - [@orta][]

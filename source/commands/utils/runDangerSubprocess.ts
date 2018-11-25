@@ -1,13 +1,14 @@
 import { debug } from "../../debug"
-import * as path from "path"
+import { join, basename } from "path"
 import { spawn } from "child_process"
 
 import { DangerDSLJSONType, DangerJSON } from "../../dsl/DangerDSL"
 import { Executor } from "../../runner/Executor"
 import { jsonToDSL } from "../../runner/jsonToDSL"
 import { markdownCode, resultsWithFailure, mergeResults } from "./reporting"
-import { readFileSync, existsSync } from "fs"
+import { readFileSync, existsSync, writeFileSync } from "fs"
 import { RunnerConfig } from "../ci/runner"
+import { tmpdir } from "os"
 
 const d = debug("runDangerSubprocess")
 
@@ -37,16 +38,26 @@ export const runDangerSubprocess = (
   let results = null as any
   args.shift() // mutate and remove the first element
 
-  const processDisplayName = path.basename(processName)
+  const processDisplayName = basename(processName)
   const dslJSONString = prepareDangerDSL(dslJSON)
-  d(`Running subprocess: ${processDisplayName} - ${args}`)
+  d(`Running sub-process: ${processDisplayName} - ${args}`)
   const child = spawn(processName, args, { env: { ...process.env, ...config.additionalEnvVars } })
 
   const sendDSLToSubprocess = () => {
-    d(`Started passing in STDIN`)
-    child.stdin.write(dslJSONString)
-    child.stdin.end()
-    d(`Passed in STDIN`)
+    if (exec.options.passURLForDSL) {
+      const resultsPath = join(tmpdir(), "danger-dsl.json")
+      writeFileSync(resultsPath, dslJSONString, "utf8")
+      const url = `danger://dsl/${resultsPath}`
+      d(`Started passing in STDIN via the URL: ${url}`)
+      child.stdin.write(url)
+      child.stdin.end()
+      d(`Passed DSL in via STDIN`)
+    } else {
+      d(`Started passing in STDIN`)
+      child.stdin.write(dslJSONString)
+      child.stdin.end()
+      d(`Passed DSL in via STDIN`)
+    }
   }
 
   // Initial sending of the DSL
