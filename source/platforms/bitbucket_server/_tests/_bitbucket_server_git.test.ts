@@ -2,12 +2,13 @@ import { BitBucketServer } from "../../BitBucketServer"
 import { BitBucketServerAPI } from "../BitBucketServerAPI"
 
 import { FakeCI } from "../../../ci_source/providers/Fake"
-import { readFileSync } from "fs"
+import { readFileSync, writeFileSync } from "fs"
 import { resolve, join as pathJoin } from "path"
 import { bitBucketServerGitDSL as gitJSONToGitDSL } from "../BitBucketServerGit"
 
 import { BitBucketServerDSL } from "../../../dsl/BitBucketServerDSL"
 import { GitDSL, GitJSONDSL } from "../../../dsl/GitDSL"
+import { jsonDSLGenerator } from "../../../runner/dslGenerator"
 
 const fixtures = resolve(__dirname, "..", "..", "_tests", "fixtures")
 
@@ -134,5 +135,13 @@ describe("the dangerfile gitDSL - BitBucket Server", async () => {
   it("checks promise rejection for `del` line for inline comment for deleted file", async () => {
     const promise = bbs.findTypeOfLine(gitDSL, 0, "jest.eslint.config.js")
     await expect(promise).rejects
+  })
+
+  it("writes a JSON DSL fixture", async () => {
+    const fakeSource = new FakeCI({})
+    const dataSent = await jsonDSLGenerator(bbs, fakeSource, {} as any)
+    dataSent.settings.github.accessToken = "12345"
+
+    writeFileSync(pathJoin(fixtures, "bbs-dsl-input.json"), JSON.stringify(dataSent, null, "  "), "utf8")
   })
 })
