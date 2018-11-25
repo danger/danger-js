@@ -91,6 +91,7 @@ getRuntimeCISource(app).then(source => {
             verbose: app.verbose,
             jsonOnly: false,
             dangerID: app.id || "default",
+            passURLForDSL: app.passURLForDSL || false,
           }
 
           d("Exec config: ", execConfig)
