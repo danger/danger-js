@@ -1,4 +1,4 @@
-import { Executor } from "../Executor"
+import { Executor, ExecutorOptions } from "../Executor"
 import { FakeCI } from "../../ci_source/providers/Fake"
 import { FakePlatform } from "../../platforms/FakePlatform"
 import {
@@ -19,11 +19,12 @@ import { singleViolationSingleFileResults } from "../../dsl/_tests/fixtures/Exam
 import { inlineTemplate } from "../templates/githubIssueTemplate"
 import { resultsIntoInlineResults, DangerResults, inlineResultsIntoResults } from "../../dsl/DangerResults"
 
-const defaultConfig = {
+const defaultConfig: ExecutorOptions = {
   stdoutOnly: false,
   verbose: false,
   jsonOnly: false,
   dangerID: "123",
+  passURLForDSL: false,
 }
 
 const fakeCI = new FakeCI({})
