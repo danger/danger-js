@@ -13,6 +13,8 @@
 
 ## Master
 
+- Update comment instead deleting, if it has replies (BitBucket Server) [@langovoi][]
+
 # 6.1.6
 
 - Adds a CLI flag for custom Danger Runners to be able to request a URL to a JSON file instead of receiving the entire

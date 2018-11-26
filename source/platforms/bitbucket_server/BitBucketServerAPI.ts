@@ -31,6 +31,16 @@ export interface BitBucketRepoCredentials {
   token?: string
 }
 
+interface CommentDeletionException {
+  errors: {
+    content: null
+    message: string
+    exceptionName: "com.atlassian.bitbucket.comment.CommentDeletionException"
+  }
+}
+
+type DeleteCommentResponse = CommentDeletionException
+
 export function bitbucketServerRepoCredentialsFromEnv(env: Env): BitBucketRepoCredentials {
   if (!env["DANGER_BITBUCKETSERVER_HOST"]) {
     throw new Error(`DANGER_BITBUCKETSERVER_HOST is not set`)
@@ -232,15 +242,23 @@ export class BitBucketServerAPI {
     }
   }
 
-  deleteComment = async ({ id, version }: BitBucketServerPRComment) => {
+  deleteComment = async ({ id, version }: { id: number; version: number }) => {
     const path = `${this.getPRBasePath()}/comments/${id}?version=${version}`
     const res = await this.delete(path)
+
+    if (res.status === 409) {
+      const errors = ((await res.json()) as DeleteCommentResponse).errors
+      if (errors.exceptionName === "com.atlassian.bitbucket.comment.CommentDeletionException") {
+        return this.updateComment({ id, version }, "(Review Retracted)")
+      }
+    }
+
     if (!res.ok) {
       throw new Error(`Failed to delete comment "${id}`)
     }
   }
 
-  updateComment = async ({ id, version }: BitBucketServerPRComment, comment: string) => {
+  updateComment = async ({ id, version }: { id: number; version: number }, comment: string) => {
     const path = `${this.getPRBasePath()}/comments/${id}`
     const res = await this.put(
       path,
