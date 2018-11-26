@@ -26,6 +26,7 @@ runners.forEach(run => {
       verbose: false,
       jsonOnly: true,
       dangerID: run.name,
+      passURLForDSL: false,
     }
 
     const makeExecutor = () => {
