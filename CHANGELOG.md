@@ -15,6 +15,7 @@
 
 - Update comment instead deleting, if it has replies (BitBucket Server) [@langovoi][]
 - Fix BitBucket Server GitDSL [@langovoi][]
+- Add support of paged APIs of BitBucket Server [@langovoi][]
 
 # 6.1.6
 

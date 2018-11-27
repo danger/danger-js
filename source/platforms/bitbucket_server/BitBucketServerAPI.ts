@@ -12,8 +12,8 @@ import {
   BitBucketServerPRActivity,
   BitBucketServerDiff,
   RepoMetaData,
-  BitBucketServerChanges,
   BitBucketServerChangesValue,
+  BitBucketServerPagedResponse,
 } from "../../dsl/BitBucketServerDSL"
 import { Comment } from "../platform"
 
@@ -73,11 +73,28 @@ export class BitBucketServerAPI {
   }
 
   getPullRequestsFromBranch = async (branch: string): Promise<BitBucketServerPRDSL[]> => {
+    let nextPageStart: null | number = 0
+    let values: BitBucketServerPRDSL[] = []
+
     const { repoSlug } = this.repoMetadata
-    const path = `rest/api/1.0/${repoSlug}/pull-requests?at=refs/heads/${branch}&withProperties=false&withAttributes=false`
-    const res = await this.get(path)
-    throwIfNotOk(res)
-    return (await res.json()).values as BitBucketServerPRDSL[]
+
+    do {
+      const path = `rest/api/1.0/${repoSlug}/pull-requests?at=refs/heads/${branch}&withProperties=false&withAttributes=false&start=${nextPageStart}`
+      const res = await this.get(path)
+      throwIfNotOk(res)
+
+      const data = (await res.json()) as BitBucketServerPagedResponse<BitBucketServerPRDSL>
+
+      values = values.concat(data.values)
+
+      if (data.isLastPage) {
+        nextPageStart = null
+      } else {
+        nextPageStart = data.nextPageStart
+      }
+    } while (nextPageStart !== null)
+
+    return values
   }
 
   getPullRequestInfo = async (): Promise<BitBucketServerPRDSL> => {
@@ -93,10 +110,26 @@ export class BitBucketServerAPI {
   }
 
   getPullRequestCommits = async (): Promise<BitBucketServerCommit[]> => {
-    const path = `${this.getPRBasePath()}/commits`
-    const res = await this.get(path)
-    throwIfNotOk(res)
-    return (await res.json()).values
+    let nextPageStart: null | number = 0
+    let values: BitBucketServerCommit[] = []
+
+    do {
+      const path = `${this.getPRBasePath()}/commits?start=${nextPageStart}`
+      const res = await this.get(path)
+      throwIfNotOk(res)
+
+      const data = (await res.json()) as BitBucketServerPagedResponse<BitBucketServerCommit>
+
+      values = values.concat(data.values)
+
+      if (data.isLastPage) {
+        nextPageStart = null
+      } else {
+        nextPageStart = data.nextPageStart
+      }
+    } while (nextPageStart !== null)
+
+    return values
   }
 
   getStructuredDiffForFile = async (base: string, head: string, filename: string): Promise<BitBucketServerDiff[]> => {
@@ -116,27 +149,47 @@ export class BitBucketServerAPI {
       const res = await this.get(path)
       throwIfNotOk(res)
 
-      const data = (await res.json()) as BitBucketServerChanges
+      const data = (await res.json()) as BitBucketServerPagedResponse<BitBucketServerChangesValue>
 
       values = values.concat(data.values)
-      nextPageStart = data.nextPageStart
+
+      if (data.isLastPage) {
+        nextPageStart = null
+      } else {
+        nextPageStart = data.nextPageStart
+      }
     } while (nextPageStart !== null)
 
     return values
   }
 
   getPullRequestComments = async (): Promise<BitBucketServerPRActivity[]> => {
-    const path = `${this.getPRBasePath()}/activities?fromType=COMMENT`
-    const res = await this.get(path)
-    throwIfNotOk(res)
-    return (await res.json()).values
+    return this.getPullRequestActivities("COMMENT")
   }
 
-  getPullRequestActivities = async (): Promise<BitBucketServerPRActivity[]> => {
-    const path = `${this.getPRBasePath()}/activities?fromType=ACTIVITY`
-    const res = await this.get(path)
-    throwIfNotOk(res)
-    return (await res.json()).values
+  getPullRequestActivities = async (
+    type: "COMMENT" | "ACTIVITY" = "ACTIVITY"
+  ): Promise<BitBucketServerPRActivity[]> => {
+    let nextPageStart: null | number = 0
+    let values: BitBucketServerPRActivity[] = []
+
+    do {
+      const path = `${this.getPRBasePath()}/activities?fromType=${type}&start=${nextPageStart}`
+      const res = await this.get(path)
+      throwIfNotOk(res)
+
+      const data = (await res.json()) as BitBucketServerPagedResponse<BitBucketServerPRActivity>
+
+      values = values.concat(data.values)
+
+      if (data.isLastPage) {
+        nextPageStart = null
+      } else {
+        nextPageStart = data.nextPageStart
+      }
+    } while (nextPageStart !== null)
+
+    return values
   }
 
   getIssues = async (): Promise<JIRAIssue[]> => {
