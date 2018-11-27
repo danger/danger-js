@@ -24,9 +24,9 @@ Object {
 
 exports[`the dangerfile gitDSL - BitBucket Server should include \`added\` text content of the file 1`] = `""`;
 
-exports[`the dangerfile gitDSL - BitBucket Server should include \`after\` text content of the file 1`] = `"{\\"path\\":\\".gitignore\\",\\"repoSlug\\":\\"projects/PROJ/repos/repo\\",\\"ref\\":\\"8942a1f75e4c95df836f19ef681d20a87da2ee20\\"}"`;
+exports[`the dangerfile gitDSL - BitBucket Server should include \`after\` text content of the file 1`] = `"{\\"path\\":\\".gitignore\\",\\"repoSlug\\":\\"projects/PROJ/repos/repo\\",\\"ref\\":\\"d6725486c38d46a33e76f622cf24b9a388c8d13d\\"}"`;
 
-exports[`the dangerfile gitDSL - BitBucket Server should include \`before\` text content of the file 1`] = `"{\\"path\\":\\".gitignore\\",\\"repoSlug\\":\\"projects/PROJ/repos/repo\\",\\"ref\\":\\"d6725486c38d46a33e76f622cf24b9a388c8d13d\\"}"`;
+exports[`the dangerfile gitDSL - BitBucket Server should include \`before\` text content of the file 1`] = `"{\\"path\\":\\".gitignore\\",\\"repoSlug\\":\\"projects/PROJ/repos/repo\\",\\"ref\\":\\"8942a1f75e4c95df836f19ef681d20a87da2ee20\\"}"`;
 
 exports[`the dangerfile gitDSL - BitBucket Server should not include \`removed\` text content of the file 1`] = `""`;
 

@@ -14,6 +14,7 @@
 ## Master
 
 - Update comment instead deleting, if it has replies (BitBucket Server) [@langovoi][]
+- Fix BitBucket Server GitDSL [@langovoi][]
 
 # 6.1.6
 

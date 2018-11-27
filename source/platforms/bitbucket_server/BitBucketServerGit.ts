@@ -71,8 +71,8 @@ export const bitBucketServerGitDSL = (
     repo:
       `projects/${bitBucketServer.pr.fromRef.repository.project.key}/` +
       `repos/${bitBucketServer.pr.fromRef.repository.slug}`,
-    baseSHA: bitBucketServer.pr.fromRef.latestCommit,
-    headSHA: bitBucketServer.pr.toRef.latestCommit,
+    baseSHA: bitBucketServer.pr.toRef.latestCommit,
+    headSHA: bitBucketServer.pr.fromRef.latestCommit,
     getFileContents: bitBucketServerAPI.getFileContents,
     getStructuredDiffForFile: async (base: string, head: string, filename: string) => {
       const diff = await bitBucketServerAPI.getStructuredDiffForFile(base, head, filename)
