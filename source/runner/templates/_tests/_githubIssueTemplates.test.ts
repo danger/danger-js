@@ -60,12 +60,23 @@ describe("generating messages", () => {
     expect(issues).toContain(expected)
   })
 
-  it("leaves space between <td>s to allow GitHub to render message content as markdown", () => {
+  it("leaves space between <td>s to allow GitHub to render message content as markdown if the message contains any", () => {
     const issues = githubResultsTemplate("example-id", {
       fails: [{ message: "**Failure:** Something failed!" }],
       warnings: [{ message: "_Maybe you meant to run `yarn install`?_" }],
       messages: [{ message: "```ts\nfunction add(a: number, b: number): number {\n  return a + b\n}\n```" }],
       markdowns: [{ message: "List of things:\n\n* one\n* two\n* three\n" }],
+    })
+
+    expect(issues).toMatchSnapshot()
+  })
+
+  it("avoids adding space inside the <td> for proper vertical alignment if the message does not contain any markdown", () => {
+    const issues = githubResultsTemplate("example-id", {
+      fails: [],
+      warnings: [],
+      messages: [{ message: "no markdown here" }],
+      markdowns: [],
     })
 
     expect(issues).toMatchSnapshot()

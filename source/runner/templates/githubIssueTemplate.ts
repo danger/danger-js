@@ -23,18 +23,32 @@ function table(name: string, emoji: string, violations: Violation[]): string {
       <th width="100%" data-danger-table="true">${name}</th>
     </tr>
   </thead>
-  <tbody>${violations
-    .map((v: Violation) => {
-      const message = isInline(v) ? `**${v.file!}#L${v.line!}** - ${v.message}` : v.message
-      return `<tr>
+  <tbody>${violations.map(violation => htmlForValidation(emoji, violation)).join("\n")}</tbody>
+</table>
+`
+}
+
+function htmlForValidation(emoji: string, violation: Violation) {
+  const message = isInline(violation)
+    ? `**${violation.file!}#L${violation.line!}** - ${violation.message}`
+    : violation.message
+
+  if (message.match(/[`*\[]/g)) {
+    return `<tr>
+      <td>:${emoji}:</td>
+      <td>
+
+  ${message}
+  </td>
+    </tr>
+  `
+  }
+
+  return `<tr>
       <td>:${emoji}:</td>
       <td>${message}</td>
     </tr>
   `
-    })
-    .join("\n")}</tbody>
-</table>
-`
 }
 
 function noViolationsOrAllOfThemEmpty(violations: Violation[]) {
