@@ -16,6 +16,8 @@
 - Update comment instead deleting, if it has replies (BitBucket Server) [@langovoi][]
 - Fix BitBucket Server GitDSL [@langovoi][]
 - Add support of paged APIs of BitBucket Server [@langovoi][]
+- Revert removal of implicit `<p>` tag from [danger/danger-js#754](https://github.com/danger/danger-js/pull/754) and add
+  disctinction depending on containing markdown or not - [@hanneskaeufler][]
 
 # 6.1.6
 
