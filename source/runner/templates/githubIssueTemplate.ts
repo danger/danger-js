@@ -12,7 +12,7 @@ import { Violation, isInline } from "../../dsl/Violation"
  * @returns {string} HTML
  */
 function table(name: string, emoji: string, violations: Violation[]): string {
-  if (violations.length === 0 || violations.every(violation => !violation.message)) {
+  if (noViolationsOrAllOfThemEmpty(violations)) {
     return ""
   }
   return `
@@ -23,18 +23,33 @@ function table(name: string, emoji: string, violations: Violation[]): string {
       <th width="100%" data-danger-table="true">${name}</th>
     </tr>
   </thead>
-  <tbody>${violations
-    .map((v: Violation) => {
-      const message = isInline(v) ? `**${v.file!}#L${v.line!}** - ${v.message}` : v.message
-      return `<tr>
+  <tbody>${violations.map(violation => htmlForValidation(emoji, violation)).join("\n")}</tbody>
+</table>
+`
+}
+
+function htmlForValidation(emoji: string, violation: Violation) {
+  let message = isInline(violation)
+    ? `**${violation.file!}#L${violation.line!}** - ${violation.message}`
+    : violation.message
+
+  if (containsMarkdown(message)) {
+    message = `\n\n  ${message}\n  `
+  }
+
+  return `<tr>
       <td>:${emoji}:</td>
       <td>${message}</td>
     </tr>
   `
-    })
-    .join("\n")}</tbody>
-</table>
-`
+}
+
+function containsMarkdown(message: string): boolean {
+  return message.match(/[`*_~\[]+/g) ? true : false
+}
+
+function noViolationsOrAllOfThemEmpty(violations: Violation[]) {
+  return violations.length === 0 || violations.every(violation => !violation.message)
 }
 
 function getSummary(label: string, violations: Violation[]): string {
