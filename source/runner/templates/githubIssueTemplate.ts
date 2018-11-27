@@ -29,19 +29,12 @@ function table(name: string, emoji: string, violations: Violation[]): string {
 }
 
 function htmlForValidation(emoji: string, violation: Violation) {
-  const message = isInline(violation)
+  let message = isInline(violation)
     ? `**${violation.file!}#L${violation.line!}** - ${violation.message}`
     : violation.message
 
   if (containsMarkdown(message)) {
-    return `<tr>
-      <td>:${emoji}:</td>
-      <td>
-
-  ${message}
-  </td>
-    </tr>
-  `
+    message = `\n\n  ${message}\n  `
   }
 
   return `<tr>
