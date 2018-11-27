@@ -1,5 +1,3 @@
-import prettier from "prettier"
-
 import { BitBucketServer } from "../../BitBucketServer"
 import { BitBucketServerAPI } from "../BitBucketServerAPI"
 
@@ -144,9 +142,6 @@ describe("the dangerfile gitDSL - BitBucket Server", async () => {
     const dataSent = await jsonDSLGenerator(bbs, fakeSource, {} as any)
     dataSent.settings.github.accessToken = "12345"
 
-    const prettierDSL = prettier.format(JSON.stringify(dataSent), {
-      parser: "json",
-    })
-    writeFileSync(pathJoin(fixtures, "bbs-dsl-input.json"), prettier.format(prettierDSL), "utf8")
+    writeFileSync(pathJoin(fixtures, "bbs-dsl-input.json"), JSON.stringify(dataSent, null, "  "), "utf8")
   })
 })
