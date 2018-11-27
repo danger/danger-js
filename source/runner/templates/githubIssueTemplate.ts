@@ -33,7 +33,7 @@ function htmlForValidation(emoji: string, violation: Violation) {
     ? `**${violation.file!}#L${violation.line!}** - ${violation.message}`
     : violation.message
 
-  if (message.match(/[`*\[]/g)) {
+  if (containsMarkdown(message)) {
     return `<tr>
       <td>:${emoji}:</td>
       <td>
@@ -49,6 +49,10 @@ function htmlForValidation(emoji: string, violation: Violation) {
       <td>${message}</td>
     </tr>
   `
+}
+
+function containsMarkdown(message: string): boolean {
+  return message.match(/[`*_~\[]+/g) ? true : false
 }
 
 function noViolationsOrAllOfThemEmpty(violations: Violation[]) {
