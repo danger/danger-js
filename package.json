@@ -99,6 +99,7 @@
     "@types/node": "^10.11.3",
     "@types/node-fetch": "^2.1.2",
     "@types/p-limit": "^2.0.0",
+    "@types/prettier": "^1.15.1",
     "@types/readline-sync": "^1.4.3",
     "@types/voca": "^1.4.0",
     "danger-plugin-jest": "^1.0.1",

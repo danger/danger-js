@@ -837,6 +837,11 @@
   resolved "https://registry.yarnpkg.com/@types/p-limit/-/p-limit-2.0.0.tgz#c076b7daa9163108a35899ea6a9d927526943ea2"
   integrity sha512-vx0HhwWQcrIzFn+Bx5OS6hk3wQ9++QjRyZgybM0+20MKqq1uYYgVjDxXk8+fFDfeGArep5l1laHCxEwltfzwYQ==
 
+"@types/prettier@^1.15.1":
+  version "1.15.1"
+  resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-1.15.1.tgz#224240202de3fda93165be826bd2f66e5759f746"
+  integrity sha512-e8gYOt6EQQXlpoUGn3KDU9I9/ao/Layl92WgcPRxYYLw2TsuVkRGu5D/5viVPl1IL3nd/4oXw7bL/3MRh2MM1g==
+
 "@types/readline-sync@^1.4.3":
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/@types/readline-sync/-/readline-sync-1.4.3.tgz#eac55a39d5a349912062c9e5216cd550c07fd9c8"
