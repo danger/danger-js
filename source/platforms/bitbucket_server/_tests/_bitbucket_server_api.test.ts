@@ -37,12 +37,12 @@ describe("API testing - BitBucket Server", () => {
   })
 
   it("getPullRequestsFromBranch", async () => {
-    jsonResult = () => ({ values: [1] })
+    jsonResult = () => ({ isLastPage: true, values: [1] })
     const result = await api.getPullRequestsFromBranch("branch")
 
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests` +
-        `?at=refs/heads/branch&withProperties=false&withAttributes=false`,
+        `?at=refs/heads/branch&withProperties=false&withAttributes=false&start=0`,
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
@@ -62,11 +62,13 @@ describe("API testing - BitBucket Server", () => {
   })
 
   it("getPullRequestCommits", async () => {
-    jsonResult = () => ({ values: ["commit"] })
+    jsonResult = () => ({ isLastPage: true, values: ["commit"] })
     const result = await api.getPullRequestCommits()
 
     expect(api.fetch).toHaveBeenCalledWith(
-      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/commits`,
+      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/commits` +
+        //
+        `?start=0`,
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
@@ -95,7 +97,7 @@ describe("API testing - BitBucket Server", () => {
         values: ["1"],
       })
       .mockReturnValueOnce({
-        nextPageStart: null,
+        isLastPage: true,
         values: ["2"],
       })
     const result = await api.getPullRequestChanges()
@@ -121,13 +123,13 @@ describe("API testing - BitBucket Server", () => {
   })
 
   it("getPullRequestComments", async () => {
-    jsonResult = () => ({ values: ["comment"] })
+    jsonResult = () => ({ isLastPage: true, values: ["comment"] })
     const result = await api.getPullRequestComments()
 
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities` +
         //
-        `?fromType=COMMENT`,
+        `?fromType=COMMENT&start=0`,
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
@@ -135,13 +137,13 @@ describe("API testing - BitBucket Server", () => {
   })
 
   it("getPullRequestActivities", async () => {
-    jsonResult = () => ({ values: ["activity"] })
+    jsonResult = () => ({ isLastPage: true, values: ["activity"] })
     const result = await api.getPullRequestActivities()
 
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities` +
         //
-        `?fromType=ACTIVITY`,
+        `?fromType=ACTIVITY&start=0`,
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
@@ -162,6 +164,7 @@ describe("API testing - BitBucket Server", () => {
 
   it("getDangerComments", async () => {
     jsonResult = () => ({
+      isLastPage: true,
       values: [
         {
           comment: {
@@ -187,7 +190,7 @@ describe("API testing - BitBucket Server", () => {
     const result = await api.getDangerComments("1")
 
     expect(api.fetch).toHaveBeenCalledWith(
-      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities?fromType=COMMENT`,
+      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities?fromType=COMMENT&start=0`,
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
@@ -203,6 +206,7 @@ describe("API testing - BitBucket Server", () => {
 
   it("getDangerInlineComments", async () => {
     jsonResult = () => ({
+      isLastPage: true,
       values: [
         {
           comment: {
@@ -221,7 +225,7 @@ describe("API testing - BitBucket Server", () => {
     })
     const comments = await api.getDangerInlineComments("default")
     expect(api.fetch).toHaveBeenCalledWith(
-      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities?fromType=COMMENT`,
+      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities?fromType=COMMENT&start=0`,
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
