@@ -296,9 +296,14 @@ interface BitBucketServerPRComment {
   }
 }
 
-interface BitBucketServerChanges {
+interface BitBucketServerPagedResponse<T> {
+  size: number
+  limit: number
+  isLastPage: boolean
+  start: number
+  filter: never | null // TODO: remove never
   nextPageStart: number | null
-  values: BitBucketServerChangesValue[]
+  values: T
 }
 
 interface BitBucketServerChangesValueAddModifyDelete {
