@@ -13,6 +13,9 @@
 
 ## Master
 
+- Add support for `COPY` change type to fix a BitBucket Server regression in
+  [danger/danger-js#764](https://github.com/danger/danger-js/pull/764) - [@sebinsua][]
+
 # 6.1.8
 
 - Revert removal of implicit `<p>` tag from [danger/danger-js#754](https://github.com/danger/danger-js/pull/754) and add

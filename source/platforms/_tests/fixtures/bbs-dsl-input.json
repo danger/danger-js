@@ -1,12 +1,23 @@
 {
   "git": {
-    "modified_files": [".gitignore"],
-    "created_files": ["banana", ".babelrc"],
-    "deleted_files": [".babelrc.example", "jest.eslint.config.js"],
+    "modified_files": [
+      ".gitignore"
+    ],
+    "created_files": [
+      "banana",
+      "orange",
+      ".babelrc"
+    ],
+    "deleted_files": [
+      ".babelrc.example",
+      "jest.eslint.config.js"
+    ],
     "commits": [
       {
         "sha": "d6725486c38d46a33e76f622cf24b9a388c8d13d",
-        "parents": ["c62ada76533a2de045d4c6062988ba84df140729"],
+        "parents": [
+          "c62ada76533a2de045d4c6062988ba84df140729"
+        ],
         "author": {
           "email": "foo@bar.com",
           "name": "danger",
@@ -23,7 +34,9 @@
       },
       {
         "sha": "c62ada76533a2de045d4c6062988ba84df140729",
-        "parents": ["8942a1f75e4c95df836f19ef681d20a87da2ee20"],
+        "parents": [
+          "8942a1f75e4c95df836f19ef681d20a87da2ee20"
+        ],
         "author": {
           "email": "foo@bar.com",
           "name": "danger",
@@ -528,7 +541,9 @@
         "createdDate": 1518870689956,
         "diff": {
           "destination": {
-            "components": ["banana"],
+            "components": [
+              "banana"
+            ],
             "name": "banana",
             "parent": "",
             "toString": "banana"
@@ -541,7 +556,9 @@
                 {
                   "lines": [
                     {
-                      "commentIds": [2],
+                      "commentIds": [
+                        2
+                      ],
                       "destination": 1,
                       "line": "bar",
                       "source": 0,
@@ -939,7 +956,9 @@
         "diff": {
           "source": null,
           "destination": {
-            "components": ["banana"],
+            "components": [
+              "banana"
+            ],
             "parent": "",
             "name": "banana",
             "toString": "banana"
@@ -959,7 +978,9 @@
                       "source": 0,
                       "line": "bar",
                       "truncated": false,
-                      "commentIds": [2]
+                      "commentIds": [
+                        2
+                      ]
                     }
                   ],
                   "truncated": false

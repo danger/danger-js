@@ -12,6 +12,12 @@
     }
   },
   {
+    "type": "COPY",
+    "path": {
+      "toString": "orange"
+    }
+  },
+  {
     "type": "MOVE",
     "path": {
       "toString": ".babelrc"
