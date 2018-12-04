@@ -64,7 +64,7 @@ describe("the dangerfile gitDSL - BitBucket Server", async () => {
 
   it("sets the modified/created/deleted", async () => {
     expect(gitJSONDSL.modified_files).toEqual([".gitignore"])
-    expect(gitJSONDSL.created_files).toEqual(["banana", ".babelrc"])
+    expect(gitJSONDSL.created_files).toEqual(["banana", "orange", ".babelrc"])
     expect(gitJSONDSL.deleted_files).toEqual([".babelrc.example", "jest.eslint.config.js"])
   })
 

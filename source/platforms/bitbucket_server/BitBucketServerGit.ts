@@ -90,8 +90,10 @@ const bitBucketServerChangesToGitJSONDSL = (
 ): GitJSONDSL => {
   return changes.reduce<GitJSONDSL>(
     (git, value) => {
+      // See: https://docs.atlassian.com/bitbucket-server/javadoc/4.1.0/api/reference/com/atlassian/bitbucket/content/ChangeType.html
       switch (value.type) {
         case "ADD":
+        case "COPY":
           return {
             ...git,
             created_files: [...git.created_files, value.path.toString],
@@ -113,7 +115,7 @@ const bitBucketServerChangesToGitJSONDSL = (
             deleted_files: [...git.deleted_files, value.path.toString],
           }
         default:
-          throw new Error("Unhandled change type")
+          throw new Error(`Unhandled change type: ${value.type}`)
       }
     },
     {

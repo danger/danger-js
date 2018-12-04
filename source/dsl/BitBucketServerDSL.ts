@@ -298,8 +298,8 @@ export interface BitBucketServerPagedResponse<T> {
   values: T
 }
 
-export interface BitBucketServerChangesValueAddModifyDelete {
-  type: "ADD" | "MODIFY" | "DELETE"
+export interface BitBucketServerChangesValueAddCopyModifyDelete {
+  type: "ADD" | "COPY" | "MODIFY" | "DELETE" | "UNKNOWN"
   path: {
     toString: string
   }
@@ -315,4 +315,6 @@ export interface BitBucketServerChangesValueMove {
   }
 }
 
-export type BitBucketServerChangesValue = BitBucketServerChangesValueAddModifyDelete | BitBucketServerChangesValueMove
+export type BitBucketServerChangesValue =
+  | BitBucketServerChangesValueAddCopyModifyDelete
+  | BitBucketServerChangesValueMove

@@ -306,8 +306,8 @@ interface BitBucketServerPagedResponse<T> {
   values: T
 }
 
-interface BitBucketServerChangesValueAddModifyDelete {
-  type: "ADD" | "MODIFY" | "DELETE"
+interface BitBucketServerChangesValueAddCopyModifyDelete {
+  type: "ADD" | "COPY" | "MODIFY" | "DELETE" | "UNKNOWN"
   path: {
     toString: string
   }
@@ -323,7 +323,9 @@ interface BitBucketServerChangesValueMove {
   }
 }
 
-type BitBucketServerChangesValue = BitBucketServerChangesValueAddModifyDelete | BitBucketServerChangesValueMove
+type BitBucketServerChangesValue =
+  | BitBucketServerChangesValueAddCopyModifyDelete
+  | BitBucketServerChangesValueMove
 
 /** A platform agnostic reference to a Git commit */
 interface GitCommit {
