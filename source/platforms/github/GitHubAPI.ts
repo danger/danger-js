@@ -7,7 +7,7 @@ import pLimit from "p-limit"
 
 import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
 
-import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates/githubIssueTemplate"
+import { dangerSignature, dangerIDToString } from "../../runner/templates/githubIssueTemplate"
 import { api as fetch } from "../../api/fetch"
 import { Comment } from "../platform"
 import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
@@ -93,7 +93,7 @@ export class GitHubAPI {
     return allComments
       .filter(comment => v.includes(comment.body, dangerIDMessage)) // does it contain the right danger ID?
       .filter(comment => comment.user.id === userID) // Does it have the right user ID?
-      .filter(comment => v.includes(comment.body, dangerSignaturePostfix)) // Does it look like a danger message?
+      .filter(comment => v.includes(comment.body, dangerSignature)) // Does it look like a danger message?
       .map(comment => comment.id) // only return IDs
   }
 

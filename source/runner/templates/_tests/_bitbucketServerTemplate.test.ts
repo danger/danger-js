@@ -7,41 +7,47 @@ import {
   messagesResults,
   markdownResults,
 } from "../../_tests/fixtures/ExampleDangerResults"
-import { template, inlineTemplate } from "../bitbucketServerTemplate"
+import { dangerSignaturePostfix, template, inlineTemplate } from "../bitbucketServerTemplate"
 
 const noEntryEmoji = "\u274C"
 const warningEmoji = "⚠️"
 const messageEmoji = "\u2728"
 
+const commitID = "e70f3d6468f61a4bef68c9e6eaba9166b096e23c"
+
 describe("generating messages for BitBucket server", () => {
   it("shows no sections for empty results", () => {
-    const issues = template("blankID", emptyResults)
+    const issues = template("blankID", commitID, emptyResults)
     expect(issues).not.toContain("Fails")
     expect(issues).not.toContain("Warnings")
     expect(issues).not.toContain("Messages")
   })
 
   it("shows no sections for results without messages", () => {
-    const issues = template("blankID", failsResultsWithoutMessages)
+    const issues = template("blankID", commitID, failsResultsWithoutMessages)
     expect(issues).not.toContain("Fails")
     expect(issues).not.toContain("Warnings")
     expect(issues).not.toContain("Messages")
   })
 
   it("Shows the failing messages in a section", () => {
-    const issues = template("blankID", failsResults)
+    const issues = template("blankID", commitID, failsResults)
     expect(issues).toContain("Fails")
     expect(issues).not.toContain("Warnings")
   })
 
   it("Shows the warning messages in a section", () => {
-    const issues = template("blankID", warnResults)
+    const issues = template("blankID", commitID, warnResults)
     expect(issues).toContain("Warnings")
     expect(issues).not.toContain("Fails")
   })
 
   it("summary result matches snapshot", () => {
-    expect(template("blankID", summaryResults)).toMatchSnapshot()
+    expect(template("blankID", commitID, summaryResults)).toMatchSnapshot()
+  })
+
+  it("shows a postfix message indicating the current commit ID at the time of comment", () => {
+    expect(template("blankID", commitID, emptyResults)).toContain(dangerSignaturePostfix(commitID))
   })
 })
 

@@ -163,12 +163,13 @@ describe("API testing - BitBucket Server", () => {
   })
 
   it("getDangerComments", async () => {
+    const commitID = "e70f3d6468f61a4bef68c9e6eaba9166b096e23c"
     jsonResult = () => ({
       isLastPage: true,
       values: [
         {
           comment: {
-            text: `FAIL! danger-id-1; ${dangerSignaturePostfix}`,
+            text: `FAIL! danger-id-1; ${dangerSignaturePostfix(commitID)}`,
             author: {
               name: "username",
             },
@@ -196,7 +197,7 @@ describe("API testing - BitBucket Server", () => {
     )
     expect(result).toEqual([
       {
-        text: `FAIL! danger-id-1; ${dangerSignaturePostfix}`,
+        text: `FAIL! danger-id-1; ${dangerSignaturePostfix(commitID)}`,
         author: {
           name: "username",
         },

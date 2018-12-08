@@ -266,9 +266,10 @@ export class Executor {
       if (isEmptyResults(mergedResults)) {
         this.platform.deleteMainComment(dangerID)
       } else {
+        const commitID = git.commits[git.commits.length - 1].sha
         const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
-          ? bitbucketServerTemplate(dangerID, mergedResults)
-          : githubResultsTemplate(dangerID, mergedResults)
+          ? bitbucketServerTemplate(dangerID, commitID, mergedResults)
+          : githubResultsTemplate(dangerID, commitID, mergedResults)
 
         issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
         this.log(`Feedback: ${issueURL}`)
