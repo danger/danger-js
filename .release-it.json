@@ -5,7 +5,7 @@
   },
   "buildCommand": "yarn package",
   "src": {
-    "beforeStartCommand": "VERSION=${version} yarn ts-node scripts/update-changelog.ts",
+    "beforeChangelogCommand": "VERSION=${version} yarn ts-node scripts/update-changelog.ts",
     "afterReleaseCommand": "VERSION=${version} scripts/create-homebrew-tap-pr.sh"
   }
 }
