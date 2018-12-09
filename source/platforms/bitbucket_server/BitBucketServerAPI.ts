@@ -18,7 +18,7 @@ import {
 import { Comment } from "../platform"
 
 import { Env } from "../../ci_source/ci_source"
-import { dangerSignaturePostfix, dangerIDToString } from "../../runner/templates/bitbucketServerTemplate"
+import { dangerSignature, dangerIDToString } from "../../runner/templates/bitbucketServerTemplate"
 import { api as fetch } from "../../api/fetch"
 
 // Note that there are parts of this class which don't seem to be
@@ -209,7 +209,7 @@ export class BitBucketServerAPI {
     return comments
       .filter(comment => v.includes(comment!.text, dangerIDMessage))
       .filter(comment => username || comment!.author.name === username)
-      .filter(comment => v.includes(comment!.text, dangerSignaturePostfix))
+      .filter(comment => v.includes(comment!.text, dangerSignature))
   }
 
   getDangerInlineComments = async (dangerID: string): Promise<Comment[]> => {

@@ -61,7 +61,9 @@ export const resultsToCheck = async (
   const mainResults = regularResults(results)
   const annotationResults = inlineResults(results)
 
-  const mainBody = githubResultsTemplate(options.dangerID, mainResults)
+  const commitID = pr.head.sha
+
+  const mainBody = githubResultsTemplate(options.dangerID, commitID, mainResults)
 
   const getBlobUrlForPath = async (path: string) => {
     try {
