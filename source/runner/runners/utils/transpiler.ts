@@ -3,6 +3,11 @@ import * as path from "path"
 import JSON5 from "json5"
 import { debug } from "../../../debug"
 
+const enum BabelPackagePrefix {
+  V7 = "@babel/",
+  BEFORE_V7 = "babel-",
+}
+
 const disableTranspilation = process.env.DANGER_DISABLE_TRANSPILATION === "true"
 
 let hasNativeTypeScript = false
@@ -10,6 +15,8 @@ let hasBabel = false
 let hasBabelTypeScript = false
 let hasFlow = false
 let hasChecked = false
+// By default assume Babel 7 is used
+let babelPackagePrefix = BabelPackagePrefix.V7
 
 const d = debug("transpiler:setup")
 
@@ -28,26 +35,39 @@ export const checkForNodeModules = () => {
     d("Does not have TypeScript set up")
   }
 
-  try {
-    require.resolve("@babel/core") // tslint:disable-line
-    require("@babel/polyfill") // tslint:disable-line
+  const checkForBabel = (prefix: BabelPackagePrefix) => {
+    require.resolve(`${prefix}core`) // tslint:disable-line
+    require(`${prefix}polyfill`) // tslint:disable-line
+    babelPackagePrefix = prefix
     hasBabel = true
+  }
 
+  try {
+    // Check for Babel 7
+    checkForBabel(BabelPackagePrefix.V7)
+  } catch (e) {
     try {
-      require.resolve("@babel/plugin-transform-typescript") // tslint:disable-line
+      // Check for older Babel versions
+      checkForBabel(BabelPackagePrefix.BEFORE_V7)
+    } catch (e) {
+      d("Does not have Babel set up")
+    }
+  }
+
+  if (hasBabel) {
+    try {
+      require.resolve(`${babelPackagePrefix}plugin-transform-typescript`) // tslint:disable-line
       hasBabelTypeScript = true
     } catch (e) {
       d("Does not have Babel 7 TypeScript set up")
     }
 
     try {
-      require.resolve("@babel/plugin-transform-flow-strip-types") // tslint:disable-line
+      require.resolve(`${babelPackagePrefix}plugin-transform-flow-strip-types`) // tslint:disable-line
       hasFlow = true
     } catch (e) {
       d("Does not have Flow set up")
     }
-  } catch (e) {
-    d("Does not have Babel set up")
   }
 
   hasChecked = true
@@ -92,8 +112,12 @@ const sanitizeTSConfig = (config: any) => {
 }
 
 export const babelify = (content: string, filename: string, extraPlugins: string[]): string => {
-  const babel = require("@babel/core") // tslint:disable-line
-  if (!babel.transform) {
+  const babel = require(`${babelPackagePrefix}core`) // tslint:disable-line
+  // Since Babel 7, it is recommended to use `transformSync`.
+  // For older versions, we fallback to `transform`.
+  // @see https://babeljs.io/docs/en/babel-core#transform
+  const transformSync = babel.transformSync || babel.transform
+  if (!transformSync) {
     return content
   }
 
@@ -108,7 +132,7 @@ export const babelify = (content: string, filename: string, extraPlugins: string
     plugins: [...extraPlugins, ...options.plugins],
   }
 
-  const result = babel.transform(content, fileOpts)
+  const result = transformSync(content, fileOpts)
   return result.code
 }
 
@@ -127,9 +151,9 @@ export default (code: string, filename: string) => {
   if (hasNativeTypeScript && filetype.startsWith(".ts")) {
     result = typescriptify(code)
   } else if (hasBabel && hasBabelTypeScript && filetype.startsWith(".ts")) {
-    result = babelify(code, filename, ["transform-typescript"])
+    result = babelify(code, filename, [`${babelPackagePrefix}plugin-transform-typescript`])
   } else if (hasBabel && filetype.startsWith(".js")) {
-    result = babelify(code, filename, hasFlow ? ["@babel/plugin-transform-flow-strip-types"] : [])
+    result = babelify(code, filename, hasFlow ? [`${babelPackagePrefix}plugin-transform-flow-strip-types`] : [])
   }
 
   return result

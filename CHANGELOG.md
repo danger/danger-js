@@ -15,6 +15,7 @@
 
 - Add support for `COPY` change type to fix a BitBucket Server regression in
   [danger/danger-js#764](https://github.com/danger/danger-js/pull/764) - [@sebinsua][]
+- Add support for older Babel versions (prior 7) [@sajjadzamani][]
 
 # 6.1.8
 
@@ -1434,3 +1435,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@patrickkempff]: https://github.com/patrickkempff
 [@imorente]: https://github.com/imorente
 [@langovoi]: https://github.com/langovoi
+[@sajjadzamani]: https://github.com/sajjadzamani
