@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+# 6.1.12
+
 - Fix issue with detecting Babel if `babel-core` is installed [@sajjadzamani][]
 
 # 6.2.0
