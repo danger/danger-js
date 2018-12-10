@@ -75,11 +75,11 @@ export class GitHubActions implements CISource {
 
   get useEventDSL() {
     // Support event based PR runs
-    return this.env.GITHUB_EVENT_TYPE !== "pull_request"
+    return this.env.GITHUB_EVENT_NAME !== "pull_request"
   }
 
   get pullRequestID(): string {
-    if (this.env.GITHUB_EVENT_TYPE === "pull_request") {
+    if (this.env.GITHUB_EVENT_NAME === "pull_request") {
       return this.event.pull_request.number
     }
 
@@ -87,7 +87,7 @@ export class GitHubActions implements CISource {
   }
 
   get repoSlug(): string {
-    if (this.env.GITHUB_EVENT_TYPE === "pull_request") {
+    if (this.env.GITHUB_EVENT_NAME === "pull_request") {
       return this.event.pull_request.base.repo.full_name
     }
 

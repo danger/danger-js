@@ -17,6 +17,7 @@
 - Add support for `COPY` change type to fix a BitBucket Server regression in
   [danger/danger-js#764](https://github.com/danger/danger-js/pull/764) - [@sebinsua][]
 - Add support for older Babel versions (prior 7) [@sajjadzamani][]
+- Fix detection of GitHub Actions event types [@cysp][]
 
 # 6.1.8
 
@@ -1438,3 +1439,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@langovoi]: https://github.com/langovoi
 [@randak]: https://github.com/randak
 [@sajjadzamani]: https://github.com/sajjadzamani
+[@cysp]: https://github.com/cysp
