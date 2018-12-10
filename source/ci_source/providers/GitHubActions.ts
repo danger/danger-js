@@ -2,7 +2,7 @@ import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist } from "../ci_source_helpers"
 import { readFileSync, existsSync } from "fs"
 
-// [unsure the docs url yet]
+// https://developer.github.com/actions/
 
 /**
  * ### CI Setup
