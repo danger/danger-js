@@ -13,11 +13,14 @@
 
 ## Master
 
+- Fix detection of GitHub Actions event types [@cysp][]
+
+# 6.1.9
+
 - Add commit ID to the comment footer [danger/danger-js#168] - [@randak][]
 - Add support for `COPY` change type to fix a BitBucket Server regression in
   [danger/danger-js#764](https://github.com/danger/danger-js/pull/764) - [@sebinsua][]
 - Add support for older Babel versions (prior 7) [@sajjadzamani][]
-- Fix detection of GitHub Actions event types [@cysp][]
 
 # 6.1.8
 
