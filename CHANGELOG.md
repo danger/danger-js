@@ -13,6 +13,10 @@
 
 ## Master
 
+<!-- Your comment below this -->
+
+# 6.2.0
+
 - Fix detection of GitHub Actions event types [@cysp][]
 
 # 6.1.9
