@@ -4,8 +4,8 @@ import * as fs from "fs"
 
 const changelog = fs.readFileSync("CHANGELOG.md", "utf8")
 const newCHANGELOG = changelog.replace(
-  "## Master",
-  `## Master
+  "<!-- Your comment below this -->",
+  `<!-- Your comment below this -->
 
 # ${process.env.VERSION}
 `

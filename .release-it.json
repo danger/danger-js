@@ -3,9 +3,8 @@
     "release": true,
     "assets": "brew-distribution/*.zip"
   },
-  "buildCommand": "yarn package",
+  "buildCommand": "VERSION=${version} yarn ts-node scripts/update-changelog.ts; yarn package",
   "src": {
-    "beforeChangelogCommand": "VERSION=${version} yarn ts-node scripts/update-changelog.ts",
     "afterReleaseCommand": "VERSION=${version} scripts/create-homebrew-tap-pr.sh"
   }
 }
