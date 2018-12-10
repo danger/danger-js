@@ -37,7 +37,6 @@ export const checkForNodeModules = () => {
 
   const checkForBabel = (prefix: BabelPackagePrefix) => {
     require.resolve(`${prefix}core`) // tslint:disable-line
-    require(`${prefix}polyfill`) // tslint:disable-line
     babelPackagePrefix = prefix
     hasBabel = true
   }
@@ -55,6 +54,8 @@ export const checkForNodeModules = () => {
   }
 
   if (hasBabel) {
+    // @babel/polyfill is a direct dependency of Danger.
+    require("@babel/polyfill") // tslint:disable-line
     try {
       require.resolve(`${babelPackagePrefix}plugin-transform-typescript`) // tslint:disable-line
       hasBabelTypeScript = true

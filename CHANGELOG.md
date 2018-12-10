@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Fix issue with detecting Babel if `babel-core` is installed [@sajjadzamani][]
+
 # 6.2.0
 
 - Fix detection of GitHub Actions event types [@cysp][]
