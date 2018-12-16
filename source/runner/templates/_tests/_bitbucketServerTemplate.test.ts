@@ -8,6 +8,7 @@ import {
   markdownResults,
 } from "../../_tests/fixtures/ExampleDangerResults"
 import { dangerSignaturePostfix, template, inlineTemplate } from "../bitbucketServerTemplate"
+import { DangerResults } from "../../../dsl/DangerResults"
 
 const noEntryEmoji = "\u274C"
 const warningEmoji = "⚠️"
@@ -47,7 +48,7 @@ describe("generating messages for BitBucket server", () => {
   })
 
   it("shows a postfix message indicating the current commit ID at the time of comment", () => {
-    expect(template("blankID", commitID, emptyResults)).toContain(dangerSignaturePostfix(commitID))
+    expect(template("blankID", commitID, emptyResults)).toContain(dangerSignaturePostfix({} as DangerResults, commitID))
   })
 })
 

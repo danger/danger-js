@@ -124,3 +124,14 @@ export const asyncResults: DangerResults = {
   messages: [],
   markdowns: [],
 }
+
+export const resultsWithCustomMeta: DangerResults = {
+  messages: [],
+  warnings: [{ message: "Test message", file: "File.swift", line: 10 }],
+  fails: [],
+  markdowns: [],
+  meta: {
+    runtimeName: "DangerMajick",
+    runtimeHref: "https://danger.magic",
+  },
+}

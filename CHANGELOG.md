@@ -15,9 +15,30 @@
 
 <!-- Your comment below this -->
 
+- Allow sub-processes to pass their own name an href so that it doesn't say made by Danger JS [@orta][]
+
+  This is done by extending the `DangerResults` object passed back to Danger JS, by adding a meta section to the JSON:
+
+  ```json
+  {
+    "markdowns":[],
+    "fails:" [],
+    "warnings:[],
+    "messages":[],
+    "meta": {
+      "runtimeHref": "https://mysite.com",
+      "runtimeName": "My Danger Runner"
+    }
+  }
+  ```
+
+  `"meta"` is optional, and will fall back to the DangerJS one.
+
+- Removed a dependency (voca) now that we're using TypeScript and have access to .includes [@orta][]
+
 # 6.1.12
 
-- Fix issue with detecting Babel if `babel-core` is installed [@sajjadzamani][]
+- Fix issue with detecting Babel if `babel-core` is installed - [@sajjadzamani][]
 
 # 6.2.0
 
