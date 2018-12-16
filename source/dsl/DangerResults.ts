@@ -24,6 +24,14 @@ export interface DangerResults {
    * Markdown messages to attach at the bottom of the comment
    */
   markdowns: Violation[]
+
+  /** Meta information about the runtime evaluation */
+  meta?: {
+    /** E.g. "dangerJS", or "Danger Swift" */
+    runtimeName: string
+    /** e.g. "https://danger.systems/js" */
+    runtimeHref: string
+  }
 }
 
 export interface DangerRuntimeContainer extends DangerResults {

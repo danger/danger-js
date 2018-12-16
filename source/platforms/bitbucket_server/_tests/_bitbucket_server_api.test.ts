@@ -1,5 +1,6 @@
 import { BitBucketServerAPI } from "../BitBucketServerAPI"
 import { dangerSignaturePostfix } from "../../../runner/templates/bitbucketServerTemplate"
+import { DangerResults } from "../../../dsl/DangerResults"
 
 describe("API testing - BitBucket Server", () => {
   let api: BitBucketServerAPI
@@ -169,7 +170,7 @@ describe("API testing - BitBucket Server", () => {
       values: [
         {
           comment: {
-            text: `FAIL! danger-id-1; ${dangerSignaturePostfix(commitID)}`,
+            text: `FAIL! danger-id-1; ${dangerSignaturePostfix({} as DangerResults, commitID)}`,
             author: {
               name: "username",
             },
@@ -197,7 +198,7 @@ describe("API testing - BitBucket Server", () => {
     )
     expect(result).toEqual([
       {
-        text: `FAIL! danger-id-1; ${dangerSignaturePostfix(commitID)}`,
+        text: `FAIL! danger-id-1; ${dangerSignaturePostfix({} as DangerResults, commitID)}`,
         author: {
           name: "username",
         },

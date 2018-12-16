@@ -8,6 +8,7 @@ import {
   markdownResults,
   inlineRegularResults,
   inlineRegularResultsForTheSameLine,
+  resultsWithCustomMeta,
 } from "../../_tests/fixtures/ExampleDangerResults"
 import {
   dangerSignaturePostfix,
@@ -87,7 +88,13 @@ describe("generating messages", () => {
 
   it("shows a postfix message indicating the current commit ID at the time of comment", () => {
     const issues = githubResultsTemplate("example-id", commitID, emptyResults)
-    expect(issues).toContain(dangerSignaturePostfix(commitID))
+    expect(issues).toContain(dangerSignaturePostfix({} as any, commitID))
+  })
+
+  it("handles custom names/hrefs for a platform from results", () => {
+    const issues = githubResultsTemplate("example-id", commitID, resultsWithCustomMeta)
+    expect(issues).toContain(resultsWithCustomMeta.meta!.runtimeHref)
+    expect(issues).toContain(resultsWithCustomMeta.meta!.runtimeName)
   })
 })
 

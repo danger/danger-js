@@ -43,6 +43,20 @@
             },
             "type": "array"
         },
+        "meta": {
+            "description": "Meta information about the runtime evaluation",
+            "properties": {
+                "runtimeHref": {
+                    "description": "e.g. \"https://danger.systems/js\"",
+                    "type": "string"
+                },
+                "runtimeName": {
+                    "description": "E.g. \"dangerJS\", or \"Danger Swift\"",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
         "warnings": {
             "description": "Messages for info",
             "items": {

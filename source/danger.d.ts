@@ -323,9 +323,7 @@ interface BitBucketServerChangesValueMove {
   }
 }
 
-type BitBucketServerChangesValue =
-  | BitBucketServerChangesValueAddCopyModifyDelete
-  | BitBucketServerChangesValueMove
+type BitBucketServerChangesValue = BitBucketServerChangesValueAddCopyModifyDelete | BitBucketServerChangesValueMove
 
 /** A platform agnostic reference to a Git commit */
 interface GitCommit {
@@ -506,6 +504,14 @@ interface DangerResults {
    * Markdown messages to attach at the bottom of the comment
    */
   markdowns: Violation[]
+
+  /** Meta information about the runtime evaluation */
+  meta?: {
+    /** E.g. "dangerJS", or "Danger Swift" */
+    runtimeName: string
+    /** e.g. "https://danger.systems/js" */
+    runtimeHref: string
+  }
 }
 
 interface DangerRuntimeContainer extends DangerResults {
