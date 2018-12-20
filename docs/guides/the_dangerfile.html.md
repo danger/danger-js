@@ -10,7 +10,7 @@ blurb: Step two on using Danger in your app, how to work locally and nuances aro
 
 The Danger JS DSL is fully typed via TypeScript. These definitions are shipped with the Danger module. If your text
 editor supports working with type definitions you will get inline-documentation and auto-completion after you import
-danger in your Dangerfile. Visual Studios Code will do this by default for you.
+danger in your Dangerfile. [Visual Studio Code](https://code.visualstudio.com/) will do this by default for you.
 
 If you are using Babel in your project, your Dangerfile will use the same transpilation settings. If you're using
 TypeScript + Jest it will work out of the box too, however, if you don't, you should head over to the [transpilation
