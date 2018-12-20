@@ -107,12 +107,12 @@ dependency is one that comes in as a dependency of a dependency, one which isn't
 
 ```js
 import fs from "fs"
-import contains from "lodash-contains"
+import includes from "lodash.includes"
 
 const blacklist = "spaced-between"
 const lockfile = fs.readFileSync("yarn.lock").toString()
 
-if (contains(lockfile, blacklist)) {
+if (includes(lockfile, blacklist)) {
   const message = `${blacklist} was added to our dependencies, see CVE #23`
   const hint = `To find out what introduced it, use \`yarn why ${blacklist}\`.`
   fail(`${message}<br/>${hint}`)
