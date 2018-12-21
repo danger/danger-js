@@ -5,7 +5,7 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *
  *  ### CI Setup
  *
- *  With Drone, you run the docker images yourself, so you will want to add `yarn danger ci` at the end of
+ *  With Drone, you run the docker images yourself, so you will want to add `[run_command]` at the end of
  *  your `.drone.yml`.
  *
  *   ``` shell
@@ -13,7 +13,7 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *      image: golang
  *        commands:
  *          - ...
- *          - yarn danger ci
+ *          - [run_command]
  *   ```
  *
  *  ### Token Setup

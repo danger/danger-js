@@ -11,7 +11,7 @@ import { ensureEnvKeysExist } from "../ci_source_helpers"
  * ```sh
  * ...
  *
- * CMD ["yarn", "danger"]
+ * CMD [run_command_split]
  * ```
  *
  * ### Token Setup

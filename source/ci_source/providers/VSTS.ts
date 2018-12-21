@@ -2,9 +2,11 @@ import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist } from "../ci_source_helpers"
 /**
  * ### CI Setup
- *  You'll need to add a npm build step and set the custom command to "run danger"
  *
- *  Only supports VSTS with github as the repository, danger doesn't yet support VSTS as a repository platform
+ * You'll need to add a build step and set the custom command to `[run_command]`.
+ *
+ * Danger only supports using VSTS with GitHub as the repository, Danger doesn't yet support VSTS as a repository
+ * platform for providing feedback
  *
  *  ### Token Setup
  *

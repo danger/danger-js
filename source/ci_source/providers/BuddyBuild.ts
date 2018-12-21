@@ -12,6 +12,7 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  * in the *Build Settings* menu on the left, choose *Environment Variables*.
  *
  * #### GitHub
+ *
  * Add the `DANGER_GITHUB_API_TOKEN` to your build user's ENV.
  *
  */

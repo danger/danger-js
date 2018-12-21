@@ -8,14 +8,14 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *
  *  ### CI Setup
  *
- *  With Concourse, you run the docker images yourself, so you will want to add `yarn danger ci` within one of your build jobs.
+ *  With Concourse, you run the docker images yourself, so you will want to add `[run_command]` within one of your build jobs.
  *
  *   ``` shell
  *    build:
  *      image: golang
  *        commands:
  *          - ...
- *          - yarn danger ci
+ *          - [run_command]
  *   ```
  *
  *  ### Environment Variable Setup

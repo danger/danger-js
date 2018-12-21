@@ -18,18 +18,18 @@ import { pullRequestParser } from "../../platforms/pullRequestParser"
  * If using Bitbucket Server, ensure you are using Multibranch Pipelines or Organization Folders.
  * Danger will respect the `CHANGE_URL` and `CHANGE_ID` environment variables.
  *
- * With that set up, you can edit your job to add `yarn danger ci` at the build action.
+ * With that set up, you can edit your job to add `[run_command]` at the build action.
  *
  * ### Pipeline
  * If you're using [pipelines](https://jenkins.io/solutions/pipeline/) you should be using the
  * [GitHub branch source plugin](https://wiki.jenkins.io/display/JENKINS/GitHub+Branch+Source+Plugin) for easy setup and handling of PRs.
  *
- * After you've set up the plugin, add a `sh 'yarn danger ci'` line in your pipeline script and make sure that build PRs is enabled.
+ * After you've set up the plugin, add a `sh '[run_command]'` line in your pipeline script and make sure that build PRs is enabled.
  *
  * ## Token Setup
  *
  * ### GitHub
- * As you own the machine, it's up to you to add the environment variable for the `DANGER_GITHUB_API_TOKEN`.
+ * As you own the machine, it's up to you to add the environment variable for the code review platform.
  */
 export class Jenkins implements CISource {
   constructor(private readonly env: Env) {}
