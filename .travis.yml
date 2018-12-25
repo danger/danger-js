@@ -33,8 +33,8 @@ matrix:
     - node_js: "10.13"
       script:
         - yarn build
-        - node distribution/commands/danger-ci.js --process "ruby scripts/danger_runner.rb"
-        - node distribution/commands/danger-pr.js --process "ruby scripts/danger_runner.rb"
+        - node distribution/commands/danger-ci.js --text-only --process "ruby scripts/danger_runner.rb"
+        - node distribution/commands/danger-pr.js --text-only --process "ruby scripts/danger_runner.rb"
           https://github.com/danger/danger-js/pull/760
 
     # Does the real danger run
