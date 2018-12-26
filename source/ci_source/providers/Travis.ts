@@ -2,10 +2,12 @@ import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
 /**
  * ### CI Setup
- *  You need to edit your `.travis.yml` to include `yarn danger ci`. If you already have
- *  a `script:` section then we recommend adding this command at the end of the script step: `- yarn danger ci`.
  *
- *   Otherwise, add a `before_script` step to the root of the `.travis.yml` with `yarn danger ci`
+ * <!-- JS --!>
+ *  You need to edit your `.travis.yml` to include `[run_command]`. If you already have
+ *  a `script:` section then we recommend adding this command at the end of the script step: `- [run_command]`.
+ *
+ *   Otherwise, add a `before_script` step to the root of the `.travis.yml` with `[run_command]`
  *
  *   ```ruby
  *     before_script:
@@ -13,7 +15,37 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *   ```
  *
  *  Adding this to your `.travis.yml` allows Danger to fail your build, both on the TravisCI website and within your Pull Request.
- *  With that set up, you can edit your job to add `yarn danger ci` at the build action.
+ *  With that set up, you can edit your job to add `[run_command]` at the build action.
+ * <!-- !JS --!>
+ * <!-- Swift --!>
+ *
+ *  Here's an example of the optimal travis setup, handling caching correctly:
+ *
+ *  ```yml
+ *   os: osx
+ *   osx_image: xcode10.1
+ *
+ *   cache:
+ *     directories:
+ *     # General SwiftPM
+ *     # Danger Swift plugins, like Yams
+ *     - .build
+ *     - ~/.danger-swift
+ *
+ *   install:
+ *     # Grab the latest Danger JS from npm
+ *     - npm install -g danger
+ *     # Compile the Danger runtime
+ *     - swift build
+ *
+ *   script:
+ *     # Run the Dangerfile.swift
+ *     - swift run danger-swift ci
+ *     # Test my app...
+ *     - [your other commands]
+ *  ```
+ *
+ * <!-- !Swift --!>
  *
  *  ### Token Setup
  *

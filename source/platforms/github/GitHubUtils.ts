@@ -66,7 +66,7 @@ export const fileContentsGenerator = (
     owner: repoSlug.split("/")[0],
   }
   try {
-    const response = await api.repos.getContent(opts)
+    const response = await api.repos.getContents(opts)
     if (response && response.data && response.data.type === "file") {
       const buffer = new Buffer(response.data.content, response.data.encoding)
       return buffer.toString()
@@ -99,7 +99,7 @@ export const createUpdatedIssueWithIDGenerator = (api: GitHub) => async (
   if (searchResults.total_count > 0 && searchResults.items[0]) {
     const issueToUpdate = searchResults.items[0]
     d(`Found: ${issueToUpdate}`)
-    const { data: issue } = await api.issues.edit({ body, owner, repo, title, number: issueToUpdate.number, state })
+    const { data: issue } = await api.issues.update({ body, owner, repo, title, number: issueToUpdate.number, state })
     return issue.html_url
   } else {
     const { data: issue } = await api.issues.create({ body, owner, repo, title })
@@ -150,12 +150,12 @@ export const createOrUpdatePR = (pr: GitHubPRDSL | undefined, api: GitHub) => as
   await filepathContentsMapToUpdateGitHubBranch(api, fileMap, branchSettings)
 
   d("Getting open PRs")
-  const prs = await api.pullRequests.getAll({ repo, owner, state: "open" })
+  const prs = await api.pulls.list({ repo, owner, state: "open" })
   const existingPR = prs.data.find(pr => pr.base.ref === config.newBranchName)
 
   if (existingPR) {
     d("Updating existing PR")
-    return await api.pullRequests.update({
+    return await api.pulls.update({
       number: existingPR.number,
       base: "source",
       owner: "artsy",
@@ -165,7 +165,7 @@ export const createOrUpdatePR = (pr: GitHubPRDSL | undefined, api: GitHub) => as
     })
   } else {
     d("Creating a new PR")
-    return await api.pullRequests.create({
+    return await api.pulls.create({
       base: "source",
       head: config.newBranchName,
       owner: "artsy",
@@ -189,7 +189,7 @@ export const createOrAddLabel = (pr: GitHubPRDSL | undefined, api: GitHub) => as
   d("Checking for existing labels")
   let label: any = null
   try {
-    const existingLabels = await api.issues.getLabels({ owner: config.owner, repo: config.repo })
+    const existingLabels = await api.issues.listLabelsForRepo({ owner: config.owner, repo: config.repo })
     label = existingLabels.data.find((l: any) => l.name == labelConfig.name)
   } catch (e) {
     d("api.issues.getLabels gave an error", e)

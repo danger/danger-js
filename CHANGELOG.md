@@ -15,6 +15,14 @@
 
 <!-- Your comment below this -->
 
+- Updates `@octokit/rest` to v16.x.x - this is a **major** semver change on their end, which I know it breaks some of
+  Artsy/Danger's Peril Dangerfiles, so it's possible that it could break your Dangerfiles too. How do you know?
+
+  Roughly, if you have any code that uses `danger.github.api` then it's very possible that you need to update your code.
+
+  There are update notes [here](https://github.com/octokit/rest.js/releases/tag/v16.0.1), but if you're using TypeScript
+  then it'll raise the issues
+
 # 6.1.13
 
 - Allow sub-processes to pass their own name an href so that it doesn't say made by Danger JS [@orta][]

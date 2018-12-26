@@ -13,10 +13,10 @@ import { ensureEnvKeysExist, getPullRequestIDForBranch } from "../ci_source_help
  *   ...
  *    - name: danger
  *      service: web
- *      command: yarn danger ci
+ *      command: [run_command]
  * ```
  *
- * If you're using Codeship Classic, add `yarn danger ci` to your 'Test Commands'
+ * If you're using Codeship Classic, add `[run_command]` to your 'Test Commands'
  *
  * ### Token Setup
  *

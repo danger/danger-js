@@ -15,7 +15,6 @@ import { pullRequestParser } from "../../platforms/pullRequestParser"
  * ```
  *
  */
-
 export class TeamCity implements CISource {
   constructor(private readonly env: Env) {}
 

@@ -2,9 +2,10 @@ import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
 /**
  * ### CI Setup
+ *  <!-- JS --!>
  *  You need to edit your `bitrise.yml` (in version control, or directly from UI) to include `yarn danger ci`.
  *
- *   You can set "is_always_run: true" to ensure that it reports even if previous steps fails
+ *   You can set `is_always_run: true` to ensure that it reports even if previous steps fails
  *
  *   ```yaml
  *     workflows:
@@ -20,12 +21,23 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *  Adding this to your `bitrise.yml` allows Danger to fail your build, both on the Bitrise website and within your Pull Request.
  *  With that set up, you can edit your job to add `yarn danger ci` at the build action.
  *
+ * <!-- !JS --!>
+ * <!-- Swift --!>
+ *
+ * No instructions yet, but basically:
+ *
+ * - Install Danger JS globally
+ * - Run `swift build`
+ * - Run `swift run danger-swift ci`
+ *
+ * <!-- !Swift --!>
+ *
  *  ### Token Setup
  *
- *  You need to add the `DANGER_GITHUB_API_TOKEN` environment variable, to do this,
+ *  You need to add the platform environment variables, to do this,
  *  go to your repo's secrets, which should look like: `https://www.bitrise.io/app/[app_id]#/workflow` and secrets tab.
  *
- *  You should check the case "Expose for Pull Requests?".
+ *  You should make sure to check the case "Expose for Pull Requests?".
  */
 export class Bitrise implements CISource {
   constructor(private readonly env: Env) {}

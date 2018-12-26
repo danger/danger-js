@@ -64,7 +64,7 @@ describe("the dangerfile gitDSL", async () => {
 
     //
     nodeGitHubAPI = new NodeGitHub()
-    nodeGitHubAPI.repos.getContent = async ({ ref }) => (await requestWithFixturedJSON(`static_file.${ref}.json`))()
+    nodeGitHubAPI.repos.getContents = async ({ ref }) => (await requestWithFixturedJSON(`static_file.${ref}.json`))()
 
     gitJSONDSL = await github.getPlatformGitRepresentation()
     const githubJSONDSL = await github.getPlatformReviewDSLRepresentation()

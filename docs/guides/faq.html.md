@@ -6,27 +6,29 @@ order: 3
 blurb: Common questions that come up in our GitHub issues.
 ---
 
-## Can Danger comment inside a file on an PR?
-
-Not yet, but there is a lot of discussion on [danger-js#77][77] and a [WIP PR here][529].
-
 ## Can I use the same Dangerfile across many repos?
 
-Ish, it's currently quite complex to set up, but work is on-going on [Danger/Peril][peril]. This is a hosted version of Danger which does not need to run on CI. Using Peril you can use Dangerfiles to reply to basically any GitHub webhook type.
+Ish, it's currently quite complex to set up, but work is on-going on [Danger/Peril][peril]. This is a hosted version of
+Danger which does not need to run on CI. Using Peril you can use Dangerfiles to reply to basically any GitHub webhook
+type.
 
 ## I only want to run Danger for internal contributors
 
-Let's say you run Danger on the same CI service that deploys your code. If that's open source, you don't want to be letting anyone pull out your private env vars. The work around for this is to not simply call Danger on every test run:
+Let's say you run Danger on the same CI service that deploys your code. If that's open source, you don't want to be
+letting anyone pull out your private env vars. The work around for this is to not simply call Danger on every test run:
 
 ```sh
 '[ ! -z $DANGER_GITHUB_API_TOKEN ] && yarn danger ci || echo "Skipping Danger for External Contributor"'
 ```
 
-This ensures that Danger only runs when you have the environment variables set up to run. This is how Danger works for a lot of the open source mobile projects in Artsy.
+This ensures that Danger only runs when you have the environment variables set up to run. This is how Danger works for a
+lot of the open source mobile projects in Artsy.
 
 ## Danger is not posting to GitHub PRs, but everything looks fine?
 
-Try logging in to the GitHub account that should be writing the messages, it's possible that your account has triggered the bot detection algorithm on GitHub. This means that messages are sent correctly, but do not show up for anyone except the sender. This makes it more or less impossible to detect from Danger's side.
+Try logging in to the GitHub account that should be writing the messages, it's possible that your account has triggered
+the bot detection algorithm on GitHub. This means that messages are sent correctly, but do not show up for anyone except
+the sender. This makes it more or less impossible to detect from Danger's side.
 
 ## I'm not sure what Danger is doing
 
@@ -46,10 +48,12 @@ This will print out a _lot_ of information.
 
 ## Circle CI doesnt run my build consistently
 
-Yeah... We're struggling with that one. It's something we keep taking stabs at improving, so [keep an eye on the issues][circle_issues]. Ideally this issue will get resolved and we'll get it [fixed for free][circle_pr].
+Yeah... We're struggling with that one. It's something we keep taking stabs at improving, so [keep an eye on the
+issues][circle_issues]. Ideally this issue will get resolved and we'll get it [fixed for free][circle_pr].
 
 What happens is that Circle triggers a CI build before the PR has been set up, and so Danger cannot get information
-about the corresponding repo and PR. Danger on Circle with use the Circle API to try and hook itself up to the right PR, so if you have `yarn danger ci` later on in the process, you'll have a better chance of them hooking up.
+about the corresponding repo and PR. Danger on Circle with use the Circle API to try and hook itself up to the right PR,
+so if you have `yarn danger ci` later on in the process, you'll have a better chance of them hooking up.
 
 This can be worked around by sending PRs from forks.
 
@@ -58,13 +62,15 @@ This can be worked around by sending PRs from forks.
 
 ## I want to help influence Danger's direction
 
-We'd recommend first becoming acquainted with the [VISION.md][] inside Danger, this is the long-term plan. Then there are two ways to start contributing today:
+We'd recommend first becoming acquainted with the [VISION.md][] inside Danger, this is the long-term plan. Then there
+are two ways to start contributing today:
 
-* Opinions are extra welcome on issues marked as [Open For Discussion][open].
+- Opinions are extra welcome on issues marked as [Open For Discussion][open].
 
-* Well defined work items like features or fixes are marked as [You Can Do This][you-can-do-this].
+- Well defined work items like features or fixes are marked as [You Can Do This][you-can-do-this].
 
-We keep comments in the public domain, there is a Slack, but it's very rarely used. If you're interested in joining, you can DM [orta][].
+We keep comments in the public domain, there is a Slack, but it's very rarely used. If you're interested in joining, you
+can DM [orta][].
 
 [77]: https://github.com/danger/danger-js/issues/77
 [529]: https://github.com/danger/danger-js/issues/529

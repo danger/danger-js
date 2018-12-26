@@ -8,7 +8,7 @@ const fixuredData = (path: string) => JSON.parse(readFileSync(`${fixtures}/${pat
 const pr = fixuredData("github_pr.json")
 const apiFake = {
   repos: {
-    getContent: jest.fn(),
+    getContents: jest.fn(),
   },
 } as any
 
@@ -42,7 +42,7 @@ describe("getContents", () => {
   it("should call the API's getContents", () => {
     const sut = utils(pr, apiFake)
     sut.fileContents("/a/b/c.ts")
-    expect(apiFake.repos.getContent).toHaveBeenCalledWith({
+    expect(apiFake.repos.getContents).toHaveBeenCalledWith({
       owner: "orta",
       path: "/a/b/c.ts",
       ref: "genevc",
