@@ -98,6 +98,15 @@ describe("API testing", () => {
     })
   })
 
+  it("getDangerCommentIDs ignores comments not marked as generated", async () => {
+    api.getAllOfResource = await requestWithFixturedJSON("github_inline_comments_with_danger.json")
+    api.getUserID = () => new Promise<number>(r => r(20229914))
+
+    const commentIDs = await api.getDangerCommentIDs("default")
+
+    expect(commentIDs.length).toEqual(0)
+  })
+
   it("getPullRequestInlineComment gets only comments for given DangerId", async () => {
     api.getAllOfResource = await requestWithFixturedJSON("github_inline_comments_with_danger.json")
     api.getUserID = () => new Promise<number>(r => r(20229914))
