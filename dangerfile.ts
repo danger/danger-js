@@ -38,14 +38,6 @@ export default async () => {
   // Some libraries
   await yarn()
   await jest()
-
-  // The thing I'm testing
-  await danger.github.utils.createUpdatedIssueWithID("TestID", `Last PR ${danger.github.pr.number}`, {
-    title: "My First Issue",
-    open: true,
-    repo: "sandbox",
-    owner: "PerilTest",
-  })
 }
 
 // Re-run the git push hooks

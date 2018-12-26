@@ -1093,25 +1093,46 @@
                 "apps": {
                     "type": "object"
                 },
-                "authorization": {
+                "checks": {
                     "type": "object"
                 },
-                "checks": {
+                "codesOfConduct": {
+                    "type": "object"
+                },
+                "emojis": {
                     "type": "object"
                 },
                 "gists": {
                     "type": "object"
                 },
-                "gitdata": {
+                "git": {
+                    "type": "object"
+                },
+                "gitignore": {
+                    "type": "object"
+                },
+                "hook": {
+                    "type": "object"
+                },
+                "interactions": {
                     "type": "object"
                 },
                 "issues": {
                     "type": "object"
                 },
+                "licenses": {
+                    "type": "object"
+                },
+                "markdown": {
+                    "type": "object"
+                },
+                "meta": {
+                    "type": "object"
+                },
                 "migrations": {
                     "type": "object"
                 },
-                "misc": {
+                "oauthAuthorizations": {
                     "type": "object"
                 },
                 "orgs": {
@@ -1120,7 +1141,10 @@
                 "projects": {
                     "type": "object"
                 },
-                "pullRequests": {
+                "pulls": {
+                    "type": "object"
+                },
+                "rateLimit": {
                     "type": "object"
                 },
                 "reactions": {
@@ -1129,7 +1153,12 @@
                 "repos": {
                     "type": "object"
                 },
+                "request": {
+                },
                 "search": {
+                    "type": "object"
+                },
+                "teams": {
                     "type": "object"
                 },
                 "users": {
