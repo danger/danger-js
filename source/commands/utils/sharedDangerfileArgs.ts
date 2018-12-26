@@ -23,6 +23,8 @@ export interface SharedCLI extends program.CommanderStatic {
   process?: string
   /** Use a URL to send in the DSL instead of just STDIN */
   passURLForDSL?: boolean
+  /** Use GitHub Checks */
+  useGithubChecks: boolean
 }
 
 export default (command: any) =>
@@ -38,3 +40,4 @@ export default (command: any) =>
     .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")
     .option("-p, --process [command]", "[dev] Runs a custom sub-process instead of the Danger JS runtime")
     .option("-u, --passURLForDSL", "[dev] Use a custom URL to send the Danger DSL into the sub-process")
+    .option("--use-github-checks", "Use GitHub Checks", false)

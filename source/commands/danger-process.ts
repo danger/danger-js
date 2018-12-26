@@ -92,6 +92,7 @@ getRuntimeCISource(app).then(source => {
             jsonOnly: false,
             dangerID: app.id || "default",
             passURLForDSL: app.passURLForDSL || false,
+            disableGitHubChecksSupport: !app.useGithubChecks,
           }
 
           d("Exec config: ", execConfig)
