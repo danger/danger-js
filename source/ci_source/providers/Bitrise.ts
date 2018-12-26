@@ -5,7 +5,7 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *  <!-- JS --!>
  *  You need to edit your `bitrise.yml` (in version control, or directly from UI) to include `yarn danger ci`.
  *
- *   You can set `is_always_run: true` to ensure that it reports even if previous steps fails
+ *  You can set `is_always_run: true` to ensure that it reports even if previous steps fails
  *
  *   ```yaml
  *     workflows:

@@ -21,7 +21,8 @@
   Roughly, if you have any code that uses `danger.github.api` then it's very possible that you need to update your code.
 
   There are update notes [here](https://github.com/octokit/rest.js/releases/tag/v16.0.1), but if you're using TypeScript
-  then it'll raise the issues
+  then it'll raise the issues at a type-check level. Note, that this version may cause issues if you are using GitHub
+  Enterprise, you can get [updates here](https://github.com/danger/danger-js/issues/797).
 
 # 6.1.13
 
