@@ -79,7 +79,7 @@ describe("API testing", () => {
     api.fetch = fetch
     api.patch = jest.fn(() => ({ json: jest.fn() }))
 
-    await api.updateCommentWithID(123, "Hello!")
+    await api.updateCommentWithID("123", "Hello!")
 
     expect(api.patch).toHaveBeenCalledWith("repos/artsy/emission/issues/comments/123", {}, { body: "Hello!" })
   })
@@ -234,7 +234,7 @@ describe("API testing", () => {
 
   it("deleteCommentWithID", async () => {
     api.fetch = jest.fn().mockReturnValue({ status: 204 })
-    await api.deleteCommentWithID(123)
+    await api.deleteCommentWithID("123")
 
     expect(api.fetch).toHaveBeenCalledWith(
       "https://api.github.com/repos/artsy/emission/issues/comments/123",

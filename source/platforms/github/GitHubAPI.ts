@@ -83,7 +83,7 @@ export class GitHubAPI {
 
   // The above is the API for Platform
 
-  getDangerCommentIDs = async (dangerID: string): Promise<number[]> => {
+  getDangerCommentIDs = async (dangerID: string): Promise<string[]> => {
     const userID = await this.getUserID()
     const allComments: any[] = await this.getPullRequestComments()
     const dangerIDMessage = dangerIDToString(dangerID)
@@ -96,7 +96,7 @@ export class GitHubAPI {
       .map(comment => comment.id) // only return IDs
   }
 
-  updateCommentWithID = async (id: number, comment: string): Promise<any> => {
+  updateCommentWithID = async (id: string, comment: string): Promise<any> => {
     const repo = this.repoMetadata.repoSlug
     const res = await this.patch(
       `repos/${repo}/issues/comments/${id}`,
@@ -109,7 +109,7 @@ export class GitHubAPI {
     return res.json()
   }
 
-  deleteCommentWithID = async (id: number): Promise<boolean> => {
+  deleteCommentWithID = async (id: string): Promise<boolean> => {
     const repo = this.repoMetadata.repoSlug
     const res = await this.api(`repos/${repo}/issues/comments/${id}`, {}, null, "DELETE")
 
