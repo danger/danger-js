@@ -15,8 +15,12 @@
 
 <!-- Your comment below this -->
 
+# 7.0.1
+
 - Make use of GitHub Checks optional and disabled by default, pass `--use-github-checks` to enable.
   [@cysp](https://github.com/danger/danger-js/pull/798)
+
+# 7.0.0
 
 - Updates `@octokit/rest` to v16.x.x - this is a **major** semver change on their end, which I know it breaks some of
   Artsy/Danger's Peril Dangerfiles, so it's possible that it could break your Dangerfiles too. How do you know?
