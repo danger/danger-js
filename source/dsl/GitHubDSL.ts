@@ -136,6 +136,23 @@ export interface GitHubIssueLabel {
   color: string
 }
 
+export interface GitHubIssueComment {
+  /**
+   *  UUID for the comment
+   */
+  id: string
+
+  /**
+   * The User who made the comment
+   */
+  user: GitHubUser
+
+  /**
+   * Textual representation of comment
+   */
+  body: string
+}
+
 // This is `danger.github.pr`
 
 /**
