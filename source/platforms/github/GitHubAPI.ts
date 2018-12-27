@@ -4,11 +4,10 @@ import * as node_fetch from "node-fetch"
 import parse from "parse-link-header"
 import pLimit from "p-limit"
 
-import { GitHubPRDSL, GitHubUser } from "../../dsl/GitHubDSL"
+import { GitHubPRDSL, GitHubIssueComment, GitHubUser } from "../../dsl/GitHubDSL"
 
 import { dangerIDToString } from "../../runner/templates/githubIssueTemplate"
 import { api as fetch } from "../../api/fetch"
-import { Comment } from "../platform"
 import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 import { CheckOptions } from "./comms/checks/resultsToCheck"
 
@@ -83,9 +82,9 @@ export class GitHubAPI {
 
   // The above is the API for Platform
 
-  getDangerCommentIDs = async (dangerID: string): Promise<number[]> => {
+  getDangerCommentIDs = async (dangerID: string): Promise<string[]> => {
     const userID = await this.getUserID()
-    const allComments: any[] = await this.getPullRequestComments()
+    const allComments = await this.getPullRequestComments()
     const dangerIDMessage = dangerIDToString(dangerID)
     this.d(`User ID: ${userID}`)
     this.d(`Looking at ${allComments.length} comments for ${dangerIDMessage}`)
@@ -96,7 +95,7 @@ export class GitHubAPI {
       .map(comment => comment.id) // only return IDs
   }
 
-  updateCommentWithID = async (id: number, comment: string): Promise<any> => {
+  updateCommentWithID = async (id: string, comment: string): Promise<any> => {
     const repo = this.repoMetadata.repoSlug
     const res = await this.patch(
       `repos/${repo}/issues/comments/${id}`,
@@ -109,7 +108,7 @@ export class GitHubAPI {
     return res.json()
   }
 
-  deleteCommentWithID = async (id: number): Promise<boolean> => {
+  deleteCommentWithID = async (id: string): Promise<boolean> => {
     const repo = this.repoMetadata.repoSlug
     const res = await this.api(`repos/${repo}/issues/comments/${id}`, {}, null, "DELETE")
 
@@ -274,23 +273,23 @@ export class GitHubAPI {
     return response.json()
   }
 
-  getPullRequestComments = async (): Promise<any[]> => {
+  getPullRequestComments = async (): Promise<GitHubIssueComment[]> => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     return await this.getAllOfResource(`repos/${repo}/issues/${prID}/comments`)
   }
 
-  getPullRequestInlineComments = async (dangerID: string): Promise<Comment[]> => {
+  getPullRequestInlineComments = async (dangerID: string): Promise<(GitHubIssueComment & { ownedByDanger: boolean })[]> => {
     const userID = await this.getUserID()
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
-    return await this.getAllOfResource(`repos/${repo}/pulls/${prID}/comments`).then(v => {
+    return await this.getAllOfResource(`repos/${repo}/pulls/${prID}/comments`).then((v: GitHubIssueComment[]) => {
       return v
         .filter(Boolean)
-        .map((i: any) => {
-          return { id: i.id, ownedByDanger: i.user.id == userID && i.body.includes(dangerID), body: i.body }
+        .map(i => {
+          return { ...i, ownedByDanger: i.user.id == userID && i.body.includes(dangerID) }
         })
-        .filter((i: any) => i.ownedByDanger)
+        .filter(i => i.ownedByDanger)
     })
   }
 
