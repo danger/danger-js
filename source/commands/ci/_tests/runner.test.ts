@@ -16,6 +16,10 @@ const defaultAppArgs: Partial<SharedCLI> = {
 const source = new FakeCI({})
 const platform = new FakePlatform()
 
+beforeEach(() => {
+  mockRunDangerSubprocess.mockReset()
+})
+
 it("uses the source and platform from config", async () => {
   await runRunner(defaultAppArgs as SharedCLI, { platform, source })
 
@@ -23,6 +27,44 @@ it("uses the source and platform from config", async () => {
   const executor: Executor = mockRunDangerSubprocess.mock.calls[0][2]
   expect(executor.ciSource).toEqual(source)
   expect(executor.platform).toEqual(platform)
+})
+
+it("does not use GitHub Checks by default", async () => {
+  await runRunner(defaultAppArgs as SharedCLI, { platform, source })
+
+  // Pull the executor out of the call to runDangerSubprocess
+  const executor: Executor = mockRunDangerSubprocess.mock.calls[0][2]
+  expect(executor.ciSource).toEqual(source)
+  expect(executor.platform).toEqual(platform)
+  expect(executor.options.disableGitHubChecksSupport).toEqual(true)
+})
+
+it("uses GitHub Checks if requested", async () => {
+  const customArgs = {
+    ...defaultAppArgs,
+    useGithubChecks: true,
+  } as SharedCLI
+  await runRunner(customArgs, { platform, source })
+
+  // Pull the executor out of the call to runDangerSubprocess
+  const executor: Executor = mockRunDangerSubprocess.mock.calls[0][2]
+  expect(executor.ciSource).toEqual(source)
+  expect(executor.platform).toEqual(platform)
+  expect(executor.options.disableGitHubChecksSupport).toEqual(false)
+})
+
+it("does not use GitHub Checks if requested not to", async () => {
+  const customArgs = {
+    ...defaultAppArgs,
+    useGithubChecks: false,
+  } as SharedCLI
+  await runRunner(customArgs, { platform, source })
+
+  // Pull the executor out of the call to runDangerSubprocess
+  const executor: Executor = mockRunDangerSubprocess.mock.calls[0][2]
+  expect(executor.ciSource).toEqual(source)
+  expect(executor.platform).toEqual(platform)
+  expect(executor.options.disableGitHubChecksSupport).toEqual(true)
 })
 
 // TODO: This occasionally fails!
