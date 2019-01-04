@@ -122,7 +122,7 @@ export const babelify = (content: string, filename: string, extraPlugins: string
     return content
   }
 
-  const options = babel.loadOptions ? babel.loadOptions({}) : { plugins: [] }
+  const options = babel.loadOptions ? babel.loadOptions({ filename }) : { plugins: [] }
 
   const fileOpts = {
     filename,
