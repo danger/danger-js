@@ -66,7 +66,7 @@ if (program.args.length === 0) {
   const findGH = program.args.find(a => a.includes(customGitHubHost) || a.includes("github"))
 
   if (!findGH) {
-    console.error(`Could find an arg which mentioned GitHub.`)
+    console.error(`Could not find an arg which mentioned GitHub.`)
     process.exitCode = 1
   } else {
     const pr = pullRequestParser(findGH)
