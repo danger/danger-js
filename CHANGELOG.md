@@ -13,6 +13,8 @@
 
 ## Master
 
+- Fix issue where the PR command could not be run with a GitHub Enterprise URL.
+
 <!-- Your comment below this -->
 
 # 7.0.1
@@ -1490,3 +1492,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@randak]: https://github.com/randak
 [@sajjadzamani]: https://github.com/sajjadzamani
 [@cysp]: https://github.com/cysp
+[@davidbrunow]: https://github.com/davidbrunow

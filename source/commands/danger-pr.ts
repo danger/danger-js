@@ -60,11 +60,13 @@ if (program.args.length === 0) {
   console.error("Please include a PR URL to run against")
   process.exitCode = 1
 } else {
+  const customGitHubHost = process.env["DANGER_GITHUB_HOST"] || "github"
+
   // Allow an ambiguous amount of args to find the PR reference
-  const findGH = program.args.find(a => a.includes("github"))
+  const findGH = program.args.find(a => a.includes(customGitHubHost) || a.includes("github"))
 
   if (!findGH) {
-    console.error(`Could find an arg which mentioned GitHub.`)
+    console.error(`Could not find an arg which mentioned GitHub.`)
     process.exitCode = 1
   } else {
     const pr = pullRequestParser(findGH)
