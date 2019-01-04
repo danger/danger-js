@@ -14,6 +14,8 @@
 ## Master
 
 <!-- Your comment below this -->
+
+- Fix issue where the PR command could not be run with a GitHub Enterprise URL.
 - Specify filename when loading Babel options. Fixes [#664](https://github.com/danger/danger-js/issues/664) ([#804](https://github.com/danger/danger-js/pull/804)) - [@NMinhNguyen][]
 
 # 7.0.1
@@ -1493,3 +1495,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@sajjadzamani]: https://github.com/sajjadzamani
 [@cysp]: https://github.com/cysp
 [@NMinhNguyen]: https://github.com/NMinhNguyen
+[@davidbrunow]: https://github.com/davidbrunow
