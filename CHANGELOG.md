@@ -15,8 +15,15 @@
 
 <!-- Your comment below this -->
 
+# 7.0.3
+
+- Lets you use `GITHUB_URL` instead of just `DANGER_GITHUB_URL` for GitHub Enterprise. - [@Aghassi][]
+
+# 7.0.2
+
 - Fix issue where the PR command could not be run with a GitHub Enterprise URL.
-- Specify filename when loading Babel options. Fixes [#664](https://github.com/danger/danger-js/issues/664) ([#804](https://github.com/danger/danger-js/pull/804)) - [@NMinhNguyen][]
+- Specify filename when loading Babel options. Fixes [#664](https://github.com/danger/danger-js/issues/664)
+  ([#804](https://github.com/danger/danger-js/pull/804)) - [@NMinhNguyen][]
 
 # 7.0.1
 
@@ -1494,5 +1501,6 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@randak]: https://github.com/randak
 [@sajjadzamani]: https://github.com/sajjadzamani
 [@cysp]: https://github.com/cysp
-[@NMinhNguyen]: https://github.com/NMinhNguyen
+[@nminhnguyen]: https://github.com/NMinhNguyen
 [@davidbrunow]: https://github.com/davidbrunow
+[@aghassi]: https://github.com/aghassi
