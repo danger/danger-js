@@ -42,7 +42,7 @@ export class GitHubAPI {
    * but for now that's just a refactor someone can try.
    */
   getExternalAPI = (accessTokenForApp?: string): GitHubNodeAPI => {
-    const host = process.env["DANGER_GITHUB_API_BASE_URL"] || undefined
+    const host = process.env["DANGER_GITHUB_API_BASE_URL"] || process.env["GITHUB_URL"] || undefined
     const options: GitHubNodeAPI.Options & { debug: boolean } = {
       debug: !!process.env.LOG_FETCH_REQUESTS,
       baseUrl: host,
