@@ -107,7 +107,7 @@ export interface GitDSL extends GitJSONDSL {
    * returns null if you don't have any changes for the file in the diff.
    *
    * Note that if you are looking to just see changes like: before, after, added or removed - you
-   * should use `JSONDiffForFile` instead, as this can be a bit unweildy for a Dangerfile.
+   * should use `JSONDiffForFile` instead, as this can be a bit unwieldy for a Dangerfile.
    *
    * @param {string} filename the path to the json file
    */
