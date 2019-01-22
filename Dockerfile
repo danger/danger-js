@@ -7,7 +7,8 @@ LABEL "com.github.actions.description"="Runs JavaScript/TypeScript Dangerfiles"
 LABEL "com.github.actions.icon"="zap"
 LABEL "com.github.actions.color"="blue"
 
-RUN yarn run build
-RUN ln -s distribution/commands/danger.js /usr/bin/danger
+RUN mkdir -p /usr/src/danger
+COPY . /usr/src/danger
+RUN cd /usr/src/danger && yarn run build && ln -s distribution/commands/danger.js /usr/bin/danger
 
 ENTRYPOINT ["danger", "ci"]
