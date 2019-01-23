@@ -17,6 +17,7 @@
 
 - Fix issue where the PR command could not be run with a GitHub Enterprise URL.
 - Specify filename when loading Babel options. Fixes [#664](https://github.com/danger/danger-js/issues/664) ([#804](https://github.com/danger/danger-js/pull/804)) - [@NMinhNguyen][]
+- Running Danger on GitHub Actions now runs Danger from source code. Before that, Danger on GitHub Actions is stuck at v5.0.0-beta-24. [@dtinth](https://github.com/danger/danger-js/pull/810)
 
 # 7.0.1
 
