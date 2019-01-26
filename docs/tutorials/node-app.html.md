@@ -54,7 +54,7 @@ direction by not allowing the body of a pull request to be less than a few chara
 
 ```js
 if (danger.github.pr.body.length < 10) {
-  fail("This pull request needs an description.")
+  fail("This pull request needs a description.")
 }
 ```
 
