@@ -39,7 +39,7 @@ can allow the build to pass, but will provide feedback that there is no assignee
 import { danger, fail, warn } from "danger"
 
 if (!danger.github.pr.assignee) {
-  const method = pr.title.includes("WIP") ? warn : fail
+  const method = danger.github.pr.title.includes("WIP") ? warn : fail
   method("This pull request needs an assignee, and optionally include any reviewers.")
 }
 ```
