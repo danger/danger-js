@@ -42,7 +42,7 @@ export class GitHubAPI {
    * but for now that's just a refactor someone can try.
    */
   getExternalAPI = (accessTokenForApp?: string): GitHubNodeAPI => {
-    const host = process.env["DANGER_GITHUB_API_BASE_URL"] || undefined
+    const host = process.env["DANGER_GITHUB_API_BASE_URL"] || process.env["GITHUB_URL"] || undefined
     const options: GitHubNodeAPI.Options & { debug: boolean } = {
       debug: !!process.env.LOG_FETCH_REQUESTS,
       baseUrl: host,
@@ -279,7 +279,9 @@ export class GitHubAPI {
     return await this.getAllOfResource(`repos/${repo}/issues/${prID}/comments`)
   }
 
-  getPullRequestInlineComments = async (dangerID: string): Promise<(GitHubIssueComment & { ownedByDanger: boolean })[]> => {
+  getPullRequestInlineComments = async (
+    dangerID: string
+  ): Promise<(GitHubIssueComment & { ownedByDanger: boolean })[]> => {
     const userID = await this.getUserID()
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
@@ -400,7 +402,7 @@ export class GitHubAPI {
     }
 
     const containsBase = path.startsWith("http")
-    const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || "https://api.github.com"
+    const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || process.env["GITHUB_URL"] || "https://api.github.com"
     const url = containsBase ? path : `${baseUrl}/${path}`
 
     let customAccept = {}

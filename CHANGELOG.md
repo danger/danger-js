@@ -15,6 +15,10 @@
 
 <!-- Your comment below this -->
 
+# 7.0.4
+
+- More fixes for `GITHUB_URL` instead of just `DANGER_GITHUB_URL` for GitHub Enterprise. - [@Aghassi][]
+
 # 7.0.3
 
 - Lets you use `GITHUB_URL` instead of just `DANGER_GITHUB_URL` for GitHub Enterprise. - [@Aghassi][]
@@ -24,6 +28,8 @@
 - Fix issue where the PR command could not be run with a GitHub Enterprise URL.
 - Specify filename when loading Babel options. Fixes [#664](https://github.com/danger/danger-js/issues/664)
   ([#804](https://github.com/danger/danger-js/pull/804)) - [@NMinhNguyen][]
+- Running Danger on GitHub Actions now runs Danger from source code. Before that, Danger on GitHub Actions is stuck at
+  v5.0.0-beta-24. [@dtinth](https://github.com/danger/danger-js/pull/810)
 
 # 7.0.1
 
