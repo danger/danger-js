@@ -400,7 +400,7 @@ export class GitHubAPI {
     }
 
     const containsBase = path.startsWith("http")
-    const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || "https://api.github.com"
+    const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || process.env["GITHUB_URL"] || "https://api.github.com"
     const url = containsBase ? path : `${baseUrl}/${path}`
 
     let customAccept = {}
