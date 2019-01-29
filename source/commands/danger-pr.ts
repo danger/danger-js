@@ -63,7 +63,7 @@ if (program.args.length === 0) {
   const customHost = process.env["DANGER_GITHUB_HOST"] || process.env["DANGER_BITBUCKETSERVER_HOST"] || "github"
 
   // Allow an ambiguous amount of args to find the PR reference
-  const findPR = program.args.find(a => a.includes(customHost) || a.includes("github"))
+  const findPR = program.args.find(a => a.includes(customHost))
 
   if (!findPR) {
     console.error(`Could not find an arg which mentioned GitHub or BitBucket Server.`)
