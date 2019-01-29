@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Allow danger-pr to work also on Bitbucket Server - [@f-meloni][]
+
 # 7.0.4
 
 - More fixes for `GITHUB_URL` instead of just `DANGER_GITHUB_URL` for GitHub Enterprise. - [@Aghassi][]
@@ -1510,3 +1512,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@nminhnguyen]: https://github.com/NMinhNguyen
 [@davidbrunow]: https://github.com/davidbrunow
 [@aghassi]: https://github.com/aghassi
+[@f-meloni]: https://github.com/f-meloni
