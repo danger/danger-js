@@ -60,18 +60,18 @@ if (program.args.length === 0) {
   console.error("Please include a PR URL to run against")
   process.exitCode = 1
 } else {
-  const customGitHubHost = process.env["DANGER_GITHUB_HOST"] || "github"
+  const customHost = process.env["DANGER_GITHUB_HOST"] || process.env["DANGER_BITBUCKETSERVER_HOST"] || "github"
 
   // Allow an ambiguous amount of args to find the PR reference
-  const findGH = program.args.find(a => a.includes(customGitHubHost) || a.includes("github"))
+  const findPR = program.args.find(a => a.includes(customHost) || a.includes("github"))
 
-  if (!findGH) {
-    console.error(`Could not find an arg which mentioned GitHub.`)
+  if (!findPR) {
+    console.error(`Could not find an arg which mentioned GitHub or BitBucket Server.`)
     process.exitCode = 1
   } else {
-    const pr = pullRequestParser(findGH)
+    const pr = pullRequestParser(findPR)
     if (!pr) {
-      console.error(`Could not get a repo and a PR number from your PR: ${findGH}, bad copy & paste?`)
+      console.error(`Could not get a repo and a PR number from your PR: ${findPR}, bad copy & paste?`)
       process.exitCode = 1
     } else {
       // TODO: Use custom `fetch` in GitHub that stores and uses local cache if PR is closed, these PRs
