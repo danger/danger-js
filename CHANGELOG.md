@@ -1511,3 +1511,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@nminhnguyen]: https://github.com/NMinhNguyen
 [@davidbrunow]: https://github.com/davidbrunow
 [@aghassi]: https://github.com/aghassi
+[@stevemoser]: https://github.com/stevemoser
