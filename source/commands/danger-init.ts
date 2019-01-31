@@ -205,15 +205,11 @@ const wrapItUp = async (ui: InitUI, _state: InitState) => {
   link("artsy/Emission#dangerfile.ts", "https://github.com/artsy/emission/blob/master/dangerfile.ts")
   link(
     "facebook/react-native#danger/dangerfile.js",
-    "https://github.com/facebook/react-native/blob/master/danger/dangerfile.js"
+    "https://github.com/facebook/react-native/blob/master/bots/dangerfile.js"
   )
   link(
     "apollographql/apollo-client#dangerfile.ts",
-    "https://github.com/apollographql/apollo-client/blob/master/dangerfile.ts"
-  )
-  link(
-    "styled-components/styled-components#dangerfile.js",
-    "https://github.com/styled-components/styled-components/blob/master/dangerfile.js"
+    "https://github.com/apollographql/apollo-client/blob/master/config/dangerfile.ts"
   )
   link(
     "styleguidist/react-styleguidist#dangerfile.js",
