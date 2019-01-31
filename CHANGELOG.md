@@ -14,6 +14,7 @@
 ## Master
 
 <!-- Your comment below this -->
+- Remove dead links to example danger files. - [@stevemoser][]
 
 # 7.0.4
 
