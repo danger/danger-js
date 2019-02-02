@@ -80,6 +80,12 @@ yarn lint
 The fixers for both tslint and prettier will be applied when you commit, and on a push your code will be verified that
 it compiles.
 
+You can run your dev copy of danger against a PR by running:
+
+```sh
+yarn build; node --inspect distribution/source/commands/danger-pr.js https://github.com/danger/danger-js/pull/817
+```
+
 ### How does Danger JS work?
 
 Check the [architecture doc](https://github.com/danger/danger-js/blob/master/docs/architecture.md).
