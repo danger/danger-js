@@ -42,21 +42,21 @@ export class GitHubAPI {
    * but for now that's just a refactor someone can try.
    */
   getExternalAPI = (accessTokenForApp?: string): GitHubNodeAPI => {
+    // A token should have been set by this point
+    const token = accessTokenForApp || this.token!
+
     const host = process.env["DANGER_GITHUB_API_BASE_URL"] || process.env["GITHUB_URL"] || undefined
     const options: GitHubNodeAPI.Options & { debug: boolean } = {
       debug: !!process.env.LOG_FETCH_REQUESTS,
       baseUrl: host,
-      headers: {
-        ...this.additionalHeaders,
-      },
+      auth: `token ${token}`,
     }
-    // A token should have been set by this point
-    const token = accessTokenForApp || this.token!
 
-    const api = new GitHubNodeAPI(options)
-    api.authenticate({ type: "token", token: token })
+    if (this.additionalHeaders) {
+      options.headers = this.additionalHeaders
+    }
 
-    return api
+    return new GitHubNodeAPI(options)
   }
 
   /**
