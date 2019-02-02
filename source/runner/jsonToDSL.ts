@@ -60,14 +60,21 @@ const apiForDSL = (dsl: DangerDSLJSONType): OctoKit | BitBucketServerAPI => {
   const options: OctoKit.Options & { debug: boolean } = {
     debug: !!process.env.LOG_FETCH_REQUESTS,
     baseUrl: dsl.settings.github.baseURL,
-    headers: {
-      ...dsl.settings.github.additionalHeaders,
-    },
+  }
+
+  // Peril will need changes for this
+  if (
+    dsl.settings.github &&
+    dsl.settings.github.additionalHeaders &&
+    Object.keys(dsl.settings.github.additionalHeaders).length
+  ) {
+    options.headers = dsl.settings.github.additionalHeaders
+  }
+
+  if (dsl.settings.github && dsl.settings.github.accessToken) {
+    options.auth = `token ${dsl.settings.github.accessToken}`
   }
 
   const api = new OctoKit(options)
-  if (dsl.settings.github && dsl.settings.github.accessToken) {
-    api.authenticate({ type: "token", token: dsl.settings.github.accessToken })
-  }
   return api
 }

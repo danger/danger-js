@@ -52,9 +52,9 @@ export const fixturedGitHubDSL = async (): Promise<DangerDSLType> => {
   api.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
   api.getFileContents = async (_path, _repoSlug, ref) => (await requestWithFixturedJSON(`static_file.${ref}.json`))()
 
-  //
   nodeGitHubAPI = new NodeGitHub()
-  nodeGitHubAPI.repos.getContents = async ({ ref }) => (await requestWithFixturedJSON(`static_file.${ref}.json`))()
+  const mockContents = async ({ ref }: any) => (await requestWithFixturedJSON(`static_file.${ref}.json`))()
+  nodeGitHubAPI.repos.getContents = mockContents as any
 
   gitJSONDSL = await github.getPlatformGitRepresentation()
   const githubJSONDSL = await github.getPlatformReviewDSLRepresentation()
