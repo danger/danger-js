@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+# 7.0.5
+
 - Remove dead links to example danger files. - [@stevemoser][]
 - Allow danger-pr to work also on Bitbucket Server - [@f-meloni][]
 - Fix for nulls in modified_files - [@orta][]
