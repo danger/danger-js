@@ -79,7 +79,7 @@ if (program.args.length === 0) {
 
       console.log(`Starting Danger PR on ${pr.repo}#${pr.pullRequestNumber}`)
 
-      if (customProcess || validateDangerfileExists(dangerfilePath(program))) {
+      if (customProcess || app.js || app.json || validateDangerfileExists(dangerfilePath(program))) {
         if (!customProcess) {
           d(`executing dangerfile at ${dangerfilePath(program)}`)
         }
