@@ -77,16 +77,18 @@ if (program.args.length === 0) {
       // TODO: Use custom `fetch` in GitHub that stores and uses local cache if PR is closed, these PRs
       //       shouldn't change often and there is a limit on API calls per hour.
 
-      console.log(`Starting Danger PR on ${pr.repo}#${pr.pullRequestNumber}`)
+      const isJSON = app.js || app.json
+      const note = isJSON ? console.error : console.log
+      note(`Starting Danger PR on ${pr.repo}#${pr.pullRequestNumber}`)
 
-      if (customProcess || app.js || app.json || validateDangerfileExists(dangerfilePath(program))) {
+      if (customProcess || isJSON || validateDangerfileExists(dangerfilePath(program))) {
         if (!customProcess) {
           d(`executing dangerfile at ${dangerfilePath(program)}`)
         }
         const source = new FakeCI({ DANGER_TEST_REPO: pr.repo, DANGER_TEST_PR: pr.pullRequestNumber })
         const platform = getPlatformForEnv(process.env, source, /* requireAuth */ false)
 
-        if (app.json || app.js) {
+        if (isJSON) {
           d("getting just the JSON/JS DSL")
           runHalfProcessJSON(platform, source)
         } else {
@@ -107,9 +109,15 @@ if (program.args.length === 0) {
 // Run the first part of a Danger Process and output the JSON to CLI
 async function runHalfProcessJSON(platform: Platform, source: CISource) {
   const dangerDSL = await jsonDSLGenerator(platform, source, program)
+  // Truncate the access token
+  if (dangerDSL.settings.github && dangerDSL.settings.github.accessToken) {
+    dangerDSL.settings.github.accessToken = dangerDSL.settings.github.accessToken.substring(0, 4) + "..."
+  }
+
   const processInput = prepareDangerDSL(dangerDSL)
   const output = JSON.parse(processInput)
   const dsl = { danger: output }
+
   // See https://github.com/Javascipt/Jsome/issues/12
   if (app.json) {
     process.stdout.write(JSON.stringify(dsl, null, 2))

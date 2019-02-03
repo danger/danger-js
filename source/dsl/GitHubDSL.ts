@@ -14,8 +14,8 @@ export interface GitHubJSONDSL {
   commits: GitHubCommit[]
   /** The reviews left on this pull request */
   reviews: GitHubReview[]
-  /** The people requested to review this PR */
-  requested_reviewers: GitHubUser[]
+  /** The people/teams requested to review this PR */
+  requested_reviewers: GitHubReviewers
 }
 
 // This is `danger.github`
@@ -272,6 +272,16 @@ export interface GitHubPRDSL {
    * The link back to this PR as user-facing
    */
   html_url: string
+
+  /** How does the PR author relate to this repo/org? */
+  author_association:
+    | "COLLABORATOR"
+    | "CONTRIBUTOR"
+    | "FIRST_TIMER"
+    | "FIRST_TIME_CONTRIBUTOR"
+    | "MEMBER"
+    | "NONE"
+    | "OWNER"
 }
 
 // These are the individual subtypes of objects inside the larger DSL objects above.
@@ -312,6 +322,10 @@ export interface GitHubUser {
    * The url for a users's image
    */
   avatar_url: string
+  /**
+   * The href for a users's page
+   */
+  href: string
 }
 
 /**
@@ -436,4 +450,11 @@ export interface GitHubAPIPR {
   repo: string
   /** The PR number */
   number: number
+}
+
+export interface GitHubReviewers {
+  /** Users that have been requested */
+  users: GitHubUser[]
+  /** Teams that have been requested */
+  teams: any[]
 }
