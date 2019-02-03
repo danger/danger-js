@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- `danger pr` with `--json` or --js` now don't require a Dangerfile to be present - [@orta][]
+
 # 7.0.5
 
 - Remove dead links to example danger files. - [@stevemoser][]
