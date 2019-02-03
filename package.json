@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "7.0.6",
+  "version": "7.0.5",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -56,7 +56,7 @@
     "prepublishOnly": "yarn build && yarn jest && yarn declarations && yarn build:flow-types && yarn build:pretty-types",
     "build": "shx rm -rf ./distribution && tsc -p tsconfig.production.json && madge ./distribution --circular",
     "build:fast": "tsc -p tsconfig.production.json",
-    "build:flow-types": "cp source/danger.d.ts source/_danger.d.ts && sed -ie 's/api: GitHub/api: any/g' source/_danger.d.ts &&  v source/_danger.d.ts -o distribution/danger.js.flow && node scripts/update_flow_types.js",
+    "build:flow-types": "cp source/danger.d.ts source/_danger.d.ts && sed -ie 's/api: GitHub/api: any/g' source/_danger.d.ts && npx flowgen@1.3.0 source/_danger.d.ts -o distribution/danger.js.flow && node scripts/update_flow_types.js",
     "build:schemas": "typescript-json-schema tsconfig.json DangerJSON > source/danger-incoming-process-schema.json; typescript-json-schema tsconfig.json DangerResults > source/danger-outgoing-process-schema.json; yarn prettier --write source/danger-outgoing-process-schema.json source/danger-incoming-process-schema.json",
     "build:pretty-types": "yarn prettier --write distribution/danger.d.ts; yarn prettier --parser flow distribution/danger.js.flow --write",
     "build:watch": "tsc -w",
