@@ -323,9 +323,7 @@ interface BitBucketServerChangesValueMove {
   }
 }
 
-type BitBucketServerChangesValue =
-  | BitBucketServerChangesValueAddCopyModifyDelete
-  | BitBucketServerChangesValueMove
+type BitBucketServerChangesValue = BitBucketServerChangesValueAddCopyModifyDelete | BitBucketServerChangesValueMove
 
 /** A platform agnostic reference to a Git commit */
 interface GitCommit {
@@ -688,7 +686,7 @@ interface GitDSL extends GitJSONDSL {
    * returns null if you don't have any changes for the file in the diff.
    *
    * Note that if you are looking to just see changes like: before, after, added or removed - you
-   * should use `JSONDiffForFile` instead, as this can be a bit unweildy for a Dangerfile.
+   * should use `JSONDiffForFile` instead, as this can be a bit unwieldy for a Dangerfile.
    *
    * @param {string} filename the path to the json file
    */
@@ -846,6 +844,23 @@ interface GitHubIssueLabel {
 
   /** The color associated with this label */
   color: string
+}
+
+interface GitHubIssueComment {
+  /**
+   *  UUID for the comment
+   */
+  id: string
+
+  /**
+   * The User who made the comment
+   */
+  user: GitHubUser
+
+  /**
+   * Textual representation of comment
+   */
+  body: string
 }
 
 // This is `danger.github.pr`
