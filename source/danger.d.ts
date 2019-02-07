@@ -844,6 +844,9 @@ interface GitHubIssueLabel {
 
   /** The color associated with this label */
   color: string
+
+  /** Does this come with every github repo? */
+  default: boolean
 }
 
 interface GitHubIssueComment {
@@ -937,6 +940,11 @@ interface GitHubPRDSL {
    * The User who is assigned the PR
    */
   assignee: GitHubUser
+
+  /**
+   * The User who is closed the PR
+   */
+  closed_by: GitHubUser
 
   /**
    * The Users who are assigned to the PR

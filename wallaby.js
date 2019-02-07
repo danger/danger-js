@@ -7,11 +7,7 @@ module.exports = wallaby => {
       { pattern: "package.json", instrument: false },
     ],
 
-    tests: [
-      "source/**/*.test.ts",
-      "!source/runner/runners/_tests/vm2.test.ts",
-      "!source/runner/_tests/json-to-context.test.s",
-    ],
+    tests: ["source/**/*.test.ts", "!source/runner/_tests/json-to-context.test.s"],
 
     env: {
       type: "node",
