@@ -20,4 +20,5 @@ jobs:
             - ~/danger-js/node_modules
             - ~/.cache/yarn/
       - run: yarn add danger
+      - run: yarn danger --version
       - run: DEBUG="*" yarn danger --dangerfile dangerfile.circle.js --text-only
