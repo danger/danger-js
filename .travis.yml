@@ -8,7 +8,6 @@ cache:
 matrix:
   include:
     # Normal CI test runs :D
-    - node_js: "6"
     - node_js: "10"
 
     - node_js: "8"
@@ -38,7 +37,7 @@ matrix:
           https://github.com/danger/danger-js/pull/760
 
     # Does the real danger run
-    - node_js: "9"
+    - node_js: "node"
       script:
         - yarn jest --outputFile test-results.json --json --runInBand
         - yarn run link

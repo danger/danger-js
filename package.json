@@ -50,6 +50,7 @@
   "scripts": {
     "release": "release-it",
     "test": "jest",
+    "test:fixtures": "node ./scripts/run-fixtures.js",
     "test:watch": "jest --watch",
     "lint": "tslint \"source/**/*.ts\"",
     "lint:fix": "tslint \"source/**/*.ts\" --fix",
@@ -66,7 +67,7 @@
     "docs:cp_defs": "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/@octokit/rest/index.d.ts docs/docs_generate/github.d.ts",
     "docs": "yarn run docs:cp_defs; yarn typedoc --ignoreCompilerErrors --mode modules --json docs/js_ref_dsl_docs.json --includeDeclarations source",
     "dts-lint": "yarn run declarations && yarn dtslint types",
-    "danger:prepush": "yarn build:fast; node distribution/commands/danger.js local --dangerfile dangerfile.lite.ts"
+    "danger:prepush": "yarn build:fast; yarn test:fixtures; node distribution/commands/danger.js local --dangerfile dangerfile.lite.ts"
   },
   "repository": {
     "type": "git",
@@ -92,7 +93,7 @@
     "@types/debug": "0.0.30",
     "@types/get-stdin": "^5.0.1",
     "@types/http-proxy-agent": "^2.0.1",
-    "@types/jest": "^23.3.2",
+    "@types/jest": "^24.0.0",
     "@types/json5": "^0.0.30",
     "@types/jsonwebtoken": "^7.2.8",
     "@types/lodash.includes": "^4.3.4",
@@ -106,7 +107,7 @@
     "date-fns": "^1.29.0",
     "flow-bin": "^0.77.0",
     "husky": "^1.0.1",
-    "jest": "^23.6.0",
+    "jest": "^24.0.0",
     "jest-json-reporter": "^1.2.2",
     "lint-staged": "^7.3.0",
     "madge": "^3.2.0",
@@ -114,8 +115,8 @@
     "prettier": "^1.14.2",
     "release-it": "^7.6.1",
     "shx": "^0.3.2",
-    "ts-jest": "^23.10.3",
-    "ts-node": "^7.0.1",
+    "ts-jest": "^23.10.5",
+    "ts-node": "^8.0.2",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "typedoc": "0.9.0",
@@ -153,8 +154,7 @@
     "readline-sync": "^1.4.9",
     "require-from-string": "^2.0.2",
     "rfc6902": "^3.0.1",
-    "supports-hyperlinks": "^1.0.1",
-    "vm2": "^3.6.3"
+    "supports-hyperlinks": "^1.0.1"
   },
   "optionalDependencies": {},
   "husky": {

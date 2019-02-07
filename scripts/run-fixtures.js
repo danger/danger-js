@@ -1,20 +1,21 @@
 // Note: Keep this ES6 only, want to be able to run this directly via node
 // to ensure that something like ts-node doesn't mess up paths etc
 
-// yarn build; cat source/_tests/fixtures/danger-js-pr-395.json | env DANGER_FAKE_CI="YEP" DANGER_TEST_REPO='danger/danger-js' DANGER_TEST_PR='395' node --inspect distribution/commands/danger-runner.js --text-only --dangerfile /Users/orta/dev/projects/danger/danger-js/source/runner/_tests/fixtures/__DangerfileAsync.js
+// yarn test:fixtures
+
+// Toggle this on to update the JSON files for each run
+const writeResults = false
 
 const fs = require("fs")
 const child_process = require("child_process")
 const { resolve } = require("path")
+const { basename } = require("path")
 const chalk = require("chalk")
 const expect = require("expect")
 
-// Toggle this on to update the JSON files for each run
-const writeResults = false
-console.log("If this script fails, you probably want to update the fixtures - just edit script/run-fixtures.js")
 const runnerFileJS = "distribution/commands/danger-runner.js"
 
-// Get all the fixtures
+// Use a DSL fixture, and emulate being the `danger ci` host process
 const dangerDSLFixture = resolve(__dirname, "../source/_tests/fixtures/danger-js-pr-395.json")
 const dslJSON = fs.readFileSync(dangerDSLFixture, "utf8")
 
@@ -28,6 +29,10 @@ const fixtures = fs
   .filter(f => !f.includes("Throws"))
   .filter(f => !f.includes("BadSyntax"))
 
+let runCount = 0
+
+console.log("Running Fixures for Danger JS. This uses the built version of danger.\n")
+
 // Runs the danger runner over a fixture, then compares it to the
 // fixtured JSON data
 const runDangerfile = fixture => {
@@ -35,7 +40,7 @@ const runDangerfile = fixture => {
   const dangerfile = `${dangerFileFixtures}/${fixture}`
   const dangerfileResults = `${dangerFileResultsFixtures}/${fixture}.json`
 
-  console.log("Running fixture for " + chalk.bold(dangerfile))
+  process.stdout.write(chalk.bold(basename(dangerfile)))
 
   // Setup the command
   const commandArgs = ["node", runnerFileJS, "--text-only", "--dangerfile", dangerfile]
@@ -58,23 +63,35 @@ const runDangerfile = fixture => {
 
   child.stdout.on("data", data => {
     data = data.toString()
+    // console.log(`stdout: ${data}`)
+
     const trimmed = data.trim()
-    if (trimmed.startsWith("{") && trimmed.endsWith("}") && trimmed.includes("markdowns")) {
-      const runtimeResults = JSON.parse(trimmed)
-
-      if (writeResults) {
-        fs.writeFileSync(dangerfileResults, trimmed)
-      }
-
-      const fixturedResults = JSON.parse(fs.readFileSync(dangerfileResults, "utf8"))
-      // Fails include traces etc
-      expect(runtimeResults).toEqual(fixturedResults)
-
-      next()
-    } else {
-      allLogs += data
+    const maybeJSON = getJSONURLFromSTDOUT(data)
+    const url = maybeJSON.replace("danger-results:/", "")
+    const runtimeResults = JSON.parse(fs.readFileSync(url, "utf8"))
+    if (writeResults) {
+      fs.writeFileSync(dangerfileResults, trimmed)
     }
+
+    const fixturedResults = JSON.parse(fs.readFileSync(dangerfileResults, "utf8"))
+    // Fails include traces etc
+    expect(runtimeResults).toEqual(fixturedResults)
+
+    const tick = chalk.bold.greenBright("✓")
+    process.stdout.write(" " + tick)
+
+    runCount++
+    next()
   })
+}
+
+/** Pulls out a URL that's from the STDOUT */
+const getJSONURLFromSTDOUT = stdout => {
+  const match = stdout.match(/danger-results:\/\/*.+json/)
+  if (!match) {
+    return undefined
+  }
+  return match[0]
 }
 
 // Keep an index and loop through the fixtures
@@ -82,7 +99,12 @@ var index = 0
 const next = () => {
   const nextFixture = fixtures[index++]
   if (nextFixture) {
+    if (index > 1) {
+      process.stdout.write(", ")
+    }
     runDangerfile(nextFixture)
+  } else {
+    expect(runCount).toEqual(fixtures.length)
   }
 }
 

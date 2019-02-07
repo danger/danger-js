@@ -77,7 +77,7 @@ describe("API testing", () => {
 
   it("updateCommentWithID", async () => {
     api.fetch = fetch
-    api.patch = jest.fn(() => ({ json: jest.fn() }))
+    api.patch = jest.fn(() => ({ json: jest.fn() })) as any
 
     await api.updateCommentWithID("123", "Hello!")
 
