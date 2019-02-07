@@ -8,7 +8,6 @@ cache:
 matrix:
   include:
     # Normal CI test runs :D
-    - node_js: "6"
     - node_js: "10"
 
     - node_js: "8"

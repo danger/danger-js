@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/danger-js
     docker:
-      - image: node:7
+      - image: node:10
     steps:
       - checkout
       - restore_cache:
