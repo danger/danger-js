@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+# 7.1.0
+
 - Removed `vm2` from Danger, it's not being used in Peril now - [@orta][]
 - `danger pr` with `--json` or --js` now don't require a Dangerfile to be present - [@orta][]
 

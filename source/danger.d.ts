@@ -724,8 +724,8 @@ interface GitHubJSONDSL {
   commits: GitHubCommit[]
   /** The reviews left on this pull request */
   reviews: GitHubReview[]
-  /** The people requested to review this PR */
-  requested_reviewers: GitHubUser[]
+  /** The people/teams requested to review this PR */
+  requested_reviewers: GitHubReviewers
 }
 
 // This is `danger.github`
@@ -844,9 +844,6 @@ interface GitHubIssueLabel {
 
   /** The color associated with this label */
   color: string
-
-  /** Does this come with every github repo? */
-  default: boolean
 }
 
 interface GitHubIssueComment {
@@ -942,11 +939,6 @@ interface GitHubPRDSL {
   assignee: GitHubUser
 
   /**
-   * The User who is closed the PR
-   */
-  closed_by: GitHubUser
-
-  /**
    * The Users who are assigned to the PR
    */
   assignees: GitHubUser[]
@@ -990,6 +982,16 @@ interface GitHubPRDSL {
    * The link back to this PR as user-facing
    */
   html_url: string
+
+  /** How does the PR author relate to this repo/org? */
+  author_association:
+    | "COLLABORATOR"
+    | "CONTRIBUTOR"
+    | "FIRST_TIMER"
+    | "FIRST_TIME_CONTRIBUTOR"
+    | "MEMBER"
+    | "NONE"
+    | "OWNER"
 }
 
 // These are the individual subtypes of objects inside the larger DSL objects above.
@@ -1030,6 +1032,10 @@ interface GitHubUser {
    * The url for a users's image
    */
   avatar_url: string
+  /**
+   * The href for a users's page
+   */
+  href: string
 }
 
 /**
@@ -1154,6 +1160,13 @@ interface GitHubAPIPR {
   repo: string
   /** The PR number */
   number: number
+}
+
+interface GitHubReviewers {
+  /** Users that have been requested */
+  users: GitHubUser[]
+  /** Teams that have been requested */
+  teams: any[]
 }
 
 /**
