@@ -15,6 +15,10 @@
 
 <!-- Your comment below this -->
 
+# 7.0.9
+
+- Updates the import for octokit at the top of the danger.d.ts - [@orta][]
+
 # 7.0.8
 
 - Handles the previews API correctly - [@orta][]
