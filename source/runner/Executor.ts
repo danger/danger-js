@@ -308,6 +308,14 @@ export class Executor {
     const inlineResults = resultsIntoInlineResults(results)
     const sortedInlineResults = sortInlineResults(inlineResults)
 
+    let emptyResult: DangerResults = {
+      messages: emptyDangerResults.messages,
+      markdowns: emptyDangerResults.markdowns,
+      fails: emptyDangerResults.fails,
+      warnings: emptyDangerResults.warnings,
+      meta: results.meta,
+    }
+
     // For every inline result check if there is a comment already
     // if there is - update it and remove comment from deleteComments array (comments prepared for deletion)
     // if there isn't - create a new comment
@@ -335,7 +343,7 @@ export class Executor {
 
     return Promise.all(commentPromises).then(dangerResults => {
       return new Promise<DangerResults>(resolve => {
-        resolve(dangerResults.reduce((acc, r) => mergeResults(acc, r), emptyDangerResults))
+        resolve(dangerResults.reduce((acc, r) => mergeResults(acc, r), emptyResult))
       })
     })
   }

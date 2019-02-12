@@ -5,6 +5,10 @@ export const singleViolationSingleFileResults: DangerResults = {
   warnings: [{ message: "Warnings message", file: "Test.swift", line: 10 }],
   messages: [{ message: "Message message", file: "Test.swift", line: 10 }],
   markdowns: [{ message: "Markdown message", file: "Test.swift", line: 10 }],
+  meta: {
+    runtimeHref: "http://danger.system/swift",
+    runtimeName: "Swift",
+  },
 }
 
 export const multipleViolationSingleFileResults: DangerResults = {
@@ -28,6 +32,10 @@ export const multipleViolationSingleFileResults: DangerResults = {
     { message: "Markdown message2", file: "Test.swift", line: 10 },
     { message: "Markdown message3", file: "Test.swift", line: 10 },
   ],
+  meta: {
+    runtimeHref: "http://danger.system/swift",
+    runtimeName: "Swift",
+  },
 }
 
 export const multipleViolationsMultipleFilesResults: DangerResults = {
@@ -51,6 +59,10 @@ export const multipleViolationsMultipleFilesResults: DangerResults = {
     { message: "Markdown message2", file: "Test.swift", line: 11 },
     { message: "Markdown message3", file: "Test.swift", line: 12 },
   ],
+  meta: {
+    runtimeHref: "http://danger.system/swift",
+    runtimeName: "Swift",
+  },
 }
 
 export const emptyDangerResults: DangerResults = {
@@ -108,6 +120,10 @@ export const regularAndInlineViolationsResults: DangerResults = {
     { message: "Markdown message2", file: "Test.swift", line: 10 },
     { message: "Markdown message3", file: "Test.swift", line: 10 },
   ],
+  meta: {
+    runtimeHref: "http://danger.system/swift",
+    runtimeName: "Swift",
+  },
 }
 
 export const unsortedInlineResults: DangerInlineResults[] = [

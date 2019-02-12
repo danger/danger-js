@@ -129,6 +129,7 @@ export function regularResults(results: DangerResults): DangerResults {
     warnings: results.warnings.filter(m => !isInline(m)),
     messages: results.messages.filter(m => !isInline(m)),
     markdowns: results.markdowns.filter(m => !isInline(m)),
+    meta: results.meta,
   }
 }
 
@@ -139,6 +140,7 @@ export function mergeResults(results1: DangerResults, results2: DangerResults): 
     warnings: results1.warnings.concat(results2.warnings),
     messages: results1.messages.concat(results2.messages),
     markdowns: results1.markdowns.concat(results2.markdowns),
+    meta: results1.meta || results2.meta,
   }
 }
 
@@ -211,6 +213,7 @@ export function sortResults(results: DangerResults): DangerResults {
     warnings: results.warnings.sort(sortByFile),
     messages: results.messages.sort(sortByFile),
     markdowns: results.markdowns.sort(sortByFile),
+    meta: results.meta,
   }
 }
 

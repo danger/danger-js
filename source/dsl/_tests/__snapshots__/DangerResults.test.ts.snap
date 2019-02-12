@@ -250,6 +250,10 @@ Object {
       "message": "Message message2",
     },
   ],
+  "meta": Object {
+    "runtimeHref": "http://danger.system/swift",
+    "runtimeName": "Swift",
+  },
   "warnings": Array [
     Object {
       "message": "Warnings message1",
@@ -329,6 +333,10 @@ Object {
       "message": "Message message3",
     },
   ],
+  "meta": Object {
+    "runtimeHref": "http://danger.system/swift",
+    "runtimeName": "Swift",
+  },
   "warnings": Array [
     Object {
       "file": "Test.swift",
