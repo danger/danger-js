@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Make bitbucket generated signature less aggressive - [@f-meloni][]
+
 # 7.0.9
 
 - Updates the import for octokit at the top of the danger.d.ts - [@orta][]
