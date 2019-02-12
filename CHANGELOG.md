@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+# 7.0.11
+
 - Return the DangerResults meta after sorting and merging operations - [@f-meloni][]
 - Make bitbucket generated signature less aggressive - [@f-meloni][]
 
