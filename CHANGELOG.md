@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Support multi-line import/require statements in Dangerfiles & possibly fix source-mapping for errors - [@fbartho][]
+
 # 7.0.11
 
 - Return the DangerResults meta after sorting and merging operations - [@f-meloni][]
@@ -677,9 +679,6 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 ### 3.0.5
 
 - Added support for Bitrise as a CI Provider - [@tychota][]
-
-### 3.0.5
-
 - Nevercode ENV var fixes - [@fbartho][]
 
 ### 3.0.4
@@ -840,7 +839,8 @@ Some UX fixes:
 
 ### 2.0.0-alpha.15
 
-- Updates `diffForFile`, `JSONPatchForFile`, and `JSONDiffForFile` to include created and removed files - #368 - bdotdub
+- Updates `diffForFile`, `JSONPatchForFile`, and `JSONDiffForFile` to include created and removed files - #368 -
+  [@bdotdub][]
 
 ### 2.0.0-alpha.14
 
@@ -919,7 +919,7 @@ Some UX fixes:
 ### 2.0.0-alpha.8
 
 - Uses the GitHub `diff_url` instead of the `diff` version header, as it conflicted with Peril - [@orta][]
-- Handle exceptions in Dangerfile and report them as failures in Danger results - macklinu
+- Handle exceptions in Dangerfile and report them as failures in Danger results - [@macklinu][]
 
 ### 2.0.0-alpha.6-7
 
@@ -978,11 +978,11 @@ Some UX fixes:
 
 ### 1.1.0
 
-- Support retrive paginated pull request commit list - kwonoj
-- Add support for VSTS CI - mlabrum
+- Support retrieve paginated pull request commit list - [@kwonoj][]
+- Add support for VSTS CI - [@mlabrum][]
 - Remove the DSL duplication on the `danger` export, it wasn't needed or used. - [@orta][]
 - Update to TypeScript 2.4.x - [@orta][]
-- Rename github test static_file to remove `:` from the filename to fix a checkout issue on windows - mlabrum
+- Rename github test static_file to remove `:` from the filename to fix a checkout issue on windows - [@mlabrum][]
 
 ### 1.0.0
 
