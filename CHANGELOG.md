@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+# 7.0.12
+
 - Support multi-line import/require statements in Dangerfiles & possibly fix source-mapping for errors - [@fbartho][]
 
 # 7.0.11
