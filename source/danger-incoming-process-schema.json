@@ -45,7 +45,7 @@
                     "type": "object"
                 },
                 "committerTimestamp": {
-                    "description": "When the commit was commited to the project",
+                    "description": "When the commit was committed to the project",
                     "type": "number"
                 },
                 "displayId": {
@@ -804,7 +804,7 @@
                 },
                 "repo": {
                     "$ref": "#/definitions/GitHubRepo",
-                    "description": "The repo from whch the reference comes from"
+                    "description": "The repo from which the reference comes from"
                 },
                 "sha": {
                     "description": "The reference point for the merge, e.g. \"704dc55988c6996f69b6873c2424be7d1de67bbe\"",
