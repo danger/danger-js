@@ -134,6 +134,8 @@ export const babelify = (content: string, filename: string, extraPlugins: string
   }
 
   const result = transformSync(content, fileOpts)
+  d("Result from Babel:")
+  d(result)
   return result.code
 }
 

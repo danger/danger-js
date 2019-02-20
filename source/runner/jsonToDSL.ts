@@ -69,7 +69,7 @@ const apiForDSL = (dsl: DangerDSLJSONType): OctoKit | BitBucketServerAPI => {
     Object.keys(dsl.settings.github.additionalHeaders).length
   ) {
     if (dsl.settings.github.additionalHeaders.Accept) {
-      options.previews = [dsl.settings.github.additionalHeaders.Accept]
+      options.previews = dsl.settings.github.additionalHeaders.Accept.split(",")
     }
   }
 
