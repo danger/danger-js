@@ -144,6 +144,30 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     }, Object.create(null))
   }
 
+  const linesOfCode = async () => {
+    const [createdFilesDiffs, modifiledFilesDiffs, deletedFilesDiffs] = await Promise.all([
+      Promise.all(gitJSONRep.created_files.map(path => diffForFile(path))),
+      Promise.all(gitJSONRep.modified_files.map(path => diffForFile(path))),
+      Promise.all(gitJSONRep.deleted_files.map(path => diffForFile(path))),
+    ])
+
+    let additions = createdFilesDiffs
+      .map(diff => (!diff ? 0 : diff.added === "" ? 0 : diff.added.split("\n").length))
+      .reduce((mem, value) => mem + value, 0)
+    let deletions = deletedFilesDiffs
+      .map(diff => (!diff ? 0 : diff.removed === "" ? 0 : diff.removed.split("\n").length))
+      .reduce((mem, value) => mem + value, 0)
+    const modifiedLines = modifiledFilesDiffs.map(diff => [
+      !diff ? 0 : diff.added === "" ? 0 : diff.added.split("\n").length,
+      !diff ? 0 : diff.removed === "" ? 0 : diff.removed.split("\n").length,
+    ])
+
+    additions = modifiedLines.reduce((mem, value) => mem + value[0], additions)
+    deletions = modifiedLines.reduce((mem, value) => mem + value[1], deletions)
+
+    return additions + deletions
+  }
+
   const byType = (t: string) => ({ type }: { type: string }) => type === t
   const getContent = ({ content }: { content: string }) => content
 
@@ -212,5 +236,6 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     structuredDiffForFile,
     JSONPatchForFile,
     JSONDiffForFile,
+    linesOfCode,
   }
 }
