@@ -755,7 +755,7 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 
 ### 2.1.5
 
-- The TS compiler will horse a module type of commonjs when transpiling the Dangerfile - [@orta][]
+- The TS compiler will force a module type of commonjs when transpiling the Dangerfile - [@orta][]
 
 ### 2.1.4
 
