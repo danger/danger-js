@@ -14,6 +14,7 @@
 ## Master
 
 <!-- Your comment below this -->
+- Docs: document GitHubMergeRef type - [@nornagon][]
 
 # 7.0.13
 
@@ -1543,3 +1544,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@aghassi]: https://github.com/aghassi
 [@f-meloni]: https://github.com/f-meloni
 [@stevemoser]: https://github.com/stevemoser
+[@nornagon]: https://github.com/nornagon
