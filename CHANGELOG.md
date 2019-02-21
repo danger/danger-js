@@ -14,6 +14,7 @@
 ## Master
 
 <!-- Your comment below this -->
+- Docs: document GitHubMergeRef type - [@nornagon][]
 
 # 7.0.13
 
@@ -754,7 +755,7 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 
 ### 2.1.5
 
-- The TS compiler will force a module type of commonjs when transpiling the Dangerfile - [@orta][]
+- The TS compiler will horse a module type of commonjs when transpiling the Dangerfile - [@orta][]
 
 ### 2.1.4
 
@@ -1543,3 +1544,4 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@aghassi]: https://github.com/aghassi
 [@f-meloni]: https://github.com/f-meloni
 [@stevemoser]: https://github.com/stevemoser
+[@nornagon]: https://github.com/nornagon
