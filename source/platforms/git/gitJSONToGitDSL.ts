@@ -4,6 +4,7 @@ import parseDiff from "parse-diff"
 import includes from "lodash.includes"
 import isobject from "lodash.isobject"
 import keys from "lodash.keys"
+import memoize from "lodash.memoize"
 
 import * as jsonDiff from "rfc6902"
 import jsonpointer from "jsonpointer"
@@ -48,6 +49,15 @@ export interface Chunk {
 export type Changes = { type: "add" | "del" | "normal"; content: string }[]
 
 export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLConfig): GitDSL => {
+  const getFullDiff: ((base: string, head: string) => Promise<string>) | null = config.getStructuredDiffForFile
+    ? null
+    : memoize(
+        (base: string, head: string) => {
+          return config.getFullDiff!(base, head)
+        },
+        (base: string, head: string) => `${base}...${head}`
+      )
+
   /**
    * Takes a filename, and pulls from the PR the two versions of a file
    * where we then pass that off to the rfc6902 JSON patch generator.
@@ -182,7 +192,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     if (config.getStructuredDiffForFile) {
       fileDiffs = await config.getStructuredDiffForFile(config.baseSHA, config.headSHA, filename)
     } else {
-      const diff = await config.getFullDiff!(config.baseSHA, config.headSHA)
+      const diff = await getFullDiff!(config.baseSHA, config.headSHA)
       fileDiffs = parseDiff(diff)
     }
     const structuredDiff = fileDiffs.find(diff => diff.from === filename || diff.to === filename)

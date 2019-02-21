@@ -1097,7 +1097,6 @@ interface GitHubRepo {
   html_url: string
 }
 
-/** Provides information about the merge reference */
 interface GitHubMergeRef {
   /**
    * The human display name for the merge reference, e.g. "artsy:master"
