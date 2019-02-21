@@ -14,6 +14,8 @@
 ## Master
 
 <!-- Your comment below this -->
+
+- Add `linesOfCode` in `GitDSL` - [@ninjaprox][]
 - Docs: document GitHubMergeRef type - [@nornagon][]
 
 # 7.0.13
