@@ -14,6 +14,8 @@
 ## Master
 
 <!-- Your comment below this -->
+
+- Fixed: Crash on BitbucketServer when the change type is unknown - [@f-meloni][]
 - Docs: document GitHubMergeRef type - [@nornagon][]
 
 # 7.0.13
