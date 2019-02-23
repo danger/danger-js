@@ -6,6 +6,9 @@
     }
   },
   {
+    "type": "UNKNOWN"
+  },
+  {
     "type": "ADD",
     "path": {
       "toString": "banana"

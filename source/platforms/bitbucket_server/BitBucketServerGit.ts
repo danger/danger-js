@@ -115,7 +115,9 @@ const bitBucketServerChangesToGitJSONDSL = (
             deleted_files: [...git.deleted_files, value.path.toString],
           }
         default:
-          throw new Error(`Unhandled change type: ${value.type}`)
+          return {
+            ...git,
+          }
       }
     },
     {

@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Fixed: Crash on BitbucketServer when the change type is unknown - [@f-meloni][]
 - Add `linesOfCode` in `GitDSL` - [@ninjaprox][]
 - Docs: document GitHubMergeRef type - [@nornagon][]
 
