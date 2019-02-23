@@ -36,6 +36,7 @@ export class FakePlatform implements Platform {
           url: "123",
         },
       ],
+      linesOfCode: async () => 0,
     }
   }
 
