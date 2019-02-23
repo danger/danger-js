@@ -131,4 +131,9 @@ export interface GitDSL extends GitJSONDSL {
    * @param {string} filename the path to the json file
    */
   JSONDiffForFile(filename: string): Promise<JSONDiff>
+
+  /**
+   * Offers the overall lines of code added/removed in the diff
+   */
+  linesOfCode(): Promise<number | null>
 }

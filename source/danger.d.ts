@@ -710,6 +710,11 @@ interface GitDSL extends GitJSONDSL {
    * @param {string} filename the path to the json file
    */
   JSONDiffForFile(filename: string): Promise<JSONDiff>
+
+  /**
+   * Offers the overall lines of code added/removed in the diff
+   */
+  linesOfCode(): Promise<number | null>
 }
 // This is `danger.github` inside the JSON
 
@@ -1092,7 +1097,6 @@ interface GitHubRepo {
   html_url: string
 }
 
-/** Provides information about the merge reference */
 interface GitHubMergeRef {
   /**
    * The human display name for the merge reference, e.g. "artsy:master"

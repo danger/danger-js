@@ -4,6 +4,7 @@ import parseDiff from "parse-diff"
 import includes from "lodash.includes"
 import isobject from "lodash.isobject"
 import keys from "lodash.keys"
+import memoize from "lodash.memoize"
 
 import * as jsonDiff from "rfc6902"
 import jsonpointer from "jsonpointer"
@@ -48,6 +49,15 @@ export interface Chunk {
 export type Changes = { type: "add" | "del" | "normal"; content: string }[]
 
 export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLConfig): GitDSL => {
+  const getFullDiff: ((base: string, head: string) => Promise<string>) | null = config.getStructuredDiffForFile
+    ? null
+    : memoize(
+        (base: string, head: string) => {
+          return config.getFullDiff!(base, head)
+        },
+        (base: string, head: string) => `${base}...${head}`
+      )
+
   /**
    * Takes a filename, and pulls from the PR the two versions of a file
    * where we then pass that off to the rfc6902 JSON patch generator.
@@ -144,6 +154,30 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     }, Object.create(null))
   }
 
+  const linesOfCode = async () => {
+    const [createdFilesDiffs, modifiledFilesDiffs, deletedFilesDiffs] = await Promise.all([
+      Promise.all(gitJSONRep.created_files.map(path => diffForFile(path))),
+      Promise.all(gitJSONRep.modified_files.map(path => diffForFile(path))),
+      Promise.all(gitJSONRep.deleted_files.map(path => diffForFile(path))),
+    ])
+
+    let additions = createdFilesDiffs
+      .map(diff => (!diff ? 0 : diff.added === "" ? 0 : diff.added.split("\n").length))
+      .reduce((mem, value) => mem + value, 0)
+    let deletions = deletedFilesDiffs
+      .map(diff => (!diff ? 0 : diff.removed === "" ? 0 : diff.removed.split("\n").length))
+      .reduce((mem, value) => mem + value, 0)
+    const modifiedLines = modifiledFilesDiffs.map(diff => [
+      !diff ? 0 : diff.added === "" ? 0 : diff.added.split("\n").length,
+      !diff ? 0 : diff.removed === "" ? 0 : diff.removed.split("\n").length,
+    ])
+
+    additions = modifiedLines.reduce((mem, value) => mem + value[0], additions)
+    deletions = modifiedLines.reduce((mem, value) => mem + value[1], deletions)
+
+    return additions + deletions
+  }
+
   const byType = (t: string) => ({ type }: { type: string }) => type === t
   const getContent = ({ content }: { content: string }) => content
 
@@ -158,7 +192,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     if (config.getStructuredDiffForFile) {
       fileDiffs = await config.getStructuredDiffForFile(config.baseSHA, config.headSHA, filename)
     } else {
-      const diff = await config.getFullDiff!(config.baseSHA, config.headSHA)
+      const diff = await getFullDiff!(config.baseSHA, config.headSHA)
       fileDiffs = parseDiff(diff)
     }
     const structuredDiff = fileDiffs.find(diff => diff.from === filename || diff.to === filename)
@@ -212,5 +246,6 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     structuredDiffForFile,
     JSONPatchForFile,
     JSONDiffForFile,
+    linesOfCode,
   }
 }
