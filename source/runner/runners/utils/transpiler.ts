@@ -2,6 +2,7 @@ import * as fs from "fs"
 import * as path from "path"
 import JSON5 from "json5"
 import { debug } from "../../../debug"
+import { BabelFileResult, BabelFileMetadata } from "@babel/core"
 
 const enum BabelPackagePrefix {
   V7 = "@babel/",
@@ -114,6 +115,7 @@ const sanitizeTSConfig = (config: any) => {
 
 export const babelify = (content: string, filename: string, extraPlugins: string[]): string => {
   const babel = require(`${babelPackagePrefix}core`) // tslint:disable-line
+  let babelTypes: BabelFileMetadata = require("@babel/core")
   // Since Babel 7, it is recommended to use `transformSync`.
   // For older versions, we fallback to `transform`.
   // @see https://babeljs.io/docs/en/babel-core#transform
@@ -123,6 +125,8 @@ export const babelify = (content: string, filename: string, extraPlugins: string
   }
 
   const options = babel.loadOptions ? babel.loadOptions({ filename }) : { plugins: [] }
+  d("Generated Babel options:")
+  d(options)
 
   const fileOpts = {
     filename,

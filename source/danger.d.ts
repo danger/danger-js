@@ -323,7 +323,9 @@ interface BitBucketServerChangesValueMove {
   }
 }
 
-type BitBucketServerChangesValue = BitBucketServerChangesValueAddCopyModifyDelete | BitBucketServerChangesValueMove
+type BitBucketServerChangesValue =
+  | BitBucketServerChangesValueAddCopyModifyDelete
+  | BitBucketServerChangesValueMove
 
 /** A platform agnostic reference to a Git commit */
 interface GitCommit {
