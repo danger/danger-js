@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Fixed: isCI check for Codeship - [@msteward]
+
 # 7.0.14
 
 - Fixed: Crash on BitbucketServer when the change type is unknown - [@f-meloni]
@@ -367,7 +369,7 @@ Also, `danger pr` now accepts a `--process` arg.
 # 3.7.19
 
 - Convert the `exec` in `danger local` to a `spawn` hopefully unblocking large diffs from going through it -
-  [@joshacheson] [@orta]
+  [@joshacheson][@orta]
 
 # 3.7.18
 
@@ -795,8 +797,8 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 ### 2.0.0-beta.2
 
 - Fixes a bug with `danger.github.utils` in that it didn't work as of b1, and now it does :+1: - [@orta]
-- Ships a `danger.js.flow` in the root of the project, this may be enough to support flow typing, thanks to
-  [@joarwilk] and [flowgen](https://github.com/joarwilk/flowgen) - [@orta]
+- Ships a `danger.js.flow` in the root of the project, this may be enough to support flow typing, thanks to [@joarwilk]
+  and [flowgen](https://github.com/joarwilk/flowgen) - [@orta]
 
 ### 2.0.0-beta.1
 
