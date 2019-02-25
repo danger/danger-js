@@ -1,17 +1,17 @@
 <!--
 
-// Please add your own contribution below inside the "master" section, no need to
+// Please add your own contribution below inside the Master section, no need to
 // set a version number, that happens during a deploy. Thanks!
 //
 // These docs are aimed at users rather than danger developers, so please limit technical
 // terminology in here.
 
 // Note: if this is your first PR, you'll need to add your URL to the footnotes
-//       see the bottom of this file
+//       see the bottom of this file. The list there is sorted, try to follow that.
 
 -->
 
-## master
+## Master
 
 <!-- Your comment below this -->
 
@@ -1443,7 +1443,7 @@ if (changelogDiff && changelogDiff.indexOf(contributorName) === -1) {
 
 ### 0.0.5-0.0.10
 
-- Changes some files casing, added some logs, a bit of error reporting, and verifying everything works through npm -
+- Changes some files cashing, added some logs, a bit of error reporting, and verifying everything works through npm -
   [@orta]
 
 ### 0.0.4
