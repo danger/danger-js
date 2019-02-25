@@ -1,7 +1,8 @@
 import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist, getPullRequestIDForBranch } from "../ci_source_helpers"
 
-// https://documentation.codeship.com/pro/builds-and-configuration/environment-variables/
+// Codeship Pro: https://documentation.codeship.com/pro/builds-and-configuration/environment-variables/
+// Codeship Basic: https://documentation.codeship.com/basic/builds-and-configuration/set-environment-variables/
 
 /**
  * ### CI Setup
@@ -48,7 +49,10 @@ export class Codeship implements CISource {
   }
 
   get isCI(): boolean {
-    return ensureEnvKeysExist(this.env, ["CODESHIP"])
+    if (ensureEnvKeysExist(this.env, ["CI_NAME"]) && this.env.CI_NAME === "codeship") {
+      return true
+    }
+    return false
   }
 
   get isPR(): boolean {
