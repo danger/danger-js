@@ -1,6 +1,6 @@
 <!--
 
-// Please add your own contribution below inside the Master section, no need to
+// Please add your own contribution below inside the "master" section, no need to
 // set a version number, that happens during a deploy. Thanks!
 //
 // These docs are aimed at users rather than danger developers, so please limit technical
@@ -11,62 +11,62 @@
 
 -->
 
-## Master
+## master
 
 <!-- Your comment below this -->
 
 # 7.0.14
 
-- Fixed: Crash on BitbucketServer when the change type is unknown - [@f-meloni][]
-- Add `linesOfCode` in `GitDSL` - [@ninjaprox][]
-- Docs: document GitHubMergeRef type - [@nornagon][]
+- Fixed: Crash on BitbucketServer when the change type is unknown - [@f-meloni]
+- Add `linesOfCode` in `GitDSL` - [@ninjaprox]
+- Docs: document GitHubMergeRef type - [@nornagon]
 
 # 7.0.13
 
-- Adds some Debug logs for babel transformation - [@orta][]
+- Adds some Debug logs for babel transformation - [@orta]
 
 # 7.0.12
 
-- Support multi-line import/require statements in Dangerfiles & possibly fix source-mapping for errors - [@fbartho][]
+- Support multi-line import/require statements in Dangerfiles & possibly fix source-mapping for errors - [@fbartho]
 
 # 7.0.11
 
-- Return the DangerResults meta after sorting and merging operations - [@f-meloni][]
-- Make bitbucket generated signature less aggressive - [@f-meloni][]
+- Return the DangerResults meta after sorting and merging operations - [@f-meloni]
+- Make bitbucket generated signature less aggressive - [@f-meloni]
 
 # 7.0.9
 
-- Updates the import for octokit at the top of the danger.d.ts - [@orta][]
+- Updates the import for octokit at the top of the danger.d.ts - [@orta]
 
 # 7.0.8
 
-- Handles the previews API correctly - [@orta][]
+- Handles the previews API correctly - [@orta]
 
 # 7.0.7
 
-- Removed `vm2` from Danger, it's not being used in Peril now - [@orta][]
-- `danger pr` with `--json` or --js` now don't require a Dangerfile to be present - [@orta][]
+- Removed `vm2` from Danger, it's not being used in Peril now - [@orta]
+- `danger pr` with `--json` or --js` now don't require a Dangerfile to be present - [@orta]
 
 # 7.0.5
 
-- Remove dead links to example danger files. - [@stevemoser][]
-- Allow danger-pr to work also on Bitbucket Server - [@f-meloni][]
-- Fix for nulls in modified_files - [@orta][]
-- Use new APIs in OctoKit - [@orta][]
+- Remove dead links to example danger files. - [@stevemoser]
+- Allow danger-pr to work also on Bitbucket Server - [@f-meloni]
+- Fix for nulls in modified_files - [@orta]
+- Use new APIs in OctoKit - [@orta]
 
 # 7.0.4
 
-- More fixes for `GITHUB_URL` instead of just `DANGER_GITHUB_URL` for GitHub Enterprise. - [@Aghassi][]
+- More fixes for `GITHUB_URL` instead of just `DANGER_GITHUB_URL` for GitHub Enterprise. - [@Aghassi]
 
 # 7.0.3
 
-- Lets you use `GITHUB_URL` instead of just `DANGER_GITHUB_URL` for GitHub Enterprise. - [@Aghassi][]
+- Lets you use `GITHUB_URL` instead of just `DANGER_GITHUB_URL` for GitHub Enterprise. - [@Aghassi]
 
 # 7.0.2
 
 - Fix issue where the PR command could not be run with a GitHub Enterprise URL.
 - Specify filename when loading Babel options. Fixes [#664](https://github.com/danger/danger-js/issues/664)
-  ([#804](https://github.com/danger/danger-js/pull/804)) - [@NMinhNguyen][]
+  ([#804](https://github.com/danger/danger-js/pull/804)) - [@NMinhNguyen]
 - Running Danger on GitHub Actions now runs Danger from source code. Before that, Danger on GitHub Actions is stuck at
   v5.0.0-beta-24. [@dtinth](https://github.com/danger/danger-js/pull/810)
 
@@ -88,7 +88,7 @@
 
 # 6.1.13
 
-- Allow sub-processes to pass their own name an href so that it doesn't say made by Danger JS [@orta][]
+- Allow sub-processes to pass their own name an href so that it doesn't say made by Danger JS [@orta]
 
   This is done by extending the `DangerResults` object passed back to Danger JS, by adding a meta section to the JSON:
 
@@ -107,96 +107,96 @@
 
   `"meta"` is optional, and will fall back to the DangerJS one.
 
-- Removed a dependency (voca) now that we're using TypeScript and have access to .includes [@orta][]
+- Removed a dependency (voca) now that we're using TypeScript and have access to .includes [@orta]
 
 # 6.1.12
 
-- Fix issue with detecting Babel if `babel-core` is installed - [@sajjadzamani][]
+- Fix issue with detecting Babel if `babel-core` is installed - [@sajjadzamani]
 
 # 6.2.0
 
-- Fix detection of GitHub Actions event types [@cysp][]
+- Fix detection of GitHub Actions event types [@cysp]
 
 # 6.1.9
 
-- Add commit ID to the comment footer [danger/danger-js#168] - [@randak][]
+- Add commit ID to the comment footer [danger/danger-js#168] - [@randak]
 - Add support for `COPY` change type to fix a BitBucket Server regression in
-  [danger/danger-js#764](https://github.com/danger/danger-js/pull/764) - [@sebinsua][]
-- Add support for older Babel versions (prior 7) [@sajjadzamani][]
+  [danger/danger-js#764](https://github.com/danger/danger-js/pull/764) - [@sebinsua]
+- Add support for older Babel versions (prior 7) [@sajjadzamani]
 
 # 6.1.8
 
 - Revert removal of implicit `<p>` tag from [danger/danger-js#754](https://github.com/danger/danger-js/pull/754) and add
-  distinction depending on containing markdown or not - [@hanneskaeufler][]
+  distinction depending on containing markdown or not - [@hanneskaeufler]
 
 # 6.1.7
 
-- Update comment instead deleting, if it has replies (BitBucket Server) [@langovoi][]
-- Fix BitBucket Server GitDSL [@langovoi][]
-- Add support of paged APIs of BitBucket Server [@langovoi][]
+- Update comment instead deleting, if it has replies (BitBucket Server) [@langovoi]
+- Fix BitBucket Server GitDSL [@langovoi]
+- Add support of paged APIs of BitBucket Server [@langovoi]
 
 # 6.1.6
 
 - Adds a CLI flag for custom Danger Runners to be able to request a URL to a JSON file instead of receiving the entire
   DSL as a big JSON dump. We're exploring using this in Danger Swift with
-  [danger/swift#108](https://github.com/danger/swift/issues/108) - [@orta][]
+  [danger/swift#108](https://github.com/danger/swift/issues/108) - [@orta]
 
 # 6.1.5
 
-- Adds `html_url` to the PR JSON declaration - [@orta][]
+- Adds `html_url` to the PR JSON declaration - [@orta]
 - Adds a way for a sub-process to tell danger-js that it wants a copy of the DSL. This is a potential fix for when you
   have a process that might not be ready to grab the DSL instantly from danger-js. The subprocess can print the message
   `danger://send-dsl` to stdout and danger-js will re-send the DSL via STDIN.
-  [danger/swift#108](https://github.com/danger/swift/issues/108). - [@orta][]
-- Allows a FakeCI to get a FakePlatform, should fix [#767](https://github.com/danger/danger-js/issues/767) - [@orta][]
+  [danger/swift#108](https://github.com/danger/swift/issues/108). - [@orta]
+- Allows a FakeCI to get a FakePlatform, should fix [#767](https://github.com/danger/danger-js/issues/767) - [@orta]
 
 # 6.1.4
 
-- Fix `GitJSONDSL` and `diffForFile` for BitBucket Server - [@langovoi][]
+- Fix `GitJSONDSL` and `diffForFile` for BitBucket Server - [@langovoi]
 
 # 6.1.3
 
-- Add support for personal tokens of BitBucket Server - [@langovoi][]
+- Add support for personal tokens of BitBucket Server - [@langovoi]
 - Ships a command `danger-js` which means other languages could also use the command danger and they won't conflict with
-  the JS version - [@orta][]
+  the JS version - [@orta]
 
 # 6.1.2
 
-- Checks for the JSON results file reported by a subprocess before accessing it - [@orta][]
+- Checks for the JSON results file reported by a subprocess before accessing it - [@orta]
 
 # 6.1.1
 
-- Improves debug logging, messaging on CI about status updates - [@orta][]
-- Better detection of json results: {} from a sub-process - [@orta][]
-- CLI Args are actually passed to subprocess instead of an empty object - [@orta][]
-- Fix Netlify integration when repo url includes an access token - [@imorente][]
+- Improves debug logging, messaging on CI about status updates - [@orta]
+- Better detection of json results: {} from a sub-process - [@orta]
+- CLI Args are actually passed to subprocess instead of an empty object - [@orta]
+- Fix Netlify integration when repo url includes an access token - [@imorente]
 
 # 6.1.0
 
-- Add CI integration for Netlify - [@imorente][]
+- Add CI integration for Netlify - [@imorente]
 
 # 6.0.7
 
-- Removes an accidental import - [@orta][]
+- Removes an accidental import - [@orta]
 
 # 6.0.6
 
-- Adds an internal flag for disabling checks support when being controller by Peril - [@orta][]
+- Adds an internal flag for disabling checks support when being controller by Peril - [@orta]
 
 # 6.0.5
 
-- Fix `danger pr` - [@orta][]
+- Fix `danger pr` - [@orta]
 
 # 6.0.4
 
-- Fix GitHub checks API payload - [@pveyes][]
+- Fix GitHub checks API payload - [@pveyes]
 
 # 6.0.3
 
-- Fix passing stdout from the sub-process back to the user - [@orta][]
-- Fix handling a `"pending"` status update properly using Bitbucket API - [@sgtcoolguy][]
-- Fix #614 - Posting status updates to Github using issue workflow broken - [@sgtcoolguy][]
-- Fix vertical alignment in GitHub issue template - [@patrickkempff][]
+- Fix passing stdout from the sub-process back to the user - [@orta]
+- Fix handling a `"pending"` status update properly using Bitbucket API - [@sgtcoolguy]
+- Fix #614 - Posting status updates to Github using issue workflow broken - [@sgtcoolguy]
+- Fix vertical alignment in GitHub issue template - [@patrickkempff]
 
 # 5.0.1, err. 6.0.0
 
@@ -247,15 +247,15 @@ Also, `danger pr` now accepts a `--process` arg.
 
 # 4.4.9
 
-- Add logic for "DANGER_DISABLE_TRANSPILATION" env [@markelog][]
-- Jenkins: Respect `CHANGE_URL`/`CHANGE_ID` for GitHub and BitBucket Server [@azz][]
-- Docs: Guides - Update link to apollo-client dangerfile.ts example [@andykenward][]
-- Fix crash that may occur when no message is set on generic event [@flovilmart][]
-- Add support to proxy requests using `HTTP_PROXY` or `HTTPS_PROXY` environment variables [@steprescott][]
+- Add logic for "DANGER_DISABLE_TRANSPILATION" env [@markelog]
+- Jenkins: Respect `CHANGE_URL`/`CHANGE_ID` for GitHub and BitBucket Server [@azz]
+- Docs: Guides - Update link to apollo-client dangerfile.ts example [@andykenward]
+- Fix crash that may occur when no message is set on generic event [@flovilmart]
+- Add support to proxy requests using `HTTP_PROXY` or `HTTPS_PROXY` environment variables [@steprescott]
 
 # 4.4.0-7
 
-- Supports installation using Homebrew [@thii][]
+- Supports installation using Homebrew [@thii]
 
 # 4.3.x
 
@@ -307,36 +307,36 @@ Also, `danger pr` now accepts a `--process` arg.
 
   This is all based on my module
   [memfs-or-file-map-to-github-branch](https://www.npmjs.com/package/memfs-or-file-map-to-github-branch) so if you need
-  a set of lower level APIs for PR/branch needs, `import` that and use it. - [@orta][]
+  a set of lower level APIs for PR/branch needs, `import` that and use it. - [@orta]
 
 # 4.0.1
 
-- Fixed a bug where Danger would fail to update status when there are no failures or messages [@johansteffner][]
-- Fixed a bug where Danger was throwing an error when removing any existing messages [@stefanbuck][]
+- Fixed a bug where Danger would fail to update status when there are no failures or messages [@johansteffner]
+- Fixed a bug where Danger was throwing an error when removing any existing messages [@stefanbuck]
 
 # 4.0.0
 
-- Updates Danger's runtime to work with Babel 7 - [@adamnoakes][]
+- Updates Danger's runtime to work with Babel 7 - [@adamnoakes]
 
   **Breaking:** 3.9.0 was the last version to support inline transpilation via Babel 6. Danger doesn't specify babel in
   its dependencies, so this warning won't show anywhere else.
 
 # 3.9.0
 
-- Adds CI integration for Concourse - [@cwright017][]
+- Adds CI integration for Concourse - [@cwright017]
 
 # 3.8.9
 
-- Adds debug logs to the vm2 runner used in Peril - [@orta][]
+- Adds debug logs to the vm2 runner used in Peril - [@orta]
 
 # 3.8.5 - 3.8.8
 
 - Adds a function to handle creating or adding a label on a PR/Issue. Works with both Danger and Peril:
-  `danger.github.createOrAddLabel` - [@orta][]
+  `danger.github.createOrAddLabel` - [@orta]
 
 # 3.8.4
 
-- Exposes some internals on module resolution to Peril - [@orta][]
+- Exposes some internals on module resolution to Peril - [@orta]
 
 # 3.8.3
 
@@ -349,29 +349,29 @@ Also, `danger pr` now accepts a `--process` arg.
 
 # 3.8.2
 
-- Use the Peril Bot ID for the comment lookup checks - [@orta][]
+- Use the Peril Bot ID for the comment lookup checks - [@orta]
 
 # 3.8.1
 
-- Adds additional logging to handleResultsPostingToPlatform - [@ashfurrow][]
+- Adds additional logging to handleResultsPostingToPlatform - [@ashfurrow]
 
 # 3.8.0
 
-- Fixes a crash if lodash isn't a transitive dependency in your node_modules - [@orta][]
-- Using the Checks API will now post a summary comment on a PR - [@orta][]
+- Fixes a crash if lodash isn't a transitive dependency in your node_modules - [@orta]
+- Using the Checks API will now post a summary comment on a PR - [@orta]
 
 # 3.7.20
 
-- Logging / verification improvements for the subprocess - [@orta][]
+- Logging / verification improvements for the subprocess - [@orta]
 
 # 3.7.19
 
 - Convert the `exec` in `danger local` to a `spawn` hopefully unblocking large diffs from going through it -
-  [@joshacheson][] [@orta][]
+  [@joshacheson] [@orta]
 
 # 3.7.18
 
-- Report the error in a commit status update when in verbose - [@orta][]
+- Report the error in a commit status update when in verbose - [@orta]
 
 # 3.7.17
 
@@ -379,27 +379,27 @@ Also, `danger pr` now accepts a `--process` arg.
 
 # 3.7.16
 
-- More work on `danger.github.utils.createUpdatedIssueWithID`. - [@orta][]
+- More work on `danger.github.utils.createUpdatedIssueWithID`. - [@orta]
 
 # 3.7.15
 
 - Turns on the strict mode in the typescript compiler, this only gave build errors, so I was basically there anyway.
-  This is so that the type defs will always pass inside environments where strict is already enabled. - [@orta][]
+  This is so that the type defs will always pass inside environments where strict is already enabled. - [@orta]
 
-- Updates to TypeScript 2.9. - [@orta][]
+- Updates to TypeScript 2.9. - [@orta]
 
 # 3.7.14
 
-- Minor refactoring in GitHubUtils to allow Peril to re-create some of the util functions - [@orta][]
+- Minor refactoring in GitHubUtils to allow Peril to re-create some of the util functions - [@orta]
 
 # 3.7.13
 
-- Updates type declarations to use top-level exports instead of a module augmentation - [@DanielRosenwasser][]
-- Bug fixes for `danger.github.utils.createUpdatedIssueWithID` - [@orta][]
+- Updates type declarations to use top-level exports instead of a module augmentation - [@DanielRosenwasser]
+- Bug fixes for `danger.github.utils.createUpdatedIssueWithID` - [@orta]
 
 # 3.7.2-12
 
-- Improved debugging when using the GitHub OctoKit - [@orta][]
+- Improved debugging when using the GitHub OctoKit - [@orta]
 - Added `danger.github.utils.createUpdatedIssueWithID` which can be used to have danger continually update a single
   issue in a repo, for example:
 
@@ -412,7 +412,7 @@ Also, `danger pr` now accepts a `--process` arg.
   })
   ```
 
-  Will first create, then update that issue with a new body. - [@orta][]
+  Will first create, then update that issue with a new body. - [@orta]
 
 # 3.7.1
 
@@ -448,81 +448,81 @@ Also, `danger pr` now accepts a `--process` arg.
 
   So now there are three ways to set up communications with GitHub, I'm not looking forwards to documenting that.
 
-  [@orta][]
+  [@orta]
 
-- JSON diffs use the JSON5 parser, so can now ignore comments in JSON etc [@orta][]
+- JSON diffs use the JSON5 parser, so can now ignore comments in JSON etc [@orta]
 - Allows the synchronous execution of multiple dangerfiles in one single "danger run".
 
   Not a particularly useful feature for Danger-JS, but it means Peril can combine many runs into a single execution
-  unit. This means people only get 1 message. [@orta][]
+  unit. This means people only get 1 message. [@orta]
 
 # 3.6.6
 
-- Updates vm2 to be an npm published version [@orta][]
+- Updates vm2 to be an npm published version [@orta]
 
 # 3.6.5
 
-- Fix setting the status url on bitbucket [@orta][]
-- Adds more logs to `danger process` [@orta][]
+- Fix setting the status url on bitbucket [@orta]
+- Adds more logs to `danger process` [@orta]
 
 # 3.6.4
 
-- Fix running Danger on issues with no comments for real [@mxstbr][]
+- Fix running Danger on issues with no comments for real [@mxstbr]
 
 # 3.6.3
 
-- Fix running Danger on issues with no comments [@mxstbr][]
+- Fix running Danger on issues with no comments [@mxstbr]
 
 # 3.6.2
 
-- Automatically rate limit concurrent GitHub API calls to avoid hitting GitHub rate limits [@mxstbr][]
+- Automatically rate limit concurrent GitHub API calls to avoid hitting GitHub rate limits [@mxstbr]
 
 # 3.6.1
 
-- Catch the github api error thrown from @octokit/rest [@Teamop][]
-- Replace preview media type of github pull request reviews api [@Teamop][]
-- Add support for [Screwdriver CI](http://screwdriver.cd) [@dbgrandi][]
+- Catch the github api error thrown from @octokit/rest [@Teamop]
+- Replace preview media type of github pull request reviews api [@Teamop]
+- Add support for [Screwdriver CI](http://screwdriver.cd) [@dbgrandi]
 
 # 3.6.0
 
-- A Dangerfile can return a default export, and then Danger will handle the execution of that code [@orta][]
-- Changes the order of the text output in verbose, or when STDOUT is the only option [@orta][]
-- Prints a link to the comment in the build log [@orta][]
+- A Dangerfile can return a default export, and then Danger will handle the execution of that code [@orta]
+- Changes the order of the text output in verbose, or when STDOUT is the only option [@orta]
+- Prints a link to the comment in the build log [@orta]
 
 ## 3.5.0 - 3.5.1
 
-- Fixed a bug where Danger posts empty main comment when it have one or more inline comments to post [@codestergit][]
-- fix bug when commiting .png files on BitBucket [@Mifi][]
-- Adds support for inline comments for bitbucket server. [@codestergit][]
+- Fixed a bug where Danger posts empty main comment when it have one or more inline comments to post [@codestergit]
+- fix bug when commiting .png files on BitBucket [@Mifi]
+- Adds support for inline comments for bitbucket server. [@codestergit]
 
 ## 3.4.7
 
-- Update dependencies [@orta][]
+- Update dependencies [@orta]
 
 ## 3.4.6
 
-- Fixed Babel 7 breaking due to invalid sourceFileName configuration [@kesne][]
+- Fixed Babel 7 breaking due to invalid sourceFileName configuration [@kesne]
 
 ## 3.4.5
 
-- Don't print error for commit status when there was no error [@sunshinejr][]
+- Don't print error for commit status when there was no error [@sunshinejr]
 
 ## 3.4.4
 
 - Fixed a bug where Danger would get access to _all_ inline comments, thus deleting comments posted by other people
-  [@sunshinejr][]
+  [@sunshinejr]
 
 ## 3.4.3
 
-- Fixed a bug where updating multiple inline comments caused a Javascript error [@sunshinejr][]
+- Fixed a bug where updating multiple inline comments caused a Javascript error [@sunshinejr]
 
 ## 3.4.2
 
-- Improving reporting when multiple violations are o nthe same line of a file [@sunshinejr][]
+- Improving reporting when multiple violations are o nthe same line of a file [@sunshinejr]
 
 ## 3.4.1
 
-- Protection against nulls in the inline comment data [@orta][]
+- Protection against nulls in the inline comment data [@orta]
 
 ## 3.4.0
 
@@ -555,28 +555,28 @@ Also, `danger pr` now accepts a `--process` arg.
   }
   ```
 
-  -- [@sunshinejr][]
+  -- [@sunshinejr]
 
-- Adds a data validation step when Danger gets results back from a process . [@orta][]
+- Adds a data validation step when Danger gets results back from a process . [@orta]
 
 ## 3.3.2
 
-- Adds support for TeamCity as a CI provider. [@fwal][]
+- Adds support for TeamCity as a CI provider. [@fwal]
 
 ## 3.3.1
 
-- Fixed Babel 7 breaking because of sourceFileName being defined wrong. [@happylinks][]
+- Fixed Babel 7 breaking because of sourceFileName being defined wrong. [@happylinks]
 
 ## 3.3.0
 
-- Fix `committer` field issue - missing in Stash API by using commit author instead. [@zdenektopic][]
+- Fix `committer` field issue - missing in Stash API by using commit author instead. [@zdenektopic]
 - Adds a new command: `reset-status`
 
   This command is for setting the CI build status in advance of running Danger. If your Danger build relies on running
   tests/linters, then you might want to set the PR status (the red/green/yellow dots) to pending at the start of your
   build. You can do this by running `yarn danger reset-status`.
 
-  [@mxstbr][]
+  [@mxstbr]
 
 ## 3.2.0
 
@@ -619,45 +619,45 @@ Also, `danger pr` now accepts a `--process` arg.
 
   You can see more in the docs for [Danger + BitBucket Server](http://danger.systems/js/usage/bitbucket_server.html).
 
-  -- [@azz][]
+  -- [@azz]
 
-- Don't check for same user ID on comment when running as a GitHub App. [@tibdex][]
+- Don't check for same user ID on comment when running as a GitHub App. [@tibdex]
 
 ## 3.1.8
 
-- Improvements to the Flow definition file. [@orta][]
-- Improve path generator for danger-runner. [@Mifi][]
-- Update the PR DSL to include bots. [@orta][]
-- Add utility function to build tables in Markdown [@keplersj][]
+- Improvements to the Flow definition file. [@orta]
+- Improve path generator for danger-runner. [@Mifi]
+- Update the PR DSL to include bots. [@orta]
+- Add utility function to build tables in Markdown [@keplersj]
 
 ## 3.1.7
 
-- Minor error reporting improvements. [@orta][]
+- Minor error reporting improvements. [@orta]
 
 ## 3.1.6
 
-- Move more code to only live inside functions. [@orta][]
+- Move more code to only live inside functions. [@orta]
 
 ## 3.1.5
 
-- Fix --base options for danger local. [@peterjgrainger][]
-- Fix a minor typo in Semaphore CI setup. [@hongrich][]
-- Fix for capitalized Dangerfiles in CI environment. [@wizardishungry][]
-- Fix `danger local` crashing when comparing master to HEAD with no changes. [@orta][]
+- Fix --base options for danger local. [@peterjgrainger]
+- Fix a minor typo in Semaphore CI setup. [@hongrich]
+- Fix for capitalized Dangerfiles in CI environment. [@wizardishungry]
+- Fix `danger local` crashing when comparing master to HEAD with no changes. [@orta]
 
 ## 3.1.4
 
-- Register danger-runner as a package binary. [@urkle][]
+- Register danger-runner as a package binary. [@urkle]
 
 ## 3.1.2-3.1.3
 
-- Peril typings to the Danger DSL. [@orta][]
-- Reference docs updates for the website. [@orta][]
+- Peril typings to the Danger DSL. [@orta]
+- Reference docs updates for the website. [@orta]
 
 ## 3.1.1
 
 - Allows `danger runner` (the hidden command which runs the process) to accept unknown command flags (such as ones
-  passed to it via `danger local`.) - [@adam-moss][]/[@orta][]
+  passed to it via `danger local`.) - [@adam-moss]/[@orta]
 
 ## 3.1.0
 
@@ -681,34 +681,34 @@ Also, `danger pr` now accepts a `--process` arg.
     // [...]
   ```
 
-You'll need to have [husky](https://www.npmjs.com/package/husky) installed for this to work. - [@orta][]
+You'll need to have [husky](https://www.npmjs.com/package/husky) installed for this to work. - [@orta]
 
 - STDOUT formatting has been improved, which is the terminal only version of Danger's typical GitHub comment style
-  system. It's used in `danger pr`, `danger ci --stdout` and `danger local`. - [@orta][]
+  system. It's used in `danger pr`, `danger ci --stdout` and `danger local`. - [@orta]
 - Exposed a get file contents for the platform abstraction so that Peril can work on many platforms in the future -
-  [@orta][]
+  [@orta]
 
 ### 3.0.5
 
-- Added support for Bitrise as a CI Provider - [@tychota][]
-- Nevercode ENV var fixes - [@fbartho][]
+- Added support for Bitrise as a CI Provider - [@tychota]
+- Nevercode ENV var fixes - [@fbartho]
 
 ### 3.0.4
 
-- Paginate for issues - [@orta][]
+- Paginate for issues - [@orta]
 
 ### 3.0.3
 
-- Added support for Nevercode.io as a CI Provider - [@fbartho][]
+- Added support for Nevercode.io as a CI Provider - [@fbartho]
 
 ### 3.0.2
 
-- Don't log ENV vars during a run - thanks @samdmarshall. - [@orta][]
+- Don't log ENV vars during a run - thanks @samdmarshall. - [@orta]
 
 ### 3.0.1
 
 - Bug fixes and debug improvements. If you're interested run danger with `DEBUG="*" yarn danger [etc]` and you'll get a
-  _lot_ of output. This should make it much easier to understand what's going on. - [@orta][]
+  _lot_ of output. This should make it much easier to understand what's going on. - [@orta]
 
 ### 3.0.0
 
@@ -732,71 +732,71 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 
   On a positive note, I gave all of the help screens an update and tried to improve language where I could.
 
-* [@orta][]
+* [@orta]
 
 ### 2.1.9-10
 
-- Fix to `danger pr` and `danger` infinite looping - [@orta][]
+- Fix to `danger pr` and `danger` infinite looping - [@orta]
 
 ### 2.1.8
 
-- Add a note in `danger pr` if you don't have a token set up - [@orta][]
-- Bunch of docs updates - [@orta][]
+- Add a note in `danger pr` if you don't have a token set up - [@orta]
+- Bunch of docs updates - [@orta]
 
 ### 2.1.7
 
-- Fix Codeship integration - [@caffodian][]
-- Updates documentation dependencies - [@orta][]
-- Fixes to running `danger` with params - [@orta][]
-- Fixes for `danger pr` not acting like `danger` WRT async code - [@orta][]
-- Fixes `tsconfig.json` parse to be JSON5 friendly - [@gantman][]
-- Fixes for `danger.github.thisPR` to use the base metadata for a PR, I'm too used to branch workflows - [@orta][]
+- Fix Codeship integration - [@caffodian]
+- Updates documentation dependencies - [@orta]
+- Fixes to running `danger` with params - [@orta]
+- Fixes for `danger pr` not acting like `danger` WRT async code - [@orta]
+- Fixes `tsconfig.json` parse to be JSON5 friendly - [@gantman]
+- Fixes for `danger.github.thisPR` to use the base metadata for a PR, I'm too used to branch workflows - [@orta]
 
 ### 2.1.6
 
-- Updates dependencies - [@orta][]
-- Link to the build URL if Danger can find it in the CI env - [@orta][]
-- Removes the "couldn't post a status" message - [@orta][]
+- Updates dependencies - [@orta]
+- Link to the build URL if Danger can find it in the CI env - [@orta]
+- Removes the "couldn't post a status" message - [@orta]
 
 ### 2.1.5
 
-- The TS compiler will force a module type of commonjs when transpiling the Dangerfile - [@orta][]
+- The TS compiler will force a module type of commonjs when transpiling the Dangerfile - [@orta]
 
 ### 2.1.4
 
 - Adds a CLI option for a unique Danger ID per run to `danger` and `danger process`, so you can have multiple Danger
-  comments on the same PR. - [@orta][]
+  comments on the same PR. - [@orta]
 
 ### 2.1.1 - 2.1.2 - 2.1.3
 
-- Fixes/Improvements for `danger init` - [@orta][]
+- Fixes/Improvements for `danger init` - [@orta]
 
 ### 2.1.0
 
-- Adds a new command for getting set up: `danger init` - [@orta][]
-- Fix double negative in documentation. [@dfalling][]
-- Fix `gloabally` typo in documentation. [@dfalling][]
+- Adds a new command for getting set up: `danger init` - [@orta]
+- Fix double negative in documentation. [@dfalling]
+- Fix `gloabally` typo in documentation. [@dfalling]
 
 ### 2.0.2 - 2.0.3
 
-- Adds a warning when you try to import Danger when you're not in a Dangerfile - [@orta][]
-- Exports the current process env to the `danger run` subprocess - [@orta][]
+- Adds a warning when you try to import Danger when you're not in a Dangerfile - [@orta]
+- Exports the current process env to the `danger run` subprocess - [@orta]
 
 ### 2.0.1
 
-- Potential fixes for CLI sub-commands not running when packaging danger - [@orta][]
+- Potential fixes for CLI sub-commands not running when packaging danger - [@orta]
 
 ### 2.0.0
 
 - Fixes the `danger.js.flow` fix to handle exports correctly, you _probably_ need to add
   `.*/node_modules/danger/distribution/danger.js.flow` to the `[libs]` section of your settings for it to work though -
-  [@orta][]
+  [@orta]
 
 ### 2.0.0-beta.2
 
-- Fixes a bug with `danger.github.utils` in that it didn't work as of b1, and now it does :+1: - [@orta][]
+- Fixes a bug with `danger.github.utils` in that it didn't work as of b1, and now it does :+1: - [@orta]
 - Ships a `danger.js.flow` in the root of the project, this may be enough to support flow typing, thanks to
-  [@joarwilk][] and [flowgen](https://github.com/joarwilk/flowgen) - [@orta][]
+  [@joarwilk] and [flowgen](https://github.com/joarwilk/flowgen) - [@orta]
 
 ### 2.0.0-beta.1
 
@@ -809,14 +809,14 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
     just like inside a traditional node app.
 
   - Makes `danger process` a first class citizen. This is awesome because there will be reliable support for other
-    languages like [danger-swift][], [danger-go][] and more to come.
+    languages like [danger-swift], [danger-go] and more to come.
 
   - The `danger process` system is now codified in types, so it's really easy to document on the website.
 
 - Adds a `--js` and `--json` option to `danger pr` which shows the output in a way that works with `danger process`.
   This means you can preview the data for any pull request.
 
-./[@orta][]
+./[@orta]
 
 ### 2.0.0-alpha.20
 
@@ -829,12 +829,12 @@ I would like to move the main parts of Danger JS to also work like `danger proce
 alpha for a bit more. One interesting side-effect of this could be that I can remove `schedule` from the DSL. I've not
 tested it yet though. Turns out this change is _real_ hard to write tests for. I've made #394 for that.
 
-./[@orta][]
+./[@orta]
 
 ### 2.0.0-alpha.18 - 19
 
-- Moves internal methods away from Sync to avoid problems when running in Peril - [@ashfurrow][]
-- Passes through non-zero exit codes from `danger process` runs - [@ashfurrow][]
+- Moves internal methods away from Sync to avoid problems when running in Peril - [@ashfurrow]
+- Passes through non-zero exit codes from `danger process` runs - [@ashfurrow]
 
 ### 2.0.0-alpha.17
 
@@ -844,35 +844,35 @@ tested it yet though. Turns out this change is _real_ hard to write tests for. I
 
 Some UX fixes:
 
-- Don't show warnings about not setting a commit status (unless in verbose) - [@orta][]
-- Delete duplicate Danger message, due to fast Peril edits - [@orta][]
-- Show Peril in the commit status if inside Peril, not just Danger - [@orta][]
-- [internal] Tightened the typings on the commands, and abstracted them to share some code - [@orta][]
+- Don't show warnings about not setting a commit status (unless in verbose) - [@orta]
+- Delete duplicate Danger message, due to fast Peril edits - [@orta]
+- Show Peril in the commit status if inside Peril, not just Danger - [@orta]
+- [internal] Tightened the typings on the commands, and abstracted them to share some code - [@orta]
 
 ### 2.0.0-alpha.15
 
 - Updates `diffForFile`, `JSONPatchForFile`, and `JSONDiffForFile` to include created and removed files - #368 -
-  [@bdotdub][]
+  [@bdotdub]
 
 ### 2.0.0-alpha.14
 
-- Adds a blank project generated in travis 8 to test no-babel or TS integration - [@orta][]
-- Improvements to `danger process` logging, and build fails correctly #363 - [@orta][]
+- Adds a blank project generated in travis 8 to test no-babel or TS integration - [@orta]
+- Improvements to `danger process` logging, and build fails correctly #363 - [@orta]
 
 ### 2.0.0-alpha.13
 
-- Improve the error handling around the babel API - #357 - [@orta][]
-- Move back to the original URLs for diffs, instead of relying on PR metadata - [@orta][]
-- Updates the types for `schedule` to be more accepting of what it actually takes - [@orta][]
+- Improve the error handling around the babel API - #357 - [@orta]
+- Move back to the original URLs for diffs, instead of relying on PR metadata - [@orta]
+- Updates the types for `schedule` to be more accepting of what it actually takes - [@orta]
 
 ### 2.0.0-alpha.12
 
 - Fixed #348 invalid json response body error on generating a diff - felipesabino
-- Potential fix for ^ that works with Peril also - [@orta][]
+- Potential fix for ^ that works with Peril also - [@orta]
 
 ### 2.0.0-alpha.11
 
-- Doh, makes the `danger process` command actually available via the CLI - [@orta][]
+- Doh, makes the `danger process` command actually available via the CLI - [@orta]
 
 ### 2.0.0-alpha.10
 
@@ -904,7 +904,7 @@ Some UX fixes:
 
   Which is basically Ruby Danger in ~10LOC. Lols.
 
-  This is the first release of the command, it's pretty untested, but [it does work][swift-first-pr]. - [@orta][]
+  This is the first release of the command, it's pretty untested, but [it does work][swift-first-pr]. - [@orta]
 
 [danger-swift]: https://github.com/danger/danger-swift
 [swift-json]: https://github.com/danger/danger-swift/blob/master/fixtures/eidolon_609.json
@@ -924,26 +924,26 @@ Some UX fixes:
   internal infra which is pretty awesome. All TS tests passed. Babel 7 is still in alpha, but so is Danger 2.0 - so I'm
   happy to keep Danger in a pretty long alpha, till at least Babel 7 is in beta.
 
-  It also still supports using TypeScript via the "`typescript"` module, if you have that installed. - [@orta][]
+  It also still supports using TypeScript via the "`typescript"` module, if you have that installed. - [@orta]
 
-- `danger.github.thisPR` now uses the PR's head, not base - [@orta][]
+- `danger.github.thisPR` now uses the PR's head, not base - [@orta]
 
 ### 2.0.0-alpha.8
 
-- Uses the GitHub `diff_url` instead of the `diff` version header, as it conflicted with Peril - [@orta][]
-- Handle exceptions in Dangerfile and report them as failures in Danger results - [@macklinu][]
+- Uses the GitHub `diff_url` instead of the `diff` version header, as it conflicted with Peril - [@orta]
+- Handle exceptions in Dangerfile and report them as failures in Danger results - [@macklinu]
 
 ### 2.0.0-alpha.6-7
 
-- Expose a Promise object to the external GitHub API - [@orta][]
+- Expose a Promise object to the external GitHub API - [@orta]
 
 ### 2.0.0-alpha.4-5
 
-- Allow running a dangerfile entirely from memory using the `Executor` API - [@orta][]
+- Allow running a dangerfile entirely from memory using the `Executor` API - [@orta]
 
 ### 2.0.0-alpha.2-3
 
-- Removes the `jest-*` dependencies - [@orta][]
+- Removes the `jest-*` dependencies - [@orta]
 
 ### 2.0.0-alpha.1
 
@@ -979,22 +979,22 @@ Some UX fixes:
 
 ### 1.2.0
 
-- Exposes an internal API for reading a file from a GitHub repo as `danger.github.utils.fileContents` - [@orta][]
+- Exposes an internal API for reading a file from a GitHub repo as `danger.github.utils.fileContents` - [@orta]
 
   Ideally this is what you should be using in plugins to read files, it's what Danger uses throughout the codebase
   internally. This means that your plugin/dangerfile doesn't need to rely on running on the CI when instead it could run
   via the GitHub API.
 
-- Update prettier - [@orta][]
+- Update prettier - [@orta]
 - Removes dtslint as a dependency - sapegin/orta
 
 ### 1.1.0
 
-- Support retrieve paginated pull request commit list - [@kwonoj][]
-- Add support for VSTS CI - [@mlabrum][]
-- Remove the DSL duplication on the `danger` export, it wasn't needed or used. - [@orta][]
-- Update to TypeScript 2.4.x - [@orta][]
-- Rename github test static_file to remove `:` from the filename to fix a checkout issue on windows - [@mlabrum][]
+- Support retrieve paginated pull request commit list - [@kwonoj]
+- Add support for VSTS CI - [@mlabrum]
+- Remove the DSL duplication on the `danger` export, it wasn't needed or used. - [@orta]
+- Update to TypeScript 2.4.x - [@orta]
+- Rename github test static_file to remove `:` from the filename to fix a checkout issue on windows - [@mlabrum]
 
 ### 1.0.0
 
@@ -1005,7 +1005,7 @@ to <http://danger.systems/js/> being generally available. I made the initial com
 You can find out a lot more about the 1.0, and Danger's history on my
 [Artsy blog post on the Danger 1.0](https://artsy.github.io/blog/2017/06/30/danger-one-oh-again/).
 
-- Adds inline docs for all CI providers - [@orta][]
+- Adds inline docs for all CI providers - [@orta]
 
 ### 0.21.1
 
@@ -1016,15 +1016,15 @@ You can find out a lot more about the 1.0, and Danger's history on my
 
 ### 0.21.0
 
-- Posts status reports for passing/failing builds, if the account for danger has access - [@orta][]
-- Adds prettier to the codebase - [@orta][]
+- Posts status reports for passing/failing builds, if the account for danger has access - [@orta]
+- Adds prettier to the codebase - [@orta]
 - Converts a bunch of Danger's dangerfile into a plugin -
-  [danger-plugin-yarn](https://github.com/orta/danger-plugin-yarn) - [@orta][]
+  [danger-plugin-yarn](https://github.com/orta/danger-plugin-yarn) - [@orta]
 
 This is my first non-trivial plugin, based on infrastructure from @macklinu. Plugins are looking great, you can get some
 info at <https://github.com/macklinu/generator-danger-plugin>.
 
-- Docs updates for the website - [@orta][]
+- Docs updates for the website - [@orta]
 
 ### 0.20.0
 
@@ -1037,7 +1037,7 @@ info at <https://github.com/macklinu/generator-danger-plugin>.
 ### 0.19.0
 
 - Update to Jest 20 - macklinu
-- Change the danger.d.ts to use module exports instead of globals - [@orta][]
+- Change the danger.d.ts to use module exports instead of globals - [@orta]
 - Render markdown inside `message()`, `warn()`, and `fail()` messages. - macklinu
 
 An example:
@@ -1143,27 +1143,27 @@ If these files are supposed to not exist, please update your PR body to include 
 
 ### 0.15.0
 
-- When a Dangerfile fails to eval, send a message to the PR - [@orta][]
+- When a Dangerfile fails to eval, send a message to the PR - [@orta]
 
 ### 0.14.2
 
-- Updated jest-\* dependencies to 19.x - [@orta][]
+- Updated jest-\* dependencies to 19.x - [@orta]
 
   Updating the jest-\* dependencies seems to be exhibiting strange behavior in tests for windows if you update, and use
   windows, can you please confirm that everything is 👍
 
-- Added type shapings to `JSONPatchForFile` - [@orta][]
+- Added type shapings to `JSONPatchForFile` - [@orta]
 - Replaced deprecated `lodash.isarray` package with `Array.isArray` - damassi
 
 ### 0.14.1
 
-- Moved `@types/chalk` from dependencies to devDependencies - [@orta][]
-- Killed some stray console logs - [@orta][]
-- Updated the danger.d.ts - [@orta][]
+- Moved `@types/chalk` from dependencies to devDependencies - [@orta]
+- Killed some stray console logs - [@orta]
+- Updated the danger.d.ts - [@orta]
 
 ### 0.14.0
 
-- TypeScript Dangerfiles are now support in Danger - [@orta][]
+- TypeScript Dangerfiles are now support in Danger - [@orta]
 
   We use TypeScript in Danger, and a lot of my work in Artsy now uses TypeScript (see:
   [JS2017 at Artsy](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#TypeScrip1t)), so I
@@ -1177,7 +1177,7 @@ If these files are supposed to not exist, please update your PR body to include 
   This repo is now using both a babel Dangerfile (running on Circle CI) and a TypeScript one (running on Travis) to
   ensure that we don't accidentally break either.
 
-- Created a new `danger.d.ts` for VS Code users to get auto-completion etc - [@orta][]
+- Created a new `danger.d.ts` for VS Code users to get auto-completion etc - [@orta]
 - Added a two new `git` DSL functions: `git.JSONDiffForFile(filename)` and `git.JSONPatchForFile(filename)`.
 
   - `git.JSONPatchForFile`
@@ -1220,15 +1220,15 @@ If these files are supposed to not exist, please update your PR body to include 
     - `before` and `after` are both objects - in which case `added` and `removed` are the added or removed keys
     - `before` and `after` are both arrays - in which case `added` and `removed` are the added or removed values
 
-- Exposed all global functions ( like `warn`, `fail`, `git`, `schedule`, ... ) on the `danger` object. - [@orta][]
+- Exposed all global functions ( like `warn`, `fail`, `git`, `schedule`, ... ) on the `danger` object. - [@orta]
 
   This is specifically to simplify building library code. It should not affect end-users. If you want to look at making
   a Danger JS Plugin, I'd recommend exposing a function which takes the `danger` object and working from that. If you're
   interested, there is an active discussion on plugin support in the DangerJS issues.
 
-- Improves messaging to the terminal - [@orta][]
-- Adds the ability to not have Danger post to GitHub via a flag: `danger run --text-only` - [@orta][]
-- Fix a crasher with `prs.find` #181 - [@orta][]
+- Improves messaging to the terminal - [@orta]
+- Adds the ability to not have Danger post to GitHub via a flag: `danger run --text-only` - [@orta]
+- Fix a crasher with `prs.find` #181 - [@orta]
 
 ### 0.13.0
 
@@ -1243,7 +1243,7 @@ If these files are supposed to not exist, please update your PR body to include 
   danger.utils.sentence(["A", "B", "C"]) // "A, B and C"
   ```
 
-- Adds `danger.github.utils` - which currently has only one function: `fileLinks` - [@orta][]
+- Adds `danger.github.utils` - which currently has only one function: `fileLinks` - [@orta]
 
   Most of the time people are working with a list of files (e.g. modified, or created) and then want to present
   clickable links to those. As the logic to figure the URLs is very GitHub specific, we've moved that into it's own
@@ -1297,12 +1297,12 @@ If these files are supposed to not exist, please update your PR body to include 
 * `danger.github.reviews` - Find out about your reviews in the new GitHub Reviewer systems,
 * `danger.github.requested_reviewers` - Find out who has been requested to review a PR.
 
-- Updated TypeScript and Jest dependencies - [@orta][]
+- Updated TypeScript and Jest dependencies - [@orta]
 - Add support for Github Enterprise via DANGER_GITHUB_API_BASE_URL env var - mashbourne
 
 ### 0.11.3 - 0.11.5
 
-- Internal changes for usage with Peril - [@orta][]
+- Internal changes for usage with Peril - [@orta]
 
 - Add `danger pr --repl`, which drops into a Node.js REPL after evaluating the dangerfile - macklinu
 - Add support for Codeship - deecewan
@@ -1317,20 +1317,20 @@ If these files are supposed to not exist, please update your PR body to include 
 
 ### 0.10.0
 
-- Adds support for running Danger against a PR locally - [@orta][]
+- Adds support for running Danger against a PR locally - [@orta]
 
 The workflow is that you find a PR that exhibits the behavior you'd like Danger to run against, then edit the local
 `Dangerfile.js` and run `yarn run danger pr https://github.com/facebook/jest/pull/2629`.
 
 This will post the results to your console, instead of on the PR itself.
 
-- Danger changes to your Dangerfile are not persisted after the run - [@orta][]
+- Danger changes to your Dangerfile are not persisted after the run - [@orta]
 - Add summary comment for danger message - kwonoj
-- Add `jest-environment-node` to the Package.json - [@orta][]
+- Add `jest-environment-node` to the Package.json - [@orta]
 
 ### 0.9.0
 
-- Adds support for `git.commits` and `github.commits` - [@orta][]
+- Adds support for `git.commits` and `github.commits` - [@orta]
 
   Why two? Well github.commits contains a bunch of github specific metadata ( e.g. GitHub user creds, commit comment
   counts. ) Chances are, you're always going to use `git.commits` however if you want more rich data, the GitHub one is
@@ -1351,21 +1351,21 @@ if (merges.length) {
 ### 0.8.0
 
 - Support `danger run -ci` to specify external CI provider - kwonoj
-- Adds `--verbose` to `danger`, which for now will echo out all the URLs Danger has requested - [@orta][]
+- Adds `--verbose` to `danger`, which for now will echo out all the URLs Danger has requested - [@orta]
 - Migrate codebase into TypeScript from flow - kwonoj
-- Handle removing all sorts of import types for Danger in the Dangerfile - [@orta][]
+- Handle removing all sorts of import types for Danger in the Dangerfile - [@orta]
 
 ### 0.7.3-4-5
 
-- A failing network request will raise an error - [@orta][]
-- Fix Dangerfile parsing which broke due to Peril related changes - [@orta][]
-- Tweak the npmignore, ship less random stuff to others - [@orta][]
+- A failing network request will raise an error - [@orta]
+- Fix Dangerfile parsing which broke due to Peril related changes - [@orta]
+- Tweak the npmignore, ship less random stuff to others - [@orta]
 
 ### 0.7.2
 
-- Fixes to the shipped Flow/TS definitions - [@orta][]
-- Adds more functions the the internal Danger GitHub client - [@orta][]
-- Infrastructure work to allow Peril to run a Dangerfile - [@orta][]
+- Fixes to the shipped Flow/TS definitions - [@orta]
+- Adds more functions the the internal Danger GitHub client - [@orta]
+- Infrastructure work to allow Peril to run a Dangerfile - [@orta]
 - Upgrade outdated ESLint packages - macklinu
 - Enhance Windows OS compatibility - kwonoj
 
@@ -1374,39 +1374,39 @@ if (merges.length) {
 - Set exit code to 1 when running `danger` throws an error - macklinu
 - Add Jenkins CI source - macklinu
 - Add .editorconfig - macklinu
-- Adds jest-runtime to the dependencies - [@orta][]
+- Adds jest-runtime to the dependencies - [@orta]
 
 ### 0.7.0
 
 - You can build and run in vscode using your own custom `env/development.env` file. This is useful because you can use
-  the debugger against a real PR. See `env/development.env.example` for syntax. - [@orta][]
+  the debugger against a real PR. See `env/development.env.example` for syntax. - [@orta]
 
 - Uses `jest-transform` and `jest-runtime` to eval and apply babel transforms.
 
   This does two things, makes it feasible to do [hosted-danger](https://github.com/danger/peril) and makes it possible
-  to write your Dangerfile in a way that's consistent with the rest of your JavaScript. - [@orta][]
+  to write your Dangerfile in a way that's consistent with the rest of your JavaScript. - [@orta]
 
 - Add tests directory to .npmignore - macklinu
 - Update to Jest 18 - macklinu
 
 ### 0.6.10
 
-- Brings back the ability to emulate a fake CI run locally via `danger` - [@orta][]
+- Brings back the ability to emulate a fake CI run locally via `danger` - [@orta]
 
 ### 0.6.9
 
 - Makes `babel-polyfill` a direct dependency, this is because it is actually an implicit dependency in the app. I'm not
   sure how I feel about this, I guess if we use a part of it in the babel translation of a user's Dangerfile them I'm OK
-  with it. - [@orta][]
+  with it. - [@orta]
 
 ### 0.6.6 - 0.6.7 - 0.6.8
 
-- Ship flow annotations with the npm module - [@orta][]
+- Ship flow annotations with the npm module - [@orta]
 
 ### 0.6.5
 
 - Adds more node instances to travis - romanki + orta
-- Adds support for Semaphore CI - [@orta][]
+- Adds support for Semaphore CI - [@orta]
 
 ### 0.6.4
 
@@ -1426,7 +1426,7 @@ if (changelogDiff && changelogDiff.indexOf(contributorName) === -1) {
 
 ### 0.6.3
 
-- Does not break commonmark on GitHub - [@orta][]
+- Does not break commonmark on GitHub - [@orta]
 - upgrades to flow 0.35.0 and fixes associated type errors in covariant/invariant interfaces - nsfmc
 - omits flow requirement for new test files - nsfmc
 - adds support for circleci - nsfmc
@@ -1434,25 +1434,25 @@ if (changelogDiff && changelogDiff.indexOf(contributorName) === -1) {
 
 ### 0.5.0
 
-- `danger.pr` -> `danger.github.pr`, I've also created interfaces for them - [@orta][]
-- `warn`, `message`, `markdown` are all ported over to DangerJS - [@orta][]
-- Shows a HTML table for Danger message - [@orta][]
+- `danger.pr` -> `danger.github.pr`, I've also created interfaces for them - [@orta]
+- `warn`, `message`, `markdown` are all ported over to DangerJS - [@orta]
+- Shows a HTML table for Danger message - [@orta]
 - Now offers a Flow-typed definition file, it's not shipped to their repo yet, you can make it by
-  `npm run export-flowtype` - [@orta][]
-- Started turning this into a real project by adding tests - [@orta][]
+  `npm run export-flowtype` - [@orta]
+- Started turning this into a real project by adding tests - [@orta]
 
 ### 0.0.5-0.0.10
 
 - Changes some files casing, added some logs, a bit of error reporting, and verifying everything works through npm -
-  [@orta][]
+  [@orta]
 
 ### 0.0.4
 
-- Danger edit an existing post, and delete it when it's not relevant - [@orta][]
+- Danger edit an existing post, and delete it when it's not relevant - [@orta]
 
 ### 0.0.3
 
-- Danger will post a comment on a GitHub PR with any Fails - [@orta][]
+- Danger will post a comment on a GitHub PR with any Fails - [@orta]
 
 ### 0.0.2
 
@@ -1503,11 +1503,11 @@ if (!hasChangelog) {
 
 That should do ya. I think. This doesn't support babel, and I haven't explored using other modules etc, so...
 
-./[@orta][]
+./[@orta]
 
 ### 0.0.1
 
-Not usable for others, only stubs of classes etc. - [@orta][]
+Not usable for others, only stubs of classes etc. - [@orta]
 
 [danger-swift]: https://github.com/danger/danger-swift#danger-swift
 [danger-go]: https://github.com/bdotdub/danger-go
