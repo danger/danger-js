@@ -1536,6 +1536,7 @@ Not usable for others, only stubs of classes etc. - [@orta][]
 [@langovoi]: https://github.com/langovoi
 [@mifi]: https://github.com/ionutmiftode
 [@mxstbr]: https://github.com/mxstbr
+[@ninjaprox]: https://github.com/ninjaprox
 [@nminhnguyen]: https://github.com/NMinhNguyen
 [@nornagon]: https://github.com/nornagon
 [@orta]: https://github.com/orta
