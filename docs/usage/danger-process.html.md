@@ -48,7 +48,7 @@ The JSON is documented using JSON Schema: [incoming][] and [outgoing][], these l
 the types (incoming to your process) [DangerJSONDSLType][] and (coming out from your process) [DangerResults][],
 
 I plan to add a full reference for this, similar to the reference for the user's DSL in the future in these docs.
-_Note:_ The JSON **will include** your access token, so you probably want to sanitize that before commiting it to the
+_Note:_ The JSON **will include** your access token, so you probably want to sanitize that before committing it to the
 repo. I accidentally shipped 2 tokens in writing the feature.
 
 A runner can output anything during the process to STDOUT, and it will be logged to the user. However, Danger JS is
