@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Docs: fix typo - [@hiroppy]
 - Fixed: isCI check for Codeship - [@msteward]
 
 # 7.0.14
