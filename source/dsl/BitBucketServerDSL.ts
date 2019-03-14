@@ -315,6 +315,5 @@ export interface BitBucketServerChangesValueMove {
   }
 }
 
-export type BitBucketServerChangesValue =
-  | BitBucketServerChangesValueAddCopyModifyDelete
-  | BitBucketServerChangesValueMove
+// prettier-ignore
+export type BitBucketServerChangesValue = BitBucketServerChangesValueAddCopyModifyDelete | BitBucketServerChangesValueMove

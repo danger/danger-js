@@ -323,6 +323,7 @@ interface BitBucketServerChangesValueMove {
   }
 }
 
+// prettier-ignore
 type BitBucketServerChangesValue = BitBucketServerChangesValueAddCopyModifyDelete | BitBucketServerChangesValueMove
 
 /** A platform agnostic reference to a Git commit */
