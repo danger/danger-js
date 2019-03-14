@@ -280,7 +280,7 @@ describe("setup", () => {
     platform.updateStatus = jest.fn()
 
     await exec.handleResults(emptyResults, dsl.git)
-    expect(platform.updateStatus).toBeCalledWith(true, jasmine.any(String), undefined)
+    expect(platform.updateStatus).toBeCalledWith(true, jasmine.any(String), undefined, defaultConfig.dangerID)
   })
 
   it("Updates the status with success for a passed results", async () => {
@@ -294,7 +294,8 @@ describe("setup", () => {
     expect(platform.updateStatus).toBeCalledWith(
       true,
       ":warning: Danger found some issues. Don't worry, everything is fixable.",
-      undefined
+      undefined,
+      defaultConfig.dangerID
     )
   })
 
@@ -309,7 +310,8 @@ describe("setup", () => {
     expect(platform.updateStatus).toBeCalledWith(
       false,
       ":warning: Danger found some issues. Don't worry, everything is fixable.",
-      undefined
+      undefined,
+      defaultConfig.dangerID
     )
   })
 
@@ -324,6 +326,6 @@ describe("setup", () => {
     platform.updateStatus = jest.fn()
 
     await exec.handleResults(failsResults, dsl.git)
-    expect(platform.updateStatus).toBeCalledWith(expect.anything(), expect.anything(), ci.ciRunURL)
+    expect(platform.updateStatus).toBeCalledWith(expect.anything(), expect.anything(), ci.ciRunURL, expect.anything())
   })
 })

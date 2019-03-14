@@ -78,7 +78,7 @@ export interface PlatformCommunicator {
   /** Replace the main Danger comment, returning the URL to the issue */
   updateOrCreateComment: (dangerID: string, newComment: string) => Promise<string | undefined>
   /** Sets the current PR's status */
-  updateStatus: (passed: boolean | "pending", message: string, url?: string) => Promise<boolean>
+  updateStatus: (passed: boolean | "pending", message: string, url?: string, dangerID?: string) => Promise<boolean>
 }
 
 /**
