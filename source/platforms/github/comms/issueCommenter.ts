@@ -55,8 +55,12 @@ export const GitHubIssueCommenter = (api: GitHubAPI) => {
      * Fails the current build, if status setting succeeds
      * then return true.
      */
-    updateStatus: async (passed: boolean | "pending", message: string, url?: string): Promise<boolean> =>
-      api.updateStatus(passed, message, url),
+    updateStatus: async (
+      passed: boolean | "pending",
+      message: string,
+      url?: string,
+      dangerID?: string
+    ): Promise<boolean> => api.updateStatus(passed, message, url, dangerID),
 
     /**
      * Gets inline comments for current PR

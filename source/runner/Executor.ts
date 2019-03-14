@@ -277,7 +277,7 @@ export class Executor {
     }
 
     const urlForInfo = issueURL || this.ciSource.ciRunURL
-    const successPosting = await this.platform.updateStatus(!failed, messageForResults(results), urlForInfo)
+    const successPosting = await this.platform.updateStatus(!failed, messageForResults(results), urlForInfo, dangerID)
     if (!successPosting && this.options.verbose) {
       this.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
       this.log("If the build fails, then danger will use a failing exit code.")

@@ -344,15 +344,29 @@ export class GitHubAPI {
     return res.ok ? res.json() : { labels: [] }
   }
 
-  updateStatus = async (passed: boolean | "pending", message: string, url?: string): Promise<any> => {
+  updateStatus = async (
+    passed: boolean | "pending",
+    message: string,
+    url?: string,
+    dangerID?: string
+  ): Promise<any> => {
     const repo = this.repoMetadata.repoSlug
 
     const prJSON = await this.getPullRequestInfo()
     const ref = prJSON.head.sha
+
     let state = passed ? "success" : "failure"
     if (passed === "pending") {
       state = "pending"
     }
+
+    let context = "Danger"
+    if (process.env["PERIL_BOT_USER_ID"]) {
+      context = "Peril"
+    } else if (dangerID) {
+      context = dangerID
+    }
+
     // Suppress errors, because in OSS
     // this failure could be due to access rights.
     //
@@ -363,7 +377,7 @@ export class GitHubAPI {
         {},
         {
           state: state,
-          context: process.env["PERIL_BOT_USER_ID"] ? "Peril" : "Danger",
+          context: context,
           target_url: url || "http://danger.systems/js",
           description: message,
         },

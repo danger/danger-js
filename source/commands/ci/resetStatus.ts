@@ -30,7 +30,7 @@ export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
     }
 
     if (platform) {
-      await platform.updateStatus("pending", "Danger is waiting for your CI run to complete...")
+      await platform.updateStatus("pending", "Danger is waiting for your CI run to complete...", undefined, app.id)
     }
   }
 }

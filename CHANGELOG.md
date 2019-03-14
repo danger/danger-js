@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Enable Danger runs with different DangerIDs to post separate statuses [@randak]
 - Docs: fix typo - [@hiroppy]
 - Fixed: isCI check for Codeship - [@msteward]
 
