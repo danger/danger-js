@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Add support for CodeBuild CI source [@sharkysharks]
 - Enable Danger runs with different DangerIDs to post separate statuses [@randak]
 - Docs: fix typo - [@hiroppy]
 - Fixed: isCI check for Codeship - [@msteward]
@@ -1550,6 +1551,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@sajjadzamani]: https://github.com/sajjadzamani
 [@sebinsua]: https://github.com/sebinsua
 [@sgtcoolguy]: https://github.com/sgtcoolguy
+[@sharkysharks]: https://github.com/sharkysharks
 [@stevemoser]: https://github.com/stevemoser
 [@sunshinejr]: https://github.com/sunshinejr
 [@tychota]: https://github.com/tychota
