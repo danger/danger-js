@@ -2,6 +2,7 @@ import { Bitrise } from "./Bitrise"
 import { BuddyBuild } from "./BuddyBuild"
 import { Buildkite } from "./Buildkite"
 import { Circle } from "./Circle"
+import { CodeBuild } from "./CodeBuild"
 import { Codeship } from "./Codeship"
 import { Concourse } from "./Concourse"
 import { DockerCloud } from "./DockerCloud"
@@ -38,6 +39,7 @@ const providers = [
   Screwdriver,
   Concourse,
   Netlify,
+  CodeBuild,
 ]
 
 // Mainly used for Dangerfile linting
@@ -59,6 +61,7 @@ const realProviders = [
   Screwdriver,
   Concourse,
   Netlify,
+  CodeBuild,
 ]
 
 export { providers, realProviders }
