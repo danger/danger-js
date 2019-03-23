@@ -15,7 +15,12 @@
 
 <!-- Your comment below this -->
 
+# 7.0.16
+
 - Add support for CodeBuild CI source [@sharkysharks]
+
+# 7.0.15
+
 - Enable Danger runs with different DangerIDs to post separate statuses [@randak]
 - Docs: fix typo - [@hiroppy]
 - Fixed: isCI check for Codeship - [@msteward]
