@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Send different build update keys based on the id on Bitbucket [@f-meloni]
+
 # 7.0.16
 
 - Add support for CodeBuild CI source [@sharkysharks]
