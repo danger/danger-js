@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+# 7.0.17
+
 - Send different build update keys based on the id on Bitbucket [@f-meloni]
 
 # 7.0.16
