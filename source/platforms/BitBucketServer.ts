@@ -54,16 +54,18 @@ export class BitBucketServer implements Platform {
     }
 
     let name = "Danger"
+    let key = "danger.systems"
     if (process.env["PERIL_INTEGRATION_ID"]) {
       name = "Peril"
     } else if (dangerID) {
       name = dangerID
+      key = dangerID
     }
 
     try {
       await this.api.postBuildStatus(latestCommit, {
         state: state,
-        key: "danger.systems",
+        key: key,
         name: name,
         url: url || "http://danger.systems/js",
         description: message,
