@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Add a strict option to fail the build if there are error on the danger report [@f-meloni]
+
 # 7.0.17
 
 - Send different build update keys based on the id on Bitbucket [@f-meloni]
