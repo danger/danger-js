@@ -67,6 +67,19 @@ it("does not use GitHub Checks if requested not to", async () => {
   expect(executor.options.disableGitHubChecksSupport).toEqual(true)
 })
 
+it("passes the strictm option from args into the executor config", async () => {
+  const customArgs = {
+    ...defaultAppArgs,
+    strict: true,
+  } as SharedCLI
+
+  await runRunner(customArgs, { platform, source })
+
+  // Pull the executor out of the call to runDangerSubprocess
+  const executor: Executor = mockRunDangerSubprocess.mock.calls[0][2]
+  expect(executor.options.strict).toEqual(true)
+})
+
 // TODO: This occasionally fails!
 it.skip("passes the dangerID from args into the executor config", async () => {
   const customArgs = {

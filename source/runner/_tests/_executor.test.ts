@@ -25,6 +25,11 @@ const defaultConfig: ExecutorOptions = {
   jsonOnly: false,
   dangerID: "123",
   passURLForDSL: false,
+  strict: false,
+}
+
+class FakeProcces {
+  constructor(public exitCode: number = 0) {}
 }
 
 const fakeCI = new FakeCI({})
@@ -57,7 +62,7 @@ const mockPayloadForResults = (results: DangerResults): any => {
 describe("setup", () => {
   it("gets diff / pr info in setup", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
 
     platform.getPlatformGitRepresentation = jest.fn()
     platform.getPlatformReviewDSLRepresentation = jest.fn()
@@ -68,7 +73,7 @@ describe("setup", () => {
   })
 
   it("gets diff / pr info / utils in setup", async () => {
-    const exec = new Executor(new FakeCI({}), new FakePlatform(), inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), new FakePlatform(), inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await exec.dslForDanger()
     expect(dsl.git).toBeTruthy()
     expect(dsl.github).toBeTruthy()
@@ -77,7 +82,7 @@ describe("setup", () => {
 
   it("Creates a DangerResults for a raising dangerfile", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
 
     // This is a real error occurring when Danger modifies the Dangerfile
@@ -97,7 +102,7 @@ describe("setup", () => {
 
   it("Deletes a post when there are no messages", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     platform.deleteMainComment = jest.fn()
 
@@ -105,9 +110,37 @@ describe("setup", () => {
     expect(platform.deleteMainComment).toBeCalled()
   })
 
+  it("Fails if the strict option is true and there are fails on the build", async () => {
+    const platform = new FakePlatform()
+    const strictConfig: ExecutorOptions = {
+      stdoutOnly: false,
+      verbose: false,
+      jsonOnly: false,
+      dangerID: "123",
+      passURLForDSL: false,
+      strict: true,
+    }
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, strictConfig, new FakeProcces())
+    const dsl = await defaultDsl(platform)
+    platform.deleteMainComment = jest.fn()
+
+    await exec.handleResults(failsResults, dsl.git)
+    expect(exec.process.exitCode).toEqual(1)
+  })
+
+  it("Doesn't fail if the strict option is false and there are fails on the build", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
+    const dsl = await defaultDsl(platform)
+    platform.deleteMainComment = jest.fn()
+
+    await exec.handleResults(failsResults, dsl.git)
+    expect(exec.process.exitCode).toEqual(0)
+  })
+
   it("Updates or Creates comments for warnings", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
 
@@ -117,7 +150,7 @@ describe("setup", () => {
 
   it("Updates or Creates comments for warnings", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
 
@@ -127,7 +160,7 @@ describe("setup", () => {
 
   it("Sends inline comments and returns regular results for failures", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     const apiFailureMock = jest.fn().mockReturnValue(new Promise<any>((_, reject) => reject()))
     platform.createInlineComment = apiFailureMock
@@ -138,7 +171,7 @@ describe("setup", () => {
 
   it("Creates an inline comment for warning", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     platform.createInlineComment = jest.fn()
     platform.updateOrCreateComment = jest.fn()
@@ -149,7 +182,7 @@ describe("setup", () => {
 
   it("Updates an inline comment as the new one was different than the old", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     const previousResults = inlineWarnResults
     const newResults = inlineFailResults
@@ -167,7 +200,7 @@ describe("setup", () => {
 
   it("Updates multiple inline comments", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     const previousResults = inlineMultipleWarnResults
     const newResults = inlineMultipleWarnResults2
@@ -185,7 +218,7 @@ describe("setup", () => {
 
   it("Doesn't update/create an inline comment as the old was the same as the new", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     const previousResults = inlineWarnResults
     const newResults = previousResults
@@ -203,7 +236,7 @@ describe("setup", () => {
 
   it("Creates new inline comment as none of the old ones was for this file/line", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     const previousResults = inlineWarnResults
     const newResults = inlineMessageResults
@@ -221,7 +254,7 @@ describe("setup", () => {
 
   it("Deletes all old inline comments because new results are all clear", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     const previousResults = {
       fails: [],
@@ -245,7 +278,7 @@ describe("setup", () => {
 
   it("Deletes old inline comment when not applicable in new results", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     const previousResults = {
       fails: [],
@@ -274,7 +307,7 @@ describe("setup", () => {
 
   it("Updates the status with success for a passed empty results", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
@@ -285,7 +318,7 @@ describe("setup", () => {
 
   it("Updates the status with success for a passed results", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
@@ -301,7 +334,7 @@ describe("setup", () => {
 
   it("Updates the status with success for failing results", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig)
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
@@ -320,7 +353,7 @@ describe("setup", () => {
     const ci: any = new FakeCI({})
     ci.ciRunURL = "https://url.com"
 
-    const exec = new Executor(ci, platform, inlineRunner, defaultConfig)
+    const exec = new Executor(ci, platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
