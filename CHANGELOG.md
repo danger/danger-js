@@ -15,7 +15,7 @@
 
 <!-- Your comment below this -->
 
-- Add a strict option to fail the build if there are error on the danger report [@f-meloni]
+- Add a failOnErrors option to fail the build if there are error on the danger report [@f-meloni]
 
 # 7.0.17
 

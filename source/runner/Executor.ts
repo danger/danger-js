@@ -50,7 +50,7 @@ export interface ExecutorOptions {
   /** Disable Checks support in GitHub */
   disableGitHubChecksSupport?: boolean
   /** Fail if danger report contains failures */
-  strict?: boolean
+  failOnErrors?: boolean
 }
 // This is still badly named, maybe it really should just be runner?
 
@@ -139,7 +139,7 @@ export class Executor {
       await this.handleResultsPostingToPlatform(results, git)
     }
 
-    if (this.options.strict && results.fails.length > 0) {
+    if (this.options.failOnErrors && results.fails.length > 0) {
       this.process.exitCode = 1
     }
   }

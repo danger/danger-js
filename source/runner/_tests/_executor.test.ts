@@ -25,7 +25,7 @@ const defaultConfig: ExecutorOptions = {
   jsonOnly: false,
   dangerID: "123",
   passURLForDSL: false,
-  strict: false,
+  failOnErrors: false,
 }
 
 class FakeProcces {
@@ -110,7 +110,7 @@ describe("setup", () => {
     expect(platform.deleteMainComment).toBeCalled()
   })
 
-  it("Fails if the strict option is true and there are fails on the build", async () => {
+  it("Fails if the failOnErrors option is true and there are fails on the build", async () => {
     const platform = new FakePlatform()
     const strictConfig: ExecutorOptions = {
       stdoutOnly: false,
@@ -118,7 +118,7 @@ describe("setup", () => {
       jsonOnly: false,
       dangerID: "123",
       passURLForDSL: false,
-      strict: true,
+      failOnErrors: true,
     }
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, strictConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
@@ -128,7 +128,7 @@ describe("setup", () => {
     expect(exec.process.exitCode).toEqual(1)
   })
 
-  it("Doesn't fail if the strict option is false and there are fails on the build", async () => {
+  it("Doesn't fail if the failOnErrors option is false and there are fails on the build", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
