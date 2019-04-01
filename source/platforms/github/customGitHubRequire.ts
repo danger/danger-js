@@ -22,20 +22,62 @@ export interface RepresentationForURL {
 
 /**
  * Takes a DangerfileReferenceString and lets you know where to find it globally
- * for strings like: artsy/peril-settings/settings.json@branch
+ * for strings like:
+ *
+ *   GitHub style:
+ *     dangerfile.ts
+ *     orta/eigen/dangerfile.ts
+ *     orta/eigen/dangerfile.ts@branch
+ *     dangerfile.ts@branch
+ *
+ *   Old Peril style:
+ *     orta/eigen@dangerfile.ts
+ *     orta/eigen@dangerfile.ts#branch
+ *     dangerfile.ts#branch
  */
 export const dangerRepresentationForPath = (value: string): RepresentationForURL => {
   const hasManySlashes = value.split("/").length > 2
+  const hasAt = value.includes("@")
 
-  const [owner, repo, ...pathComponents] = hasManySlashes
-    ? value.split("@")[0].split("/")
-    : [undefined, undefined, ...value.split("@")[0].split("/")]
+  // Definitely Peril style
+  const hasExactlyOneSlashBeforeAt = hasAt && value.split("@")[0].split("/").length == 2
+  const hasAHashInTheURL = value.includes("#")
 
-  return {
-    branch: value.includes("@") ? value.split("@")[1] : "master",
-    dangerfilePath: pathComponents.join("/"),
-    repoSlug: owner ? `${owner}/${repo}` : undefined,
-    referenceString: value,
+  // Definitely GitHub style
+  const hasAtAndNoRepoRef = hasAt ? true : value.split("@")[0].split("/").length == 0
+
+  // This'll return true is anything is true
+  const isDefPeril = [hasExactlyOneSlashBeforeAt, hasAHashInTheURL, !hasAtAndNoRepoRef].find(a => a)
+  console.log([
+    value,
+    {
+      peril: isDefPeril,
+      oneSlash: hasExactlyOneSlashBeforeAt,
+      hasHash: hasAHashInTheURL,
+      noRepoRef: !hasAtAndNoRepoRef,
+    },
+  ])
+  if (isDefPeril) {
+    // Peril style
+    const afterAt = value.includes("@") ? value.split("@")[1] : value
+    return {
+      branch: value.includes("#") ? value.split("#")[1] : "master",
+      dangerfilePath: afterAt.split("#")[0],
+      repoSlug: value.includes("@") ? value.split("@")[0] : undefined,
+      referenceString: value,
+    }
+  } else {
+    // GitHub style
+    const [owner, repo, ...pathComponents] = hasManySlashes
+      ? value.split("@")[0].split("/")
+      : [undefined, undefined, ...value.split("@")[0].split("/")]
+
+    return {
+      branch: value.includes("@") ? value.split("@")[1] : "master",
+      dangerfilePath: pathComponents.join("/"),
+      repoSlug: owner ? `${owner}/${repo}` : undefined,
+      referenceString: value,
+    }
   }
 }
 

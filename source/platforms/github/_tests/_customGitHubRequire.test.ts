@@ -60,43 +60,76 @@ describe("customGitHubResolveRequest", () => {
 })
 
 describe("dangerRepresentationforPath", () => {
-  it("returns just the path with master and no repo with just a path", () => {
-    const path = "dangerfile.ts"
-    expect(dangerRepresentationForPath(path)).toEqual({
-      branch: "master",
-      dangerfilePath: "dangerfile.ts",
-      referenceString: "dangerfile.ts",
-      repoSlug: undefined,
+  describe("github style", () => {
+    it("returns just the path with master and no repo with just a path", () => {
+      const path = "dangerfile.ts"
+      expect(dangerRepresentationForPath(path)).toEqual({
+        branch: "master",
+        dangerfilePath: "dangerfile.ts",
+        referenceString: "dangerfile.ts",
+        repoSlug: undefined,
+      })
+    })
+
+    it("returns the path and repo", () => {
+      const path = "orta/eigen/dangerfile.ts"
+      expect(dangerRepresentationForPath(path)).toEqual({
+        branch: "master",
+        dangerfilePath: "dangerfile.ts",
+        referenceString: "orta/eigen/dangerfile.ts",
+        repoSlug: "orta/eigen",
+      })
+    })
+
+    it("returns just the path when there is no repo reference", () => {
+      const path = "orta/eigen/dangerfile.ts@branch"
+      expect(dangerRepresentationForPath(path)).toEqual({
+        branch: "branch",
+        dangerfilePath: "dangerfile.ts",
+        referenceString: "orta/eigen/dangerfile.ts@branch",
+        repoSlug: "orta/eigen",
+      })
+    })
+
+    it("handles a branch with no repo ref", () => {
+      const path = "dangerfile.ts@branch"
+      expect(dangerRepresentationForPath(path)).toEqual({
+        branch: "branch",
+        dangerfilePath: "dangerfile.ts",
+        referenceString: "dangerfile.ts@branch",
+        repoSlug: undefined,
+      })
     })
   })
-
-  it("returns the path and repo", () => {
-    const path = "orta/eigen/dangerfile.ts"
-    expect(dangerRepresentationForPath(path)).toEqual({
-      branch: "master",
-      dangerfilePath: "dangerfile.ts",
-      referenceString: "orta/eigen/dangerfile.ts",
-      repoSlug: "orta/eigen",
+  describe("old school peril style", () => {
+    it("returns the path and repo", () => {
+      const path = "orta/eigen@dangerfile.ts"
+      expect(dangerRepresentationForPath(path)).toEqual({
+        branch: "master",
+        dangerfilePath: "dangerfile.ts",
+        referenceString: "orta/eigen@dangerfile.ts",
+        repoSlug: "orta/eigen",
+      })
     })
-  })
 
-  it("returns just the path when there is no repo reference", () => {
-    const path = "orta/eigen/dangerfile.ts@branch"
-    expect(dangerRepresentationForPath(path)).toEqual({
-      branch: "branch",
-      dangerfilePath: "dangerfile.ts",
-      referenceString: "orta/eigen/dangerfile.ts@branch",
-      repoSlug: "orta/eigen",
+    it("returns just the path when there is no repo reference", () => {
+      const path = "orta/eigen@dangerfile.ts#branch"
+      expect(dangerRepresentationForPath(path)).toEqual({
+        branch: "branch",
+        dangerfilePath: "dangerfile.ts",
+        referenceString: "orta/eigen@dangerfile.ts#branch",
+        repoSlug: "orta/eigen",
+      })
     })
-  })
 
-  it("handles a branch with no repo ref", () => {
-    const path = "dangerfile.ts@branch"
-    expect(dangerRepresentationForPath(path)).toEqual({
-      branch: "branch",
-      dangerfilePath: "dangerfile.ts",
-      referenceString: "dangerfile.ts@branch",
-      repoSlug: undefined,
+    it("handles a branch with no repo ref", () => {
+      const path = "dangerfile.ts#branch"
+      expect(dangerRepresentationForPath(path)).toEqual({
+        branch: "branch",
+        dangerfilePath: "dangerfile.ts",
+        referenceString: "dangerfile.ts#branch",
+        repoSlug: undefined,
+      })
     })
   })
 })

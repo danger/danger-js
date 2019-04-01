@@ -9,8 +9,11 @@ import { DangerContext } from "../../runner/Dangerfile"
 import { DangerRunner } from "./runner"
 
 import compile from "./utils/transpiler"
-import cleanDangerfile from "./utils/cleanDangerfile"
+// import cleanDangerfile from "./utils/cleanDangerfile"
 import resultsForCaughtError from "./utils/resultsForCaughtError"
+//
+// var Module = require("module")
+import Module from "module"
 
 const d = debug("inline_runner")
 
@@ -87,10 +90,11 @@ export const runDangerfileEnvironment = async (
   for (const filename of filenames) {
     const index = filenames.indexOf(filename)
     const originalContent = (originalContents && originalContents[index]) || fs.readFileSync(filename, "utf8")
-    let content = cleanDangerfile(originalContent)
+    let content = originalContent // cleanDangerfile(originalContent)
     let compiled = compile(content, filename)
 
     try {
+      d(`Adding ${Object.keys(environment)} to global`)
       // Move all the DSL attributes into the global scope
       for (let key in environment) {
         if (environment.hasOwnProperty(key)) {
@@ -98,6 +102,16 @@ export const runDangerfileEnvironment = async (
           global[key] = element
         }
       }
+
+      // Explore mocking out the module danger instead of
+      // just setting the globals
+      const dangerImportPath = require.resolve("../../danger")
+      let m = new Module("danger", module)
+      m.filename = filename
+      m.exports = environment
+      require.cache[dangerImportPath] = m
+
+      console.log("dangerImportPath", dangerImportPath)
 
       d("Started parsing Dangerfile: ", filename)
       const optionalExport = _require(compiled, filename, {})
