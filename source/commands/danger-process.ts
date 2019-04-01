@@ -93,12 +93,13 @@ getRuntimeCISource(app).then(source => {
             dangerID: app.id || "default",
             passURLForDSL: app.passURLForDSL || false,
             disableGitHubChecksSupport: !app.useGithubChecks,
+            failOnErrors: app.failOnErrors,
           }
 
           d("Exec config: ", execConfig)
           d("Run config: ", runConfig)
 
-          const exec = new Executor(source, platform, inlineRunner, execConfig)
+          const exec = new Executor(source, platform, inlineRunner, execConfig, process)
           runDangerSubprocess([subprocessName], dangerJSONDSL, exec, runConfig)
         }
       })

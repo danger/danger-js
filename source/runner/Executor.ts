@@ -49,10 +49,16 @@ export interface ExecutorOptions {
   passURLForDSL: boolean
   /** Disable Checks support in GitHub */
   disableGitHubChecksSupport?: boolean
+  /** Fail if danger report contains failures */
+  failOnErrors?: boolean
 }
 // This is still badly named, maybe it really should just be runner?
 
 const isTests = typeof jest === "object"
+
+interface ExitCodeContainer {
+  exitCode: number
+}
 
 export class Executor {
   private readonly d = debug("executor")
@@ -63,7 +69,8 @@ export class Executor {
     public readonly ciSource: CISource,
     public readonly platform: Platform,
     public readonly runner: DangerRunner,
-    public readonly options: ExecutorOptions
+    public readonly options: ExecutorOptions,
+    public readonly process: ExitCodeContainer
   ) {}
 
   /**
@@ -131,6 +138,10 @@ export class Executor {
     } else {
       await this.handleResultsPostingToPlatform(results, git)
     }
+
+    if (this.options.failOnErrors && results.fails.length > 0) {
+      this.process.exitCode = 1
+    }
   }
   /**
    * Handle showing results inside the shell.
@@ -161,7 +172,6 @@ export class Executor {
         const are = fails.length === 1 ? "is" : "are"
         const message = chalk.underline.red("Failing the build")
         output = `Danger: ${cross} ${message}, there ${are} ${fails.length} fail${s}.`
-        process.exitCode = 1
       } else if (warnings.length > 0) {
         const message = chalk.underline("not failing the build")
         output = `Danger: ${tick} found only warnings, ${message}`

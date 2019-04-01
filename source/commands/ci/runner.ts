@@ -65,6 +65,7 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
         dangerID: app.id || "default",
         passURLForDSL: app.passURLForDSL || false,
         disableGitHubChecksSupport: !app.useGithubChecks,
+        failOnErrors: app.failOnErrors,
       }
 
       const processName = (app.process && app.process.split(" ")) || undefined
@@ -80,7 +81,7 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
       }
 
       // Ship it
-      const exec = new Executor(source, platform, inlineRunner, execConfig)
+      const exec = new Executor(source, platform, inlineRunner, execConfig, process)
       runDangerSubprocess(runnerCommand, dangerJSONDSL, exec, runConfig)
     }
   }
