@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+# 7.0.19
+
 - Taken a stab at trying to make the commit status summary to feel better in both Danger & Peril [@orta][@dblandin]
 
 # 7.0.18
