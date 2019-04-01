@@ -15,6 +15,10 @@
 
 <!-- Your comment below this -->
 
+# 7.0.18
+
+- Adds a CLI option `--fail-on-errors` so that you can force `danger ci` to return a failed exit code on any `fail`s in
+  a Dangerfile [@f-meloni]
 - Add a failOnErrors option to fail the build if there are error on the danger report [@f-meloni]
 
 # 7.0.17
