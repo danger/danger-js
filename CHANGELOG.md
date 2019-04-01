@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Taken a stab at trying to make the commit status summary to feel better in both Danger & Peril [@orta][@dblandin]
+
 # 7.0.18
 
 - Adds a CLI option `--fail-on-errors` so that you can force `danger ci` to return a failed exit code on any `fail`s in
@@ -1572,3 +1574,4 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@tychota]: https://github.com/tychota
 [@urkle]: https://github.com/urkle
 [@wizardishungry]: https://github.com/wizardishungry
+[@dblandin]: https://github.com/dblandin

@@ -99,7 +99,7 @@ export const dangerSignaturePostfix = (results: DangerResults, commitID: string)
 /**
  * Comment to add when updating the PR status when issues are found
  */
-export const messageForResultWithIssues = `:warning: Danger found some issues. Don't worry, everything is fixable.`
+export const messageForResultWithIssues = `Found some issues. Don't worry, everything is fixable.`
 
 /**
  * A template function for creating a GitHub issue comment from Danger Results

@@ -360,12 +360,9 @@ export class GitHubAPI {
       state = "pending"
     }
 
-    let context = "Danger"
-    if (process.env["PERIL_BOT_USER_ID"]) {
-      context = "Peril"
-    } else if (dangerID) {
-      context = dangerID
-    }
+    // This is the bold bit of the status message, it kinda feels like
+    // the name of the service.
+    let context = dangerID || "Danger"
 
     // Suppress errors, because in OSS
     // this failure could be due to access rights.
