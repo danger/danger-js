@@ -1,7 +1,8 @@
 import GitLabAPI from "./gitlab/GitLabAPI"
 import { Platform, Comment } from "./platform"
 import { readFileSync } from "fs"
-import { GitDSL } from "../dsl/GitDSL"
+import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
+import { GitCommit } from "../dsl/Commit"
 
 class GitLab implements Platform {
   public readonly name: string
@@ -11,33 +12,57 @@ class GitLab implements Platform {
   }
 
   async getReviewInfo(): Promise<any> {
-    return {}
+    return this.api.getPullRequestInfo()
   }
 
   async getPlatformReviewDSLRepresentation(): Promise<any> {
     return {}
   }
 
-  async getPlatformGitRepresentation(): Promise<GitDSL> {
-    return {
-      modified_files: [],
-      created_files: [],
-      deleted_files: [],
-      diffForFile: async () => ({ before: "", after: "", diff: "", added: "", removed: "" }),
-      structuredDiffForFile: async () => ({ chunks: [] }),
-      JSONDiffForFile: async () => ({} as any),
-      JSONPatchForFile: async () => ({} as any),
-      commits: [
-        {
-          sha: "123",
-          author: { name: "1", email: "1", date: "1" },
-          committer: { name: "1", email: "1", date: "1" },
-          message: "456",
-          tree: { sha: "123", url: "123" },
-          url: "123",
+  async getPlatformGitRepresentation(): Promise<GitJSONDSL> {
+    const changes = await this.api.getMergeRequestChanges()
+    const commits = await this.api.getMergeRequestCommits()
+
+    const mappedCommits: GitCommit[] = commits.map(commit => {
+      return {
+        sha: commit.id,
+        author: {
+          name: commit.author_name,
+          email: commit.author_email,
+          date: commit.authored_date,
         },
-      ],
-      linesOfCode: async () => 0,
+        committer: {
+          name: commit.committer_name,
+          email: commit.committer_email,
+          date: commit.committed_date,
+        },
+        message: commit.message,
+        parents: commit.parent_ids,
+        url: `${this.api.projectURL}/commit/${commit.id}`,
+        //url: `${this.api.mergeRequestURL}/diffs?commit_id=${commit.id}`,
+        tree: null,
+      }
+    })
+
+    // XXX: does "renamed_file"/move count is "delete/create", or "modified"?
+    const modified_files: string[] = changes
+      .filter(change => change.new_file === false && change.deleted_file == false)
+      .map(change => change.new_path)
+    const created_files: string[] = changes.filter(change => change.new_file === true).map(change => change.new_path)
+    const deleted_files: string[] = changes
+      .filter(change => change.deleted_file === true)
+      .map(change => change.new_path)
+
+    return {
+      modified_files,
+      created_files,
+      deleted_files,
+      // diffForFile: async () => ({ before: "", after: "", diff: "", added: "", removed: "" }),
+      // structuredDiffForFile: async () => ({ chunks: [] }),
+      // JSONDiffForFile: async () => ({} as any),
+      // JSONPatchForFile: async () => ({} as any),
+      commits: mappedCommits,
+      // linesOfCode: async () => 0,
     }
   }
 
