@@ -9,8 +9,8 @@ export type MatchResult<T> = { [K in Extract<keyof T, string>]: boolean }
 
 export interface Chainsmoker<T> {
   (...patterns: Pattern[]): MatchResult<T>
-  tap(callback: (keyedPaths: KeyedPaths<T>) => void): (...patterns: Pattern[]) => MatchResult<T>
   debug(...patterns: Pattern[]): MatchResult<T>
+  tap(callback: (keyedPaths: KeyedPaths<T>) => void): (...patterns: Pattern[]) => MatchResult<T>
 }
 
 const isExclude = (p: Pattern) => p.startsWith("!")
@@ -36,15 +36,15 @@ export default function chainsmoker<T>(keyedPaths: KeyedPaths<T>): Chainsmoker<T
 
   const fileMatch = ((...patterns) => finalize(matchPatterns(patterns))) as Chainsmoker<T>
 
-  fileMatch.tap = callback => (...patterns) => {
-    const results = matchPatterns(patterns)
-    callback(results)
-    return finalize(results)
-  }
-
   fileMatch.debug = (...patterns) => {
     const results = matchPatterns(patterns)
     console.log(JSON.stringify(results, undefined, 2))
+    return finalize(results)
+  }
+
+  fileMatch.tap = callback => (...patterns) => {
+    const results = matchPatterns(patterns)
+    callback(results)
     return finalize(results)
   }
 
