@@ -4,6 +4,8 @@ import { GitHub } from "./GitHub"
 import { GitHubAPI } from "./github/GitHubAPI"
 import { BitBucketServer } from "./BitBucketServer"
 import { BitBucketServerAPI, bitbucketServerRepoCredentialsFromEnv } from "./bitbucket_server/BitBucketServerAPI"
+import GitLabAPI from "./gitlab/GitLabAPI"
+import GitLab from "./GitLab"
 import { DangerResults } from "../dsl/DangerResults"
 import { ExecutorOptions } from "../runner/Executor"
 import { DangerRunner } from "../runner/runners/runner"
@@ -102,6 +104,19 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
     return bbs
   }
 
+  // GitLab
+  if (env["DANGER_GITLAB_HOST"] && env["DANGER_GITLAB_API_TOKEN"]) {
+    const api = new GitLabAPI(
+      {
+        pullRequestID: source.pullRequestID,
+        repoSlug: source.repoSlug,
+      },
+      env["DANGER_GITLAB_API_TOKEN"]
+    )
+    const gitlab = new GitLab(api)
+    return gitlab
+  }
+
   // They need to set the token up for GitHub actions to work
   if (env["GITHUB_EVENT_NAME"] && !env["GITHUB_TOKEN"]) {
     console.error(`You need to add GITHUB_TOKEN to your Danger action in the workflow:
@@ -129,7 +144,9 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
     return new FakePlatform()
   }
 
-  console.error("The DANGER_GITHUB_API_TOKEN/DANGER_BITBUCKETSERVER_HOST environmental variable is missing")
+  console.error(
+    "The DANGER_GITHUB_API_TOKEN/DANGER_BITBUCKETSERVER_HOST/DANGER_GITLAB_HOST environmental variable is missing"
+  )
   console.error("Without an api token, danger will be unable to comment on a PR")
   throw new Error("Cannot use authenticated API requests.")
 }
