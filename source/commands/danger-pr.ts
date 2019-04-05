@@ -34,7 +34,11 @@ program
   .on("--help", () => {
     log("\n")
     log("  Docs:")
-    if (!process.env["DANGER_GITHUB_API_TOKEN"] && !process.env["DANGER_BITBUCKETSERVER_HOST"]) {
+    if (
+      !process.env["DANGER_GITHUB_API_TOKEN"] &&
+      !process.env["DANGER_BITBUCKETSERVER_HOST"] &&
+      !process.env["DANGER_GITLAB_HOST"]
+    ) {
       log("")
       log("     You don't have a DANGER_GITHUB_API_TOKEN set up, this is optional, but TBH, you want to do this.")
       log("     Check out: http://danger.systems/js/guides/the_dangerfile.html#working-on-your-dangerfile")
@@ -60,13 +64,17 @@ if (program.args.length === 0) {
   console.error("Please include a PR URL to run against")
   process.exitCode = 1
 } else {
-  const customHost = process.env["DANGER_GITHUB_HOST"] || process.env["DANGER_BITBUCKETSERVER_HOST"] || "github"
+  const customHost =
+    process.env["DANGER_GITHUB_HOST"] ||
+    process.env["DANGER_BITBUCKETSERVER_HOST"] ||
+    process.env["DANGER_GITLAB_HOST"] ||
+    "github"
 
   // Allow an ambiguous amount of args to find the PR reference
   const findPR = program.args.find(a => a.includes(customHost))
 
   if (!findPR) {
-    console.error(`Could not find an arg which mentioned GitHub or BitBucket Server.`)
+    console.error(`Could not find an arg which mentioned GitHub, BitBucket, or GitLab Server.`)
     process.exitCode = 1
   } else {
     const pr = pullRequestParser(findPR)
