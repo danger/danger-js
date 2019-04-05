@@ -11,6 +11,7 @@ import jsonpointer from "jsonpointer"
 import JSON5 from "json5"
 
 import { GitDSL, JSONPatchOperation, GitJSONDSL, StructuredDiff } from "../../dsl/GitDSL"
+import chainsmoker from "../../commands/utils/chainsmoker"
 
 /*
  * As Danger JS bootstraps from JSON like all `danger process` commands
@@ -238,6 +239,11 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
   }
 
   return {
+    fileMatch: chainsmoker({
+      modified: gitJSONRep.modified_files,
+      created: gitJSONRep.created_files,
+      deleted: gitJSONRep.deleted_files,
+    }),
     modified_files: gitJSONRep.modified_files,
     created_files: gitJSONRep.created_files,
     deleted_files: gitJSONRep.deleted_files,

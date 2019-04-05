@@ -21,14 +21,17 @@ export default function chainsmoker<T>(keyedPaths: KeyedPaths<T>): Chainsmoker<T
       const excludePatterns = patterns.filter(p => isExclude(p))
       const includePatterns = patterns.filter(p => !isExclude(p))
 
-      const included = includePatterns.reduce((accum, pattern) => accum.concat(micromatch.match(paths, pattern)), [])
+      const included = includePatterns.reduce(
+        (accum, pattern) => accum.concat(micromatch.match(paths, pattern)),
+        [] as Path[]
+      )
 
       return excludePatterns.reduce((accum, pattern) => micromatch.match(accum, pattern), included)
-    })
+    }) as KeyedPaths<T>
   }
 
   function finalize(keyedPaths: KeyedPaths<T>): MatchResult<T> {
-    return mapValues(keyedPaths, (paths: Path[]) => paths.length > 0)
+    return mapValues(keyedPaths, (paths: Path[]) => paths.length > 0) as MatchResult<T>
   }
 
   const fileMatch = ((...patterns) => finalize(matchPatterns(patterns))) as Chainsmoker<T>

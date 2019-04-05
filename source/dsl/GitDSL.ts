@@ -1,4 +1,5 @@
 import { GitCommit } from "./Commit"
+import { Chainsmoker } from "../commands/utils/chainsmoker"
 
 /** All Text diff values will be this shape */
 export interface TextDiff {
@@ -86,8 +87,19 @@ export interface GitJSONDSL {
   readonly commits: GitCommit[]
 }
 
+type MatchResult = {
+  modified: any
+  created: any
+  deleted: any
+}
+
 /** The git specific metadata for a PR */
 export interface GitDSL extends GitJSONDSL {
+  /**
+   * A Chainsmoker object to help match paths
+   */
+  fileMatch: Chainsmoker<MatchResult>
+
   /**
    * Offers the diff for a specific file
    *
