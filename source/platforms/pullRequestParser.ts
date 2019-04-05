@@ -26,6 +26,18 @@ export function pullRequestParser(address: string): PullRequestParts | null {
         pullRequestNumber: components.path.split("/pull/")[1],
       }
     }
+
+    // shape: https://gitlab.com/GROUP[/SUBGROUP]/PROJ/merge_requests/123
+    if (includes(components.path, "merge_requests")) {
+      const regex = /\/(.+)\/merge_requests\/(\d+)/
+      const parts = components.path.match(regex)
+      if (parts) {
+        return {
+          repo: parts[1],
+          pullRequestNumber: parts[2],
+        }
+      }
+    }
   }
 
   return null
