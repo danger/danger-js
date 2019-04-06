@@ -28,9 +28,12 @@ export const jsonDSLGenerator = async (
     textOnly: program.textOnly,
     verbose: program.verbose,
   }
+
+  const dslPlatformName = jsonDSLPlatformName(platform)
+
   return {
     git,
-    [platform.name === "BitBucketServer" ? "bitbucket_server" : "github"]: platformDSL,
+    [dslPlatformName]: platformDSL,
     settings: {
       github: {
         accessToken: process.env["DANGER_GITHUB_API_TOKEN"] || process.env["GITHUB_TOKEN"] || "NO_TOKEN",
@@ -39,5 +42,17 @@ export const jsonDSLGenerator = async (
       },
       cliArgs,
     },
+  }
+}
+
+const jsonDSLPlatformName = (platform: Platform): string => {
+  switch (platform.name) {
+    case "BitBucketServer":
+      return "bitbucket_server"
+    case "GitLab":
+      return "gitlab"
+    case "GitHub":
+    default:
+      return "github"
   }
 }

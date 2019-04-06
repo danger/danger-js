@@ -1,13 +1,29 @@
+// TODO: extract out from BitBucket specifically, or create our own type
+import { RepoMetaData } from "./BitBucketServerDSL"
+
+// danger.gitlab
+
+export interface GitLabDSL {
+  metadata: RepoMetaData
+  // issues: any[]
+  mr: GitLabMR
+  // commits: GitLabMRCommit[]
+  // comments: any[]
+}
+
+// ---
+// JSON responses from API
+
 export interface GitLabUser {
   id: number
   name: string
   username: string
-  state: "active"
+  state: "active" // XXX: other states?
   avatar_url: string | null
   web_url: string
 }
 
-export interface GitLabMRDSLBase {
+export interface GitLabMRBase {
   /**  */
   id: number
 
@@ -52,7 +68,7 @@ export interface GitLabMRDSLBase {
     project_id: number
     title: string
     description: string
-    state: "closed"
+    state: "closed" // XXX: other states?
     created_at: string
     updated_at: string
     due_date: string
@@ -60,7 +76,7 @@ export interface GitLabMRDSLBase {
     web_url: string
   }
   merge_when_pipeline_succeeds: boolean
-  merge_status: "can_be_merged"
+  merge_status: "can_be_merged" // XXX: other statuses?
   merge_error: null | null
   sha: string
   merge_commit_sha: string | null
@@ -79,7 +95,7 @@ export interface GitLabMRDSLBase {
   }
 }
 
-export interface GitLabMRDSL extends GitLabMRDSLBase {
+export interface GitLabMR extends GitLabMRBase {
   squash: boolean
   subscribed: boolean
   changes_count: string
@@ -94,7 +110,7 @@ export interface GitLabMRDSL extends GitLabMRDSLBase {
     id: number
     sha: string
     ref: string
-    status: "success"
+    status: "success" // XXX: other statuses?
     web_url: string
   }
   diff_refs: {
@@ -107,7 +123,7 @@ export interface GitLabMRDSL extends GitLabMRDSLBase {
   approvals_before_merge: null | null
 }
 
-export interface GitLabMRChangeDSL {
+export interface GitLabMRChange {
   old_path: string
   new_path: string
   a_mode: string
@@ -118,11 +134,42 @@ export interface GitLabMRChangeDSL {
   deleted_file: boolean
 }
 
-export interface GitLabMRChangesDSL extends GitLabMRDSLBase {
-  changes: GitLabMRChangeDSL[]
+export interface GitLabMRChanges extends GitLabMRBase {
+  changes: GitLabMRChange[]
 }
 
-export interface GitLabMRCommitDSL {
+export interface GitLabComment {
+  id: number
+  type: "DiffNote" | null // XXX: other types? null means "normal comment"
+  body: string
+  attachment: null // XXX: what can an attachment be?
+  author: GitLabUser
+  created_at: string
+  updated_at: string
+  system: boolean
+  noteable_id: number
+  noteable_type: "MergeRequest" // XXX: other types...?
+  resolvable: boolean
+  noteable_iid: number
+}
+
+export interface GitLabInlineComment extends GitLabComment {
+  position: {
+    base_sha: string
+    start_sha: string
+    head_sha: string
+    old_path: string
+    new_path: string
+    position_type: "text" // XXX: other types?
+    old_line: number | null
+    new_line: number
+  }
+  resolvable: boolean
+  resolved: boolean
+  resolved_by: GitLabUser | null
+}
+
+export interface GitLabMRCommit {
   id: string
   short_id: string
   created_at: string

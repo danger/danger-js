@@ -1,6 +1,13 @@
 import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 import { api as fetch } from "../../api/fetch"
-import { GitLabMRDSL, GitLabMRChangesDSL, GitLabMRChangeDSL, GitLabMRCommitDSL } from "../../dsl/GitLabDSL"
+import {
+  GitLabMR,
+  GitLabMRChanges,
+  GitLabMRChange,
+  GitLabMRCommit,
+  GitLabInlineComment,
+  GitLabComment,
+} from "../../dsl/GitLabDSL"
 
 import { Gitlab } from "gitlab"
 // const Gitlab = require("gitlab").default
@@ -10,7 +17,7 @@ export type GitLabAPIToken = string
 class GitLabAPI {
   fetch: typeof fetch
 
-  private pr: GitLabMRDSL | undefined
+  // private mr: GitLabMR | undefined
 
   // https://github.com/jdalrymple/node-gitlab/issues/257
   private api: any //typeof Gitlab
@@ -45,14 +52,19 @@ class GitLabAPI {
     return `${this.projectURL}/merge_requests/${this.repoMetadata.pullRequestID}`
   }
 
-  getPullRequestInfo = async (): Promise<GitLabMRDSL> => {
-    if (this.pr) {
-      return this.pr
-    }
+  getMergeRequestInfo = async (): Promise<GitLabMR> => {
+    // if (this.mr) {
+    //   return this.mr
+    // }
 
-    console.log("[+] getPullRequestInfo")
+    const mr = (await this.api.MergeRequests.show(
+      this.repoMetadata.repoSlug,
+      this.repoMetadata.pullRequestID
+    )) as GitLabMR
 
-    return this.api.MergeRequests.show(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)
+    // this.mr = mr
+
+    return mr
 
     // const repo = this.repoMetadata.repoSlug
     // const prID = this.repoMetadata.pullRequestID
@@ -67,17 +79,29 @@ class GitLabAPI {
     // }
   }
 
-  getMergeRequestChanges = async (): Promise<GitLabMRChangeDSL[]> => {
-    const pr: GitLabMRChangesDSL = await this.api.MergeRequests.changes(
+  getMergeRequestChanges = async (): Promise<GitLabMRChange[]> => {
+    const mr = (await this.api.MergeRequests.changes(
       this.repoMetadata.repoSlug,
       this.repoMetadata.pullRequestID
-    )
+    )) as GitLabMRChanges
 
-    return pr.changes
+    return mr.changes
   }
 
-  getMergeRequestCommits = async (): Promise<GitLabMRCommitDSL[]> => {
-    return this.api.MergeRequests.commits(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)
+  getMergeRequestCommits = async (): Promise<GitLabMRCommit[]> => {
+    return await this.api.MergeRequests.commits(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)
+  }
+
+  getMergeRequestComments = async (): Promise<GitLabComment[]> => {
+    const api = this.api.MergeRequestNotes()
+    return (await api.all(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)) as GitLabComment[]
+  }
+
+  getMergeRequestInlineComments = async (): Promise<GitLabInlineComment[]> => {
+    const api = this.api.MergeRequestNotes()
+    return (await api
+      .all(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)
+      .filter((comment: GitLabComment) => comment.type == "DiffNote")) as GitLabInlineComment[]
   }
 }
 

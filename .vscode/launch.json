@@ -10,7 +10,8 @@
       "protocol": "inspector",
       "console": "internalConsole",
       "sourceMaps": true,
-      "outFiles": ["${workspaceRoot}/distribution"]
+      "outFiles": ["${workspaceRoot}/distribution"],
+      "runtimeExecutable": "/Users/joshua/.nvm/versions/node/v10.12.0/bin/node"
     }
   ]
 }

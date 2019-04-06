@@ -58,6 +58,7 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
 
     if (platform) {
       const dangerJSONDSL = await jsonDSLGenerator(platform, source, app)
+      d({ dangerJSONDSL })
       const execConfig: ExecutorOptions = {
         stdoutOnly: !platform.supportsCommenting() || app.textOnly,
         verbose: app.verbose,

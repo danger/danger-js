@@ -3,6 +3,7 @@ import { Platform, Comment } from "./platform"
 import { readFileSync } from "fs"
 import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitCommit } from "../dsl/Commit"
+import { GitLabDSL } from "../dsl/GitLabDSL"
 
 class GitLab implements Platform {
   public readonly name: string
@@ -11,15 +12,28 @@ class GitLab implements Platform {
     this.name = "GitLab"
   }
 
-  async getReviewInfo(): Promise<any> {
-    return this.api.getPullRequestInfo()
+  getReviewInfo = async (): Promise<any> => {
+    return this.api.getMergeRequestInfo()
   }
 
-  async getPlatformReviewDSLRepresentation(): Promise<any> {
-    return {}
+  // returns the `danger.gitlab` object
+  getPlatformReviewDSLRepresentation = async (): Promise<GitLabDSL> => {
+    const mr = await this.getReviewInfo()
+    // const commits = await this.api.getMergeRequestCommits()
+    // const comments: any[] = [] //await this.api.getMergeRequestComments()
+    // const activities = {} //await this.api.getPullRequestActivities()
+    // const issues: any[] = [] //await this.api.getIssues()
+
+    return {
+      metadata: this.api.repoMetadata,
+      // issues,
+      mr,
+      // commits,
+      // comments,
+    }
   }
 
-  async getPlatformGitRepresentation(): Promise<GitJSONDSL> {
+  getPlatformGitRepresentation = async (): Promise<GitJSONDSL> => {
     const changes = await this.api.getMergeRequestChanges()
     const commits = await this.api.getMergeRequestCommits()
 
@@ -57,17 +71,25 @@ class GitLab implements Platform {
       modified_files,
       created_files,
       deleted_files,
+      commits: mappedCommits,
       // diffForFile: async () => ({ before: "", after: "", diff: "", added: "", removed: "" }),
       // structuredDiffForFile: async () => ({ chunks: [] }),
       // JSONDiffForFile: async () => ({} as any),
       // JSONPatchForFile: async () => ({} as any),
-      commits: mappedCommits,
       // linesOfCode: async () => 0,
     }
   }
 
-  async getInlineComments(_: string): Promise<Comment[]> {
-    return []
+  getInlineComments = async (_: string): Promise<Comment[]> => {
+    const comments = (await this.api.getMergeRequestInlineComments()).map(comment => {
+      return {
+        id: `${comment.id}`,
+        body: comment.body,
+        ownedByDanger: comment.author.id === 1,
+      }
+    })
+
+    return comments
   }
 
   supportsCommenting() {
@@ -78,31 +100,31 @@ class GitLab implements Platform {
     return true
   }
 
-  async updateOrCreateComment(_dangerID: string, _newComment: string): Promise<string> {
+  updateOrCreateComment = async (_dangerID: string, _newComment: string): Promise<string> => {
     return "https://gitlab.com/group/project/merge_requests/154#note_132143425"
   }
 
-  async createComment(_comment: string): Promise<any> {
+  createComment = async (_comment: string): Promise<any> => {
     return true
   }
 
-  async createInlineComment(_git: GitDSL, _comment: string, _path: string, _line: number): Promise<any> {
+  createInlineComment = async (_git: GitDSL, _comment: string, _path: string, _line: number): Promise<any> => {
     return true
   }
 
-  async updateInlineComment(_comment: string, _commentId: string): Promise<any> {
+  updateInlineComment = async (_comment: string, _commentId: string): Promise<any> => {
     return true
   }
 
-  async deleteInlineComment(_id: string): Promise<boolean> {
+  deleteInlineComment = async (_id: string): Promise<boolean> => {
     return true
   }
 
-  async deleteMainComment(): Promise<boolean> {
+  deleteMainComment = async (): Promise<boolean> => {
     return true
   }
 
-  async updateStatus(): Promise<boolean> {
+  updateStatus = async (): Promise<boolean> => {
     return true
   }
 
