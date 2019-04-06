@@ -1,3 +1,7 @@
+// Graciously vendored from
+// https://github.com/paulmelnikow/chainsmoker
+//
+
 import micromatch from "micromatch"
 import mapValues from "lodash.mapvalues"
 
@@ -36,12 +40,14 @@ export default function chainsmoker<T>(keyedPaths: KeyedPaths<T>): Chainsmoker<T
 
   const fileMatch = ((...patterns) => finalize(matchPatterns(patterns))) as Chainsmoker<T>
 
+  /** Logs an object containing matched files before returning the usual boolean values. */
   fileMatch.debug = (...patterns) => {
     const results = matchPatterns(patterns)
     console.log(JSON.stringify(results, undefined, 2))
     return finalize(results)
   }
 
+  /** Invoke the callback with an object containing matched files before returning the usual boolean values. */
   fileMatch.tap = callback => (...patterns) => {
     const results = matchPatterns(patterns)
     callback(results)

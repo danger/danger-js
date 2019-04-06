@@ -23,7 +23,7 @@ export class FakePlatform implements Platform {
       modified_files: [],
       created_files: [],
       deleted_files: [],
-      fileMatch: chainsmoker({ modified: [], created: [], deleted: [] }),
+      fileMatch: chainsmoker({ modified: [], created: [], deleted: [], edited: [] }),
       diffForFile: async () => ({ before: "", after: "", diff: "", added: "", removed: "" }),
       structuredDiffForFile: async () => ({ chunks: [] }),
       JSONDiffForFile: async () => ({} as any),

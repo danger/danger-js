@@ -666,8 +666,19 @@ interface GitJSONDSL {
   readonly commits: GitCommit[]
 }
 
+type MatchResult = {
+  modified: any
+  created: any
+  deleted: any
+}
+
 /** The git specific metadata for a PR */
 interface GitDSL extends GitJSONDSL {
+  /**
+   * A Chainsmoker object to help match paths
+   */
+  fileMatch: Chainsmoker<MatchResult>
+
   /**
    * Offers the diff for a specific file
    *

@@ -58,8 +58,6 @@ export interface JSONDiff {
   [name: string]: JSONDiffValue
 }
 
-// This is `danger.git`
-
 /**
  *
  * The Git Related Metadata which is available inside the Danger DSL JSON
@@ -87,16 +85,43 @@ export interface GitJSONDSL {
   readonly commits: GitCommit[]
 }
 
+/** The shape of the Chainsmoker response */
 type MatchResult = {
+  /** Did any file paths match from the git modified list? */
   modified: any
+  /** Did any file paths match from the git created list? */
   created: any
+  /** Did any file paths match from the combination of the git modified and created list? */
+  edited: any
+  /** Did any file paths match from the git deleted list? */
   deleted: any
 }
 
 /** The git specific metadata for a PR */
 export interface GitDSL extends GitJSONDSL {
   /**
-   * A Chainsmoker object to help match paths
+   * A Chainsmoker object to help match paths as an elegant DSL. It
+   * lets you write a globbed string and then get booleans on whether
+   * there are matches within a certain part of the git DSL.
+   *
+   * Use this to create an object which has booleans set on 4 keys
+   * `modified`, `created`, `edited` (created + modified) and `deleted`.
+   *
+   * @example
+   * const packageJSON = danger.git.fileMatch("package.json")
+   * const lockfile = danger.git.fileMatch("yarn.lock")
+   *
+   * if (packageJSON.modified && !lockfile.modified) {
+   *    warn("You might have forgotten to run `yarn`.")
+   * }
+   *
+   * @example
+   * const needsSchemaChange = danger.git.fileMatch("src/app/analytics/*.ts")
+   * const schema = danger.git.fileMatch("src/app/analytics/schema.ts")
+   *
+   * if (needsSchemaChange.edited && !schema.modified) {
+   *    fail("Changes to the analytics files need to edit update the schema.")
+   * }
    */
   fileMatch: Chainsmoker<MatchResult>
 
