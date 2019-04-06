@@ -15,6 +15,24 @@
 
 <!-- Your comment below this -->
 
+- Adds Chainsmoker, and expands the Danger DSL with the addition of `danger.git.fileMatch`.
+
+  ```ts
+  const documentation = danger.git.fileMatch("**/*.md")
+  const packageJson = danger.git.fileMatch("package.json")
+  const lockfile = danger.git.fileMatch("yarn.lock", "package-lock.json")
+
+  if (documentation.edited) {
+    message("Thanks - We :heart: our [documentarians](http://www.writethedocs.org/)!")
+  }
+
+  if (packageJson.modified && !lockfile.modified) {
+    warn("This PR modified package.json, but not the lockfile")
+  }
+  ```
+
+  This makes it much simpler to compose a collection of file checks - [@paulmelnikow]
+
 # 7.0.19
 
 - Taken a stab at trying to make the commit status summary to feel better in both Danger & Peril [@orta][@dblandin]
@@ -1577,3 +1595,4 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@urkle]: https://github.com/urkle
 [@wizardishungry]: https://github.com/wizardishungry
 [@dblandin]: https://github.com/dblandin
+[@paulmelnikow]: https://github.com/paulmelnikow
