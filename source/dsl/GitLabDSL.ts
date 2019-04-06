@@ -164,9 +164,9 @@ export interface GitLabMRChanges extends GitLabMRBase {
   changes: GitLabMRChange[]
 }
 
-export interface GitLabComment {
+export interface GitLabNote {
   id: number
-  type: "DiffNote" | null // XXX: other types? null means "normal comment"
+  type: "DiffNote" | "DiscussionNote" | null // XXX: other types? null means "normal comment"
   body: string
   attachment: null // XXX: what can an attachment be?
   author: GitLabUser
@@ -179,7 +179,7 @@ export interface GitLabComment {
   noteable_iid: number
 }
 
-export interface GitLabInlineComment extends GitLabComment {
+export interface GitLabInlineNote extends GitLabNote {
   position: {
     base_sha: string
     start_sha: string

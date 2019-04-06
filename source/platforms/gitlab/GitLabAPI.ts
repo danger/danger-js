@@ -5,9 +5,9 @@ import {
   GitLabMRChanges,
   GitLabMRChange,
   GitLabMRCommit,
-  GitLabInlineComment,
-  GitLabComment,
   GitLabUserProfile,
+  GitLabInlineNote,
+  GitLabNote,
 } from "../../dsl/GitLabDSL"
 
 import { Gitlab } from "gitlab"
@@ -106,18 +106,80 @@ class GitLabAPI {
     return await this.api.MergeRequests.commits(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)
   }
 
-  getMergeRequestComments = async (): Promise<GitLabComment[]> => {
+  getMergeRequestNotes = async (): Promise<GitLabNote[]> => {
     const api = this.api.MergeRequestNotes
-    return (await api.all(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)) as GitLabComment[]
+    return (await api.all(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)) as GitLabNote[]
   }
 
-  getMergeRequestInlineComments = async (): Promise<GitLabInlineComment[]> => {
+  getMergeRequestInlineNotes = async (): Promise<GitLabInlineNote[]> => {
     const api = this.api.MergeRequestNotes
     const res = await api.all(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)
 
-    const returns = res.filter((comment: GitLabComment) => comment.type == "DiffNote") as GitLabInlineComment[]
+    const returns = res.filter((note: GitLabNote) => note.type == "DiffNote") as GitLabInlineNote[]
 
     return Promise.resolve(returns)
+  }
+
+  createMergeRequestDiscussion = async (content: string): Promise<string> => {
+    const api = this.api.MergeRequestDiscussions
+
+    try {
+      const res = await api.create(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, content, {
+        position: {
+          position_type: "text",
+          base_sha: "7ff257811bbd6eb14bb6a3d3ceee0006b431d6dd",
+          start_sha: "7ff257811bbd6eb14bb6a3d3ceee0006b431d6dd",
+          head_sha: "1a3f30ca1a64c558a98c43ea1201a43423b4c520",
+          new_line: "4",
+          new_path: "file2",
+        },
+      })
+
+      console.log({ res })
+
+      return res
+    } catch (e) {
+      console.error(`Error in createMergeRequestDiscussion: ${e}`)
+      return Promise.reject(e)
+    }
+  }
+
+  createMergeRequestNote = async (body: string): Promise<GitLabNote> => {
+    const api = this.api.MergeRequestNotes
+
+    try {
+      return (await api.create(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, body)) as GitLabNote
+    } catch (e) {
+      console.error(`Error in createMergeRequestNote: ${e}`)
+    }
+
+    return Promise.reject()
+  }
+
+  updateMergeRequestNote = async (id: number, body: string): Promise<GitLabNote> => {
+    const api = this.api.MergeRequestNotes
+
+    try {
+      return (await api.edit(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, id, body)) as GitLabNote
+    } catch (e) {
+      console.error(`Error in updateMergeRequestNote "${id}": ${e}`)
+    }
+
+    return Promise.reject()
+  }
+
+  // note: deleting the _only_ note in a discussion also deletes the discussion \o/
+  deleteMergeRequestNote = async (id: number): Promise<boolean> => {
+    const api = this.api.MergeRequestNotes
+
+    try {
+      await api.remove(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, id)
+      return true
+    } catch (e) {
+      console.error(`Error in deleteMergeRequestNote "${id}": ${e}`)
+    }
+
+    return false
   }
 }
 

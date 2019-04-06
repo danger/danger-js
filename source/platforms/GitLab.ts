@@ -3,7 +3,7 @@ import { Platform, Comment } from "./platform"
 import { readFileSync } from "fs"
 import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitCommit } from "../dsl/Commit"
-import { GitLabDSL } from "../dsl/GitLabDSL"
+import { GitLabDSL, GitLabNote } from "../dsl/GitLabDSL"
 
 import { debug } from "../debug"
 const d = debug("GitLab")
@@ -87,15 +87,15 @@ class GitLab implements Platform {
   getInlineComments = async (dangerID: string): Promise<Comment[]> => {
     const dangerUserID = (await this.api.getUser()).id
 
-    const comments = (await this.api.getMergeRequestInlineComments()).map(comment => {
+    const comments = (await this.api.getMergeRequestInlineNotes()).map(note => {
       return {
-        id: `${comment.id}`,
-        body: comment.body,
-        ownedByDanger: comment.author.id === dangerUserID && comment.body.includes(dangerID),
+        id: `${note.id}`,
+        body: note.body,
+        ownedByDanger: note.author.id === dangerUserID && note.body.includes(dangerID),
       }
     })
 
-    console.log({ comments })
+    // console.log({ comments })
 
     return comments
   }
@@ -108,29 +108,68 @@ class GitLab implements Platform {
     return true
   }
 
-  updateOrCreateComment = async (_dangerID: string, _newComment: string): Promise<string> => {
-    d("updateOrCreateComment", { _dangerID, _newComment })
-    return "https://gitlab.com/group/project/merge_requests/154#note_132143425"
+  updateOrCreateComment = async (dangerID: string, newComment: string): Promise<string> => {
+    d("updateOrCreateComment", { dangerID, newComment })
+
+    const dangerUserID = (await this.api.getUser()).id
+
+    const existing = await this.api.getMergeRequestNotes()
+    const dangered = existing
+      .filter(note => note.author.id === dangerUserID && note.body.includes(dangerID))
+      .filter(note => note.type == null) // we only want "normal" comments on the main body of the MR
+
+    let note: GitLabNote
+
+    if (dangered.length) {
+      // update the first
+      console.log(`[+] update ${dangered[0].id}`)
+      console.log(dangered)
+      note = await this.api.updateMergeRequestNote(dangered[0].id, newComment)
+
+      // delete the rest
+      for (let deleteme of dangered) {
+        if (deleteme === dangered[0]) {
+          console.log(`[-] skip ${deleteme.id}`)
+          continue
+        }
+
+        console.log(`[+] delete ${deleteme.id}`)
+        await this.api.deleteMergeRequestNote(deleteme.id)
+      }
+    } else {
+      // create a new note
+      console.log("[+] create")
+      note = await this.api.createMergeRequestNote(newComment)
+    }
+
+    console.log("[+] note -> " + note.id)
+
+    // create URL from note
+    // "https://gitlab.com/group/project/merge_requests/154#note_132143425"
+    return `${this.api.mergeRequestURL}#note_${note.id}`
   }
 
-  createComment = async (_comment: string): Promise<any> => {
-    d("createComment", { _comment })
-    return true
+  createComment = async (comment: string): Promise<any> => {
+    d("createComment", { comment })
+    return this.api.createMergeRequestNote(comment)
   }
 
-  createInlineComment = async (_git: GitDSL, _comment: string, _path: string, _line: number): Promise<any> => {
-    d("createInlineComment", { _comment, _path, _line })
-    return true
+  createInlineComment = async (git: GitDSL, comment: string, path: string, line: number): Promise<string> => {
+    d("createInlineComment", { git, comment, path, line })
+
+    return this.api.createMergeRequestDiscussion(comment)
   }
 
-  updateInlineComment = async (_comment: string, _commentId: string): Promise<any> => {
-    d("updateInlineComment", { _comment, _commentId })
-    return true
+  updateInlineComment = async (comment: string, id: string): Promise<GitLabNote> => {
+    d("updateInlineComment", { comment, id })
+    const nid = parseInt(id) // fingers crossed
+    return await this.api.updateMergeRequestNote(nid, comment)
   }
 
-  deleteInlineComment = async (_id: string): Promise<boolean> => {
-    d("deleteInlineComment", { _id })
-    return true
+  deleteInlineComment = async (id: string): Promise<boolean> => {
+    d("deleteInlineComment", { id })
+    const nid = parseInt(id) // fingers crossed
+    return await this.api.deleteMergeRequestNote(nid)
   }
 
   deleteMainComment = async (): Promise<boolean> => {
