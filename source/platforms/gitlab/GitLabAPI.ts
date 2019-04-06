@@ -7,6 +7,7 @@ import {
   GitLabMRCommit,
   GitLabInlineComment,
   GitLabComment,
+  GitLabUserProfile,
 } from "../../dsl/GitLabDSL"
 
 import { Gitlab } from "gitlab"
@@ -18,6 +19,7 @@ class GitLabAPI {
   fetch: typeof fetch
 
   // private mr: GitLabMR | undefined
+  // private user: GitLabUserProfile | undefined
 
   // https://github.com/jdalrymple/node-gitlab/issues/257
   private api: any //typeof Gitlab
@@ -50,6 +52,18 @@ class GitLabAPI {
 
   get mergeRequestURL(): string {
     return `${this.projectURL}/merge_requests/${this.repoMetadata.pullRequestID}`
+  }
+
+  getUser = async (): Promise<GitLabUserProfile> => {
+    // if (this.user) {
+    //   return this.user
+    // }
+
+    const user = (await this.api.Users.current()) as GitLabUserProfile
+
+    // this.user = user
+
+    return user
   }
 
   getMergeRequestInfo = async (): Promise<GitLabMR> => {
@@ -93,15 +107,17 @@ class GitLabAPI {
   }
 
   getMergeRequestComments = async (): Promise<GitLabComment[]> => {
-    const api = this.api.MergeRequestNotes()
+    const api = this.api.MergeRequestNotes
     return (await api.all(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)) as GitLabComment[]
   }
 
   getMergeRequestInlineComments = async (): Promise<GitLabInlineComment[]> => {
-    const api = this.api.MergeRequestNotes()
-    return (await api
-      .all(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)
-      .filter((comment: GitLabComment) => comment.type == "DiffNote")) as GitLabInlineComment[]
+    const api = this.api.MergeRequestNotes
+    const res = await api.all(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)
+
+    const returns = res.filter((comment: GitLabComment) => comment.type == "DiffNote") as GitLabInlineComment[]
+
+    return Promise.resolve(returns)
   }
 }
 

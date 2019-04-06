@@ -64,9 +64,6 @@ const apiForDSL = (dsl: DangerDSLJSONType): OctoKit | BitBucketServerAPI | GitLa
   }
 
   const gitlab = dsl.gitlab
-  console.log("??????")
-  d("???????????")
-  d({ dsl })
   if (gitlab != null && process.env["DANGER_GITLAB_API_TOKEN"] != null) {
     // d({ gitlab })
     return new GitLabAPI(gitlab.metadata, process.env["DANGER_GITLAB_API_TOKEN"]!)

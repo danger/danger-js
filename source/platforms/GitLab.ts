@@ -5,6 +5,9 @@ import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitCommit } from "../dsl/Commit"
 import { GitLabDSL } from "../dsl/GitLabDSL"
 
+import { debug } from "../debug"
+const d = debug("GitLab")
+
 class GitLab implements Platform {
   public readonly name: string
 
@@ -19,7 +22,7 @@ class GitLab implements Platform {
   // returns the `danger.gitlab` object
   getPlatformReviewDSLRepresentation = async (): Promise<GitLabDSL> => {
     const mr = await this.getReviewInfo()
-    // const commits = await this.api.getMergeRequestCommits()
+    const commits = await this.api.getMergeRequestCommits()
     // const comments: any[] = [] //await this.api.getMergeRequestComments()
     // const activities = {} //await this.api.getPullRequestActivities()
     // const issues: any[] = [] //await this.api.getIssues()
@@ -28,8 +31,9 @@ class GitLab implements Platform {
       metadata: this.api.repoMetadata,
       // issues,
       mr,
-      // commits,
+      commits,
       // comments,
+      utils: {},
     }
   }
 
@@ -80,14 +84,18 @@ class GitLab implements Platform {
     }
   }
 
-  getInlineComments = async (_: string): Promise<Comment[]> => {
+  getInlineComments = async (dangerID: string): Promise<Comment[]> => {
+    const dangerUserID = (await this.api.getUser()).id
+
     const comments = (await this.api.getMergeRequestInlineComments()).map(comment => {
       return {
         id: `${comment.id}`,
         body: comment.body,
-        ownedByDanger: comment.author.id === 1,
+        ownedByDanger: comment.author.id === dangerUserID && comment.body.includes(dangerID),
       }
     })
+
+    console.log({ comments })
 
     return comments
   }
@@ -101,30 +109,37 @@ class GitLab implements Platform {
   }
 
   updateOrCreateComment = async (_dangerID: string, _newComment: string): Promise<string> => {
+    d("updateOrCreateComment", { _dangerID, _newComment })
     return "https://gitlab.com/group/project/merge_requests/154#note_132143425"
   }
 
   createComment = async (_comment: string): Promise<any> => {
+    d("createComment", { _comment })
     return true
   }
 
   createInlineComment = async (_git: GitDSL, _comment: string, _path: string, _line: number): Promise<any> => {
+    d("createInlineComment", { _comment, _path, _line })
     return true
   }
 
   updateInlineComment = async (_comment: string, _commentId: string): Promise<any> => {
+    d("updateInlineComment", { _comment, _commentId })
     return true
   }
 
   deleteInlineComment = async (_id: string): Promise<boolean> => {
+    d("deleteInlineComment", { _id })
     return true
   }
 
   deleteMainComment = async (): Promise<boolean> => {
+    d("deleteMainComment", {})
     return true
   }
 
   updateStatus = async (): Promise<boolean> => {
+    d("updateStatus", {})
     return true
   }
 
