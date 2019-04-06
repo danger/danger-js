@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+# 7.1.19
+
 - Adds Chainsmoker, and expands the Danger DSL with the addition of `danger.git.fileMatch`.
 
   ```ts
