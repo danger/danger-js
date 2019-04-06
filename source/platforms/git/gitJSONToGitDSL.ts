@@ -11,6 +11,7 @@ import jsonpointer from "jsonpointer"
 import JSON5 from "json5"
 
 import { GitDSL, JSONPatchOperation, GitJSONDSL, StructuredDiff } from "../../dsl/GitDSL"
+import chainsmoker from "../../commands/utils/chainsmoker"
 
 /*
  * As Danger JS bootstraps from JSON like all `danger process` commands
@@ -155,7 +156,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
   }
 
   const linesOfCode = async () => {
-    const [createdFilesDiffs, modifiledFilesDiffs, deletedFilesDiffs] = await Promise.all([
+    const [createdFilesDiffs, modifiedFilesDiffs, deletedFilesDiffs] = await Promise.all([
       Promise.all(gitJSONRep.created_files.map(path => diffForFile(path))),
       Promise.all(gitJSONRep.modified_files.map(path => diffForFile(path))),
       Promise.all(gitJSONRep.deleted_files.map(path => diffForFile(path))),
@@ -167,7 +168,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     let deletions = deletedFilesDiffs
       .map(diff => (!diff ? 0 : diff.removed === "" ? 0 : diff.removed.split("\n").length))
       .reduce((mem, value) => mem + value, 0)
-    const modifiedLines = modifiledFilesDiffs.map(diff => [
+    const modifiedLines = modifiedFilesDiffs.map(diff => [
       !diff ? 0 : diff.added === "" ? 0 : diff.added.split("\n").length,
       !diff ? 0 : diff.removed === "" ? 0 : diff.removed.split("\n").length,
     ])
@@ -238,6 +239,12 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
   }
 
   return {
+    fileMatch: chainsmoker({
+      modified: gitJSONRep.modified_files,
+      created: gitJSONRep.created_files,
+      deleted: gitJSONRep.deleted_files,
+      edited: gitJSONRep.modified_files.concat(gitJSONRep.created_files),
+    }),
     modified_files: gitJSONRep.modified_files,
     created_files: gitJSONRep.created_files,
     deleted_files: gitJSONRep.deleted_files,

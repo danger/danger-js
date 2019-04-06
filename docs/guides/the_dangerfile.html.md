@@ -76,24 +76,18 @@ potential arrays of files. For example:
 
 ```js
 import { danger } from "danger"
-import { includes, concat } from "lodash"
 
-// The Danger DSL can be a bit verbose, so let's rename
-const modified = danger.git.modified_files
-const newFiles = danger.git.created_files
+const docs = danger.git.fileMatch("**/*.md")
+const app = danger.git.fileMatch("src/**/*.ts")
+const tests = danger.git.fileMatch("*/__tests__/*")
 
-// Have there actually been changes to our app code vs just README changes
-const modifiedAppFiles = modified.filter(p => includes(p, "lib/"))
-const modifiedTestFiles = modified.filter(p => includes(p, "__tests__"))
+if (docs.edited) {
+  message("Thanks - We :heart: our [documentarians](http://www.writethedocs.org/)!")
+}
 
-// Pull out specific files, we want to do against them regardless
-// of whether they are just created or modified.
-const touchedFiles = modified.concat(danger.git.created_files)
-const touchedAppOnlyFiles = touchedFiles.filter(p => includes(p, "src/lib/") && !includes(p, "__tests__"))
-const touchedComponents = touchedFiles.filter(p => includes(p, "src/lib/components") && !includes(p, "__tests__"))
-
-// Now do work against our lists of files
-// ...
+if (app.modified && !tests.modified) {
+  warn("You have app changes without tests.")
+}
 ```
 
 ## Utils
@@ -114,8 +108,7 @@ If you'd like to work with some reference material, here are some examples in th
 
 JavaScript:
 
-- **Libraries** - [facebook/react-native][rn], [facebook/react][r] and
-  [ReactiveX/rxjs][rxjs].
+- **Libraries** - [facebook/react-native][rn], [facebook/react][r] and [ReactiveX/rxjs][rxjs].
 - **Docs** - [bamlab/dev-standards][bamlab]
 
 Some TypeScript examples:
