@@ -637,6 +637,8 @@ interface JSONDiff {
   [name: string]: JSONDiffValue
 }
 
+// This is `danger.git`
+
 /**
  *
  * The Git Related Metadata which is available inside the Danger DSL JSON
