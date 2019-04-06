@@ -8,6 +8,7 @@ import {
   GitLabUserProfile,
   GitLabInlineNote,
   GitLabNote,
+  GitLabDiscussionTextPosition,
 } from "../../dsl/GitLabDSL"
 
 import { Gitlab } from "gitlab"
@@ -120,22 +121,13 @@ class GitLabAPI {
     return Promise.resolve(returns)
   }
 
-  createMergeRequestDiscussion = async (content: string): Promise<string> => {
+  createMergeRequestDiscussion = async (content: string, position: GitLabDiscussionTextPosition): Promise<string> => {
     const api = this.api.MergeRequestDiscussions
 
     try {
       const res = await api.create(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, content, {
-        position: {
-          position_type: "text",
-          base_sha: "7ff257811bbd6eb14bb6a3d3ceee0006b431d6dd",
-          start_sha: "7ff257811bbd6eb14bb6a3d3ceee0006b431d6dd",
-          head_sha: "1a3f30ca1a64c558a98c43ea1201a43423b4c520",
-          new_line: "4",
-          new_path: "file2",
-        },
+        position,
       })
-
-      console.log({ res })
 
       return res
     } catch (e) {
