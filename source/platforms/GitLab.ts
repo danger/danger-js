@@ -95,8 +95,6 @@ class GitLab implements Platform {
       }
     })
 
-    // console.log({ comments })
-
     return comments
   }
 
@@ -122,27 +120,20 @@ class GitLab implements Platform {
 
     if (dangered.length) {
       // update the first
-      console.log(`[+] update ${dangered[0].id}`)
-      console.log(dangered)
       note = await this.api.updateMergeRequestNote(dangered[0].id, newComment)
 
       // delete the rest
       for (let deleteme of dangered) {
         if (deleteme === dangered[0]) {
-          console.log(`[-] skip ${deleteme.id}`)
           continue
         }
 
-        console.log(`[+] delete ${deleteme.id}`)
         await this.api.deleteMergeRequestNote(deleteme.id)
       }
     } else {
       // create a new note
-      console.log("[+] create")
       note = await this.api.createMergeRequestNote(newComment)
     }
-
-    console.log("[+] note -> " + note.id)
 
     // create URL from note
     // "https://gitlab.com/group/project/merge_requests/154#note_132143425"
@@ -157,7 +148,18 @@ class GitLab implements Platform {
   createInlineComment = async (git: GitDSL, comment: string, path: string, line: number): Promise<string> => {
     d("createInlineComment", { git, comment, path, line })
 
-    return this.api.createMergeRequestDiscussion(comment)
+    const mr = await this.api.getMergeRequestInfo()
+
+    return this.api.createMergeRequestDiscussion(comment, {
+      position_type: "text",
+      base_sha: mr.diff_refs.base_sha,
+      start_sha: mr.diff_refs.start_sha,
+      head_sha: mr.diff_refs.head_sha,
+      old_path: path,
+      old_line: null,
+      new_path: path,
+      new_line: `${line}`,
+    })
   }
 
   updateInlineComment = async (comment: string, id: string): Promise<GitLabNote> => {

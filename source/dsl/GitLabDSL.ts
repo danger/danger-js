@@ -179,6 +179,17 @@ export interface GitLabNote {
   noteable_iid: number
 }
 
+export interface GitLabDiscussionTextPosition {
+  position_type: "text"
+  base_sha: string
+  start_sha: string
+  head_sha: string
+  new_path: string
+  new_line: string
+  old_path: string
+  old_line: string | null
+}
+
 export interface GitLabInlineNote extends GitLabNote {
   position: {
     base_sha: string
