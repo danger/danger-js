@@ -1,4 +1,4 @@
-import chainsmoker, { MatchResult } from "../chainsmoker"
+import chainsmoker, { _MatchResult } from "../chainsmoker"
 
 describe("chainsmoker", () => {
   const keyedPaths = {
@@ -9,51 +9,74 @@ describe("chainsmoker", () => {
 
   const fileMatch = chainsmoker(keyedPaths)
 
-  it.each<[string[], MatchResult<typeof keyedPaths>]>([
-    [["**/*.md"], { created: false, modified: true, deleted: true }],
-    [["**/*.js"], { created: true, modified: true, deleted: true }],
+  it.each<[string[], typeof keyedPaths, _MatchResult<typeof keyedPaths>]>([
+    [
+      ["**/*.md"],
+      { created: [], modified: ["changed.md"], deleted: ["also/deleted.md"] },
+      {
+        created: false,
+        modified: true,
+        deleted: true,
+      },
+    ],
+    [
+      ["**/*.js"],
+      {
+        created: ["added.js", "also/added.js", "this/was/also/Added.js"],
+        modified: ["changed.js", "also/changed.js"],
+        deleted: ["deleted.js"],
+      },
+      {
+        created: true,
+        modified: true,
+        deleted: true,
+      },
+    ],
     [
       ["**/*[A-Z]*.js"],
+      {
+        created: ["this/was/also/Added.js"],
+        modified: [],
+        deleted: [],
+      },
       {
         created: true,
         modified: false,
         deleted: false,
       },
     ],
-    [["**/*_*"], { created: false, modified: true, deleted: false }],
+    [
+      ["**/*_*"],
+      {
+        created: [],
+        modified: ["this_is_changed.sh"],
+        deleted: [],
+      },
+      {
+        created: false,
+        modified: true,
+        deleted: false,
+      },
+    ],
     [
       ["also/*", "!**/*.md"],
+      {
+        created: ["also/added.js"],
+        modified: ["also/changed.js"],
+        deleted: [],
+      },
       {
         created: true,
         modified: true,
         deleted: false,
       },
     ],
-  ])("fileMatch(%s)", (patterns, expected) => expect(fileMatch(...patterns)).toEqual(expected))
-
-  it("tap()", () => {
-    const callback = jest.fn()
-    expect(fileMatch.tap(callback)("**/*.md")).toEqual({ created: false, modified: true, deleted: true })
-    expect(callback).toBeCalledWith({
-      created: [],
-      modified: ["changed.md"],
-      deleted: ["also/deleted.md"],
+  ])("fileMatch(%s)", (patterns, keyedPaths, matchResult) => {
+    const matched = fileMatch(...patterns)
+    expect(matched.getKeyedPaths()).toEqual(keyedPaths)
+    expect(matched).toEqual({
+      ...matchResult,
+      getKeyedPaths: expect.any(Function),
     })
-  })
-
-  it("debug()", () => {
-    const mockConsoleLog = jest.spyOn(console, "log").mockImplementation(() => undefined)
-    expect(fileMatch.debug("**/*.md")).toEqual({ created: false, modified: true, deleted: true })
-    expect(mockConsoleLog).toBeCalledWith(
-      JSON.stringify(
-        {
-          created: [],
-          modified: ["changed.md"],
-          deleted: ["also/deleted.md"],
-        },
-        undefined,
-        2
-      )
-    )
   })
 })
