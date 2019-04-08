@@ -9,6 +9,7 @@ import { DockerCloud } from "./DockerCloud"
 import { Drone } from "./Drone"
 import { FakeCI } from "./Fake"
 import { GitHubActions } from "./GitHubActions"
+import { GitLabCI } from "./GitLabCI"
 import { Jenkins } from "./Jenkins"
 import { Netlify } from "./Netlify"
 import { Nevercode } from "./Nevercode"
@@ -22,6 +23,7 @@ import { VSTS } from "./VSTS"
 const providers = [
   FakeCI,
   GitHubActions,
+  GitLabCI,
   Travis,
   Circle,
   Semaphore,
@@ -45,6 +47,7 @@ const providers = [
 // Mainly used for Dangerfile linting
 const realProviders = [
   GitHubActions,
+  GitLabCI,
   Travis,
   Circle,
   Semaphore,
