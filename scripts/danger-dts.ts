@@ -66,6 +66,8 @@ import * as GitHub from "@octokit/rest"
 
   fileOutput += context
 
+  fileOutput += fs.readFileSync("distribution/commands/utils/chainsmoker.d.ts", "utf8")
+
   // Remove all JS-y bits
   fileOutput = fileOutput
     .split("\n")
