@@ -1,7 +1,8 @@
 import { debug } from "../../debug"
 import { GitLabDSL } from "../../dsl/GitLabDSL"
-import { GitJSONDSL, GitDSL } from "../../dsl/GitDSL"
-import { GitJSONToGitDSLConfig, gitJSONToGitDSL, GitStructuredDiff } from "../git/gitJSONToGitDSL"
+import { GitDSL, GitJSONDSL } from "../../dsl/GitDSL"
+import { gitJSONToGitDSL, GitJSONToGitDSLConfig, GitStructuredDiff } from "../git/gitJSONToGitDSL"
+
 const d = debug("GitLabGit")
 
 export const gitLabGitDSL = (gitlab: GitLabDSL, json: GitJSONDSL): GitDSL => {
@@ -12,14 +13,16 @@ export const gitLabGitDSL = (gitlab: GitLabDSL, json: GitJSONDSL): GitDSL => {
 
     // TODO: implement me when the API methods are in
     getFileContents: async (): Promise<string> => {
-      return ""
+      throw new Error("getFileContents is not yet implemented")
     },
     // TODO: implement me when the API methods are in
     getFullDiff: async (): Promise<string> => {
-      return ""
+      throw new Error("getFullDiff is not yet implemented")
     },
     // TODO: implement me when the API methods are in
-    getStructuredDiffForFile: async (): Promise<GitStructuredDiff> => Promise.resolve([]),
+    getStructuredDiffForFile: async (): Promise<GitStructuredDiff> => {
+      throw new Error("getStructuredDiffForFile is not yet implemented")
+    },
   }
 
   d("Setting up git DSL with: ", config)
