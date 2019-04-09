@@ -185,9 +185,9 @@ export interface GitLabDiscussionTextPosition {
   start_sha: string
   head_sha: string
   new_path: string
-  new_line: string
+  new_line: number
   old_path: string
-  old_line: string | null
+  old_line: number | null
 }
 
 export interface GitLabInlineNote extends GitLabNote {

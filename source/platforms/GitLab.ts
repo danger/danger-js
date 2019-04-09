@@ -158,7 +158,7 @@ class GitLab implements Platform {
       old_path: path,
       old_line: null,
       new_path: path,
-      new_line: `${line}`,
+      new_line: line,
     })
   }
 

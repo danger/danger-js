@@ -1,14 +1,14 @@
 import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 import { api as fetch } from "../../api/fetch"
 import {
-  GitLabMR,
-  GitLabMRChanges,
-  GitLabMRChange,
-  GitLabMRCommit,
-  GitLabUserProfile,
-  GitLabInlineNote,
-  GitLabNote,
   GitLabDiscussionTextPosition,
+  GitLabInlineNote,
+  GitLabMR,
+  GitLabMRChange,
+  GitLabMRChanges,
+  GitLabMRCommit,
+  GitLabNote,
+  GitLabUserProfile,
 } from "../../dsl/GitLabDSL"
 
 import { Gitlab } from "gitlab"
@@ -126,7 +126,7 @@ class GitLabAPI {
 
     try {
       const res = await api.create(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, content, {
-        position,
+        position: position,
       })
 
       return res
