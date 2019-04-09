@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Adds GitLab & GitLab CI support.
+
 # 7.1.0
 
 - Adds Chainsmoker, and expands the Danger DSL with the addition of `danger.git.fileMatch`.
