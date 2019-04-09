@@ -88,7 +88,7 @@ export interface GitJSONDSL {
 }
 
 /** The shape of the Chainsmoker response */
-type MatchResult = {
+type GitMatchResult = {
   /** Did any file paths match from the git modified list? */
   modified: any
   /** Did any file paths match from the git created list? */
@@ -125,7 +125,7 @@ export interface GitDSL extends GitJSONDSL {
    *    fail("Changes to the analytics files need to edit update the schema.")
    * }
    */
-  fileMatch: Chainsmoker<MatchResult>
+  fileMatch: Chainsmoker<GitMatchResult>
 
   /**
    * Offers the diff for a specific file

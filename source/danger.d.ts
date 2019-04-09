@@ -667,7 +667,7 @@ interface GitJSONDSL {
 }
 
 /** The shape of the Chainsmoker response */
-type MatchResult = {
+type GitMatchResult = {
   /** Did any file paths match from the git modified list? */
   modified: any
   /** Did any file paths match from the git created list? */
@@ -704,7 +704,7 @@ interface GitDSL extends GitJSONDSL {
    *    fail("Changes to the analytics files need to edit update the schema.")
    * }
    */
-  fileMatch: Chainsmoker<MatchResult>
+  fileMatch: Chainsmoker<GitMatchResult>
 
   /**
    * Offers the diff for a specific file
@@ -1322,3 +1322,14 @@ declare const peril: PerilDSL
  * are wanting to introspect on whether a build has already failed.
  */
 declare const results: DangerRuntimeContainer
+export declare type Pattern = string
+export declare type Path = string
+export declare type KeyedPatterns<T> = { [K in Extract<keyof T, string>]: Pattern[] }
+export declare type KeyedPaths<T> = { [K in Extract<keyof T, string>]: Path[] }
+export declare type MatchResult<T> = { [K in Extract<keyof T, string>]: boolean }
+interface Chainsmoker<T> {
+  (...patterns: Pattern[]): MatchResult<T>
+  debug(...patterns: Pattern[]): MatchResult<T>
+  tap(callback: (keyedPaths: KeyedPaths<T>) => void): (...patterns: Pattern[]) => MatchResult<T>
+}
+export default function chainsmoker<T>(keyedPaths: KeyedPaths<T>): Chainsmoker<T>

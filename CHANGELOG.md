@@ -15,7 +15,8 @@
 
 <!-- Your comment below this -->
 
-- Adds GitLab & GitLab CI support.
+- Adds GitLab & GitLab CI support. - [@notjosh, @bigkraig]
+- Adds a fix for the default name of Danger in status - [@orta]
 
 # 7.1.0
 
