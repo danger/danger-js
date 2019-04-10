@@ -821,17 +821,17 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
 
-"@types/braces@*":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@types/braces/-/braces-2.3.0.tgz#d00ec0a76562b2acb6f29330be33a093e33ed25c"
-  integrity sha512-A3MV5EsLHgShHoJ/XES/fQAnwNISKLrFuH9eNBZY5OkTQB7JPIwbRoExvRpDsNABvkMojnKqKWS8x0m2rLYi+A==
-
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-1.1.2.tgz#b1665e2c461a2cd92f4c1bbf50d5454de0d4b421"
   integrity sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==
   dependencies:
     defer-to-connect "^1.0.1"
+
+"@types/braces@*":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@types/braces/-/braces-2.3.0.tgz#d00ec0a76562b2acb6f29330be33a093e33ed25c"
+  integrity sha512-A3MV5EsLHgShHoJ/XES/fQAnwNISKLrFuH9eNBZY5OkTQB7JPIwbRoExvRpDsNABvkMojnKqKWS8x0m2rLYi+A==
 
 "@types/debug@0.0.30":
   version "0.0.30"
@@ -4041,16 +4041,16 @@ gitconfiglocal@^1.0.0:
   dependencies:
     ini "^1.3.2"
 
-gitlab@^5.0.0-rc.11:
-  version "5.0.0-rc.11"
-  resolved "https://registry.yarnpkg.com/gitlab/-/gitlab-5.0.0-rc.11.tgz#ff06b1ca7409b2d1e59cdee98e005796df6280c5"
-  integrity sha512-z7VYXXhQy8YS/My8gA6Dt1XraDPyXR2TYapVNUJvxeMwPnpIXEoe6LV3IWCMf3ux09iRDFq8woA0PgkB+P6S3g==
+gitlab@^5.0.0-rc.12:
+  version "5.0.0-rc.12"
+  resolved "https://registry.yarnpkg.com/gitlab/-/gitlab-5.0.0-rc.12.tgz#5847cc28c1a48caf5bd5f0e2049c04d3dee04d06"
+  integrity sha512-9vg7Jax/Y0QctnlUw2HI92eelQz6aJ5178nfh+qWGzDqdgWeXIxhhPmWn/eYqDAFBuEhgX/cBpnmMuYqjTrF9Q==
   dependencies:
     "@types/form-data" "^2.2.1"
     form-data "^2.3.3"
     got "^9.6.0"
     humps "^2.0.1"
-    ky "^0.9.0"
+    ky "^0.9.1"
     query-string "^6.4.2"
     randomstring "^1.1.5"
 
@@ -5642,10 +5642,10 @@ kleur@^3.0.0:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.1.tgz#4f5b313f5fa315432a400f19a24db78d451ede62"
   integrity sha512-P3kRv+B+Ra070ng2VKQqW4qW7gd/v3iD8sy/zOdcYRsfiD+QBokQNOps/AfP6Hr48cBhIIBFWckB9aO+IZhrWg==
 
-ky@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/ky/-/ky-0.9.0.tgz#f6ca68417e1c95e0292d083d5c3c4c39558c13fe"
-  integrity sha512-5OgdeZ/HROtJh6ghuSARGIe4Y0SzY+eM7EY5YEvlVVBmp3V2ioz1erGRYaf55uMUG0jTkE+L8USxD+oiRmgX8A==
+ky@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/ky/-/ky-0.9.1.tgz#0b41c1d14f328226e4cea426a24db7f0fa181c65"
+  integrity sha512-E3R8ziFIbeh8j7BEicyPiCxO7LsJdeXj1WbX86SpJaEmg8HA1zqdylRrXsHxDSV+e1dk0edSPdEI8Z8fnk6+Fw==
 
 latest-version@^3.0.0:
   version "3.1.0"
