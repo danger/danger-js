@@ -12,12 +12,12 @@ matrix:
 
     - node_js: "8"
       after_script:
+        - echo "Validating TypeScript definition file"
+        - yarn build
+        - yarn declarations
+        - yarn tsc distribution/danger.d.ts
         - rm -rf node_modules/@types/babel-*
         - rm -rf node_modules/@types/babylon
-        - echo "Testing that the Danger d.ts file lints"
-        - yarn docs
-        - yarn add dtslint@0.1.2
-        - yarn dts-lint
         - echo "Testing Flow definition file"
         - yarn build:flow-types
         - yarn flow check

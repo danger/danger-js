@@ -15,8 +15,9 @@
 
 <!-- Your comment below this -->
 
-- Add `danger.git.fileMatch.getKeyedPaths()`, providing more convenient access to paths. This replaces `fileMatch.tap()`
-  and `fileMatch.debug()`.
+- Adds a fix for the default name of Danger in status - [@orta]
+- Adds `danger.git.fileMatch.getKeyedPaths()`, providing more convenient access to paths. This replaces
+  `fileMatch.tap()` and `fileMatch.debug()`.
 
   ```ts
   const components = fileMatch("components/**/*.js", "!**/*.test.js")
