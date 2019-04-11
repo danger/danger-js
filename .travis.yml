@@ -23,7 +23,7 @@ matrix:
         - yarn flow check
 
     # Checks every example dangerfile can run in `danger runner`.
-    - node_js: "8.4"
+    - node_js: "8.9"
       script:
         - yarn build
         - node scripts/run-fixtures.js
