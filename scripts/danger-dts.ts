@@ -1,4 +1,5 @@
 import * as fs from "fs"
+import * as prettier from "prettier"
 
 const mapLines = (s: string, func: (s: string) => string) =>
   s
@@ -66,7 +67,15 @@ import * as GitHub from "@octokit/rest"
 
   fileOutput += context
 
-  fileOutput += fs.readFileSync("distribution/commands/utils/chainsmoker.d.ts", "utf8")
+  const chainDefs = fs.readFileSync("distribution/commands/utils/chainsmoker.d.ts", "utf8")
+  const chainDefsMinusDefaultExport = chainDefs
+    .split("\n")
+    .filter(line => {
+      return !line.startsWith("export default function")
+    })
+    .join("\n")
+
+  fileOutput += chainDefsMinusDefaultExport
 
   // Remove all JS-y bits
   fileOutput = fileOutput
@@ -81,7 +90,18 @@ import * as GitHub from "@octokit/rest"
     .replace(/export interface/g, "interface")
     .replace(/export type/g, "type")
   const indentedBody = mapLines(noRedundantExports, line => (line.length ? line : ""))
-  return header + indentedBody + footer
+
+  const def = header + indentedBody + footer
+
+  return prettier.format(def, {
+    parser: "typescript",
+    printWidth: 120,
+    semi: false,
+    singleQuote: false,
+    trailingComma: "es5",
+    bracketSpacing: true,
+    proseWrap: "always",
+  })
 }
 
 export default createDTS
