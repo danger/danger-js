@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Cleans up the declarations a little bit - [@orta]
+
 # 7.1.2
 
 - Update ts-jest to 24.0.2 - [@friederbluemle]

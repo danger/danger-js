@@ -14,6 +14,8 @@ export type MatchResult<T> = _MatchResult<T> & {
   /** Returns an object containing arrays of matched files instead of the usual boolean values. */
   getKeyedPaths(): KeyedPaths<T>
 }
+
+/** A vendored copy of the  Chainsmoker module on NPM */
 export type Chainsmoker<T> = (...patterns: Pattern[]) => MatchResult<T>
 
 const isExclude = (p: Pattern) => p.startsWith("!")
