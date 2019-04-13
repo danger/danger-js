@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Update ts-jest to 24.0.2 - [@friederbluemle]
 - Adds a fix for the default name of Danger in status - [@orta]
 - Adds `danger.git.fileMatch.getKeyedPaths()`, providing more convenient access to paths. This replaces
   `fileMatch.tap()` and `fileMatch.debug()`.
