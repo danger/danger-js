@@ -16,6 +16,26 @@
 <!-- Your comment below this -->
 
 - Adds a fix for the default name of Danger in status - [@orta]
+- Adds `danger.git.fileMatch.getKeyedPaths()`, providing more convenient access to paths. This replaces
+  `fileMatch.tap()` and `fileMatch.debug()`.
+
+  ```ts
+  const components = fileMatch("components/**/*.js", "!**/*.test.js")
+  const componentTests = fileMatch("!**/*.test.js")
+
+  if (components.edited && !componentTests.edited) {
+    warn(
+      [
+        "This PR modified some components but none of their tests. <br>",
+        "That's okay so long as it's refactoring existing code. <br>",
+        "Affected files: ",
+        components.getKeyedPaths().edited.join(", "),
+      ].join("")
+    )
+  }
+  ```
+
+  This makes it much simpler to compose a collection of file checks - [@paulmelnikow]
 
 # 7.1.0
 
