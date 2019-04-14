@@ -7,15 +7,16 @@ import mapValues from "lodash.mapvalues"
 
 export type Pattern = string
 export type Path = string
-export type KeyedPatterns<T> = { [K in Extract<keyof T, string>]: Pattern[] }
-export type KeyedPaths<T> = { [K in Extract<keyof T, string>]: Path[] }
-export type MatchResult<T> = { [K in Extract<keyof T, string>]: boolean }
-
-export interface Chainsmoker<T> {
-  (...patterns: Pattern[]): MatchResult<T>
-  debug(...patterns: Pattern[]): MatchResult<T>
-  tap(callback: (keyedPaths: KeyedPaths<T>) => void): (...patterns: Pattern[]) => MatchResult<T>
+export type KeyedPatterns<T> = { readonly [K in keyof T]: Pattern[] }
+export type KeyedPaths<T> = { readonly [K in keyof T]: Path[] }
+export type _MatchResult<T> = { readonly [K in keyof T]: boolean }
+export type MatchResult<T> = _MatchResult<T> & {
+  /** Returns an object containing arrays of matched files instead of the usual boolean values. */
+  getKeyedPaths(): KeyedPaths<T>
 }
+
+/** A vendored copy of the  Chainsmoker module on NPM */
+export type Chainsmoker<T> = (...patterns: Pattern[]) => MatchResult<T>
 
 const isExclude = (p: Pattern) => p.startsWith("!")
 
@@ -35,24 +36,11 @@ export default function chainsmoker<T>(keyedPaths: KeyedPaths<T>): Chainsmoker<T
   }
 
   function finalize(keyedPaths: KeyedPaths<T>): MatchResult<T> {
-    return mapValues(keyedPaths, (paths: Path[]) => paths.length > 0) as MatchResult<T>
+    return {
+      ...mapValues(keyedPaths, (paths: Path[]) => paths.length > 0),
+      getKeyedPaths: () => keyedPaths,
+    } as MatchResult<T>
   }
 
-  const fileMatch = ((...patterns) => finalize(matchPatterns(patterns))) as Chainsmoker<T>
-
-  /** Logs an object containing matched files before returning the usual boolean values. */
-  fileMatch.debug = (...patterns) => {
-    const results = matchPatterns(patterns)
-    console.log(JSON.stringify(results, undefined, 2))
-    return finalize(results)
-  }
-
-  /** Invoke the callback with an object containing matched files before returning the usual boolean values. */
-  fileMatch.tap = callback => (...patterns) => {
-    const results = matchPatterns(patterns)
-    callback(results)
-    return finalize(results)
-  }
-
-  return fileMatch
+  return (...patterns) => finalize(matchPatterns(patterns))
 }

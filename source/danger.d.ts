@@ -1324,12 +1324,11 @@ declare const peril: PerilDSL
 declare const results: DangerRuntimeContainer
 export declare type Pattern = string
 export declare type Path = string
-export declare type KeyedPatterns<T> = { [K in Extract<keyof T, string>]: Pattern[] }
-export declare type KeyedPaths<T> = { [K in Extract<keyof T, string>]: Path[] }
-export declare type MatchResult<T> = { [K in Extract<keyof T, string>]: boolean }
-interface Chainsmoker<T> {
-  (...patterns: Pattern[]): MatchResult<T>
-  debug(...patterns: Pattern[]): MatchResult<T>
-  tap(callback: (keyedPaths: KeyedPaths<T>) => void): (...patterns: Pattern[]) => MatchResult<T>
+export declare type KeyedPatterns<T> = { readonly [K in keyof T]: Pattern[] }
+export declare type KeyedPaths<T> = { readonly [K in keyof T]: Path[] }
+export declare type _MatchResult<T> = { readonly [K in keyof T]: boolean }
+export declare type MatchResult<T> = _MatchResult<T> & {
+  /** Returns an object containing arrays of matched files instead of the usual boolean values. */
+  getKeyedPaths(): KeyedPaths<T>
 }
-export default function chainsmoker<T>(keyedPaths: KeyedPaths<T>): Chainsmoker<T>
+export declare type Chainsmoker<T> = (...patterns: Pattern[]) => MatchResult<T>
