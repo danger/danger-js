@@ -23,7 +23,7 @@ matrix:
         - yarn flow check
 
     # Checks every example dangerfile can run in `danger runner`.
-    - node_js: "8.9"
+    - node_js: "8"
       script:
         - yarn build
         - node scripts/run-fixtures.js
@@ -67,7 +67,7 @@ matrix:
           source/platforms/git/_tests/local_dangerfile_example.ts || echo "Skipping Danger Local for non PR run"'
 
     # Create some fake projects at runtime
-    - node_js: "8.12"
+    - node_js: "8"
       script:
         - echo "This is only for Integration tests on two blank projects"
         - yarn build
