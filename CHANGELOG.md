@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+# 7.1.3
+
 - Cleans up the declarations a little bit - [@orta]
 - Adds support for [Codefresh CI](https://codefresh.io) - [@stevenp]
 
