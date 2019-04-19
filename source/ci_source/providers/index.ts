@@ -3,6 +3,7 @@ import { BuddyBuild } from "./BuddyBuild"
 import { Buildkite } from "./Buildkite"
 import { Circle } from "./Circle"
 import { CodeBuild } from "./CodeBuild"
+import { Codefresh } from "./Codefresh"
 import { Codeship } from "./Codeship"
 import { Concourse } from "./Concourse"
 import { DockerCloud } from "./DockerCloud"
@@ -40,6 +41,7 @@ const providers = [
   Concourse,
   Netlify,
   CodeBuild,
+  Codefresh,
 ]
 
 // Mainly used for Dangerfile linting
@@ -62,6 +64,7 @@ const realProviders = [
   Concourse,
   Netlify,
   CodeBuild,
+  Codefresh,
 ]
 
 export { providers, realProviders }

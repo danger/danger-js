@@ -16,6 +16,7 @@
 <!-- Your comment below this -->
 
 - Cleans up the declarations a little bit - [@orta]
+- Adds support for [Codefresh CI](https://codefresh.io) - [@stevenp]
 
 # 7.1.2
 
@@ -1619,6 +1620,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@sgtcoolguy]: https://github.com/sgtcoolguy
 [@sharkysharks]: https://github.com/sharkysharks
 [@stevemoser]: https://github.com/stevemoser
+[@stevenp]: https://github.com/stevenp
 [@sunshinejr]: https://github.com/sunshinejr
 [@tychota]: https://github.com/tychota
 [@urkle]: https://github.com/urkle
