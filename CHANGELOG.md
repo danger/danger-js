@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Fix for nulls in changed_files [@keith][]
+
 # 7.1.3
 
 - Cleans up the declarations a little bit - [@orta]
