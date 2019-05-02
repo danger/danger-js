@@ -157,19 +157,19 @@ export const createOrUpdatePR = (pr: GitHubPRDSL | undefined, api: GitHub) => as
     d("Updating existing PR")
     return await api.pulls.update({
       number: existingPR.number,
-      base: "source",
-      owner: "artsy",
-      repo: "artsy.github.io",
+      base: config.baseBranch,
+      owner,
+      repo,
       title: config.title,
       body: config.body,
     })
   } else {
     d("Creating a new PR")
     return await api.pulls.create({
-      base: "source",
+      base: config.baseBranch,
       head: config.newBranchName,
-      owner: "artsy",
-      repo: "artsy.github.io",
+      owner,
+      repo,
       title: config.title,
     })
   }
