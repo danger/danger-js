@@ -15,6 +15,10 @@
 
 <!-- Your comment below this -->
 
+# 7.1.4
+
+- Un-hardcodes the repo in `danger.github.utils.createOrUpdatePR`- [@ds300]
+
 # 7.1.3
 
 - Cleans up the declarations a little bit - [@orta]
@@ -71,8 +75,8 @@
 
 # 7.0.18
 
-- Adds a CLI option `--failOnErrors` so that you can force `danger ci` to return a failed exit code on any `fail`s in
-  a Dangerfile [@f-meloni]
+- Adds a CLI option `--failOnErrors` so that you can force `danger ci` to return a failed exit code on any `fail`s in a
+  Dangerfile [@f-meloni]
 
 # 7.0.17
 
@@ -1628,3 +1632,4 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@wizardishungry]: https://github.com/wizardishungry
 [@dblandin]: https://github.com/dblandin
 [@paulmelnikow]: https://github.com/paulmelnikow
+[@ds300]: https://github.com/ds300
