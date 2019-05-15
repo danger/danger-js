@@ -11,6 +11,8 @@ import * as url from "url"
  * To make Danger run, add following lines to the `appcenter-pre-build.sh` file:
  *
  * ```
+ * - cd $APPCENTER_SOURCE_DIRECTORY
+ * - npm install -g danger
  * - swift build
  * - swift run danger-swift ci
  * ```
