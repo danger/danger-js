@@ -15,8 +15,16 @@
 
 <!-- Your comment below this -->
 
-- Adds GitLab & GitLab CI support. - [@notjosh, @bigkraig]
+- Adds GitLab & GitLab CI support. - [@notjosh, @bigkraig, @jamime]
+
+# 7.1.4
+
+- Un-hardcodes the repo in `danger.github.utils.createOrUpdatePR`- [@ds300]
+
+# 7.1.3
+
 - Cleans up the declarations a little bit - [@orta]
+- Adds support for [Codefresh CI](https://codefresh.io) - [@stevenp]
 
 # 7.1.2
 
@@ -69,9 +77,8 @@
 
 # 7.0.18
 
-- Adds a CLI option `--fail-on-errors` so that you can force `danger ci` to return a failed exit code on any `fail`s in
-  a Dangerfile [@f-meloni]
-- Add a failOnErrors option to fail the build if there are error on the danger report [@f-meloni]
+- Adds a CLI option `--failOnErrors` so that you can force `danger ci` to return a failed exit code on any `fail`s in a
+  Dangerfile [@f-meloni]
 
 # 7.0.17
 
@@ -1620,9 +1627,11 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@sgtcoolguy]: https://github.com/sgtcoolguy
 [@sharkysharks]: https://github.com/sharkysharks
 [@stevemoser]: https://github.com/stevemoser
+[@stevenp]: https://github.com/stevenp
 [@sunshinejr]: https://github.com/sunshinejr
 [@tychota]: https://github.com/tychota
 [@urkle]: https://github.com/urkle
 [@wizardishungry]: https://github.com/wizardishungry
 [@dblandin]: https://github.com/dblandin
 [@paulmelnikow]: https://github.com/paulmelnikow
+[@ds300]: https://github.com/ds300
