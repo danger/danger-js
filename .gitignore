@@ -53,3 +53,6 @@ test-results.json
 source/_danger.d.tse
 source/_danger.d.ts
 tests.json
+
+# IDEs
+.idea

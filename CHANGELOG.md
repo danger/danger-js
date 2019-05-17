@@ -15,7 +15,7 @@
 
 <!-- Your comment below this -->
 
-- Adds GitLab & GitLab CI support. - [@notjosh, @bigkraig, @jamime]
+- Adds GitLab & GitLab CI support. - [@notjosh], [@bigkraig], [@jamime]
 
 # 7.1.4
 
@@ -1635,3 +1635,4 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@dblandin]: https://github.com/dblandin
 [@paulmelnikow]: https://github.com/paulmelnikow
 [@ds300]: https://github.com/ds300
+[@jamime]: https://github.com/jamime
