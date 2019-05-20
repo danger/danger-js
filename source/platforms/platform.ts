@@ -4,7 +4,7 @@ import { GitHub } from "./GitHub"
 import { GitHubAPI } from "./github/GitHubAPI"
 import { BitBucketServer } from "./BitBucketServer"
 import { BitBucketServerAPI, bitbucketServerRepoCredentialsFromEnv } from "./bitbucket_server/BitBucketServerAPI"
-import GitLabAPI from "./gitlab/GitLabAPI"
+import GitLabAPI, { getGitLabAPICredentialsFromEnv } from "./gitlab/GitLabAPI"
 import GitLab from "./GitLab"
 import { DangerResults } from "../dsl/DangerResults"
 import { ExecutorOptions } from "../runner/Executor"
@@ -111,7 +111,7 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
         pullRequestID: source.pullRequestID,
         repoSlug: source.repoSlug,
       },
-      env["DANGER_GITLAB_API_TOKEN"]
+      getGitLabAPICredentialsFromEnv(env)
     )
     const gitlab = new GitLab(api)
     return gitlab

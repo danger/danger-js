@@ -74,7 +74,7 @@ if (program.args.length === 0) {
   const findPR = program.args.find(a => a.includes(customHost))
 
   if (!findPR) {
-    console.error(`Could not find an arg which mentioned GitHub, BitBucket, or GitLab Server.`)
+    console.error(`Could not find an arg which mentioned GitHub, BitBucket Server, or GitLab.`)
     process.exitCode = 1
   } else {
     const pr = pullRequestParser(findPR)

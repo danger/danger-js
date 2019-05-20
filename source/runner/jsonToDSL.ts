@@ -14,7 +14,7 @@ import {
 import { CISource } from "../ci_source/ci_source"
 
 import { debug } from "../debug"
-import GitLabAPI from "../platforms/gitlab/GitLabAPI"
+import GitLabAPI, { getGitLabAPICredentialsFromEnv } from "../platforms/gitlab/GitLabAPI"
 import { gitLabGitDSL } from "../platforms/gitlab/GitLabGit"
 const d = debug("jsonToDSL")
 
@@ -38,7 +38,7 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
   } else if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
     git = bitBucketServerGitDSL(bitbucket_server!, dsl.git, api as BitBucketServerAPI)
   } else if (process.env["DANGER_GITLAB_HOST"]) {
-    git = gitLabGitDSL(gitlab!, dsl.git /*, api as GitLabAPI*/)
+    git = gitLabGitDSL(gitlab!, dsl.git)
   } else {
     git = source && source.useEventDSL ? ({} as any) : githubJSONToGitDSL(github!, dsl.git)
   }
@@ -66,7 +66,7 @@ const apiForDSL = (dsl: DangerDSLJSONType): OctoKit | BitBucketServerAPI | GitLa
   const gitlab = dsl.gitlab
   if (gitlab != null && process.env["DANGER_GITLAB_API_TOKEN"] != null) {
     // d({ gitlab })
-    return new GitLabAPI(gitlab.metadata, process.env["DANGER_GITLAB_API_TOKEN"]!)
+    return new GitLabAPI(gitlab.metadata, getGitLabAPICredentialsFromEnv(process.env))
   }
 
   const options: OctoKit.Options & { debug: boolean } = {
