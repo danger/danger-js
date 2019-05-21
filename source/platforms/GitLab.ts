@@ -6,6 +6,7 @@ import { GitCommit } from "../dsl/Commit"
 import { GitLabDSL, GitLabNote } from "../dsl/GitLabDSL"
 
 import { debug } from "../debug"
+import { dangerIDToString } from "../runner/templates/githubIssueTemplate"
 const d = debug("GitLab")
 
 class GitLab implements Platform {
@@ -174,9 +175,27 @@ class GitLab implements Platform {
     return await this.api.deleteMergeRequestNote(nid)
   }
 
-  deleteMainComment = async (): Promise<boolean> => {
-    d("deleteMainComment", {})
-    return true
+  deleteMainComment = async (dangerID: string): Promise<boolean> => {
+    const notes = await this.getDangerNotes(dangerID)
+    for (let note of notes) {
+      d("deleteMainComment", { id: note.id })
+      await this.api.deleteMergeRequestNote(note.id)
+    }
+
+    return notes.length > 0
+  }
+
+  getDangerNotes = async (dangerID: string): Promise<GitLabNote[]> => {
+    const { id: dangerUserId } = await this.api.getUser()
+    const notes: GitLabNote[] = await this.api.getMergeRequestNotes()
+
+    return (
+      notes
+        .filter(({ author: { id } }) => id === dangerUserId)
+        // danger-id-(dangerID) is included in a hidden comment in the githubIssueTemplate
+        // this allows users to run Danger as their user without risking deleting their comments
+        .filter(({ body }) => body!.includes(dangerIDToString(dangerID)))
+    )
   }
 
   updateStatus = async (): Promise<boolean> => {
