@@ -14,6 +14,7 @@
 ## Master
 
 <!-- Your comment below this -->
+- Add support for AppCenter - [@mrndjo]
 
 # 7.1.4
 
