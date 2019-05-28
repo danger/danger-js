@@ -1,6 +1,6 @@
 {
-  "name": "danger",
-  "version": "7.1.4",
+  "name": "@jamime/danger",
+  "version": "7.1.5-next.5",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -136,7 +136,7 @@
     "commander": "^2.18.0",
     "debug": "^4.1.1",
     "get-stdin": "^6.0.0",
-    "gitlab": "5.0.0-rc.13",
+    "gitlab": "^5.0.1",
     "http-proxy-agent": "^2.1.0",
     "https-proxy-agent": "^2.2.1",
     "hyperlinker": "^1.0.0",
