@@ -57,7 +57,7 @@ export class AppCenter implements CISource {
   get repoSlug(): string {
     if (
       ensureEnvKeysExist(this.env, ["BUILD_REPOSITORY_NAME"]) &&
-      ensureEnvKeysExist(this.env, ["BUILD_REPOSITORY_NAME"])
+      ensureEnvKeysExist(this.env, ["BUILD_REPOSITORY_URI"])
     ) {
       const repositoryName = this.env["BUILD_REPOSITORY_NAME"]
       const components = url.parse(this.env["BUILD_REPOSITORY_URI"], false)
