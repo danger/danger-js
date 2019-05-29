@@ -1,3 +1,4 @@
+import { AppCenter } from "./AppCenter"
 import { Bitrise } from "./Bitrise"
 import { BuddyBuild } from "./BuddyBuild"
 import { Buildkite } from "./Buildkite"
@@ -44,6 +45,7 @@ const providers = [
   Netlify,
   CodeBuild,
   Codefresh,
+  AppCenter,
 ]
 
 // Mainly used for Dangerfile linting
@@ -68,6 +70,7 @@ const realProviders = [
   Netlify,
   CodeBuild,
   Codefresh,
+  AppCenter,
 ]
 
 export { providers, realProviders }

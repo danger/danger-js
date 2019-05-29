@@ -14,6 +14,7 @@
 ## Master
 
 <!-- Your comment below this -->
+- Add support for AppCenter - [@mrndjo]
 
 - Adds GitLab & GitLab CI support. - [@notjosh], [@bigkraig], [@jamime]
 
