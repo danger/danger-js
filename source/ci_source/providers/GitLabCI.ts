@@ -9,7 +9,7 @@ export class GitLabCI implements CISource {
   }
 
   get isCI(): boolean {
-    return ensureEnvKeysExist(this.env, ["CI_MERGE_REQUEST_IID"])
+    return ensureEnvKeysExist(this.env, ["GITLAB_CI"])
   }
 
   get isPR(): boolean {
