@@ -37,7 +37,7 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
     git = await localPlatform.getPlatformGitRepresentation()
   } else if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
     git = bitBucketServerGitDSL(bitbucket_server!, dsl.git, api as BitBucketServerAPI)
-  } else if (process.env["DANGER_GITLAB_HOST"]) {
+  } else if (process.env["DANGER_GITLAB_API_TOKEN"]) {
     git = gitLabGitDSL(gitlab!, dsl.git)
   } else {
     git = source && source.useEventDSL ? ({} as any) : githubJSONToGitDSL(github!, dsl.git)
