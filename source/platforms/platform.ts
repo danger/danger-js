@@ -105,7 +105,7 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
   }
 
   // GitLab
-  if (env["DANGER_GITLAB_HOST"] && env["DANGER_GITLAB_API_TOKEN"]) {
+  if (env["DANGER_GITLAB_API_TOKEN"]) {
     const api = new GitLabAPI(
       {
         pullRequestID: source.pullRequestID,
@@ -145,7 +145,7 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
   }
 
   console.error(
-    "The DANGER_GITHUB_API_TOKEN/DANGER_BITBUCKETSERVER_HOST/DANGER_GITLAB_HOST environmental variable is missing"
+    "The DANGER_GITHUB_API_TOKEN/DANGER_BITBUCKETSERVER_HOST/DANGER_GITLAB_API_TOKEN environmental variable is missing"
   )
   console.error("Without an api token, danger will be unable to comment on a PR")
   throw new Error("Cannot use authenticated API requests.")
