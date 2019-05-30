@@ -110,22 +110,18 @@ class GitLab implements Platform {
   updateOrCreateComment = async (dangerID: string, newComment: string): Promise<string> => {
     d("updateOrCreateComment", { dangerID, newComment })
 
-    const dangerUserID = (await this.api.getUser()).id
-
-    const existing = await this.api.getMergeRequestNotes()
-    const dangered = existing
-      .filter(note => note.author.id === dangerUserID && note.body.includes(dangerID))
-      .filter(note => note.type == null) // we only want "normal" comments on the main body of the MR
+    const notes: GitLabNote[] = await this.getDangerNotes(dangerID)
+    debugger
 
     let note: GitLabNote
 
-    if (dangered.length) {
+    if (notes.length) {
       // update the first
-      note = await this.api.updateMergeRequestNote(dangered[0].id, newComment)
+      note = await this.api.updateMergeRequestNote(notes[0].id, newComment)
 
       // delete the rest
-      for (let deleteme of dangered) {
-        if (deleteme === dangered[0]) {
+      for (let deleteme of notes) {
+        if (deleteme === notes[0]) {
           continue
         }
 
@@ -189,12 +185,12 @@ class GitLab implements Platform {
     const { id: dangerUserId } = await this.api.getUser()
     const notes: GitLabNote[] = await this.api.getMergeRequestNotes()
 
-    return (
-      notes
-        .filter(({ author: { id } }) => id === dangerUserId)
-        // danger-id-(dangerID) is included in a hidden comment in the githubIssueTemplate
-        // this allows users to run Danger as their user without risking deleting their comments
-        .filter(({ body }) => body!.includes(dangerIDToString(dangerID)))
+    return notes.filter(
+      ({ author: { id }, body, system, type }: GitLabNote) =>
+        !system && // system notes are generated when the user interacts with the UI e.g. changing a PR title
+        type == null && // we only want "normal" comments on the main body of the MR;
+        id === dangerUserId &&
+        body!.includes(dangerIDToString(dangerID)) // danger-id-(dangerID) is included in a hidden comment in the githubIssueTemplate
     )
   }
 
