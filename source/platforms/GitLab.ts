@@ -24,16 +24,10 @@ class GitLab implements Platform {
   getPlatformReviewDSLRepresentation = async (): Promise<GitLabDSL> => {
     const mr = await this.getReviewInfo()
     const commits = await this.api.getMergeRequestCommits()
-    // const comments: any[] = [] //await this.api.getMergeRequestComments()
-    // const activities = {} //await this.api.getPullRequestActivities()
-    // const issues: any[] = [] //await this.api.getIssues()
-
     return {
       metadata: this.api.repoMetadata,
-      // issues,
       mr,
       commits,
-      // comments,
       utils: {},
     }
   }
@@ -58,45 +52,36 @@ class GitLab implements Platform {
         message: commit.message,
         parents: commit.parent_ids,
         url: `${this.api.projectURL}/commit/${commit.id}`,
-        //url: `${this.api.mergeRequestURL}/diffs?commit_id=${commit.id}`,
         tree: null,
       }
     })
 
     // XXX: does "renamed_file"/move count is "delete/create", or "modified"?
     const modified_files: string[] = changes
-      .filter(change => change.new_file === false && change.deleted_file == false)
+      .filter(change => !change.new_file && !change.deleted_file)
       .map(change => change.new_path)
-    const created_files: string[] = changes.filter(change => change.new_file === true).map(change => change.new_path)
-    const deleted_files: string[] = changes
-      .filter(change => change.deleted_file === true)
-      .map(change => change.new_path)
+    const created_files: string[] = changes.filter(change => change.new_file).map(change => change.new_path)
+    const deleted_files: string[] = changes.filter(change => change.deleted_file).map(change => change.new_path)
 
     return {
       modified_files,
       created_files,
       deleted_files,
       commits: mappedCommits,
-      // diffForFile: async () => ({ before: "", after: "", diff: "", added: "", removed: "" }),
-      // structuredDiffForFile: async () => ({ chunks: [] }),
-      // JSONDiffForFile: async () => ({} as any),
-      // JSONPatchForFile: async () => ({} as any),
-      // linesOfCode: async () => 0,
     }
   }
 
   getInlineComments = async (dangerID: string): Promise<Comment[]> => {
     const dangerUserID = (await this.api.getUser()).id
 
-    const comments = (await this.api.getMergeRequestInlineNotes()).map(note => {
+    return (await this.api.getMergeRequestInlineNotes()).map(note => {
       return {
         id: `${note.id}`,
         body: note.body,
+        // XXX: we should re-use the logic in getDangerNotes, need to check what inline comment template we're using if any
         ownedByDanger: note.author.id === dangerUserID && note.body.includes(dangerID),
       }
     })
-
-    return comments
   }
 
   supportsCommenting() {
