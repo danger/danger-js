@@ -1227,16 +1227,19 @@ interface GitHubReviewers {
 }
 
 // TODO: extract out from BitBucket specifically, or create our own type
-
-// danger.gitlab
-
-interface GitLabDSL {
+// getPlatformReviewDSLRepresentation
+interface GitLabJSONDSL {
   metadata: RepoMetaData
-  // issues: any[]
   mr: GitLabMR
   commits: GitLabMRCommit[]
-  // comments: any[]
-  utils: {}
+}
+
+// danger.gitlab
+interface GitLabDSL extends GitLabJSONDSL {
+  api: GitLabAPI
+  utils: {
+    fileContents(path: string, repoSlug?: string, ref?: string): Promise<string>
+  }
 }
 
 // ---

@@ -1,15 +1,18 @@
 // TODO: extract out from BitBucket specifically, or create our own type
 import { RepoMetaData } from "./BitBucketServerDSL"
 
-// danger.gitlab
-
-export interface GitLabDSL {
+// getPlatformReviewDSLRepresentation
+export interface GitLabJSONDSL {
   metadata: RepoMetaData
-  // issues: any[]
   mr: GitLabMR
   commits: GitLabMRCommit[]
-  // comments: any[]
-  utils: {}
+}
+
+// danger.gitlab
+export interface GitLabDSL extends GitLabJSONDSL {
+  utils: {
+    fileContents(path: string, repoSlug?: string, ref?: string): Promise<string>
+  }
 }
 
 // ---

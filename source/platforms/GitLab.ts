@@ -1,9 +1,8 @@
 import GitLabAPI from "./gitlab/GitLabAPI"
 import { Platform, Comment } from "./platform"
-import { readFileSync } from "fs"
 import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitCommit } from "../dsl/Commit"
-import { GitLabDSL, GitLabNote } from "../dsl/GitLabDSL"
+import { GitLabDSL, GitLabJSONDSL, GitLabNote } from "../dsl/GitLabDSL"
 
 import { debug } from "../debug"
 import { dangerIDToString } from "../runner/templates/githubIssueTemplate"
@@ -21,14 +20,13 @@ class GitLab implements Platform {
   }
 
   // returns the `danger.gitlab` object
-  getPlatformReviewDSLRepresentation = async (): Promise<GitLabDSL> => {
+  getPlatformReviewDSLRepresentation = async (): Promise<GitLabJSONDSL> => {
     const mr = await this.getReviewInfo()
     const commits = await this.api.getMergeRequestCommits()
     return {
       metadata: this.api.repoMetadata,
       mr,
       commits,
-      utils: {},
     }
   }
 
@@ -184,7 +182,14 @@ class GitLab implements Platform {
     return true
   }
 
-  getFileContents = (path: string) => new Promise<string>(res => res(readFileSync(path, "utf8")))
+  getFileContents = this.api.getFileContents
 }
 
 export default GitLab
+
+export const gitlabJSONToGitLabDSL = (gl: GitLabDSL, api: GitLabAPI): GitLabDSL => ({
+  ...gl,
+  utils: {
+    fileContents: api.getFileContents,
+  },
+})

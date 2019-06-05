@@ -140,6 +140,27 @@ class GitLabAPI {
 
     return false
   }
+
+  getFileContents = async (path: string, slug?: string, ref?: string): Promise<string> => {
+    const api = this.api.RepositoryFiles
+    const projectId = slug || this.repoMetadata.repoSlug
+    // Use the current state of PR if no ref is passed
+    if (!ref) {
+      const mr: GitLabMR = await this.getMergeRequestInfo()
+      ref = mr.diff_refs.head_sha
+    }
+
+    try {
+      const response = await api.show(projectId, path, ref)
+      return Buffer.from(response.content, "base64").toString()
+    } catch (e) {
+      // GitHubAPI.fileContents returns "" when the file does not exist, keep it consistent across providers
+      if (e.response.status === 404) {
+        return ""
+      }
+      throw e
+    }
+  }
 }
 
 export default GitLabAPI

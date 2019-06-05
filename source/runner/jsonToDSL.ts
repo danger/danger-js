@@ -14,6 +14,7 @@ import {
 import { CISource } from "../ci_source/ci_source"
 
 import { debug } from "../debug"
+import { gitlabJSONToGitLabDSL } from "../platforms/GitLab"
 import GitLabAPI, { getGitLabAPICredentialsFromEnv } from "../platforms/gitlab/GitLabAPI"
 import { gitLabGitDSL } from "../platforms/gitlab/GitLabGit"
 const d = debug("jsonToDSL")
@@ -29,7 +30,7 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
   const platformExists = [dsl.github, dsl.bitbucket_server, dsl.gitlab].some(p => !!p)
   const github = dsl.github && githubJSONToGitHubDSL(dsl.github, api as OctoKit)
   const bitbucket_server = dsl.bitbucket_server
-  const gitlab = dsl.gitlab
+  const gitlab = dsl.gitlab && gitlabJSONToGitLabDSL(dsl.gitlab, api as GitLabAPI)
 
   let git: GitDSL
   if (!platformExists) {
