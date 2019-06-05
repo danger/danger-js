@@ -13,7 +13,7 @@ import { GitHubChecksCommenter } from "./github/comms/checksCommenter"
 
 export type GitHubType = Platform & { api: GitHubAPI }
 
-export const GitHub = (api: GitHubAPI) => {
+export function GitHub(api: GitHubAPI) {
   /**
    * Converts the PR JSON into something easily used by the Github API client.
    */
