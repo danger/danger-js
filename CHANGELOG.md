@@ -1639,3 +1639,6 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@paulmelnikow]: https://github.com/paulmelnikow
 [@ds300]: https://github.com/ds300
 [@jamime]: https://github.com/jamime
+[@mrndjo]: https://github.com/mrndjo
+[@bigkraig]: https://github.com/bigkraig
+[@notjosh]: https://github.com/notjosh
