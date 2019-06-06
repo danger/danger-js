@@ -19,9 +19,9 @@ review.
 
 You can use Danger to codify your teams norms, leaving humans to think about harder problems.
 
-Danger JS works with GitHub or BitBucket Server for code review, then with: Travis CI, Circle CI, GitHub Actions,
-Semaphore, Jenkins, Docker Cloud, Bitrise, surf-build, Codeship, Drone, Buildkite, Nevercode, buddybuild, TeamCity,
-Visual Studio Team Services, Screwdriver, Concourse, Netlify, CodeBuild, Codefresh or AppCenter.
+Danger JS works with GitHub or BitBucket Server for code review, then with: Travis CI, GitLab CI, Circle CI, GitHub
+Actions, Semaphore, Jenkins, Docker Cloud, Bitrise, surf-build, Codeship, Drone, Buildkite, Nevercode, buddybuild,
+TeamCity, Visual Studio Team Services, Screwdriver, Concourse, Netlify, CodeBuild, Codefresh or AppCenter.
 
 [![npm](https://img.shields.io/npm/v/danger.svg)](https://www.npmjs.com/package/danger)
 [![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=master)](https://travis-ci.org/danger/danger-js)
@@ -83,7 +83,7 @@ it compiles.
 You can run your dev copy of danger against a PR by running:
 
 ```sh
-yarn build; node --inspect distribution/source/commands/danger-pr.js https://github.com/danger/danger-js/pull/817
+yarn build; node --inspect distribution/commands/danger-pr.js https://github.com/danger/danger-js/pull/817
 ```
 
 ### How does Danger JS work?
