@@ -83,7 +83,7 @@ describe("API testing - BitBucket Server", () => {
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/compare/diff/` +
         `filename.txt` +
-        `?withComments=false&from=BASE&to=HEAD`,
+        `?withComments=false&from=HEAD&to=BASE`,
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
