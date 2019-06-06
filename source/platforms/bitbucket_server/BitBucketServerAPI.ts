@@ -133,7 +133,7 @@ export class BitBucketServerAPI {
 
   getStructuredDiffForFile = async (base: string, head: string, filename: string): Promise<BitBucketServerDiff[]> => {
     const { repoSlug } = this.repoMetadata
-    const path = `rest/api/1.0/${repoSlug}/compare/diff/${filename}?withComments=false&from=${base}&to=${head}`
+    const path = `rest/api/1.0/${repoSlug}/compare/diff/${filename}?withComments=false&from=${head}&to=${base}`
     const res = await this.get(path)
     throwIfNotOk(res)
     return (await res.json()).diffs
