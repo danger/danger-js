@@ -5,6 +5,7 @@ import { GitHubDSL } from "../dsl/GitHubDSL"
 import { BitBucketServerDSL, BitBucketServerJSONDSL } from "../dsl/BitBucketServerDSL"
 import { DangerUtilsDSL } from "./DangerUtilsDSL"
 import { CliArgs } from "../dsl/cli-args"
+import { GitLabDSL } from "./GitLabDSL"
 
 /**
  * The shape of the JSON passed between Danger and a subprocess. It's built
@@ -57,6 +58,8 @@ export interface DangerDSLJSONType {
   github?: GitHubDSL
   /** The data only version of BitBucket Server DSL */
   bitbucket_server?: BitBucketServerJSONDSL
+  /** The data only version of GitLab DSL */
+  gitlab?: GitLabDSL
   /**
    * Used in the Danger JSON DSL to pass metadata between
    * processes. It will be undefined when used inside the Danger DSL
@@ -119,11 +122,22 @@ export interface DangerDSLType {
    *  comments and reviews on the PR, related issues, commits, comments
    *  and activities.
    *
-   *  Strictly speaking, `bitbucket_server` is a nullable type, if you are using
-   *  GitHub then it will be undefined. For the DSL convenience sake though, it
+   *  Strictly speaking, `bitbucket_server` is a nullable type, if you are not using
+   *  BitBucket Server then it will be undefined. For the DSL convenience sake though, it
    *  is classed as non-nullable
    */
   readonly bitbucket_server: BitBucketServerDSL
+
+  /**
+   * The GitLab metadata. This covers things like PR info,
+   * comments and reviews on the MR, commits, comments
+   * and activities.
+   *
+   * Strictly speaking, `gitlab` is a nullable type, if you are not using
+   * GitLab then it will be undefined. For the DSL convenience sake though, it
+   * is classed as non-nullable
+   */
+  readonly gitlab: GitLabDSL
 
   /**
    * Functions which are globally useful in most Dangerfiles. Right
@@ -138,6 +152,7 @@ export interface DangerDSLType {
 export class DangerDSL {
   public readonly github?: GitHubDSL
   public readonly bitbucket_server?: BitBucketServerDSL
+  public readonly gitlab?: GitLabDSL
 
   constructor(platformDSL: any, public readonly git: GitJSONDSL, public readonly utils: DangerUtilsDSL, name: string) {
     switch (name) {
@@ -146,6 +161,8 @@ export class DangerDSL {
         this.github = platformDSL
       case "BitBucketServer":
         this.bitbucket_server = platformDSL
+      case "GitLab":
+        this.gitlab = platformDSL
     }
   }
 }

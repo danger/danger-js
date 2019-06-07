@@ -14,6 +14,7 @@ import { prepareDangerDSL } from "./utils/runDangerSubprocess"
 import { runRunner } from "./ci/runner"
 import { Platform, getPlatformForEnv } from "../platforms/platform"
 import { CISource } from "../ci_source/ci_source"
+import { getGitLabAPICredentialsFromEnv } from "../platforms/gitlab/GitLabAPI"
 
 const d = debug("pr")
 const log = console.log
@@ -25,6 +26,8 @@ interface App extends SharedCLI {
   js?: boolean
 }
 
+const gitLabApiCredentials = getGitLabAPICredentialsFromEnv(process.env)
+
 program
   .usage("[options] <pr_url>")
   .description("Emulate running Danger against an existing GitHub Pull Request.")
@@ -34,9 +37,15 @@ program
   .on("--help", () => {
     log("\n")
     log("  Docs:")
-    if (!process.env["DANGER_GITHUB_API_TOKEN"] && !process.env["DANGER_BITBUCKETSERVER_HOST"]) {
+    if (
+      !process.env["DANGER_GITHUB_API_TOKEN"] &&
+      !process.env["DANGER_BITBUCKETSERVER_HOST"] &&
+      !gitLabApiCredentials.token
+    ) {
       log("")
-      log("     You don't have a DANGER_GITHUB_API_TOKEN set up, this is optional, but TBH, you want to do this.")
+      log(
+        "     You don't have a DANGER_GITHUB_API_TOKEN/DANGER_GITLAB_API_TOKEN set up, this is optional, but TBH, you want to do this."
+      )
       log("     Check out: http://danger.systems/js/guides/the_dangerfile.html#working-on-your-dangerfile")
       log("")
     }
@@ -60,13 +69,14 @@ if (program.args.length === 0) {
   console.error("Please include a PR URL to run against")
   process.exitCode = 1
 } else {
-  const customHost = process.env["DANGER_GITHUB_HOST"] || process.env["DANGER_BITBUCKETSERVER_HOST"] || "github"
+  const customHost =
+    process.env["DANGER_GITHUB_HOST"] || process.env["DANGER_BITBUCKETSERVER_HOST"] || gitLabApiCredentials.host // this defaults to https://gitlab.com
 
   // Allow an ambiguous amount of args to find the PR reference
-  const findPR = program.args.find(a => a.includes(customHost))
+  const findPR = program.args.find(a => a.includes(customHost) || a.includes("github"))
 
   if (!findPR) {
-    console.error(`Could not find an arg which mentioned GitHub or BitBucket Server.`)
+    console.error(`Could not find an arg which mentioned GitHub, BitBucket Server, or GitLab.`)
     process.exitCode = 1
   } else {
     const pr = pullRequestParser(findPR)
@@ -86,7 +96,18 @@ if (program.args.length === 0) {
           d(`executing dangerfile at ${dangerfilePath(program)}`)
         }
         const source = new FakeCI({ DANGER_TEST_REPO: pr.repo, DANGER_TEST_PR: pr.pullRequestNumber })
-        const platform = getPlatformForEnv(process.env, source, /* requireAuth */ false)
+        const platform = getPlatformForEnv(
+          {
+            ...process.env,
+            // Inject a platform hint, its up to getPlatformForEnv to decide if the environment is suitable for the
+            // requested platform. Because we have a URL we can determine with greater accuracy what platform that the
+            // user is attempting to test. This complexity is required because danger-pr defaults to using
+            // un-authenticated GitHub where typically when using FakeCI we want to use Fake(Platform) e.g. when running
+            // danger-local
+            DANGER_PR_PLATFORM: pr.platform,
+          },
+          source
+        )
 
         if (isJSON) {
           d("getting just the JSON/JS DSL")

@@ -1,9 +1,13 @@
 import * as url from "url"
 import includes from "lodash.includes"
+import { BitBucketServer } from "./BitBucketServer"
+import { GitHub } from "./GitHub"
+import GitLab from "./GitLab"
 
 export interface PullRequestParts {
   pullRequestNumber: string
   repo: string
+  platform: string
 }
 
 export function pullRequestParser(address: string): PullRequestParts | null {
@@ -14,6 +18,7 @@ export function pullRequestParser(address: string): PullRequestParts | null {
     const parts = components.path.match(/(projects\/\w+\/repos\/[\w-_.]+)\/pull-requests\/(\d+)/)
     if (parts) {
       return {
+        platform: BitBucketServer.name,
         repo: parts[1],
         pullRequestNumber: parts[2],
       }
@@ -22,8 +27,22 @@ export function pullRequestParser(address: string): PullRequestParts | null {
     // shape: http://github.com/proj/repo/pull/1
     if (includes(components.path, "pull")) {
       return {
+        platform: GitHub.name,
         repo: components.path.split("/pull")[0].slice(1),
         pullRequestNumber: components.path.split("/pull/")[1],
+      }
+    }
+
+    // shape: https://gitlab.com/GROUP[/SUBGROUP]/PROJ/merge_requests/123
+    if (includes(components.path, "merge_requests")) {
+      const regex = /\/(.+)\/merge_requests\/(\d+)/
+      const parts = components.path.match(regex)
+      if (parts) {
+        return {
+          platform: GitLab.name,
+          repo: parts[1],
+          pullRequestNumber: parts[2],
+        }
       }
     }
   }

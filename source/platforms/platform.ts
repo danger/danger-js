@@ -1,9 +1,11 @@
-import { Env, CISource } from "../ci_source/ci_source"
-import { GitJSONDSL, GitDSL } from "../dsl/GitDSL"
+import { CISource, Env } from "../ci_source/ci_source"
+import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitHub } from "./GitHub"
 import { GitHubAPI } from "./github/GitHubAPI"
 import { BitBucketServer } from "./BitBucketServer"
 import { BitBucketServerAPI, bitbucketServerRepoCredentialsFromEnv } from "./bitbucket_server/BitBucketServerAPI"
+import GitLabAPI, { getGitLabAPICredentialsFromEnv } from "./gitlab/GitLabAPI"
+import GitLab from "./GitLab"
 import { DangerResults } from "../dsl/DangerResults"
 import { ExecutorOptions } from "../runner/Executor"
 import { DangerRunner } from "../runner/runners/runner"
@@ -36,7 +38,7 @@ export interface Platform extends PlatformCommunicator {
   readonly name: string
 
   getReviewInfo: () => Promise<any>
-  /** Pulls in the platform specific metadata for code review runs */
+  /** Pulls in the platform specific metadata for code review runs in JSON format */
   getPlatformReviewDSLRepresentation: () => Promise<any>
   /** Pulls in the platform specific metadata for event runs */
   getPlatformReviewSimpleRepresentation?: () => Promise<any>
@@ -87,10 +89,9 @@ export interface PlatformCommunicator {
  * @param {CISource} source The existing source, to ensure they can run against each other
  * @returns {Platform} returns a platform if it can be supported
  */
-export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true): Platform {
+export function getPlatformForEnv(env: Env, source: CISource): Platform {
   // BitBucket Server
-  const bbsHost = env["DANGER_BITBUCKETSERVER_HOST"]
-  if (bbsHost) {
+  if (env["DANGER_BITBUCKETSERVER_HOST"] || env["DANGER_PR_PLATFORM"] === BitBucketServer.name) {
     const api = new BitBucketServerAPI(
       {
         pullRequestID: source.pullRequestID,
@@ -98,8 +99,19 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
       },
       bitbucketServerRepoCredentialsFromEnv(env)
     )
-    const bbs = new BitBucketServer(api)
-    return bbs
+    return new BitBucketServer(api)
+  }
+
+  // GitLab
+  if (env["DANGER_GITLAB_API_TOKEN"] || env["DANGER_PR_PLATFORM"] === GitLab.name) {
+    const api = new GitLabAPI(
+      {
+        pullRequestID: source.pullRequestID,
+        repoSlug: source.repoSlug,
+      },
+      getGitLabAPICredentialsFromEnv(env)
+    )
+    return new GitLab(api)
   }
 
   // They need to set the token up for GitHub actions to work
@@ -113,15 +125,14 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
 
   // GitHub Platform
   const ghToken = env["DANGER_GITHUB_API_TOKEN"] || env["GITHUB_TOKEN"]
-  if (ghToken || !requireAuth) {
+  if (ghToken || env["DANGER_PR_PLATFORM"] === GitHub.name) {
     if (!ghToken) {
       console.log("You don't have a DANGER_GITHUB_API_TOKEN set up, this is optional, but TBH, you want to do this")
       console.log("Check out: http://danger.systems/js/guides/the_dangerfile.html#working-on-your-dangerfile")
     }
 
     const api = new GitHubAPI(source, ghToken)
-    const github = GitHub(api)
-    return github
+    return GitHub(api)
   }
 
   // Support automatically returning a fake platform if you pass a Fake CI
@@ -129,7 +140,9 @@ export function getPlatformForEnv(env: Env, source: CISource, requireAuth = true
     return new FakePlatform()
   }
 
-  console.error("The DANGER_GITHUB_API_TOKEN/DANGER_BITBUCKETSERVER_HOST environmental variable is missing")
+  console.error(
+    "The DANGER_GITHUB_API_TOKEN/DANGER_BITBUCKETSERVER_HOST/DANGER_GITLAB_API_TOKEN environmental variable is missing"
+  )
   console.error("Without an api token, danger will be unable to comment on a PR")
   throw new Error("Cannot use authenticated API requests.")
 }

@@ -15,8 +15,12 @@
 
 <!-- Your comment below this -->
 
-- Add support for AppCenter - [@mrndjo]
 - Fix structuredDiffForFile for BitBucket Server - [@osmestad]
+
+# 8.0.0
+
+- Adds GitLab & GitLab CI support - [@notjosh], [@bigkraig], [@jamime]
+- Add support for AppCenter - [@mrndjo]
 
 # 7.1.4
 
@@ -1637,3 +1641,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@dblandin]: https://github.com/dblandin
 [@paulmelnikow]: https://github.com/paulmelnikow
 [@ds300]: https://github.com/ds300
+[@jamime]: https://github.com/jamime
+[@mrndjo]: https://github.com/mrndjo
+[@bigkraig]: https://github.com/bigkraig
+[@notjosh]: https://github.com/notjosh
