@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Fixes incorrect slug for builds from forks on Codefresh - [@stevenp]
+
 # 8.0.0
 
 - Adds GitLab & GitLab CI support - [@notjosh], [@bigkraig], [@jamime]
