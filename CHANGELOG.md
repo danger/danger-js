@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Add GitLab missing states - [@f-meloni]
 - Fixes incorrect slug for builds from forks on Codefresh - [@stevenp]
 
 # 8.0.0
