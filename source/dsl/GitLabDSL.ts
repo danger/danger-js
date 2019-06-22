@@ -22,7 +22,7 @@ export interface GitLabUser {
   id: number
   name: string
   username: string
-  state: "active" // XXX: other states?
+  state: "active" | "blocked"
   avatar_url: string | null
   web_url: string
 }
@@ -97,7 +97,7 @@ export interface GitLabMRBase {
     project_id: number
     title: string
     description: string
-    state: "closed" // XXX: other states?
+    state: "closed" | "active"
     created_at: string
     updated_at: string
     due_date: string
@@ -139,7 +139,7 @@ export interface GitLabMR extends GitLabMRBase {
     id: number
     sha: string
     ref: string
-    status: "success" // XXX: other statuses?
+    status: "canceled" | "failed" | "pending" | "running" | "skipped" | "success"
     web_url: string
   }
   diff_refs: {
