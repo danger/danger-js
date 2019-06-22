@@ -19,8 +19,7 @@ review.
 
 You can use Danger to codify your teams norms, leaving humans to think about harder problems.
 
-Danger JS works with GitHub or BitBucket Server for code review, then with: Travis CI, GitLab CI, Circle CI, GitHub
-Actions, Semaphore, Jenkins, Docker Cloud, Bitrise, surf-build, Codeship, Drone, Buildkite, Nevercode, buddybuild,
+Danger JS works with GitHub or BitBucket Server for code review, then with: Travis CI, GitLab CI, Circle CI, GitHub Actions, Semaphore, Jenkins, Docker Cloud, Bitrise, surf-build, Codeship, Drone, Buildkite, Nevercode, buddybuild,
 TeamCity, Visual Studio Team Services, Screwdriver, Concourse, Netlify, CodeBuild, Codefresh or AppCenter.
 
 [![npm](https://img.shields.io/npm/v/danger.svg)](https://www.npmjs.com/package/danger)
