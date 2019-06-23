@@ -213,7 +213,7 @@ describe("API testing - BitBucket Cloud", () => {
   })
 
   it("deleteComment", async () => {
-    await api.deleteComment(1)
+    await api.deleteComment("1")
 
     expect(api.fetch).toHaveBeenCalledWith(
       `https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments/1`,
@@ -265,7 +265,7 @@ describe("API testing - BitBucket Cloud", () => {
   //   })
 
   it("updateComment", async () => {
-    await api.updateComment(1, "Hello!")
+    await api.updateComment("1", "Hello!")
 
     expect(api.fetch).toHaveBeenCalledWith(
       `https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments/1`,

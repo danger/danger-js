@@ -136,6 +136,8 @@ export interface BitBucketCloudContent {
 
 export interface BitBucketCloudPRComment {
   deleted: boolean
+  links: BitBucketCloudLinks<"self" | "html">
+
   pullrequest: {
     id: number
     links: BitBucketCloudLinks<"self" | "html">

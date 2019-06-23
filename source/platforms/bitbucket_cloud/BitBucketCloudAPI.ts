@@ -202,7 +202,7 @@ export class BitBucketCloudAPI {
     return await res.json()
   }
 
-  deleteComment = async (id: number) => {
+  deleteComment = async (id: string) => {
     const path = `${this.getPRURL()}/comments/${id}`
     const res = await this.delete(path)
 
@@ -213,7 +213,7 @@ export class BitBucketCloudAPI {
     }
   }
 
-  updateComment = async (id: number, comment: string) => {
+  updateComment = async (id: string, comment: string) => {
     const path = `${this.getPRURL()}/comments/${id}`
     const res = await this.put(
       path,
