@@ -6,6 +6,7 @@ import { BitBucketServerDSL, BitBucketServerJSONDSL } from "../dsl/BitBucketServ
 import { DangerUtilsDSL } from "./DangerUtilsDSL"
 import { CliArgs } from "../dsl/cli-args"
 import { GitLabDSL } from "./GitLabDSL"
+import { BitBucketCloudJSONDSL } from "./BitBucketCloudDSL"
 
 /**
  * The shape of the JSON passed between Danger and a subprocess. It's built
@@ -58,6 +59,8 @@ export interface DangerDSLJSONType {
   github?: GitHubDSL
   /** The data only version of BitBucket Server DSL */
   bitbucket_server?: BitBucketServerJSONDSL
+  /** The data only version of BitBucket Cloud DSL */
+  bitbucket_cloud?: BitBucketCloudJSONDSL
   /** The data only version of GitLab DSL */
   gitlab?: GitLabDSL
   /**
