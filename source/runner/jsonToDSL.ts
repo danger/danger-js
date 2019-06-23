@@ -56,6 +56,7 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
     // which just doesn't feel right.
     github: github!,
     bitbucket_server: bitbucket_server!,
+    bitbucket_cloud: bitbucket_cloud!,
     gitlab: gitlab!,
     utils: {
       sentence,
