@@ -1,4 +1,19 @@
-import { BitBucketServerPRDSL, RepoMetaData as BitBucketServerRepoMetaData } from "./BitBucketServerDSL"
+import { RepoMetaData as BitBucketServerRepoMetaData } from "./BitBucketServerDSL"
+
+export interface BitBucketCloudJSONDSL {
+  /** The pull request and repository metadata */
+  metadata: RepoMetaData
+  /** The PR metadata */
+  pr: BitBucketCloudPRDSL
+  /** The commits associated with the pull request */
+  commits: BitBucketCloudCommit[]
+  /** The comments on the pull request */
+  comments: BitBucketCloudPRComment[]
+  /** The activities such as OPENING, CLOSING, MERGING or UPDATING a pull request */
+  activities: BitBucketCloudPRActivity[]
+}
+
+export interface BitBucketCloudDSL extends BitBucketCloudJSONDSL {}
 
 export interface BitBucketCloudPagedResponse<T> {
   pagelen: number
@@ -8,8 +23,68 @@ export interface BitBucketCloudPagedResponse<T> {
   previous: string | undefined
   values: T[]
 }
+export interface BitBucketCloudPRDSL {
+  /** The PR's ID */
+  id: number
+  /** Title of the pull request. */
+  title: string
+  /** The text describing the PR */
+  description: string
+  /** The pull request's current status. */
+  state: "OPEN" | "MERGED" | "DECLINED" | "SUPERSEDED"
+  /** Date PR created as number of milliseconds since the unix epoch */
+  created_on: number
+  /** Date PR updated as number of milliseconds since the unix epoch */
+  updated_on: number
+  /** The PR's source, The repo Danger is running on  */
+  source: BitBucketCloudMergeRef
+  /** The PR's destination */
+  destination: BitBucketCloudMergeRef
+  /** The creator of the PR */
+  author: BitBucketCloudUser
+  /** People requested as reviewers */
+  reviewers: BitBucketCloudUser[]
+  /** People who have participated in the PR */
+  participants: BitBucketCloudPRParticipant[]
+  /** Misc links for hypermedia conformance */
+  links: BitBucketCloudLinks<
+    "decline" | "commits" | "self" | "comments" | "merge" | "html" | "activity" | "diff" | "approve" | "statuses"
+  >
+}
 
-export type BitBucketCloudPRDSL = BitBucketServerPRDSL
+export interface BitBucketCloudMergeRef {
+  commit: {
+    hash: string
+  }
+  branch: {
+    name: string
+  }
+  repository: BitBucketCloudRepo
+}
+
+export type BitBucketCloudLinks<Names extends string> = {
+  [key in Names]: {
+    href: string
+  }
+}
+
+export interface BitBucketCloudPRParticipant {
+  /*The user for  */
+  user: BitBucketCloudUser
+
+  /** How did they contribute */
+  role: "REVIEWER" | "PARTICIPANT"
+
+  /** Did they approve of the PR? */
+  approved: boolean
+}
+
+export interface BitBucketCloudRepo {
+  name: string
+  full_name: string
+  uuid: string
+}
+
 export type RepoMetaData = BitBucketServerRepoMetaData
 
 export interface BitBucketCloudUser {
@@ -32,7 +107,11 @@ export interface BitBucketCloudCommit {
   hash: string
 
   /** The author of the commit, assumed to be the person who wrote the code. */
-  author: BitBucketCloudUser
+  author: {
+    /** Format: `Foo Bar <foo@bar.com>` */
+    raw: string
+    user: BitBucketCloudUser
+  }
 
   /** When the commit was commited to the project, in ISO 8601 format */
   date: string
@@ -43,19 +122,9 @@ export interface BitBucketCloudCommit {
     /** The full SHA */
     hash: string
   }[]
-}
 
-export interface BitBucketCloudPRLink {
-  id: number
-  links: {
-    self: {
-      href: string
-    }
-    html: {
-      href: string
-    }
-  }
-  title: string
+  /** The commit's links */
+  links: BitBucketCloudLinks<"html">
 }
 
 export interface BitBucketCloudContent {
@@ -67,7 +136,11 @@ export interface BitBucketCloudContent {
 
 export interface BitBucketCloudPRComment {
   deleted: boolean
-  pullrequest: BitBucketCloudPRLink
+  pullrequest: {
+    id: number
+    links: BitBucketCloudLinks<"self" | "html">
+    title: string
+  }
   content: BitBucketCloudContent
 
   /** When the comment was created, in ISO 8601 format */

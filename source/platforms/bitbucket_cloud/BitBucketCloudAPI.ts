@@ -153,6 +153,22 @@ export class BitBucketCloudAPI {
     return values
   }
 
+  getFileContents = async (filePath: string, repoSlug?: string, ref?: string) => {
+    if (!repoSlug || !ref) {
+      const prJSON = await this.getPullRequestInfo()
+      repoSlug = prJSON.source.repository.full_name
+      ref = prJSON.source.commit.hash
+    }
+
+    const url = `${this.baseURL}/repositories/${repoSlug}/src/${ref}/${filePath}`
+    const res = await this.get(url, undefined, true)
+    if (res.status === 404) {
+      return ""
+    }
+    throwIfNotOk(res)
+    return await res.text()
+  }
+
   getDangerComments = async (dangerID: string): Promise<BitBucketCloudPRComment[]> => {
     const comments = await this.getPullRequestComments()
     const dangerIDMessage = dangerIDToString(dangerID)

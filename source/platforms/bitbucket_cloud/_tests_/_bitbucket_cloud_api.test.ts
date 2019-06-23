@@ -96,6 +96,17 @@ describe("API testing - BitBucket Cloud", () => {
     })
   })
 
+  it("getFileContents", async () => {
+    api.fetch = fetchText
+    let text = await api.getFileContents("Dangerfile.ts", api.repoMetadata.repoSlug, "a0cd")
+
+    expect(JSON.parse(text)).toMatchObject({
+      method: "GET",
+      api: "https://api.bitbucket.org/2.0/repositories/foo/bar/src/a0cd/Dangerfile.ts",
+      headers: expectedJSONHeaders,
+    })
+  })
+
   it("getPullRequestComments", async () => {
     jsonResult = () => ({ next: undefined, values: [{ comment: {} }, {}] })
     const result = await api.getPullRequestComments()
