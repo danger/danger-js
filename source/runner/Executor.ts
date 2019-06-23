@@ -278,9 +278,11 @@ export class Executor {
       } else {
         const commitID = git.commits[git.commits.length - 1].sha
         // TODO: GitLab template formatting (or reuse one of the others?)
-        const comment = process.env["DANGER_BITBUCKETSERVER_HOST"]
-          ? bitbucketServerTemplate(dangerID, commitID, mergedResults)
-          : githubResultsTemplate(dangerID, commitID, mergedResults)
+        // Try using bitbucketServerTemplate for bitbucketCloud
+        const comment =
+          process.env["DANGER_BITBUCKETSERVER_HOST"] || process.env["DANGER_BITBUCKETCLOUD_USERNAME"]
+            ? bitbucketServerTemplate(dangerID, commitID, mergedResults)
+            : githubResultsTemplate(dangerID, commitID, mergedResults)
 
         issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
         this.log(`Feedback: ${issueURL}`)
