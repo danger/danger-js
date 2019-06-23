@@ -126,8 +126,10 @@ export class BitBucketCloudAPI {
     return res.ok ? res.text() : ""
   }
 
-  getPullRequestComments = async (): Promise<BitBucketCloudPRComment[]> => {
-    const activities = await this.getPullRequestActivities()
+  getPullRequestComments = async (activities?: BitBucketCloudPRActivity[]): Promise<BitBucketCloudPRComment[]> => {
+    if (activities == null) {
+      activities = await this.getPullRequestActivities()
+    }
     return activities
       .map(activity => activity.comment)
       .filter((comment): comment is BitBucketCloudPRComment => comment != null)

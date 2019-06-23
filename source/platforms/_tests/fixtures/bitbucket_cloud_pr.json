@@ -31,7 +31,7 @@
     "approve": { "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/324/approve" },
     "statuses": { "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/324/statuses" }
   },
-  "title": "Improve CI-JIRA-Danger workflow",
+  "title": "Pull request title",
   "close_source_branch": true,
   "reviewers": [
     {
