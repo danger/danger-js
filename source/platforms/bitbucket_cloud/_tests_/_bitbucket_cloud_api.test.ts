@@ -120,6 +120,36 @@ describe("API testing - BitBucket Cloud", () => {
     expect(result).toEqual([{ content: { raw: "Hello" } }])
   })
 
+  it("getDangerInlineComments", async () => {
+    jsonResult = () => ({
+      values: [
+        {
+          content: {
+            raw:
+              "\n[//]: # (danger-id-1;)\n[//]: # (  File: dangerfile.ts;\n  Line: 5;)\n\n- :warning: Hello updates\n\n\n  ",
+          },
+          id: 1234,
+          inline: {
+            from: 5,
+            path: "dangerfile.ts",
+          },
+          user: {
+            uuid: "{1234-1234-1234-1234}",
+            display_name: "name",
+          },
+        },
+      ],
+    })
+    const comments = await api.getDangerInlineComments("1")
+    expect(api.fetch).toHaveBeenCalledWith(
+      "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments",
+      { method: "GET", body: null, headers: expectedJSONHeaders },
+      undefined
+    )
+    expect(comments.length).toEqual(1)
+    expect(comments[0].ownedByDanger).toBeTruthy()
+  })
+
   it("getPullRequestActivities", async () => {
     jsonResult = () => ({ isLastPage: true, values: ["activity"] })
     const result = await api.getPullRequestActivities()
@@ -227,6 +257,19 @@ describe("API testing - BitBucket Cloud", () => {
       {
         method: "PUT",
         body: JSON.stringify({ content: { raw: "Hello!" } }),
+        headers: expectedJSONHeaders,
+      },
+      undefined
+    )
+  })
+
+  it("postInlinePRComment", async () => {
+    await api.postInlinePRComment("comment...", 5, "dangerfile.ts")
+    expect(api.fetch).toHaveBeenCalledWith(
+      `https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments`,
+      {
+        method: "POST",
+        body: JSON.stringify({ content: { raw: "comment..." }, inline: { from: 5, path: "dangerfile.ts" } }),
         headers: expectedJSONHeaders,
       },
       undefined

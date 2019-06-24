@@ -153,6 +153,12 @@ export interface BitBucketCloudPRComment {
   updated_on: string
   type: string
   id: number
+
+  inline?: {
+    to: number | null
+    from: number
+    path: string
+  }
 }
 
 export interface BitBucketCloudPRActivity {
