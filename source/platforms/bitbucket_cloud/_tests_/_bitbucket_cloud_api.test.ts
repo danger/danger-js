@@ -1,7 +1,7 @@
 import { BitBucketCloudAPI } from "../BitBucketCloudAPI"
 
 // try with bitbucketServerTemplate
-import { dangerSignaturePostfix } from "../../../runner/templates/bitbucketServerTemplate"
+import { dangerSignaturePostfix } from "../../../runner/templates/bitbucketCloudTemplate"
 import { DangerResults } from "../../../dsl/DangerResults"
 
 const fetchText = (api: any, params: any): Promise<any> => {
