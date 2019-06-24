@@ -219,48 +219,6 @@ describe("API testing - BitBucket Cloud", () => {
     )
   })
 
-  //   TODO: (HelloCore) Have to handle this case
-  //   it("deleteComment with reply", async () => {
-  //     api.fetch = jest
-  //       .fn()
-  //       .mockReturnValueOnce({
-  //         status: 409,
-  //         ok: true,
-  //         json: () => ({
-  //           errors: {
-  //             exceptionName: "com.atlassian.bitbucket.comment.CommentDeletionException",
-  //           },
-  //         }),
-  //         text: () => textResult,
-  //       })
-  //       .mockReturnValueOnce({
-  //         status: 200,
-  //         ok: true,
-  //         json: () => jsonResult(),
-  //         text: () => textResult,
-  //       })
-
-  //     await api.deleteComment({ id: 1, version: 2 } as any)
-
-  //     expect(api.fetch).toHaveBeenCalledTimes(2)
-
-  //     expect(api.fetch).toHaveBeenCalledWith(
-  //       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/comments/1?version=2`,
-  //       { method: "DELETE", body: `{}`, headers: expectedJSONHeaders },
-  //       undefined
-  //     )
-
-  //     expect(api.fetch).toHaveBeenCalledWith(
-  //       `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/comments/1`,
-  //       {
-  //         method: "PUT",
-  //         body: JSON.stringify({ text: "(Review Retracted)", version: 2 }),
-  //         headers: expectedJSONHeaders,
-  //       },
-  //       undefined
-  //     )
-  //   })
-
   it("updateComment", async () => {
     await api.updateComment("1", "Hello!")
 

@@ -219,8 +219,6 @@ export class BitBucketCloudAPI {
     const path = `${this.getPRURL()}/comments/${id}`
     const res = await this.delete(path)
 
-    //   TODO: (HelloCore) Have to handle nested comment case
-
     if (!res.ok) {
       throw new Error(`Failed to delete comment "${id}`)
     }
