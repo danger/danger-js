@@ -1,11 +1,10 @@
 import { DangerResults } from "../../dsl/DangerResults"
 import { Violation } from "../../dsl/Violation"
 
-// Getting emoji from here
-// https://bitbucket.org/DACOFFEY/wiki/wiki/BITBUCKET/EMOJI/Emoji
-const noEntryEmoji = ":x:"
-const warningEmoji = ":warning️:"
-const messageEmoji = ":sparkles:"
+// This unicode emojis also work for old versions of bitbucket server, were emojis are not supported
+const noEntryEmoji = "❌"
+const warningEmoji = "⚠️"
+const messageEmoji = "✨"
 
 export const dangerSignature = (results: DangerResults) => {
   let meta = results.meta || { runtimeName: "dangerJS", runtimeHref: "https://danger.systems/js" }
@@ -20,9 +19,9 @@ export const dangerIDToString = (id: string) => `danger-id-${id};`
  * Postfix signature to be attached comment generated / updated by danger.
  */
 export const dangerSignaturePostfix = (results: DangerResults, commitID: string) => `
-  |    |
-  |---:|
-  | _${dangerSignature(results)} against ${commitID}_ |
+
+
+  > _${dangerSignature(results)} against ${commitID}
   `
 
 function buildMarkdownTable(header: string, emoji: string, violations: Violation[]): string {
@@ -30,9 +29,12 @@ function buildMarkdownTable(header: string, emoji: string, violations: Violation
     return ""
   }
   return `
-  |   | ${header} |
-  | -: | ------ |
-  ${violations.map(v => `| ${emoji} | ${v.message} |`)}`
+
+  |      ${violations.length} ${header} |
+  | --- |
+  ${violations.map(v => `| ${emoji} ${v.message} |`)}
+
+  `
 }
 
 /**
@@ -45,9 +47,7 @@ function buildMarkdownTable(header: string, emoji: string, violations: Violation
 export function template(dangerID: string, commitID: string, results: DangerResults): string {
   return `
   ${buildMarkdownTable("Fails", noEntryEmoji, results.fails)}
-
   ${buildMarkdownTable("Warnings", warningEmoji, results.warnings)}
-
   ${buildMarkdownTable("Messages", messageEmoji, results.messages)}
   
   ${results.markdowns.map(v => v.message).join("\n\n")}

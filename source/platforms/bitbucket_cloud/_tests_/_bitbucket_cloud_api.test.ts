@@ -202,7 +202,7 @@ describe("API testing - BitBucket Cloud", () => {
       `https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments`,
       {
         method: "POST",
-        body: JSON.stringify({ content: { raw: comment, markup: "markdown" } }),
+        body: JSON.stringify({ content: { raw: comment } }),
         headers: expectedJSONHeaders,
       },
       undefined
@@ -268,7 +268,7 @@ describe("API testing - BitBucket Cloud", () => {
       `https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments/1`,
       {
         method: "PUT",
-        body: JSON.stringify({ content: { raw: "Hello!", markup: "markdown" } }),
+        body: JSON.stringify({ content: { raw: "Hello!" } }),
         headers: expectedJSONHeaders,
       },
       undefined
