@@ -3,13 +3,14 @@ import { bitBucketCloudRawAndDateToGitCommitAuthor } from "../BitBucketCloudGit"
 import { BitBucketCloud } from "../../BitBucketCloud"
 import { BitBucketCloudAPI } from "../BitBucketCloudAPI"
 import { FakeCI } from "../../../ci_source/providers/Fake"
-import { readFileSync } from "fs"
+import { readFileSync, writeFileSync } from "fs"
 import { resolve, join as pathJoin } from "path"
 import { bitBucketCloudGitDSL as gitJSONToGitDSL } from "../BitBucketCloudGit"
 
 import { BitBucketCloudDSL } from "../../../dsl/BitBucketCloudDSL"
 import { GitJSONDSL, GitDSL } from "../../../dsl/GitDSL"
 import { GitCommit } from "../../../dsl/Commit"
+import { jsonDSLGenerator } from "../../../runner/dslGenerator"
 
 const fixtures = resolve(__dirname, "..", "..", "_tests", "fixtures")
 
@@ -157,13 +158,13 @@ describe("the dangerfile gitDSL - BitBucket Cloud", async () => {
     expect(gitDSL.commits[0]).toEqual(exampleCommit)
   })
 
-  // it("writes a JSON DSL fixture", async () => {
-  //   const fakeSource = new FakeCI({})
-  //   const dataSent = await jsonDSLGenerator(bbc, fakeSource, {} as any)
-  //   dataSent.settings.github.accessToken = "12345"
+  it("writes a JSON DSL fixture", async () => {
+    const fakeSource = new FakeCI({})
+    const dataSent = await jsonDSLGenerator(bbc, fakeSource, {} as any)
+    dataSent.settings.github.accessToken = "12345"
 
-  //   writeFileSync(pathJoin(fixtures, "bbc-dsl-input.json"), JSON.stringify(dataSent, null, "  "), "utf8")
-  // })
+    writeFileSync(pathJoin(fixtures, "bbc-dsl-input.json"), JSON.stringify(dataSent, null, "  "), "utf8")
+  })
 })
 
 describe("bitBucketCloudRawAndDateToGitCommitAuthor", () => {
