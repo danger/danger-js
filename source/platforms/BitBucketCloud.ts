@@ -64,7 +64,7 @@ export class BitBucketCloud implements Platform {
   }
 
   supportsInlineComments() {
-    return false
+    return true
   }
 
   /**
@@ -120,38 +120,25 @@ export class BitBucketCloud implements Platform {
     return undefined
   }
 
-  //TODO: inline comment
-  getInlineComments = async (_dangerID: string): Promise<Comment[]> => {
-    if (!this.supportsInlineComments) {
-      return new Promise<[]>((_resolve, reject) => reject())
-    }
-    this.d("Trying to get inline comment:" + _dangerID)
+  getInlineComments = async (dangerID: string): Promise<Comment[]> => this.api.getDangerInlineComments(dangerID)
 
-    return []
-  }
   createInlineComment = async (git: GitDSL, comment: string, path: string, line: number): Promise<any> => {
-    if (!this.supportsInlineComments) {
-      return new Promise<[]>((_resolve, reject) => reject())
-    }
     this.d("Trying to get inline comment:" + comment + " atPath: " + path + " line: " + line)
     this.d("GIT: " + git)
+
+    return this.api.postInlinePRComment(comment, line, path)
   }
 
   updateInlineComment = async (comment: string, commentId: string): Promise<any> => {
-    if (!this.supportsInlineComments) {
-      return new Promise<boolean>((_resolve, reject) => reject())
-    }
     this.d("Trying to update inline comment:" + commentId + " message:" + comment)
+    return this.api.updateComment(commentId, comment)
   }
 
   deleteInlineComment = async (commentId: string): Promise<boolean> => {
-    if (!this.supportsInlineComments) {
-      return new Promise<boolean>((_resolve, reject) => reject())
-    }
     this.d("Trying to delete inline comment: " + commentId)
 
-    this.api.deleteComment(commentId)
-    return false
+    await this.api.deleteComment(commentId)
+    return true
   }
 
   updateStatus = async (

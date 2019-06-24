@@ -269,7 +269,7 @@ describe("API testing - BitBucket Cloud", () => {
       `https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments`,
       {
         method: "POST",
-        body: JSON.stringify({ content: { raw: "comment..." }, inline: { from: 5, path: "dangerfile.ts" } }),
+        body: JSON.stringify({ content: { raw: "comment..." }, inline: { to: 5, path: "dangerfile.ts" } }),
         headers: expectedJSONHeaders,
       },
       undefined

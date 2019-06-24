@@ -198,8 +198,8 @@ export class BitBucketCloudAPI {
     const dangerIDMessage = dangerIDToString(dangerID)
 
     return comments
-      .filter(comment => comment.content.raw.includes(dangerIDMessage))
       .filter(comment => comment.inline)
+      .filter(comment => comment.content.raw.includes(dangerIDMessage))
       .filter(comment => comment.user.uuid === this.credentials.uuid)
       .map(comment => ({
         id: comment.id.toString(),
@@ -233,7 +233,6 @@ export class BitBucketCloudAPI {
 
   postInlinePRComment = async (comment: string, line: number, filePath: string) => {
     const url = `${this.getPRURL()}/comments`
-
     const res = await this.post(
       url,
       {},
@@ -242,7 +241,7 @@ export class BitBucketCloudAPI {
           raw: comment,
         },
         inline: {
-          from: line,
+          to: line,
           path: filePath,
         },
       }
