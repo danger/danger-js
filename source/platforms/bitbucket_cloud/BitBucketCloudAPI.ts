@@ -197,15 +197,11 @@ export class BitBucketCloudAPI {
     const comments = await this.getPullRequestComments()
     const dangerIDMessage = dangerIDToString(dangerID)
 
-    return comments
-      .filter(comment => comment.inline)
-      .filter(comment => comment.content.raw.includes(dangerIDMessage))
-      .filter(comment => comment.user.uuid === this.credentials.uuid)
-      .map(comment => ({
-        id: comment.id.toString(),
-        ownedByDanger: true,
-        body: comment.content.raw,
-      }))
+    return comments.filter(comment => comment.inline).map(comment => ({
+      id: comment.id.toString(),
+      ownedByDanger: comment.content.raw.includes(dangerIDMessage) && comment.user.uuid === this.credentials.uuid,
+      body: comment.content.raw,
+    }))
   }
 
   postBuildStatus = async (
