@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Add BitBucket Cloud & BitBucket Pipelines support [@HelloCore]
 - Add GitLab missing states - [@f-meloni]
 - Fixes incorrect slug for builds from forks on Codefresh - [@stevenp]
 
