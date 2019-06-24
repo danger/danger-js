@@ -69,7 +69,6 @@ export class BitBucketCloudAPI {
 
   getPullRequestsFromBranch = async (branch: string): Promise<BitBucketCloudPRDSL[]> => {
     // Need to encode URI here because it used special characters in query params.
-    // TODO: (HelloCore) Not sure if we need to use `source.branch.name` or `destination.branch.name` here.
     // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests
     let nextPageURL: string | undefined = encodeURI(
       `${this.getBaseRepoURL()}/pullrequests?q=source.branch.name = "${branch}"`
