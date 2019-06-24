@@ -200,7 +200,7 @@ export class BitBucketCloudAPI {
 
   postPRComment = async (comment: string) => {
     const url = `${this.getPRURL()}/comments`
-    const res = await this.post(url, {}, { content: { raw: comment } })
+    const res = await this.post(url, {}, { content: { raw: comment, markup: "markdown" } })
     return await res.json()
   }
 
@@ -223,6 +223,7 @@ export class BitBucketCloudAPI {
       {
         content: {
           raw: comment,
+          markup: "markdown",
         },
       }
     )

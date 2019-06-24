@@ -26,6 +26,10 @@ import {
   inlineTemplate as bitbucketServerInlineTemplate,
   messageForResultWithIssues as bitbucketMessageForResultWithIssues,
 } from "./templates/bitbucketServerTemplate"
+import {
+  template as bitbucketCloudTemplate,
+  messageForResultWithIssues as bitbucketCloudMessageForResultWithIssues,
+} from "./templates/bitbucketCloudTemplate"
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
 import { debug } from "../debug"
@@ -277,12 +281,14 @@ export class Executor {
         this.platform.deleteMainComment(dangerID)
       } else {
         const commitID = git.commits[git.commits.length - 1].sha
-        // TODO: GitLab template formatting (or reuse one of the others?)
-        // Try using bitbucketServerTemplate for bitbucketCloud
-        const comment =
-          process.env["DANGER_BITBUCKETSERVER_HOST"] || process.env["DANGER_BITBUCKETCLOUD_USERNAME"]
-            ? bitbucketServerTemplate(dangerID, commitID, mergedResults)
-            : githubResultsTemplate(dangerID, commitID, mergedResults)
+        let comment
+        if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
+          comment = bitbucketServerTemplate(dangerID, commitID, mergedResults)
+        } else if (process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
+          comment = bitbucketCloudTemplate(dangerID, commitID, mergedResults)
+        } else {
+          comment = githubResultsTemplate(dangerID, commitID, mergedResults)
+        }
 
         issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
         this.log(`Feedback: ${issueURL}`)
@@ -415,8 +421,12 @@ const messageForResults = (results: DangerResults) => {
   if (!results.fails.length && !results.warnings.length) {
     return `All green. ${compliment()}`
   } else {
-    return process.env["DANGER_BITBUCKETSERVER_HOST"]
-      ? bitbucketMessageForResultWithIssues
-      : githubMessageForResultWithIssues
+    if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
+      return bitbucketMessageForResultWithIssues
+    } else if (process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
+      return bitbucketCloudMessageForResultWithIssues
+    } else {
+      return githubMessageForResultWithIssues
+    }
   }
 }
