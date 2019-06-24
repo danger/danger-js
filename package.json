@@ -23,6 +23,9 @@
       "/distribution/",
       "/types/"
     ],
+    "watchPathIgnorePatterns": [
+      "<rootDir>/test-results.json"
+    ],
     "cacheDirectory": ".jest/cache"
   },
   "lint-staged": {
