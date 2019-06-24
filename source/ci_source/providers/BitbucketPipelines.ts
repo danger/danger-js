@@ -4,7 +4,25 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
 /**
  * ### CI Setup
  *
- * Bitbucket Pipeline
+ * Install dependencies and add a danger step to your `bitbucket-pipelines.yml`.
+ * For improving the performance, you may need to cache `node_modules`.
+ *
+ * ```yml
+ * image: node:10.15.0
+ * pipelines:
+ *   pull-requests:
+ *     "**":
+ *       - step:
+ *           caches:
+ *             - node
+ *           script:
+ *             - export LANG="C.UTF-8"
+ *             - yarn install
+ *             - yarn danger ci
+ * definitions:
+ *   caches:
+ *     node: node_modules
+ * ```
  *
  * ### Token Setup
  *
