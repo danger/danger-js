@@ -14,7 +14,8 @@ export const dangerSignature = (results: DangerResults) => {
 export const messageForResultWithIssues = `${warningEmoji}  Danger found some issues. Don't worry, everything is fixable.`
 
 export const dangerIDToString = (id: string) => `danger-id-${id};`
-
+export const fileLineToString = (file: string, line: number) => `  File: ${file};
+  Line: ${line};`
 /**
  * Postfix signature to be attached comment generated / updated by danger.
  */
@@ -57,5 +58,20 @@ export function template(dangerID: string, commitID: string, results: DangerResu
   ${dangerSignaturePostfix(results, commitID)}
   
   [](http://${dangerIDToString(dangerID)})
+  `
+}
+
+export function inlineTemplate(dangerID: string, results: DangerResults, file: string, line: number): string {
+  const printViolation = (emoji: string) => (violation: Violation) => {
+    return `- ${emoji} ${violation.message}`
+  }
+
+  return `
+[//]: # (${dangerIDToString(dangerID)})
+[//]: # (${fileLineToString(file, line)})
+${results.fails.map(printViolation(noEntryEmoji)).join("\n")}
+${results.warnings.map(printViolation(warningEmoji)).join("\n")}
+${results.messages.map(printViolation(messageEmoji)).join("\n")}
+${results.markdowns.map(v => v.message).join("\n\n")}
   `
 }

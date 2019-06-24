@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`generating inline messages summary inline result matches snapshot 1`] = `
+"
+[//]: # (danger-id-blankID;)
+[//]: # (  File: File.swift;
+  Line: 5;)
+- ❌ Failing message Failing message
+- ⚠️ Warning message Warning message
+- ✨ message
+markdown
+  "
+`;
+
 exports[`generating messages for BitBucket cloud summary result matches snapshot 1`] = `
 "
   ⚠️  Danger found some issues. Don't worry, everything is fixable.
