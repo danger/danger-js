@@ -54,6 +54,7 @@ describe("the dangerfile gitDSL - BitBucket Cloud", async () => {
     bbc = new BitBucketCloud(api)
 
     api.getPullRequestInfo = await requestWithFixturedJSON(pullRequestInfoFilename)
+    api.getPullRequestComments = await requestWithFixturedJSON("bitbucket_cloud_comments.json")
     api.getPullRequestCommits = await requestWithFixturedJSON("bitbucket_cloud_commits.json")
     api.getPullRequestActivities = await requestWithFixturedJSON("bitbucket_cloud_activities.json")
     api.getPullRequestDiff = await requestWithFixturedContent("bitbucket_cloud_diff.diff")

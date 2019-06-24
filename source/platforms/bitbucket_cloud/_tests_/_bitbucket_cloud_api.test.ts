@@ -108,16 +108,16 @@ describe("API testing - BitBucket Cloud", () => {
   })
 
   it("getPullRequestComments", async () => {
-    jsonResult = () => ({ next: undefined, values: [{ comment: {} }, {}] })
+    jsonResult = () => ({ next: undefined, values: [{ content: { raw: "Hello" } }] })
     const result = await api.getPullRequestComments()
 
     expect(api.fetch).toHaveBeenCalledWith(
-      "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/activity",
+      "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments",
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
     // should filtered out item that doesn't contain comment
-    expect(result).toEqual([{}])
+    expect(result).toEqual([{ content: { raw: "Hello" } }])
   })
 
   it("getPullRequestActivities", async () => {
@@ -138,28 +138,21 @@ describe("API testing - BitBucket Cloud", () => {
       isLastPage: true,
       values: [
         {
-          comment: {
-            content: {
-              raw: `FAIL! danger-id-1; ${dangerSignaturePostfix({} as DangerResults, commitID)}`,
-            },
-            user: {
-              display_name: "name",
-              uuid: "{1234-1234-1234-1234}",
-            },
+          content: {
+            raw: `FAIL! danger-id-1; ${dangerSignaturePostfix({} as DangerResults, commitID)}`,
+          },
+          user: {
+            display_name: "name",
+            uuid: "{1234-1234-1234-1234}",
           },
         },
         {
-          comment: null,
-        },
-        {
-          comment: {
-            content: {
-              raw: "not a danger comment",
-            },
-            user: {
-              display_name: "someone",
-              uuid: "{1234-1234-1234-1235}",
-            },
+          content: {
+            raw: "not a danger comment",
+          },
+          user: {
+            display_name: "someone",
+            uuid: "{1234-1234-1234-1235}",
           },
         },
       ],
@@ -167,7 +160,7 @@ describe("API testing - BitBucket Cloud", () => {
     const result = await api.getDangerComments("1")
 
     expect(api.fetch).toHaveBeenCalledWith(
-      "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/activity",
+      "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments",
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
@@ -207,7 +200,11 @@ describe("API testing - BitBucket Cloud", () => {
 
     expect(api.fetch).toHaveBeenCalledWith(
       `https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments`,
-      { method: "POST", body: JSON.stringify({ content: { raw: comment } }), headers: expectedJSONHeaders },
+      {
+        method: "POST",
+        body: JSON.stringify({ content: { raw: comment, markup: "markdown" } }),
+        headers: expectedJSONHeaders,
+      },
       undefined
     )
   })
@@ -271,7 +268,7 @@ describe("API testing - BitBucket Cloud", () => {
       `https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments/1`,
       {
         method: "PUT",
-        body: JSON.stringify({ content: { raw: "Hello!" } }),
+        body: JSON.stringify({ content: { raw: "Hello!", markup: "markdown" } }),
         headers: expectedJSONHeaders,
       },
       undefined

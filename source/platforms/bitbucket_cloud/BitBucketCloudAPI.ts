@@ -126,13 +126,24 @@ export class BitBucketCloudAPI {
     return res.ok ? res.text() : ""
   }
 
-  getPullRequestComments = async (activities?: BitBucketCloudPRActivity[]): Promise<BitBucketCloudPRComment[]> => {
-    if (activities == null) {
-      activities = await this.getPullRequestActivities()
-    }
-    return activities
-      .map(activity => activity.comment)
-      .filter((comment): comment is BitBucketCloudPRComment => comment != null)
+  getPullRequestComments = async (): Promise<BitBucketCloudPRComment[]> => {
+    let values: BitBucketCloudPRComment[] = []
+
+    // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/comments
+    let nextPageURL: string | undefined = `${this.getPRURL()}/comments`
+
+    do {
+      const res = await this.get(nextPageURL)
+      throwIfNotOk(res)
+
+      const data = (await res.json()) as BitBucketCloudPagedResponse<BitBucketCloudPRComment>
+
+      values = values.concat(data.values)
+
+      nextPageURL = data.next
+    } while (nextPageURL != null)
+
+    return values
   }
 
   getPullRequestActivities = async (): Promise<BitBucketCloudPRActivity[]> => {

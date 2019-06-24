@@ -48,8 +48,8 @@ export class BitBucketCloud implements Platform {
     }
 
     const commits = await this.api.getPullRequestCommits()
+    const comments = await this.api.getPullRequestComments()
     const activities = await this.api.getPullRequestActivities()
-    const comments = await this.api.getPullRequestComments(activities)
     return {
       metadata: this.api.repoMetadata,
       pr,
