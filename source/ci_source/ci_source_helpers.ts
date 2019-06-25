@@ -62,7 +62,7 @@ export async function getPullRequestIDForBranch(metadata: RepoMetaData, env: Env
     }
     return 0
   }
-  if (process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
+  if (process.env["DANGER_BITBUCKETCLOUD_UUID"]) {
     const api = new BitBucketCloudAPI(metadata, bitbucketCloudCredentialsFromEnv(env))
     const prs = await api.getPullRequestsFromBranch(branch)
     if (prs.length) {

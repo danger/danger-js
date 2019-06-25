@@ -369,7 +369,7 @@ function throwIfNotOk(res: node_fetch.Response) {
   if (!res.ok) {
     let message = `${res.status} - ${res.statusText}`
     if (res.status >= 400 && res.status < 500) {
-      message += ` (Have you set DANGER_BITBUCKETCLOUD_USERNAME and DANGER_BITBUCKETCLOUD_PASSWORD?)`
+      message += ` (Have you set DANGER_BITBUCKETCLOUD_USERNAME or DANGER_BITBUCKETCLOUD_OAUTH_KEY?)`
     }
     throw new Error(message)
   }

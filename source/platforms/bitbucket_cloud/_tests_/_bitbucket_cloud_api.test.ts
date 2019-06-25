@@ -28,6 +28,7 @@ describe("API testing - BitBucket Cloud", () => {
     const api = new BitBucketCloudAPI(
       { repoSlug: "foo/bar", pullRequestID: "1" },
       {
+        type: "PASSWORD",
         username,
         password,
         uuid,

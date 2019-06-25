@@ -40,7 +40,7 @@ program
     if (
       !process.env["DANGER_GITHUB_API_TOKEN"] &&
       !process.env["DANGER_BITBUCKETSERVER_HOST"] &&
-      !process.env["DANGER_BITBUCKETCLOUD_USERNAME"] &&
+      !process.env["DANGER_BITBUCKETCLOUD_UUID"] &&
       !gitLabApiCredentials.token
     ) {
       log("")
