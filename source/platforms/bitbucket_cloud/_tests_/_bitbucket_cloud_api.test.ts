@@ -1,6 +1,4 @@
 import { BitBucketCloudAPI } from "../BitBucketCloudAPI"
-
-// try with bitbucketServerTemplate
 import { dangerSignaturePostfix } from "../../../runner/templates/bitbucketCloudTemplate"
 import { DangerResults } from "../../../dsl/DangerResults"
 

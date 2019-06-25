@@ -4,7 +4,7 @@ import { Agent } from "http"
 import HttpsProxyAgent from "https-proxy-agent"
 
 import { Env } from "../../ci_source/ci_source"
-import { dangerIDToString } from "../../runner/templates/bitbucketServerTemplate"
+import { dangerIDToString } from "../../runner/templates/bitbucketCloudTemplate"
 import { api as fetch } from "../../api/fetch"
 import {
   BitBucketCloudPagedResponse,
@@ -47,7 +47,7 @@ export function bitbucketCloudCredentialsFromEnv(env: Env): BitBucketCloudCreden
 
 export class BitBucketCloudAPI {
   fetch: typeof fetch
-  private readonly d = debug("BitBucketServerAPI")
+  private readonly d = debug("BitBucketCloudAPI")
   private pr: BitBucketCloudPRDSL | undefined
   private baseURL = "https://api.bitbucket.org/2.0"
 

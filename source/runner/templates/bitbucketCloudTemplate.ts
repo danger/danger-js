@@ -1,7 +1,7 @@
 import { DangerResults } from "../../dsl/DangerResults"
 import { Violation } from "../../dsl/Violation"
 
-// This unicode emojis also work for old versions of bitbucket server, were emojis are not supported
+// BitBucket Cloud supports these emojis 🎉
 const noEntryEmoji = "❌"
 const warningEmoji = "⚠️"
 const messageEmoji = "✨"

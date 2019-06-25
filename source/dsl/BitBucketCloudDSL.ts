@@ -101,7 +101,7 @@ export interface BitBucketCloudUser {
   account_id: string
 }
 
-/** A BitBucketServer specific implementation of a git commit. */
+/** A BitBucketCloud specific implementation of a git commit. */
 export interface BitBucketCloudCommit {
   /** The SHA for the commit */
   hash: string
