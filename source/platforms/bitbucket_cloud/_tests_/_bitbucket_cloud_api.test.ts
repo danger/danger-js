@@ -110,7 +110,7 @@ describe("API testing - BitBucket Cloud", () => {
     const result = await api.getPullRequestComments()
 
     expect(api.fetch).toHaveBeenCalledWith(
-      "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments",
+      "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments?q=deleted=false",
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
@@ -140,7 +140,7 @@ describe("API testing - BitBucket Cloud", () => {
     })
     const comments = await api.getDangerInlineComments("1")
     expect(api.fetch).toHaveBeenCalledWith(
-      "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments",
+      "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments?q=deleted=false",
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
@@ -188,7 +188,7 @@ describe("API testing - BitBucket Cloud", () => {
     const result = await api.getDangerComments("1")
 
     expect(api.fetch).toHaveBeenCalledWith(
-      "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments",
+      "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments?q=deleted=false",
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
     )
