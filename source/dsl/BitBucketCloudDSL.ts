@@ -1,4 +1,5 @@
-import { RepoMetaData as BitBucketServerRepoMetaData } from "./BitBucketServerDSL"
+// TODO: extract out from BitBucket specifically, or create our own type
+import { RepoMetaData } from "../dsl/BitBucketServerDSL"
 
 export interface BitBucketCloudJSONDSL {
   /** The pull request and repository metadata */
@@ -84,8 +85,6 @@ export interface BitBucketCloudRepo {
   full_name: string
   uuid: string
 }
-
-export type RepoMetaData = BitBucketServerRepoMetaData
 
 export interface BitBucketCloudUser {
   /** The uuid of the commit author */
