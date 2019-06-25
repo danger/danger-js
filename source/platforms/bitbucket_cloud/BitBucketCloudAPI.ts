@@ -1,8 +1,8 @@
 import { debug } from "../../debug"
 import * as node_fetch from "node-fetch"
-import FormData from "form-data"
 import { Agent } from "http"
 import HttpsProxyAgent from "https-proxy-agent"
+import { URLSearchParams } from "url"
 
 import { Env } from "../../ci_source/ci_source"
 import { dangerIDToString } from "../../runner/templates/bitbucketCloudTemplate"
@@ -66,11 +66,12 @@ export function bitbucketCloudCredentialsFromEnv(env: Env): BitBucketCloudCreden
 
 export class BitBucketCloudAPI {
   fetch: typeof fetch
+  accessToken: string | undefined
+
   private readonly d = debug("BitBucketCloudAPI")
   private pr: BitBucketCloudPRDSL | undefined
   private baseURL = "https://api.bitbucket.org/2.0"
   private oauthURL = "https://bitbucket.org/site/oauth2/access_token"
-  private accessToken: string | undefined
 
   constructor(public readonly repoMetadata: RepoMetaData, public readonly credentials: BitBucketCloudCredentials) {
     // This allows Peril to DI in a new Fetch function
@@ -304,14 +305,23 @@ export class BitBucketCloudAPI {
       ).toString("base64")}`
     } else {
       if (this.accessToken == null) {
-        headers["Authorization"] = `Basic ${new Buffer(
-          this.credentials.oauthKey + ":" + this.credentials.oauthSecret
-        ).toString("base64")}`
+        const params = new URLSearchParams()
 
-        let formData = new FormData()
-        formData.append("grant_type", "client_credentials")
+        params.append("grant_type", "client_credentials")
 
-        const authResponse = await this.performAPI(this.oauthURL, headers, formData, "POST", suppressErrors)
+        const authResponse = await this.performAPI(
+          this.oauthURL,
+          {
+            ...headers,
+            Authorization: `Basic ${new Buffer(this.credentials.oauthKey + ":" + this.credentials.oauthSecret).toString(
+              "base64"
+            )}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          params,
+          "POST",
+          suppressErrors
+        )
         if (authResponse.ok) {
           const jsonResp = await authResponse.json()
           this.accessToken = jsonResp["access_token"]
