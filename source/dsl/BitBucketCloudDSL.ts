@@ -69,7 +69,7 @@ export type BitBucketCloudLinks<Names extends string> = {
 }
 
 export interface BitBucketCloudPRParticipant {
-  /*The user for  */
+  /*The user who participated in this PR  */
   user: BitBucketCloudUser
 
   /** How did they contribute */
