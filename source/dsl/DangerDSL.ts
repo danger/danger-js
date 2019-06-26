@@ -6,6 +6,7 @@ import { BitBucketServerDSL, BitBucketServerJSONDSL } from "../dsl/BitBucketServ
 import { DangerUtilsDSL } from "./DangerUtilsDSL"
 import { CliArgs } from "../dsl/cli-args"
 import { GitLabDSL } from "./GitLabDSL"
+import { BitBucketCloudJSONDSL, BitBucketCloudDSL } from "./BitBucketCloudDSL"
 
 /**
  * The shape of the JSON passed between Danger and a subprocess. It's built
@@ -58,6 +59,8 @@ export interface DangerDSLJSONType {
   github?: GitHubDSL
   /** The data only version of BitBucket Server DSL */
   bitbucket_server?: BitBucketServerJSONDSL
+  /** The data only version of BitBucket Cloud DSL */
+  bitbucket_cloud?: BitBucketCloudJSONDSL
   /** The data only version of GitLab DSL */
   gitlab?: GitLabDSL
   /**
@@ -128,6 +131,15 @@ export interface DangerDSLType {
    */
   readonly bitbucket_server: BitBucketServerDSL
 
+  /**
+   *  The BitBucket Cloud metadata. This covers things like PR info,
+   *  comments and reviews on the PR, commits, comments, and activities.
+   *
+   *  Strictly speaking, `bitbucket_cloud` is a nullable type, if you are not using
+   *  BitBucket Cloud then it will be undefined. For the DSL convenience sake though, it
+   *  is classed as non-nullable
+   */
+  readonly bitbucket_cloud: BitBucketCloudDSL
   /**
    * The GitLab metadata. This covers things like PR info,
    * comments and reviews on the MR, commits, comments

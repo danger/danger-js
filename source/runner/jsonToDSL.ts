@@ -11,12 +11,14 @@ import {
   BitBucketServerAPI,
   bitbucketServerRepoCredentialsFromEnv,
 } from "../platforms/bitbucket_server/BitBucketServerAPI"
+import { BitBucketCloudAPI, bitbucketCloudCredentialsFromEnv } from "../platforms/bitbucket_cloud/BitBucketCloudAPI"
 import { CISource } from "../ci_source/ci_source"
 
 import { debug } from "../debug"
 import { gitlabJSONToGitLabDSL } from "../platforms/GitLab"
 import GitLabAPI, { getGitLabAPICredentialsFromEnv } from "../platforms/gitlab/GitLabAPI"
 import { gitLabGitDSL } from "../platforms/gitlab/GitLabGit"
+import { bitBucketCloudGitDSL } from "../platforms/bitbucket_cloud/BitBucketCloudGit"
 const d = debug("jsonToDSL")
 
 /**
@@ -27,9 +29,10 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
   d(`Creating ${source && source.useEventDSL ? "event" : "pr"} DSL from JSON`)
 
   const api = apiForDSL(dsl)
-  const platformExists = [dsl.github, dsl.bitbucket_server, dsl.gitlab].some(p => !!p)
+  const platformExists = [dsl.github, dsl.bitbucket_server, dsl.gitlab, dsl.bitbucket_cloud].some(p => !!p)
   const github = dsl.github && githubJSONToGitHubDSL(dsl.github, api as OctoKit)
   const bitbucket_server = dsl.bitbucket_server
+  const bitbucket_cloud = dsl.bitbucket_cloud
   const gitlab = dsl.gitlab && gitlabJSONToGitLabDSL(dsl.gitlab, api as GitLabAPI)
 
   let git: GitDSL
@@ -38,6 +41,8 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
     git = await localPlatform.getPlatformGitRepresentation()
   } else if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
     git = bitBucketServerGitDSL(bitbucket_server!, dsl.git, api as BitBucketServerAPI)
+  } else if (process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
+    git = bitBucketCloudGitDSL(bitbucket_cloud!, dsl.git, api as BitBucketCloudAPI)
   } else if (process.env["DANGER_GITLAB_API_TOKEN"]) {
     git = gitLabGitDSL(gitlab!, dsl.git)
   } else {
@@ -51,6 +56,7 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
     // which just doesn't feel right.
     github: github!,
     bitbucket_server: bitbucket_server!,
+    bitbucket_cloud: bitbucket_cloud!,
     gitlab: gitlab!,
     utils: {
       sentence,
@@ -59,9 +65,13 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
   }
 }
 
-const apiForDSL = (dsl: DangerDSLJSONType): OctoKit | BitBucketServerAPI | GitLabAPI => {
+const apiForDSL = (dsl: DangerDSLJSONType): OctoKit | BitBucketServerAPI | GitLabAPI | BitBucketCloudAPI => {
   if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
     return new BitBucketServerAPI(dsl.bitbucket_server!.metadata, bitbucketServerRepoCredentialsFromEnv(process.env))
+  }
+
+  if (process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
+    return new BitBucketCloudAPI(dsl.bitbucket_cloud!.metadata, bitbucketCloudCredentialsFromEnv(process.env))
   }
 
   const gitlab = dsl.gitlab

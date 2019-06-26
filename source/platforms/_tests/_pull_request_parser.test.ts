@@ -109,4 +109,40 @@ describe("parsing urls", () => {
       })
     })
   })
+
+  describe("Bitbucket Cloud", () => {
+    it("handles PRs", () => {
+      expect(pullRequestParser("https://bitbucket.org/project/repo/pull-requests/1")).toEqual({
+        pullRequestNumber: "1",
+        repo: "project/repo",
+        platform: "BitBucketCloud",
+      })
+    })
+
+    it("handles PRs (overview)", () => {
+      expect(pullRequestParser("https://bitbucket.org/project/repo/pull-requests/1/overview")).toEqual({
+        pullRequestNumber: "1",
+        repo: "project/repo",
+        platform: "BitBucketCloud",
+      })
+    })
+
+    it("handles PRs (overview) with dashes in name", () => {
+      expect(pullRequestParser("https://bitbucket.org/project/super-repo/pull-requests/1/overview")).toEqual({
+        pullRequestNumber: "1",
+        repo: "project/super-repo",
+        platform: "BitBucketCloud",
+      })
+    })
+
+    it("handles PRs (overview) with dashes in name", () => {
+      expect(
+        pullRequestParser("https://bitbucket.org/project/super-strong.repo_name/pull-requests/1/overview")
+      ).toEqual({
+        pullRequestNumber: "1",
+        repo: "project/super-strong.repo_name",
+        platform: "BitBucketCloud",
+      })
+    })
+  })
 })

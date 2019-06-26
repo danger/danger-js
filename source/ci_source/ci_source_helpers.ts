@@ -7,6 +7,7 @@ import {
   bitbucketServerRepoCredentialsFromEnv,
 } from "../platforms/bitbucket_server/BitBucketServerAPI"
 import { RepoMetaData } from "../dsl/BitBucketServerDSL"
+import { BitBucketCloudAPI, bitbucketCloudCredentialsFromEnv } from "../platforms/bitbucket_cloud/BitBucketCloudAPI"
 
 /**
  * Validates that all ENV keys exist and have a length
@@ -55,6 +56,14 @@ export function ensureEnvKeysAreInt(env: Env, keys: string[]): boolean {
 export async function getPullRequestIDForBranch(metadata: RepoMetaData, env: Env, branch: string): Promise<number> {
   if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
     const api = new BitBucketServerAPI(metadata, bitbucketServerRepoCredentialsFromEnv(env))
+    const prs = await api.getPullRequestsFromBranch(branch)
+    if (prs.length) {
+      return prs[0].id
+    }
+    return 0
+  }
+  if (process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
+    const api = new BitBucketCloudAPI(metadata, bitbucketCloudCredentialsFromEnv(env))
     const prs = await api.getPullRequestsFromBranch(branch)
     if (prs.length) {
       return prs[0].id

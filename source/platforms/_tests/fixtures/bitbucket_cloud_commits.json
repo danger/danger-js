@@ -1,0 +1,823 @@
+[
+  {
+    "hash": "7f73207cea935b2fd07a76028484c20eb18422ba",
+    "repository": {
+      "links": {
+        "self": { "href": "https://api.bitbucket.org/2.0/repositories/foo/bar" },
+        "html": { "href": "https://bitbucket.org/foo/bar" },
+        "avatar": { "href": "https://bytebucket.org/ravatar/%7Bf6c37714-cfda-4298-aadb-08997b3eec24%7D?ts=default" }
+      },
+      "type": "repository",
+      "name": "foobar",
+      "full_name": "foo/bar",
+      "uuid": "{f6c37714-cfda-4298-aadb-08997b3eec24}"
+    },
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/7f73207cea935b2fd07a76028484c20eb18422ba"
+      },
+      "comments": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/7f73207cea935b2fd07a76028484c20eb18422ba/comments"
+      },
+      "html": {
+        "href": "https://bitbucket.org/foo/bar/commits/7f73207cea935b2fd07a76028484c20eb18422ba"
+      },
+      "diff": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/diff/7f73207cea935b2fd07a76028484c20eb18422ba"
+      },
+      "approve": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/7f73207cea935b2fd07a76028484c20eb18422ba/approve"
+      },
+      "statuses": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/7f73207cea935b2fd07a76028484c20eb18422ba/statuses"
+      }
+    },
+    "author": {
+      "raw": "Hello Core <foo@bar.com>",
+      "type": "author",
+      "user": {
+        "display_name": "Hello Core",
+        "uuid": "{b582acac-f1c1-47a8-a29b-e4c01c5274ab}",
+        "links": {
+          "self": { "href": "https://api.bitbucket.org/2.0/users/%7Bb582acac-f1c1-47a8-a29b-e4c01c5274ab%7D" },
+          "html": { "href": "https://bitbucket.org/%7Bb582acac-f1c1-47a8-a29b-e4c01c5274ab%7D/" },
+          "avatar": {
+            "href": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5b3b3d9c50b3772e6bbda9f8/1a7a3e0f-84d7-4948-b107-77b744b4d1c6/128"
+          }
+        },
+        "nickname": "Hello Core",
+        "type": "user",
+        "account_id": "5b3b3d9c50b3772e6bbda9f8"
+      }
+    },
+    "summary": {
+      "raw": "Merged in develop (pull request #174)\n\nDevelop to SIT\n\nApproved-by: Hello Core <foo@bar.com>\n",
+      "markup": "markdown",
+      "html": "<p>Merged in develop (<a href=\"https://api.bitbucket.org/foo/bar/pull-requests/174/develop-to-sit\" rel=\"nofollow\" class=\"ap-connect-link\">pull request #174</a>)</p>\n<p>Develop to SIT</p>\n<p>Approved-by: Hello Core <a href=\"/foo/bar/src/03ac2e2bbf14ea8c6cc40742e9db13e15cdda1b3/&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#98;&#101;&#110;&#122;&#64;&#97;&#112;&#112;&#115;&#121;&#110;&#116;&#104;&#46;&#110;&#101;&#116;\">&#98;&#101;&#110;&#122;&#64;&#97;&#112;&#112;&#115;&#121;&#110;&#116;&#104;&#46;&#110;&#101;&#116;</a></p>",
+      "type": "rendered"
+    },
+    "parents": [
+      {
+        "hash": "77fdf99fcc08dce8bd49c9aedfc7442f2bd40bde",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/77fdf99fcc08dce8bd49c9aedfc7442f2bd40bde"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/77fdf99fcc08dce8bd49c9aedfc7442f2bd40bde"
+          }
+        }
+      },
+      {
+        "hash": "a584f1256b8522cfce4ccc33dfbf157590a6044d",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/a584f1256b8522cfce4ccc33dfbf157590a6044d"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/a584f1256b8522cfce4ccc33dfbf157590a6044d"
+          }
+        }
+      }
+    ],
+    "date": "2019-05-13T13:24:53+00:00",
+    "message": "Merged in develop (pull request #174)\n\nDevelop to SIT\n\nApproved-by: Hello Core <foo@bar.com>\n",
+    "type": "commit"
+  },
+  {
+    "hash": "a584f1256b8522cfce4ccc33dfbf157590a6044d",
+    "repository": {
+      "links": {
+        "self": { "href": "https://api.bitbucket.org/2.0/repositories/foo/bar" },
+        "html": { "href": "https://bitbucket.org/foo/bar" },
+        "avatar": { "href": "https://bytebucket.org/ravatar/%7Bf6c37714-cfda-4298-aadb-08997b3eec24%7D?ts=default" }
+      },
+      "type": "repository",
+      "name": "foobar",
+      "full_name": "foo/bar",
+      "uuid": "{f6c37714-cfda-4298-aadb-08997b3eec24}"
+    },
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/a584f1256b8522cfce4ccc33dfbf157590a6044d"
+      },
+      "comments": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/a584f1256b8522cfce4ccc33dfbf157590a6044d/comments"
+      },
+      "html": {
+        "href": "https://bitbucket.org/foo/bar/commits/a584f1256b8522cfce4ccc33dfbf157590a6044d"
+      },
+      "diff": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/diff/a584f1256b8522cfce4ccc33dfbf157590a6044d"
+      },
+      "approve": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/a584f1256b8522cfce4ccc33dfbf157590a6044d/approve"
+      },
+      "statuses": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/a584f1256b8522cfce4ccc33dfbf157590a6044d/statuses"
+      }
+    },
+    "author": {
+      "raw": "Hello Core <foo@bar.com>",
+      "type": "author",
+      "user": {
+        "display_name": "Hello Core",
+        "uuid": "{b582acac-f1c1-47a8-a29b-e4c01c5274ab}",
+        "links": {
+          "self": { "href": "https://api.bitbucket.org/2.0/users/%7Bb582acac-f1c1-47a8-a29b-e4c01c5274ab%7D" },
+          "html": { "href": "https://bitbucket.org/%7Bb582acac-f1c1-47a8-a29b-e4c01c5274ab%7D/" },
+          "avatar": {
+            "href": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5b3b3d9c50b3772e6bbda9f8/1a7a3e0f-84d7-4948-b107-77b744b4d1c6/128"
+          }
+        },
+        "nickname": "Hello Core",
+        "type": "user",
+        "account_id": "5b3b3d9c50b3772e6bbda9f8"
+      }
+    },
+    "summary": {
+      "raw": "Merged in fix/temp-change-url (pull request #175)\n\nUpdate URL SIT\n\nApproved-by: Hello Core <foo@bar.com>\n",
+      "markup": "markdown",
+      "html": "<p>Merged in fix/temp-change-url (<a href=\"https://api.bitbucket.org/foo/bar/pull-requests/175/update-url-sit\" rel=\"nofollow\" class=\"ap-connect-link\">pull request #175</a>)</p>\n<p>Update URL SIT</p>\n<p>Approved-by: Hello Core <a href=\"/foo/bar/src/03ac2e2bbf14ea8c6cc40742e9db13e15cdda1b3/&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#98;&#101;&#110;&#122;&#64;&#97;&#112;&#112;&#115;&#121;&#110;&#116;&#104;&#46;&#110;&#101;&#116;\">&#98;&#101;&#110;&#122;&#64;&#97;&#112;&#112;&#115;&#121;&#110;&#116;&#104;&#46;&#110;&#101;&#116;</a></p>",
+      "type": "rendered"
+    },
+    "parents": [
+      {
+        "hash": "afccc4576bacac2aa0b7190d339cff600cb15b27",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/afccc4576bacac2aa0b7190d339cff600cb15b27"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/afccc4576bacac2aa0b7190d339cff600cb15b27"
+          }
+        }
+      },
+      {
+        "hash": "cc41166d1886d0c12e4def6381b77cd346de8c5d",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/cc41166d1886d0c12e4def6381b77cd346de8c5d"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/cc41166d1886d0c12e4def6381b77cd346de8c5d"
+          }
+        }
+      }
+    ],
+    "date": "2019-05-13T13:23:12+00:00",
+    "message": "Merged in fix/temp-change-url (pull request #175)\n\nUpdate URL SIT\n\nApproved-by: Hello Core <foo@bar.com>\n",
+    "type": "commit"
+  },
+  {
+    "hash": "cc41166d1886d0c12e4def6381b77cd346de8c5d",
+    "repository": {
+      "links": {
+        "self": { "href": "https://api.bitbucket.org/2.0/repositories/foo/bar" },
+        "html": { "href": "https://bitbucket.org/foo/bar" },
+        "avatar": { "href": "https://bytebucket.org/ravatar/%7Bf6c37714-cfda-4298-aadb-08997b3eec24%7D?ts=default" }
+      },
+      "type": "repository",
+      "name": "foobar",
+      "full_name": "foo/bar",
+      "uuid": "{f6c37714-cfda-4298-aadb-08997b3eec24}"
+    },
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/cc41166d1886d0c12e4def6381b77cd346de8c5d"
+      },
+      "comments": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/cc41166d1886d0c12e4def6381b77cd346de8c5d/comments"
+      },
+      "patch": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/patch/cc41166d1886d0c12e4def6381b77cd346de8c5d"
+      },
+      "html": {
+        "href": "https://bitbucket.org/foo/bar/commits/cc41166d1886d0c12e4def6381b77cd346de8c5d"
+      },
+      "diff": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/diff/cc41166d1886d0c12e4def6381b77cd346de8c5d"
+      },
+      "approve": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/cc41166d1886d0c12e4def6381b77cd346de8c5d/approve"
+      },
+      "statuses": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/cc41166d1886d0c12e4def6381b77cd346de8c5d/statuses"
+      }
+    },
+    "author": {
+      "raw": "Hello <hello@abc.com>",
+      "type": "author",
+      "user": {
+        "display_name": "Hello Core",
+        "uuid": "{7bf8c493-5282-4ea0-937c-d6989fa6c0d0}",
+        "links": {
+          "self": { "href": "https://api.bitbucket.org/2.0/users/%7B7bf8c493-5282-4ea0-937c-d6989fa6c0d0%7D" },
+          "html": { "href": "https://bitbucket.org/%7B7bf8c493-5282-4ea0-937c-d6989fa6c0d0%7D/" },
+          "avatar": {
+            "href": "https://avatar-cdn.atlassian.com/557058%3Aca17e329-f533-4ec0-97d8-9593594f436e?by=id&sg=nfPWnKBLfE%2BzwHFEsgrLMaGywjw%3D&d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAC-4.png"
+          }
+        },
+        "nickname": "Core00",
+        "type": "user",
+        "account_id": "557058:ca17e329-f533-4ec0-97d8-9593594f436e"
+      }
+    },
+    "summary": {
+      "raw": "Update URL SIT\n",
+      "markup": "markdown",
+      "html": "<p>Update URL SIT</p>",
+      "type": "rendered"
+    },
+    "parents": [
+      {
+        "hash": "1bf44b3fa31eca7efc68c5d880a9a4d18a2cef71",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/1bf44b3fa31eca7efc68c5d880a9a4d18a2cef71"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/1bf44b3fa31eca7efc68c5d880a9a4d18a2cef71"
+          }
+        }
+      }
+    ],
+    "date": "2019-05-13T13:16:22+00:00",
+    "message": "Update URL SIT\n",
+    "type": "commit"
+  },
+  {
+    "hash": "afccc4576bacac2aa0b7190d339cff600cb15b27",
+    "repository": {
+      "links": {
+        "self": { "href": "https://api.bitbucket.org/2.0/repositories/foo/bar" },
+        "html": { "href": "https://bitbucket.org/foo/bar" },
+        "avatar": { "href": "https://bytebucket.org/ravatar/%7Bf6c37714-cfda-4298-aadb-08997b3eec24%7D?ts=default" }
+      },
+      "type": "repository",
+      "name": "foobar",
+      "full_name": "foo/bar",
+      "uuid": "{f6c37714-cfda-4298-aadb-08997b3eec24}"
+    },
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/afccc4576bacac2aa0b7190d339cff600cb15b27"
+      },
+      "comments": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/afccc4576bacac2aa0b7190d339cff600cb15b27/comments"
+      },
+      "html": {
+        "href": "https://bitbucket.org/foo/bar/commits/afccc4576bacac2aa0b7190d339cff600cb15b27"
+      },
+      "diff": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/diff/afccc4576bacac2aa0b7190d339cff600cb15b27"
+      },
+      "approve": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/afccc4576bacac2aa0b7190d339cff600cb15b27/approve"
+      },
+      "statuses": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/afccc4576bacac2aa0b7190d339cff600cb15b27/statuses"
+      }
+    },
+    "author": {
+      "raw": "Hello Core <foo@bar.com>",
+      "type": "author",
+      "user": {
+        "display_name": "Hello Core",
+        "uuid": "{b582acac-f1c1-47a8-a29b-e4c01c5274ab}",
+        "links": {
+          "self": { "href": "https://api.bitbucket.org/2.0/users/%7Bb582acac-f1c1-47a8-a29b-e4c01c5274ab%7D" },
+          "html": { "href": "https://bitbucket.org/%7Bb582acac-f1c1-47a8-a29b-e4c01c5274ab%7D/" },
+          "avatar": {
+            "href": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5b3b3d9c50b3772e6bbda9f8/1a7a3e0f-84d7-4948-b107-77b744b4d1c6/128"
+          }
+        },
+        "nickname": "Hello Core",
+        "type": "user",
+        "account_id": "5b3b3d9c50b3772e6bbda9f8"
+      }
+    },
+    "summary": {
+      "raw": "Merged in fix/temp-change-url (pull request #173)\n\nFix/temp change url\n\nApproved-by: Hello Core <foo@bar.com>\n",
+      "markup": "markdown",
+      "html": "<p>Merged in fix/temp-change-url (<a href=\"https://api.bitbucket.org/foo/bar/pull-requests/173/fix-temp-change-url\" rel=\"nofollow\" class=\"ap-connect-link\">pull request #173</a>)</p>\n<p>Fix/temp change url</p>\n<p>Approved-by: Hello Core <a href=\"/foo/bar/src/03ac2e2bbf14ea8c6cc40742e9db13e15cdda1b3/&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#98;&#101;&#110;&#122;&#64;&#97;&#112;&#112;&#115;&#121;&#110;&#116;&#104;&#46;&#110;&#101;&#116;\">&#98;&#101;&#110;&#122;&#64;&#97;&#112;&#112;&#115;&#121;&#110;&#116;&#104;&#46;&#110;&#101;&#116;</a></p>",
+      "type": "rendered"
+    },
+    "parents": [
+      {
+        "hash": "097d11d21257881ba71157392dfa0f5bf094dc9f",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/097d11d21257881ba71157392dfa0f5bf094dc9f"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/097d11d21257881ba71157392dfa0f5bf094dc9f"
+          }
+        }
+      },
+      {
+        "hash": "1bf44b3fa31eca7efc68c5d880a9a4d18a2cef71",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/1bf44b3fa31eca7efc68c5d880a9a4d18a2cef71"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/1bf44b3fa31eca7efc68c5d880a9a4d18a2cef71"
+          }
+        }
+      }
+    ],
+    "date": "2019-05-13T13:09:42+00:00",
+    "message": "Merged in fix/temp-change-url (pull request #173)\n\nFix/temp change url\n\nApproved-by: Hello Core <foo@bar.com>\n",
+    "type": "commit"
+  },
+  {
+    "hash": "1bf44b3fa31eca7efc68c5d880a9a4d18a2cef71",
+    "repository": {
+      "links": {
+        "self": { "href": "https://api.bitbucket.org/2.0/repositories/foo/bar" },
+        "html": { "href": "https://bitbucket.org/foo/bar" },
+        "avatar": { "href": "https://bytebucket.org/ravatar/%7Bf6c37714-cfda-4298-aadb-08997b3eec24%7D?ts=default" }
+      },
+      "type": "repository",
+      "name": "foobar",
+      "full_name": "foo/bar",
+      "uuid": "{f6c37714-cfda-4298-aadb-08997b3eec24}"
+    },
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/1bf44b3fa31eca7efc68c5d880a9a4d18a2cef71"
+      },
+      "comments": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/1bf44b3fa31eca7efc68c5d880a9a4d18a2cef71/comments"
+      },
+      "patch": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/patch/1bf44b3fa31eca7efc68c5d880a9a4d18a2cef71"
+      },
+      "html": {
+        "href": "https://bitbucket.org/foo/bar/commits/1bf44b3fa31eca7efc68c5d880a9a4d18a2cef71"
+      },
+      "diff": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/diff/1bf44b3fa31eca7efc68c5d880a9a4d18a2cef71"
+      },
+      "approve": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/1bf44b3fa31eca7efc68c5d880a9a4d18a2cef71/approve"
+      },
+      "statuses": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/1bf44b3fa31eca7efc68c5d880a9a4d18a2cef71/statuses"
+      }
+    },
+    "author": {
+      "raw": "Hello <hello@abc.com>",
+      "type": "author",
+      "user": {
+        "display_name": "Hello Core",
+        "uuid": "{7bf8c493-5282-4ea0-937c-d6989fa6c0d0}",
+        "links": {
+          "self": { "href": "https://api.bitbucket.org/2.0/users/%7B7bf8c493-5282-4ea0-937c-d6989fa6c0d0%7D" },
+          "html": { "href": "https://bitbucket.org/%7B7bf8c493-5282-4ea0-937c-d6989fa6c0d0%7D/" },
+          "avatar": {
+            "href": "https://avatar-cdn.atlassian.com/557058%3Aca17e329-f533-4ec0-97d8-9593594f436e?by=id&sg=nfPWnKBLfE%2BzwHFEsgrLMaGywjw%3D&d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAC-4.png"
+          }
+        },
+        "nickname": "Core00",
+        "type": "user",
+        "account_id": "557058:ca17e329-f533-4ec0-97d8-9593594f436e"
+      }
+    },
+    "summary": {
+      "raw": "Change appConfig Model\n",
+      "markup": "markdown",
+      "html": "<p>Change appConfig Model</p>",
+      "type": "rendered"
+    },
+    "parents": [
+      {
+        "hash": "f1646c2a029da975d69524a723771450f4e780cd",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/f1646c2a029da975d69524a723771450f4e780cd"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/f1646c2a029da975d69524a723771450f4e780cd"
+          }
+        }
+      }
+    ],
+    "date": "2019-05-13T13:07:12+00:00",
+    "message": "Change appConfig Model\n",
+    "type": "commit"
+  },
+  {
+    "hash": "f1646c2a029da975d69524a723771450f4e780cd",
+    "repository": {
+      "links": {
+        "self": { "href": "https://api.bitbucket.org/2.0/repositories/foo/bar" },
+        "html": { "href": "https://bitbucket.org/foo/bar" },
+        "avatar": { "href": "https://bytebucket.org/ravatar/%7Bf6c37714-cfda-4298-aadb-08997b3eec24%7D?ts=default" }
+      },
+      "type": "repository",
+      "name": "foobar",
+      "full_name": "foo/bar",
+      "uuid": "{f6c37714-cfda-4298-aadb-08997b3eec24}"
+    },
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/f1646c2a029da975d69524a723771450f4e780cd"
+      },
+      "comments": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/f1646c2a029da975d69524a723771450f4e780cd/comments"
+      },
+      "patch": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/patch/f1646c2a029da975d69524a723771450f4e780cd"
+      },
+      "html": {
+        "href": "https://bitbucket.org/foo/bar/commits/f1646c2a029da975d69524a723771450f4e780cd"
+      },
+      "diff": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/diff/f1646c2a029da975d69524a723771450f4e780cd"
+      },
+      "approve": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/f1646c2a029da975d69524a723771450f4e780cd/approve"
+      },
+      "statuses": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/f1646c2a029da975d69524a723771450f4e780cd/statuses"
+      }
+    },
+    "author": {
+      "raw": "Hello <hello@abc.com>",
+      "type": "author",
+      "user": {
+        "display_name": "Hello Core",
+        "uuid": "{7bf8c493-5282-4ea0-937c-d6989fa6c0d0}",
+        "links": {
+          "self": { "href": "https://api.bitbucket.org/2.0/users/%7B7bf8c493-5282-4ea0-937c-d6989fa6c0d0%7D" },
+          "html": { "href": "https://bitbucket.org/%7B7bf8c493-5282-4ea0-937c-d6989fa6c0d0%7D/" },
+          "avatar": {
+            "href": "https://avatar-cdn.atlassian.com/557058%3Aca17e329-f533-4ec0-97d8-9593594f436e?by=id&sg=nfPWnKBLfE%2BzwHFEsgrLMaGywjw%3D&d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAC-4.png"
+          }
+        },
+        "nickname": "Core00",
+        "type": "user",
+        "account_id": "557058:ca17e329-f533-4ec0-97d8-9593594f436e"
+      }
+    },
+    "summary": {
+      "raw": "Change develop URL\n",
+      "markup": "markdown",
+      "html": "<p>Change develop URL</p>",
+      "type": "rendered"
+    },
+    "parents": [
+      {
+        "hash": "097d11d21257881ba71157392dfa0f5bf094dc9f",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/097d11d21257881ba71157392dfa0f5bf094dc9f"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/097d11d21257881ba71157392dfa0f5bf094dc9f"
+          }
+        }
+      }
+    ],
+    "date": "2019-05-13T13:06:37+00:00",
+    "message": "Change develop URL\n",
+    "type": "commit"
+  },
+  {
+    "hash": "097d11d21257881ba71157392dfa0f5bf094dc9f",
+    "repository": {
+      "links": {
+        "self": { "href": "https://api.bitbucket.org/2.0/repositories/foo/bar" },
+        "html": { "href": "https://bitbucket.org/foo/bar" },
+        "avatar": { "href": "https://bytebucket.org/ravatar/%7Bf6c37714-cfda-4298-aadb-08997b3eec24%7D?ts=default" }
+      },
+      "type": "repository",
+      "name": "foobar",
+      "full_name": "foo/bar",
+      "uuid": "{f6c37714-cfda-4298-aadb-08997b3eec24}"
+    },
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/097d11d21257881ba71157392dfa0f5bf094dc9f"
+      },
+      "comments": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/097d11d21257881ba71157392dfa0f5bf094dc9f/comments"
+      },
+      "html": {
+        "href": "https://bitbucket.org/foo/bar/commits/097d11d21257881ba71157392dfa0f5bf094dc9f"
+      },
+      "diff": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/diff/097d11d21257881ba71157392dfa0f5bf094dc9f"
+      },
+      "approve": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/097d11d21257881ba71157392dfa0f5bf094dc9f/approve"
+      },
+      "statuses": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/097d11d21257881ba71157392dfa0f5bf094dc9f/statuses"
+      }
+    },
+    "author": {
+      "raw": "Ryo <ryo@ryo.com>",
+      "type": "author",
+      "user": {
+        "display_name": "Ryo Hello",
+        "uuid": "{98a8e189-6ffd-4e11-9154-e0099023116a}",
+        "links": {
+          "self": { "href": "https://api.bitbucket.org/2.0/users/%7B98a8e189-6ffd-4e11-9154-e0099023116a%7D" },
+          "html": { "href": "https://bitbucket.org/%7B98a8e189-6ffd-4e11-9154-e0099023116a%7D/" },
+          "avatar": {
+            "href": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RF-1.png"
+          }
+        },
+        "nickname": "Ryo Hello",
+        "type": "user",
+        "account_id": "5c04d48a470dea35d6932c45"
+      }
+    },
+    "summary": {
+      "raw": "Merged in fix/points-history-text-style (pull request #169)\n\nPointsHistoryCard adding a new textstyle\n\nApproved-by: DangerCI <danger@ci.com>\n",
+      "markup": "markdown",
+      "html": "<p>Merged in fix/points-history-text-style (<a href=\"https://api.bitbucket.org/foo/bar/pull-requests/169/pointshistorycard-adding-a-new-textstyle\" rel=\"nofollow\" class=\"ap-connect-link\">pull request #169</a>)</p>\n<p>PointsHistoryCard adding a new textstyle</p>\n<p>Approved-by: DangerCI <a href=\"/foo/bar/src/03ac2e2bbf14ea8c6cc40742e9db13e15cdda1b3/&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#100;&#64;&#97;&#112;&#112;&#115;&#121;&#110;&#116;&#104;&#46;&#110;&#101;&#116;\">&#101;&#100;&#64;&#97;&#112;&#112;&#115;&#121;&#110;&#116;&#104;&#46;&#110;&#101;&#116;</a></p>",
+      "type": "rendered"
+    },
+    "parents": [
+      {
+        "hash": "04eadff2879786f21dd60253c1a5c49a1b72d08b",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/04eadff2879786f21dd60253c1a5c49a1b72d08b"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/04eadff2879786f21dd60253c1a5c49a1b72d08b"
+          }
+        }
+      },
+      {
+        "hash": "5b70bec17deefe19c82782f8bbfbb7e1a7533ac8",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/5b70bec17deefe19c82782f8bbfbb7e1a7533ac8"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/5b70bec17deefe19c82782f8bbfbb7e1a7533ac8"
+          }
+        }
+      }
+    ],
+    "date": "2019-05-13T11:44:42+00:00",
+    "message": "Merged in fix/points-history-text-style (pull request #169)\n\nPointsHistoryCard adding a new textstyle\n\nApproved-by: DangerCI <danger@ci.com>\n",
+    "type": "commit"
+  },
+  {
+    "hash": "5b70bec17deefe19c82782f8bbfbb7e1a7533ac8",
+    "repository": {
+      "links": {
+        "self": { "href": "https://api.bitbucket.org/2.0/repositories/foo/bar" },
+        "html": { "href": "https://bitbucket.org/foo/bar" },
+        "avatar": { "href": "https://bytebucket.org/ravatar/%7Bf6c37714-cfda-4298-aadb-08997b3eec24%7D?ts=default" }
+      },
+      "type": "repository",
+      "name": "foobar",
+      "full_name": "foo/bar",
+      "uuid": "{f6c37714-cfda-4298-aadb-08997b3eec24}"
+    },
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/5b70bec17deefe19c82782f8bbfbb7e1a7533ac8"
+      },
+      "comments": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/5b70bec17deefe19c82782f8bbfbb7e1a7533ac8/comments"
+      },
+      "html": {
+        "href": "https://bitbucket.org/foo/bar/commits/5b70bec17deefe19c82782f8bbfbb7e1a7533ac8"
+      },
+      "diff": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/diff/5b70bec17deefe19c82782f8bbfbb7e1a7533ac8"
+      },
+      "approve": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/5b70bec17deefe19c82782f8bbfbb7e1a7533ac8/approve"
+      },
+      "statuses": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/5b70bec17deefe19c82782f8bbfbb7e1a7533ac8/statuses"
+      }
+    },
+    "author": { "raw": "Furyou81 <lfujimot@student.42.fr>", "type": "author" },
+    "summary": { "raw": "merge\n", "markup": "markdown", "html": "<p>merge</p>", "type": "rendered" },
+    "parents": [
+      {
+        "hash": "0f20860ab9b1446d39d6aff4df90d90060ccc329",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/0f20860ab9b1446d39d6aff4df90d90060ccc329"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/0f20860ab9b1446d39d6aff4df90d90060ccc329"
+          }
+        }
+      },
+      {
+        "hash": "04eadff2879786f21dd60253c1a5c49a1b72d08b",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/04eadff2879786f21dd60253c1a5c49a1b72d08b"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/04eadff2879786f21dd60253c1a5c49a1b72d08b"
+          }
+        }
+      }
+    ],
+    "date": "2019-05-13T11:41:13+00:00",
+    "message": "merge\n",
+    "type": "commit"
+  },
+  {
+    "hash": "04eadff2879786f21dd60253c1a5c49a1b72d08b",
+    "repository": {
+      "links": {
+        "self": { "href": "https://api.bitbucket.org/2.0/repositories/foo/bar" },
+        "html": { "href": "https://bitbucket.org/foo/bar" },
+        "avatar": { "href": "https://bytebucket.org/ravatar/%7Bf6c37714-cfda-4298-aadb-08997b3eec24%7D?ts=default" }
+      },
+      "type": "repository",
+      "name": "foobar",
+      "full_name": "foo/bar",
+      "uuid": "{f6c37714-cfda-4298-aadb-08997b3eec24}"
+    },
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/04eadff2879786f21dd60253c1a5c49a1b72d08b"
+      },
+      "comments": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/04eadff2879786f21dd60253c1a5c49a1b72d08b/comments"
+      },
+      "html": {
+        "href": "https://bitbucket.org/foo/bar/commits/04eadff2879786f21dd60253c1a5c49a1b72d08b"
+      },
+      "diff": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/diff/04eadff2879786f21dd60253c1a5c49a1b72d08b"
+      },
+      "approve": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/04eadff2879786f21dd60253c1a5c49a1b72d08b/approve"
+      },
+      "statuses": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/04eadff2879786f21dd60253c1a5c49a1b72d08b/statuses"
+      }
+    },
+    "author": {
+      "raw": "Hello Core <foo@bar.com>",
+      "type": "author",
+      "user": {
+        "display_name": "Hello Core",
+        "uuid": "{b582acac-f1c1-47a8-a29b-e4c01c5274ab}",
+        "links": {
+          "self": { "href": "https://api.bitbucket.org/2.0/users/%7Bb582acac-f1c1-47a8-a29b-e4c01c5274ab%7D" },
+          "html": { "href": "https://bitbucket.org/%7Bb582acac-f1c1-47a8-a29b-e4c01c5274ab%7D/" },
+          "avatar": {
+            "href": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5b3b3d9c50b3772e6bbda9f8/1a7a3e0f-84d7-4948-b107-77b744b4d1c6/128"
+          }
+        },
+        "nickname": "Hello Core",
+        "type": "user",
+        "account_id": "5b3b3d9c50b3772e6bbda9f8"
+      }
+    },
+    "summary": {
+      "raw": "Merged in feature/app-icon-temp (pull request #171)\n\nFeature/app icon temp\n\nApproved-by: DangerCI <danger@ci.com>\nApproved-by: Ryo <ryo@ryo.com>\n",
+      "markup": "markdown",
+      "html": "<p>Merged in feature/app-icon-temp (<a href=\"https://api.bitbucket.org/foo/bar/pull-requests/171/feature-app-icon-temp\" rel=\"nofollow\" class=\"ap-connect-link\">pull request #171</a>)</p>\n<p>Feature/app icon temp</p>\n<p>Approved-by: DangerCI <a href=\"/foo/bar/src/03ac2e2bbf14ea8c6cc40742e9db13e15cdda1b3/&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#100;&#64;&#97;&#112;&#112;&#115;&#121;&#110;&#116;&#104;&#46;&#110;&#101;&#116;\">&#101;&#100;&#64;&#97;&#112;&#112;&#115;&#121;&#110;&#116;&#104;&#46;&#110;&#101;&#116;</a>\nApproved-by: Ryo Hello <a href=\"/foo/bar/src/03ac2e2bbf14ea8c6cc40742e9db13e15cdda1b3/&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#114;&#121;&#111;&#64;&#97;&#112;&#112;&#115;&#121;&#110;&#116;&#104;&#46;&#110;&#101;&#116;\">&#114;&#121;&#111;&#64;&#97;&#112;&#112;&#115;&#121;&#110;&#116;&#104;&#46;&#110;&#101;&#116;</a></p>",
+      "type": "rendered"
+    },
+    "parents": [
+      {
+        "hash": "d802defdf0e6b4f85e01e48f2576b5f4ade8c77d",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/d802defdf0e6b4f85e01e48f2576b5f4ade8c77d"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/d802defdf0e6b4f85e01e48f2576b5f4ade8c77d"
+          }
+        }
+      },
+      {
+        "hash": "301b16bbd02e1f2107ce3e50812afd584c5a99e0",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/301b16bbd02e1f2107ce3e50812afd584c5a99e0"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/301b16bbd02e1f2107ce3e50812afd584c5a99e0"
+          }
+        }
+      }
+    ],
+    "date": "2019-05-13T11:07:20+00:00",
+    "message": "Merged in feature/app-icon-temp (pull request #171)\n\nFeature/app icon temp\n\nApproved-by: DangerCI <danger@ci.com>\nApproved-by: Ryo <ryo@ryo.com>\n",
+    "type": "commit"
+  },
+  {
+    "hash": "301b16bbd02e1f2107ce3e50812afd584c5a99e0",
+    "repository": {
+      "links": {
+        "self": { "href": "https://api.bitbucket.org/2.0/repositories/foo/bar" },
+        "html": { "href": "https://bitbucket.org/foo/bar" },
+        "avatar": { "href": "https://bytebucket.org/ravatar/%7Bf6c37714-cfda-4298-aadb-08997b3eec24%7D?ts=default" }
+      },
+      "type": "repository",
+      "name": "foobar",
+      "full_name": "foo/bar",
+      "uuid": "{f6c37714-cfda-4298-aadb-08997b3eec24}"
+    },
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/301b16bbd02e1f2107ce3e50812afd584c5a99e0"
+      },
+      "comments": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/301b16bbd02e1f2107ce3e50812afd584c5a99e0/comments"
+      },
+      "html": {
+        "href": "https://bitbucket.org/foo/bar/commits/301b16bbd02e1f2107ce3e50812afd584c5a99e0"
+      },
+      "diff": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/diff/301b16bbd02e1f2107ce3e50812afd584c5a99e0"
+      },
+      "approve": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/301b16bbd02e1f2107ce3e50812afd584c5a99e0/approve"
+      },
+      "statuses": {
+        "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/301b16bbd02e1f2107ce3e50812afd584c5a99e0/statuses"
+      }
+    },
+    "author": {
+      "raw": "Danger <danger@abc.com>",
+      "type": "author",
+      "user": {
+        "display_name": "DangerCI",
+        "uuid": "{72609b93-5f99-40f3-81d0-11a8eabf44ac}",
+        "links": {
+          "self": { "href": "https://api.bitbucket.org/2.0/users/%7B72609b93-5f99-40f3-81d0-11a8eabf44ac%7D" },
+          "html": { "href": "https://bitbucket.org/%7B72609b93-5f99-40f3-81d0-11a8eabf44ac%7D/" },
+          "avatar": {
+            "href": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5af3c70fa971e7674e4d8882/f7377cbf-0745-4562-9244-0f4547d6c1f7/128"
+          }
+        },
+        "nickname": "DangerCI",
+        "type": "user",
+        "account_id": "5af3c70fa971e7674e4d8882"
+      }
+    },
+    "summary": {
+      "raw": "bump up version\n",
+      "markup": "markdown",
+      "html": "<p>bump up version</p>",
+      "type": "rendered"
+    },
+    "parents": [
+      {
+        "hash": "25422a6589feee092d7e47f12c4e7a160d086f2b",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/25422a6589feee092d7e47f12c4e7a160d086f2b"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/25422a6589feee092d7e47f12c4e7a160d086f2b"
+          }
+        }
+      },
+      {
+        "hash": "d802defdf0e6b4f85e01e48f2576b5f4ade8c77d",
+        "type": "commit",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/foo/bar/commit/d802defdf0e6b4f85e01e48f2576b5f4ade8c77d"
+          },
+          "html": {
+            "href": "https://bitbucket.org/foo/bar/commits/d802defdf0e6b4f85e01e48f2576b5f4ade8c77d"
+          }
+        }
+      }
+    ],
+    "date": "2019-05-13T11:04:13+00:00",
+    "message": "bump up version\n",
+    "type": "commit"
+  }
+]
