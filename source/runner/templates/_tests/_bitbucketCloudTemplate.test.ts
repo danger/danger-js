@@ -6,6 +6,7 @@ import {
   messagesResults,
   markdownResults,
   summaryResults,
+  multipleSummaryResults,
 } from "../../_tests/fixtures/ExampleDangerResults"
 import { dangerSignaturePostfix, template, inlineTemplate } from "../bitbucketCloudTemplate"
 import { DangerResults } from "../../../dsl/DangerResults"
@@ -45,6 +46,10 @@ describe("generating messages for BitBucket cloud", () => {
 
   it("summary result matches snapshot", () => {
     expect(template("blankID", commitID, summaryResults)).toMatchSnapshot()
+  })
+
+  it("multiple summary result matches snapshot", () => {
+    expect(template("blankID", commitID, multipleSummaryResults)).toMatchSnapshot()
   })
 
   it("shows a postfix message indicating the current commit ID at the time of comment", () => {
