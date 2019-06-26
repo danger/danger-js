@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+# 9.0.0
+
 - Add BitBucket Cloud & BitBucket Pipelines support [@HelloCore]
 - Add GitLab missing states - [@f-meloni]
 - Fixes incorrect slug for builds from forks on Codefresh - [@stevenp]

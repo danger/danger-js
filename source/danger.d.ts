@@ -5,6 +5,9 @@
 import * as GitHub from "@octokit/rest"
 
 type MarkdownString = string
+
+// TODO: extract out from BitBucket specifically, or create our own type
+
 interface BitBucketCloudJSONDSL {
   /** The pull request and repository metadata */
   metadata: RepoMetaData
@@ -89,8 +92,6 @@ interface BitBucketCloudRepo {
   full_name: string
   uuid: string
 }
-
-type RepoMetaData = BitBucketServerRepoMetaData
 
 interface BitBucketCloudUser {
   /** The uuid of the commit author */

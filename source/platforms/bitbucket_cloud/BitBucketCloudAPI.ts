@@ -10,12 +10,12 @@ import { api as fetch } from "../../api/fetch"
 import {
   BitBucketCloudPagedResponse,
   BitBucketCloudPRDSL,
-  RepoMetaData,
   BitBucketCloudCommit,
   BitBucketCloudPRActivity,
   BitBucketCloudPRComment,
 } from "../../dsl/BitBucketCloudDSL"
 import { Comment } from "../platform"
+import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 
 export type BitBucketCloudCredentials = {
   /** Unique ID for this user, must be wrapped with brackets */
@@ -152,7 +152,7 @@ export class BitBucketCloudAPI {
     let values: BitBucketCloudPRComment[] = []
 
     // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/comments
-    let nextPageURL: string | undefined = `${this.getPRURL()}/comments`
+    let nextPageURL: string | undefined = `${this.getPRURL()}/comments?q=deleted=false`
 
     do {
       const res = await this.get(nextPageURL)
