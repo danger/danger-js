@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Add support OAuth for BitBucket Cloud - [@HelloCore]
+
 # 9.0.0
 
 - Add BitBucket Cloud & BitBucket Pipelines support [@HelloCore]
