@@ -15,9 +15,11 @@
 
 <!-- Your comment below this -->
 
+- Fixed incorrect main comment template on Bitbucket Cloud - [@HelloCore]
+
 # 9.0.0
 
-- Add BitBucket Cloud & BitBucket Pipelines support [@HelloCore]
+- Add BitBucket Cloud & BitBucket Pipelines support - [@HelloCore]
 - Add GitLab missing states - [@f-meloni]
 - Fixes incorrect slug for builds from forks on Codefresh - [@stevenp]
 
