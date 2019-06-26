@@ -14,14 +14,19 @@ It was started in mid-2016, and has fleshed out into a considerable set of usefu
 
 ## Future Plans
 
-There is only really one big target left for the future of Danger JS:
+Wow, hi... So it's mid-2019. Three years in, 9 major versions, 150+ releases and every major long-term goal for Danger
+JS has been accomplished:
 
-- GitLab
+- Support hosted-infra like [Peril](https://github.com/danger/peril)
+- Support custom language runtimes like [Swift](https://danger.systems/swift/),
+  [Kotlin](https://github.com/danger/kotlin/) and [Rust](https://github.com/danger/rust)
+- Support GitHub, GitLab, BitBucket Cloud and BitBucket Server
+- Allow running just with a local set of git commits
+- Documented at scale
 
-I don't plan on really using this, so I expect both to come from the community instead.
-
-My focus is going to be mainly in the Peril side of Danger. Moving to making it trivial to add Danger to any GitHub
-project and really unlocking some complex culture systems. Examples of these can be found on [the Artsy blog][peril].
+So, what now? Well. It's kinda done, and now can mature. For the past few years Danger Ruby has solidified and become
+foundational infrastructure which you can trust won't change much, now Danger JS can be in the same place. This is a
+great place to be as a developer tool.
 
 # Why Danger JS? What about Danger Ruby?
 
