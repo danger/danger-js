@@ -20,7 +20,7 @@ JS has been accomplished:
 - Support hosted-infra like [Peril](https://github.com/danger/peril)
 - Support custom language runtimes like [Swift](https://danger.systems/swift/),
   [Kotlin](https://github.com/danger/kotlin/) and [Rust](https://github.com/danger/rust)
-- Support GitHub, GitLab, BitBucket Cloud and BitBucket Server
+- Support GitHub, GitLab and BitBucket Cloud which covers most PR review tools
 - Allow running just with a local set of git commits
 - Documented at scale
 
