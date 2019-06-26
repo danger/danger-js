@@ -4,6 +4,8 @@ import { GitHub } from "./GitHub"
 import { GitHubAPI } from "./github/GitHubAPI"
 import { BitBucketServer } from "./BitBucketServer"
 import { BitBucketServerAPI, bitbucketServerRepoCredentialsFromEnv } from "./bitbucket_server/BitBucketServerAPI"
+import { BitBucketCloud } from "./BitBucketCloud"
+import { BitBucketCloudAPI, bitbucketCloudCredentialsFromEnv } from "./bitbucket_cloud/BitBucketCloudAPI"
 import GitLabAPI, { getGitLabAPICredentialsFromEnv } from "./gitlab/GitLabAPI"
 import GitLab from "./GitLab"
 import { DangerResults } from "../dsl/DangerResults"
@@ -100,6 +102,18 @@ export function getPlatformForEnv(env: Env, source: CISource): Platform {
       bitbucketServerRepoCredentialsFromEnv(env)
     )
     return new BitBucketServer(api)
+  }
+
+  // Bitbucket Cloud
+  if (env["DANGER_BITBUCKETCLOUD_USERNAME"] || env["DANGER_PR_PLATFORM"] === BitBucketCloud.name) {
+    const api = new BitBucketCloudAPI(
+      {
+        pullRequestID: source.pullRequestID,
+        repoSlug: source.repoSlug,
+      },
+      bitbucketCloudCredentialsFromEnv(env)
+    )
+    return new BitBucketCloud(api)
   }
 
   // GitLab

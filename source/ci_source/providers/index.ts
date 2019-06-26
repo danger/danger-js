@@ -21,6 +21,7 @@ import { Surf } from "./Surf"
 import { TeamCity } from "./TeamCity"
 import { Travis } from "./Travis"
 import { VSTS } from "./VSTS"
+import { BitbucketPipelines } from "./BitbucketPipelines"
 
 const providers = [
   FakeCI,
@@ -46,6 +47,7 @@ const providers = [
   CodeBuild,
   Codefresh,
   AppCenter,
+  BitbucketPipelines,
 ]
 
 // Mainly used for Dangerfile linting
