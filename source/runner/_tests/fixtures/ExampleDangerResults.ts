@@ -135,3 +135,10 @@ export const resultsWithCustomMeta: DangerResults = {
     runtimeHref: "https://danger.magic",
   },
 }
+
+export const multipleSummaryResults: DangerResults = {
+  fails: [{ message: "Failing message Failing message" }, { message: "Failing message 2, This is Failing message" }],
+  warnings: [{ message: "Warning message Warning message" }, { message: "Warning message" }],
+  messages: [{ message: "message" }, { message: "message 2" }, { message: "message 3" }],
+  markdowns: [{ message: "markdown" }],
+}

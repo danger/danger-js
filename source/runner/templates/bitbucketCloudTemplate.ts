@@ -32,7 +32,7 @@ function buildMarkdownTable(header: string, emoji: string, violations: Violation
 
   |      ${violations.length} ${header} |
   | --- |
-  ${violations.map(v => `| ${emoji} - ${v.message} |`)}
+${violations.map(v => `  | ${emoji} - ${v.message} |`).join("\n")}
 
   `
 }
