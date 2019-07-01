@@ -15,6 +15,10 @@
 
 <!-- Your comment below this -->
 
+# 9.0.2
+
+- Fix for the GitLab dependency making danger not load - [@f-meloni]
+
 # 9.0.1
 
 - Fixed incorrect main comment template on Bitbucket Cloud - [@HelloCore]
