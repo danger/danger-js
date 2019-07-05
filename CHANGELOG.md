@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Allow `handleResults` to be called without a `git` object - [@jtreanor]
+
 # 9.0.2
 
 - Fix for the GitLab dependency making danger not load - [@f-meloni]
