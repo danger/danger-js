@@ -26,8 +26,10 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *
  * ### Token Setup
  *
- * Add `DANGER_BITBUCKETCLOUD_USERNAME`, `DANGER_BITBUCKETCLOUD_PASSWORD`, and `DANGER_BITBUCKETCLOUD_UUID` to your pipeline repository variable.
- *
+ * Add `DANGER_BITBUCKETCLOUD_UUID` to your pipeline repository variable.
+ * You can either add `DANGER_BITBUCKETCLOUD_USERNAME`, `DANGER_BITBUCKETCLOUD_PASSWORD`
+ * or add `DANGER_BITBUCKETCLOUD_OAUTH_KEY`, `DANGER_BITBUCKETCLOUD_OAUTH_SECRET`
+ * -
  */
 
 export class BitbucketPipelines implements CISource {

@@ -290,7 +290,7 @@ export class Executor {
         let comment
         if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
           comment = bitbucketServerTemplate(dangerID, mergedResults, commitID)
-        } else if (process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
+        } else if (process.env["DANGER_BITBUCKETCLOUD_UUID"]) {
           comment = bitbucketCloudTemplate(dangerID, mergedResults, commitID)
         } else {
           comment = githubResultsTemplate(dangerID, mergedResults, commitID)
@@ -398,7 +398,7 @@ export class Executor {
     let comment
     if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
       comment = bitbucketServerInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
-    } else if (process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
+    } else if (process.env["DANGER_BITBUCKETCLOUD_UUID"]) {
       comment = bitbucketCloudInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
     } else {
       comment = githubResultsInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
@@ -434,7 +434,7 @@ const messageForResults = (results: DangerResults) => {
   } else {
     if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
       return bitbucketMessageForResultWithIssues
-    } else if (process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
+    } else if (process.env["DANGER_BITBUCKETCLOUD_UUID"]) {
       return bitbucketCloudMessageForResultWithIssues
     } else {
       return githubMessageForResultWithIssues

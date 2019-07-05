@@ -1,6 +1,7 @@
 import { BitBucketCloudAPI } from "../BitBucketCloudAPI"
 import { dangerSignaturePostfix } from "../../../runner/templates/bitbucketCloudTemplate"
 import { DangerResults } from "../../../dsl/DangerResults"
+import { URLSearchParams } from "url"
 
 const fetchText = (api: any, params: any): Promise<any> => {
   return Promise.resolve({
@@ -28,6 +29,7 @@ describe("API testing - BitBucket Cloud", () => {
     const api = new BitBucketCloudAPI(
       { repoSlug: "foo/bar", pullRequestID: "1" },
       {
+        type: "PASSWORD",
         username,
         password,
         uuid,
@@ -272,5 +274,101 @@ describe("API testing - BitBucket Cloud", () => {
       },
       undefined
     )
+  })
+
+  it("should fetch accessToken", async () => {
+    api = new BitBucketCloudAPI(
+      { repoSlug: "foo/bar", pullRequestID: "1" },
+      {
+        type: "OAUTH",
+        oauthSecret: "superSecretOAUTH",
+        oauthKey: "superOAUTHKey",
+        uuid: "{1234-1234-1234-1234}",
+      }
+    )
+    let isFetchedToken = false
+    let fetch = jest.fn().mockReturnValue({
+      status: 200,
+      ok: true,
+      json: () => {
+        if (isFetchedToken === false) {
+          isFetchedToken = true
+          return {
+            access_token: "bla bla bla bla",
+          }
+        } else {
+          return { pr: "info" }
+        }
+      },
+      text: () => textResult,
+    })
+    api.fetch = fetch
+
+    const expectedAuthBody = new URLSearchParams()
+    expectedAuthBody.append("grant_type", "client_credentials")
+
+    const expectedAuthHeaders = {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${new Buffer("superOAUTHKey:superSecretOAUTH").toString("base64")}`,
+    }
+    const expectedOAUTHRequestHeaders = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer bla bla bla bla`,
+    }
+
+    const result = await api.getPullRequestInfo()
+    expect(api.fetch).toBeCalledTimes(2)
+
+    expect(fetch.mock.calls[0][0]).toBe("https://bitbucket.org/site/oauth2/access_token")
+    const firstCalledBody = fetch.mock.calls[0][1]
+    expect(firstCalledBody["method"]).toBe("POST")
+    expect(firstCalledBody["headers"]).toEqual(expectedAuthHeaders)
+    expect(firstCalledBody["body"].toString()).toEqual(expectedAuthBody.toString())
+
+    expect(api.fetch).toHaveBeenNthCalledWith(
+      2,
+      `https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1`,
+      { method: "GET", body: null, headers: expectedOAUTHRequestHeaders },
+      undefined
+    )
+
+    expect(result).toEqual({ pr: "info" })
+  })
+
+  it("shouldn't fetch accessToken if it exists", async () => {
+    api = new BitBucketCloudAPI(
+      { repoSlug: "foo/bar", pullRequestID: "1" },
+      {
+        type: "OAUTH",
+        oauthSecret: "superSecretOAUTH",
+        oauthKey: "superOAUTHKey",
+        uuid: "{1234-1234-1234-1234}",
+      }
+    )
+
+    api.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      ok: true,
+      json: () => ({ pr: "info" }),
+      text: () => textResult,
+    })
+
+    api.accessToken = "bla bla bla bla"
+
+    const expectedOAUTHRequestHeaders = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer bla bla bla bla`,
+    }
+
+    const result = await api.getPullRequestInfo()
+    expect(api.fetch).toBeCalledTimes(1)
+    expect(api.fetch).toHaveBeenNthCalledWith(
+      1,
+      `https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1`,
+      { method: "GET", body: null, headers: expectedOAUTHRequestHeaders },
+      undefined
+    )
+
+    expect(result).toEqual({ pr: "info" })
   })
 })
