@@ -63,7 +63,7 @@ export const resultsToCheck = async (
 
   const commitID = pr.head.sha
 
-  const mainBody = githubResultsTemplate(options.dangerID, commitID, mainResults)
+  const mainBody = githubResultsTemplate(options.dangerID, mainResults, commitID)
 
   const getBlobUrlForPath = async (path: string) => {
     try {

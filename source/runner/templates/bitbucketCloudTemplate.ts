@@ -19,10 +19,16 @@ export const fileLineToString = (file: string, line: number) => `  File: ${file}
 /**
  * Postfix signature to be attached comment generated / updated by danger.
  */
-export const dangerSignaturePostfix = (results: DangerResults, commitID: string) => `
+export const dangerSignaturePostfix = (results: DangerResults, commitID?: string) => {
+  let signature = dangerSignature(results)
+  if (commitID !== undefined) {
+    signature = `${signature} against ${commitID}`
+  }
+  return `
 
-  ${dangerSignature(results)} against ${commitID}
+  ${signature}
   `
+}
 
 function buildMarkdownTable(header: string, emoji: string, violations: Violation[]): string {
   if (violations.length === 0 || violations.every(violation => !violation.message)) {
@@ -44,7 +50,7 @@ ${violations.map(v => `  | ${emoji} - ${v.message} |`).join("\n")}
  * @param {DangerResults} results Data to work with
  * @returns {string} HTML
  */
-export function template(dangerID: string, commitID: string, results: DangerResults): string {
+export function template(dangerID: string, results: DangerResults, commitID?: string): string {
   return `
   ${messageForResultWithIssues}
 
