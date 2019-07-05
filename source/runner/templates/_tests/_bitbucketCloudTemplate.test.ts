@@ -19,41 +19,49 @@ const messageEmoji = "✨"
 
 describe("generating messages for BitBucket cloud", () => {
   it("shows no sections for empty results", () => {
-    const issues = template("blankID", commitID, emptyResults)
+    const issues = template("blankID", emptyResults, commitID)
     expect(issues).not.toContain("Fails")
     expect(issues).not.toContain("Warnings")
     expect(issues).not.toContain("Messages")
   })
 
   it("shows no sections for results without messages", () => {
-    const issues = template("blankID", commitID, failsResultsWithoutMessages)
+    const issues = template("blankID", failsResultsWithoutMessages, commitID)
     expect(issues).not.toContain("Fails")
     expect(issues).not.toContain("Warnings")
     expect(issues).not.toContain("Messages")
   })
 
   it("Shows the failing messages in a section", () => {
-    const issues = template("blankID", commitID, failsResults)
+    const issues = template("blankID", failsResults, commitID)
     expect(issues).toContain("Fails")
     expect(issues).not.toContain("Warnings")
   })
 
   it("Shows the warning messages in a section", () => {
-    const issues = template("blankID", commitID, warnResults)
+    const issues = template("blankID", warnResults, commitID)
     expect(issues).toContain("Warnings")
     expect(issues).not.toContain("Fails")
   })
 
-  it("summary result matches snapshot", () => {
-    expect(template("blankID", commitID, summaryResults)).toMatchSnapshot()
+  it("summary result matches snapshot, with a commit", () => {
+    expect(template("blankID", summaryResults, commitID)).toMatchSnapshot()
+  })
+
+  it("summary result matches snapshot, without a commit", () => {
+    expect(template("blankID", summaryResults)).toMatchSnapshot()
   })
 
   it("multiple summary result matches snapshot", () => {
-    expect(template("blankID", commitID, multipleSummaryResults)).toMatchSnapshot()
+    expect(template("blankID", multipleSummaryResults, commitID)).toMatchSnapshot()
   })
 
   it("shows a postfix message indicating the current commit ID at the time of comment", () => {
-    expect(template("blankID", commitID, emptyResults)).toContain(dangerSignaturePostfix({} as DangerResults, commitID))
+    expect(template("blankID", emptyResults, commitID)).toContain(dangerSignaturePostfix({} as DangerResults, commitID))
+  })
+
+  it("shows a postfix message with no commit ID if not provided", () => {
+    expect(template("blankID", emptyResults)).toContain(dangerSignaturePostfix({} as DangerResults))
   })
 })
 

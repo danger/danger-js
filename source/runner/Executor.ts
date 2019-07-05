@@ -284,11 +284,11 @@ export class Executor {
         const commitID = git.commits[git.commits.length - 1].sha
         let comment
         if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
-          comment = bitbucketServerTemplate(dangerID, commitID, mergedResults)
+          comment = bitbucketServerTemplate(dangerID, mergedResults, commitID)
         } else if (process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
-          comment = bitbucketCloudTemplate(dangerID, commitID, mergedResults)
+          comment = bitbucketCloudTemplate(dangerID, mergedResults, commitID)
         } else {
-          comment = githubResultsTemplate(dangerID, commitID, mergedResults)
+          comment = githubResultsTemplate(dangerID, mergedResults, commitID)
         }
 
         issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
