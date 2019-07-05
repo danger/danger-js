@@ -127,7 +127,7 @@ export class Executor {
    *
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    */
-  async handleResults(results: DangerResults, git: GitDSL) {
+  async handleResults(results: DangerResults, git?: GitDSL) {
     this.d("Got results back:", results)
     if (!results) {
       throw new Error(
@@ -228,7 +228,7 @@ export class Executor {
    * @param {DangerResults} results a JSON representation of the end-state for a Danger run
    * @param {GitDSL} git a reference to a git implementation so that inline comments find diffs to work with
    */
-  async handleResultsPostingToPlatform(originalResults: DangerResults, git: GitDSL) {
+  async handleResultsPostingToPlatform(originalResults: DangerResults, git?: GitDSL) {
     // Allow a platform to say "I can do something special with this" - the example case for this
     // is the GitHub Checks API. It doesn't have an API that feels like commenting, so
     // it allows transforming the results after doing its work.
@@ -271,17 +271,22 @@ export class Executor {
         this.log("Found only messages, passing those to review.")
       }
 
-      const previousComments = await this.platform.getInlineComments(dangerID)
-      const inline = inlineResults(results)
-      const inlineLeftovers = await this.sendInlineComments(inline, git, previousComments)
-      const regular = regularResults(results)
-      const mergedResults = sortResults(mergeResults(regular, inlineLeftovers))
+      let mergedResults = regularResults(results)
+      if (git !== undefined) {
+        const previousComments = await this.platform.getInlineComments(dangerID)
+        const inline = inlineResults(results)
+        const inlineLeftovers = await this.sendInlineComments(inline, git, previousComments)
+        mergedResults = sortResults(mergeResults(mergedResults, inlineLeftovers))
+      }
 
       // If danger have no comments other than inline to update. Just delete previous main comment.
       if (isEmptyResults(mergedResults)) {
         this.platform.deleteMainComment(dangerID)
       } else {
-        const commitID = git.commits[git.commits.length - 1].sha
+        let commitID
+        if (git !== undefined) {
+          commitID = git.commits[git.commits.length - 1].sha
+        }
         let comment
         if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
           comment = bitbucketServerTemplate(dangerID, mergedResults, commitID)
