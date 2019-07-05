@@ -16,6 +16,7 @@
 <!-- Your comment below this -->
 
 - Add support OAuth for BitBucket Cloud - [@HelloCore]
+- Allow `handleResults` to be called without a `git` object - [@jtreanor]
 
 # 9.0.2
 
