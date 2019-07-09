@@ -39,7 +39,7 @@ const stripWhitespaceForSnapshot = (str: string) => {
 
 const pullRequestInfoFilename = "bitbucket_cloud_pr.json"
 
-describe("the dangerfile gitDSL - BitBucket Cloud", async () => {
+describe("the dangerfile gitDSL - BitBucket Cloud", () => {
   let bbc: BitBucketCloud = {} as any
   let gitJSONDSL: GitJSONDSL = {} as any
 

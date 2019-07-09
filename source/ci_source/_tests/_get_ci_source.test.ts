@@ -14,7 +14,7 @@ describe(".getCISourceForEnv", () => {
   })
 })
 
-describe(".getCISourceForExternal", async () => {
+describe(".getCISourceForExternal", () => {
   test("should resolve module relatively", async () => {
     const ci = await getCISourceForExternal({}, "./source/ci_source/_tests/fixtures/dummy_ci.js")
     expect(ci).toBeInstanceOf(DummyCI)
