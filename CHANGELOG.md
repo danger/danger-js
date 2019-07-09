@@ -197,10 +197,10 @@
 
   ```json
   {
-    "markdowns":[],
-    "fails:" [],
-    "warnings:[],
-    "messages":[],
+    "markdowns": [],
+    "fails": [],
+    "warnings": [],
+    "messages": [],
     "meta": {
       "runtimeHref": "https://mysite.com",
       "runtimeName": "My Danger Runner"
