@@ -1,8 +1,8 @@
 import { GitDSL, GitJSONDSL } from "../../dsl/GitDSL"
 import {
   BitBucketServerCommit,
-  BitBucketServerDSL,
   BitBucketServerDiff,
+  BitBucketServerJSONDSL,
   RepoMetaData,
   BitBucketServerChangesValue,
 } from "../../dsl/BitBucketServerDSL"
@@ -63,7 +63,7 @@ export default async function gitDSLForBitBucketServer(api: BitBucketServerAPI):
 }
 
 export const bitBucketServerGitDSL = (
-  bitBucketServer: BitBucketServerDSL,
+  bitBucketServer: BitBucketServerJSONDSL,
   json: GitJSONDSL,
   bitBucketServerAPI: BitBucketServerAPI
 ): GitDSL => {

@@ -6,7 +6,7 @@ import { readFileSync, writeFileSync } from "fs"
 import { resolve, join as pathJoin } from "path"
 import { bitBucketServerGitDSL as gitJSONToGitDSL } from "../BitBucketServerGit"
 
-import { BitBucketServerDSL } from "../../../dsl/BitBucketServerDSL"
+import { BitBucketServerJSONDSL } from "../../../dsl/BitBucketServerDSL"
 import { GitDSL, GitJSONDSL } from "../../../dsl/GitDSL"
 import { jsonDSLGenerator } from "../../../runner/dslGenerator"
 
@@ -41,7 +41,7 @@ describe("the dangerfile gitDSL - BitBucket Server", async () => {
   let bbs: BitBucketServer = {} as any
   let gitJSONDSL: GitJSONDSL = {} as any
 
-  let bbsDSL: BitBucketServerDSL = {} as any
+  let bbsDSL: BitBucketServerJSONDSL = {} as any
   let gitDSL: GitDSL = {} as any
 
   beforeEach(async () => {

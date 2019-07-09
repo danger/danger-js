@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Expose BitBucketServerAPI - [@NMinhNguyen]
+
 # 9.0.3
 
 - Add support OAuth for BitBucket Cloud - [@HelloCore]
