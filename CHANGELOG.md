@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+# 9.0.4
+
 - Expose BitBucketServerAPI - [@NMinhNguyen]
 
 # 9.0.3
