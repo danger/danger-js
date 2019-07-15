@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Fix Github Actions documentation - [@ravanscafi]
+
 # 9.0.4
 
 - Expose BitBucketServerAPI - [@NMinhNguyen]
@@ -1648,6 +1650,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@patrickkempff]: https://github.com/patrickkempff
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@randak]: https://github.com/randak
+[@ravanscafi]: https://github.com/ravanscafi
 [@sajjadzamani]: https://github.com/sajjadzamani
 [@sebinsua]: https://github.com/sebinsua
 [@sgtcoolguy]: https://github.com/sgtcoolguy
