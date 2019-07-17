@@ -93,8 +93,13 @@ export const dangerSignature = (results: DangerResults) => {
 /**
  * Postfix signature to be attached comment generated / updated by danger.
  */
-export const dangerSignaturePostfix = (results: DangerResults, commitID: string) =>
-  `${dangerSignature(results)} against ${commitID}`
+export const dangerSignaturePostfix = (results: DangerResults, commitID?: string) => {
+  let signature = dangerSignature(results)
+  if (commitID !== undefined) {
+    signature = `${signature} against ${commitID}`
+  }
+  return signature
+}
 
 /**
  * Comment to add when updating the PR status when issues are found
@@ -104,11 +109,11 @@ export const messageForResultWithIssues = `Found some issues. Don't worry, every
 /**
  * A template function for creating a GitHub issue comment from Danger Results
  * @param {string} dangerID A string that represents a unique build
- * @param {string} commitID The hash that represents the latest commit
  * @param {DangerResults} results Data to work with
+ * @param {string} commitID The hash that represents the latest commit
  * @returns {string} HTML
  */
-export function template(dangerID: string, commitID: string, results: DangerResults): string {
+export function template(dangerID: string, results: DangerResults, commitID?: string): string {
   return `
 <!--
 ${buildSummaryMessage(dangerID, results)}

@@ -2,6 +2,7 @@ import { debug } from "../../debug"
 import * as node_fetch from "node-fetch"
 import { Agent } from "http"
 import HttpsProxyAgent from "https-proxy-agent"
+import { URLSearchParams } from "url"
 
 import { Env } from "../../ci_source/ci_source"
 import { dangerIDToString } from "../../runner/templates/bitbucketCloudTemplate"
@@ -16,40 +17,61 @@ import {
 import { Comment } from "../platform"
 import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 
-export interface BitBucketCloudCredentials {
-  username: string
-  password: string
+export type BitBucketCloudCredentials = {
   /** Unique ID for this user, must be wrapped with brackets */
   uuid: string
+} & (BitBucketCloudCredentialsOAuth | BitBucketCloudCredentialsPassword)
+
+interface BitBucketCloudCredentialsOAuth {
+  type: "OAUTH"
+  oauthKey: string
+  oauthSecret: string
+}
+
+interface BitBucketCloudCredentialsPassword {
+  type: "PASSWORD"
+  username: string
+  password: string
 }
 
 export function bitbucketCloudCredentialsFromEnv(env: Env): BitBucketCloudCredentials {
-  if (!env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
-    throw new Error(`DANGER_BITBUCKETCLOUD_USERNAME is not set`)
-  }
-  if (!env["DANGER_BITBUCKETCLOUD_PASSWORD"]) {
-    throw new Error(`DANGER_BITBUCKETCLOUD_PASSWORD is not set`)
-  }
-  if (!env["DANGER_BITBUCKETCLOUD_UUID"]) {
-    throw new Error(`DANGER_BITBUCKETCLOUD_UUID is not set`)
-  }
   const uuid = `${env["DANGER_BITBUCKETCLOUD_UUID"]}`
   if (!uuid.startsWith("{") || !uuid.endsWith("}")) {
     throw new Error(`DANGER_BITBUCKETCLOUD_UUID must be wraped with brackets`)
   }
 
-  return {
-    username: env["DANGER_BITBUCKETCLOUD_USERNAME"],
-    password: env["DANGER_BITBUCKETCLOUD_PASSWORD"],
-    uuid,
+  if (env["DANGER_BITBUCKETCLOUD_OAUTH_KEY"]) {
+    if (!env["DANGER_BITBUCKETCLOUD_OAUTH_SECRET"]) {
+      throw new Error(`DANGER_BITBUCKETCLOUD_OAUTH_SECRET is not set`)
+    }
+    return {
+      type: "OAUTH",
+      uuid,
+      oauthKey: env["DANGER_BITBUCKETCLOUD_OAUTH_KEY"],
+      oauthSecret: env["DANGER_BITBUCKETCLOUD_OAUTH_SECRET"],
+    }
+  } else if (env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
+    if (!env["DANGER_BITBUCKETCLOUD_PASSWORD"]) {
+      throw new Error(`DANGER_BITBUCKETCLOUD_PASSWORD is not set`)
+    }
+    return {
+      type: "PASSWORD",
+      username: env["DANGER_BITBUCKETCLOUD_USERNAME"],
+      password: env["DANGER_BITBUCKETCLOUD_PASSWORD"],
+      uuid,
+    }
   }
+  throw new Error(`Either DANGER_BITBUCKETCLOUD_OAUTH_KEY or DANGER_BITBUCKETCLOUD_USERNAME is not set`)
 }
 
 export class BitBucketCloudAPI {
   fetch: typeof fetch
+  accessToken: string | undefined
+
   private readonly d = debug("BitBucketCloudAPI")
   private pr: BitBucketCloudPRDSL | undefined
   private baseURL = "https://api.bitbucket.org/2.0"
+  private oauthURL = "https://bitbucket.org/site/oauth2/access_token"
 
   constructor(public readonly repoMetadata: RepoMetaData, public readonly credentials: BitBucketCloudCredentials) {
     // This allows Peril to DI in a new Fetch function
@@ -274,14 +296,48 @@ export class BitBucketCloudAPI {
       throw await res.json()
     }
   }
+
   // API implementation
-  private api = (url: string, headers: any = {}, body: any = {}, method: string, suppressErrors?: boolean) => {
-    headers["Authorization"] = `Basic ${new Buffer(
-      this.credentials.username + ":" + this.credentials.password
-    ).toString("base64")}`
+  private api = async (url: string, headers: any = {}, body: any = {}, method: string, suppressErrors?: boolean) => {
+    if (this.credentials.type === "PASSWORD") {
+      headers["Authorization"] = `Basic ${new Buffer(
+        this.credentials.username + ":" + this.credentials.password
+      ).toString("base64")}`
+    } else {
+      if (this.accessToken == null) {
+        const params = new URLSearchParams()
 
+        params.append("grant_type", "client_credentials")
+
+        const authResponse = await this.performAPI(
+          this.oauthURL,
+          {
+            ...headers,
+            Authorization: `Basic ${new Buffer(this.credentials.oauthKey + ":" + this.credentials.oauthSecret).toString(
+              "base64"
+            )}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          params,
+          "POST",
+          suppressErrors
+        )
+        if (authResponse.ok) {
+          const jsonResp = await authResponse.json()
+          this.accessToken = jsonResp["access_token"]
+        } else {
+          throwIfNotOk(authResponse)
+        }
+      }
+
+      headers["Authorization"] = `Bearer ${this.accessToken}`
+    }
+
+    return this.performAPI(url, headers, body, method, suppressErrors)
+  }
+
+  private performAPI = (url: string, headers: any = {}, body: any = {}, method: string, suppressErrors?: boolean) => {
     this.d(`${method} ${url}`)
-
     // Allow using a proxy configured through environmental variables
     // Remember that to avoid the error "Error: self signed certificate in certificate chain"
     // you should also do: "export NODE_TLS_REJECT_UNAUTHORIZED=0". See: https://github.com/request/request/issues/2061
@@ -323,7 +379,7 @@ function throwIfNotOk(res: node_fetch.Response) {
   if (!res.ok) {
     let message = `${res.status} - ${res.statusText}`
     if (res.status >= 400 && res.status < 500) {
-      message += ` (Have you set DANGER_BITBUCKETCLOUD_USERNAME and DANGER_BITBUCKETCLOUD_PASSWORD?)`
+      message += ` (Have you set DANGER_BITBUCKETCLOUD_USERNAME or DANGER_BITBUCKETCLOUD_OAUTH_KEY?)`
     }
     throw new Error(message)
   }

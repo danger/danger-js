@@ -15,6 +15,19 @@
 
 <!-- Your comment below this -->
 
+# 9.0.4
+
+- Expose BitBucketServerAPI - [@NMinhNguyen]
+
+# 9.0.3
+
+- Add support OAuth for BitBucket Cloud - [@HelloCore]
+- Allow `handleResults` to be called without a `git` object - [@jtreanor]
+
+# 9.0.2
+
+- Fix for the GitLab dependency making danger not load - [@f-meloni]
+
 # 9.0.1
 
 - Fixed incorrect main comment template on Bitbucket Cloud - [@HelloCore]
@@ -186,10 +199,10 @@
 
   ```json
   {
-    "markdowns":[],
-    "fails:" [],
-    "warnings:[],
-    "messages":[],
+    "markdowns": [],
+    "fails": [],
+    "warnings": [],
+    "messages": [],
     "meta": {
       "runtimeHref": "https://mysite.com",
       "runtimeName": "My Danger Runner"

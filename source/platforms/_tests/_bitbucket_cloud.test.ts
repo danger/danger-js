@@ -42,6 +42,7 @@ describe("getPlatformReviewDSLRepresentation", () => {
         username: "username",
         password: "password",
         uuid: "{1234-1234-1234-1234}",
+        type: "PASSWORD",
       })
     )
   })

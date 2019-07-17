@@ -40,12 +40,12 @@ program
     if (
       !process.env["DANGER_GITHUB_API_TOKEN"] &&
       !process.env["DANGER_BITBUCKETSERVER_HOST"] &&
-      !process.env["DANGER_BITBUCKETCLOUD_USERNAME"] &&
+      !process.env["DANGER_BITBUCKETCLOUD_UUID"] &&
       !gitLabApiCredentials.token
     ) {
       log("")
       log(
-        "     You don't have a DANGER_GITHUB_API_TOKEN/DANGER_GITLAB_API_TOKEN/DANGER_BITBUCKETCLOUD_USERNAME set up, this is optional, but TBH, you want to do this."
+        "     You don't have a DANGER_GITHUB_API_TOKEN/DANGER_GITLAB_API_TOKEN/DANGER_BITBUCKETCLOUD_UUID set up, this is optional, but TBH, you want to do this."
       )
       log("     Check out: http://danger.systems/js/guides/the_dangerfile.html#working-on-your-dangerfile")
       log("")

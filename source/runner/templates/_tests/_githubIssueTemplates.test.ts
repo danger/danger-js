@@ -20,38 +20,38 @@ const commitID = "e70f3d6468f61a4bef68c9e6eaba9166b096e23c"
 
 describe("generating messages", () => {
   it("shows no tables for empty results", () => {
-    const issues = githubResultsTemplate("blankID", commitID, emptyResults)
+    const issues = githubResultsTemplate("blankID", emptyResults, commitID)
     expect(issues).not.toContain("Fails")
     expect(issues).not.toContain("Warnings")
     expect(issues).not.toContain("Messages")
   })
 
   it("shows no tables for results without messages", () => {
-    const issues = githubResultsTemplate("blankID", commitID, failsResultsWithoutMessages)
+    const issues = githubResultsTemplate("blankID", failsResultsWithoutMessages, commitID)
     expect(issues).not.toContain("Fails")
     expect(issues).not.toContain("Warnings")
     expect(issues).not.toContain("Messages")
   })
 
   it("Shows the failing messages in a table", () => {
-    const issues = githubResultsTemplate("blankID", commitID, failsResults)
+    const issues = githubResultsTemplate("blankID", failsResults, commitID)
     expect(issues).toContain("Fails")
     expect(issues).not.toContain("Warnings")
   })
 
   it("Shows the warning messages in a table", () => {
-    const issues = githubResultsTemplate("blankID", commitID, warnResults)
+    const issues = githubResultsTemplate("blankID", warnResults, commitID)
     expect(issues).toContain("Warnings")
     expect(issues).not.toContain("Fails")
   })
 
   it("does not break commonmark rules around line breaks", () => {
-    const issues = githubResultsTemplate("blankID", commitID, warnResults)
+    const issues = githubResultsTemplate("blankID", warnResults, commitID)
     expect(issues).not.toMatch(/(\r?\n){2}[ \t]+</)
   })
 
   it("Should include summary on top of message", () => {
-    const issues = githubResultsTemplate("blankID", commitID, summaryResults)
+    const issues = githubResultsTemplate("blankID", summaryResults, commitID)
     const expected = `
 <!--
   1 failure:  Failing message F...
@@ -65,34 +65,55 @@ describe("generating messages", () => {
   })
 
   it("leaves space between <td>s to allow GitHub to render message content as markdown if the message contains any", () => {
-    const issues = githubResultsTemplate("example-id", commitID, {
-      fails: [{ message: "**Failure:** Something failed!" }],
-      warnings: [{ message: "_Maybe you meant to run `yarn install`?_" }],
-      messages: [{ message: "```ts\nfunction add(a: number, b: number): number {\n  return a + b\n}\n```" }],
-      markdowns: [{ message: "List of things:\n\n* one\n* two\n* three\n" }],
-    })
+    const issues = githubResultsTemplate(
+      "example-id",
+      {
+        fails: [{ message: "**Failure:** Something failed!" }],
+        warnings: [{ message: "_Maybe you meant to run `yarn install`?_" }],
+        messages: [{ message: "```ts\nfunction add(a: number, b: number): number {\n  return a + b\n}\n```" }],
+        markdowns: [{ message: "List of things:\n\n* one\n* two\n* three\n" }],
+      },
+      commitID
+    )
 
     expect(issues).toMatchSnapshot()
   })
 
   it("avoids adding space inside the <td> for proper vertical alignment if the message does not contain any markdown", () => {
-    const issues = githubResultsTemplate("example-id", commitID, {
-      fails: [],
-      warnings: [],
-      messages: [{ message: "no markdown here" }],
-      markdowns: [],
-    })
+    const issues = githubResultsTemplate(
+      "example-id",
+      {
+        fails: [],
+        warnings: [],
+        messages: [{ message: "no markdown here" }],
+        markdowns: [],
+      },
+      commitID
+    )
 
     expect(issues).toMatchSnapshot()
   })
 
+  it("summary result matches snapshot, with a commit", () => {
+    expect(githubResultsTemplate("blankID", summaryResults, commitID)).toMatchSnapshot()
+  })
+
+  it("summary result matches snapshot, without a commit", () => {
+    expect(githubResultsTemplate("blankID", summaryResults)).toMatchSnapshot()
+  })
+
   it("shows a postfix message indicating the current commit ID at the time of comment", () => {
-    const issues = githubResultsTemplate("example-id", commitID, emptyResults)
+    const issues = githubResultsTemplate("example-id", emptyResults, commitID)
     expect(issues).toContain(dangerSignaturePostfix({} as any, commitID))
   })
 
+  it("shows a postfix message with no commit ID if not provided", () => {
+    const issues = githubResultsTemplate("example-id", emptyResults)
+    expect(issues).toContain(dangerSignaturePostfix({} as any))
+  })
+
   it("handles custom names/hrefs for a platform from results", () => {
-    const issues = githubResultsTemplate("example-id", commitID, resultsWithCustomMeta)
+    const issues = githubResultsTemplate("example-id", resultsWithCustomMeta, commitID)
     expect(issues).toContain(resultsWithCustomMeta.meta!.runtimeHref)
     expect(issues).toContain(resultsWithCustomMeta.meta!.runtimeName)
   })
@@ -147,7 +168,7 @@ describe("generating inline messages", () => {
   })
 
   it("Shows correct messages for inline/regular violations", () => {
-    const issues = githubResultsTemplate("blankID", commitID, inlineRegularResults)
+    const issues = githubResultsTemplate("blankID", inlineRegularResults, commitID)
 
     expect(issues).toMatchSnapshot()
   })

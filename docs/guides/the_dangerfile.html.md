@@ -38,6 +38,12 @@ export DANGER_BITBUCKETSERVER_HOST='xxxx' DANGER_BITBUCKETSERVER_USERNAME='yyyy'
 export DANGER_BITBUCKETCLOUD_USERNAME='xxxx'
 export DANGER_BITBUCKETCLOUD_PASSWORD='yyyy'
 export DANGER_BITBUCKETCLOUD_UUID='{zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz}'
+
+# or for BitBucket Cloud by OAuth key, and OAuth secret, UUID
+# You can get OAuth key from Settings > OAuth > Add consumer, put `https://bitbucket.org/site/oauth2/authorize` for `Callback URL`, and enable Pull requests Permission.
+export DANGER_BITBUCKETCLOUD_OAUTH_KEY='xxxx'
+export DANGER_BITBUCKETCLOUD_OAUTH_SECRET='yyyy'
+export DANGER_BITBUCKETCLOUD_UUID='{zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz}'
 ```
 
 Then the danger CLI will use authenticated API calls, which don't get this by API limits.

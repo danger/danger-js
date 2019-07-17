@@ -1,3 +1,5 @@
+import { BitBucketServerAPI } from "../platforms/bitbucket_server/BitBucketServerAPI"
+
 /** Key details about a repo */
 export interface RepoMetaData {
   /** A path like "artsy/eigen" */
@@ -26,7 +28,12 @@ export interface BitBucketServerJSONDSL {
 // This is `danger.bitbucket_server`
 
 /** The BitBucketServer metadata for your PR */
-export interface BitBucketServerDSL extends BitBucketServerJSONDSL {}
+export interface BitBucketServerDSL extends BitBucketServerJSONDSL {
+  /**
+   * An authenticated API so you can extend danger's behavior.
+   */
+  api: BitBucketServerAPI
+}
 
 /**
  * This is `danger.bitbucket_server.issues` It refers to the issues that are linked to the Pull Request.
