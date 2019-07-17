@@ -64,6 +64,21 @@ describe("generating messages for BitBucket cloud", () => {
     expect(complimentMock).not.toBeCalled()
   })
 
+  it("Shows custom icon for message", () => {
+    const issues = template("blankID", customIconMessagesResults, commitID)
+    expect(issues).toContain("Messages")
+    expect(issues).toContain("📝")
+    expect(issues).not.toContain(messageEmoji)
+    expect(issues).not.toContain("Warnings")
+    expect(issues).not.toContain("Fails")
+    expect(issues).toContain("Well done.")
+    expect(complimentMock).toBeCalled()
+  })
+
+  it("Mixed icon messages match snapshot", () => {
+    expect(template("blankID", multipleMessagesResults, commitID)).toMatchSnapshot()
+  })
+
   it("summary result matches snapshot, with a commit", () => {
     expect(template("blankID", summaryResults, commitID)).toMatchSnapshot()
   })

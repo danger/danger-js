@@ -48,6 +48,20 @@ describe("generating messages", () => {
     expect(issues).not.toContain("Fails")
   })
 
+  it("Uses the custom icon in the messages table", () => {
+    const issues = githubResultsTemplate("blankID", customIconMessagesResults, commitID)
+    expect(issues).toContain("Messages")
+    expect(issues).toContain("📝")
+    expect(issues).not.toContain(":book:")
+    expect(issues).not.toContain("Warnings")
+    expect(issues).not.toContain("Fails")
+  })
+
+  it("Mixed icon messages match snapshot", () => {
+    const issues = githubResultsTemplate("blankID", multipleMessagesResults, commitID)
+    expect(issues).toMatchSnapshot()
+  })
+
   it("does not break commonmark rules around line breaks", () => {
     const issues = githubResultsTemplate("blankID", warnResults, commitID)
     expect(issues).not.toMatch(/(\r?\n){2}[ \t]+</)
