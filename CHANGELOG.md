@@ -15,7 +15,7 @@
 
 <!-- Your comment below this -->
 
-- Improve Performance by Caching BitBucket Cloud Commits - [@HelloCore]
+- Improve Performance by Caching BitBucket Cloud Commits - [@hellocore]
 
 # 9.0.4
 
