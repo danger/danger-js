@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Add compliment message to comment template on Bitbucket Cloud - [@HelloCore]
+
 # 9.0.4
 
 - Expose BitBucketServerAPI - [@NMinhNguyen]
