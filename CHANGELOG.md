@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Improve Performance by Caching BitBucket Cloud Commits - [@hellocore]
 - Add compliment message to comment template on Bitbucket Cloud - [@hellocore]
 
 # 9.0.4

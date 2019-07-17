@@ -86,6 +86,17 @@ describe("API testing - BitBucket Cloud", () => {
     expect(result).toEqual(["commit"])
   })
 
+  it("should not fetch commits on the second time", async () => {
+    const mockJsonResult = jest.fn().mockReturnValue({ next: undefined, values: ["commit"] })
+    jsonResult = mockJsonResult
+
+    await api.getPullRequestCommits()
+    const result2 = await api.getPullRequestCommits()
+
+    expect(mockJsonResult).toBeCalledTimes(1)
+    expect(result2).toEqual(["commit"])
+  })
+
   it("getPullRequestDiff", async () => {
     api.fetch = fetchText
     let text = await api.getPullRequestDiff()

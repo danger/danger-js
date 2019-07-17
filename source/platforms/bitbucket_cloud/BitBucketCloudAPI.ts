@@ -70,6 +70,7 @@ export class BitBucketCloudAPI {
 
   private readonly d = debug("BitBucketCloudAPI")
   private pr: BitBucketCloudPRDSL | undefined
+  private commits: BitBucketCloudCommit[] | undefined
   private baseURL = "https://api.bitbucket.org/2.0"
   private oauthURL = "https://bitbucket.org/site/oauth2/access_token"
 
@@ -123,6 +124,9 @@ export class BitBucketCloudAPI {
   }
 
   getPullRequestCommits = async (): Promise<BitBucketCloudCommit[]> => {
+    if (this.commits) {
+      return this.commits
+    }
     let values: BitBucketCloudCommit[] = []
 
     // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/commits
@@ -138,7 +142,7 @@ export class BitBucketCloudAPI {
 
       nextPageURL = data.next
     } while (nextPageURL != null)
-
+    this.commits = values
     return values
   }
 
