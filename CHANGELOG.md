@@ -16,6 +16,7 @@
 <!-- Your comment below this -->
 
 - Improve Performance by Caching BitBucket Cloud Commits - [@hellocore]
+- Add compliment message to comment template on Bitbucket Cloud - [@hellocore]
 
 # 9.0.4
 
@@ -23,7 +24,7 @@
 
 # 9.0.3
 
-- Add support OAuth for BitBucket Cloud - [@HelloCore]
+- Add support OAuth for BitBucket Cloud - [@hellocore]
 - Allow `handleResults` to be called without a `git` object - [@jtreanor]
 
 # 9.0.2
@@ -32,11 +33,11 @@
 
 # 9.0.1
 
-- Fixed incorrect main comment template on Bitbucket Cloud - [@HelloCore]
+- Fixed incorrect main comment template on Bitbucket Cloud - [@hellocore]
 
 # 9.0.0
 
-- Add BitBucket Cloud & BitBucket Pipelines support - [@HelloCore]
+- Add BitBucket Cloud & BitBucket Pipelines support - [@hellocore]
 - Add GitLab missing states - [@f-meloni]
 - Fixes incorrect slug for builds from forks on Codefresh - [@stevenp]
 
@@ -1635,6 +1636,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@fwal]: https://github.com/fwal
 [@happylinks]: https://github.com/happylinks
 [@hongrich]: https://github.com/hongrich
+[@hellocore]: https://github.com/HelloCore
 [@imorente]: https://github.com/imorente
 [@joarwilk]: https://github.com/joarwilk
 [@johansteffner]: https://github.com/johansteffner
