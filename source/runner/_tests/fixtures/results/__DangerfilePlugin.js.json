@@ -1,8 +1,7 @@
 {
   "fails": [
     {
-      "message":
-        "@types dependencies were added to package.json, as a dependency for others.<br/><i>You need to move &#64;types/danger into \"devDependencies\"?</i>"
+      "message": "@types dependencies were added to package.json, as a dependency for others.<br/><i>You need to move &#64;types/danger into \"devDependencies\"?</i>"
     }
   ],
   "warnings": [],
