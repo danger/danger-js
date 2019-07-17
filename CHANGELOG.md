@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Improve Performance by Caching BitBucket Cloud Commits - [@HelloCore]
+
 # 9.0.4
 
 - Expose BitBucketServerAPI - [@NMinhNguyen]
