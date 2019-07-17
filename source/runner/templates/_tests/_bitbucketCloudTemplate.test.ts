@@ -4,6 +4,8 @@ import {
   warnResults,
   failsResults,
   messagesResults,
+  customIconMessagesResults,
+  multipleMessagesResults,
   markdownResults,
   summaryResults,
   multipleSummaryResults,
@@ -105,6 +107,23 @@ describe("generating inline messages", () => {
   it("Shows the message", () => {
     const issues = inlineTemplate("blankID", messagesResults, "File.swift", 5)
     expect(issues).toContain(`- ${messageEmoji} Message`)
+    expect(issues).not.toContain(`- ${noEntryEmoji}`)
+    expect(issues).not.toContain(`- ${warningEmoji}`)
+  })
+
+  it("Shows message with custom icon", () => {
+    const issues = inlineTemplate("blankID", customIconMessagesResults, "File.swift", 10)
+    expect(issues).toContain("- 📝 Message with custom icon")
+    expect(issues).not.toContain(`- ${messageEmoji}`)
+    expect(issues).not.toContain(`- ${noEntryEmoji}`)
+    expect(issues).not.toContain(`- ${warningEmoji}`)
+  })
+
+  it("Shows mixed messages", () => {
+    const issues = inlineTemplate("blankID", multipleMessagesResults, "File.swift", 10)
+    expect(issues).toContain("- 📝 Message with custom icon")
+    expect(issues).toContain("- 🔔 Message with custom icon2")
+    expect(issues).toContain(`- ${messageEmoji} Test message`)
     expect(issues).not.toContain(`- ${noEntryEmoji}`)
     expect(issues).not.toContain(`- ${warningEmoji}`)
   })
