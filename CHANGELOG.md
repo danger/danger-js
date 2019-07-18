@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Added [two-way authentication](https://en.wikipedia.org/wiki/Mutual_authentication) support for gitlab - [@skyway777]
 - Improve Performance by Caching BitBucket Cloud Commits - [@hellocore]
 - Add compliment message to comment template on Bitbucket Cloud - [@hellocore]
 

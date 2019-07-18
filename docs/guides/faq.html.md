@@ -46,6 +46,16 @@ DEBUG="*" yarn danger ci
 
 This will print out a _lot_ of information.
 
+## I'm using two-way authentication in my Gitlab
+
+You can use env-variables for working with certificates in Gitlab. E.g:
+
+```sh
+GITLAB_SSL_KEY=/path/to/my/key GITLAB_SSL_CERT=/path/to/mycert NODE_EXTRA_CA_CERTS=/path/to/my/ca/certs yarn danger pr https://my-gitlab/my-project/mr/453
+```
+
+Also you can set env variables in your Gitlab GUI
+
 ## Circle CI doesnt run my build consistently
 
 Yeah... We're struggling with that one. It's something we keep taking stabs at improving, so [keep an eye on the
