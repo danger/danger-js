@@ -35,7 +35,7 @@ import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
 import { debug } from "../debug"
 import chalk from "chalk"
-import { sentence, href } from "./DangerUtils"
+import { sentence, href, compliment } from "./DangerUtils"
 import { DangerRunner } from "./runners/runner"
 import { GitDSL } from "../dsl/GitDSL"
 import { DangerDSL } from "../dsl/DangerDSL"
@@ -421,11 +421,6 @@ export class Executor {
       markdowns: [{ message: exceptionRaisedTemplate(error) }],
     }
   }
-}
-
-const compliment = () => {
-  const compliments = ["Well done.", "Congrats.", "Woo!", "Yay.", "Jolly good show.", "Good on 'ya.", "Nice work."]
-  return compliments[Math.floor(Math.random() * compliments.length)]
 }
 
 const messageForResults = (results: DangerResults) => {

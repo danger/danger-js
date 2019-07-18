@@ -1,11 +1,13 @@
 import { DangerResults } from "../../dsl/DangerResults"
 import { Violation } from "../../dsl/Violation"
+import { compliment } from "../DangerUtils"
 
 // BitBucket Cloud supports these emojis 🎉
 const noEntryEmoji = "❌"
 const warningEmoji = "⚠️"
 const messageEmoji = "✨"
 const signatureEmoji = "🚫"
+const successEmoji = "🎉"
 
 export const dangerSignature = (results: DangerResults) => {
   let meta = results.meta || { runtimeName: "dangerJS", runtimeHref: "https://danger.systems/js" }
@@ -51,8 +53,14 @@ ${violations.map(v => `  | ${emoji} - ${v.message} |`).join("\n")}
  * @returns {string} HTML
  */
 export function template(dangerID: string, results: DangerResults, commitID?: string): string {
+  let summaryMessage: string
+  if (!results.fails.length && !results.warnings.length) {
+    summaryMessage = `${successEmoji}  All green. ${compliment()}`
+  } else {
+    summaryMessage = messageForResultWithIssues
+  }
   return `
-  ${messageForResultWithIssues}
+  ${summaryMessage}
 
   ${buildMarkdownTable("Fails", noEntryEmoji, results.fails)}
   ${buildMarkdownTable("Warnings", warningEmoji, results.warnings)}
