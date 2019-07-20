@@ -1,3 +1,5 @@
+// Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
+
 /**
  * The result of user doing warn, message or fail, built this way for
  * expansion later.

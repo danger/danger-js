@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Fixes TS declarations - [@orta]
 - Improve Performance by Caching BitBucket Cloud Commits - [@hellocore]
 - Add compliment message to comment template on Bitbucket Cloud - [@hellocore]
 
