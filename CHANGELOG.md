@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Fix Github Actions documentation - [@ravanscafi]
 - Improve Performance by Caching BitBucket Cloud Commits - [@hellocore]
 - Add compliment message to comment template on Bitbucket Cloud - [@hellocore]
 - Add option to set custom icon in messages - [@rohit-smpx]
@@ -1653,6 +1654,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@patrickkempff]: https://github.com/patrickkempff
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@randak]: https://github.com/randak
+[@ravanscafi]: https://github.com/ravanscafi
 [@rohit-smpx]: https://github.com/rohit-smpx
 [@sajjadzamani]: https://github.com/sajjadzamani
 [@sebinsua]: https://github.com/sebinsua
