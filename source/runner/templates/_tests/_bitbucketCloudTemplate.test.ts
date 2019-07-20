@@ -4,6 +4,8 @@ import {
   warnResults,
   failsResults,
   messagesResults,
+  customIconMessagesResults,
+  multipleMessagesResults,
   markdownResults,
   summaryResults,
   multipleSummaryResults,
@@ -62,6 +64,21 @@ describe("generating messages for BitBucket cloud", () => {
     expect(complimentMock).not.toBeCalled()
   })
 
+  it("Shows custom icon for message", () => {
+    const issues = template("blankID", customIconMessagesResults, commitID)
+    expect(issues).toContain("Messages")
+    expect(issues).toContain("📝")
+    expect(issues).not.toContain(messageEmoji)
+    expect(issues).not.toContain("Warnings")
+    expect(issues).not.toContain("Fails")
+    expect(issues).toContain("Well done.")
+    expect(complimentMock).toBeCalled()
+  })
+
+  it("Mixed icon messages match snapshot", () => {
+    expect(template("blankID", multipleMessagesResults, commitID)).toMatchSnapshot()
+  })
+
   it("summary result matches snapshot, with a commit", () => {
     expect(template("blankID", summaryResults, commitID)).toMatchSnapshot()
   })
@@ -105,6 +122,23 @@ describe("generating inline messages", () => {
   it("Shows the message", () => {
     const issues = inlineTemplate("blankID", messagesResults, "File.swift", 5)
     expect(issues).toContain(`- ${messageEmoji} Message`)
+    expect(issues).not.toContain(`- ${noEntryEmoji}`)
+    expect(issues).not.toContain(`- ${warningEmoji}`)
+  })
+
+  it("Shows message with custom icon", () => {
+    const issues = inlineTemplate("blankID", customIconMessagesResults, "File.swift", 10)
+    expect(issues).toContain("- 📝 Message with custom icon")
+    expect(issues).not.toContain(`- ${messageEmoji}`)
+    expect(issues).not.toContain(`- ${noEntryEmoji}`)
+    expect(issues).not.toContain(`- ${warningEmoji}`)
+  })
+
+  it("Shows mixed messages", () => {
+    const issues = inlineTemplate("blankID", multipleMessagesResults, "File.swift", 10)
+    expect(issues).toContain("- 📝 Message with custom icon")
+    expect(issues).toContain("- 🔔 Message with custom icon2")
+    expect(issues).toContain(`- ${messageEmoji} Test message`)
     expect(issues).not.toContain(`- ${noEntryEmoji}`)
     expect(issues).not.toContain(`- ${warningEmoji}`)
   })

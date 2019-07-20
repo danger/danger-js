@@ -64,6 +64,13 @@ export const inlineMessageResults: DangerResults = {
   markdowns: [],
 }
 
+export const inlineCustomIconMessagesResults: DangerResults = {
+  fails: [],
+  warnings: [],
+  messages: [{ message: "Message with custom icon", icon: "📝", file: "File.swift", line: 10 }],
+  markdowns: [],
+}
+
 export const inlineRegularResults: DangerResults = {
   messages: [],
   warnings: [{ message: "Test message", file: "File.swift", line: 10 }, { message: "Warning message" }],
@@ -101,6 +108,24 @@ export const messagesResults: DangerResults = {
   fails: [],
   warnings: [],
   messages: [{ message: "Message" }],
+  markdowns: [],
+}
+
+export const customIconMessagesResults: DangerResults = {
+  fails: [],
+  warnings: [],
+  messages: [{ message: "Message with custom icon", icon: "📝" }],
+  markdowns: [],
+}
+
+export const multipleMessagesResults: DangerResults = {
+  fails: [],
+  warnings: [],
+  messages: [
+    { message: "Message with custom icon", icon: "📝" },
+    { message: "Message with custom icon2", icon: "🔔" },
+    { message: "Test message" }
+  ],
   markdowns: [],
 }
 
