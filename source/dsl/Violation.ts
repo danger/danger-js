@@ -11,6 +11,9 @@ export interface Violation {
 
   /** Optional line in the file */
   line?: number
+
+  /** Optional icon for table (Only valid for messages) */
+  icon?: string
 }
 
 /// End of Danger DSL definition

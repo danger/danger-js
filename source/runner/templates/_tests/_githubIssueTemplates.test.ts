@@ -5,8 +5,11 @@ import {
   failsResults,
   summaryResults,
   messagesResults,
+  customIconMessagesResults,
+  multipleMessagesResults,
   markdownResults,
   inlineRegularResults,
+  inlineCustomIconMessagesResults,
   inlineRegularResultsForTheSameLine,
   resultsWithCustomMeta,
 } from "../../_tests/fixtures/ExampleDangerResults"
@@ -43,6 +46,20 @@ describe("generating messages", () => {
     const issues = githubResultsTemplate("blankID", warnResults, commitID)
     expect(issues).toContain("Warnings")
     expect(issues).not.toContain("Fails")
+  })
+
+  it("Uses the custom icon in the messages table", () => {
+    const issues = githubResultsTemplate("blankID", customIconMessagesResults, commitID)
+    expect(issues).toContain("Messages")
+    expect(issues).toContain("📝")
+    expect(issues).not.toContain(":book:")
+    expect(issues).not.toContain("Warnings")
+    expect(issues).not.toContain("Fails")
+  })
+
+  it("Mixed icon messages match snapshot", () => {
+    const issues = githubResultsTemplate("blankID", multipleMessagesResults, commitID)
+    expect(issues).toMatchSnapshot()
   })
 
   it("does not break commonmark rules around line breaks", () => {
@@ -141,6 +158,24 @@ describe("generating inline messages", () => {
     expect(issues).not.toContain("- :warning:")
   })
 
+
+  it("Shows message with custom icon", () => {
+    const issues = githubResultsInlineTemplate("blankID", customIconMessagesResults, "File.swift", 10)
+    expect(issues).toContain("- 📝 Message with custom icon")
+    expect(issues).not.toContain("- :book:")
+    expect(issues).not.toContain("- :no_entry_sign:")
+    expect(issues).not.toContain("- :warning:")
+  })
+
+  it("Shows mixed messages", () => {
+    const issues = githubResultsInlineTemplate("blankID", multipleMessagesResults, "File.swift", 10)
+    expect(issues).toContain("- 📝 Message with custom icon")
+    expect(issues).toContain("- 🔔 Message with custom icon2")
+    expect(issues).toContain("- :book: Test message")
+    expect(issues).not.toContain("- :no_entry_sign:")
+    expect(issues).not.toContain("- :warning:")
+  })
+
   it("Should include summary on top of message", () => {
     const issues = githubResultsInlineTemplate("blankID", summaryResults, "File.swift", 10)
     const expected = `
@@ -169,6 +204,12 @@ describe("generating inline messages", () => {
 
   it("Shows correct messages for inline/regular violations", () => {
     const issues = githubResultsTemplate("blankID", inlineRegularResults, commitID)
+
+    expect(issues).toMatchSnapshot()
+  })
+
+  it("Shows correct messages with custom icon for inline/regular violations", () => {
+    const issues = githubResultsTemplate("blankID", inlineCustomIconMessagesResults, commitID)
 
     expect(issues).toMatchSnapshot()
   })

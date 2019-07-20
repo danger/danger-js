@@ -1,11 +1,13 @@
 import { DangerResults } from "../../dsl/DangerResults"
 import { Violation } from "../../dsl/Violation"
+import { compliment } from "../DangerUtils"
 
 // BitBucket Cloud supports these emojis 🎉
 const noEntryEmoji = "❌"
 const warningEmoji = "⚠️"
 const messageEmoji = "✨"
 const signatureEmoji = "🚫"
+const successEmoji = "🎉"
 
 export const dangerSignature = (results: DangerResults) => {
   let meta = results.meta || { runtimeName: "dangerJS", runtimeHref: "https://danger.systems/js" }
@@ -30,7 +32,7 @@ export const dangerSignaturePostfix = (results: DangerResults, commitID?: string
   `
 }
 
-function buildMarkdownTable(header: string, emoji: string, violations: Violation[]): string {
+function buildMarkdownTable(header: string, defaultEmoji: string, violations: Violation[]): string {
   if (violations.length === 0 || violations.every(violation => !violation.message)) {
     return ""
   }
@@ -38,7 +40,7 @@ function buildMarkdownTable(header: string, emoji: string, violations: Violation
 
   |      ${violations.length} ${header} |
   | --- |
-${violations.map(v => `  | ${emoji} - ${v.message} |`).join("\n")}
+${violations.map(v => `  | ${v.icon || defaultEmoji} - ${v.message} |`).join("\n")}
 
   `
 }
@@ -51,8 +53,14 @@ ${violations.map(v => `  | ${emoji} - ${v.message} |`).join("\n")}
  * @returns {string} HTML
  */
 export function template(dangerID: string, results: DangerResults, commitID?: string): string {
+  let summaryMessage: string
+  if (!results.fails.length && !results.warnings.length) {
+    summaryMessage = `${successEmoji}  All green. ${compliment()}`
+  } else {
+    summaryMessage = messageForResultWithIssues
+  }
   return `
-  ${messageForResultWithIssues}
+  ${summaryMessage}
 
   ${buildMarkdownTable("Fails", noEntryEmoji, results.fails)}
   ${buildMarkdownTable("Warnings", warningEmoji, results.warnings)}
@@ -67,8 +75,8 @@ export function template(dangerID: string, results: DangerResults, commitID?: st
 }
 
 export function inlineTemplate(dangerID: string, results: DangerResults, file: string, line: number): string {
-  const printViolation = (emoji: string) => (violation: Violation) => {
-    return `- ${emoji} ${violation.message}`
+  const printViolation = (defaultEmoji: string) => (violation: Violation) => {
+    return `- ${violation.icon || defaultEmoji} ${violation.message}`
   }
 
   return `
