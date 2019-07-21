@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+# 9.0.5
+
 - Fixes TS declarations - [@orta]
 - Fix Github Actions documentation - [@ravanscafi]
 - Improve Performance by Caching BitBucket Cloud Commits - [@hellocore]
