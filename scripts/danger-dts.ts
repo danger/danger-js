@@ -83,6 +83,9 @@ import * as GitHub from "@octokit/rest"
     .filter(line => {
       return !line.startsWith("import") && !line.includes("* @type ")
     })
+    .filter(line => {
+      return !line.includes("Please don't have")
+    })
     .join("\n")
 
   const trimmedWhitespaceLines = fileOutput.replace(/\n\s*\n\s*\n/g, "\n")
