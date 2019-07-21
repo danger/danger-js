@@ -54,6 +54,7 @@
     "release": "release-it",
     "test": "jest",
     "test:fixtures": "node ./scripts/run-fixtures.js",
+    "test:update-fixtures": "yarn test:fixtures --update",
     "test:watch": "jest --watch",
     "lint": "tslint \"source/**/*.ts\"",
     "lint:fix": "tslint \"source/**/*.ts\" --fix",

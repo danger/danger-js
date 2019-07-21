@@ -32,7 +32,7 @@ export const dangerSignaturePostfix = (results: DangerResults, commitID?: string
   `
 }
 
-function buildMarkdownTable(header: string, emoji: string, violations: Violation[]): string {
+function buildMarkdownTable(header: string, defaultEmoji: string, violations: Violation[]): string {
   if (violations.length === 0 || violations.every(violation => !violation.message)) {
     return ""
   }
@@ -40,7 +40,7 @@ function buildMarkdownTable(header: string, emoji: string, violations: Violation
 
   |      ${violations.length} ${header} |
   | --- |
-${violations.map(v => `  | ${emoji} - ${v.message} |`).join("\n")}
+${violations.map(v => `  | ${v.icon || defaultEmoji} - ${v.message} |`).join("\n")}
 
   `
 }
@@ -75,8 +75,8 @@ export function template(dangerID: string, results: DangerResults, commitID?: st
 }
 
 export function inlineTemplate(dangerID: string, results: DangerResults, file: string, line: number): string {
-  const printViolation = (emoji: string) => (violation: Violation) => {
-    return `- ${emoji} ${violation.message}`
+  const printViolation = (defaultEmoji: string) => (violation: Violation) => {
+    return `- ${violation.icon || defaultEmoji} ${violation.message}`
   }
 
   return `

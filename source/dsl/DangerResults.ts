@@ -105,7 +105,7 @@ export function validateResults(results: DangerResults) {
         )
       }
       // Warn if anything other than the initial API is on a violation
-      const officialAPI = ["message", "line", "file"]
+      const officialAPI = ["message", "line", "file", "icon"]
       const keys = Object.keys(v).filter(f => !officialAPI.includes(f))
       if (keys.length) {
         console.warn(`Received unexpected key in Violation, expected only ${officialAPI} but got ${Object.keys(v)}`)
