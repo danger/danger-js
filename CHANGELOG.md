@@ -15,7 +15,7 @@
 
 <!-- Your comment below this -->
 
-# 9.0.5
+# 9.1.1
 
 - Fixes TS declarations - [@orta]
 - Fix Github Actions documentation - [@ravanscafi]
@@ -23,7 +23,7 @@
 - Add compliment message to comment template on Bitbucket Cloud - [@hellocore]
 - Add option to set custom icon in messages - [@rohit-smpx]
 
-# 9.0.4
+# 9.1.0
 
 - Expose BitBucketServerAPI - [@NMinhNguyen]
 

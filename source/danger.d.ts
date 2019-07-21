@@ -1660,6 +1660,9 @@ interface Violation {
 
   /** Optional line in the file */
   line?: number
+
+  /** Optional icon for table (Only valid for messages) */
+  icon?: string
 }
 /**
  * Describes the possible arguments that
@@ -1729,19 +1732,18 @@ declare function warn(message: MarkdownString, file?: string, line?: number): vo
  * @param {number | undefined} line the line which this message should be attached to
  */
 declare function message(message: MarkdownString, file?: string, line?: number): void
-
 /**
  * Adds a message to the Danger table, the only difference between this
  * and warn is the default emoji which shows in the table.
  * You can also specifiy a custom emoji to show in the table for each message
- * 
+ *
  * @param {MarkdownString} message the String to output
  * @param {{file?: string, line?: string, icon?: MarkdownString}} [opts]
  * @param opts.file a file which this message should be attached to
  * @param opts.line the line which this message should be attached to
  * @param opts.icon icon string or image to show in table, take care not to break table formatting
  */
-declare function message(message: MarkdownString, opts?: { file?: string, line?: number, icon?: MarkdownString }): void
+declare function message(message: MarkdownString, opts?: { file?: string; line?: number; icon?: MarkdownString }): void
 
 /**
  * Adds raw markdown into the Danger comment, under the table
