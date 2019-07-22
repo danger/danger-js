@@ -1,3 +1,5 @@
+// Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
+
 import { GitCommit } from "./Commit"
 import { Chainsmoker } from "../commands/utils/chainsmoker"
 

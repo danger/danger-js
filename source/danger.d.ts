@@ -5,7 +5,6 @@
 import * as GitHub from "@octokit/rest"
 
 type MarkdownString = string
-
 // TODO: extract out from BitBucket specifically, or create our own type
 
 interface BitBucketCloudJSONDSL {
@@ -174,7 +173,6 @@ interface BitBucketCloudPRActivity {
     title: string
   }
 }
-
 /** Key details about a repo */
 interface RepoMetaData {
   /** A path like "artsy/eigen" */
@@ -200,10 +198,32 @@ interface BitBucketServerJSONDSL {
   activities: BitBucketServerPRActivity[]
 }
 
+interface BitBucketServerAPIDSL {
+  /** Gets the contents of a file from a repo (defaults to yours) */
+  getFileContents(filePath: string, repoSlug?: string, refspec?: string): Promise<string>
+
+  /** Make a get call against the bitbucket server API */
+  get(path: string, headers: any, suppressErrors?: boolean): Promise<any>
+
+  /** Make a post call against the bitbucket server API */
+  post(path: string, headers: any, body: any, suppressErrors?: boolean): Promise<any>
+
+  /** Make a put call against the bitbucket server API */
+  put(path: string, headers: any, body: any): Promise<any>
+
+  /** Make a delete call against the bitbucket server API */
+  delete(path: string, headers: any, body: any): Promise<any>
+}
+
 // This is `danger.bitbucket_server`
 
 /** The BitBucketServer metadata for your PR */
-interface BitBucketServerDSL extends BitBucketServerJSONDSL {}
+interface BitBucketServerDSL extends BitBucketServerJSONDSL {
+  /**
+   * An authenticated API so you can extend danger's behavior.
+   */
+  api: BitBucketServerAPIDSL
+}
 
 /**
  * This is `danger.bitbucket_server.issues` It refers to the issues that are linked to the Pull Request.
@@ -522,8 +542,6 @@ interface GitCommitAuthor {
   /** ISO6801 date string */
   date: string
 }
-
-// Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
 /**
  * The shape of the JSON passed between Danger and a subprocess. It's built
  * to be expanded in the future.
@@ -1405,7 +1423,6 @@ interface GitHubReviewers {
   /** Teams that have been requested */
   teams: any[]
 }
-
 // TODO: extract out from BitBucket specifically, or create our own type
 
 // getPlatformReviewDSLRepresentation
@@ -1630,7 +1647,6 @@ interface GitLabMRCommit {
   committer_email: string
   committed_date: string
 }
-
 /**
  * The result of user doing warn, message or fail, built this way for
  * expansion later.
@@ -1644,6 +1660,9 @@ interface Violation {
 
   /** Optional line in the file */
   line?: number
+
+  /** Optional icon for table (Only valid for messages) */
+  icon?: string
 }
 /**
  * Describes the possible arguments that
@@ -1713,6 +1732,18 @@ declare function warn(message: MarkdownString, file?: string, line?: number): vo
  * @param {number | undefined} line the line which this message should be attached to
  */
 declare function message(message: MarkdownString, file?: string, line?: number): void
+/**
+ * Adds a message to the Danger table, the only difference between this
+ * and warn is the default emoji which shows in the table.
+ * You can also specifiy a custom emoji to show in the table for each message
+ *
+ * @param {MarkdownString} message the String to output
+ * @param {{file?: string, line?: string, icon?: MarkdownString}} [opts]
+ * @param opts.file a file which this message should be attached to
+ * @param opts.line the line which this message should be attached to
+ * @param opts.icon icon string or image to show in table, take care not to break table formatting
+ */
+declare function message(message: MarkdownString, opts?: { file?: string; line?: number; icon?: MarkdownString }): void
 
 /**
  * Adds raw markdown into the Danger comment, under the table

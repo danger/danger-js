@@ -1,4 +1,4 @@
-import { BitBucketServerAPI } from "../platforms/bitbucket_server/BitBucketServerAPI"
+// Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
 
 /** Key details about a repo */
 export interface RepoMetaData {
@@ -25,6 +25,23 @@ export interface BitBucketServerJSONDSL {
   activities: BitBucketServerPRActivity[]
 }
 
+export interface BitBucketServerAPIDSL {
+  /** Gets the contents of a file from a repo (defaults to yours) */
+  getFileContents(filePath: string, repoSlug?: string, refspec?: string): Promise<string>
+
+  /** Make a get call against the bitbucket server API */
+  get(path: string, headers: any, suppressErrors?: boolean): Promise<any>
+
+  /** Make a post call against the bitbucket server API */
+  post(path: string, headers: any, body: any, suppressErrors?: boolean): Promise<any>
+
+  /** Make a put call against the bitbucket server API */
+  put(path: string, headers: any, body: any): Promise<any>
+
+  /** Make a delete call against the bitbucket server API */
+  delete(path: string, headers: any, body: any): Promise<any>
+}
+
 // This is `danger.bitbucket_server`
 
 /** The BitBucketServer metadata for your PR */
@@ -32,7 +49,7 @@ export interface BitBucketServerDSL extends BitBucketServerJSONDSL {
   /**
    * An authenticated API so you can extend danger's behavior.
    */
-  api: BitBucketServerAPI
+  api: BitBucketServerAPIDSL
 }
 
 /**
