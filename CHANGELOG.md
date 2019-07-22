@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Added [two-way authentication](https://en.wikipedia.org/wiki/Mutual_authentication) support for gitlab - [@skyway777]
+
 # 9.1.1
 
 - Fixes TS declarations - [@orta]

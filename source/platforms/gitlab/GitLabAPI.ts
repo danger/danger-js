@@ -12,6 +12,8 @@ import {
 } from "../../dsl/GitLabDSL"
 
 import { Gitlab } from "gitlab"
+import { KyRequester } from "custom-node-gitlab-requester"
+
 import { Env } from "../../ci_source/ci_source"
 import { debug } from "../../debug"
 
@@ -20,6 +22,7 @@ export type GitLabAPIToken = string
 export interface GitLabAPICredentials {
   host: string
   token: GitLabAPIToken
+  requester: typeof KyRequester
 }
 
 export function getGitLabAPICredentialsFromEnv(env: Env): GitLabAPICredentials {
@@ -35,6 +38,7 @@ export function getGitLabAPICredentialsFromEnv(env: Env): GitLabAPICredentials {
   return {
     host,
     token: env["DANGER_GITLAB_API_TOKEN"],
+    requester: KyRequester,
   }
 }
 
