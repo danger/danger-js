@@ -15,8 +15,8 @@ export const fileLineToString = (file: string, line: number) => `  File: ${file}
 export const messageForResultWithIssues = `${warningEmoji}  Danger found some issues. Don't worry, everything is fixable.`
 
 export function inlineTemplate(dangerID: string, results: DangerResults, file: string, line: number): string {
-  const printViolation = (emoji: string) => (violation: Violation) => {
-    return `- ${emoji} ${violation.message}`
+  const printViolation = (defaultEmoji: string) => (violation: Violation) => {
+    return `- ${violation.icon || defaultEmoji} ${violation.message}`
   }
 
   return `
