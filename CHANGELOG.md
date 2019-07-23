@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+# 9.1.2
+
 - Add retry handling for API requests - [@jtreanor]
 
 # 9.1.1
