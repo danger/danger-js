@@ -10,7 +10,7 @@ import {
 } from "./bitbucketTemplateCommon"
 import { compliment } from "../DangerUtils"
 
-
+const successEmoji = "🎉"
 /**
  * Postfix signature to be attached comment generated / updated by danger.
  */
