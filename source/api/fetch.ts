@@ -4,11 +4,53 @@ import * as node_fetch from "node-fetch"
 import HttpProxyAgent from "http-proxy-agent"
 import HttpsProxyAgent from "https-proxy-agent"
 
+import AsyncRetry from "async-retry"
+
 const d = debug("networking")
 declare const global: any
 
 const isJest = typeof jest !== "undefined"
 const warn = isJest ? () => "" : console.warn
+
+const shouldRetryRequest = (res: node_fetch.Response) => {
+  // Don't retry 4xx errors other than 401. All 4xx errors can probably be ignored once
+  // the Github API issue causing https://github.com/danger/peril/issues/440 is fixed
+  return res.status === 401 || (res.status >= 500 && res.status <= 599)
+}
+
+/**
+ * Adds retry handling to fetch requests
+ *
+ * @param {(string | fetch.Request)} url the request
+ * @param {fetch.RequestInit} [init] the usual options
+ * @returns {Promise<fetch.Response>} network-y promise
+ */
+export async function retryableFetch(
+  url: string | node_fetch.Request,
+  init: node_fetch.RequestInit
+): Promise<node_fetch.Response> {
+  const retries = isJest ? 1 : 3
+  return AsyncRetry(
+    async (_, attempt) => {
+      const originalFetch = node_fetch.default
+      const res = await originalFetch(url, init)
+
+      // Throwing an error will trigger a retry
+      if (attempt <= retries && shouldRetryRequest(res)) {
+        throw new Error(`Request failed [${res.status}]: ${res.url}. Attempting retry.`)
+      }
+
+      return res
+    },
+    {
+      retries: retries,
+      onRetry: (error, attempt) => {
+        warn(error.message)
+        warn(`Retry ${attempt} of ${retries}.`)
+      },
+    }
+  )
+}
 
 /**
  * Adds logging to every fetch request if a global var for `verbose` is set to true
@@ -72,8 +114,7 @@ export function api(
     init.agent = secure ? new HttpsProxyAgent(proxy) : new HttpProxyAgent(proxy)
   }
 
-  const originalFetch = node_fetch.default
-  return originalFetch(url, init).then(async (response: node_fetch.Response) => {
+  return retryableFetch(url, init).then(async (response: node_fetch.Response) => {
     // Handle failing errors
     if (!suppressErrorReporting && !response.ok) {
       // we should not modify the response when an error occur to allow body stream to be read again if needed

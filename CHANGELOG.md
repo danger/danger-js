@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Add retry handling for API requests - [@jtreanor]
+
 # 9.1.1
 
 - Fixes TS declarations - [@orta]
