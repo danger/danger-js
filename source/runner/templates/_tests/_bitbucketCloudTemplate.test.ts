@@ -8,7 +8,8 @@ import {
   summaryResults,
   multipleSummaryResults,
 } from "../../_tests/fixtures/ExampleDangerResults"
-import { dangerSignaturePostfix, template, inlineTemplate } from "../bitbucketCloudTemplate"
+import { inlineTemplate } from "../bitbucketTemplateCommon"
+import { dangerSignaturePostfix, template } from "../bitbucketCloudTemplate"
 import { DangerResults } from "../../../dsl/DangerResults"
 
 const commitID = "e70f3d6468f61a4bef68c9e6eaba9166b096e23c"

@@ -5,7 +5,7 @@ import HttpsProxyAgent from "https-proxy-agent"
 import { URLSearchParams } from "url"
 
 import { Env } from "../../ci_source/ci_source"
-import { dangerIDToString } from "../../runner/templates/bitbucketCloudTemplate"
+import { dangerIDToString } from "../../runner/templates/bitbucketTemplateCommon"
 import { api as fetch } from "../../api/fetch"
 import {
   BitBucketCloudPagedResponse,

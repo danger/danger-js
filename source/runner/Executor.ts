@@ -22,15 +22,11 @@ import {
   messageForResultWithIssues as githubMessageForResultWithIssues,
 } from "./templates/githubIssueTemplate"
 import {
-  template as bitbucketServerTemplate,
-  inlineTemplate as bitbucketServerInlineTemplate,
+  inlineTemplate as bitbucketInlineTemplate,
   messageForResultWithIssues as bitbucketMessageForResultWithIssues,
-} from "./templates/bitbucketServerTemplate"
-import {
-  template as bitbucketCloudTemplate,
-  inlineTemplate as bitbucketCloudInlineTemplate,
-  messageForResultWithIssues as bitbucketCloudMessageForResultWithIssues,
-} from "./templates/bitbucketCloudTemplate"
+} from "./templates/bitbucketTemplateCommon"
+import { template as bitbucketServerTemplate } from "./templates/bitbucketServerTemplate"
+import { template as bitbucketCloudTemplate } from "./templates/bitbucketCloudTemplate"
 import exceptionRaisedTemplate from "./templates/exceptionRaisedTemplate"
 
 import { debug } from "../debug"
@@ -396,10 +392,8 @@ export class Executor {
     const results = inlineResultsIntoResults(inlineResults)
 
     let comment
-    if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
-      comment = bitbucketServerInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
-    } else if (process.env["DANGER_BITBUCKETCLOUD_UUID"]) {
-      comment = bitbucketCloudInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
+    if (process.env["DANGER_BITBUCKETSERVER_HOST"] || process.env["DANGER_BITBUCKETCLOUD_UUID"]) {
+      comment = bitbucketInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
     } else {
       comment = githubResultsInlineTemplate(this.options.dangerID, results, inlineResults.file, inlineResults.line)
     }
@@ -432,10 +426,8 @@ const messageForResults = (results: DangerResults) => {
   if (!results.fails.length && !results.warnings.length) {
     return `All green. ${compliment()}`
   } else {
-    if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
+    if (process.env["DANGER_BITBUCKETSERVER_HOST"] || process.env["DANGER_BITBUCKETCLOUD_UUID"]) {
       return bitbucketMessageForResultWithIssues
-    } else if (process.env["DANGER_BITBUCKETCLOUD_UUID"]) {
-      return bitbucketCloudMessageForResultWithIssues
     } else {
       return githubMessageForResultWithIssues
     }

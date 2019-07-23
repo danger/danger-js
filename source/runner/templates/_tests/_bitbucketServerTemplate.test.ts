@@ -7,7 +7,8 @@ import {
   messagesResults,
   markdownResults,
 } from "../../_tests/fixtures/ExampleDangerResults"
-import { dangerSignaturePostfix, template, inlineTemplate } from "../bitbucketServerTemplate"
+import { inlineTemplate } from "../bitbucketTemplateCommon"
+import { dangerSignaturePostfix, template } from "../bitbucketServerTemplate"
 import { DangerResults } from "../../../dsl/DangerResults"
 
 const noEntryEmoji = "\u274C"

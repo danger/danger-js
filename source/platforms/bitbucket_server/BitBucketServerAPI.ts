@@ -17,7 +17,7 @@ import {
 import { Comment } from "../platform"
 
 import { Env } from "../../ci_source/ci_source"
-import { dangerIDToString } from "../../runner/templates/bitbucketServerTemplate"
+import { dangerIDToString } from "../../runner/templates/bitbucketTemplateCommon"
 import { api as fetch } from "../../api/fetch"
 
 // Note that there are parts of this class which don't seem to be
