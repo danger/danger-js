@@ -4,7 +4,8 @@
 // yarn test:fixtures
 
 // Toggle this on to update the JSON files for each run
-const writeResults = false
+// or use `yarn test:update-fixtures`
+const writeResults = false || process.argv.includes('--update')
 
 const fs = require("fs")
 const child_process = require("child_process")
@@ -36,7 +37,6 @@ console.log("Running Fixures for Danger JS. This uses the built version of dange
 // Runs the danger runner over a fixture, then compares it to the
 // fixtured JSON data
 const runDangerfile = fixture => {
-  let allLogs = ""
   const dangerfile = `${dangerFileFixtures}/${fixture}`
   const dangerfileResults = `${dangerFileResultsFixtures}/${fixture}.json`
 
@@ -65,12 +65,11 @@ const runDangerfile = fixture => {
     data = data.toString()
     // console.log(`stdout: ${data}`)
 
-    const trimmed = data.trim()
     const maybeJSON = getJSONURLFromSTDOUT(data)
     const url = maybeJSON.replace("danger-results:/", "")
     const runtimeResults = JSON.parse(fs.readFileSync(url, "utf8"))
     if (writeResults) {
-      fs.writeFileSync(dangerfileResults, trimmed)
+      fs.writeFileSync(dangerfileResults, JSON.stringify(runtimeResults, null, 2))
     }
 
     const fixturedResults = JSON.parse(fs.readFileSync(dangerfileResults, "utf8"))
@@ -108,7 +107,7 @@ const next = () => {
   }
 }
 
-process.on("unhandledRejection", function(reason, _p) {
+process.on("unhandledRejection", function (reason, _p) {
   console.log(chalk.red("Error: "), reason)
   process.exitCode = 1
 })

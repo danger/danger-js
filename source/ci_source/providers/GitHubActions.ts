@@ -18,7 +18,7 @@ import { readFileSync, existsSync } from "fs"
  * }
  *
  * action "Danger JS" {
- *   uses = "danger/danger-js"
+ *   uses = "danger/danger-js@master"
  *   secrets = ["GITHUB_TOKEN"]
  * }
  * ```
@@ -43,7 +43,7 @@ import { readFileSync, existsSync } from "fs"
  *
  * ```
  * action "Danger JS" {
- *   uses = "danger/danger-js"
+ *   uses = "danger/danger-js@master"
  *   secrets = ["GITHUB_TOKEN"]
  * }
  * ```

@@ -5,11 +5,11 @@ import { Violation, isInline } from "../../dsl/Violation"
  * Converts a set of violations into a HTML table
  *
  * @param {string} name User facing title of table
- * @param {string} emoji Emoji name to show next to each item
+ * @param {string} defaultEmoji Emoji name to show next to each item
  * @param {Violation[]} violations for table
  * @returns {string} HTML
  */
-function table(name: string, emoji: string, violations: Violation[]): string {
+function table(name: string, defaultEmoji: string, violations: Violation[]): string {
   if (noViolationsOrAllOfThemEmpty(violations)) {
     return ""
   }
@@ -21,12 +21,12 @@ function table(name: string, emoji: string, violations: Violation[]): string {
       <th width="100%" data-danger-table="true">${name}</th>
     </tr>
   </thead>
-  <tbody>${violations.map(violation => htmlForValidation(emoji, violation)).join("\n")}</tbody>
+  <tbody>${violations.map(violation => htmlForValidation(defaultEmoji, violation)).join("\n")}</tbody>
 </table>
 `
 }
 
-function htmlForValidation(emoji: string, violation: Violation) {
+function htmlForValidation(defaultEmoji: string, violation: Violation) {
   let message = isInline(violation)
     ? `**${violation.file!}#L${violation.line!}** - ${violation.message}`
     : violation.message
@@ -35,8 +35,10 @@ function htmlForValidation(emoji: string, violation: Violation) {
     message = `\n\n  ${message}\n  `
   }
 
+  const emojiString = `:${defaultEmoji}:`;
+
   return `<tr>
-      <td>:${emoji}:</td>
+      <td>${violation.icon || emojiString}</td>
       <td>${message}</td>
     </tr>
   `
@@ -129,8 +131,9 @@ ${results.markdowns.map(v => v.message).join("\n\n")}
 }
 
 export function inlineTemplate(dangerID: string, results: DangerResults, file: string, line: number): string {
-  const printViolation = (emoji: string) => (violation: Violation) => {
-    return `- :${emoji}: ${violation.message}`
+  const printViolation = (defaultEmoji: string) => (violation: Violation) => {
+    const emojiString = `:${defaultEmoji}:`;
+    return `- ${violation.icon || emojiString} ${violation.message}`
   }
 
   return `

@@ -8,7 +8,7 @@ import {
 } from "../../dsl/BitBucketServerDSL"
 import { GitCommit } from "../../dsl/Commit"
 
-import { BitBucketServerAPI } from "../bitbucket_server/BitBucketServerAPI"
+import { BitBucketServerAPI } from "./BitBucketServerAPI"
 
 import { GitJSONToGitDSLConfig, gitJSONToGitDSL, GitStructuredDiff } from "../git/gitJSONToGitDSL"
 
