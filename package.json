@@ -94,6 +94,7 @@
     "@babel/plugin-transform-typescript": "7.1.0",
     "@babel/preset-env": "7.1.0",
     "@babel/traverse": "7.1.0",
+    "@types/async-retry": "^1.4.1",
     "@types/debug": "0.0.30",
     "@types/get-stdin": "^5.0.1",
     "@types/http-proxy-agent": "^2.0.1",
@@ -136,6 +137,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
     "@octokit/rest": "^16.14.1",
+    "async-retry": "1.2.3",
     "chalk": "^2.3.0",
     "commander": "^2.18.0",
     "debug": "^4.1.1",
