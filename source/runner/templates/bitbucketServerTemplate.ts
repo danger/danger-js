@@ -1,14 +1,10 @@
 import { DangerResults } from "../../dsl/DangerResults"
 import { Violation } from "../../dsl/Violation"
-import {
-  dangerIDToString,
-  messageForResultWithIssues,
-  dangerSignature,
-  noEntryEmoji,
-  warningEmoji,
-  messageEmoji,
-} from "./bitbucketTemplateCommon"
-
+import { dangerIDToString, dangerSignature } from "./bitbucketTemplateCommon"
+// This unicode emojis also work for old versions of bitbucket server, were emojis are not supported
+const noEntryEmoji = "\u274C"
+const warningEmoji = "⚠️"
+const messageEmoji = "\u2728"
 /**
  * Converts a set of violations into a Markdown section
  *
@@ -45,7 +41,7 @@ function resultsSection(name: string, emoji: string, violations: Violation[]): s
  * Postfix signature to be attached comment generated / updated by danger.
  */
 export const dangerSignaturePostfix = (results: DangerResults, commitID?: string) => {
-  let signature = dangerSignature(results)
+  let signature = dangerSignature(results, warningEmoji)
   if (commitID !== undefined) {
     signature = `${signature} against ${commitID}`
   }
@@ -65,7 +61,7 @@ export const dangerSignaturePostfix = (results: DangerResults, commitID?: string
  */
 export function template(dangerID: string, results: DangerResults, commitID?: string): string {
   return `
-${messageForResultWithIssues}
+
 
 ${resultsSection("Fails", noEntryEmoji, results.fails)}
 ${resultsSection("Warnings", warningEmoji, results.warnings)}

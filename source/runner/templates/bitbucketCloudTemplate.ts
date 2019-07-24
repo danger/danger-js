@@ -1,21 +1,19 @@
 import { DangerResults } from "../../dsl/DangerResults"
 import { Violation } from "../../dsl/Violation"
-import {
-  dangerIDToString,
-  messageForResultWithIssues,
-  dangerSignature,
-  noEntryEmoji,
-  warningEmoji,
-  messageEmoji,
-} from "./bitbucketTemplateCommon"
+import { dangerIDToString, messageForResultWithIssues, dangerSignature } from "./bitbucketTemplateCommon"
 import { compliment } from "../DangerUtils"
 
+// BitBucket Cloud supports these emojis 🎉
+const noEntryEmoji = "❌"
+const warningEmoji = "⚠️"
+const messageEmoji = "✨"
+const signatureEmoji = "🚫"
 const successEmoji = "🎉"
 /**
  * Postfix signature to be attached comment generated / updated by danger.
  */
 export const dangerSignaturePostfix = (results: DangerResults, commitID?: string) => {
-  let signature = dangerSignature(results)
+  let signature = dangerSignature(results, signatureEmoji)
   if (commitID !== undefined) {
     signature = `${signature} against ${commitID}`
   }
