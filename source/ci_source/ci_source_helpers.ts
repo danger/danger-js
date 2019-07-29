@@ -16,16 +16,7 @@ import { BitBucketCloudAPI, bitbucketCloudCredentialsFromEnv } from "../platform
  * @returns {bool} true if they exist, false if not
  */
 export function ensureEnvKeysExist(env: Env, keys: string[]): boolean {
-  /*const hasKeys = keys.map((key: string): boolean => {
-    return env.hasOwnProperty(key) && env[key] != null && env[key].length > 0
-  });
-  return !includes(hasKeys, false);*/
-
-  return (
-    keys
-      .map((key: string) => env.hasOwnProperty(key) && env[key] != null && env[key].length > 0)
-      .filter(x => x === false).length === 0
-  )
+  return keys.every((key: string) => env.hasOwnProperty(key) && env[key] != null && env[key].length > 0)
 }
 
 /**
@@ -35,15 +26,7 @@ export function ensureEnvKeysExist(env: Env, keys: string[]): boolean {
  * @returns {bool} true if they are all good, false if not
  */
 export function ensureEnvKeysAreInt(env: Env, keys: string[]): boolean {
-  /*const hasKeys = keys.map((key: string): boolean => {
-    return env.hasOwnProperty(key) && !isNaN(parseInt(env[key]))
-  })
-  return !includes(hasKeys, false);*/
-
-  return (
-    keys.map((key: string) => env.hasOwnProperty(key) && !isNaN(parseInt(env[key]))).filter(x => x === false).length ===
-    0
-  )
+  return keys.every((key: string) => env.hasOwnProperty(key) && !isNaN(parseInt(env[key])))
 }
 
 /**
