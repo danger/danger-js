@@ -15,6 +15,10 @@
 
 <!-- Your comment below this -->
 
+# 9.1.3
+
+- Updates GitLab API to 10.x - [@awgeorge]
+
 # 9.1.2
 
 - Add retry handling for API requests - [@jtreanor]
