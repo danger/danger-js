@@ -75,4 +75,8 @@ export class Jenkins implements CISource {
   get ciRunURL() {
     return process.env.RUN_DISPLAY_URL || process.env.BUILD_URL
   }
+
+  get commitHash(): string {
+    return this.env.GIT_COMMIT
+  }
 }
