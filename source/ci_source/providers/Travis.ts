@@ -83,6 +83,10 @@ export class Travis implements CISource {
     // TODO: This only supports travis.org
     return `https://travis-ci.org/${this.env.TRAVIS_REPO_SLUG}/jobs/${this.env.TRAVIS_JOB_ID}`
   }
+
+  get commitHash(): string {
+    return this.env.TRAVIS_COMMIT
+  }
 }
 
 // See end of https://travis-ci.org/danger/danger-js/jobs/317790046
