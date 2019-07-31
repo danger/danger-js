@@ -84,3 +84,19 @@ describe(".ciRunURL", () => {
     expect(travis.ciRunURL).toEqual("https://travis-ci.org/artsy/eigen/jobs/317790046")
   })
 })
+
+describe("commit hash", () => {
+  it("returns correct commit hash when present", () => {
+    const env = {
+      ...correctEnv,
+      TRAVIS_COMMIT: "1234abc",
+    }
+    const travis = new Travis(env)
+    expect(travis.commitHash).toEqual("1234abc")
+  })
+
+  it("returns no commit hash when not present", () => {
+    const travis = new Travis(correctEnv)
+    expect(travis.commitHash).toBeUndefined()
+  })
+})

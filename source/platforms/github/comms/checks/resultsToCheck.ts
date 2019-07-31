@@ -52,6 +52,7 @@ export const resultsToCheck = async (
   options: ExecutorOptions,
   pr: GitHubPRDSL,
   api: GitHubNodeAPI,
+  ciCommitHash?: string,
   name: string = "Danger"
 ): Promise<CheckOptions> => {
   const repo = pr.base.repo
@@ -61,7 +62,7 @@ export const resultsToCheck = async (
   const mainResults = regularResults(results)
   const annotationResults = inlineResults(results)
 
-  const commitID = pr.head.sha
+  const commitID = ciCommitHash || pr.head.sha
 
   const mainBody = githubResultsTemplate(options.dangerID, mainResults, commitID)
 

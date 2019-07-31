@@ -60,7 +60,11 @@ export interface Platform extends PlatformCommunicator {
 // separate out the comment handling vs the DSL generation for a platform
 export interface PlatformCommunicator {
   /** Basically, should a chance for async platform side-effects before passing the results into the comment section of danger issue create/update/deleter */
-  platformResultsPreMapper?: (results: DangerResults, options: ExecutorOptions) => Promise<DangerResults>
+  platformResultsPreMapper?: (
+    results: DangerResults,
+    options: ExecutorOptions,
+    ciCommitHash?: string
+  ) => Promise<DangerResults>
   /** Can it update comments? */
   supportsCommenting: () => boolean
   /** Does the platform support inline comments? */
@@ -82,7 +86,13 @@ export interface PlatformCommunicator {
   /** Replace the main Danger comment, returning the URL to the issue */
   updateOrCreateComment: (dangerID: string, newComment: string) => Promise<string | undefined>
   /** Sets the current PR's status */
-  updateStatus: (passed: boolean | "pending", message: string, url?: string, dangerID?: string) => Promise<boolean>
+  updateStatus: (
+    passed: boolean | "pending",
+    message: string,
+    url?: string,
+    dangerID?: string,
+    commitHash?: string
+  ) => Promise<boolean>
 }
 
 /**

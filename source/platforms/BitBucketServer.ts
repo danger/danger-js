@@ -43,10 +43,11 @@ export class BitBucketServer implements Platform {
     passed: boolean | "pending",
     message: string,
     url?: string,
-    dangerID?: string
+    dangerID?: string,
+    ciCommitHash?: string
   ): Promise<boolean> => {
     const pr = await this.api.getPullRequestInfo()
-    const { latestCommit } = pr.fromRef
+    const latestCommit = ciCommitHash || pr.fromRef.latestCommit
 
     let state = passed ? "SUCCESSFUL" : "FAILED"
     if (passed === "pending") {

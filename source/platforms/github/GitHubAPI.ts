@@ -348,12 +348,13 @@ export class GitHubAPI {
     passed: boolean | "pending",
     message: string,
     url?: string,
-    dangerID?: string
+    dangerID?: string,
+    ciCommitHash?: string
   ): Promise<any> => {
     const repo = this.repoMetadata.repoSlug
 
     const prJSON = await this.getPullRequestInfo()
-    const ref = prJSON.head.sha
+    const ref = ciCommitHash || prJSON.head.sha
 
     let state = passed ? "success" : "failure"
     if (passed === "pending") {
