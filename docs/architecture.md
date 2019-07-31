@@ -33,13 +33,7 @@ evaluating your code, and adds the DSL attributes into the global evaluation con
 **Step 6: Results**. Once the `danger runner` process is finished with evaluation, the results are passed back to the
 the platform. The platform then chooses whether to create/delete/edit any messages in core review.
 
-## Structure Of Project
-
-Following is the main structure of project. Hope it is helpful for developer.
-
-- [Providers](https://github.com/danger/danger-js/tree/master/source/ci_source/providers)
-
-- [DangerDSL](https://github.com/danger/danger-js/blob/master/source/dsl/DangerDSL.ts)
-
-- [Runner](https://github.com/danger/danger-js/blob/master/source/commands/danger-runner.ts)
-- [Inline-Runner](https://github.com/danger/danger-js/blob/master/source/runner/runners/inline.ts)
+[provs]: https://github.com/danger/danger-js/tree/master/source/ci_source/providers
+[dangerdsl]: https://github.com/danger/danger-js/blob/master/sourformace/dsl/DangerDSL.ts
+[runner]: https://github.com/danger/danger-js/blob/master/source/commands/danger-runner.ts
+[in_runner]: https://github.com/danger/danger-js/blob/master/source/runner/runners/inline.ts
