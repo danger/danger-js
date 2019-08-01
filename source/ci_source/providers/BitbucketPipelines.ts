@@ -54,7 +54,7 @@ export class BitbucketPipelines implements CISource {
   }
 
   get repoSlug(): string {
-    return `${this.env.BITBUCKET_REPO_OWNER}/${this.env.BITBUCKET_REPO_SLUG}`
+    return `${this.env.BITBUCKET_REPO_FULL_NAME}`
   }
 
   get repoURL(): string {
