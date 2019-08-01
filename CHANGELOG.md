@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Use new env `BITBUCKET_REPO_FULL_NAME` in bitbucket pipeline. - [@Soyn]
+
 # 9.1.3
 
 - Updates GitLab API to 10.x - [@awgeorge]
