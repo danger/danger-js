@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Use new env `BITBUCKET_REPO_FULL_NAME` in bitbucket pipeline. - [@Soyn]
 - Take commit hash from CI Source if available - [@f-meloni]
 
 # 9.1.3

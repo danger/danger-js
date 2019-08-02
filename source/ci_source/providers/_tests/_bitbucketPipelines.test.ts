@@ -11,6 +11,7 @@ const correctEnv = {
   BITBUCKET_BUILD_NUMBER: "5",
   BITBUCKET_PR_DESTINATION_COMMIT: "91c917d4389b82ec11a0d372b9e5754eb7727e4a",
   BITBUCKET_REPO_OWNER: "foo",
+  BITBUCKET_REPO_FULL_NAME: "foo/bar",
 }
 
 describe("being found when looking for CI", () => {
