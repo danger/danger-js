@@ -109,3 +109,19 @@ describe(".repoSlug", () => {
     expect(jenkins.repoSlug).toEqual("projects/PROJ/repos/REPO")
   })
 })
+
+describe("commit hash", () => {
+  it("returns correct commit hash when present", () => {
+    const env = {
+      ...envs.ghprb,
+      GIT_COMMIT: "1234abc",
+    }
+    const jenkins = new Jenkins(env)
+    expect(jenkins.commitHash).toEqual("1234abc")
+  })
+
+  it("returns no commit hash when not present", () => {
+    const jenkins = new Jenkins(envs.ghprb)
+    expect(jenkins.commitHash).toBeUndefined()
+  })
+})

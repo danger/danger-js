@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Take commit hash from CI Source if available - [@f-meloni]
+
 # 9.1.3
 
 - Updates GitLab API to 10.x - [@awgeorge]

@@ -235,7 +235,7 @@ export class Executor {
     let results = originalResults
     if (this.platform.platformResultsPreMapper) {
       this.d("Running platformResultsPreMapper:")
-      results = await this.platform.platformResultsPreMapper(results, this.options)
+      results = await this.platform.platformResultsPreMapper(results, this.options, this.ciSource.commitHash)
       this.d("Received results from platformResultsPreMapper:", results)
     }
 
@@ -284,7 +284,9 @@ export class Executor {
         this.platform.deleteMainComment(dangerID)
       } else {
         let commitID
-        if (git !== undefined) {
+        if (this.ciSource.commitHash !== undefined) {
+          commitID = this.ciSource.commitHash
+        } else if (git !== undefined) {
           commitID = git.commits[git.commits.length - 1].sha
         }
         let comment

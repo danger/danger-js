@@ -145,10 +145,11 @@ export class BitBucketCloud implements Platform {
     passed: boolean | "pending",
     message: string,
     url?: string,
-    dangerID?: string
+    dangerID?: string,
+    ciCommitHash?: string
   ): Promise<boolean> => {
     const pr = await this.api.getPullRequestInfo()
-    const commitId = pr.source.commit.hash
+    const commitId = ciCommitHash || pr.source.commit.hash
 
     let state: "SUCCESSFUL" | "INPROGRESS" | "FAILED" = passed ? "SUCCESSFUL" : "FAILED"
     if (passed === "pending") {
