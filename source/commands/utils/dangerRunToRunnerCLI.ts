@@ -1,6 +1,6 @@
 const usesProcessSeparationCommands = ["ci", "pr", "local"]
 
-const dangerRunToRunnerCLI = (argv: string[]) => {
+const dangerRunToRunnerCLI = (argv: string[]): string[] => {
   let newCommand = []
   newCommand.push(argv[0])
 

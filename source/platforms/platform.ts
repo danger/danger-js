@@ -58,7 +58,7 @@ export interface Platform extends PlatformCommunicator {
 
 // This is basically the commenting aspect of a platform, which allow us to
 // separate out the comment handling vs the DSL generation for a platform
-export interface PlatformCommunicator {
+interface PlatformCommunicator {
   /** Basically, should a chance for async platform side-effects before passing the results into the comment section of danger issue create/update/deleter */
   platformResultsPreMapper?: (
     results: DangerResults,
