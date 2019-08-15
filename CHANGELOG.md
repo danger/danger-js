@@ -15,6 +15,16 @@
 
 <!-- Your comment below this -->
 
+# 9.1.7
+
+- GitHub Actions docs update - [@orta]
+
+# 9.1.6
+
+- Release only made for GitHub Actions - [@orta]
+
+# 9.1.5
+
 - Take commit hash from bitrise env - [@f-meloni]
 
 # 9.1.4
