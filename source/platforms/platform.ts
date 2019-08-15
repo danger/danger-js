@@ -141,10 +141,12 @@ export function getPlatformForEnv(env: Env, source: CISource): Platform {
   // They need to set the token up for GitHub actions to work
   if (env["GITHUB_EVENT_NAME"] && !env["GITHUB_TOKEN"]) {
     console.error(`You need to add GITHUB_TOKEN to your Danger action in the workflow:
-
-    action "${env["GITHUB_ACTION"]}" {
-    ${chalk.green('+  secrets = ["GITHUB_TOKEN"]"')}
-    }`)
+  
+    - name: Danger JS
+      uses: danger/danger-js@X.Y.Z
+      ${chalk.green(`env:
+        GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}`)}
+    `)
   }
 
   // GitHub Platform
