@@ -133,12 +133,13 @@ import { readFileSync, existsSync } from "fs"
  *
  */
 
+const eventFilePath = process.env.GITHUB_EVENT_PATH || "/github/workflow/event.json"
+
 export class GitHubActions implements CISource {
   private event: any
 
   constructor(private readonly env: Env) {
-    if (existsSync("/github/workflow/event.json")) {
-      const eventFilePath = process.env.GITHUB_EVENT_PATH || "/github/workflow/event.json"
+    if (existsSync(eventFilePath)) {
       const event = readFileSync(eventFilePath, "utf8")
       this.event = JSON.parse(event)
     }
