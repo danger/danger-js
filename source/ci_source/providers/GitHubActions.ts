@@ -137,8 +137,11 @@ export class GitHubActions implements CISource {
   private event: any
 
   constructor(private readonly env: Env) {
-    if (existsSync("/github/workflow/event.json")) {
-      const event = readFileSync("/github/workflow/event.json", "utf8")
+    const { GITHUB_EVENT_PATH } = env
+    const eventFilePath = GITHUB_EVENT_PATH || "/github/workflow/event.json"
+    
+    if (existsSync(eventFilePath)) {
+      const event = readFileSync(eventFilePath, "utf8")
       this.event = JSON.parse(event)
     }
   }

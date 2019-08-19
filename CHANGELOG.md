@@ -15,6 +15,10 @@
 
 <!-- Your comment below this -->
 
+# 9.1.8
+
+- Get GitHub Actions event file pathname from env variable - [@IljaDaderko]
+
 # 9.1.7
 
 - GitHub Actions docs update - [@orta]
