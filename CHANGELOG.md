@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Added flag to bypass Jira/Issues - [@orieken]
+
 # 9.1.8
 
 - Get GitHub Actions event file pathname from env variable - [@IljaDaderko]
