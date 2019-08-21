@@ -193,6 +193,9 @@ export class BitBucketServerAPI implements BitBucketServerAPIDSL {
   }
 
   getIssues = async (): Promise<JIRAIssue[]> => {
+    if (process.env.DANGER_NO_BITBUCKET_JIRA_INTEGRATION) {
+      return [] as JIRAIssue[]
+    }
     const path = `${this.getPRBasePath("jira")}/issues`
     const res = await this.get(path)
     throwIfNotOk(res)
