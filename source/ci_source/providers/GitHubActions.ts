@@ -112,7 +112,8 @@ import { readFileSync, existsSync } from "fs"
  *
  * ```
  *  - uses: danger/...
- *    args: "--dangerfile artsy/peril-settings/org/allPRs.ts"
+ *    with:
+ *      args: "--dangerfile artsy/peril-settings/org/allPRs.ts"
  * ```
  *
  * This runs the file [`org/allPRs.ts`](https://github.com/artsy/peril-settings/blob/master/org/allPRs.ts)
