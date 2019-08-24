@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Improve docs for GitHub Actions - [@nguyenhuy]
+
 # 9.1.8
 
 - Get GitHub Actions event file pathname from env variable - [@IljaDaderko]
