@@ -15,7 +15,10 @@
 
 <!-- Your comment below this -->
 
+# 9.2.0
+
 - Improve docs for GitHub Actions - [@nguyenhuy]
+- Add Buddy.works Pipelines support - [@kristof0425]
 
 # 9.1.8
 
