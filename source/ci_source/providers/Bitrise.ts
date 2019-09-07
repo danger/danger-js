@@ -72,6 +72,10 @@ export class Bitrise implements CISource {
   }
 
   get ciRunURL() {
-    return process.env.BITRISE_PULL_REQUEST
+    return this.env.BITRISE_PULL_REQUEST
+  }
+
+  get commitHash() {
+    return this.env.BITRISE_GIT_COMMIT
   }
 }

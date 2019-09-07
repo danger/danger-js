@@ -17,6 +17,24 @@
 
 <!-- Your comment above this -->
 
+- Improve docs for GitHub Actions - [@nguyenhuy]
+
+# 9.1.8
+
+- Get GitHub Actions event file pathname from env variable - [@IljaDaderko]
+
+# 9.1.7
+
+- GitHub Actions docs update - [@orta]
+
+# 9.1.6
+
+- Release only made for GitHub Actions - [@orta]
+
+# 9.1.5
+
+- Take commit hash from bitrise env - [@f-meloni]
+
 # 9.1.4
 
 - Use new env `BITBUCKET_REPO_FULL_NAME` in bitbucket pipeline. - [@Soyn]
@@ -1691,3 +1709,4 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@mrndjo]: https://github.com/mrndjo
 [@bigkraig]: https://github.com/bigkraig
 [@notjosh]: https://github.com/notjosh
+[@iljadaderko]: https://github.com/IljaDaderko
