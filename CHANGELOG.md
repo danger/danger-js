@@ -15,9 +15,11 @@
 
 <!-- Your comment below this -->
 
+- Added flag to bypass Jira/Issues - [@orieken]
+- Improve docs for GitHub Actions - [@nguyenhuy]
+
 <!-- Your comment above this -->
 
-- Improve docs for GitHub Actions - [@nguyenhuy]
 
 # 9.1.8
 
