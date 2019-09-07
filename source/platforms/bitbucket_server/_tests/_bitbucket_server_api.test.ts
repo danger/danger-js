@@ -163,6 +163,41 @@ describe("API testing - BitBucket Server", () => {
     expect(result).toEqual({ issue: "key" })
   })
 
+  describe("getIssues", () => {
+    const OLD_ENV = process.env
+
+    beforeEach(() => {
+      jest.resetModules()
+      process.env = { ...OLD_ENV }
+      delete process.env.DANGER_NO_BITBUCKET_JIRA_INTEGRATION
+    })
+
+    afterEach(() => {
+      process.env = OLD_ENV
+    })
+
+    it("returns Issue", async () => {
+      jsonResult = () => ({ issue: "key" })
+      const result = await api.getIssues()
+
+      expect(api.fetch).toHaveBeenCalledWith(
+        `${host}/rest/jira/1.0/projects/FOO/repos/BAR/pull-requests/1/issues`,
+        { method: "GET", body: null, headers: expectedJSONHeaders },
+        undefined
+      )
+      expect(result).toEqual({ issue: "key" })
+    })
+
+    it("bypass getIssues if DANGER_NO_BITBUCKET_JIRA_INTEGRATION is set", async () => {
+      process.env.DANGER_NO_BITBUCKET_JIRA_INTEGRATION = "true"
+      jsonResult = () => ({ issue: "key" })
+      const result = await api.getIssues()
+
+      expect(api.fetch).not.toHaveBeenCalled()
+      expect(result).toEqual([])
+    })
+  })
+
   it("getDangerComments", async () => {
     const commitID = "e70f3d6468f61a4bef68c9e6eaba9166b096e23c"
     jsonResult = () => ({

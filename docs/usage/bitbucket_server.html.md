@@ -93,3 +93,7 @@ export http_proxy=http://127.0.0.1:8080
 or
 export https_proxy=https://127.0.0.1:8080
 ```
+
+If you are using Bitbucket but not using Jira/Issues you can add an environment variable to bypass the check:
+
+- `DANGER_NO_BITBUCKET_JIRA_INTEGRATION` Bypass Jira/Issues integration
