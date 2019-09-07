@@ -38,6 +38,12 @@ export default async () => {
   // Some libraries
   await yarn()
   await jest()
+
+  // Don't have folks setting the package json version
+  const packageDiff = await danger.git.JSONDiffForFile("package.json")
+  if (packageDiff.version && danger.github.pr.user.login !== "orta") {
+    fail("Please don't make package version changes")
+  }
 }
 
 // Re-run the git push hooks
