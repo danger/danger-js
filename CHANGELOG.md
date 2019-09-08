@@ -15,12 +15,13 @@
 
 <!-- Your comment below this -->
 
+<!-- Your comment above this -->
+
+# 9.2.0
+
 - Add Buddy.works Pipelines support - [@kristof0425]
 - Added flag to bypass Jira/Issues - [@orieken]
 - Improve docs for GitHub Actions - [@nguyenhuy]
-
-<!-- Your comment above this -->
-
 
 # 9.1.8
 
