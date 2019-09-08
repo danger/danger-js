@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Add Buddy.works Pipelines support - [@kristof0425]
 - Added flag to bypass Jira/Issues - [@orieken]
 - Improve docs for GitHub Actions - [@nguyenhuy]
 

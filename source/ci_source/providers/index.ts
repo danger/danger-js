@@ -1,6 +1,7 @@
 import { AppCenter } from "./AppCenter"
 import { Bitrise } from "./Bitrise"
 import { BuddyBuild } from "./BuddyBuild"
+import { BuddyWorks } from "./BuddyWorks"
 import { Buildkite } from "./Buildkite"
 import { Circle } from "./Circle"
 import { CodeBuild } from "./CodeBuild"
@@ -38,6 +39,7 @@ const providers = [
   Drone,
   Buildkite,
   BuddyBuild,
+  BuddyWorks,
   VSTS,
   Bitrise,
   TeamCity,
@@ -65,6 +67,7 @@ const realProviders = [
   Drone,
   Buildkite,
   BuddyBuild,
+  BuddyWorks,
   VSTS,
   TeamCity,
   Screwdriver,
