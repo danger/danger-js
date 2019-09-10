@@ -3,7 +3,7 @@ import { getCISourceForEnv } from "../../get_ci_source"
 
 const correctEnv = {
   BUDDY_PIPELINE_ID: "170873",
-  BUDDY_EXECUTION_PULL_REQUEST_ID: "1799",
+  BUDDY_EXECUTION_PULL_REQUEST_ID: "pull/1799",
   BUDDY_REPO_SLUG: "danger/dangerjs",
   BUDDY_EXECUTION_URL:
     "https://app.buddy.works/danger/dangerjs/pipelines/pipeline/170873/execution/5d6d49dbaab2cb6fdf975c71",
@@ -50,7 +50,7 @@ describe(".isPR", () => {
     })
   })
 
-  it("needs to have a PR number", () => {
+  it("needs to have a PR id", () => {
     const env = Object.assign({}, correctEnv)
     delete env.BUDDY_EXECUTION_PULL_REQUEST_ID
     const buddyWorks = new BuddyWorks(env)
@@ -61,7 +61,7 @@ describe(".isPR", () => {
 describe(".pullRequestID", () => {
   it("pulls it out of the env", () => {
     const buddyWorks = new BuddyWorks(correctEnv)
-    expect(buddyWorks.pullRequestID).toEqual("1799")
+    expect(buddyWorks.pullRequestID).toEqual("pull/1799")
   })
 })
 
