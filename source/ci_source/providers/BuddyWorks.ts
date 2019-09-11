@@ -1,5 +1,5 @@
 import { Env, CISource } from "../ci_source"
-import { ensureEnvKeysExist } from "../ci_source_helpers"
+import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
 /**
  * ### CI Setup
  *
@@ -26,12 +26,14 @@ export class BuddyWorks implements CISource {
   }
 
   get isPR(): boolean {
-    const mustHave = ["BUDDY_PIPELINE_ID", "BUDDY_EXECUTION_PULL_REQUEST_ID", "BUDDY_REPO_SLUG"]
-    return ensureEnvKeysExist(this.env, mustHave)
+    const mustHave = ["BUDDY_PIPELINE_ID", "BUDDY_EXECUTION_PULL_REQUEST_NO", "BUDDY_REPO_SLUG"]
+    const mustBeInts = ["BUDDY_EXECUTION_PULL_REQUEST_NO"]
+
+    return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, mustBeInts)
   }
 
   get pullRequestID(): string {
-    return this.env.BUDDY_EXECUTION_PULL_REQUEST_ID
+    return this.env.BUDDY_EXECUTION_PULL_REQUEST_NO
   }
 
   get repoSlug(): string {
