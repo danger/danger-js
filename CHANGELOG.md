@@ -15,7 +15,7 @@
 
 <!-- Your comment below this -->
 
-- Fix Buddy.works isPR because PR ids are not always ints - [@mmiszy]
+- Fix Buddy.works isPR and use PR number instead of PR ID - [@mmiszy]
 
 <!-- Your comment above this -->
 
