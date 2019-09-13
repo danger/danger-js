@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Fix Buddy.works isPR and use PR number instead of PR ID - [@mmiszy]
+
 <!-- Your comment above this -->
 
 # 9.2.0
