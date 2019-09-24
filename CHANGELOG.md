@@ -16,6 +16,7 @@
 <!-- Your comment below this -->
 
 - Fix Buddy.works isPR and use PR number instead of PR ID - [@mmiszy]
+- Add GitLab support to Jenkins provider - [@sandratatarevicova]
 
 <!-- Your comment above this -->
 
