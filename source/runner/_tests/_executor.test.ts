@@ -158,6 +158,15 @@ describe("setup", () => {
     expect(platform.updateOrCreateComment).toBeCalled()
   })
 
+  it("Updates or Creates comments for warnings, without GitDSL", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
+    platform.updateOrCreateComment = jest.fn()
+
+    await exec.handleResults(warnResults)
+    expect(platform.updateOrCreateComment).toBeCalled()
+  })
+
   it("Sends inline comments and returns regular results for failures", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())

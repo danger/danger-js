@@ -816,6 +816,13 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
 
+"@types/async-retry@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@types/async-retry/-/async-retry-1.4.1.tgz#3b136a707b7a850f4947a727eb0f7b473b601992"
+  integrity sha512-hDI5Ttk9SUmDLcD/Yl2VuWQRGYZjJ7aaJFeRlomUOz/iTKSE7yA55SwY87QwjiZgwhMlVAKoT1rl08UyQoheag==
+  dependencies:
+    "@types/retry" "*"
+
 "@types/braces@*":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@types/braces/-/braces-2.3.0.tgz#d00ec0a76562b2acb6f29330be33a093e33ed25c"
@@ -967,6 +974,11 @@
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/@types/readline-sync/-/readline-sync-1.4.3.tgz#eac55a39d5a349912062c9e5216cd550c07fd9c8"
   integrity sha512-YP9NVli96E+qQLAF2db+VjnAUEeZcFVg4YnMgr8kpDUFwQBnj31rPLOVHmazbKQhaIkJ9cMHsZhpKdzUeL0KTg==
+
+"@types/retry@*":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@types/retry/-/retry-0.12.0.tgz#2b35eccfcee7d38cd72ad99232fbd58bffb3c84d"
+  integrity sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA==
 
 "@types/shelljs@0.7.0":
   version "0.7.0"
@@ -4067,17 +4079,17 @@ gitconfiglocal@^1.0.0:
   dependencies:
     ini "^1.3.2"
 
-gitlab@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/gitlab/-/gitlab-6.0.0.tgz#7bd44bf57dcb6b1231c70a52ea9b83934e6c1539"
-  integrity sha512-/0KE/Un0Hg/CDTtiYfC1Z4lkuHhkSmC3JjkKy4VsCgTb51rTtOfk7NGspyM+wTIgEPd6cE061Pu5m4a5ao01Ow==
+gitlab@^10.0.1:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/gitlab/-/gitlab-10.0.1.tgz#f1619e8d2d6c5a707d0ffec47c14219b232af143"
+  integrity sha512-gd4Kok3CRC6AOTBWwtCu95WFyhginVDbNRaLak5soxpBqkC5QiC3f74peaKgSLqlKtIuDnxHXmZ9oNsS2S+iGQ==
   dependencies:
     form-data "^2.3.3"
     humps "^2.0.1"
-    ky "^0.11.0"
+    ky "^0.11.2"
     ky-universal "^0.2.1"
     li "^1.3.0"
-    query-string "^6.5.0"
+    query-string "^6.8.1"
     randomstring "^1.1.5"
     universal-url "^2.0.0"
 
@@ -5653,10 +5665,10 @@ ky-universal@^0.2.1:
     abort-controller "^3.0.0"
     node-fetch "^2.3.0"
 
-ky@^0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/ky/-/ky-0.11.0.tgz#032e01e10979f9f16682f6acff7daf43cafa5507"
-  integrity sha512-8EHh1PfPKrERUf5XTSSUkuvfMygg6qyFmW7fqjjHxoGTySMQ5TfF006QenZmtcSSbJmd71wLYY04xxIS7vNpJg==
+ky@^0.11.2:
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/ky/-/ky-0.11.2.tgz#4ffe6621d9d9ab61bf0f5500542e3a96d1ba0815"
+  integrity sha512-5Aou5BWue5/mkPqIRqzSWW+0Hkl403pr/2AIrCKYw7cVl/Xoe8Xe4KLBO0PRjbz7GnRe1/8wW1KhqQNFFE7/GQ==
 
 latest-version@^3.0.0:
   version "3.1.0"
@@ -7420,10 +7432,10 @@ query-string@^5.0.1:
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
 
-query-string@^6.5.0:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/query-string/-/query-string-6.5.0.tgz#2e1a70125af01f6f04573692d02c09302a1d8bfc"
-  integrity sha512-TYC4hDjZSvVxLMEucDMySkuAS9UIzSbAiYGyA9GWCjLKB8fQpviFbjd20fD7uejCDxZS+ftSdBKE6DS+xucJFg==
+query-string@^6.8.1:
+  version "6.8.2"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-6.8.2.tgz#36cb7e452ae11a4b5e9efee83375e0954407b2f6"
+  integrity sha512-J3Qi8XZJXh93t2FiKyd/7Ec6GNifsjKXUsVFkSBj/kjLsDylWhnCz4NT1bkPcKotttPW+QbKGqqPH8OoI2pdqw==
   dependencies:
     decode-uri-component "^0.2.0"
     split-on-first "^1.0.0"

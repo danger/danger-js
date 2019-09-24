@@ -34,6 +34,6 @@ evaluating your code, and adds the DSL attributes into the global evaluation con
 the platform. The platform then chooses whether to create/delete/edit any messages in core review.
 
 [provs]: https://github.com/danger/danger-js/tree/master/source/ci_source/providers
-[dangerdsl]: https://github.com/danger/danger-js/blob/master/sourformace/dsl/DangerDSL.ts
+[dangerdsl]: https://github.com/danger/danger-js/blob/master/source/dsl/DangerDSL.ts
 [runner]: https://github.com/danger/danger-js/blob/master/source/commands/danger-runner.ts
 [in_runner]: https://github.com/danger/danger-js/blob/master/source/runner/runners/inline.ts

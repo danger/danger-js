@@ -175,6 +175,25 @@ describe("API testing", () => {
     )
   })
 
+  it("updateStatus with commitId success", async () => {
+    api.fetch = jest.fn().mockReturnValue({ ok: true })
+    api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
+
+    await expect(api.updateStatus("pending", "message", "", "", "a1234")).resolves.toEqual(true)
+    expect(api.fetch).toHaveBeenCalledWith(
+      "https://api.github.com/repos/artsy/emission/statuses/a1234",
+      {
+        headers: {
+          Authorization: "token ABCDE",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: '{"state":"pending","context":"Danger","target_url":"http://danger.systems/js","description":"message"}',
+      },
+      true
+    )
+  })
+
   it("updateStatus(false) success", async () => {
     api.fetch = jest.fn().mockReturnValue({ ok: true })
     api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")

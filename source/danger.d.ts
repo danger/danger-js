@@ -5,7 +5,174 @@
 import * as GitHub from "@octokit/rest"
 
 type MarkdownString = string
+// TODO: extract out from BitBucket specifically, or create our own type
 
+interface BitBucketCloudJSONDSL {
+  /** The pull request and repository metadata */
+  metadata: RepoMetaData
+  /** The PR metadata */
+  pr: BitBucketCloudPRDSL
+  /** The commits associated with the pull request */
+  commits: BitBucketCloudCommit[]
+  /** The comments on the pull request */
+  comments: BitBucketCloudPRComment[]
+  /** The activities such as OPENING, CLOSING, MERGING or UPDATING a pull request */
+  activities: BitBucketCloudPRActivity[]
+}
+
+interface BitBucketCloudDSL extends BitBucketCloudJSONDSL {}
+
+interface BitBucketCloudPagedResponse<T> {
+  pagelen: number
+  size: number
+  page: number
+  next: string | undefined
+  previous: string | undefined
+  values: T[]
+}
+interface BitBucketCloudPRDSL {
+  /** The PR's ID */
+  id: number
+  /** Title of the pull request. */
+  title: string
+  /** The text describing the PR */
+  description: string
+  /** The pull request's current status. */
+  state: "OPEN" | "MERGED" | "DECLINED" | "SUPERSEDED"
+  /** Date PR created as number of milliseconds since the unix epoch */
+  created_on: number
+  /** Date PR updated as number of milliseconds since the unix epoch */
+  updated_on: number
+  /** The PR's source, The repo Danger is running on  */
+  source: BitBucketCloudMergeRef
+  /** The PR's destination */
+  destination: BitBucketCloudMergeRef
+  /** The creator of the PR */
+  author: BitBucketCloudUser
+  /** People requested as reviewers */
+  reviewers: BitBucketCloudUser[]
+  /** People who have participated in the PR */
+  participants: BitBucketCloudPRParticipant[]
+  /** Misc links for hypermedia conformance */
+  links: BitBucketCloudLinks<
+    "decline" | "commits" | "self" | "comments" | "merge" | "html" | "activity" | "diff" | "approve" | "statuses"
+  >
+}
+
+interface BitBucketCloudMergeRef {
+  commit: {
+    hash: string
+  }
+  branch: {
+    name: string
+  }
+  repository: BitBucketCloudRepo
+}
+
+type BitBucketCloudLinks<Names extends string> = {
+  [key in Names]: {
+    href: string
+  }
+}
+
+interface BitBucketCloudPRParticipant {
+  /*The user who participated in this PR  */
+  user: BitBucketCloudUser
+
+  /** How did they contribute */
+  role: "REVIEWER" | "PARTICIPANT"
+
+  /** Did they approve of the PR? */
+  approved: boolean
+}
+
+interface BitBucketCloudRepo {
+  name: string
+  full_name: string
+  uuid: string
+}
+
+interface BitBucketCloudUser {
+  /** The uuid of the commit author */
+  uuid: string
+
+  /** The display name of the commit author */
+  display_name: string
+
+  /** The nick name of the commit author */
+  nickname: string
+
+  /** The acount id of the commit author */
+  account_id: string
+}
+
+/** A BitBucketCloud specific implementation of a git commit. */
+interface BitBucketCloudCommit {
+  /** The SHA for the commit */
+  hash: string
+
+  /** The author of the commit, assumed to be the person who wrote the code. */
+  author: {
+    /** Format: `Foo Bar <foo@bar.com>` */
+    raw: string
+    user: BitBucketCloudUser
+  }
+
+  /** When the commit was commited to the project, in ISO 8601 format */
+  date: string
+  /** The commit's message */
+  message: string
+  /** The commit's parents */
+  parents: {
+    /** The full SHA */
+    hash: string
+  }[]
+
+  /** The commit's links */
+  links: BitBucketCloudLinks<"html">
+}
+
+interface BitBucketCloudContent {
+  raw: string
+  markup: string
+  html: string
+  type: "rendered"
+}
+
+interface BitBucketCloudPRComment {
+  deleted: boolean
+  links: BitBucketCloudLinks<"self" | "html">
+
+  pullrequest: {
+    id: number
+    links: BitBucketCloudLinks<"self" | "html">
+    title: string
+  }
+  content: BitBucketCloudContent
+
+  /** When the comment was created, in ISO 8601 format */
+  created_on: string
+  user: BitBucketCloudUser
+
+  /** When the comment was updated, in ISO 8601 format */
+  updated_on: string
+  type: string
+  id: number
+
+  inline?: {
+    to: number | null
+    from: number
+    path: string
+  }
+}
+
+interface BitBucketCloudPRActivity {
+  comment?: BitBucketCloudPRComment
+  pull_request: {
+    id: number
+    title: string
+  }
+}
 /** Key details about a repo */
 interface RepoMetaData {
   /** A path like "artsy/eigen" */
@@ -31,10 +198,32 @@ interface BitBucketServerJSONDSL {
   activities: BitBucketServerPRActivity[]
 }
 
+interface BitBucketServerAPIDSL {
+  /** Gets the contents of a file from a repo (defaults to yours) */
+  getFileContents(filePath: string, repoSlug?: string, refspec?: string): Promise<string>
+
+  /** Make a get call against the bitbucket server API */
+  get(path: string, headers: any, suppressErrors?: boolean): Promise<any>
+
+  /** Make a post call against the bitbucket server API */
+  post(path: string, headers: any, body: any, suppressErrors?: boolean): Promise<any>
+
+  /** Make a put call against the bitbucket server API */
+  put(path: string, headers: any, body: any): Promise<any>
+
+  /** Make a delete call against the bitbucket server API */
+  delete(path: string, headers: any, body: any): Promise<any>
+}
+
 // This is `danger.bitbucket_server`
 
 /** The BitBucketServer metadata for your PR */
-interface BitBucketServerDSL extends BitBucketServerJSONDSL {}
+interface BitBucketServerDSL extends BitBucketServerJSONDSL {
+  /**
+   * An authenticated API so you can extend danger's behavior.
+   */
+  api: BitBucketServerAPIDSL
+}
 
 /**
  * This is `danger.bitbucket_server.issues` It refers to the issues that are linked to the Pull Request.
@@ -353,8 +542,6 @@ interface GitCommitAuthor {
   /** ISO6801 date string */
   date: string
 }
-
-// Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
 /**
  * The shape of the JSON passed between Danger and a subprocess. It's built
  * to be expanded in the future.
@@ -406,6 +593,8 @@ interface DangerDSLJSONType {
   github?: GitHubDSL
   /** The data only version of BitBucket Server DSL */
   bitbucket_server?: BitBucketServerJSONDSL
+  /** The data only version of BitBucket Cloud DSL */
+  bitbucket_cloud?: BitBucketCloudJSONDSL
   /** The data only version of GitLab DSL */
   gitlab?: GitLabDSL
   /**
@@ -476,6 +665,15 @@ interface DangerDSLType {
    */
   readonly bitbucket_server: BitBucketServerDSL
 
+  /**
+   *  The BitBucket Cloud metadata. This covers things like PR info,
+   *  comments and reviews on the PR, commits, comments, and activities.
+   *
+   *  Strictly speaking, `bitbucket_cloud` is a nullable type, if you are not using
+   *  BitBucket Cloud then it will be undefined. For the DSL convenience sake though, it
+   *  is classed as non-nullable
+   */
+  readonly bitbucket_cloud: BitBucketCloudDSL
   /**
    * The GitLab metadata. This covers things like PR info,
    * comments and reviews on the MR, commits, comments
@@ -1225,8 +1423,8 @@ interface GitHubReviewers {
   /** Teams that have been requested */
   teams: any[]
 }
-
 // TODO: extract out from BitBucket specifically, or create our own type
+
 // getPlatformReviewDSLRepresentation
 interface GitLabJSONDSL {
   metadata: RepoMetaData
@@ -1236,7 +1434,6 @@ interface GitLabJSONDSL {
 
 // danger.gitlab
 interface GitLabDSL extends GitLabJSONDSL {
-  api: GitLabAPI
   utils: {
     fileContents(path: string, repoSlug?: string, ref?: string): Promise<string>
   }
@@ -1249,7 +1446,7 @@ interface GitLabUser {
   id: number
   name: string
   username: string
-  state: "active" // XXX: other states?
+  state: "active" | "blocked"
   avatar_url: string | null
   web_url: string
 }
@@ -1324,7 +1521,7 @@ interface GitLabMRBase {
     project_id: number
     title: string
     description: string
-    state: "closed" // XXX: other states?
+    state: "closed" | "active"
     created_at: string
     updated_at: string
     due_date: string
@@ -1366,7 +1563,7 @@ interface GitLabMR extends GitLabMRBase {
     id: number
     sha: string
     ref: string
-    status: "success" // XXX: other statuses?
+    status: "canceled" | "failed" | "pending" | "running" | "skipped" | "success"
     web_url: string
   }
   diff_refs: {
@@ -1450,7 +1647,6 @@ interface GitLabMRCommit {
   committer_email: string
   committed_date: string
 }
-
 /**
  * The result of user doing warn, message or fail, built this way for
  * expansion later.
@@ -1464,6 +1660,9 @@ interface Violation {
 
   /** Optional line in the file */
   line?: number
+
+  /** Optional icon for table (Only valid for messages) */
+  icon?: string
 }
 /**
  * Describes the possible arguments that
@@ -1533,6 +1732,18 @@ declare function warn(message: MarkdownString, file?: string, line?: number): vo
  * @param {number | undefined} line the line which this message should be attached to
  */
 declare function message(message: MarkdownString, file?: string, line?: number): void
+/**
+ * Adds a message to the Danger table, the only difference between this
+ * and warn is the default emoji which shows in the table.
+ * You can also specifiy a custom emoji to show in the table for each message
+ *
+ * @param {MarkdownString} message the String to output
+ * @param {{file?: string, line?: string, icon?: MarkdownString}} [opts]
+ * @param opts.file a file which this message should be attached to
+ * @param opts.line the line which this message should be attached to
+ * @param opts.icon icon string or image to show in table, take care not to break table formatting
+ */
+declare function message(message: MarkdownString, opts?: { file?: string; line?: number; icon?: MarkdownString }): void
 
 /**
  * Adds raw markdown into the Danger comment, under the table

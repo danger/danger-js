@@ -7,6 +7,7 @@ import {
   bitbucketServerRepoCredentialsFromEnv,
 } from "../platforms/bitbucket_server/BitBucketServerAPI"
 import { RepoMetaData } from "../dsl/BitBucketServerDSL"
+import { BitBucketCloudAPI, bitbucketCloudCredentialsFromEnv } from "../platforms/bitbucket_cloud/BitBucketCloudAPI"
 
 /**
  * Validates that all ENV keys exist and have a length
@@ -15,16 +16,7 @@ import { RepoMetaData } from "../dsl/BitBucketServerDSL"
  * @returns {bool} true if they exist, false if not
  */
 export function ensureEnvKeysExist(env: Env, keys: string[]): boolean {
-  /*const hasKeys = keys.map((key: string): boolean => {
-    return env.hasOwnProperty(key) && env[key] != null && env[key].length > 0
-  });
-  return !includes(hasKeys, false);*/
-
-  return (
-    keys
-      .map((key: string) => env.hasOwnProperty(key) && env[key] != null && env[key].length > 0)
-      .filter(x => x === false).length === 0
-  )
+  return keys.every((key: string) => env.hasOwnProperty(key) && env[key] != null && env[key].length > 0)
 }
 
 /**
@@ -34,15 +26,7 @@ export function ensureEnvKeysExist(env: Env, keys: string[]): boolean {
  * @returns {bool} true if they are all good, false if not
  */
 export function ensureEnvKeysAreInt(env: Env, keys: string[]): boolean {
-  /*const hasKeys = keys.map((key: string): boolean => {
-    return env.hasOwnProperty(key) && !isNaN(parseInt(env[key]))
-  })
-  return !includes(hasKeys, false);*/
-
-  return (
-    keys.map((key: string) => env.hasOwnProperty(key) && !isNaN(parseInt(env[key]))).filter(x => x === false).length ===
-    0
-  )
+  return keys.every((key: string) => env.hasOwnProperty(key) && !isNaN(parseInt(env[key])))
 }
 
 /**
@@ -55,6 +39,14 @@ export function ensureEnvKeysAreInt(env: Env, keys: string[]): boolean {
 export async function getPullRequestIDForBranch(metadata: RepoMetaData, env: Env, branch: string): Promise<number> {
   if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
     const api = new BitBucketServerAPI(metadata, bitbucketServerRepoCredentialsFromEnv(env))
+    const prs = await api.getPullRequestsFromBranch(branch)
+    if (prs.length) {
+      return prs[0].id
+    }
+    return 0
+  }
+  if (process.env["DANGER_BITBUCKETCLOUD_UUID"]) {
+    const api = new BitBucketCloudAPI(metadata, bitbucketCloudCredentialsFromEnv(env))
     const prs = await api.getPullRequestsFromBranch(branch)
     if (prs.length) {
       return prs[0].id

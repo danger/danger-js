@@ -6,7 +6,7 @@ import { readFileSync, writeFileSync } from "fs"
 import { resolve, join as pathJoin } from "path"
 import { bitBucketServerGitDSL as gitJSONToGitDSL } from "../BitBucketServerGit"
 
-import { BitBucketServerDSL } from "../../../dsl/BitBucketServerDSL"
+import { BitBucketServerJSONDSL } from "../../../dsl/BitBucketServerDSL"
 import { GitDSL, GitJSONDSL } from "../../../dsl/GitDSL"
 import { jsonDSLGenerator } from "../../../runner/dslGenerator"
 
@@ -37,11 +37,11 @@ const stripWhitespaceForSnapshot = (str: string) => {
 
 const pullRequestInfoFilename = "bitbucket_server_pr.json"
 
-describe("the dangerfile gitDSL - BitBucket Server", async () => {
+describe("the dangerfile gitDSL - BitBucket Server", () => {
   let bbs: BitBucketServer = {} as any
   let gitJSONDSL: GitJSONDSL = {} as any
 
-  let bbsDSL: BitBucketServerDSL = {} as any
+  let bbsDSL: BitBucketServerJSONDSL = {} as any
   let gitDSL: GitDSL = {} as any
 
   beforeEach(async () => {

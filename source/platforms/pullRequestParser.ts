@@ -3,6 +3,7 @@ import includes from "lodash.includes"
 import { BitBucketServer } from "./BitBucketServer"
 import { GitHub } from "./GitHub"
 import GitLab from "./GitLab"
+import { BitBucketCloud } from "./BitBucketCloud"
 
 export interface PullRequestParts {
   pullRequestNumber: string
@@ -21,6 +22,15 @@ export function pullRequestParser(address: string): PullRequestParts | null {
         platform: BitBucketServer.name,
         repo: parts[1],
         pullRequestNumber: parts[2],
+      }
+    }
+
+    // shape: https://bitbucket.org/proj/repo/pull-requests/1
+    if (includes(components.path, "pull-requests")) {
+      return {
+        platform: BitBucketCloud.name,
+        repo: components.path.split("/pull-requests")[0].slice(1),
+        pullRequestNumber: components.path.split("/pull-requests/")[1].split("/")[0],
       }
     }
 

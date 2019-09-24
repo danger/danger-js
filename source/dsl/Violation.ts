@@ -1,3 +1,5 @@
+// Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
+
 /**
  * The result of user doing warn, message or fail, built this way for
  * expansion later.
@@ -11,6 +13,9 @@ export interface Violation {
 
   /** Optional line in the file */
   line?: number
+
+  /** Optional icon for table (Only valid for messages) */
+  icon?: string
 }
 
 /// End of Danger DSL definition

@@ -73,3 +73,19 @@ describe(".repoSlug", () => {
     expect(bitrise.repoSlug).toEqual("artsy/eigen")
   })
 })
+
+describe("commit hash", () => {
+  it("returns correct commit hash when present", () => {
+    const env = {
+      ...correctEnv,
+      BITRISE_GIT_COMMIT: "1234abc",
+    }
+    const bitrise = new Bitrise(env)
+    expect(bitrise.commitHash).toEqual("1234abc")
+  })
+
+  it("returns no commit hash when not present", () => {
+    const bitrise = new Bitrise(correctEnv)
+    expect(bitrise.commitHash).toBeUndefined()
+  })
+})

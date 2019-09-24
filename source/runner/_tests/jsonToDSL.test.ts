@@ -3,6 +3,7 @@ jest.mock("../../platforms/git/localGetDiff", () => ({ localGetDiff: jest.fn(() 
 /**
  * Mock everything that calls externally
  */
+jest.mock("../../platforms/bitbucket_server/BitBucketServerGit")
 jest.mock("../../platforms/github/GitHubGit")
 jest.mock("../../platforms/GitHub")
 jest.mock("../../platforms/git/localGetDiff")
@@ -42,5 +43,23 @@ describe("runner/jsonToDSL", () => {
   it("should call LocalGit with correct base", async () => {
     await jsonToDSL(dsl as DangerDSLJSONType, new FakeCI({}))
     expect(localGetDiff).toHaveBeenLastCalledWith("develop", "HEAD")
+  })
+
+  it("should expose BitBucketServerAPI if `dsl.bitbucket_server` is passed in", async () => {
+    const originalHost = process.env["DANGER_BITBUCKETSERVER_HOST"]
+    try {
+      process.env["DANGER_BITBUCKETSERVER_HOST"] = "https://bitbucket.mycompany.com"
+      const outputDsl = await jsonToDSL({ ...dsl, bitbucket_server: {} } as DangerDSLJSONType, new FakeCI({}))
+      // Simply enumerate a few APIs `BitBucketServerAPI` provides
+      expect(outputDsl.bitbucket_server.api).toMatchObject({
+        get: expect.any(Function),
+        post: expect.any(Function),
+        put: expect.any(Function),
+        delete: expect.any(Function),
+        getPullRequestInfo: expect.any(Function),
+      })
+    } finally {
+      process.env["DANGER_BITBUCKETSERVER_HOST"] = originalHost
+    }
   })
 })

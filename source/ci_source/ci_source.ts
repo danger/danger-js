@@ -18,6 +18,8 @@ export interface CISource {
   /** What unique id can be found for the code review platform's PR */
   readonly pullRequestID: string
 
+  readonly commitHash?: string
+
   /** allows the source to do some setup */
   setup?(): Promise<any>
 

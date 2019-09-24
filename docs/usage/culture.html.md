@@ -56,7 +56,7 @@ achievements, for example:
 
 - Submit congratulations when your app has had a version bump.
 - Thank the author for reducing the dependency tree.
-- Highlighting when someone has removed more code than adding it.
+- Highlighting when someone has removed more code than added.
 - If there are notably tricky areas of the codebase, pass along a thumbs up for daring to improve it.
 
-There's aren't contrived either - I've seen variations on all of these rules inside Dangerfiles.
+These aren't contrived either - I've seen variations on all of these rules inside Dangerfiles.

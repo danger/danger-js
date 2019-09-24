@@ -1,5 +1,5 @@
 import { GitJSONDSL, GitDSL } from "../dsl/GitDSL"
-import { BitBucketServerPRDSL, BitBucketServerJSONDSL } from "../dsl/BitBucketServerDSL"
+import { BitBucketServerPRDSL, BitBucketServerJSONDSL, BitBucketServerDSL } from "../dsl/BitBucketServerDSL"
 import { BitBucketServerAPI } from "./bitbucket_server/BitBucketServerAPI"
 import gitDSLForBitBucketServer from "./bitbucket_server/BitBucketServerGit"
 import { Platform, Comment } from "./platform"
@@ -43,10 +43,11 @@ export class BitBucketServer implements Platform {
     passed: boolean | "pending",
     message: string,
     url?: string,
-    dangerID?: string
+    dangerID?: string,
+    ciCommitHash?: string
   ): Promise<boolean> => {
     const pr = await this.api.getPullRequestInfo()
-    const { latestCommit } = pr.fromRef
+    const latestCommit = ciCommitHash || pr.fromRef.latestCommit
 
     let state = passed ? "SUCCESSFUL" : "FAILED"
     if (passed === "pending") {
@@ -258,3 +259,11 @@ export class BitBucketServer implements Platform {
 
   getFileContents = this.api.getFileContents
 }
+
+export const bitbucketServerJSONToBitBucketServerDSL = (
+  bitbucket: BitBucketServerJSONDSL,
+  api: BitBucketServerAPI
+): BitBucketServerDSL => ({
+  ...bitbucket,
+  api,
+})

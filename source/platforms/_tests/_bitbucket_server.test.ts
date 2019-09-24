@@ -46,9 +46,11 @@ import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 
 describe("getPlatformReviewDSLRepresentation", () => {
   let bbs: BitBucketServer
+  let api: BitBucketServerAPI
 
   beforeEach(() => {
-    bbs = new BitBucketServer(new BitBucketServerAPI({} as RepoMetaData, { host: "fake://host" }))
+    api = new BitBucketServerAPI({} as RepoMetaData, { host: "fake://host" })
+    bbs = new BitBucketServer(api)
   })
 
   it("should return the correct review title from getReviewInfo", async () => {
@@ -79,5 +81,31 @@ describe("getPlatformReviewDSLRepresentation", () => {
   it("should get the metadata", async () => {
     const dsl = await bbs.getPlatformReviewDSLRepresentation()
     expect(dsl.metadata).toMatchSnapshot()
+  })
+
+  it("should update status", async () => {
+    api.postBuildStatus = jest.fn().mockReturnValue({ ok: true })
+    await bbs.updateStatus(true, "message", undefined, "danger", undefined)
+
+    expect(api.postBuildStatus).toHaveBeenCalledWith("d6725486c38d46a33e76f622cf24b9a388c8d13d", {
+      state: "SUCCESSFUL",
+      key: "danger",
+      name: "danger",
+      url: "http://danger.systems/js",
+      description: "message",
+    })
+  })
+
+  it("should update status with ci commit hash", async () => {
+    api.postBuildStatus = jest.fn().mockReturnValue({ ok: true })
+    await bbs.updateStatus(true, "message", undefined, "danger", "abc1234")
+
+    expect(api.postBuildStatus).toHaveBeenCalledWith("abc1234", {
+      state: "SUCCESSFUL",
+      key: "danger",
+      name: "danger",
+      url: "http://danger.systems/js",
+      description: "message",
+    })
   })
 })

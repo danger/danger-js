@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "8.0.0",
+  "version": "9.2.0",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -22,6 +22,9 @@
       "/node_modules/",
       "/distribution/",
       "/types/"
+    ],
+    "watchPathIgnorePatterns": [
+      "<rootDir>/test-results.json"
     ],
     "cacheDirectory": ".jest/cache"
   },
@@ -51,6 +54,7 @@
     "release": "release-it",
     "test": "jest",
     "test:fixtures": "node ./scripts/run-fixtures.js",
+    "test:update-fixtures": "yarn test:fixtures --update",
     "test:watch": "jest --watch",
     "lint": "tslint \"source/**/*.ts\"",
     "lint:fix": "tslint \"source/**/*.ts\" --fix",
@@ -90,6 +94,7 @@
     "@babel/plugin-transform-typescript": "7.1.0",
     "@babel/preset-env": "7.1.0",
     "@babel/traverse": "7.1.0",
+    "@types/async-retry": "^1.4.1",
     "@types/debug": "0.0.30",
     "@types/get-stdin": "^5.0.1",
     "@types/http-proxy-agent": "^2.0.1",
@@ -132,11 +137,12 @@
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
     "@octokit/rest": "^16.14.1",
+    "async-retry": "1.2.3",
     "chalk": "^2.3.0",
     "commander": "^2.18.0",
     "debug": "^4.1.1",
     "get-stdin": "^6.0.0",
-    "gitlab": "^6.0.0",
+    "gitlab": "^10.0.1",
     "http-proxy-agent": "^2.1.0",
     "https-proxy-agent": "^2.2.1",
     "hyperlinker": "^1.0.0",

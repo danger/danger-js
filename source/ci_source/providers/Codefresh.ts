@@ -58,9 +58,13 @@ export class Codefresh implements CISource {
   }
 
   get repoSlug(): string {
-    const owner = this.env.CF_REPO_OWNER
-    const reponame = this.env.CF_REPO_NAME
-    return owner && reponame ? `${owner}/${reponame}` : ""
+    const splitSlug = this.env.CF_COMMIT_URL.split("/")
+    if (splitSlug.length === 7) {
+      const owner = splitSlug[3]
+      const reponame = splitSlug[4]
+      return owner && reponame ? `${owner}/${reponame}` : ""
+    }
+    return ""
   }
 
   get ciRunURL() {

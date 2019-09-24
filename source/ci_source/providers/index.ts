@@ -1,6 +1,7 @@
 import { AppCenter } from "./AppCenter"
 import { Bitrise } from "./Bitrise"
 import { BuddyBuild } from "./BuddyBuild"
+import { BuddyWorks } from "./BuddyWorks"
 import { Buildkite } from "./Buildkite"
 import { Circle } from "./Circle"
 import { CodeBuild } from "./CodeBuild"
@@ -21,6 +22,7 @@ import { Surf } from "./Surf"
 import { TeamCity } from "./TeamCity"
 import { Travis } from "./Travis"
 import { VSTS } from "./VSTS"
+import { BitbucketPipelines } from "./BitbucketPipelines"
 
 const providers = [
   FakeCI,
@@ -37,6 +39,7 @@ const providers = [
   Drone,
   Buildkite,
   BuddyBuild,
+  BuddyWorks,
   VSTS,
   Bitrise,
   TeamCity,
@@ -46,6 +49,7 @@ const providers = [
   CodeBuild,
   Codefresh,
   AppCenter,
+  BitbucketPipelines,
 ]
 
 // Mainly used for Dangerfile linting
@@ -63,6 +67,7 @@ const realProviders = [
   Drone,
   Buildkite,
   BuddyBuild,
+  BuddyWorks,
   VSTS,
   TeamCity,
   Screwdriver,

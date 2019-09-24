@@ -13,6 +13,7 @@ import {
   RepoMetaData,
   BitBucketServerChangesValue,
   BitBucketServerPagedResponse,
+  BitBucketServerAPIDSL,
 } from "../../dsl/BitBucketServerDSL"
 import { Comment } from "../platform"
 
@@ -54,7 +55,7 @@ export function bitbucketServerRepoCredentialsFromEnv(env: Env): BitBucketRepoCr
 
 /** This represent the BitBucketServer API */
 
-export class BitBucketServerAPI {
+export class BitBucketServerAPI implements BitBucketServerAPIDSL {
   fetch: typeof fetch
   private readonly d = debug("BitBucketServerAPI")
 
@@ -192,6 +193,9 @@ export class BitBucketServerAPI {
   }
 
   getIssues = async (): Promise<JIRAIssue[]> => {
+    if (process.env.DANGER_NO_BITBUCKET_JIRA_INTEGRATION) {
+      return [] as JIRAIssue[]
+    }
     const path = `${this.getPRBasePath("jira")}/issues`
     const res = await this.get(path)
     throwIfNotOk(res)

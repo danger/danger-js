@@ -16,6 +16,75 @@
 <!-- Your comment below this -->
 
 - Fix structuredDiffForFile for BitBucket Server - [@osmestad]
+- Fix Buddy.works isPR and use PR number instead of PR ID - [@mmiszy]
+
+<!-- Your comment above this -->
+
+# 9.2.0
+
+- Add Buddy.works Pipelines support - [@kristof0425]
+- Added flag to bypass Jira/Issues - [@orieken]
+- Improve docs for GitHub Actions - [@nguyenhuy]
+
+# 9.1.8
+
+- Get GitHub Actions event file pathname from env variable - [@IljaDaderko]
+
+# 9.1.7
+
+- GitHub Actions docs update - [@orta]
+
+# 9.1.6
+
+- Release only made for GitHub Actions - [@orta]
+
+# 9.1.5
+
+- Take commit hash from bitrise env - [@f-meloni]
+
+# 9.1.4
+
+- Use new env `BITBUCKET_REPO_FULL_NAME` in bitbucket pipeline. - [@Soyn]
+- Take commit hash from CI Source if available - [@f-meloni]
+
+# 9.1.3
+
+- Updates GitLab API to 10.x - [@awgeorge]
+
+# 9.1.2
+
+- Add retry handling for API requests - [@jtreanor]
+
+# 9.1.1
+
+- Fixes TS declarations - [@orta]
+- Fix Github Actions documentation - [@ravanscafi]
+- Improve Performance by Caching BitBucket Cloud Commits - [@hellocore]
+- Add compliment message to comment template on Bitbucket Cloud - [@hellocore]
+- Add option to set custom icon in messages - [@rohit-smpx]
+
+# 9.1.0
+
+- Expose BitBucketServerAPI - [@NMinhNguyen]
+
+# 9.0.3
+
+- Add support OAuth for BitBucket Cloud - [@hellocore]
+- Allow `handleResults` to be called without a `git` object - [@jtreanor]
+
+# 9.0.2
+
+- Fix for the GitLab dependency making danger not load - [@f-meloni]
+
+# 9.0.1
+
+- Fixed incorrect main comment template on Bitbucket Cloud - [@hellocore]
+
+# 9.0.0
+
+- Add BitBucket Cloud & BitBucket Pipelines support - [@hellocore]
+- Add GitLab missing states - [@f-meloni]
+- Fixes incorrect slug for builds from forks on Codefresh - [@stevenp]
 
 # 8.0.0
 
@@ -178,10 +247,10 @@
 
   ```json
   {
-    "markdowns":[],
-    "fails:" [],
-    "warnings:[],
-    "messages":[],
+    "markdowns": [],
+    "fails": [],
+    "warnings": [],
+    "messages": [],
     "meta": {
       "runtimeHref": "https://mysite.com",
       "runtimeName": "My Danger Runner"
@@ -1612,6 +1681,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@fwal]: https://github.com/fwal
 [@happylinks]: https://github.com/happylinks
 [@hongrich]: https://github.com/hongrich
+[@hellocore]: https://github.com/HelloCore
 [@imorente]: https://github.com/imorente
 [@joarwilk]: https://github.com/joarwilk
 [@johansteffner]: https://github.com/johansteffner
@@ -1628,6 +1698,8 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@patrickkempff]: https://github.com/patrickkempff
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@randak]: https://github.com/randak
+[@ravanscafi]: https://github.com/ravanscafi
+[@rohit-smpx]: https://github.com/rohit-smpx
 [@sajjadzamani]: https://github.com/sajjadzamani
 [@sebinsua]: https://github.com/sebinsua
 [@sgtcoolguy]: https://github.com/sgtcoolguy
@@ -1645,3 +1717,4 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@mrndjo]: https://github.com/mrndjo
 [@bigkraig]: https://github.com/bigkraig
 [@notjosh]: https://github.com/notjosh
+[@iljadaderko]: https://github.com/IljaDaderko

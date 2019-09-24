@@ -63,7 +63,11 @@ export const GitHubChecksCommenter = (api: GitHubAPI) => {
   }
 
   return {
-    platformResultsPreMapper: async (results: DangerResults, options: ExecutorOptions): Promise<DangerResults> => {
+    platformResultsPreMapper: async (
+      results: DangerResults,
+      options: ExecutorOptions,
+      ciCommitHash?: string
+    ): Promise<DangerResults> => {
       // Does nothing if you disable checks support
       if (options.disableGitHubChecksSupport) {
         return results
@@ -80,7 +84,7 @@ export const GitHubChecksCommenter = (api: GitHubAPI) => {
       let returnedResults = results
       d("Getting PR details for checks")
       const pr = await api.getPullRequestInfo()
-      const checkData = await resultsToCheck(results, options, pr, api.getExternalAPI())
+      const checkData = await resultsToCheck(results, options, pr, api.getExternalAPI(), ciCommitHash)
       try {
         // If Danger succeeds at creating a checks API call, then we switch out
         // the results which go through to the issue commenter with a summary version.

@@ -39,7 +39,7 @@ const stripWhitespaceForSnapshot = (str: string) => {
 const pullRequestInfoFilename = "github_pr.json"
 const masterSHA = JSON.parse(readFileSync(pathJoin(fixtures, pullRequestInfoFilename), {}).toString()).base.sha
 
-describe("the dangerfile gitDSL", async () => {
+describe("the dangerfile gitDSL", () => {
   let github: GitHubType = {} as any
   let nodeGitHubAPI: NodeGitHub = {} as any
   let gitJSONDSL: GitJSONDSL = {} as any

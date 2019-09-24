@@ -64,6 +64,13 @@ export const inlineMessageResults: DangerResults = {
   markdowns: [],
 }
 
+export const inlineCustomIconMessagesResults: DangerResults = {
+  fails: [],
+  warnings: [],
+  messages: [{ message: "Message with custom icon", icon: "📝", file: "File.swift", line: 10 }],
+  markdowns: [],
+}
+
 export const inlineRegularResults: DangerResults = {
   messages: [],
   warnings: [{ message: "Test message", file: "File.swift", line: 10 }, { message: "Warning message" }],
@@ -104,6 +111,24 @@ export const messagesResults: DangerResults = {
   markdowns: [],
 }
 
+export const customIconMessagesResults: DangerResults = {
+  fails: [],
+  warnings: [],
+  messages: [{ message: "Message with custom icon", icon: "📝" }],
+  markdowns: [],
+}
+
+export const multipleMessagesResults: DangerResults = {
+  fails: [],
+  warnings: [],
+  messages: [
+    { message: "Message with custom icon", icon: "📝" },
+    { message: "Message with custom icon2", icon: "🔔" },
+    { message: "Test message" }
+  ],
+  markdowns: [],
+}
+
 export const markdownResults: DangerResults = {
   fails: [],
   warnings: [],
@@ -134,4 +159,11 @@ export const resultsWithCustomMeta: DangerResults = {
     runtimeName: "DangerMajick",
     runtimeHref: "https://danger.magic",
   },
+}
+
+export const multipleSummaryResults: DangerResults = {
+  fails: [{ message: "Failing message Failing message" }, { message: "Failing message 2, This is Failing message" }],
+  warnings: [{ message: "Warning message Warning message" }, { message: "Warning message" }],
+  messages: [{ message: "message" }, { message: "message 2" }, { message: "message 3" }],
+  markdowns: [{ message: "markdown" }],
 }
