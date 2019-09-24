@@ -16,6 +16,7 @@
 <!-- Your comment below this -->
 
 - Fix Buddy.works isPR and use PR number instead of PR ID - [@mmiszy]
+- remove jsome package and replace with prettyjson - [@watchinharrison]
 
 <!-- Your comment above this -->
 
