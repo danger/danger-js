@@ -7,10 +7,10 @@ declare module "jest-runtime"
 declare module "jest-haste-map"
 declare module "jest-environment-node"
 declare module "jest-config"
-declare module "jsome"
 declare module "jsonpointer"
 declare module "parse-link-header"
 declare module "pinpoint"
+declare module "prettyjson"
 
 declare module "*/package.json"
 
