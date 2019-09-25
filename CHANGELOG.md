@@ -18,6 +18,7 @@
 - Fix structuredDiffForFile for BitBucket Server - [@osmestad]
 - Fix Buddy.works isPR and use PR number instead of PR ID - [@mmiszy]
 - remove jsome package and replace with prettyjson - [@watchinharrison]
+- Add GitLab support to Jenkins provider - [@sandratatarevicova]
 
 <!-- Your comment above this -->
 
