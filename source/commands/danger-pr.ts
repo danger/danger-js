@@ -2,7 +2,7 @@
 
 import program from "commander"
 import { debug } from "../debug"
-import jsome from "jsome"
+import prettyjson from "prettyjson"
 
 import { FakeCI } from "../ci_source/providers/Fake"
 import { pullRequestParser } from "../platforms/pullRequestParser"
@@ -140,10 +140,9 @@ async function runHalfProcessJSON(platform: Platform, source: CISource) {
   const output = JSON.parse(processInput)
   const dsl = { danger: output }
 
-  // See https://github.com/Javascipt/Jsome/issues/12
   if (app.json) {
     process.stdout.write(JSON.stringify(dsl, null, 2))
   } else if (app.js) {
-    jsome(dsl)
+    console.log(prettyjson.render(dsl))
   }
 }
