@@ -15,7 +15,8 @@
 
 <!-- Your comment below this -->
 
-<!-- Your comment above this -->
+- Fix binary files for BitBucket Server - [@osmestad]
+  <!-- Your comment above this -->
 
 # 9.2.1
 
