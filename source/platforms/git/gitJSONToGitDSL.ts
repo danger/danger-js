@@ -197,7 +197,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
       fileDiffs = parseDiff(diff)
     }
     const structuredDiff = fileDiffs.find(diff => diff.from === filename || diff.to === filename)
-    if (structuredDiff !== undefined) {
+    if (structuredDiff !== undefined && structuredDiff.chunks !== undefined) {
       return { chunks: structuredDiff.chunks }
     } else {
       return null
