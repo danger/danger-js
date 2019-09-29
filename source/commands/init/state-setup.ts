@@ -38,7 +38,9 @@ export const generateInitialState = (osProcess: NodeJS.Process): InitState => {
   const isBabel = checkForBabel()
   const hasTravis = fs.existsSync(".travis.yml")
   const hasCircle = fs.existsSync("circle.yml")
-  const ciType = hasTravis ? "travis" : hasCircle ? "circle" : "unknown"
+  const hasAzureDevops = fs.existsSync("azure-pipelines.yml")
+  //TODO - conditional statement won't scale
+  const ciType = hasTravis ? "travis" : hasCircle ? "circle" : hasAzureDevops ? "azureDevops" : "unknown"
   const repoSlug = getRepoSlug()
   const isGitHub = !!repoSlug
 

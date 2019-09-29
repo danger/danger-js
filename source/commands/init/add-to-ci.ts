@@ -82,6 +82,11 @@ export const circle = async (ui: InitUI, state: InitState) => {
   ui.say("  ```")
 }
 
+export const azureDevops = async (ui: InitUI) => {
+  // https://travis-ci.org/artsy/eigen/settings
+  ui.say("This is ground-level foundation.  This support is still not supported for Azure Devops")
+}
+
 export const unsure = async (ui: InitUI, _state: InitState) => {
   ui.say(
     "You need to expose a token called " +

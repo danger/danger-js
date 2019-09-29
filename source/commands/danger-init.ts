@@ -6,7 +6,7 @@ import program from "commander"
 import * as fs from "fs"
 
 import { generateDefaultDangerfile } from "./init/default-dangerfile"
-import { travis, circle, unsure } from "./init/add-to-ci"
+import { travis, circle, azureDevops, unsure } from "./init/add-to-ci"
 import { generateInitialState, createUI } from "./init/state-setup"
 import { InitUI, InitState, highlight } from "./init/interfaces"
 
@@ -33,6 +33,8 @@ const app: App = program as any
 const go = async (app: App) => {
   const state = generateInitialState(process)
   const ui: InitUI = createUI(state, app)
+
+  ui.say("Repo slug " + state.repoSlug)
 
   if (!state.isGitHub) {
     return showNonGitHubWarning(ui)
@@ -229,6 +231,8 @@ const addToCI = async (ui: InitUI, state: InitState) => {
     await travis(ui, state)
   } else if (state.ciType === "circle") {
     await circle(ui, state)
+  } else if (state.ciType === "azureDevops") {
+    await azureDevops(ui)
   } else {
     await unsure(ui, state)
   }
