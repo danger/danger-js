@@ -7,7 +7,7 @@ import { basename } from "path"
 import { setTimeout } from "timers"
 import * as fs from "fs"
 
-import { getRepoSlug } from "./get-repo-slug"
+import { getRepoSlug, getRepoInfo } from "./get-repo-slug"
 import { InitState, InitUI } from "./interfaces"
 
 export const createUI = (state: InitState, app: any): InitUI => {
@@ -42,6 +42,7 @@ export const generateInitialState = (osProcess: NodeJS.Process): InitState => {
   //TODO - conditional statement won't scale
   const ciType = hasTravis ? "travis" : hasCircle ? "circle" : hasAzureDevops ? "azureDevops" : "unknown"
   const repoSlug = getRepoSlug()
+  const repoType = getRepoInfo()
   const isGitHub = !!repoSlug
 
   return {
@@ -57,6 +58,7 @@ export const generateInitialState = (osProcess: NodeJS.Process): InitState => {
     hasCreatedDangerfile: false,
     hasSetUpAccountToken: false,
     repoSlug,
+    repoType,
     ciType,
     isGitHub,
   }

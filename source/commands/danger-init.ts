@@ -34,8 +34,6 @@ const go = async (app: App) => {
   const state = generateInitialState(process)
   const ui: InitUI = createUI(state, app)
 
-  ui.say("Repo slug " + state.repoSlug)
-
   if (!state.isGitHub) {
     return showNonGitHubWarning(ui)
   }
