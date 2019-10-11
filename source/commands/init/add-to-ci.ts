@@ -84,7 +84,11 @@ export const circle = async (ui: InitUI, state: InitState) => {
 
 export const azureDevops = async (ui: InitUI) => {
   // https://travis-ci.org/artsy/eigen/settings
-  ui.say("This is ground-level foundation.  This support is still not supported for Azure Devops")
+  ui.say("Currently your two options for Azure Devops (Formerly VSTS) support are the following.")
+  ui.say("1. Use AzureDevops as the CI provider (running danger). Use Github as the repo/PR provider.")
+  ui.say(highlight("This approach is far more feature complete."))
+  ui.say("2. Use AzureDevops as the CI provider (running danger). Use Azure Devops as the repo/PR provider.")
+  ui.say(highlight("This approach is incubating PRs are welcome!"))
 }
 
 export const unsure = async (ui: InitUI, _state: InitState) => {

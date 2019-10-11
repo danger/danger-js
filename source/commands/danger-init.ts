@@ -10,6 +10,8 @@ import { travis, circle, azureDevops, unsure } from "./init/add-to-ci"
 import { generateInitialState, createUI } from "./init/state-setup"
 import { InitUI, InitState, highlight } from "./init/interfaces"
 
+import { setupGithubAccount, setupUnknownRepoProvider, setupAzureDevopsAccount } from "./init/setup-bot-account"
+
 program
   .description("Helps you get set up through to your first Dangerfile.")
   .option("-i, --impatient", "Don't add dramatic pauses.")
@@ -35,14 +37,14 @@ const go = async (app: App) => {
   const ui: InitUI = createUI(state, app)
 
   if (state.repoType != "github") {
-    return showNonGitHubWarning(ui)
+    showNonGitHubWarning(ui)
   }
 
   const { isOSS } = await showTodoState(ui)
   state.isAnOSSRepo = isOSS
 
   await setupDangerfile(ui, state)
-  await setupGitHubAccount(ui, state)
+  await setupBotAccount(ui, state)
   await setupGHAccessToken(ui, state)
   await addToCI(ui, state)
   await wrapItUp(ui, state)
@@ -108,45 +110,14 @@ const setupDangerfile = async (ui: InitUI, state: InitState) => {
   }
 }
 
-const setupGitHubAccount = async (ui: InitUI, state: InitState) => {
-  ui.header("Step 2: Creating a GitHub account")
-
-  ui.say("In order to get the most out of Danger, I'd recommend giving it the ability to post in")
-  ui.say("the code-review comment section.")
-
-  ui.say("\n" + ui.link("GitHub Home", "https://github.com") + "\n")
-
-  await ui.pause(1)
-
-  ui.say(`IMO, it's best to do this by using the private mode of your browser.`)
-  ui.say(`Create an account like: ${highlight(state.botName)} and don't forget a cool robot avatar too.\n`)
-
-  await ui.pause(1)
-  ui.say("Here are great resources for creative-commons images of robots:\n")
-  const flickr = ui.link("flickr", "https://www.flickr.com/search/?text=robot&license=2%2C3%2C4%2C5%2C6%2C9")
-  const googImages = ui.link(
-    "googleimages",
-    "https://www.google.com/search?q=robot&tbs=sur:fmc&tbm=isch&tbo=u&source=univ&sa=X&ved=0ahUKEwjgy8-f95jLAhWI7hoKHV_UD00QsAQIMQ&biw=1265&bih=1359"
-  )
-  ui.say(" - " + flickr)
-  ui.say(" - " + googImages)
-  ui.say("")
-  await ui.pause(1)
-
-  noteAboutClickingLinks(ui, state)
-  await ui.pause(1)
-
-  if (state.isAnOSSRepo) {
-    ui.say(`${state.botName} does not need privileged access to your repo or org. This is because Danger will only`)
-    ui.say("be writing comments, and you do not need special access for that.")
+const setupBotAccount = async (ui: InitUI, state: InitState) => {
+  if (state.repoType == "github") {
+    setupGithubAccount(ui, state)
+  } else if (state.repoType == "azureDevops") {
+    setupAzureDevopsAccount(ui, state)
   } else {
-    ui.say(`${state.botName} will need access to your repo. Simply because the code is not available for the public`)
-    ui.say("to read and comment on.")
+    setupUnknownRepoProvider(ui)
   }
-
-  await ui.pause(1)
-  ui.say("\nCool, please press return when you have your account ready (and you've verified the email...)")
-  ui.waitForReturn()
 }
 
 const setupGHAccessToken = async (ui: InitUI, state: InitState) => {
@@ -181,13 +152,6 @@ const setupGHAccessToken = async (ui: InitUI, state: InitState) => {
 
   ui.say("\n👍, please press return when you have your token set up...")
   ui.waitForReturn()
-}
-
-const noteAboutClickingLinks = (ui: InitUI, state: InitState) => {
-  const modifier_key = state.isMac ? "cmd ( ⌘ )" : "ctrl"
-  const clicks = state.isWindows || state.supportsHLinks ? "clicking" : "double clicking"
-  const sidenote = chalk.italic.bold("Sidenote: ")
-  ui.say(`${sidenote} Holding ${modifier_key} and ${clicks} a link will open it in your browser.\n`)
 }
 
 const wrapItUp = async (ui: InitUI, _state: InitState) => {
