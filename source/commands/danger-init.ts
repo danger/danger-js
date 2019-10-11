@@ -34,7 +34,7 @@ const go = async (app: App) => {
   const state = generateInitialState(process)
   const ui: InitUI = createUI(state, app)
 
-  if (!state.isGitHub) {
+  if (state.repoType != "github") {
     return showNonGitHubWarning(ui)
   }
 
@@ -50,7 +50,7 @@ const go = async (app: App) => {
 }
 
 const showNonGitHubWarning = (ui: InitUI) => {
-  ui.say("Hi, welcome to Danger Init - I'm afraid at the moment this command only works for GitHub projects.")
+  ui.say("Hi, welcome to Danger Init - I'm afraid at the moment there is only limited support for non-GitHub projects.")
   ui.say("\nWe're definitely open to PRs improving this. You can find the code at:")
   const link = ui.link(
     "danger/danger-js#/source/commands/danger-init.ts",

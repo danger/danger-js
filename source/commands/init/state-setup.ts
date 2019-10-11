@@ -43,7 +43,6 @@ export const generateInitialState = (osProcess: NodeJS.Process): InitState => {
   const ciType = hasTravis ? "travis" : hasCircle ? "circle" : hasAzureDevops ? "azureDevops" : "unknown"
   const repoSlug = getRepoSlug()
   const repoType = getRepoInfo()
-  const isGitHub = !!repoSlug
 
   return {
     isMac,
@@ -60,7 +59,6 @@ export const generateInitialState = (osProcess: NodeJS.Process): InitState => {
     repoSlug,
     repoType,
     ciType,
-    isGitHub,
   }
 }
 
