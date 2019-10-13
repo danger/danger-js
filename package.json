@@ -135,11 +135,11 @@
     "typescript-json-schema": "^0.32.0"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.2.5",
     "@octokit/rest": "^16.14.1",
     "async-retry": "1.2.3",
     "chalk": "^2.3.0",
     "commander": "^2.18.0",
+    "core-js": "^3.2.1",
     "debug": "^4.1.1",
     "get-stdin": "^6.0.0",
     "gitlab": "^10.0.1",
@@ -168,6 +168,7 @@
     "pinpoint": "^1.1.0",
     "prettyjson": "^1.2.1",
     "readline-sync": "^1.4.9",
+    "regenerator-runtime": "^0.13.3",
     "require-from-string": "^2.0.2",
     "rfc6902": "^3.0.1",
     "supports-hyperlinks": "^1.0.1"

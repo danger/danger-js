@@ -16,6 +16,7 @@
 <!-- Your comment below this -->
 
 - Fix binary files for BitBucket Server - [@osmestad]
+- Remove @Babel/polyfill dependency (_replace with core-js and regenerator-runtime_) - [@gpetrioli]
   <!-- Your comment above this -->
 
 # 9.2.1
@@ -1684,6 +1685,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@f-meloni]: https://github.com/f-meloni
 [@fbartho]: https://github.com/fbartho
 [@fwal]: https://github.com/fwal
+[@gpetrioli]: https:/github.com/gpetrioli
 [@happylinks]: https://github.com/happylinks
 [@hongrich]: https://github.com/hongrich
 [@hellocore]: https://github.com/HelloCore
