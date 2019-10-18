@@ -15,8 +15,12 @@
 
 <!-- Your comment below this -->
 
-- Fix binary files for BitBucket Server - [@osmestad]
   <!-- Your comment above this -->
+
+# 9.2.2
+
+- Fix binary files for BitBucket Server - [@osmestad]
+- Allow GHE to use checks - [@adam-bratin]
 
 # 9.2.1
 
