@@ -67,7 +67,7 @@ const app = (program as any) as App
 const customProcess = !!app.process
 
 if (program.args.length === 0) {
-  console.error("")
+  console.error("Please include a PR URL to run against")
   process.exitCode = 1
 } else {
   const customHost =

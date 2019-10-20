@@ -20,7 +20,6 @@ program
   // .option("-s, --staging", "Just use staged changes.")
   .description("Runs danger without PR metadata, useful for git hooks.")
   .option("-b, --base [branch_name]", "Use a different base branch")
-  .option("-s, --staging", "Use a different base branch")
 setSharedArgs(program).parse(process.argv)
 
 const app = (program as any) as App
