@@ -38,7 +38,6 @@ export default (command: any) =>
       "Specify a custom dangerfile path, remote urls only work with github"
     )
     .option("-i, --id [danger_id]", "Specify a unique Danger ID for the Danger run")
-    .option("-b, --base [branch_name]", "Use a different base branch")
     .option("-c, --external-ci-provider [modulePath]", "Specify custom CI provider")
     .option("-p, --process [command]", "[dev] Runs a custom sub-process instead of the Danger JS runtime")
     .option("-u, --passURLForDSL", "[dev] Use a custom URL to send the Danger DSL into the sub-process")
