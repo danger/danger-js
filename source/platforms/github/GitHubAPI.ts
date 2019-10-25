@@ -130,11 +130,6 @@ export class GitHubAPI {
       return parseInt(perilID)
     }
 
-    const useGitHubActionsID = process.env["GITHUB_WORKFLOW"]
-    if (useGitHubActionsID) {
-      return 41898282
-    }
-
     const info = await this.getUserInfo()
     return info.id
   }
