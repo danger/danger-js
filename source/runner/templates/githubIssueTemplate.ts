@@ -17,8 +17,8 @@ function table(name: string, defaultEmoji: string, violations: Violation[]): str
 <table>
   <thead>
     <tr>
-      <th width="50"></th>
-      <th data-danger-table="true">${name}</th>
+      <th width="50" style="min-width:50"></th>
+      <th width="100%" data-danger-table="true">${name}</th>
     </tr>
   </thead>
   <tbody>${violations.map(violation => htmlForValidation(defaultEmoji, violation)).join("\n")}</tbody>
