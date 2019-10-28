@@ -1,4 +1,4 @@
-FROM node:10-slim
+FROM node:12-slim
 
 MAINTAINER Orta Therox
 
