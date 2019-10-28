@@ -14,7 +14,7 @@
 ## Master
 
 <!-- Your comment below this -->
-
+- Fix Github comment template that message can overlap with icon when viewed in email notification - [@wenhuanli]
   <!-- Your comment above this -->
 
 # 9.2.2
