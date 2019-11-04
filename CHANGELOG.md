@@ -14,7 +14,7 @@
 ## Master
 
 <!-- Your comment below this -->
-
+- Support more events on GitHub actions - [@f-meloni]
   <!-- Your comment above this -->
 
 # 9.2.2
