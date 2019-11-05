@@ -15,25 +15,25 @@ const issueEvent = {
   issue: {
     number: "2",
   },
-  repo: {
+  repository: {
     full_name: "danger/danger-js",
   },
 }
 
 describe("use event DSL", () => {
-  it("returns true when event.json contains pull_request data", () => {
+  it("returns false when event.json contains pull_request data", () => {
     const ci = new GitHubActions({}, pullRequestEvent)
-    expect(ci.useEventDSL).toBeTruthy()
-  })
-
-  it("returns true when event.json contains issue data", () => {
-    const ci = new GitHubActions({}, issueEvent)
-    expect(ci.useEventDSL).toBeTruthy()
-  })
-
-  it("returns false when event.json doesn't contain issue or pull_request data", () => {
-    const ci = new GitHubActions({}, {})
     expect(ci.useEventDSL).toBeFalsy()
+  })
+
+  it("returns false when event.json contains issue data", () => {
+    const ci = new GitHubActions({}, issueEvent)
+    expect(ci.useEventDSL).toBeFalsy()
+  })
+
+  it("returns true when event.json doesn't contain issue or pull_request data", () => {
+    const ci = new GitHubActions({}, {})
+    expect(ci.useEventDSL).toBeTruthy()
   })
 })
 
