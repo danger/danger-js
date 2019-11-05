@@ -163,7 +163,7 @@ export class GitHubActions implements CISource {
   }
 
   get useEventDSL() {
-    return this.event.pull_request !== undefined || this.event.issue !== undefined
+    return this.event.pull_request === undefined && this.event.issue === undefined
   }
 
   get pullRequestID(): string {
@@ -179,8 +179,8 @@ export class GitHubActions implements CISource {
   get repoSlug(): string {
     if (this.event.pull_request !== undefined) {
       return this.event.pull_request.base.repo.full_name
-    } else if (this.event.repo !== undefined) {
-      return this.event.repo.full_name
+    } else if (this.event.repository !== undefined) {
+      return this.event.repository.full_name
     }
 
     throw new Error("repoSlug was called on GitHubActions when it wasn't a PR")
