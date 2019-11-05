@@ -15,9 +15,11 @@ x
 
 <!-- Your comment below this -->
 
-- Fix github actions checks - [@f-meloni]
-
 <!-- Your comment above this -->
+
+# 9.2.4
+
+- Fix github actions checks - [@f-meloni]
 
 # 9.2.3
 
