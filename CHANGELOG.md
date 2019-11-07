@@ -15,6 +15,8 @@ x
 
 <!-- Your comment below this -->
 
+- Remove additional danger from pr generated json - [@f-meloni]
+
 <!-- Your comment above this -->
 
 # 9.2.4
