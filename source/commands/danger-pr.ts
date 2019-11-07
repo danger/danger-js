@@ -138,11 +138,10 @@ async function runHalfProcessJSON(platform: Platform, source: CISource) {
 
   const processInput = prepareDangerDSL(dangerDSL)
   const output = JSON.parse(processInput)
-  const dsl = { danger: output }
 
   if (app.json) {
-    process.stdout.write(JSON.stringify(dsl, null, 2))
+    process.stdout.write(JSON.stringify(output, null, 2))
   } else if (app.js) {
-    console.log(prettyjson.render(dsl))
+    console.log(prettyjson.render(output))
   }
 }
