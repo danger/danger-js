@@ -1,7 +1,7 @@
 import { Env, CISource } from "../ci_source"
 import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
 
-export class Travis implements CISource {
+export class Cirrus implements CISource {
   constructor(private readonly env: Env) {}
 
   get name(): string {
