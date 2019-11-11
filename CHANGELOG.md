@@ -17,6 +17,10 @@ x
 
 <!-- Your comment above this -->
 
+# 9.2.6
+
+- Add support for Cirrus CI - [@RDIL]
+
 # 9.2.5
 
 - Remove additional danger from pr generated json - [@f-meloni]
