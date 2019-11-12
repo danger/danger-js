@@ -17,6 +17,10 @@ x
 
 <!-- Your comment above this -->
 
+# 9.2.7
+
+- Maybe fix deploys to GPR for Docker - [@orta]
+
 # 9.2.6
 
 - Add support for Cirrus CI - [@RDIL]

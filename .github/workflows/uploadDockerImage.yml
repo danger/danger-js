@@ -13,7 +13,16 @@ jobs:
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: docker.pkg.github.com/elgohr/publish-docker-github-action/publish-docker-github-action
-          username: "Orta"
-          password: ${{ secrets.GITHUB_TOKEN }}
+          name: docker.pkg.github.com/elgohr/danger/danger-js/release
+          username: ${{ secrets.DOCKER_GITHUB_USERNAME }}
+          password: ${{ secrets.DOCKER_GITHUB_PASSWORD }}
           registry: docker.pkg.github.com
+
+
+        - name: Push
+          run: |
+            docker login docker.pkg.github.com --username RepoOwner --password "${GITHUB_PACKAGE_REGISTRY_TOKEN}"
+            docker push docker.pkg.github.com/danger/danger-js/master:tag
+          env:
+            GITHUB_PACKAGE_REGISTRY_TOKEN: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
+
