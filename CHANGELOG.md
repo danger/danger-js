@@ -17,7 +17,7 @@ x
 
 <!-- Your comment above this -->
 
-# 9.2.7
+# 9.2.7-8
 
 - Maybe fix deploys to GPR for Docker - [@orta]
 

@@ -17,12 +17,3 @@ jobs:
           username: ${{ secrets.DOCKER_GITHUB_USERNAME }}
           password: ${{ secrets.DOCKER_GITHUB_PASSWORD }}
           registry: docker.pkg.github.com
-
-
-        - name: Push
-          run: |
-            docker login docker.pkg.github.com --username RepoOwner --password "${GITHUB_PACKAGE_REGISTRY_TOKEN}"
-            docker push docker.pkg.github.com/danger/danger-js/master:tag
-          env:
-            GITHUB_PACKAGE_REGISTRY_TOKEN: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
-
