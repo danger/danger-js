@@ -56,6 +56,8 @@ export interface ExecutorOptions {
   disableGitHubChecksSupport?: boolean
   /** Fail if danger report contains failures */
   failOnErrors?: boolean
+  /** Dont add danger check to PR */
+  noPublishCheck?: boolean
 }
 // This is still badly named, maybe it really should just be runner?
 
@@ -303,21 +305,33 @@ export class Executor {
       }
     }
 
-    const urlForInfo = issueURL || this.ciSource.ciRunURL
-    const successPosting = await this.platform.updateStatus(!failed, messageForResults(results), urlForInfo, dangerID)
-    if (!successPosting && this.options.verbose) {
-      this.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
-      this.log("If the build fails, then danger will use a failing exit code.")
-    }
-
-    if (!successPosting && failed) {
-      this.d("Failing the build due to handleResultsPostingToPlatform not successfully setting a commit status")
-      process.exitCode = 1
+    if (!this.options.noPublishCheck) {
+      await this.updatePrStatus(!failed, issueURL, results, dangerID)
     }
 
     // More info, is more info.
     if (this.options.verbose) {
       await this.handleResultsPostingToSTDOUT(results)
+    }
+  }
+
+  async updatePrStatus(
+    passed: boolean | "pending",
+    issueURL: string | undefined,
+    results: DangerResults,
+    dangerID: string
+  ) {
+    const urlForInfo = issueURL || this.ciSource.ciRunURL
+    const successPosting = await this.platform.updateStatus(passed, messageForResults(results), urlForInfo, dangerID)
+
+    if (!successPosting && this.options.verbose) {
+      this.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
+      this.log("If the build fails, then danger will use a failing exit code.")
+    }
+
+    if (!successPosting && !passed) {
+      this.d("Failing the build due to handleResultsPostingToPlatform not successfully setting a commit status")
+      process.exitCode = 1
     }
   }
 
