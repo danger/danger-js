@@ -26,6 +26,7 @@ const defaultConfig: ExecutorOptions = {
   dangerID: "123",
   passURLForDSL: false,
   failOnErrors: false,
+  noPublishCheck: false,
 }
 
 class FakeProcces {
@@ -171,7 +172,9 @@ describe("setup", () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
-    const apiFailureMock = jest.fn().mockReturnValue(new Promise<any>((_, reject) => reject()))
+    const apiFailureMock = jest.fn().mockReturnValue(
+      new Promise<any>((_, reject) => reject())
+    )
     platform.createInlineComment = apiFailureMock
 
     let results = await exec.sendInlineComments(singleViolationSingleFileResults, dsl.git, [])
@@ -267,7 +270,10 @@ describe("setup", () => {
     const dsl = await defaultDsl(platform)
     const previousResults = {
       fails: [],
-      warnings: [{ message: "1", file: "1.swift", line: 1 }, { message: "2", file: "2.swift", line: 2 }],
+      warnings: [
+        { message: "1", file: "1.swift", line: 1 },
+        { message: "2", file: "2.swift", line: 2 },
+      ],
       messages: [],
       markdowns: [],
     }
@@ -291,13 +297,19 @@ describe("setup", () => {
     const dsl = await defaultDsl(platform)
     const previousResults = {
       fails: [],
-      warnings: [{ message: "1", file: "1.swift", line: 1 }, { message: "2", file: "2.swift", line: 2 }],
+      warnings: [
+        { message: "1", file: "1.swift", line: 1 },
+        { message: "2", file: "2.swift", line: 2 },
+      ],
       messages: [],
       markdowns: [],
     }
     const newResults = {
       fails: [],
-      warnings: [{ message: "1", file: "1.swift", line: 2 }, { message: "2", file: "2.swift", line: 3 }],
+      warnings: [
+        { message: "1", file: "1.swift", line: 2 },
+        { message: "2", file: "2.swift", line: 3 },
+      ],
       messages: [],
       markdowns: [],
     }
@@ -369,5 +381,24 @@ describe("setup", () => {
 
     await exec.handleResults(failsResults, dsl.git)
     expect(platform.updateStatus).toBeCalledWith(expect.anything(), expect.anything(), ci.ciRunURL, expect.anything())
+  })
+
+  it("Doesn't update status when check publishing feature is disabled", async () => {
+    const platform = new FakePlatform()
+    const ci: any = new FakeCI({})
+    ci.ciRunURL = "https://url.com"
+
+    const config = {
+      ...defaultConfig,
+      noPublishCheck: true,
+    }
+
+    const exec = new Executor(ci, platform, inlineRunner, config, new FakeProcces())
+    const dsl = await defaultDsl(platform)
+    platform.updateOrCreateComment = jest.fn()
+    platform.updateStatus = jest.fn()
+
+    await exec.handleResults(failsResults, dsl.git)
+    expect(platform.updateStatus).not.toBeCalled()
   })
 })

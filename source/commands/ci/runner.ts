@@ -67,6 +67,7 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
         passURLForDSL: app.passURLForDSL || false,
         disableGitHubChecksSupport: !app.useGithubChecks,
         failOnErrors: app.failOnErrors,
+        noPublishCheck: !app.publishCheck,
       }
 
       const processName = (app.process && app.process.split(" ")) || undefined
