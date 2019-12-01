@@ -51,13 +51,12 @@ export const runDangerSubprocess = (
       d(`Started passing in STDIN via the URL: ${url}`)
       child.stdin.write(url)
       child.stdin.end()
-      d(`Passed DSL in via STDIN`)
     } else {
       d(`Started passing in STDIN`)
       child.stdin.write(dslJSONString)
       child.stdin.end()
-      d(`Passed DSL in via STDIN`)
     }
+    d(`Passed DSL in via STDIN`)
   }
 
   // Initial sending of the DSL
