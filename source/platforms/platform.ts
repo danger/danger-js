@@ -115,7 +115,11 @@ export function getPlatformForEnv(env: Env, source: CISource): Platform {
   }
 
   // Bitbucket Cloud
-  if (env["DANGER_BITBUCKETCLOUD_UUID"] || env["DANGER_PR_PLATFORM"] === BitBucketCloud.name) {
+  if (
+    env["DANGER_BITBUCKETCLOUD_OAUTH_KEY"] ||
+    env["DANGER_BITBUCKETCLOUD_USERNAME"] ||
+    env["DANGER_PR_PLATFORM"] === BitBucketCloud.name
+  ) {
     const api = new BitBucketCloudAPI(
       {
         pullRequestID: source.pullRequestID,
