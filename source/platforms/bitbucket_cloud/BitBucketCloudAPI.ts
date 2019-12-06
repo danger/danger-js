@@ -19,7 +19,7 @@ import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 
 export type BitBucketCloudCredentials = {
   /** Unique ID for this user, must be wrapped with brackets */
-  uuid: string
+  uuid?: string
 } & (BitBucketCloudCredentialsOAuth | BitBucketCloudCredentialsPassword)
 
 interface BitBucketCloudCredentialsOAuth {
@@ -35,8 +35,8 @@ interface BitBucketCloudCredentialsPassword {
 }
 
 export function bitbucketCloudCredentialsFromEnv(env: Env): BitBucketCloudCredentials {
-  const uuid = `${env["DANGER_BITBUCKETCLOUD_UUID"]}`
-  if (uuid.length > 0) {
+  const uuid: string | undefined = env["DANGER_BITBUCKETCLOUD_UUID"]
+  if (uuid != null && uuid.length > 0) {
     if (!uuid.startsWith("{") || !uuid.endsWith("}")) {
       throw new Error(`DANGER_BITBUCKETCLOUD_UUID must be wraped with brackets`)
     }
@@ -83,9 +83,7 @@ export class BitBucketCloudAPI {
     this.fetch = fetch
 
     // Backward compatible,
-    if (credentials.uuid.length > 0) {
-      this.uuid = credentials.uuid
-    }
+    this.uuid = credentials.uuid
   }
 
   getBaseRepoURL() {

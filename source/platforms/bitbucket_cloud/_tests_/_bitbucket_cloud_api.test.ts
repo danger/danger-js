@@ -390,7 +390,6 @@ describe("API testing - BitBucket Cloud", () => {
         type: "PASSWORD",
         username: "foo",
         password: "bar",
-        uuid: "",
       }
     )
     let requestNo = 0
@@ -425,7 +424,6 @@ describe("API testing - BitBucket Cloud", () => {
         type: "OAUTH",
         oauthSecret: "superSecretOAUTH",
         oauthKey: "superOAUTHKey",
-        uuid: "",
       }
     )
     let requestNo = 0
@@ -464,7 +462,6 @@ describe("API testing - BitBucket Cloud", () => {
         type: "OAUTH",
         oauthSecret: "superSecretOAUTH",
         oauthKey: "superOAUTHKey",
-        uuid: "",
       }
     )
     let requestNo = 0
@@ -500,7 +497,6 @@ describe("API testing - BitBucket Cloud", () => {
         type: "OAUTH",
         oauthSecret: "superSecretOAUTH",
         oauthKey: "superOAUTHKey",
-        uuid: "",
       }
     )
 
