@@ -15,8 +15,12 @@ x
 
 <!-- Your comment below this -->
 
-- Bitbucket Cloud: Allow DangerCI to get UUID from Bitbucket - [@hellocore]
   <!-- Your comment above this -->
+
+# 9.2.9
+
+- Bitbucket Cloud: Allow DangerCI to get UUID from Bitbucket - [@hellocore]
+- Update docs for GitLab - [@orta]
 
 # 9.2.7-8-9
 
