@@ -9,14 +9,6 @@ blurb: An overview of using Danger with BitBucket Cloud, and some examples
 To use Danger JS with BitBucket Cloud: you'll need to create a new account for Danger to use, then set the following
 environment variables on your CI:
 
-We need UUID for updating comment, you can get it from the link on your home page of bitbucket.org. Then replace `%7B`
-with `{` and `%7D` with `}`.
-
-For example, the UUID of `https://bitbucket.org/%7Bzzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz%7D/` will be
-`{zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz}`
-
-- `DANGER_BITBUCKETCLOUD_UUID` = The uuid for the account used to comment.
-
 You could use either username with password or OAuth key with OAuth secret.
 
 For username and password, you need to set.
@@ -25,13 +17,14 @@ For username and password, you need to set.
   https://bitbucket.org/account/
 - `DANGER_BITBUCKETCLOUD_PASSWORD` = The password for the account used to comment, you could use
   [App passwords](https://confluence.atlassian.com/bitbucket/app-passwords-828781300.html#Apppasswords-Aboutapppasswords)
-  with Read Pull Requests Permission.
+  with Read Pull Requests and Read Account Permissions.
 
 For OAuth key and OAuth secret, you can get them from.
 
 - Open [BitBucket Cloud Website](https://bitbucket.org)
 - Navigate to Settings > OAuth > Add consumer
-- Put `https://bitbucket.org/site/oauth2/authorize` for `Callback URL`, and enable Pull requests Permission.
+- Put `https://bitbucket.org/site/oauth2/authorize` for `Callback URL`, and enable Read Pull requests, and Read Account
+  Permission.
 
 - `DANGER_BITBUCKETCLOUD_OAUTH_KEY` = The consumer key for the account used to comment, as show as `Key` on the website.
 - `DANGER_BITBUCKETCLOUD_OAUTH_SECRET` = The consumer secret for the account used to comment, as show as `Secret` on the
