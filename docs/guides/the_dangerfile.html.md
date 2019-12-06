@@ -31,19 +31,14 @@ export DANGER_BITBUCKETSERVER_HOST='xxxx' DANGER_BITBUCKETSERVER_USERNAME='yyyy'
 # or for BitBucket by username and personal access token
 export DANGER_BITBUCKETSERVER_HOST='xxxx' DANGER_BITBUCKETSERVER_USERNAME='yyyy' DANGER_BITBUCKETSERVER_TOKEN='zzzz'
 
-# or for BitBucket Cloud by username (from Account Settings page), password (App-password with Read Pull requests Permission is enough), and UUID
-# We need UUID for updating comment, you can get it from the link on your home page of bitbucket.org
-# For example, https://bitbucket.org/%7Bzzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz%7D/
-# Then replace "%7B" with "{" and "%7D" with "}"
+# or for BitBucket Cloud by username (from Account Settings page), password (App-password with Read Pull requests, and Read Account Permissions)
 export DANGER_BITBUCKETCLOUD_USERNAME='xxxx'
 export DANGER_BITBUCKETCLOUD_PASSWORD='yyyy'
-export DANGER_BITBUCKETCLOUD_UUID='{zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz}'
 
-# or for BitBucket Cloud by OAuth key, and OAuth secret, UUID
-# You can get OAuth key from Settings > OAuth > Add consumer, put `https://bitbucket.org/site/oauth2/authorize` for `Callback URL`, and enable Pull requests Permission.
+# or for BitBucket Cloud by OAuth key, and OAuth secret
+# You can get OAuth key from Settings > OAuth > Add consumer, put `https://bitbucket.org/site/oauth2/authorize` for `Callback URL`, and enable Read Pull requests, and Read Account Permissions.
 export DANGER_BITBUCKETCLOUD_OAUTH_KEY='xxxx'
 export DANGER_BITBUCKETCLOUD_OAUTH_SECRET='yyyy'
-export DANGER_BITBUCKETCLOUD_UUID='{zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz}'
 ```
 
 Then the danger CLI will use authenticated API calls, which don't get this by API limits.

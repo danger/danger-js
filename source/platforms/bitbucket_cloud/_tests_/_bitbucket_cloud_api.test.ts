@@ -382,4 +382,139 @@ describe("API testing - BitBucket Cloud", () => {
 
     expect(result).toEqual({ pr: "info" })
   })
+
+  it("should fetch uuid if not exists given username", async () => {
+    api = new BitBucketCloudAPI(
+      { repoSlug: "foo/bar", pullRequestID: "1" },
+      {
+        type: "PASSWORD",
+        username: "foo",
+        password: "bar",
+      }
+    )
+    let requestNo = 0
+    let fetch = jest.fn().mockReturnValue({
+      status: 200,
+      ok: true,
+      json: () => {
+        requestNo += 1
+        if (requestNo === 1) {
+          return {
+            uuid: "{1234-1234-1234-1234}",
+          }
+        } else {
+          return { pr: "info" }
+        }
+      },
+      text: () => textResult,
+    })
+
+    api.fetch = fetch
+
+    const result = await api.getPullRequestInfo()
+    expect(api.fetch).toBeCalledTimes(2)
+    expect(fetch.mock.calls[0][0]).toBe("https://api.bitbucket.org/2.0/user")
+    expect(result).toEqual({ pr: "info" })
+  })
+
+  it("should fetch uuid if not exists given oauth key", async () => {
+    api = new BitBucketCloudAPI(
+      { repoSlug: "foo/bar", pullRequestID: "1" },
+      {
+        type: "OAUTH",
+        oauthSecret: "superSecretOAUTH",
+        oauthKey: "superOAUTHKey",
+      }
+    )
+    let requestNo = 0
+    let fetch = jest.fn().mockReturnValue({
+      status: 200,
+      ok: true,
+      json: () => {
+        requestNo += 1
+        if (requestNo === 1) {
+          return {
+            access_token: "bla bla bla bla",
+          }
+        } else if (requestNo === 2) {
+          return {
+            uuid: "{1234-1234-1234-1234}",
+          }
+        } else {
+          return { pr: "info" }
+        }
+      },
+      text: () => textResult,
+    })
+
+    api.fetch = fetch
+
+    const result = await api.getPullRequestInfo()
+    expect(api.fetch).toBeCalledTimes(3)
+    expect(fetch.mock.calls[1][0]).toBe("https://api.bitbucket.org/2.0/user")
+    expect(result).toEqual({ pr: "info" })
+  })
+
+  it("should fetch uuid if not exists given accessToken", async () => {
+    api = new BitBucketCloudAPI(
+      { repoSlug: "foo/bar", pullRequestID: "1" },
+      {
+        type: "OAUTH",
+        oauthSecret: "superSecretOAUTH",
+        oauthKey: "superOAUTHKey",
+      }
+    )
+    let requestNo = 0
+    let fetch = jest.fn().mockReturnValue({
+      status: 200,
+      ok: true,
+      json: () => {
+        requestNo += 1
+        if (requestNo === 1) {
+          return {
+            uuid: "{1234-1234-1234-1234}",
+          }
+        } else {
+          return { pr: "info" }
+        }
+      },
+      text: () => textResult,
+    })
+
+    api.fetch = fetch
+    api.accessToken = "bla bla bla bla"
+
+    const result = await api.getPullRequestInfo()
+    expect(api.fetch).toBeCalledTimes(2)
+    expect(fetch.mock.calls[0][0]).toBe("https://api.bitbucket.org/2.0/user")
+    expect(result).toEqual({ pr: "info" })
+  })
+
+  it("shouldn't fetch uuid if uuid exists (from api calling)", async () => {
+    api = new BitBucketCloudAPI(
+      { repoSlug: "foo/bar", pullRequestID: "1" },
+      {
+        type: "OAUTH",
+        oauthSecret: "superSecretOAUTH",
+        oauthKey: "superOAUTHKey",
+      }
+    )
+
+    let fetch = jest.fn().mockReturnValue({
+      status: 200,
+      ok: true,
+      json: () => {
+        return { pr: "info" }
+      },
+      text: () => textResult,
+    })
+
+    api.fetch = fetch
+    api.accessToken = "bla bla bla bla"
+    api.uuid = "{1234-1234-1234-1234}"
+
+    const result = await api.getPullRequestInfo()
+    expect(api.fetch).toBeCalledTimes(1)
+    expect(result).toEqual({ pr: "info" })
+  })
 })
