@@ -3,7 +3,7 @@
   "version": "9.2.8",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
-  "typings": "distribution/danger.d.ts",
+  "types": "distribution/danger.d.ts",
   "bin": {
     "danger": "distribution/commands/danger.js",
     "danger-js": "distribution/commands/danger.js",
@@ -86,6 +86,9 @@
   "bugs": {
     "url": "https://github.com/danger/danger-js/issues"
   },
+  "tsd": {
+    "directory": "types-tests"
+  },
   "homepage": "https://github.com/danger/danger-js#readme",
   "devDependencies": {
     "@babel/cli": "7.1.2",
@@ -128,6 +131,7 @@
     "shx": "^0.3.2",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.0.2",
+    "tsd": "^0.10.0",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "typedoc": "0.9.0",

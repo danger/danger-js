@@ -12,6 +12,7 @@ dangerfile.circle.js
 dangerfile.flow.js
 dangerfile.lite.ts
 dangerfile.ts
+index.test-d.ts
 docs
 env
 flow-typed

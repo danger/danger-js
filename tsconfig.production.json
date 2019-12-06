@@ -8,6 +8,7 @@
     "source/**/fixtures/*",
     "source/**/_tests/*",
     "distribution",
-    "types"
+    "types",
+    "types-tests"
   ]
 }
