@@ -17,7 +17,7 @@ Then in your Dangerfiles you will have a fully fleshed out `danger.gitlab` objec
 ```ts
 import { danger, warn } from "danger"
 
-if (danger.bitbucket_cloud.mr.title.includes("WIP")) {
+if (danger.gitlab.mr.title.includes("WIP")) {
   warn("PR is considered WIP")
 }
 ```
@@ -29,7 +29,7 @@ danger.gitlab.
   /** The pull request and repository metadata */
   metadata: RepoMetaData
   /** The Merge Request metadata */
-  mr: BitBucketCloudPRDSL
+  mr: GitLabMR
   /** The commits associated with the merge request */
-  commits: BitBucketCloudCommit[]
+  commits: GitLabMRCommit[]
 ```
