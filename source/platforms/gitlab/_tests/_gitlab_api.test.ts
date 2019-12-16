@@ -35,6 +35,18 @@ describe("GitLab API", () => {
     )
   })
 
+  it("configures host from CI_API_V4_URL", () => {
+    api = new GitLabAPI(
+      { pullRequestID: "27117", repoSlug: "gitlab-org/gitlab-ce" },
+      getGitLabAPICredentialsFromEnv({
+        CI_API_V4_URL: "https://testciapiv4url.com/api/v4",
+        DANGER_GITLAB_API_TOKEN: "FAKE_DANGER_GITLAB_API_TOKEN",
+      })
+    )
+
+    expect(api.projectURL).toBe("https://testciapiv4url.com/gitlab-org/gitlab-ce")
+  })
+
   it("projectURL is defined", () => {
     expect(api.projectURL).toBe("https://gitlab.com/gitlab-org/gitlab-ce")
   })
