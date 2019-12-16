@@ -7,10 +7,13 @@ blurb: An overview of using Danger with GitLab, and some examples
 ---
 
 To use Danger JS with GitLab: you'll need to create a new account for Danger to use, then set the following environment
-variables on your CI system:
+variable on your CI system:
+
+- `DANGER_GITLAB_API_TOKEN` = An access token for the account which will post comments
+
+If you are using a GitLab version prior to 11.7 you will also need to define the following environment variable:
 
 - `DANGER_GITLAB_HOST` = Defaults to `https://gitlab.com` but you can use it for your own url
-- `DANGER_GITLAB_API_TOKEN` = An access token for the account which will post comments
 
 Then in your Dangerfiles you will have a fully fleshed out `danger.gitlab` object to work with. For example:
 
