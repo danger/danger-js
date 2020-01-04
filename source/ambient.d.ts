@@ -45,3 +45,13 @@ declare module "parse-git-config"
 declare module "parse-github-url"
 // Basically does one thing
 declare module "override-require"
+
+declare namespace NodeJS {
+  interface Process {
+    // https://github.com/zeit/pkg#snapshot-filesystem
+    pkg?: {
+      entrypoint: string
+      defaultEntrypoint: string
+    }
+  }
+}

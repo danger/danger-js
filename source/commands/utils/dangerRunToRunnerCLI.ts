@@ -9,7 +9,7 @@ const dangerRunToRunnerCLI = (argv: string[]) => {
 
   if (argv.length === 1) {
     return ["danger", "runner"]
-  } else if (argv[0].includes("node")) {
+  } else if (argv[0].includes("node") || process.pkg != null) {
     // convert
     let newJSFile = argv[1]
     usesProcessSeparationCommands.forEach(name => {
