@@ -15,8 +15,11 @@ x
 
 <!-- Your comment below this -->
 
-- Fix generated binary - [@hellocore]
   <!-- Your comment above this -->
+
+# 9.2.10
+
+- Fixes for the homebrew generated binaries - [@hellocore]
 
 # 9.2.9
 
