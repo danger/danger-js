@@ -33,6 +33,6 @@ localPlatform.validateThereAreChanges().then(changes => {
     // try to find the CI danger is running on and use that.
     runRunner(app, { source: fakeSource, platform: localPlatform, additionalEnvVars: { DANGER_LOCAL_NO_CI: "yep" } })
   } else {
-    console.log("No git changes detected between head and master.")
+    console.log(`No git changes detected between head and ${base}.`)
   }
 })
