@@ -6,7 +6,7 @@ import { readFileSync } from "fs"
 const nockBack = nock.back
 nockBack.fixtures = __dirname + "/fixtures"
 
-// We're testing https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/27117
+// We're testing https://gitlab.com/456/merge_requests/27117
 // This has been chosen because it is already merged and publicly available, it's unlikely to change
 
 /** Returns a fixture. */
@@ -27,7 +27,7 @@ describe("GitLab API", () => {
 
   beforeEach(() => {
     api = new GitLabAPI(
-      { pullRequestID: "27117", repoSlug: "gitlab-org/gitlab-ce" },
+      { pullRequestID: "27117", repoSlug: "456" },
       getGitLabAPICredentialsFromEnv({
         DANGER_GITLAB_HOST: "gitlab.com",
         DANGER_GITLAB_API_TOKEN: "FAKE_DANGER_GITLAB_API_TOKEN",
@@ -37,22 +37,22 @@ describe("GitLab API", () => {
 
   it("configures host from CI_API_V4_URL", () => {
     api = new GitLabAPI(
-      { pullRequestID: "27117", repoSlug: "gitlab-org/gitlab-ce" },
+      { pullRequestID: "27117", repoSlug: "456" },
       getGitLabAPICredentialsFromEnv({
         CI_API_V4_URL: "https://testciapiv4url.com/api/v4",
         DANGER_GITLAB_API_TOKEN: "FAKE_DANGER_GITLAB_API_TOKEN",
       })
     )
 
-    expect(api.projectURL).toBe("https://testciapiv4url.com/gitlab-org/gitlab-ce")
+    expect(api.projectURL).toBe("https://testciapiv4url.com/456")
   })
 
   it("projectURL is defined", () => {
-    expect(api.projectURL).toBe("https://gitlab.com/gitlab-org/gitlab-ce")
+    expect(api.projectURL).toBe("https://gitlab.com/456")
   })
 
   it("mergeRequestURL is defined", () => {
-    expect(api.mergeRequestURL).toBe("https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/27117")
+    expect(api.mergeRequestURL).toBe("https://gitlab.com/456/merge_requests/27117")
   })
 
   const sanitizeUserResponse = (nocks: NockDefinition[]): NockDefinition[] => {

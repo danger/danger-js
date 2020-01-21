@@ -1189,7 +1189,7 @@
                     "type": "string"
                 },
                 "repoSlug": {
-                    "description": "A path like \"artsy/eigen\"",
+                    "description": "Project ID \"624\" or a path like \"artsy/eigen\"",
                     "type": "string"
                 }
             },
