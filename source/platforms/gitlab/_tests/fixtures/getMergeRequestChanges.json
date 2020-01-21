@@ -2,7 +2,7 @@
   {
     "scope": "https://gitlab.com:443",
     "method": "GET",
-    "path": "/api/v4/projects/gitlab-org%2Fgitlab-ce/merge_requests/27117/changes",
+    "path": "/api/v4/projects/456/merge_requests/27117/changes",
     "body": "",
     "status": 200,
     "response": {
@@ -58,7 +58,12 @@
       ],
       "source_project_id": 13083,
       "target_project_id": 13083,
-      "labels": ["Danger bot", "Plan", "backend", "backstage"],
+      "labels": [
+        "Danger bot",
+        "Plan",
+        "backend",
+        "backstage"
+      ],
       "work_in_progress": false,
       "milestone": {
         "id": 655280,

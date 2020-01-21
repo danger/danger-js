@@ -2,7 +2,7 @@
   {
     "scope": "https://gitlab.com:443",
     "method": "GET",
-    "path": "/api/v4/projects/gitlab-org%2Fgitlab-ce/merge_requests/27117",
+    "path": "/api/v4/projects/456/merge_requests/27117",
     "body": "",
     "status": 200,
     "response": {
