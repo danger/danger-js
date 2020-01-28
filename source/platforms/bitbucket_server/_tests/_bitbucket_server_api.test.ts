@@ -275,7 +275,7 @@ describe("API testing - BitBucket Server", () => {
     const result = await api.getFileContents("path/to/foo.txt", "projects/FOO/repos/BAR", "master")
 
     expect(api.fetch).toHaveBeenCalledWith(
-      `${host}/projects/FOO/repos/BAR/raw/path/to/foo.txt?at=master`,
+      `${host}/rest/api/1.0/projects/FOO/repos/BAR/raw/path/to/foo.txt?at=master`,
       { method: "GET", body: null, headers: expectedJSONHeaders },
       true
     )
