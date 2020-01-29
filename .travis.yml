@@ -10,7 +10,7 @@ matrix:
     # Normal CI test runs :D
     - node_js: "10"
 
-    - node_js: "8"
+    - node_js: "10"
       after_script:
         - echo "Validating TypeScript definition file"
         - yarn build
@@ -23,7 +23,7 @@ matrix:
         - yarn flow check
 
     # Checks every example dangerfile can run in `danger runner`.
-    - node_js: "8"
+    - node_js: "10"
       script:
         - yarn build
         - node scripts/run-fixtures.js
