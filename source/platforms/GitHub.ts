@@ -3,7 +3,7 @@ import { GitHubAPI } from "./github/GitHubAPI"
 import GitHubUtils from "./github/GitHubUtils"
 import gitDSLForGitHub from "./github/GitHubGit"
 
-import NodeGitHub from "@octokit/rest"
+import { Octokit as NodeGitHub } from "@octokit/rest"
 import { Platform } from "./platform"
 
 import { GitHubIssueCommenter } from "./github/comms/issueCommenter"

@@ -1,7 +1,7 @@
 // Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
 
 import { GitCommit } from "./Commit"
-import * as GitHub from "@octokit/rest"
+import { Octokit as GitHub } from "@octokit/rest"
 
 // This is `danger.github` inside the JSON
 

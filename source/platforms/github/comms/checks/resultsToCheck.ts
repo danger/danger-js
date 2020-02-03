@@ -2,7 +2,7 @@ import { DangerResults, regularResults, inlineResults, resultsIntoInlineResults 
 import { GitHubPRDSL } from "../../../../dsl/GitHubDSL"
 import { ExecutorOptions } from "../../../../runner/Executor"
 import { template as githubResultsTemplate } from "../../../../runner/templates/githubIssueTemplate"
-import GitHubNodeAPI from "@octokit/rest"
+import { Octokit as GitHubNodeAPI } from "@octokit/rest"
 import { debug } from "../../../../debug"
 
 const d = debug("GitHub::ResultsToCheck")

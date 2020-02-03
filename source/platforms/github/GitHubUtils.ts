@@ -6,7 +6,7 @@ import { filepathContentsMapToUpdateGitHubBranch, BranchCreationConfig } from "m
 
 const d = debug("GitHub::Utils")
 
-import * as GitHub from "@octokit/rest"
+import { Octokit as GitHub } from "@octokit/rest"
 
 // We need to curry in access to the GitHub PR metadata
 
