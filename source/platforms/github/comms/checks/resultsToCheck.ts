@@ -68,7 +68,13 @@ export const resultsToCheck = async (
 
   const getBlobUrlForPath = async (path: string) => {
     try {
+      // response of getContents() can be one of 4 things. We are interested in file responses only
+      // https://developer.github.com/v3/repos/contents/#get-contents
       const { data } = await api.repos.getContents({ repo: pr.head.repo.name, owner: pr.head.repo.owner.login, path })
+      if (Array.isArray(data)) {
+        console.error(`Path "${path}" is a folder - ignoring`)
+        return ""
+      }
       d("Got content data for: ", path)
       // https://developer.github.com/v3/checks/runs/#example-of-completed-conclusion
       // e.g.  "blob_href": "http://github.com/octocat/Hello-World/blob/837db83be4137ca555d9a5598d0a1ea2987ecfee/README.md",
