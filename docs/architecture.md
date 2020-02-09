@@ -11,8 +11,8 @@ Actually doing that though, is a bit of a process.
 `source/ci_source/providers`][provs]. These use ENV VARs to figure out which CI `danger ci` is running on and validate
 whether it is a pull request.
 
-**Step 2: Platform**. Danger needs to know which platform the code review is happening in. Today Github, Gitlab,
-BitBucket Server and BitBucket Cloud are supported. You can see them them all in [`source/platforms`][platforms].
+**Step 2: Platform**. Danger needs to know which platform the code review is happening in. Today, Danger supports
+Github, Gitlab, BitBucket Server, and BitBucket Cloud. You can see them them all in [`source/platforms`][platforms].
 
 **Step 3: JSON DSL**. To allow for all of:
 
