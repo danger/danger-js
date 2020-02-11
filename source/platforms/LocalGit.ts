@@ -45,8 +45,9 @@ export class LocalGit implements Platform {
     const base = this.options.base || "master"
     const head = "HEAD"
     const diff = await this.getGitDiff()
+    const unstagedDiff = await localGetDiff(base, head, false)
     const commits: GitCommit[] = await localGetCommits(base, head)
-    const gitJSON = diffToGitJSONDSL(diff, commits)
+    const gitJSON = diffToGitJSONDSL(diff.concat(unstagedDiff), commits)
 
     const config: GitJSONToGitDSLConfig = {
       repo: process.cwd(),
