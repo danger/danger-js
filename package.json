@@ -161,7 +161,7 @@
     "node-fetch": "^2.3.0",
     "override-require": "^1.1.1",
     "p-limit": "^2.1.0",
-    "parse-diff": "^0.5.1",
+    "parse-diff": "^0.7.0",
     "parse-git-config": "^2.0.3",
     "parse-github-url": "^1.0.2",
     "parse-link-header": "^1.0.1",
