@@ -9,6 +9,7 @@ import {
   GitLabMRCommit,
   GitLabNote,
   GitLabUserProfile,
+  GitLabRepositoryFile,
 } from "../../dsl/GitLabDSL"
 
 import { Gitlab } from "gitlab"
@@ -52,7 +53,7 @@ export function getGitLabAPICredentialsFromEnv(env: Env): GitLabAPICredentials {
 
 class GitLabAPI {
   fetch: typeof fetch
-  private api: any
+  private api: InstanceType<typeof Gitlab>
   private readonly hostURL: string
   private readonly d = debug("GitLabAPI")
 
@@ -72,14 +73,17 @@ class GitLabAPI {
 
   getUser = async (): Promise<GitLabUserProfile> => {
     this.d("getUser")
-    const user: GitLabUserProfile = await this.api.Users.current()
+    const user = (await this.api.Users.current()) as GitLabUserProfile
     this.d("getUser", user)
     return user
   }
 
   getMergeRequestInfo = async (): Promise<GitLabMR> => {
     this.d(`getMergeRequestInfo for repo: ${this.repoMetadata.repoSlug} pr: ${this.repoMetadata.pullRequestID}`)
-    const mr: GitLabMR = await this.api.MergeRequests.show(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)
+    const mr = (await this.api.MergeRequests.show(
+      this.repoMetadata.repoSlug,
+      Number(this.repoMetadata.pullRequestID)
+    )) as GitLabMR
     this.d("getMergeRequestInfo", mr)
     return mr
   }
@@ -88,7 +92,7 @@ class GitLabAPI {
     this.d(`getMergeRequestChanges for repo: ${this.repoMetadata.repoSlug} pr: ${this.repoMetadata.pullRequestID}`)
     const mr = (await this.api.MergeRequests.changes(
       this.repoMetadata.repoSlug,
-      this.repoMetadata.pullRequestID
+      Number(this.repoMetadata.pullRequestID)
     )) as GitLabMRChanges
 
     this.d("getMergeRequestChanges", mr.changes)
@@ -97,10 +101,10 @@ class GitLabAPI {
 
   getMergeRequestCommits = async (): Promise<GitLabMRCommit[]> => {
     this.d("getMergeRequestCommits", this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)
-    const commits: GitLabMRCommit[] = await this.api.MergeRequests.commits(
+    const commits = (await this.api.MergeRequests.commits(
       this.repoMetadata.repoSlug,
-      this.repoMetadata.pullRequestID
-    )
+      Number(this.repoMetadata.pullRequestID)
+    )) as GitLabMRCommit[]
     this.d("getMergeRequestCommits", commits)
     return commits
   }
@@ -108,7 +112,7 @@ class GitLabAPI {
   getMergeRequestNotes = async (): Promise<GitLabNote[]> => {
     this.d("getMergeRequestNotes", this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)
     const api = this.api.MergeRequestNotes
-    const notes: GitLabNote[] = await api.all(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)
+    const notes = (await api.all(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)) as GitLabNote[]
     this.d("getMergeRequestNotes", notes)
     return notes
   }
@@ -132,6 +136,7 @@ class GitLabAPI {
     const api = this.api.MergeRequestDiscussions
 
     try {
+      // @ts-ignore
       const result: string = await api.create(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, content, {
         position: position,
       })
@@ -149,7 +154,7 @@ class GitLabAPI {
 
     try {
       this.d("createMergeRequestNote")
-      const note: GitLabNote = await api.create(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, body)
+      const note = (await api.create(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, body)) as GitLabNote
       this.d("createMergeRequestNote", note)
       return note
     } catch (e) {
@@ -163,7 +168,7 @@ class GitLabAPI {
     this.d("updateMergeRequestNote", this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, id, body)
     const api = this.api.MergeRequestNotes
     try {
-      const note: GitLabNote = await api.edit(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, id, body)
+      const note = (await api.edit(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, id, body)) as GitLabNote
       this.d("updateMergeRequestNote", note)
       return note
     } catch (e) {
@@ -200,7 +205,7 @@ class GitLabAPI {
 
     try {
       this.d("getFileContents", projectId, path, ref)
-      const response = await api.show(projectId, path, ref)
+      const response = (await api.show(projectId, path, ref)) as GitLabRepositoryFile
       const result: string = Buffer.from(response.content, "base64").toString()
       this.d("getFileContents", result)
       return result
