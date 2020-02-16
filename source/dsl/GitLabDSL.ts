@@ -238,3 +238,20 @@ export interface GitLabRepositoryFile {
   commit_id: string
   last_commit_id: string
 }
+
+export interface GitLabCommit {
+  id: string
+  short_id: string
+  title: string
+  author_name: string
+  author_email: string
+  created_at: string
+}
+
+export interface GitLabRepositoryCompare {
+  commit: GitLabCommit
+  commits: GitLabCommit[]
+  diffs: GitLabMRChange[]
+  compare_timeout: boolean
+  compare_same_ref: boolean
+}

@@ -46,7 +46,7 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
   } else if (process.env["DANGER_BITBUCKETCLOUD_OAUTH_KEY"] || process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
     git = bitBucketCloudGitDSL(bitbucket_cloud!, dsl.git, api as BitBucketCloudAPI)
   } else if (process.env["DANGER_GITLAB_API_TOKEN"]) {
-    git = gitLabGitDSL(gitlab!, dsl.git)
+    git = gitLabGitDSL(gitlab!, dsl.git, api as GitLabAPI)
   } else {
     git = source && source.useEventDSL ? ({} as any) : githubJSONToGitDSL(github!, dsl.git)
   }

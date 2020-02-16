@@ -10,6 +10,7 @@ import {
   GitLabNote,
   GitLabUserProfile,
   GitLabRepositoryFile,
+  GitLabRepositoryCompare,
 } from "../../dsl/GitLabDSL"
 
 import { Gitlab } from "gitlab"
@@ -217,6 +218,13 @@ class GitLabAPI {
       }
       throw e
     }
+  }
+
+  getCompareChanges = async (base: string, head: string): Promise<GitLabMRChange[]> => {
+    const api = this.api.Repositories
+    const projectId = this.repoMetadata.repoSlug
+    const compare = (await api.compare(projectId, base, head)) as GitLabRepositoryCompare
+    return compare.diffs
   }
 }
 
