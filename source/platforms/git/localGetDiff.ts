@@ -2,11 +2,11 @@ import { debug } from "../../debug"
 import { spawn } from "child_process"
 
 const d = debug("localGetDiff")
-const stagedDiffArgs = (base: string, head: string) => ["diff", `${base}...${head}`]
-const unstagedDiffArgas = (base: string) => ["diff", base]
-export const localGetDiff = (base: string, head: string, onlyUsedStaged: boolean = true) =>
+const useCommittedDiffArgs = (base: string, head: string) => ["diff", `${base}...${head}`]
+const useStagedChanges = (base: string) => ["diff", base]
+export const localGetDiff = (base: string, head: string, staged: boolean = false) =>
   new Promise<string>(done => {
-    const args = onlyUsedStaged ? stagedDiffArgs(base, head) : unstagedDiffArgas(base)
+    const args = staged ? useStagedChanges(base) : useCommittedDiffArgs(base, head)
     let stdout = ""
 
     const child = spawn("git", args, { env: process.env })
