@@ -16,6 +16,7 @@ x
 <!-- Your comment below this -->
 
 - Update `parse-diff` library - [@417-72KI]
+- Fix repository slug in Jenkins provider - [sandratatarevicova]
 
   <!-- Your comment above this -->
 

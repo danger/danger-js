@@ -75,7 +75,7 @@ export class Jenkins implements CISource {
 
       return result.repo
     }
-    return this.env.ghprbGhRepository || this.env.gitlabTargetNamespace + "/" + this.env.gitlabTargetRepoName
+    return this.env.ghprbGhRepository || new URL(this.env.GIT_URL_1).pathname.replace(/^\/(.*)\.git$/, "$1")
   }
 
   get ciRunURL() {
