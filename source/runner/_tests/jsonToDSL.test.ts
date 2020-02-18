@@ -43,7 +43,7 @@ describe("runner/jsonToDSL", () => {
   it("should call LocalGit with correct base", async () => {
     await jsonToDSL(dsl as DangerDSLJSONType, new FakeCI({}))
     expect(localGetDiff).toHaveBeenLastCalledWith("develop", "HEAD", undefined)
-    dsl.settings.cliArgs.staged = true
+    dsl.settings.cliArgs.staging = true
     await jsonToDSL(dsl as DangerDSLJSONType, new FakeCI({}))
     expect(localGetDiff).toHaveBeenLastCalledWith("develop", "HEAD", true)
   })

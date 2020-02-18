@@ -24,7 +24,7 @@ setSharedArgs(program).parse(process.argv)
 const app = (program as any) as App
 const base = app.base || "master"
 
-const localPlatform = new LocalGit({ base, staged: app.staging })
+const localPlatform = new LocalGit({ base, staging: app.staging })
 localPlatform.validateThereAreChanges().then(changes => {
   if (changes) {
     const fakeSource = new FakeCI(process.env)
