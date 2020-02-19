@@ -24,7 +24,7 @@ import { readFileSync, existsSync } from "fs"
  *     - name: Use Node.js 10.x
  *       uses: actions/setup-node@v1
  *       with:
- *         version: 10.x
+ *         node-version: 10.x
  *     - name: install yarn
  *       run: npm install -g yarn
  *     - name: yarn install, build, and test
