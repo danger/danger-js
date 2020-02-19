@@ -24,7 +24,7 @@ import { readFileSync, existsSync } from "fs"
  *     - name: Use Node.js 10.x
  *       uses: actions/setup-node@v1
  *       with:
- *         version: 10.x
+ *         node-version: 10.x
  *     - name: install yarn
  *       run: npm install -g yarn
  *     - name: yarn install, build, and test
@@ -131,6 +131,8 @@ import { readFileSync, existsSync } from "fs"
  *     uses: danger/danger-js@9.1.6
  *     env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  * ```
+ *
+ * [GitHub automatically creates a `GITHUB_TOKEN` secret to use in your workflow](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token). You can use the `GITHUB_TOKEN` to authenticate in a workflow run.
  *
  */
 
