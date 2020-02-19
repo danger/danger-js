@@ -132,6 +132,8 @@ import { readFileSync, existsSync } from "fs"
  *     env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  * ```
  *
+ * [GitHub automatically creates a `GITHUB_TOKEN` secret to use in your workflow](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token). You can use the `GITHUB_TOKEN` to authenticate in a workflow run.
+ *
  */
 
 export class GitHubActions implements CISource {
