@@ -18,6 +18,7 @@ x
 - Add the staged flag to `danger local` command - [@soyn]
 
 - Update `parse-diff` library - [@417-72KI]
+- Fix repository slug in Jenkins provider - [sandratatarevicova]
 
   <!-- Your comment above this -->
 
