@@ -15,6 +15,8 @@ export interface CliArgs {
   dangerfile: string
   /** So you can have many danger runs in one code review */
   id: string
+  /** Use staged changes */
+  staging?: boolean
 }
 
 // NOTE: if add something new here, you need to change dslGenerator.ts

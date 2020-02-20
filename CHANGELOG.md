@@ -15,6 +15,8 @@ x
 
 <!-- Your comment below this -->
 
+- Add the staged flag to `danger local` command - [@soyn]
+
 - Update `parse-diff` library - [@417-72KI]
 
   <!-- Your comment above this -->
@@ -1758,3 +1760,5 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@bigkraig]: https://github.com/bigkraig
 [@notjosh]: https://github.com/notjosh
 [@iljadaderko]: https://github.com/IljaDaderko
+[@417-72ki]: https://github.com/417-72KI
+[@soyn]: https://github.com/Soyn
