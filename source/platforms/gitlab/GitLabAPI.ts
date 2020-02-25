@@ -220,7 +220,10 @@ class GitLabAPI {
     }
   }
 
-  getCompareChanges = async (base: string, head: string): Promise<GitLabMRChange[]> => {
+  getCompareChanges = async (base?: string, head?: string): Promise<GitLabMRChange[]> => {
+    if (!base || !head) {
+      return this.getMergeRequestChanges()
+    }
     const api = this.api.Repositories
     const projectId = this.repoMetadata.repoSlug
     const compare = (await api.compare(projectId, base, head)) as GitLabRepositoryCompare

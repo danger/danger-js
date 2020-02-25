@@ -1,7 +1,7 @@
 import { debug } from "../../debug"
 import { GitLabDSL, GitLabMRChange } from "../../dsl/GitLabDSL"
 import { GitDSL, GitJSONDSL } from "../../dsl/GitDSL"
-import { gitJSONToGitDSL, GitJSONToGitDSLConfig, GitStructuredDiff } from "../git/gitJSONToGitDSL"
+import { gitJSONToGitDSL, GitJSONToGitDSLConfig } from "../git/gitJSONToGitDSL"
 import GitLabAPI from "./GitLabAPI"
 
 const d = debug("GitLabGit")
