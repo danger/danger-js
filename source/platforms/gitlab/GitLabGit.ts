@@ -22,7 +22,8 @@ export const gitLabGitDSL = (gitlab: GitLabDSL, json: GitJSONDSL, gitlabAPI: Git
   return gitJSONToGitDSL(json, config)
 }
 
-const gitlabChangesToDiff = (changes: GitLabMRChange[]): string => {
+export const gitlabChangesToDiff = (changes: GitLabMRChange[]): string => {
+  d("Converting GitLab Changes to Diff")
   // Gitlab doesn't return full raw git diff, relevant issue: https://gitlab.com/gitlab-org/gitlab/issues/24913
   return changes
     .map(change => {

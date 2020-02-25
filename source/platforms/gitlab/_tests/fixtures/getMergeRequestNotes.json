@@ -2,7 +2,7 @@
   {
     "scope": "https://gitlab.com:443",
     "method": "GET",
-    "path": "/api/v4/projects/gitlab-org%2Fgitlab-ce/merge_requests/27117/notes",
+    "path": "/api/v4/projects/gitlab-org%2Fgitlab-foss/merge_requests/27117/notes",
     "body": "",
     "status": 200,
     "response": [
@@ -356,7 +356,7 @@
       "Etag",
       "W/\"edab8aad8eea37dd376785c34c7c250f\"",
       "Link",
-      "<https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/merge_requests/27117/notes?id=gitlab-org%2Fgitlab-ce&noteable_id=27117&order_by=created_at&page=1&per_page=20&sort=desc>; rel=\"first\", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/merge_requests/27117/notes?id=gitlab-org%2Fgitlab-ce&noteable_id=27117&order_by=created_at&page=1&per_page=20&sort=desc>; rel=\"last\"",
+      "<https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/merge_requests/27117/notes?id=gitlab-org%2Fgitlab-foss&noteable_id=27117&order_by=created_at&page=1&per_page=20&sort=desc>; rel=\"first\", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/merge_requests/27117/notes?id=gitlab-org%2Fgitlab-foss&noteable_id=27117&order_by=created_at&page=1&per_page=20&sort=desc>; rel=\"last\"",
       "Vary",
       "Origin",
       "X-Content-Type-Options",
