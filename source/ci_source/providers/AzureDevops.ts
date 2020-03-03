@@ -11,7 +11,10 @@ export class AzureDevops implements CISource {
     return true
   }
   get isPR(): boolean {
-    if (ensureEnvKeysExist(this.env, ["CI_PULL_REQUEST"]) || ensureEnvKeysExist(this.env, ["CIRCLE_PULL_REQUEST"])) {
+    if (
+      ensureEnvKeysExist(this.env, ["SYSTEM_PULLREQUEST_PULLREQUESTID"]) ||
+      ensureEnvKeysExist(this.env, ["CIRCLE_PULL_REQUEST"])
+    ) {
       return true
     }
 
@@ -19,18 +22,18 @@ export class AzureDevops implements CISource {
     return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, ["CIRCLE_PR_NUMBER"])
   }
   get repoSlug(): string {
-    return ""
+    return this.env.BUILD_REPOSITORY_NAME
   }
   get pullRequestID(): string {
-    return this.env.BITRISE_PULL_REQUEST
+    return this.env.SYSTEM_PULLREQUEST_PULLREQUESTID
   }
   get commitHash(): string {
-    return this.env.BITRISE_GIT_COMMIT
+    return this.env.SYSTEM_PULLREQUEST_SOURCECOMMITID
   }
   get ciRunURL(): string {
-    return this.env.BITRISE_PULL_REQUEST
+    return this.env.SYSTEM_PULLREQUEST_PULLREQUESTID
   }
   get useEventDSL(): boolean {
-    return this.env.GITHUB_EVENT_NAME !== "pull_request"
+    return false
   }
 }
