@@ -63,9 +63,9 @@ export interface ExecutorOptions {
 
 const isTests = typeof jest === "object"
 
-interface ExitCodeContainer {
+/*interface ExitCodeContainer {
   exitCode: number
-}
+}*/
 
 export class Executor {
   private readonly d = debug("executor")
@@ -77,7 +77,7 @@ export class Executor {
     public readonly platform: Platform,
     public readonly runner: DangerRunner,
     public readonly options: ExecutorOptions,
-    public readonly process: ExitCodeContainer
+    public readonly process: NodeJS.Process
   ) {}
 
   /**
