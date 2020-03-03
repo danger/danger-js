@@ -11,5 +11,4 @@ use the global object for the root DSL elements.
 
 There is a spectrum thread for discussion here:
   - https://spectrum.chat/?t=0a005b56-31ec-4919-9a28-ced623949d4d
-
 `

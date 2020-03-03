@@ -23,6 +23,7 @@ import { TeamCity } from "./TeamCity"
 import { Travis } from "./Travis"
 import { VSTS } from "./VSTS"
 import { BitbucketPipelines } from "./BitbucketPipelines"
+import { Cirrus } from "./Cirrus"
 
 const providers = [
   FakeCI,
@@ -50,6 +51,7 @@ const providers = [
   Codefresh,
   AppCenter,
   BitbucketPipelines,
+  Cirrus,
 ]
 
 // Mainly used for Dangerfile linting
@@ -76,6 +78,7 @@ const realProviders = [
   CodeBuild,
   Codefresh,
   AppCenter,
+  Cirrus
 ]
 
 export { providers, realProviders }

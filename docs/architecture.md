@@ -7,12 +7,12 @@ Actually doing that though, is a bit of a process.
 
 ## Setup
 
-**Step 1: CI**. Danger needs to figure out what CI we're running on. You can see them all [in
+**Step 1: CI**. Danger needs to figure out what CI we're running on. You can see them all in [
 `source/ci_source/providers`][provs]. These use ENV VARs to figure out which CI `danger ci` is running on and validate
 whether it is a pull request.
 
-**Step 2: Platform**. Danger needs to know which platform the code review is happening in. Today it's just GitHub, but
-BitBucket Server is around the corner.
+**Step 2: Platform**. Danger needs to know which platform the code review is happening in. Today, Danger supports
+Github, Gitlab, BitBucket Server, and BitBucket Cloud. You can see them them all in [`source/platforms`][platforms].
 
 **Step 3: JSON DSL**. To allow for all of:
 
@@ -21,7 +21,7 @@ BitBucket Server is around the corner.
 - `peril` to arbitrarily sandbox danger per-run on a unique docker container
 
 Danger first generates a JSON DSL. This can be passed safely between processes, or servers. For `danger ci` the exposed
-DSL is created as a [DangerDSLJSONType][dangerdsl] and this is passed into the hidden [command `danger runner`][runner].
+DSL is created as a [DangerDSLJSONType][dangerdsl] and this is passed into the hidden command [`danger runner`][runner].
 
 **Step 4: DSL**. The JSON DSL is picked up from STDIN in `danger runner` and then converted into a
 [DangerDSLType][dangerdsl]. This is basically where functions are added into the DSL.
@@ -37,3 +37,4 @@ the platform. The platform then chooses whether to create/delete/edit any messag
 [dangerdsl]: https://github.com/danger/danger-js/blob/master/source/dsl/DangerDSL.ts
 [runner]: https://github.com/danger/danger-js/blob/master/source/commands/danger-runner.ts
 [in_runner]: https://github.com/danger/danger-js/blob/master/source/runner/runners/inline.ts
+[platforms]: https://github.com/danger/danger-js/blob/master/source/platforms

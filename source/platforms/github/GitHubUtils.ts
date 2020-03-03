@@ -6,7 +6,7 @@ import { filepathContentsMapToUpdateGitHubBranch, BranchCreationConfig } from "m
 
 const d = debug("GitHub::Utils")
 
-import * as GitHub from "@octokit/rest"
+import { Octokit as GitHub } from "@octokit/rest"
 
 // We need to curry in access to the GitHub PR metadata
 
@@ -66,8 +66,13 @@ export const fileContentsGenerator = (
     owner: repoSlug.split("/")[0],
   }
   try {
+    // response of getContents() can be one of 4 things. We are interested in file responses only
+    // https://developer.github.com/v3/repos/contents/#get-contents
     const response = await api.repos.getContents(opts)
-    if (response && response.data && response.data.type === "file") {
+    if (Array.isArray(response.data)) {
+      return ""
+    }
+    if (response && response.data && response.data.content) {
       const buffer = new Buffer(response.data.content, response.data.encoding)
       return buffer.toString()
     } else {

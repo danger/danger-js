@@ -20,7 +20,10 @@ const jwtForGitHubAuth = (appID: string, key: string) => {
 // Step 2 - Use App signed JWT to grab a per-installation
 
 const requestAccessTokenForInstallation = (appID: string, installationID: number, key: string) => {
-  const url = `https://api.github.com/installations/${installationID}/access_tokens`
+  const apiUrl = process.env["DANGER_GITHUB_API_BASE_URL"]
+    ? process.env["DANGER_GITHUB_API_BASE_URL"]
+    : "https://api.github.com"
+  const url = `${apiUrl}/installations/${installationID}/access_tokens`
   const headers = {
     Accept: "application/vnd.github.machine-man-preview+json",
     Authorization: `Bearer ${jwtForGitHubAuth(appID, key)}`,

@@ -24,7 +24,7 @@ import { readFileSync, existsSync } from "fs"
  *     - name: Use Node.js 10.x
  *       uses: actions/setup-node@v1
  *       with:
- *         version: 10.x
+ *         node-version: 10.x
  *     - name: install yarn
  *       run: npm install -g yarn
  *     - name: yarn install, build, and test
@@ -132,16 +132,20 @@ import { readFileSync, existsSync } from "fs"
  *     env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  * ```
  *
+ * [GitHub automatically creates a `GITHUB_TOKEN` secret to use in your workflow](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token). You can use the `GITHUB_TOKEN` to authenticate in a workflow run.
+ *
  */
 
 export class GitHubActions implements CISource {
   private event: any
 
-  constructor(private readonly env: Env) {
+  constructor(private readonly env: Env, event: any = undefined) {
     const { GITHUB_EVENT_PATH } = env
     const eventFilePath = GITHUB_EVENT_PATH || "/github/workflow/event.json"
-    
-    if (existsSync(eventFilePath)) {
+
+    if (event !== undefined) {
+      this.event = event
+    } else if (existsSync(eventFilePath)) {
       const event = readFileSync(eventFilePath, "utf8")
       this.event = JSON.parse(event)
     }
@@ -161,21 +165,24 @@ export class GitHubActions implements CISource {
   }
 
   get useEventDSL() {
-    // Support event based PR runs
-    return this.env.GITHUB_EVENT_NAME !== "pull_request"
+    return this.event.pull_request === undefined && this.event.issue === undefined
   }
 
   get pullRequestID(): string {
-    if (this.env.GITHUB_EVENT_NAME === "pull_request") {
+    if (this.event.pull_request !== undefined) {
       return this.event.pull_request.number
+    } else if (this.event.issue !== undefined) {
+      return this.event.issue.number
     }
 
     throw new Error("pullRequestID was called on GitHubActions when it wasn't a PR")
   }
 
   get repoSlug(): string {
-    if (this.env.GITHUB_EVENT_NAME === "pull_request") {
+    if (this.event.pull_request !== undefined) {
       return this.event.pull_request.base.repo.full_name
+    } else if (this.event.repository !== undefined) {
+      return this.event.repository.full_name
     }
 
     throw new Error("repoSlug was called on GitHubActions when it wasn't a PR")

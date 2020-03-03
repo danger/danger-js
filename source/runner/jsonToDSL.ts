@@ -1,4 +1,4 @@
-import OctoKit from "@octokit/rest"
+import { Octokit } from "@octokit/rest"
 
 import { DangerDSLJSONType, DangerDSLType } from "../dsl/DangerDSL"
 import { gitHubGitDSL as githubJSONToGitDSL } from "../platforms/github/GitHubGit"
@@ -31,7 +31,7 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
 
   const api = apiForDSL(dsl)
   const platformExists = [dsl.github, dsl.bitbucket_server, dsl.gitlab, dsl.bitbucket_cloud].some(p => !!p)
-  const github = dsl.github && githubJSONToGitHubDSL(dsl.github, api as OctoKit)
+  const github = dsl.github && githubJSONToGitHubDSL(dsl.github, api as Octokit)
   const bitbucket_server =
     dsl.bitbucket_server && bitbucketServerJSONToBitBucketServerDSL(dsl.bitbucket_server, api as BitBucketServerAPI)
   const bitbucket_cloud = dsl.bitbucket_cloud
@@ -43,7 +43,7 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
     git = await localPlatform.getPlatformGitRepresentation()
   } else if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
     git = bitBucketServerGitDSL(bitbucket_server!, dsl.git, api as BitBucketServerAPI)
-  } else if (process.env["DANGER_BITBUCKETCLOUD_UUID"]) {
+  } else if (process.env["DANGER_BITBUCKETCLOUD_OAUTH_KEY"] || process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
     git = bitBucketCloudGitDSL(bitbucket_cloud!, dsl.git, api as BitBucketCloudAPI)
   } else if (process.env["DANGER_GITLAB_API_TOKEN"]) {
     git = gitLabGitDSL(gitlab!, dsl.git)
@@ -67,12 +67,12 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
   }
 }
 
-const apiForDSL = (dsl: DangerDSLJSONType): OctoKit | BitBucketServerAPI | GitLabAPI | BitBucketCloudAPI => {
+const apiForDSL = (dsl: DangerDSLJSONType): Octokit | BitBucketServerAPI | GitLabAPI | BitBucketCloudAPI => {
   if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
     return new BitBucketServerAPI(dsl.bitbucket_server!.metadata, bitbucketServerRepoCredentialsFromEnv(process.env))
   }
 
-  if (process.env["DANGER_BITBUCKETCLOUD_UUID"]) {
+  if (process.env["DANGER_BITBUCKETCLOUD_OAUTH_KEY"] || process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
     return new BitBucketCloudAPI(dsl.bitbucket_cloud!.metadata, bitbucketCloudCredentialsFromEnv(process.env))
   }
 
@@ -82,7 +82,7 @@ const apiForDSL = (dsl: DangerDSLJSONType): OctoKit | BitBucketServerAPI | GitLa
     return new GitLabAPI(gitlab.metadata, getGitLabAPICredentialsFromEnv(process.env))
   }
 
-  const options: OctoKit.Options & { debug: boolean } = {
+  const options: Octokit.Options & { debug: boolean } = {
     debug: !!process.env.LOG_FETCH_REQUESTS,
     baseUrl: dsl.settings.github.baseURL,
   }
@@ -102,6 +102,6 @@ const apiForDSL = (dsl: DangerDSLJSONType): OctoKit | BitBucketServerAPI | GitLa
     options.auth = `token ${dsl.settings.github.accessToken}`
   }
 
-  const api = new OctoKit(options)
+  const api = new Octokit(options)
   return api
 }

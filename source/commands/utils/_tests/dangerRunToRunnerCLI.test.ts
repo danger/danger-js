@@ -48,3 +48,37 @@ it("`danger pr --dangerfile 'myDanger file.ts'`", () => {
     "myDanger file.ts",
   ])
 })
+
+describe("it can handle the command when running from pkg", () => {
+  beforeAll(() => {
+    process.pkg = {
+      defaultEntrypoint: "Hello",
+      entrypoint: "World",
+    }
+  })
+
+  afterAll(() => {
+    process.pkg = undefined
+  })
+
+  it("`./brew-distribution/danger /snapshot/danger-js/distribution/commands/danger-pr.js --dangerfile myDangerfile.ts`", () => {
+    /**
+     * The example of argv
+     * [ '/Users/core/Documents/project/danger-js/brew-distribution/danger',
+     *    '/snapshot/danger-js/distribution/commands/danger-pr.js',
+     *    'https://bitbucket.org/foo/bar/pull-requests/381' ]
+     */
+    expect(
+      dangerRunToRunnerCLI([
+        "./brew-distribution/danger",
+        "/snapshot/danger-js/distribution/commands/danger-pr.js",
+        "--dangerfile",
+        "myDangerfile.ts",
+      ])
+    ).toEqual(
+      "./brew-distribution/danger /snapshot/danger-js/distribution/commands/danger-runner.js --dangerfile myDangerfile.ts".split(
+        " "
+      )
+    )
+  })
+})

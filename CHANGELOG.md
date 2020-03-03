@@ -8,15 +8,53 @@
 
 // Note: if this is your first PR, you'll need to add your URL to the footnotes
 //       see the bottom of this file. The list there is sorted, try to follow that.
-
+x
 -->
 
 ## Master
 
 <!-- Your comment below this -->
 
-- Fix binary files for BitBucket Server - [@osmestad]
+- Add the staged flag to `danger local` command - [@soyn]
+
+- Update `parse-diff` library - [@417-72KI]
+- Fix repository slug in Jenkins provider - [sandratatarevicova]
+
   <!-- Your comment above this -->
+
+# 9.2.10
+
+- Fixes for the homebrew generated binaries - [@hellocore]
+
+# 9.2.9
+
+- Bitbucket Cloud: Allow DangerCI to get UUID from Bitbucket - [@hellocore]
+- Update docs for GitLab - [@orta]
+
+# 9.2.7-8-9
+
+- Maybe fix deploys to GPR for Docker - [@orta]
+
+# 9.2.6
+
+- Add support for Cirrus CI - [@RDIL]
+
+# 9.2.5
+
+- Remove additional danger from pr generated json - [@f-meloni]
+
+# 9.2.4
+
+- Fix github actions checks - [@f-meloni]
+
+# 9.2.3
+
+- Support more events on GitHub actions - [@f-meloni]
+
+# 9.2.2
+
+- Fix binary files for BitBucket Server - [@osmestad]
+- Allow GHE to use checks - [@adam-bratin]
 
 # 9.2.1
 
@@ -1723,3 +1761,5 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@bigkraig]: https://github.com/bigkraig
 [@notjosh]: https://github.com/notjosh
 [@iljadaderko]: https://github.com/IljaDaderko
+[@417-72ki]: https://github.com/417-72KI
+[@soyn]: https://github.com/Soyn

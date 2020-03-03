@@ -7,7 +7,7 @@ import { readFileSync } from "fs"
 import { resolve, join as pathJoin } from "path"
 import { gitHubGitDSL as gitJSONToGitDSL } from "../GitHubGit"
 
-import NodeGitHub from "@octokit/rest"
+import { Octokit as NodeGitHub } from "@octokit/rest"
 import { GitHubDSL } from "../../../dsl/GitHubDSL"
 import { GitDSL, GitJSONDSL } from "../../../dsl/GitDSL"
 

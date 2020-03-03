@@ -25,11 +25,23 @@ export interface GitLabAPICredentials {
 export function getGitLabAPICredentialsFromEnv(env: Env): GitLabAPICredentials {
   let host = "https://gitlab.com"
   const envHost = env["DANGER_GITLAB_HOST"]
+  const envCIAPI = env["CI_API_V4_URL"]
+
   if (envHost) {
     // We used to support DANGER_GITLAB_HOST being just the host e.g. "gitlab.com"
     // however it is possible to have a custom host without SSL, ensure we only add the protocol if one is not provided
-    const protocolRegex = /^http(s)*?:\/\//i
+    const protocolRegex = /^https?:\/\//i
     host = protocolRegex.test(envHost) ? envHost : `https://${envHost}`
+  } else if (envCIAPI) {
+    // GitLab >= v11.7 supplies the API Endpoint in an environment variable and we can work out our host value from that.
+    // See https://docs.gitlab.com/ce/ci/variables/predefined_variables.html
+    const hostRegex = /^(https?):\/\/([^\/]+)\//i
+    if (hostRegex.test(envCIAPI)) {
+      const matches = hostRegex.exec(envCIAPI)!
+      const matchProto = matches[1]
+      const matchHost = matches[2]
+      host = `${matchProto}://${matchHost}`
+    }
   }
 
   return {

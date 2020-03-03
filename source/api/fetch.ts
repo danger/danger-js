@@ -62,7 +62,8 @@ export async function retryableFetch(
 export function api(
   url: string | node_fetch.Request,
   init: node_fetch.RequestInit,
-  suppressErrorReporting?: boolean
+  suppressErrorReporting?: boolean,
+  provessEnv: NodeJS.ProcessEnv = process.env
 ): Promise<node_fetch.Response> {
   const isTests = typeof jest !== "undefined"
   if (isTests && !url.toString().includes("localhost")) {
@@ -78,8 +79,8 @@ export function api(
       output.push(`-X ${init.method}`)
     }
 
-    const showToken = process.env["DANGER_VERBOSE_SHOW_TOKEN"]
-    const token = process.env["DANGER_GITHUB_API_TOKEN"] || process.env["GITHUB_TOKEN"]
+    const showToken = provessEnv["DANGER_VERBOSE_SHOW_TOKEN"]
+    const token = provessEnv["DANGER_GITHUB_API_TOKEN"] || provessEnv["GITHUB_TOKEN"]
 
     if (init.headers) {
       for (const prop in init.headers) {
@@ -107,7 +108,8 @@ export function api(
   }
 
   let agent = init.agent
-  const proxy = process.env["HTTPS_PROXY"] || process.env["HTTP_PROXY"]
+  const proxy =
+    provessEnv["HTTPS_PROXY"] || provessEnv["https_proxy"] || provessEnv["HTTP_PROXY"] || provessEnv["http_proxy"]
 
   if (!agent && proxy) {
     let secure = url.toString().startsWith("https")

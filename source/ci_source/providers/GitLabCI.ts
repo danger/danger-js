@@ -25,6 +25,10 @@ export class GitLabCI implements CISource {
   get repoSlug(): string {
     return this.env.CI_PROJECT_PATH
   }
+
+  get commitHash(): string {
+    return this.env.CI_COMMIT_SHA
+  }
 }
 
 // See https://docs.gitlab.com/ee/ci/variables/predefined_variables.html

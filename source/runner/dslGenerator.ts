@@ -54,7 +54,8 @@ const jsonDSLPlatformName = (platform: Platform): string => {
     case "GitLab":
       return "gitlab"
     case "GitHub":
-    default:
       return "github"
+    default:
+      return platform.name.split(" ").join("_")
   }
 }
