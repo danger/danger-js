@@ -19,6 +19,7 @@ x
 
 - Update `parse-diff` library - [@417-72KI]
 - Fix repository slug in Jenkins provider - [sandratatarevicova]
+- Fix Typos across danger-js Repo - [@yohix]
 
   <!-- Your comment above this -->
 
