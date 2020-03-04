@@ -27,7 +27,7 @@
                     "type": "number"
                 },
                 "committer": {
-                    "description": "The author of the commit, assumed to be the person who commited/merged the code into a project.",
+                    "description": "The author of the commit, assumed to be the person who committed/merged the code into a project.",
                     "properties": {
                         "displayName": {
                             "description": "The display name of the commit committer",

@@ -114,7 +114,7 @@ export interface BitBucketCloudCommit {
     user: BitBucketCloudUser
   }
 
-  /** When the commit was commited to the project, in ISO 8601 format */
+  /** When the commit was committed to the project, in ISO 8601 format */
   date: string
   /** The commit's message */
   message: string
