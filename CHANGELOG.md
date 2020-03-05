@@ -16,7 +16,7 @@ x
 <!-- Your comment below this -->
 
 - Add the staged flag to `danger local` command - [@soyn]
-
+- Disable warning in Github Action if using DANGER_GITHUB_API_TOKEN- [@rohit-gohri]
 - Update `parse-diff` library - [@417-72KI]
 - Fix repository slug in Jenkins provider - [sandratatarevicova]
 - Fix Typos across danger-js Repo - [@yohix]
@@ -105,7 +105,7 @@ x
 - Fix Github Actions documentation - [@ravanscafi]
 - Improve Performance by Caching BitBucket Cloud Commits - [@hellocore]
 - Add compliment message to comment template on Bitbucket Cloud - [@hellocore]
-- Add option to set custom icon in messages - [@rohit-smpx]
+- Add option to set custom icon in messages - [@rohit-gohri]
 
 # 9.1.0
 
@@ -1743,7 +1743,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@randak]: https://github.com/randak
 [@ravanscafi]: https://github.com/ravanscafi
-[@rohit-smpx]: https://github.com/rohit-smpx
+[@rohit-gohri]: https://github.com/rohit-gohri
 [@sajjadzamani]: https://github.com/sajjadzamani
 [@sebinsua]: https://github.com/sebinsua
 [@sgtcoolguy]: https://github.com/sgtcoolguy
