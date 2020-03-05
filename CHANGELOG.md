@@ -20,6 +20,7 @@ x
 - Update `parse-diff` library - [@417-72KI]
 - Fix repository slug in Jenkins provider - [sandratatarevicova]
 - Fix Typos across danger-js Repo - [@yohix]
+- Fix `@octokit/rest` deprecation warning when using `.issues.addLabels()` - [@sogame]
 
   <!-- Your comment above this -->
 
