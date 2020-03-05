@@ -217,7 +217,7 @@ export const createOrAddLabel = (pr: GitHubPRDSL | undefined, api: GitHub) => as
   await api.issues.addLabels({
     owner: config.owner,
     repo: config.repo,
-    number: config.id,
+    issue_number: config.id,
     labels: [labelConfig.name],
   })
 }
