@@ -130,8 +130,11 @@ export class GitHubAPI {
       return parseInt(perilID)
     }
 
-    const useGitHubActionsID = process.env["GITHUB_WORKFLOW"]
+    const useGitHubActionsID = process.env["GITHUB_WORKFLOW"] && !process.env["DANGER_GITHUB_API_TOKEN"]
     if (useGitHubActionsID) {
+      // This is the user.id of the github-actions app(https://github.com/apps/github-actions)
+      // that is used to comment when using danger in Github Action
+      // with GITHUB_TOKEN (https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token)
       return 41898282
     }
 
