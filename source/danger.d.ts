@@ -118,7 +118,7 @@ interface BitBucketCloudCommit {
     user: BitBucketCloudUser
   }
 
-  /** When the commit was commited to the project, in ISO 8601 format */
+  /** When the commit was committed to the project, in ISO 8601 format */
   date: string
   /** The commit's message */
   message: string
@@ -301,7 +301,7 @@ interface BitBucketServerCommit {
   }
   /** The UNIX timestamp for when the commit was authored */
   authorTimestamp: number
-  /** The author of the commit, assumed to be the person who commited/merged the code into a project. */
+  /** The author of the commit, assumed to be the person who committed/merged the code into a project. */
   committer: {
     /** The id of the commit committer */
     name: string
@@ -310,7 +310,7 @@ interface BitBucketServerCommit {
     /** The email of the commit committer */
     emailAddress: string
   }
-  /** When the commit was commited to the project */
+  /** When the commit was committed to the project */
   committerTimestamp: number
   /** The commit's message */
   message: string
@@ -324,9 +324,9 @@ interface BitBucketServerCommit {
 }
 
 interface BitBucketServerDiff {
-  /** The file refrence when moved */
+  /** The file reference when moved */
   destination?: BitBucketServerFile
-  /** The original file refrence */
+  /** The original file reference */
   source?: BitBucketServerFile
   /** A set of diff changes */
   hunks: BitBucketServerHunk[]
@@ -1735,7 +1735,7 @@ declare function message(message: MarkdownString, file?: string, line?: number):
 /**
  * Adds a message to the Danger table, the only difference between this
  * and warn is the default emoji which shows in the table.
- * You can also specifiy a custom emoji to show in the table for each message
+ * You can also specify a custom emoji to show in the table for each message
  *
  * @param {MarkdownString} message the String to output
  * @param {{file?: string, line?: string, icon?: MarkdownString}} [opts]
