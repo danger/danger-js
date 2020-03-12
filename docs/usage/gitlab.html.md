@@ -11,6 +11,10 @@ variable on your CI system:
 
 - `DANGER_GITLAB_API_TOKEN` = An access token for the account which will post comments
 
+You will need also to add an environment variable for your gitlab project id:
+
+- `DANGER_GITLAB_PROJECT_ID` = Gitlab project id can be found in (Settings -> General). if not defined, project name will be used instead
+
 If you are using a GitLab version prior to 11.7 you will also need to define the following environment variable:
 
 - `DANGER_GITLAB_HOST` = Defaults to `https://gitlab.com` but you can use it for your own url

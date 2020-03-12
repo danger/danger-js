@@ -132,10 +132,11 @@ export function getPlatformForEnv(env: Env, source: CISource): Platform {
 
   // GitLab
   if (env["DANGER_GITLAB_API_TOKEN"] || env["DANGER_PR_PLATFORM"] === GitLab.name) {
+    const repoSlug = env["DANGER_GITLAB_PROJECT_ID"] ? env["DANGER_GITLAB_PROJECT_ID"] : source.repoSlug
     const api = new GitLabAPI(
       {
         pullRequestID: source.pullRequestID,
-        repoSlug: source.repoSlug,
+        repoSlug: repoSlug,
       },
       getGitLabAPICredentialsFromEnv(env)
     )
