@@ -15,16 +15,18 @@ x
 
 <!-- Your comment below this -->
 
-- Don't use hardcoded userId to update comments if using personal token in Github Actions - [@rohit-gohri]
+<!-- Your comment above this -->
+
+# 9.3.0
+
 - Add the staged flag to `danger local` command - [@soyn]
+- Don't use hardcoded userId to update comments if using personal token in Github Actions - [@rohit-gohri]
 - Disable warning in Github Action if using DANGER_GITHUB_API_TOKEN - [@rohit-gohri]
 - Update `parse-diff` library - [@417-72KI]
 - Fix repository slug in Jenkins provider - [sandratatarevicova]
 - Add Gitlab diff support - [@rohit-gohri]
 - Fix Typos across danger-js Repo - [@yohix]
 - Fix `@octokit/rest` deprecation warning when using `.issues.addLabels()` - [@sogame]
-
-  <!-- Your comment above this -->
 
 # 9.2.10
 
