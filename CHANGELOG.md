@@ -20,6 +20,7 @@ x
 - Disable warning in Github Action if using DANGER_GITHUB_API_TOKEN - [@rohit-gohri]
 - Update `parse-diff` library - [@417-72KI]
 - Fix repository slug in Jenkins provider - [sandratatarevicova]
+- Add Gitlab diff support - [@rohit-gohri]
 - Fix Typos across danger-js Repo - [@yohix]
 - Fix `@octokit/rest` deprecation warning when using `.issues.addLabels()` - [@sogame]
 

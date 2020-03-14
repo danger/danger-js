@@ -2,7 +2,7 @@
   {
     "scope": "https://gitlab.com:443",
     "method": "GET",
-    "path": "/api/v4/projects/gitlab-org%2Fgitlab-ce/merge_requests/27117/commits",
+    "path": "/api/v4/projects/gitlab-org%2Fgitlab-foss/merge_requests/27117/commits",
     "body": "",
     "status": 200,
     "response": [
@@ -51,7 +51,7 @@
       "Etag",
       "W/\"478bcb3a3b56ea7180c04159ff3adea5\"",
       "Link",
-      "<https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/merge_requests/27117/commits?id=gitlab-org%2Fgitlab-ce&merge_request_iid=27117&page=1&per_page=>; rel=\"first\", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-ce/merge_requests/27117/commits?id=gitlab-org%2Fgitlab-ce&merge_request_iid=27117&page=1&per_page=>; rel=\"last\"",
+      "<https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/merge_requests/27117/commits?id=gitlab-org%2Fgitlab-foss&merge_request_iid=27117&page=1&per_page=>; rel=\"first\", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/merge_requests/27117/commits?id=gitlab-org%2Fgitlab-foss&merge_request_iid=27117&page=1&per_page=>; rel=\"last\"",
       "Vary",
       "Origin",
       "X-Content-Type-Options",

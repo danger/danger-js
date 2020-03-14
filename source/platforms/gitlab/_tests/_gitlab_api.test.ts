@@ -6,7 +6,7 @@ import { readFileSync } from "fs"
 const nockBack = nock.back
 nockBack.fixtures = __dirname + "/fixtures"
 
-// We're testing https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/27117
+// We're testing https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/27117
 // This has been chosen because it is already merged and publicly available, it's unlikely to change
 
 /** Returns a fixture. */
@@ -27,7 +27,7 @@ describe("GitLab API", () => {
 
   beforeEach(() => {
     api = new GitLabAPI(
-      { pullRequestID: "27117", repoSlug: "gitlab-org/gitlab-ce" },
+      { pullRequestID: "27117", repoSlug: "gitlab-org/gitlab-foss" },
       getGitLabAPICredentialsFromEnv({
         DANGER_GITLAB_HOST: "gitlab.com",
         DANGER_GITLAB_API_TOKEN: "FAKE_DANGER_GITLAB_API_TOKEN",
@@ -37,22 +37,22 @@ describe("GitLab API", () => {
 
   it("configures host from CI_API_V4_URL", () => {
     api = new GitLabAPI(
-      { pullRequestID: "27117", repoSlug: "gitlab-org/gitlab-ce" },
+      { pullRequestID: "27117", repoSlug: "gitlab-org/gitlab-foss" },
       getGitLabAPICredentialsFromEnv({
         CI_API_V4_URL: "https://testciapiv4url.com/api/v4",
         DANGER_GITLAB_API_TOKEN: "FAKE_DANGER_GITLAB_API_TOKEN",
       })
     )
 
-    expect(api.projectURL).toBe("https://testciapiv4url.com/gitlab-org/gitlab-ce")
+    expect(api.projectURL).toBe("https://testciapiv4url.com/gitlab-org/gitlab-foss")
   })
 
   it("projectURL is defined", () => {
-    expect(api.projectURL).toBe("https://gitlab.com/gitlab-org/gitlab-ce")
+    expect(api.projectURL).toBe("https://gitlab.com/gitlab-org/gitlab-foss")
   })
 
   it("mergeRequestURL is defined", () => {
-    expect(api.mergeRequestURL).toBe("https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/27117")
+    expect(api.mergeRequestURL).toBe("https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/27117")
   })
 
   const sanitizeUserResponse = (nocks: NockDefinition[]): NockDefinition[] => {
@@ -137,5 +137,24 @@ describe("GitLab API", () => {
     nockDone()
     // TODO: There are no inline notes on this MR, we should look for a public one that has inline notes to improve this test
     expect(result).toEqual([])
+  })
+
+  it("getCompareChanges", async () => {
+    const { nockDone } = await nockBack("getCompareChanges.json")
+    const result = await api.getCompareChanges(
+      "50cd5d9b776848cf23f1fd1ec52789dbdf946185",
+      "28531ab43666b5fdf37e0a70db3bcbf7d3f92183"
+    )
+    nockDone()
+    const { response } = loadFixture("getCompareChanges")
+    expect(result).toEqual(response.diffs)
+  })
+
+  it("getCompareChanges without base/head", async () => {
+    const { nockDone } = await nockBack("getMergeRequestChanges.json")
+    const result = await api.getCompareChanges()
+    nockDone()
+    const { response } = loadFixture("getCompareChanges")
+    expect(result).toEqual(response.diffs)
   })
 })
