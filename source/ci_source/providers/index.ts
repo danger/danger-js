@@ -24,6 +24,7 @@ import { Travis } from "./Travis"
 import { VSTS } from "./VSTS"
 import { BitbucketPipelines } from "./BitbucketPipelines"
 import { Cirrus } from "./Cirrus"
+import { AzureDevops } from "./AzureDevops"
 
 const providers = [
   FakeCI,
@@ -52,6 +53,7 @@ const providers = [
   AppCenter,
   BitbucketPipelines,
   Cirrus,
+  AzureDevops,
 ]
 
 // Mainly used for Dangerfile linting
@@ -78,7 +80,8 @@ const realProviders = [
   CodeBuild,
   Codefresh,
   AppCenter,
-  Cirrus
+  Cirrus,
+  AzureDevops,
 ]
 
 export { providers, realProviders }
