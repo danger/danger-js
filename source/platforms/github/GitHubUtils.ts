@@ -203,23 +203,31 @@ export const createOrAddLabel = (pr: GitHubPRDSL | undefined, api: GitHub) => as
   // Create the label if it doesn't exist yet
   if (!label) {
     d("no label found, creating a new one for this repo")
-    await api.issues.createLabel({
-      owner: config.owner,
-      repo: config.repo,
-      name: labelConfig.name,
-      color: labelConfig.color,
-      description: labelConfig.description,
-    })
+    try {
+      await api.issues.createLabel({
+        owner: config.owner,
+        repo: config.repo,
+        name: labelConfig.name,
+        color: labelConfig.color,
+        description: labelConfig.description,
+      })
+    } catch (e) {
+      d("api.issues.createLabel gave an error", e)
+    }
   }
 
   d("adding a label to this pr")
   // Then add the label
-  await api.issues.addLabels({
-    owner: config.owner,
-    repo: config.repo,
-    issue_number: config.id,
-    labels: [labelConfig.name],
-  })
+  try {
+    await api.issues.addLabels({
+      owner: config.owner,
+      repo: config.repo,
+      issue_number: config.id,
+      labels: [labelConfig.name],
+    })
+  } catch (e) {
+    d("api.issues.addLabels gave an error", e)
+  }
 }
 
 export default utils

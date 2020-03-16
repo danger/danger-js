@@ -15,6 +15,8 @@ x
 
 <!-- Your comment below this -->
 
+- Don't fail when using `createOrAddLabel` if label fails to be created or added - [@sogame]
+
 <!-- Your comment above this -->
 
 # 9.3.0
