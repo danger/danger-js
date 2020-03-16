@@ -15,6 +15,8 @@ x
 
 <!-- Your comment below this -->
 
+- Azure DevOps support [@jonasbark], [@devandanger]
+
 <!-- Your comment above this -->
 
 # 9.3.0
