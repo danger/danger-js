@@ -6,7 +6,7 @@ import isobject from "lodash.isobject"
 import keys from "lodash.keys"
 import memoize from "lodash.memoize"
 
-import * as jsonDiff from "rfc6902"
+import * as jsonDiff from "fast-json-patch"
 import jsonpointer from "jsonpointer"
 import JSON5 from "json5"
 
@@ -88,7 +88,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     return {
       before: baseFile === "" ? null : baseJSON,
       after: headFile === "" ? null : headJSON,
-      diff: jsonDiff.createPatch(baseJSON, headJSON) as JSONPatchOperation[],
+      diff: jsonDiff.compare(baseJSON, headJSON) as JSONPatchOperation[],
     }
   }
 
