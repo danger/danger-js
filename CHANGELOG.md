@@ -15,11 +15,14 @@ x
 
 <!-- Your comment below this -->
 
-- Changed JSON patch implementation for better memory performance. [@dkundel] **Breaking:** `JSONPatchForFile` will
-  return a different order of operations than previously. It will also return a `path` with the index of the element
-  inserted into an array for `add` operations.
-
 <!-- Your comment above this -->
+
+# 10.0.0
+
+- Changed JSON patch implementation for better memory performance. [@dkundel]
+
+  **Breaking:** `JSONPatchForFile` will return a different order of operations than previously. It will also return a
+  `path` with the index of the element inserted into an array for `add` operations.
 
 # 9.3.1
 
