@@ -16,6 +16,7 @@ x
 <!-- Your comment below this -->
 
 - Pass process arguments back to the original process [@f-meloni]
+- When fetching existing labels in `createOrAddLabel` use pagination to fetch them all - [@sogame]
 
 <!-- Your comment above this -->
 
