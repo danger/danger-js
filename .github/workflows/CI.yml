@@ -17,7 +17,6 @@ jobs:
       - run: 'echo "This is only for Integration tests on two blank projects"'
 
       - run: |
-          yarn build
           mkdir danger_blank_test
           cd danger_blank_test
           yarn init --yes
@@ -27,7 +26,11 @@ jobs:
           DEBUG="*" yarn danger run --text-only
           cd ..
           rm -rf danger_blank_test
+        name: "Make a CRA"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - run: |
           npm install -g create-react-app
           create-react-app danger_babel_test
           cd danger_babel_test
@@ -37,3 +40,6 @@ jobs:
           DEBUG="*" yarn danger ci --text-only
           cd ..
           rm -rf danger_babel_test
+        name: "Make a small babel app"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
