@@ -1,4 +1,5 @@
 import dangerRunToRunnerCLI from "../dangerRunToRunnerCLI"
+import { addSubprocessCallAguments } from "../runDangerSubprocess"
 
 describe("it can handle the command", () => {
   it("`danger ci`", () => {
@@ -47,6 +48,15 @@ it("`danger pr --dangerfile 'myDanger file.ts'`", () => {
     "--dangerfile",
     "myDanger file.ts",
   ])
+})
+
+it("Adds correct subprocess arguments", () => {
+  expect(
+    addSubprocessCallAguments(
+      ["danger-swift"],
+      ["danger", "danger-pr", "--process", "danger-swift", "--dangerfile", "File.swift"]
+    )
+  ).toEqual(["danger-swift", "runner", "danger-pr", "--process", "danger-swift", "--dangerfile", "File.swift"])
 })
 
 describe("it can handle the command when running from pkg", () => {

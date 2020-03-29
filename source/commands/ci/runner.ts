@@ -3,7 +3,7 @@ import { debug } from "../../debug"
 
 import { getPlatformForEnv, Platform } from "../../platforms/platform"
 import { Executor, ExecutorOptions } from "../../runner/Executor"
-import { runDangerSubprocess } from "../utils/runDangerSubprocess"
+import { runDangerSubprocess, addSubprocessCallAguments } from "../utils/runDangerSubprocess"
 import { SharedCLI } from "../utils/sharedDangerfileArgs"
 import getRuntimeCISource from "../utils/getRuntimeCISource"
 
@@ -70,7 +70,7 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
         noPublishCheck: !app.publishCheck,
       }
 
-      const processName = (app.process && app.process.split(" ")) || undefined
+      const processName = (app.process && addSubprocessCallAguments(app.process.split(" "))) || undefined
       const runnerCommand = processName || dangerRunToRunnerCLI(process.argv)
       d(`Preparing to run: ${runnerCommand}`)
 
