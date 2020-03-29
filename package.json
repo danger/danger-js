@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "9.2.10",
+  "version": "10.0.0",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -136,11 +136,12 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "@octokit/rest": "^16.14.1",
+    "@octokit/rest": "^16.43.1",
     "async-retry": "1.2.3",
     "chalk": "^2.3.0",
     "commander": "^2.18.0",
     "debug": "^4.1.1",
+    "fast-json-patch": "^3.0.0-1",
     "get-stdin": "^6.0.0",
     "gitlab": "^10.0.1",
     "http-proxy-agent": "^2.1.0",
@@ -161,7 +162,7 @@
     "node-fetch": "^2.3.0",
     "override-require": "^1.1.1",
     "p-limit": "^2.1.0",
-    "parse-diff": "^0.5.1",
+    "parse-diff": "^0.7.0",
     "parse-git-config": "^2.0.3",
     "parse-github-url": "^1.0.2",
     "parse-link-header": "^1.0.1",
@@ -169,7 +170,6 @@
     "prettyjson": "^1.2.1",
     "readline-sync": "^1.4.9",
     "require-from-string": "^2.0.2",
-    "rfc6902": "^3.0.1",
     "supports-hyperlinks": "^1.0.1"
   },
   "optionalDependencies": {},

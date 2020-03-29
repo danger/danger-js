@@ -24,7 +24,7 @@ import { readFileSync, existsSync } from "fs"
  *     - name: Use Node.js 10.x
  *       uses: actions/setup-node@v1
  *       with:
- *         version: 10.x
+ *         node-version: 10.x
  *     - name: install yarn
  *       run: npm install -g yarn
  *     - name: yarn install, build, and test
@@ -130,6 +130,23 @@ import { readFileSync, existsSync } from "fs"
  *   - name: Danger JS
  *     uses: danger/danger-js@9.1.6
  *     env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ * ```
+ *
+ * [GitHub automatically creates a `GITHUB_TOKEN` secret to use in your workflow](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token).
+ * You can use the `GITHUB_TOKEN` to authenticate in a workflow run.
+ * Using this token will post the danger comment as the `github-actions` app user.
+ *
+ * #### Using Personal Tokens
+ *
+ * If you need to post the danger comment as some particular user or for some other reason
+ * you need to use a personal token for danger then you can provide it in env as DANGER_GITHUB_API_TOKEN,
+ * but make sure that this is not the [automatically generated GITHUB_TOKEN in actions](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token)
+ * otherwise comments will not be updated and new ones will be created everytime.
+ *
+ * ```yml
+ *   - name: Danger JS
+ *     uses: danger/danger-js@9.1.6
+ *     env: DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
  * ```
  *
  */

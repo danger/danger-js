@@ -6,7 +6,7 @@ import { filepathContentsMapToUpdateGitHubBranch, BranchCreationConfig } from "m
 
 const d = debug("GitHub::Utils")
 
-import * as GitHub from "@octokit/rest"
+import { Octokit as GitHub } from "@octokit/rest"
 
 // We need to curry in access to the GitHub PR metadata
 
@@ -66,8 +66,13 @@ export const fileContentsGenerator = (
     owner: repoSlug.split("/")[0],
   }
   try {
+    // response of getContents() can be one of 4 things. We are interested in file responses only
+    // https://developer.github.com/v3/repos/contents/#get-contents
     const response = await api.repos.getContents(opts)
-    if (response && response.data && response.data.type === "file") {
+    if (Array.isArray(response.data)) {
+      return ""
+    }
+    if (response && response.data && response.data.content) {
       const buffer = new Buffer(response.data.content, response.data.encoding)
       return buffer.toString()
     } else {
@@ -198,23 +203,31 @@ export const createOrAddLabel = (pr: GitHubPRDSL | undefined, api: GitHub) => as
   // Create the label if it doesn't exist yet
   if (!label) {
     d("no label found, creating a new one for this repo")
-    await api.issues.createLabel({
-      owner: config.owner,
-      repo: config.repo,
-      name: labelConfig.name,
-      color: labelConfig.color,
-      description: labelConfig.description,
-    })
+    try {
+      await api.issues.createLabel({
+        owner: config.owner,
+        repo: config.repo,
+        name: labelConfig.name,
+        color: labelConfig.color,
+        description: labelConfig.description,
+      })
+    } catch (e) {
+      d("api.issues.createLabel gave an error", e)
+    }
   }
 
   d("adding a label to this pr")
   // Then add the label
-  await api.issues.addLabels({
-    owner: config.owner,
-    repo: config.repo,
-    number: config.id,
-    labels: [labelConfig.name],
-  })
+  try {
+    await api.issues.addLabels({
+      owner: config.owner,
+      repo: config.repo,
+      issue_number: config.id,
+      labels: [labelConfig.name],
+    })
+  } catch (e) {
+    d("api.issues.addLabels gave an error", e)
+  }
 }
 
 export default utils

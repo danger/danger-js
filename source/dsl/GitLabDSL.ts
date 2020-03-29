@@ -225,3 +225,33 @@ export interface GitLabMRCommit {
   committer_email: string
   committed_date: string
 }
+
+export interface GitLabRepositoryFile {
+  file_name: string
+  file_path: string
+  size: number
+  encoding: "base64"
+  content: string
+  content_sha256: string
+  ref: string
+  blob_id: string
+  commit_id: string
+  last_commit_id: string
+}
+
+export interface GitLabCommit {
+  id: string
+  short_id: string
+  title: string
+  author_name: string
+  author_email: string
+  created_at: string
+}
+
+export interface GitLabRepositoryCompare {
+  commit: GitLabCommit
+  commits: GitLabCommit[]
+  diffs: GitLabMRChange[]
+  compare_timeout: boolean
+  compare_same_ref: boolean
+}

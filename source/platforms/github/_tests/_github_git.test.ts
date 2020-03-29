@@ -7,7 +7,7 @@ import { readFileSync } from "fs"
 import { resolve, join as pathJoin } from "path"
 import { gitHubGitDSL as gitJSONToGitDSL } from "../GitHubGit"
 
-import NodeGitHub from "@octokit/rest"
+import { Octokit as NodeGitHub } from "@octokit/rest"
 import { GitHubDSL } from "../../../dsl/GitHubDSL"
 import { GitDSL, GitJSONDSL } from "../../../dsl/GitDSL"
 
@@ -222,7 +222,7 @@ describe("the dangerfile gitDSL", () => {
       expect(empty).toEqual({
         before: before,
         after: null,
-        diff: [{ op: "remove", path: "/a" }, { op: "remove", path: "/b" }, { op: "remove", path: "/c" }],
+        diff: [{ op: "remove", path: "/c" }, { op: "remove", path: "/b" }, { op: "remove", path: "/a" }],
       })
     })
 
@@ -251,9 +251,9 @@ describe("the dangerfile gitDSL", () => {
         before,
         after,
         diff: [
-          { op: "replace", path: "/a", value: "o, world" },
+          { op: "add", path: "/c/3", value: "four" },
           { op: "replace", path: "/b", value: 3 },
-          { op: "add", path: "/c/-", value: "four" },
+          { op: "replace", path: "/a", value: "o, world" },
         ],
       })
     })

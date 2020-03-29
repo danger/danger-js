@@ -15,7 +15,29 @@ x
 
 <!-- Your comment below this -->
 
-  <!-- Your comment above this -->
+<!-- Your comment above this -->
+
+# 10.0.0
+
+- Changed JSON patch implementation for better memory performance. [@dkundel]
+
+  **Breaking:** `JSONPatchForFile` will return a different order of operations than previously. It will also return a
+  `path` with the index of the element inserted into an array for `add` operations.
+
+# 9.3.1
+
+- Don't fail when using `createOrAddLabel` if label fails to be created or added - [@sogame]
+
+# 9.3.0
+
+- Add the staged flag to `danger local` command - [@soyn]
+- Don't use hardcoded userId to update comments if using personal token in Github Actions - [@rohit-gohri]
+- Disable warning in Github Action if using DANGER_GITHUB_API_TOKEN - [@rohit-gohri]
+- Update `parse-diff` library - [@417-72KI]
+- Fix repository slug in Jenkins provider - [sandratatarevicova]
+- Add Gitlab diff support - [@rohit-gohri]
+- Fix Typos across danger-js Repo - [@yohix]
+- Fix `@octokit/rest` deprecation warning when using `.issues.addLabels()` - [@sogame]
 
 # 9.2.10
 
@@ -99,7 +121,7 @@ x
 - Fix Github Actions documentation - [@ravanscafi]
 - Improve Performance by Caching BitBucket Cloud Commits - [@hellocore]
 - Add compliment message to comment template on Bitbucket Cloud - [@hellocore]
-- Add option to set custom icon in messages - [@rohit-smpx]
+- Add option to set custom icon in messages - [@rohit-gohri]
 
 # 9.1.0
 
@@ -1714,6 +1736,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@danielrosenwasser]: https://github.com/DanielRosenwasser
 [@davidbrunow]: https://github.com/davidbrunow
 [@dfalling]: https://github.com/dfalling
+[@dkundel]: https://github.com/dkundel
 [@f-meloni]: https://github.com/f-meloni
 [@fbartho]: https://github.com/fbartho
 [@fwal]: https://github.com/fwal
@@ -1737,11 +1760,12 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@randak]: https://github.com/randak
 [@ravanscafi]: https://github.com/ravanscafi
-[@rohit-smpx]: https://github.com/rohit-smpx
+[@rohit-gohri]: https://github.com/rohit-gohri
 [@sajjadzamani]: https://github.com/sajjadzamani
 [@sebinsua]: https://github.com/sebinsua
 [@sgtcoolguy]: https://github.com/sgtcoolguy
 [@sharkysharks]: https://github.com/sharkysharks
+[@sogame]: https://github.com/sogame
 [@stevemoser]: https://github.com/stevemoser
 [@stevenp]: https://github.com/stevenp
 [@sunshinejr]: https://github.com/sunshinejr
@@ -1756,3 +1780,5 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@bigkraig]: https://github.com/bigkraig
 [@notjosh]: https://github.com/notjosh
 [@iljadaderko]: https://github.com/IljaDaderko
+[@417-72ki]: https://github.com/417-72KI
+[@soyn]: https://github.com/Soyn

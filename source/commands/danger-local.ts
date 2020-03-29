@@ -16,9 +16,8 @@ interface App extends SharedCLI {
 
 program
   .usage("[options]")
-  // TODO: this option
-  // .option("-s, --staging", "Just use staged changes.")
   .description("Runs danger without PR metadata, useful for git hooks.")
+  .option("-s, --staging", "Just use staged changes.")
   .option("-b, --base [branch_name]", "Use a different base branch")
   .allowUnknownOption(true)
 setSharedArgs(program).parse(process.argv)
@@ -26,7 +25,7 @@ setSharedArgs(program).parse(process.argv)
 const app = (program as any) as App
 const base = app.base || "master"
 
-const localPlatform = new LocalGit({ base, staged: app.staging })
+const localPlatform = new LocalGit({ base, staging: app.staging })
 localPlatform.validateThereAreChanges().then(changes => {
   if (changes) {
     const fakeSource = new FakeCI(process.env)
