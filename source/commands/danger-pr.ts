@@ -33,6 +33,7 @@ program
   .description("Emulate running Danger against an existing GitHub Pull Request.")
   .option("-J, --json", "Output the raw JSON that would be passed into `danger process` for this PR.")
   .option("-j, --js", "A more human-readable version of the JSON.")
+  .allowUnknownOption(true)
 
   .on("--help", () => {
     log("\n")

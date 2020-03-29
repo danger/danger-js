@@ -26,6 +26,10 @@ export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
   return JSON.stringify(dangerJSONOutput, null, "  ") + "\n"
 }
 
+export const addSubprocessCallAguments = (call: string[], args: string[] = process.argv): string[] => {
+  return call.concat(["runner"], args.slice(1, args.length))
+}
+
 // Runs the Danger process
 export const runDangerSubprocess = (
   subprocessName: string[],
