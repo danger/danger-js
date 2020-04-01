@@ -1,4 +1,5 @@
 import { AppCenter } from "./AppCenter"
+import { Bamboo } from "./Bamboo"
 import { Bitrise } from "./Bitrise"
 import { BuddyBuild } from "./BuddyBuild"
 import { BuddyWorks } from "./BuddyWorks"
@@ -52,6 +53,7 @@ const providers = [
   AppCenter,
   BitbucketPipelines,
   Cirrus,
+  Bamboo,
 ]
 
 // Mainly used for Dangerfile linting
@@ -78,7 +80,8 @@ const realProviders = [
   CodeBuild,
   Codefresh,
   AppCenter,
-  Cirrus
+  Cirrus,
+  Bamboo,
 ]
 
 export { providers, realProviders }
