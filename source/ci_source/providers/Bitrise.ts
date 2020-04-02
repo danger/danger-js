@@ -58,9 +58,8 @@ export class Bitrise implements CISource {
 
   private _parseRepoURL(): string {
     const repoURL = this.env.GIT_REPOSITORY_URL
-    const regexp = new RegExp("([/:])([^/]+/[^/.]+)(?:.git)?$")
-    const matches = repoURL.match(regexp)
-    return matches ? matches[2] : ""
+    let regexp = repoURL.startsWith("git") ? /(.+):/ : /^http(s):\/\/(www[0-9]?\.)?(.[^/:]+)\//
+    return repoURL.replace(regexp, "").replace(/.git$/, "")
   }
 
   get pullRequestID(): string {

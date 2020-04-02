@@ -72,6 +72,24 @@ describe(".repoSlug", () => {
     const bitrise = new Bitrise(env)
     expect(bitrise.repoSlug).toEqual("artsy/eigen")
   })
+
+  it("derives it from a long URL format", () => {
+    const env = {
+      ...correctEnv,
+      GIT_REPOSITORY_URL: "https://github.com/organization/project/subproject/repo.git",
+    }
+    const bitrise = new Bitrise(env)
+    expect(bitrise.repoSlug).toEqual("organization/project/subproject/repo")
+  })
+
+  it("derives it from a long SSH format", () => {
+    const env = {
+      ...correctEnv,
+      GIT_REPOSITORY_URL: "git@github.com:organization/project/subproject/repo.git",
+    }
+    const bitrise = new Bitrise(env)
+    expect(bitrise.repoSlug).toEqual("organization/project/subproject/repo")
+  })
 })
 
 describe("commit hash", () => {
