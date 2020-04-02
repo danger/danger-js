@@ -101,7 +101,7 @@ Following [this commit](https://github.com/danger/danger-js/commit/a26ac3b3bd4f0
 
 - Checkout the `master` branch. Ensure your working tree is clean, and make sure you have the latest changes by running
   `git pull`.
-- Publish - `npm run release -- [major/patch/minor] --non-interactive`.
+- Publish - `npm run release -- [major/patch/minor] --ci`.
 
 :ship:
 

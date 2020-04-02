@@ -4,7 +4,7 @@
     "assets": "brew-distribution/*.zip"
   },
   "buildCommand": "yarn package",
-  "scripts": {
+  "hooks": {
     "before:init": "VERSION=${version} yarn ts-node scripts/update-changelog.ts",
     "before:bump": "yarn declarations; yarn build:schemas",
     "after:release": "VERSION=${version} scripts/create-homebrew-tap-pr.sh"
