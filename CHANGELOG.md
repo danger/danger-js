@@ -14,11 +14,15 @@ x
 ## Master
 
 <!-- Your comment below this -->
+
+<!-- Your comment above this -->
+
+# 10.1.0
+
+- Adds support for Bamboo CI [@tim3trick]
 - Replace regex to a long url repos approach on Bitrise [@lucasmpaim]
 - Pass process arguments back to the original process [@f-meloni]
 - When fetching existing labels in `createOrAddLabel` use pagination to fetch them all - [@sogame]
-
-<!-- Your comment above this -->
 
 # 10.0.0
 
@@ -1785,3 +1789,4 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@iljadaderko]: https://github.com/IljaDaderko
 [@417-72ki]: https://github.com/417-72KI
 [@soyn]: https://github.com/Soyn
+[@tim3trick]: https://github.com/tim3trick
