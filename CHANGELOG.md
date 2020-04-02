@@ -14,7 +14,7 @@ x
 ## Master
 
 <!-- Your comment below this -->
-
+- Replace regex to a long url repos approach on Bitrise [@lucasmpaim]
 - Pass process arguments back to the original process [@f-meloni]
 - When fetching existing labels in `createOrAddLabel` use pagination to fetch them all - [@sogame]
 
