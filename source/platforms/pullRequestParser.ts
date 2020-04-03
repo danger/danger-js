@@ -50,7 +50,7 @@ export function pullRequestParser(address: string): PullRequestParts | null {
       if (parts) {
         return {
           platform: GitLab.name,
-          repo: parts[1],
+          repo: parts[1].replace(/\/-$/, ""),
           pullRequestNumber: parts[2],
         }
       }
