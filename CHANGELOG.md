@@ -15,7 +15,8 @@ x
 
 <!-- Your comment below this -->
 
-<!-- Your comment above this -->
+- Fix project path with /- in GitLab MR URL [@pgoudreau]
+  <!-- Your comment above this -->
 
 # 10.1.0
 
