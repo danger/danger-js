@@ -16,6 +16,7 @@ x
 <!-- Your comment below this -->
 
 - Fix project path with /- in GitLab MR URL [@pgoudreau]
+- When creating a new PR with `createOrUpdatePR`, add the description (as done when editing) - [@sogame]
   <!-- Your comment above this -->
 
 # 10.1.0
