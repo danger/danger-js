@@ -176,6 +176,7 @@ export const createOrUpdatePR = (pr: GitHubPRDSL | undefined, api: GitHub) => as
       owner,
       repo,
       title: config.title,
+      body: config.body,
     })
   }
 }
