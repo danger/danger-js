@@ -97,3 +97,19 @@ describe(".repoSlug", () => {
     expect(circle.repoSlug).toEqual("artsy/eigen")
   })
 })
+
+describe("commit hash", () => {
+  it("returns correct commit hash when present", () => {
+    const env = {
+      ...correctEnv,
+      CIRCLE_SHA1: "1234abc",
+    }
+    const circle = new Circle(env)
+    expect(circle.commitHash).toEqual("1234abc")
+  })
+
+  it("returns no commit hash when not present", () => {
+    const circle = new Circle(correctEnv)
+    expect(circle.commitHash).toBeUndefined()
+  })
+})
