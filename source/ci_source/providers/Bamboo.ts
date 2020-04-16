@@ -35,7 +35,7 @@ export class Bamboo implements CISource {
   constructor(private readonly env: Env) {}
 
   get name(): string {
-    return "bamboo"
+    return "Bamboo"
   }
 
   get isCI(): boolean {
