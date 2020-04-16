@@ -8,6 +8,10 @@
                     "description": "Optional path to the file",
                     "type": "string"
                 },
+                "icon": {
+                    "description": "Optional icon for table (Only valid for messages)",
+                    "type": "string"
+                },
                 "line": {
                     "description": "Optional line in the file",
                     "type": "number"
