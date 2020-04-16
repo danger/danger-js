@@ -96,4 +96,8 @@ export class Circle implements CISource {
   get ciRunURL() {
     return this.env["CIRCLE_BUILD_URL"]
   }
+
+  get commitHash(): string {
+    return this.env.CIRCLE_SHA1
+  }
 }
