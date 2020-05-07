@@ -15,6 +15,8 @@ x
 
 <!-- Your comment below this -->
 
+- Fix danger failure on getting diff for files with spaces in file path [@HonzaMac]
+
 <!-- Your comment above this -->
 
 # 10.2.0
