@@ -120,7 +120,7 @@ export const runDangerSubprocess = (
       d(`Handling fail from subprocess`)
       process.exitCode = code
 
-      const failResults = resultsWithFailure(`${processDisplayName}\` failed.`, "### Log\n\n" + markdownCode(allLogs))
+      const failResults = resultsWithFailure(`\`${processDisplayName}\` failed.`, "### Log\n\n" + markdownCode(allLogs))
       if (results) {
         results = mergeResults(results, failResults)
       } else {
