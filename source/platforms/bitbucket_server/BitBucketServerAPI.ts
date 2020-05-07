@@ -134,7 +134,9 @@ export class BitBucketServerAPI implements BitBucketServerAPIDSL {
 
   getStructuredDiffForFile = async (base: string, head: string, filename: string): Promise<BitBucketServerDiff[]> => {
     const { repoSlug } = this.repoMetadata
-    const path = `rest/api/1.0/${repoSlug}/compare/diff/${filename}?withComments=false&from=${head}&to=${base}`
+    const path = `rest/api/1.0/${repoSlug}/compare/diff/${encodeURI(
+      filename
+    )}?withComments=false&from=${head}&to=${base}`
     const res = await this.get(path)
     throwIfNotOk(res)
     return (await res.json()).diffs
@@ -241,7 +243,7 @@ export class BitBucketServerAPI implements BitBucketServerAPIDSL {
 
   // The last two are "optional" in the protocol, but not really optional WRT the BBSAPI
   getFileContents = async (filePath: string, repoSlug?: string, refspec?: string) => {
-    const path = `rest/api/1.0/${repoSlug}/` + `raw/${filePath}` + `?at=${refspec}`
+    const path = `rest/api/1.0/${repoSlug}/` + `raw/${encodeURI(filePath)}` + `?at=${refspec}`
     const res = await this.get(path, undefined, true)
     if (res.status === 404) {
       return ""
