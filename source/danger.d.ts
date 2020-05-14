@@ -1647,6 +1647,36 @@ interface GitLabMRCommit {
   committer_email: string
   committed_date: string
 }
+
+interface GitLabRepositoryFile {
+  file_name: string
+  file_path: string
+  size: number
+  encoding: "base64"
+  content: string
+  content_sha256: string
+  ref: string
+  blob_id: string
+  commit_id: string
+  last_commit_id: string
+}
+
+interface GitLabCommit {
+  id: string
+  short_id: string
+  title: string
+  author_name: string
+  author_email: string
+  created_at: string
+}
+
+interface GitLabRepositoryCompare {
+  commit: GitLabCommit
+  commits: GitLabCommit[]
+  diffs: GitLabMRChange[]
+  compare_timeout: boolean
+  compare_same_ref: boolean
+}
 /**
  * The result of user doing warn, message or fail, built this way for
  * expansion later.
@@ -1681,6 +1711,8 @@ interface CliArgs {
   dangerfile: string
   /** So you can have many danger runs in one code review */
   id: string
+  /** Use staged changes */
+  staging?: boolean
 }
 
 // NOTE: if add something new here, you need to change dslGenerator.ts
@@ -1735,7 +1767,7 @@ declare function message(message: MarkdownString, file?: string, line?: number):
 /**
  * Adds a message to the Danger table, the only difference between this
  * and warn is the default emoji which shows in the table.
- * You can also specify a custom emoji to show in the table for each message
+ * You can also specifiy a custom emoji to show in the table for each message
  *
  * @param {MarkdownString} message the String to output
  * @param {{file?: string, line?: string, icon?: MarkdownString}} [opts]
@@ -1773,9 +1805,15 @@ declare const peril: PerilDSL
 declare const results: DangerRuntimeContainer
 export declare type Pattern = string
 export declare type Path = string
-export declare type KeyedPatterns<T> = { readonly [K in keyof T]: Pattern[] }
-export declare type KeyedPaths<T> = { readonly [K in keyof T]: Path[] }
-export declare type _MatchResult<T> = { readonly [K in keyof T]: boolean }
+export declare type KeyedPatterns<T> = {
+  readonly [K in keyof T]: Pattern[]
+}
+export declare type KeyedPaths<T> = {
+  readonly [K in keyof T]: Path[]
+}
+export declare type _MatchResult<T> = {
+  readonly [K in keyof T]: boolean
+}
 export declare type MatchResult<T> = _MatchResult<T> & {
   /** Returns an object containing arrays of matched files instead of the usual boolean values. */
   getKeyedPaths(): KeyedPaths<T>

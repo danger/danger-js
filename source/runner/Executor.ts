@@ -40,6 +40,7 @@ import { DangerRunner } from "./runners/runner"
 import { GitDSL } from "../dsl/GitDSL"
 import { DangerDSL } from "../dsl/DangerDSL"
 import { emptyGitJSON } from "../platforms/github/GitHubGit"
+import Process = NodeJS.Process
 
 export interface ExecutorOptions {
   /** Should we do a text-only run? E.g. skipping comments */
@@ -63,10 +64,6 @@ export interface ExecutorOptions {
 
 const isTests = typeof jest === "object"
 
-interface ExitCodeContainer {
-  exitCode: number
-}
-
 export class Executor {
   private readonly d = debug("executor")
   private readonly log = isTests ? () => "" : console.log
@@ -77,7 +74,7 @@ export class Executor {
     public readonly platform: Platform,
     public readonly runner: DangerRunner,
     public readonly options: ExecutorOptions,
-    public readonly process: ExitCodeContainer
+    public readonly process: Process
   ) {}
 
   /**
