@@ -200,7 +200,6 @@ export class GitHubAPI {
     }
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
-    console.log("~~~ into getPullRequestInfo")
     const res = await this.get(`repos/${repo}/pulls/${prID}`)
     const prDSL = (await res.json()) as GitHubPRDSL
     this.pr = prDSL
@@ -215,7 +214,6 @@ export class GitHubAPI {
   getPullRequestCommits = async (): Promise<any[]> => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
-    console.log("~~~ into getPullRequestCommits")
     return await this.getAllOfResource(`repos/${repo}/pulls/${prID}/commits`)
   }
 
@@ -316,7 +314,6 @@ export class GitHubAPI {
 
   getPullRequests = async (): Promise<any> => {
     const repo = this.repoMetadata.repoSlug
-    console.log('~~~ into getPullRequests')
     const res = await this.get(`repos/${repo}/pulls`)
 
     return res.ok ? res.json() : []
@@ -421,9 +418,6 @@ export class GitHubAPI {
 
     const containsBase = path.startsWith("http")
     const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || process.env["GITHUB_URL"] || "https://api.github.com"
-    this.d("~~~ DANGER_GITHUB_API_BASE_URL ", process.env["DANGER_GITHUB_API_BASE_URL"])
-    this.d("~~~ GITHUB_URL ", process.env["GITHUB_URL"])
-    this.d("~~~ baseUrl ", baseUrl)
     const url = containsBase ? path : `${baseUrl}/${path}`
 
     let customAccept = {}
