@@ -15,7 +15,7 @@ x
 
 <!-- Your comment below this -->
 
-- Fix danger failure on getting diff for files with spaces in file path [@HonzaMac]
+- Wait for close event on spawned process in local git platform - [@gzaripov]
 
 <!-- Your comment above this -->
 
