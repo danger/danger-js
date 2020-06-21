@@ -70,3 +70,8 @@ it("does nothing when there's a PR body", () => {
 ```
 
 [tsconfig]: https://github.com/artsy/emission/blob/master/tsconfig.json
+
+### Disabling Transpilation
+
+You can force Danger to skip transpiling your Dangerfile by setting the environment variable
+`DANGER_DISABLE_TRANSPILATION="true"`.
