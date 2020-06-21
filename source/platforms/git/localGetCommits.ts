@@ -21,13 +21,14 @@ const committer = `"committer": {"name": "${committerName}", "email": "${committ
 export const formatJSON = `{ "sha": "${sha}", "parents": "${parents}", ${author}, ${committer}, "message": "${message}"},`
 
 export const localGetCommits = (base: string, head: string) =>
-  new Promise<GitCommit[]>(done => {
+  new Promise<GitCommit[]>((resolve, reject) => {
     const args = ["log", `${base}...${head}`, `--pretty=format:${formatJSON}`]
     const child = spawn("git", args, { env: process.env })
     d("> git", args.join(" "))
-    child.stdout.on("data", async data => {
-      data = data.toString()
+    const commits: GitCommit[] = []
 
+    child.stdout.on("data", async (chunk: Buffer) => {
+      const data = chunk.toString()
       // remove trailing comma, and wrap into an array
       const asJSONString = `[${data.substring(0, data.length - 1)}]`
       const commits = JSON5.parse(asJSONString)
@@ -36,11 +37,21 @@ export const localGetCommits = (base: string, head: string) =>
         parents: c.parents.split(" "),
       }))
 
-      done(realCommits)
+      commits.push(...realCommits)
     })
 
-    child.stderr.on("data", data => {
-      console.error(`Could not get commits from git between ${base} and ${head}`)
-      throw new Error(data.toString())
+    child.stderr.on("end", () => resolve(commits))
+
+    const errorParts: string[] = []
+
+    child.stderr.on("data", (chunk: Buffer) => errorParts.push(chunk.toString()))
+
+    child.on("close", code => {
+      if (code !== 0) {
+        console.error(`Could not get commits from git between ${base} and ${head}`)
+        reject(new Error(errorParts.join("")))
+      } else {
+        resolve(commits)
+      }
     })
   })
