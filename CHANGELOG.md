@@ -18,6 +18,7 @@ x
 - Wait for close event on spawned process in local git platform - [@gzaripov]
 - Fix Typo in README.md [@NotMoni]
 - Fix danger failure on getting diff for files with spaces in file path [@HonzaMac]
+- Document how to disable transpilation [@rzgry]
 
 <!-- Your comment above this -->
 
