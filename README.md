@@ -17,7 +17,7 @@ Danger runs after your CI, automating your team's conventions surrounding code r
 This provides another logical step in your process, through which Danger can help lint your rote tasks in daily code
 review.
 
-You can use Danger to codify your teams norms, leaving humans to think about harder problems.
+You can use Danger to codify your team's norms, leaving humans to think about harder problems.
 
 Danger JS works with GitHub, BitBucket Server, BitBucket Cloud for code review, then with: Travis CI, GitLab CI,
 Semaphore, Circle CI, GitHub Actions, Jenkins, Docker Cloud, Bamboo, Bitrise, surf-build, Codeship, Drone, Buildkite,
