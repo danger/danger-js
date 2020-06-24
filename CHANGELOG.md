@@ -19,6 +19,7 @@ x
 - Fix Typo in README.md [@NotMoni]
 - Fix danger failure on getting diff for files with spaces in file path [@HonzaMac]
 - Document how to disable transpilation [@rzgry]
+- Get blob url for pr commit [@doniyor2109]
 
 <!-- Your comment above this -->
 
@@ -1772,7 +1773,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@ninjaprox]: https://github.com/ninjaprox
 [@nminhnguyen]: https://github.com/NMinhNguyen
 [@nornagon]: https://github.com/nornagon
-[@NotMoni]: https://github.com/NotMoni
+[@notmoni]: https://github.com/NotMoni
 [@orta]: https://github.com/orta
 [@osmestad]: https://github.com/osmestad
 [@patrickkempff]: https://github.com/patrickkempff
