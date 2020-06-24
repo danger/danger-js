@@ -70,7 +70,12 @@ export const resultsToCheck = async (
     try {
       // response of getContents() can be one of 4 things. We are interested in file responses only
       // https://developer.github.com/v3/repos/contents/#get-contents
-      const { data } = await api.repos.getContents({ repo: pr.head.repo.name, owner: pr.head.repo.owner.login, path })
+      const { data } = await api.repos.getContents({
+        path,
+        ref: pr.head.sha,
+        repo: pr.head.repo.name,
+        owner: pr.head.repo.owner.login,
+      })
       if (Array.isArray(data)) {
         console.error(`Path "${path}" is a folder - ignoring`)
         return ""
