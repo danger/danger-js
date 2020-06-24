@@ -15,13 +15,15 @@ x
 
 <!-- Your comment below this -->
 
+<!-- Your comment above this -->
+
+# 10.2.1
+
 - Wait for close event on spawned process in local git platform - [@gzaripov]
 - Fix Typo in README.md [@NotMoni]
 - Fix danger failure on getting diff for files with spaces in file path [@HonzaMac]
 - Document how to disable transpilation [@rzgry]
 - Fix get blob url for pr commit [@doniyor2109]
-
-<!-- Your comment above this -->
 
 # 10.2.0
 
