@@ -19,7 +19,7 @@ x
 - Fix Typo in README.md [@NotMoni]
 - Fix danger failure on getting diff for files with spaces in file path [@HonzaMac]
 - Document how to disable transpilation [@rzgry]
-- Get blob url for pr commit [@doniyor2109]
+- Fix get blob url for pr commit [@doniyor2109]
 
 <!-- Your comment above this -->
 
@@ -1803,3 +1803,4 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@417-72ki]: https://github.com/417-72KI
 [@soyn]: https://github.com/Soyn
 [@tim3trick]: https://github.com/tim3trick
+[@doniyor2109]: https://github.com/doniyor2109
