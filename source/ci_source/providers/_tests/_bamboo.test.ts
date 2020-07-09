@@ -3,8 +3,14 @@ import { getCISourceForEnv } from "../../get_ci_source"
 
 const correctEnv = {
   bamboo_buildPlanName: "My Build Plan",
-  bamboo_inject_prId: "1234",
+  bamboo_repository_pr_key: "1234",
   bamboo_planRepository_repositoryUrl: "ssh://git@bitbucket.mycompany.com:7999/my_project/my_repository.git",
+}
+
+const correctDotedRepoEnv = {
+  bamboo_buildPlanName: "My Build Plan",
+  bamboo_repository_pr_key: "1234",
+  bamboo_planRepository_repositoryUrl: "ssh://git@bitbucket.mycompany.com:7999/my_project/my.custom.repository.git",
 }
 
 describe("being found when looking for CI", () => {
@@ -48,7 +54,7 @@ describe(".isPR", () => {
 
     it("needs to have a PR number", () => {
       let env = Object.assign({}, correctEnv)
-      delete env["bamboo_inject_prId"]
+      delete env["bamboo_repository_pr_key"]
       const pipelines = new Bamboo(env)
       expect(pipelines.isPR).toBeFalsy()
     })
@@ -57,7 +63,7 @@ describe(".isPR", () => {
 
 describe(".pullRequestID", () => {
   it("pulls it out of the env", () => {
-    const pipelines = new Bamboo({ bamboo_inject_prId: "800" })
+    const pipelines = new Bamboo({ bamboo_repository_pr_key: "800" })
     expect(pipelines.pullRequestID).toEqual("800")
   })
 })
@@ -66,5 +72,9 @@ describe(".repoSlug", () => {
   it("derives it from the PR Url", () => {
     const pipelines = new Bamboo(correctEnv)
     expect(pipelines.repoSlug).toEqual("projects/my_project/repos/my_repository")
+  })
+  it("derives it from the PR doted Url", () => {
+    const pipelines = new Bamboo(correctDotedRepoEnv)
+    expect(pipelines.repoSlug).toEqual("projects/my_project/repos/my.custom.repository")
   })
 })
