@@ -75,7 +75,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nataliSM/danger-js.git"
+    "url": "git+https://github.com/danger/danger-js.git"
   },
   "keywords": [
     "danger",
