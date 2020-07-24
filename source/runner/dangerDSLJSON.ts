@@ -37,7 +37,11 @@ export class DangerDSLJSON implements DangerDSLJSONType {
     const parsedString = JSON.parse(JSONString)
     Object.assign(this, parsedString.danger)
 
+    // Merge the command line settings with the settings from the
+    // original command invocation.  This is needed because some
+    // commands like danger-local have options that are unknown to
+    // danger-runner
     // @ts-ignore
-    this.settings.cliArgs = cliArgs
+    Object.assign(this.settings.cliArgs, cliArgs)
   }
 }
