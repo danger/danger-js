@@ -8,7 +8,7 @@
 
 // Note: if this is your first PR, you'll need to add your URL to the footnotes
 //       see the bottom of this file. The list there is sorted, try to follow that.
-x
+
 -->
 
 ## Master
@@ -16,6 +16,10 @@ x
 <!-- Your comment below this -->
 
 <!-- Your comment above this -->
+
+# 10.2.2
+
+- Add support for `danger local` on repos without a master branch - [@ahobson](https://github.com/ahobson)
 
 # 10.2.1
 
