@@ -43,20 +43,20 @@ export class Bamboo implements CISource {
   }
 
   get isPR(): boolean {
-    const mustHave = ["bamboo_inject_prId", "bamboo_planRepository_repositoryUrl", "bamboo_buildPlanName"]
-    const mustBeInts = ["bamboo_inject_prId"]
+    const mustHave = ["bamboo_repository_pr_key", "bamboo_planRepository_repositoryUrl", "bamboo_buildPlanName"]
+    const mustBeInts = ["bamboo_repository_pr_key"]
     return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, mustBeInts)
   }
 
   get pullRequestID(): string {
-    return `${this.env.bamboo_inject_prId}`
+    return `${this.env.bamboo_repository_pr_key}`
   }
 
   get repoSlug(): string {
     //ssh://git@bt01.cliplister.com:7999/clfr30/bc3_complete.git
     // bamboo_inject_slug="projects/CLFR30/repos/bc3_complete" \
 
-    const [, project, slug] = this.env.bamboo_planRepository_repositoryUrl.match(/\/(\w+)\/(\w+(?:.git)?)$/)
+    const [, project, slug] = this.env.bamboo_planRepository_repositoryUrl.match(/\/(\w+)\/([a-zA-Z0-9_\.-]+(?:.git)?)$/)
 
     return `projects/${project}/repos/${slug.replace(/\.[^.]+$/, "")}`
   }
