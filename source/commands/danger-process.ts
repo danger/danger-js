@@ -95,6 +95,7 @@ getRuntimeCISource(app).then(source => {
             passURLForDSL: app.passURLForDSL || false,
             disableGitHubChecksSupport: !app.useGithubChecks,
             failOnErrors: app.failOnErrors,
+            ignoreInvalidInlineComments: app.ignoreInvalidInlineComments,
           }
 
           d("Exec config: ", execConfig)

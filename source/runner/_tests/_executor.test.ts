@@ -27,6 +27,7 @@ const defaultConfig: ExecutorOptions = {
   passURLForDSL: false,
   failOnErrors: false,
   noPublishCheck: false,
+  ignoreInvalidInlineComments: false,
 }
 
 class FakeProcces {
@@ -120,6 +121,7 @@ describe("setup", () => {
       dangerID: "123",
       passURLForDSL: false,
       failOnErrors: true,
+      ignoreInvalidInlineComments: false,
     }
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, strictConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
@@ -172,9 +174,7 @@ describe("setup", () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
-    const apiFailureMock = jest.fn().mockReturnValue(
-      new Promise<any>((_, reject) => reject())
-    )
+    const apiFailureMock = jest.fn().mockReturnValue(new Promise<any>((_, reject) => reject()))
     platform.createInlineComment = apiFailureMock
 
     let results = await exec.sendInlineComments(singleViolationSingleFileResults, dsl.git, [])
@@ -270,10 +270,7 @@ describe("setup", () => {
     const dsl = await defaultDsl(platform)
     const previousResults = {
       fails: [],
-      warnings: [
-        { message: "1", file: "1.swift", line: 1 },
-        { message: "2", file: "2.swift", line: 2 },
-      ],
+      warnings: [{ message: "1", file: "1.swift", line: 1 }, { message: "2", file: "2.swift", line: 2 }],
       messages: [],
       markdowns: [],
     }
@@ -297,19 +294,13 @@ describe("setup", () => {
     const dsl = await defaultDsl(platform)
     const previousResults = {
       fails: [],
-      warnings: [
-        { message: "1", file: "1.swift", line: 1 },
-        { message: "2", file: "2.swift", line: 2 },
-      ],
+      warnings: [{ message: "1", file: "1.swift", line: 1 }, { message: "2", file: "2.swift", line: 2 }],
       messages: [],
       markdowns: [],
     }
     const newResults = {
       fails: [],
-      warnings: [
-        { message: "1", file: "1.swift", line: 2 },
-        { message: "2", file: "2.swift", line: 3 },
-      ],
+      warnings: [{ message: "1", file: "1.swift", line: 2 }, { message: "2", file: "2.swift", line: 3 }],
       messages: [],
       markdowns: [],
     }

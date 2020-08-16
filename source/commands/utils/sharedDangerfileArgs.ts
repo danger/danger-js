@@ -27,6 +27,8 @@ export interface SharedCLI extends program.CommanderStatic {
   failOnErrors: boolean
   /** Use GitHub Checks */
   useGithubChecks: boolean
+  /** Ignore Inline-Comments where the specified line was not changed */
+  ignoreInvalidInlineComments: boolean
 }
 
 export default (command: any) =>
