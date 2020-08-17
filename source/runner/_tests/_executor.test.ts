@@ -3,13 +3,13 @@ import { FakeCI } from "../../ci_source/providers/Fake"
 import { FakePlatform } from "../../platforms/FakePlatform"
 import {
   emptyResults,
-  warnResults,
-  inlineWarnResults,
   failsResults,
   inlineFailResults,
   inlineMessageResults,
   inlineMultipleWarnResults,
   inlineMultipleWarnResults2,
+  inlineWarnResults,
+  warnResults,
 } from "./fixtures/ExampleDangerResults"
 import inlineRunner from "../runners/inline"
 import { jsonDSLGenerator } from "../dslGenerator"
@@ -17,7 +17,7 @@ import { jsonToDSL } from "../jsonToDSL"
 import { DangerDSLType } from "../../dsl/DangerDSL"
 import { singleViolationSingleFileResults } from "../../dsl/_tests/fixtures/ExampleDangerResults"
 import { inlineTemplate } from "../templates/githubIssueTemplate"
-import { resultsIntoInlineResults, DangerResults, inlineResultsIntoResults } from "../../dsl/DangerResults"
+import { DangerResults, inlineResultsIntoResults, resultsIntoInlineResults } from "../../dsl/DangerResults"
 
 const defaultConfig: ExecutorOptions = {
   stdoutOnly: false,
@@ -174,8 +174,7 @@ describe("setup", () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
-    const apiFailureMock = jest.fn().mockReturnValue(new Promise<any>((_, reject) => reject()))
-    platform.createInlineComment = apiFailureMock
+    platform.createInlineComment = jest.fn().mockReturnValue(new Promise<any>((_, reject) => reject()))
 
     let results = await exec.sendInlineComments(singleViolationSingleFileResults, dsl.git, [])
     expect(results).toEqual(singleViolationSingleFileResults)
@@ -190,6 +189,18 @@ describe("setup", () => {
 
     await exec.handleResults(inlineWarnResults, dsl.git)
     expect(platform.createInlineComment).toBeCalled()
+  })
+
+  it("Invalid inline comment is ignored if ignoreInvalidInlineComments is true", async () => {
+    const platform = new FakePlatform()
+    const config = Object.assign({}, defaultConfig, { ignoreInvalidInlineComments: true })
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, config, new FakeProcces())
+    const dsl = await defaultDsl(platform)
+    platform.createInlineComment = jest.fn().mockReturnValue(new Promise<any>((_, reject) => reject()))
+    platform.updateOrCreateComment = jest.fn()
+
+    await exec.handleResults(inlineWarnResults, dsl.git)
+    expect(platform.updateOrCreateComment).not.toBeCalled()
   })
 
   it("Updates an inline comment as the new one was different than the old", async () => {
