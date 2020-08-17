@@ -16,7 +16,7 @@
 <!-- Your comment below this -->
 
 - Added a CLI option `--ignoreInvalidInlineComments` so that you can ignore inline-comments for invalid lines (e.g
-  unchanged lines). the comment would be ignored completely - it won't even show in the results commit. [@pinkasey]
+  unchanged lines). The comment would be ignored completely - it won't even show in the results commit. [@pinkasey]
 
 <!-- Your comment above this -->
 
