@@ -16,7 +16,7 @@
 <!-- Your comment below this -->
 
 - Added a CLI option `--noOutOfDiffComments` so that you can ignore inline-comments for lines that were not changed in
-  this PR. The comments would be ignored completely - they won't even show in the results comment. [@pinkasey]
+  the checked PR. The comments would be ignored completely - they won't even show in the results comment. [@pinkasey]
 
 <!-- Your comment above this -->
 

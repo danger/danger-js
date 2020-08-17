@@ -58,7 +58,7 @@ export interface ExecutorOptions {
   failOnErrors?: boolean
   /** Dont add danger check to PR */
   noPublishCheck?: boolean
-  /** Ignore invalid inline-comments, for instance a comment with a line that was not changed */
+  /** Ignore inline-comments that are in lines which were not changed */
   noOutOfDiffComments: boolean
 }
 // This is still badly named, maybe it really should just be runner?
