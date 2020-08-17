@@ -28,7 +28,7 @@ export interface SharedCLI extends program.CommanderStatic {
   /** Use GitHub Checks */
   useGithubChecks: boolean
   /** Ignore invalid inline-comments, for instance a comment with a line that was not changed */
-  ignoreInvalidInlineComments: boolean
+  noOutOfDiffComments: boolean
 }
 
 export default (command: any) =>
@@ -46,7 +46,7 @@ export default (command: any) =>
     .option("-f, --failOnErrors", "Fail if there are fails in the danger report", false)
     .option("--use-github-checks", "Use GitHub Checks", false)
     .option(
-      "-iiic, --ignoreInvalidInlineComments",
+      "--noOutOfDiffComments",
       "Ignore invalid inline-comments, for instance a comment with a line that was not changed",
       false
     )

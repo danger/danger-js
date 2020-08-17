@@ -27,7 +27,7 @@ const defaultConfig: ExecutorOptions = {
   passURLForDSL: false,
   failOnErrors: false,
   noPublishCheck: false,
-  ignoreInvalidInlineComments: false,
+  noOutOfDiffComments: false,
 }
 
 class FakeProcces {
@@ -121,7 +121,7 @@ describe("setup", () => {
       dangerID: "123",
       passURLForDSL: false,
       failOnErrors: true,
-      ignoreInvalidInlineComments: false,
+      noOutOfDiffComments: false,
     }
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, strictConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
@@ -191,9 +191,9 @@ describe("setup", () => {
     expect(platform.createInlineComment).toBeCalled()
   })
 
-  it("Invalid inline comment is ignored if ignoreInvalidInlineComments is true", async () => {
+  it("Invalid inline comment is ignored if noOutOfDiffComments is true", async () => {
     const platform = new FakePlatform()
-    const config = Object.assign({}, defaultConfig, { ignoreInvalidInlineComments: true })
+    const config = Object.assign({}, defaultConfig, { noOutOfDiffComments: true })
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, config, new FakeProcces())
     const dsl = await defaultDsl(platform)
     platform.createInlineComment = jest.fn().mockReturnValue(new Promise<any>((_, reject) => reject()))

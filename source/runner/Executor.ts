@@ -59,7 +59,7 @@ export interface ExecutorOptions {
   /** Dont add danger check to PR */
   noPublishCheck?: boolean
   /** Ignore invalid inline-comments, for instance a comment with a line that was not changed */
-  ignoreInvalidInlineComments: boolean
+  noOutOfDiffComments: boolean
 }
 // This is still badly named, maybe it really should just be runner?
 
@@ -280,7 +280,7 @@ export class Executor {
         const previousComments = await this.platform.getInlineComments(dangerID)
         const inline = inlineResults(results)
         let inlineLeftovers = await this.sendInlineComments(inline, git, previousComments)
-        inlineLeftovers = this.options.ignoreInvalidInlineComments ? emptyDangerResults : inlineLeftovers
+        inlineLeftovers = this.options.noOutOfDiffComments ? emptyDangerResults : inlineLeftovers
         mergedResults = sortResults(mergeResults(mergedResults, inlineLeftovers))
       }
 
