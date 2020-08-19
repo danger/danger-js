@@ -68,7 +68,7 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
         disableGitHubChecksSupport: !app.useGithubChecks,
         failOnErrors: app.failOnErrors,
         noPublishCheck: !app.publishCheck,
-        noOutOfDiffComments: app.noOutOfDiffComments,
+        ignoreOutOfDiffComments: app.ignoreOutOfDiffComments,
       }
 
       const processName = (app.process && addSubprocessCallAguments(app.process.split(" "))) || undefined
