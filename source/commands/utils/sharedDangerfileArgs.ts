@@ -27,6 +27,8 @@ export interface SharedCLI extends program.CommanderStatic {
   failOnErrors: boolean
   /** Use GitHub Checks */
   useGithubChecks: boolean
+  /** Ignore inline-comments that are in lines which were not changed */
+  ignoreOutOfDiffComments: boolean
 }
 
 export default (command: any) =>
@@ -43,3 +45,4 @@ export default (command: any) =>
     .option("-u, --passURLForDSL", "[dev] Use a custom URL to send the Danger DSL into the sub-process")
     .option("-f, --failOnErrors", "Fail if there are fails in the danger report", false)
     .option("--use-github-checks", "Use GitHub Checks", false)
+    .option("--ignoreOutOfDiffComments", "Ignore inline-comments that are in lines which were not changed", false)
