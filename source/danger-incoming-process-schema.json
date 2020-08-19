@@ -1576,18 +1576,22 @@
             "type": "object"
         },
         "GitLabDSL": {
+            "description": "The GitLab metadata for your MR",
             "properties": {
                 "commits": {
+                    "description": "All of the individual commits in the merge request",
                     "items": {
                         "$ref": "#/definitions/GitLabMRCommit"
                     },
                     "type": "array"
                 },
                 "metadata": {
-                    "$ref": "#/definitions/RepoMetaData"
+                    "$ref": "#/definitions/RepoMetaData",
+                    "description": "Info about the repo"
                 },
                 "mr": {
-                    "$ref": "#/definitions/GitLabMR"
+                    "$ref": "#/definitions/GitLabMR",
+                    "description": "Info about the merge request"
                 },
                 "utils": {
                     "type": "object"
@@ -1596,6 +1600,7 @@
             "type": "object"
         },
         "GitLabMR": {
+            "description": "TODO: These need more comments from someone who uses GitLab, see GitLabDSL.ts in the danger-js repo",
             "properties": {
                 "allow_collaboration": {
                     "type": "boolean"
@@ -1607,10 +1612,12 @@
                     "type": "null"
                 },
                 "assignee": {
-                    "$ref": "#/definitions/GitLabUser"
+                    "$ref": "#/definitions/GitLabUser",
+                    "description": "Who was assigned as the person to review"
                 },
                 "author": {
-                    "$ref": "#/definitions/GitLabUser"
+                    "$ref": "#/definitions/GitLabUser",
+                    "description": "Who made it"
                 },
                 "changes_count": {
                     "type": "string"
@@ -1632,9 +1639,11 @@
                     ]
                 },
                 "created_at": {
+                    "description": "When was the MR made",
                     "type": "string"
                 },
                 "description": {
+                    "description": "The body text describing the MR",
                     "type": "string"
                 },
                 "diff_refs": {
@@ -1658,6 +1667,7 @@
                     "type": "number"
                 },
                 "downvotes": {
+                    "description": "How many folks have given it an downvote",
                     "type": "number"
                 },
                 "first_deployed_to_production_at": {
@@ -1670,9 +1680,11 @@
                     "type": "boolean"
                 },
                 "id": {
+                    "description": "The MR's id",
                     "type": "number"
                 },
                 "iid": {
+                    "description": "The unique ID for this MR",
                     "type": "number"
                 },
                 "labels": {
@@ -1782,6 +1794,7 @@
                     "type": "object"
                 },
                 "project_id": {
+                    "description": "The project ID for this MR",
                     "type": "number"
                 },
                 "rebase_in_progress": {
@@ -1794,6 +1807,7 @@
                     "type": "boolean"
                 },
                 "source_branch": {
+                    "description": "What branch is this MR come from",
                     "type": "string"
                 },
                 "source_project_id": {
@@ -1803,6 +1817,7 @@
                     "type": "boolean"
                 },
                 "state": {
+                    "description": "The MR's current availability",
                     "enum": [
                         "closed",
                         "locked",
@@ -1815,6 +1830,7 @@
                     "type": "boolean"
                 },
                 "target_branch": {
+                    "description": "What branch is this MR being merged into",
                     "type": "string"
                 },
                 "target_project_id": {
@@ -1844,17 +1860,22 @@
                     "type": "object"
                 },
                 "title": {
+                    "description": "The given name of the MR",
                     "type": "string"
                 },
                 "updated_at": {
+                    "description": "When was the MR updated",
                     "type": "string"
                 },
                 "upvotes": {
+                    "description": "How many folks have given it an upvote",
                     "type": "number"
                 },
                 "user": {
+                    "description": "Access rights for the user who created the MR",
                     "properties": {
                         "can_merge": {
+                            "description": "Does the author have access to merge?",
                             "type": "boolean"
                         }
                     },
