@@ -17,6 +17,10 @@
 
 <!-- Your comment above this -->
 
+# 10.3.1
+
+- Experimental support for internal routing when using `npx danger-ts` [@orta]
+
 # 10.3.0
 
 - Added a CLI option `--ignoreOutOfDiffComments` so that you can ignore inline-comments for lines that were not changed
