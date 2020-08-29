@@ -9,8 +9,8 @@ const d = debug("GitLabGit")
 export const gitLabGitDSL = (gitlab: GitLabDSL, json: GitJSONDSL, gitlabAPI: GitLabAPI): GitDSL => {
   const config: GitJSONToGitDSLConfig = {
     repo: `${gitlab.mr.project_id}`, // we don't get the repo slug, but `project_id` is equivalent in API calls
-    baseSHA: gitlab.mr.diff_refs.base_sha,
-    headSHA: gitlab.mr.diff_refs.head_sha,
+    baseSHA: gitlab.mr.diff_refs ? gitlab.mr.diff_refs.base_sha : "",
+    headSHA: gitlab.mr.diff_refs ? gitlab.mr.diff_refs.head_sha : "",
     getFileContents: gitlab.utils.fileContents,
     getFullDiff: async (base: string, head: string) => {
       const changes = await gitlabAPI.getCompareChanges(base, head)
