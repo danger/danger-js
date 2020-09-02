@@ -15,6 +15,9 @@
 
 <!-- Your comment below this -->
 
+- Improved `tsconfig.json` file lookup strategy: it now looks for it starting from the location of the danger file.
+  #1068 [@igorbek](https://github.com/igorbek)
+
 <!-- Your comment above this -->
 
 # 10.3.1
