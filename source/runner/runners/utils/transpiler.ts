@@ -74,15 +74,58 @@ export const checkForNodeModules = () => {
   hasChecked = true
 }
 
+export const dirContains = (rootDir: string, dir: string): boolean => {
+  const relative = path.relative(rootDir, dir)
+  // on win32, relative can refer to a different drive
+  if (path.isAbsolute(relative)) {
+    return false
+  }
+  return !relative.startsWith("..")
+}
+
 // Now that we have a sense of what exists inside the users' node modules
 
-export const typescriptify = (content: string): string => {
+export const lookupTSConfig = (dir: string): string | null => {
+  const filename = "tsconfig.json"
+  let filepath = path.join(dir, filename)
+
+  if (fs.existsSync(filepath)) {
+    return filepath
+  }
+
+  const rootDir = path.resolve()
+  dir = path.resolve(dir)
+
+  if (rootDir === dir) {
+    return null
+  }
+
+  // if root dir is disconnected, we only check in the root
+  if (!dirContains(rootDir, dir)) {
+    filepath = filename
+    return fs.existsSync(filepath) ? filepath : null
+  }
+
+  dir = path.dirname(dir)
+  do {
+    filepath = path.join(dir, filename)
+    if (fs.existsSync(filepath)) {
+      return path.relative(rootDir, filepath)
+    }
+    dir = path.dirname(dir)
+  } while (dirContains(rootDir, dir))
+
+  return null
+}
+
+export const typescriptify = (content: string, dir: string): string => {
   const ts = require("typescript") // tslint:disable-line
 
   // Support custom TSC options, but also fallback to defaults
   let compilerOptions: any
-  if (fs.existsSync("tsconfig.json")) {
-    compilerOptions = JSON5.parse(fs.readFileSync("tsconfig.json", "utf8"))
+  const tsConfigPath = lookupTSConfig(dir)
+  if (tsConfigPath) {
+    compilerOptions = JSON5.parse(fs.readFileSync(tsConfigPath, "utf8"))
   } else {
     compilerOptions = ts.getDefaultCompilerOptions()
   }
@@ -152,7 +195,7 @@ export default (code: string, filename: string) => {
 
   let result = code
   if (hasNativeTypeScript && filetype.startsWith(".ts")) {
-    result = typescriptify(code)
+    result = typescriptify(code, path.dirname(filename))
   } else if (hasBabel && hasBabelTypeScript && filetype.startsWith(".ts")) {
     result = babelify(code, filename, [`${babelPackagePrefix}plugin-transform-typescript`])
   } else if (hasBabel && filetype.startsWith(".js")) {
