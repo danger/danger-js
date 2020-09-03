@@ -97,7 +97,6 @@ export const lookupTSConfig = (dir: string): string | null => {
   dir = path.resolve(dir)
 
   if (rootDir === dir) {
-    console.log("return", rootDir, dir)
     return null
   }
 
@@ -111,7 +110,7 @@ export const lookupTSConfig = (dir: string): string | null => {
   do {
     filepath = path.join(dir, filename)
     if (fs.existsSync(filepath)) {
-      return filepath
+      return path.relative(rootDir, filepath)
     }
     dir = path.dirname(dir)
   } while (dirContains(rootDir, dir))

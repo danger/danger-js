@@ -56,7 +56,7 @@ describe("lookupTSConfig", () => {
 
   it("can find in a parent folder", () => {
     setup("/a", "/a/b")
-    expect(lookupTSConfig(n("./b/c"))).toBe(n("/a/b/tsconfig.json"))
+    expect(lookupTSConfig(n("./b/c"))).toBe(n("b/tsconfig.json"))
   })
 
   it("can find in the working dir", () => {
