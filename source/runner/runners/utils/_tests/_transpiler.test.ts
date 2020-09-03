@@ -27,8 +27,18 @@ describe("typescriptify", () => {
   })
 })
 
+/** Normalizes path to platform-specific */
+function n(p: string) {
+  if (path.sep !== "/") {
+    return p.split("/").join(path.sep)
+  }
+  return p
+}
+
 describe("lookupTSConfig", () => {
   function setup(cwd: string, configDir: string) {
+    cwd = n(cwd)
+    configDir = n(configDir)
     // mock path.resolve to be relative to cwd
     const actualPath = jest.requireActual("path") as typeof path
     const resolve = path.resolve as jest.Mock
@@ -41,29 +51,38 @@ describe("lookupTSConfig", () => {
 
   it("can find in the same folder as dangerfile", () => {
     setup("/a", "/c")
-    expect(lookupTSConfig("/c")).toBe("/c/tsconfig.json")
+    expect(lookupTSConfig(n("/c"))).toBe(n("/c/tsconfig.json"))
   })
 
   it("can find in a parent folder", () => {
     setup("/a", "/a/b")
-    expect(lookupTSConfig("./b/c")).toBe("/a/b/tsconfig.json")
+    expect(lookupTSConfig(n("./b/c"))).toBe(n("/a/b/tsconfig.json"))
   })
 
   it("can find in the working dir", () => {
     setup("/a", "/a")
-    expect(lookupTSConfig("/c")).toBe("tsconfig.json")
+    expect(lookupTSConfig(n("/c"))).toBe("tsconfig.json")
   })
 
   it("cannot find in a directory higher than current", () => {
     setup("/a/b", "/a")
-    expect(lookupTSConfig("/a/b/c")).toBe(null)
+    expect(lookupTSConfig(n("/a/b/c"))).toBe(null)
   })
 })
 
 describe("dirContains", () => {
   it("identifies what directory contains", () => {
-    expect(dirContains("/a", "/a/b")).toBe(true)
-    expect(dirContains("/a/b", "/a")).toBe(false)
-    expect(dirContains("/a", "/a")).toBe(true)
+    expect(dirContains(n("/a"), n("/a/b"))).toBe(true)
+    expect(dirContains(n("/a/b"), n("/a"))).toBe(false)
+    expect(dirContains(n("/a"), n("/a"))).toBe(true)
   })
+
+  if (path.sep === "\\") {
+    it("identifies what directory contains on win32", () => {
+      expect(dirContains(`c:\\a`, `c:\\a\\b`)).toBe(true)
+      expect(dirContains(`c:\\a`, `c:\\a`)).toBe(true)
+      expect(dirContains(`c:\\a`, `d:\\a\\b`)).toBe(false)
+      expect(dirContains(`c:\\a`, `d:\\a`)).toBe(false)
+    })
+  }
 })
