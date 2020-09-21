@@ -195,7 +195,10 @@ export const createOrAddLabel = (pr: GitHubPRDSL | undefined, api: GitHub) => as
   d("Checking for existing labels")
   let label: any = null
   try {
-    const existingLabels = await api.paginate('GET /repos/:owner/:repo/labels', { owner: config.owner, repo: config.repo })
+    const existingLabels = await api.paginate("GET /repos/:owner/:repo/labels", {
+      owner: config.owner,
+      repo: config.repo,
+    })
     label = existingLabels.find((l: any) => l.name == labelConfig.name)
   } catch (e) {
     d("api.issues.getLabels gave an error", e)
