@@ -15,11 +15,15 @@
 
 <!-- Your comment below this -->
 
-# 10.3.2
+<!-- Your comment above this -->
+
+# 10.4.1
 
 - Improved `tsconfig.json` file lookup strategy: it now looks for it starting from the location of the danger file.
   #1068 [@igorbek](https://github.com/igorbek)
 - Upgrade node-fetch to 2.6.1 to fix GHSA-w7rc-rwvf-8q5r. #1071 [@hmcc](https://github.com/hmcc)
+
+# 10.4.0
 
 - Adds aliases to the FakeCI env vars. You could now have something like:
   ```yml
@@ -31,8 +35,6 @@
       DANGER_MANUAL_PR: ${{ steps.pr_info.outputs.number }}
   ```
   Which looks more intentional instead of: `DANGER_FAKE_CI` etc. [@orta](https://github.com/orta)
-
-<!-- Your comment above this -->
 
 # 10.3.1
 
