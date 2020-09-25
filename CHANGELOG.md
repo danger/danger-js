@@ -19,6 +19,7 @@
 
 - Improved `tsconfig.json` file lookup strategy: it now looks for it starting from the location of the danger file.
   #1068 [@igorbek](https://github.com/igorbek)
+- Upgrade node-fetch to 2.6.1 to fix GHSA-w7rc-rwvf-8q5r. #1071 [@hmcc](https://github.com/hmcc)
 
 - Adds aliases to the FakeCI env vars. You could now have something like:
   ```yml
@@ -1791,6 +1792,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@fbartho]: https://github.com/fbartho
 [@fwal]: https://github.com/fwal
 [@happylinks]: https://github.com/happylinks
+[@hmcc]: https://github.com/hmcc
 [@hongrich]: https://github.com/hongrich
 [@hellocore]: https://github.com/HelloCore
 [@imorente]: https://github.com/imorente
