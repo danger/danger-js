@@ -23,7 +23,7 @@ const requestAccessTokenForInstallation = (appID: string, installationID: number
   const apiUrl = process.env["DANGER_GITHUB_API_BASE_URL"]
     ? process.env["DANGER_GITHUB_API_BASE_URL"]
     : "https://api.github.com"
-  const url = `${apiUrl}/installations/${installationID}/access_tokens`
+  const url = `${apiUrl}/app/installations/${installationID}/access_tokens`
   const headers = {
     Accept: "application/vnd.github.machine-man-preview+json",
     Authorization: `Bearer ${jwtForGitHubAuth(appID, key)}`,
