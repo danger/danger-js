@@ -17,6 +17,10 @@
 
 <!-- Your comment above this -->
 
+# 10.4.2
+
+- Handle deprecations for the APIs used with `--use-github-checks` #1073 [@wardpeet](https://github.com/wardpeet)
+
 # 10.4.1
 
 - Improved `tsconfig.json` file lookup strategy: it now looks for it starting from the location of the danger file.
