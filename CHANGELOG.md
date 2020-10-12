@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Bitbucket Cloud: Fix bug when Danger updating inline comment with summary comment. - [@hellocore]
+
 <!-- Your comment above this -->
 
 # 10.4.2

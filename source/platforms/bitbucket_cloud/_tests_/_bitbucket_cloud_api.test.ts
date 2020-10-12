@@ -149,6 +149,24 @@ describe("API testing - BitBucket Cloud", () => {
             display_name: "name",
           },
         },
+        {
+          content: {
+            raw: `FAIL! danger-id-1; ${dangerSignaturePostfix({} as DangerResults, "1234")}`,
+          },
+          user: {
+            display_name: "name",
+            uuid: "{1234-1234-1234-1234}",
+          },
+        },
+        {
+          content: {
+            raw: "not a danger comment",
+          },
+          user: {
+            display_name: "someone",
+            uuid: "{1234-1234-1234-1235}",
+          },
+        },
       ],
     })
     const comments = await api.getDangerInlineComments("1")
@@ -173,7 +191,7 @@ describe("API testing - BitBucket Cloud", () => {
     expect(result).toEqual(["activity"])
   })
 
-  it("getDangerComments", async () => {
+  it("getDangerMainComments", async () => {
     const commitID = "e70f3d6468f61a4bef68c9e6eaba9166b096e23c"
     jsonResult = () => ({
       isLastPage: true,
@@ -189,6 +207,21 @@ describe("API testing - BitBucket Cloud", () => {
         },
         {
           content: {
+            raw:
+              "\n[//]: # (danger-id-1;)\n[//]: # (  File: dangerfile.ts;\n  Line: 5;)\n\n- :warning: Hello updates\n\n\n  ",
+          },
+          id: 1234,
+          inline: {
+            from: 5,
+            path: "dangerfile.ts",
+          },
+          user: {
+            uuid: "{1234-1234-1234-1234}",
+            display_name: "name",
+          },
+        },
+        {
+          content: {
             raw: "not a danger comment",
           },
           user: {
@@ -198,7 +231,8 @@ describe("API testing - BitBucket Cloud", () => {
         },
       ],
     })
-    const result = await api.getDangerComments("1")
+
+    const result = await api.getDangerMainComments("1")
 
     expect(api.fetch).toHaveBeenCalledWith(
       "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments?q=deleted=false",
