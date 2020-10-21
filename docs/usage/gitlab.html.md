@@ -25,7 +25,7 @@ if (danger.gitlab.mr.title.includes("WIP")) {
 }
 ```
 
-The DSL is expansive, you can see all the details inside the [Danger JS Reference][ref], but the TLDR is:
+The DSL is expansive, you can see all the details inside the [Danger JS Reference](https://danger.systems/js/reference.html), but the TLDR is:
 
 ```ts
 danger.gitlab.
