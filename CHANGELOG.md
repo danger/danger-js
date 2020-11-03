@@ -15,9 +15,12 @@
 
 <!-- Your comment below this -->
 
-- Fall back to alternative methods for establishing the PR number from CodeBuild - [@alexandermendes]
-
 <!-- Your comment above this -->
+
+# 10.4.3
+
+- Bitbucket Cloud: Fix bug when Danger updating inline comment with summary comment. - [@hellocore]
+- Fall back to alternative methods for establishing the PR number from CodeBuild - [@alexandermendes]
 
 # 10.4.2
 
