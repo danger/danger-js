@@ -17,12 +17,12 @@
 
 <!-- Your comment above this -->
 
-# 10.4.3
+# 10.5.1
 
 - Bitbucket Cloud: Fix bug when Danger updating inline comment with summary comment. - [@hellocore]
 - Fall back to alternative methods for establishing the PR number from CodeBuild - [@alexandermendes]
 
-# 10.4.2
+# 10.5.0
 
 - Handle deprecations for the APIs used with `--use-github-checks` #1073 [@wardpeet](https://github.com/wardpeet)
 
