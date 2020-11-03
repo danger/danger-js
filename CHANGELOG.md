@@ -15,7 +15,7 @@
 
 <!-- Your comment below this -->
 
-- Bitbucket Cloud: Fix bug when Danger updating inline comment with summary comment. - [@hellocore]
+- Fall back to alternative methods for establishing the PR number from CodeBuild - [@alexandermendes]
 
 <!-- Your comment above this -->
 
@@ -1845,3 +1845,4 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@soyn]: https://github.com/Soyn
 [@tim3trick]: https://github.com/tim3trick
 [@doniyor2109]: https://github.com/doniyor2109
+[@alexandermendes]: https://github.com/alexandermendes
