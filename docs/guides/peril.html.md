@@ -55,4 +55,4 @@ continuing, so make sure to not cause it to lock.
 ## Plugin implications
 
 A plugin that runs on Peril will also have to handle the above if it uses async code. For some examples of this, see
-[danger-plugin-spellcheck](https://github.com/orta/danger-plugin-spellcheck#danger-plugin-spellcheck) or
+[danger-plugin-spellcheck](https://github.com/orta/danger-plugin-spellcheck#danger-plugin-spellcheck).
