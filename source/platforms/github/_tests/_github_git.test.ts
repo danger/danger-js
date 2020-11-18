@@ -166,6 +166,8 @@ describe("the dangerfile gitDSL", () => {
       url: "https://api.github.com/repos/artsy/emission/commits/13da2c844def1f4262ee440bd86fb2a3b021718b",
     }
 
+    expect(gitDSL.head).toBe("cfa8fb80d2b65f4c4fa0b54d25352a3a0ff58f75")
+    expect(gitDSL.base).toBe("98f3e73f5e419f3af9ab928c86312f28a3c87475")
     expect(gitDSL.commits[0]).toEqual(exampleCommit)
   })
 

@@ -104,6 +104,16 @@ type GitMatchResult = {
 /** The git specific metadata for a PR */
 export interface GitDSL extends GitJSONDSL {
   /**
+   * The git commit Danger is comparing from.
+   */
+  base: string
+
+  /**
+   * The git commit Danger is comparing to.
+   */
+  head: string
+
+  /**
    * A Chainsmoker object to help match paths as an elegant DSL. It
    * lets you write a globbed string and then get booleans on whether
    * there are matches within a certain part of the git DSL.

@@ -104,6 +104,8 @@ describe("the dangerfile gitDSL - BitBucket Server", () => {
   })
 
   it("sets up commit data correctly", async () => {
+    expect(gitDSL.head).toBe("d6725486c38d46a33e76f622cf24b9a388c8d13d")
+    expect(gitDSL.base).toBe("8942a1f75e4c95df836f19ef681d20a87da2ee20")
     expect(gitDSL.commits[0]).toMatchSnapshot()
   })
 
