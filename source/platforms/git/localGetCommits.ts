@@ -31,8 +31,8 @@ export const localGetCommits = (base: string, head: string) =>
       const data = chunk.toString()
       // remove trailing comma, and wrap into an array
       const asJSONString = `[${data.substring(0, data.length - 1)}]`
-      const commits = JSON5.parse(asJSONString)
-      const realCommits = commits.map((c: any) => ({
+      const parsedCommits = JSON5.parse(asJSONString)
+      const realCommits = parsedCommits.map((c: any) => ({
         ...c,
         parents: c.parents.split(" "),
       }))
