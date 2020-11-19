@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "10.5.2",
+  "version": "10.5.3",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
