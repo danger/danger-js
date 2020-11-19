@@ -15,9 +15,11 @@
 
 <!-- Your comment below this -->
 
-- Adds `danger.git.head` and `danger.git.base`
-
 <!-- Your comment above this -->
+
+# 10.5.2
+
+- Adds `danger.git.head` and `danger.git.base` - [@jamiebuilds]
 
 # 10.5.1
 
@@ -1851,3 +1853,4 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@tim3trick]: https://github.com/tim3trick
 [@doniyor2109]: https://github.com/doniyor2109
 [@alexandermendes]: https://github.com/alexandermendes
+[@jamiebuilds]: https://github.com/jamiebuilds
