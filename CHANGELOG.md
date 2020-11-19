@@ -19,6 +19,10 @@
 
 # 10.5.2
 
+- Fix for `danger local` not showing commit messages - [@hmschreiner]
+
+# 10.5.2
+
 - Adds `danger.git.head` and `danger.git.base` - [@jamiebuilds]
 
 # 10.5.1
@@ -1854,3 +1858,4 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@doniyor2109]: https://github.com/doniyor2109
 [@alexandermendes]: https://github.com/alexandermendes
 [@jamiebuilds]: https://github.com/jamiebuilds
+[@hmschreiner]: https://github.com/hmschreiner
