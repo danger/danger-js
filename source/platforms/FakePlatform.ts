@@ -20,6 +20,8 @@ export class FakePlatform implements Platform {
 
   async getPlatformGitRepresentation(): Promise<GitDSL> {
     return {
+      base: "456",
+      head: "123",
       modified_files: [],
       created_files: [],
       deleted_files: [],

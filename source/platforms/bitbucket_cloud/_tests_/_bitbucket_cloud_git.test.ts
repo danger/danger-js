@@ -156,6 +156,8 @@ describe("the dangerfile gitDSL - BitBucket Cloud", () => {
       url: "https://bitbucket.org/foo/bar/commits/7f73207cea935b2fd07a76028484c20eb18422ba",
     }
 
+    expect(gitDSL.head).toBe("007bf2423436")
+    expect(gitDSL.base).toBe("8a2eb414cb5d")
     expect(gitDSL.commits[0]).toEqual(exampleCommit)
   })
 

@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Adds `danger.git.head` and `danger.git.base`
+
 <!-- Your comment above this -->
 
 # 10.5.1

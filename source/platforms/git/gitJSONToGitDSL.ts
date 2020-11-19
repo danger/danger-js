@@ -239,6 +239,8 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
   }
 
   return {
+    base: config.baseSHA,
+    head: config.headSHA,
     fileMatch: chainsmoker({
       modified: gitJSONRep.modified_files,
       created: gitJSONRep.created_files,
