@@ -27,6 +27,7 @@ export const jsonDSLGenerator = async (
     id: program.id,
     textOnly: program.textOnly,
     verbose: program.verbose,
+    staging: program.staging
   }
 
   const dslPlatformName = jsonDSLPlatformName(platform)
