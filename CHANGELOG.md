@@ -17,7 +17,11 @@
 
 <!-- Your comment above this -->
 
-# 10.5.2
+# 10.5.4
+
+- Fix for `danger local` not passing through `--staging` - [@g3offrey]
+
+# 10.5.3
 
 - Fix for `danger local` not showing commit messages - [@hmschreiner]
 
@@ -1859,3 +1863,4 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@alexandermendes]: https://github.com/alexandermendes
 [@jamiebuilds]: https://github.com/jamiebuilds
 [@hmschreiner]: https://github.com/hmschreiner
+[@g3offrey]: https://github.com/g3offrey
