@@ -16,9 +16,9 @@ import * as utils from "../../DangerUtils"
 
 const commitID = "e70f3d6468f61a4bef68c9e6eaba9166b096e23c"
 
-const noEntryEmoji = "❌"
-const warningEmoji = "⚠️"
-const messageEmoji = "✨"
+const noEntryEmoji = ":x:"
+const warningEmoji = ":warning:"
+const messageEmoji = ":sparkles:"
 
 describe("generating messages for BitBucket cloud", () => {
   let complimentMock: jest.Mock<string, []>
