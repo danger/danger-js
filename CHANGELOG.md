@@ -14,7 +14,7 @@
 ## Master
 
 <!-- Your comment below this -->
-
+- Bitbucket Cloud: Add markdown emoji instead of unicode [@JanStevens]
 <!-- Your comment above this -->
 
 # 10.5.4
