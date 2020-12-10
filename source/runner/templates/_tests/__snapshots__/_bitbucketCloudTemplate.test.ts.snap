@@ -4,16 +4,16 @@ exports[`generating inline messages summary inline result matches snapshot 1`] =
 "
 [//]: # (danger-id-blankID;)
 [//]: # (  File: File.swift;Line: 5;)
-- ❌ Failing message Failing message
-- ⚠️ Warning message Warning message
-- ✨ message
+- :x: Failing message Failing message
+- :warning: Warning message Warning message
+- :sparkles: message
 markdown
   "
 `;
 
 exports[`generating messages for BitBucket cloud Mixed icon messages match snapshot 1`] = `
 "
-  🎉  All green. Well done.
+  :tada:  All green. Well done.
 
   
   
@@ -23,7 +23,7 @@ exports[`generating messages for BitBucket cloud Mixed icon messages match snaps
   | --- |
   | 📝 - Message with custom icon |
   | 🔔 - Message with custom icon2 |
-  | ✨ - Test message |
+  | :sparkles: - Test message |
 
   
   
@@ -40,7 +40,7 @@ exports[`generating messages for BitBucket cloud Mixed icon messages match snaps
 
 exports[`generating messages for BitBucket cloud empty result matches snapshot, with a compliment 1`] = `
 "
-  🎉  All green. Well done.
+  :tada:  All green. Well done.
 
   
   
@@ -59,31 +59,31 @@ exports[`generating messages for BitBucket cloud empty result matches snapshot, 
 
 exports[`generating messages for BitBucket cloud multiple summary result matches snapshot 1`] = `
 "
-  ⚠️  Danger found some issues. Don't worry, everything is fixable.
+  :warning:  Danger found some issues. Don't worry, everything is fixable.
 
   
 
   |      2 Fails |
   | --- |
-  | ❌ - Failing message Failing message |
-  | ❌ - Failing message 2, This is Failing message |
+  | :x: - Failing message Failing message |
+  | :x: - Failing message 2, This is Failing message |
 
   
   
 
   |      2 Warnings |
   | --- |
-  | ⚠️ - Warning message Warning message |
-  | ⚠️ - Warning message |
+  | :warning: - Warning message Warning message |
+  | :warning: - Warning message |
 
   
   
 
   |      3 Messages |
   | --- |
-  | ✨ - message |
-  | ✨ - message 2 |
-  | ✨ - message 3 |
+  | :sparkles: - message |
+  | :sparkles: - message 2 |
+  | :sparkles: - message 3 |
 
   
   
@@ -100,27 +100,27 @@ exports[`generating messages for BitBucket cloud multiple summary result matches
 
 exports[`generating messages for BitBucket cloud summary result matches snapshot, with a commit 1`] = `
 "
-  ⚠️  Danger found some issues. Don't worry, everything is fixable.
+  :warning:  Danger found some issues. Don't worry, everything is fixable.
 
   
 
   |      1 Fails |
   | --- |
-  | ❌ - Failing message Failing message |
+  | :x: - Failing message Failing message |
 
   
   
 
   |      1 Warnings |
   | --- |
-  | ⚠️ - Warning message Warning message |
+  | :warning: - Warning message Warning message |
 
   
   
 
   |      1 Messages |
   | --- |
-  | ✨ - message |
+  | :sparkles: - message |
 
   
   
@@ -137,27 +137,27 @@ exports[`generating messages for BitBucket cloud summary result matches snapshot
 
 exports[`generating messages for BitBucket cloud summary result matches snapshot, without a commit 1`] = `
 "
-  ⚠️  Danger found some issues. Don't worry, everything is fixable.
+  :warning:  Danger found some issues. Don't worry, everything is fixable.
 
   
 
   |      1 Fails |
   | --- |
-  | ❌ - Failing message Failing message |
+  | :x: - Failing message Failing message |
 
   
   
 
   |      1 Warnings |
   | --- |
-  | ⚠️ - Warning message Warning message |
+  | :warning: - Warning message Warning message |
 
   
   
 
   |      1 Messages |
   | --- |
-  | ✨ - message |
+  | :sparkles: - message |
 
   
   
