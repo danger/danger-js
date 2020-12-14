@@ -15,7 +15,9 @@
 
 <!-- Your comment below this -->
 
-<!-- Your comment above this -->
+- Add `DANGER_DISABLE_TSC` environment variable to disable transpiling with tsc, providing a way to force transpiling
+  with Babel - [@ozzieorca]
+  <!-- Your comment above this -->
 
 # 10.5.4
 
