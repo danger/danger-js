@@ -60,6 +60,8 @@ export interface ExecutorOptions {
   noPublishCheck?: boolean
   /** Ignore inline-comments that are in lines which were not changed */
   ignoreOutOfDiffComments: boolean
+  /** Makes Danger post a new comment instead of editing its previous one */
+  newComment?: boolean
   /** Removes all previous comment and create a new one in the end of the list */
   removePreviousComments?: boolean
 }
@@ -312,7 +314,11 @@ export class Executor {
           comment = githubResultsTemplate(dangerID, mergedResults, commitID)
         }
 
-        issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
+        if (this.options.newComment) {
+          issueURL = await this.platform.createComment(dangerID, comment)
+        } else {
+          issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
+        }
         this.log(`Feedback: ${issueURL}`)
       }
     }

@@ -29,6 +29,8 @@ export interface SharedCLI extends program.CommanderStatic {
   useGithubChecks: boolean
   /** Ignore inline-comments that are in lines which were not changed */
   ignoreOutOfDiffComments: boolean
+  /** Makes Danger post a new comment instead of editing its previous one */
+  newComment?: boolean
   /** Removes all previous comment and create a new one in the end of the list */
   removePreviousComments?: boolean
 }
@@ -48,6 +50,7 @@ export default (command: any) =>
     .option("-f, --failOnErrors", "Fail if there are fails in the danger report", false)
     .option("--use-github-checks", "Use GitHub Checks", false)
     .option("--ignoreOutOfDiffComments", "Ignore inline-comments that are in lines which were not changed", false)
+    .option("--newComment", "Makes Danger post a new comment instead of editing its previous one", false)
     .option(
       "--removePreviousComments",
       "Removes all previous comment and create a new one in the end of the list",
