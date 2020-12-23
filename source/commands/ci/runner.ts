@@ -69,6 +69,7 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
         failOnErrors: app.failOnErrors,
         noPublishCheck: !app.publishCheck,
         ignoreOutOfDiffComments: app.ignoreOutOfDiffComments,
+        removePreviousComments: app.removePreviousComments || false,
       }
 
       const processName = (app.process && addSubprocessCallAguments(app.process.split(" "))) || undefined

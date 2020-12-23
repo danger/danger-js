@@ -112,6 +112,22 @@ describe("setup", () => {
     expect(platform.deleteMainComment).toBeCalled()
   })
 
+  it("Deletes a post when 'removePreviousComments' option has been specified", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(
+      new FakeCI({}),
+      platform,
+      inlineRunner,
+      { ...defaultConfig, removePreviousComments: true },
+      new FakeProcces()
+    )
+    const dsl = await defaultDsl(platform)
+    platform.deleteMainComment = jest.fn()
+
+    await exec.handleResults(warnResults, dsl.git)
+    expect(platform.deleteMainComment).toBeCalled()
+  })
+
   it("Fails if the failOnErrors option is true and there are fails on the build", async () => {
     const platform = new FakePlatform()
     const strictConfig: ExecutorOptions = {
@@ -297,6 +313,27 @@ describe("setup", () => {
     expect(platform.updateInlineComment).not.toBeCalled()
     expect(platform.createInlineComment).not.toBeCalled()
     expect(platform.deleteInlineComment).toHaveBeenCalledTimes(2)
+  })
+
+  it("Deletes all old inline comments when 'removePreviousComments' option has been specified", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(
+      new FakeCI({}),
+      platform,
+      inlineRunner,
+      { ...defaultConfig, removePreviousComments: true },
+      new FakeProcces()
+    )
+    const dsl = await defaultDsl(platform)
+    const previousComments = mockPayloadForResults(inlineMultipleWarnResults)
+
+    platform.getInlineComments = jest.fn().mockResolvedValueOnce(previousComments).mockResolvedValueOnce([])
+    platform.updateInlineComment = jest.fn()
+    platform.createInlineComment = jest.fn()
+    platform.deleteInlineComment = jest.fn()
+
+    await exec.handleResults(warnResults, dsl.git)
+    expect(platform.deleteInlineComment).toHaveBeenCalledTimes(3)
   })
 
   it("Deletes old inline comment when not applicable in new results", async () => {
