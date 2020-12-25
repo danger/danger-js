@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Adds options `newComment` and `removePreviousComments` - [@davidhouweling]
+
 <!-- Your comment above this -->
 
 # 10.5.4
