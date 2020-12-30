@@ -6,7 +6,7 @@ import { compliment } from "../DangerUtils"
 const noEntryEmoji = ":x:"
 const warningEmoji = ":warning:"
 const messageEmoji = ":sparkles:"
-const signatureEmoji = "🚫"
+const signatureEmoji = ":no_entry_sign:"
 const successEmoji = ":tada:"
 
 export const dangerSignature = (results: DangerResults) => {
