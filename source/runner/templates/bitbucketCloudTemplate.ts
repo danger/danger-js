@@ -65,11 +65,11 @@ export function template(dangerID: string, results: DangerResults, commitID?: st
   ${buildMarkdownTable("Fails", noEntryEmoji, results.fails)}
   ${buildMarkdownTable("Warnings", warningEmoji, results.warnings)}
   ${buildMarkdownTable("Messages", messageEmoji, results.messages)}
-  
+
   ${results.markdowns.map(v => v.message).join("\n\n")}
-  
+
   ${dangerSignaturePostfix(results, commitID)}
-  
+
   [](http://${dangerIDToString(dangerID)})
   `
 }
