@@ -10,6 +10,8 @@ import * as jsonDiff from "fast-json-patch"
 import jsonpointer from "jsonpointer"
 import JSON5 from "json5"
 
+import micromatch from "micromatch"
+
 import { GitDSL, JSONPatchOperation, GitJSONDSL, StructuredDiff } from "../../dsl/GitDSL"
 import chainsmoker from "../../commands/utils/chainsmoker"
 
@@ -155,11 +157,13 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     }, Object.create(null))
   }
 
-  const linesOfCode = async () => {
+  const linesOfCode = async (pattern?: string) => {
+    const isPatternMatch = (path: string) => pattern === undefined || micromatch.isMatch(path, pattern)
+
     const [createdFilesDiffs, modifiedFilesDiffs, deletedFilesDiffs] = await Promise.all([
-      Promise.all(gitJSONRep.created_files.map(path => diffForFile(path))),
-      Promise.all(gitJSONRep.modified_files.map(path => diffForFile(path))),
-      Promise.all(gitJSONRep.deleted_files.map(path => diffForFile(path))),
+      Promise.all(gitJSONRep.created_files.filter(isPatternMatch).map(path => diffForFile(path))),
+      Promise.all(gitJSONRep.modified_files.filter(isPatternMatch).map(path => diffForFile(path))),
+      Promise.all(gitJSONRep.deleted_files.filter(isPatternMatch).map(path => diffForFile(path))),
     ])
 
     let additions = createdFilesDiffs
