@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Adds options `--newComment` and `--removePreviousComments` - [@davidhouweling]
 - Add support for a file path filter when calculation lines of code - [@melvinvermeer]
 
 <!-- Your comment above this -->
