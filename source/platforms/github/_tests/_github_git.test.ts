@@ -102,6 +102,16 @@ describe("the dangerfile gitDSL", () => {
     ])
   })
 
+  it("counts the lines of code", async () => {
+    const loc = await gitDSL.linesOfCode()
+    expect(loc).toBe(1151)
+  })
+
+  it("allows the lines of code to be filtered by file path", async () => {
+    const loc = await gitDSL.linesOfCode("lib/**")
+    expect(loc).toBe(720)
+  })
+
   it("show diff chunks for a specific file", async () => {
     const { chunks } = (await gitDSL.structuredDiffForFile("tsconfig.json"))!
 

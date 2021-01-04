@@ -112,6 +112,22 @@ describe("setup", () => {
     expect(platform.deleteMainComment).toBeCalled()
   })
 
+  it("Deletes a post when 'removePreviousComments' option has been specified", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(
+      new FakeCI({}),
+      platform,
+      inlineRunner,
+      { ...defaultConfig, removePreviousComments: true },
+      new FakeProcces()
+    )
+    const dsl = await defaultDsl(platform)
+    platform.deleteMainComment = jest.fn()
+
+    await exec.handleResults(warnResults, dsl.git)
+    expect(platform.deleteMainComment).toBeCalled()
+  })
+
   it("Fails if the failOnErrors option is true and there are fails on the build", async () => {
     const platform = new FakePlatform()
     const strictConfig: ExecutorOptions = {
@@ -151,14 +167,22 @@ describe("setup", () => {
     expect(platform.updateOrCreateComment).toBeCalled()
   })
 
-  it("Updates or Creates comments for warnings", async () => {
+  it("Creates comments (rather than update or create) for warnings when newComment option is passed", async () => {
     const platform = new FakePlatform()
-    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
+    const exec = new Executor(
+      new FakeCI({}),
+      platform,
+      inlineRunner,
+      { ...defaultConfig, newComment: true },
+      new FakeProcces()
+    )
     const dsl = await defaultDsl(platform)
+    platform.createComment = jest.fn()
     platform.updateOrCreateComment = jest.fn()
 
     await exec.handleResults(warnResults, dsl.git)
-    expect(platform.updateOrCreateComment).toBeCalled()
+    expect(platform.createComment).toBeCalled()
+    expect(platform.updateOrCreateComment).not.toBeCalled()
   })
 
   it("Updates or Creates comments for warnings, without GitDSL", async () => {
@@ -168,6 +192,23 @@ describe("setup", () => {
 
     await exec.handleResults(warnResults)
     expect(platform.updateOrCreateComment).toBeCalled()
+  })
+
+  it("Creates comments (rather than update or create) for warnings, without GitDSL, when newComment option is passed", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(
+      new FakeCI({}),
+      platform,
+      inlineRunner,
+      { ...defaultConfig, newComment: true },
+      new FakeProcces()
+    )
+    platform.createComment = jest.fn()
+    platform.updateOrCreateComment = jest.fn()
+
+    await exec.handleResults(warnResults)
+    expect(platform.createComment).toBeCalled()
+    expect(platform.updateOrCreateComment).not.toBeCalled()
   })
 
   it("Sends inline comments and returns regular results for failures", async () => {
@@ -185,6 +226,7 @@ describe("setup", () => {
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
     platform.createInlineComment = jest.fn()
+    platform.createComment = jest.fn()
     platform.updateOrCreateComment = jest.fn()
 
     await exec.handleResults(inlineWarnResults, dsl.git)
@@ -197,9 +239,11 @@ describe("setup", () => {
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, config, new FakeProcces())
     const dsl = await defaultDsl(platform)
     platform.createInlineComment = jest.fn().mockReturnValue(new Promise<any>((_, reject) => reject()))
+    platform.createComment = jest.fn()
     platform.updateOrCreateComment = jest.fn()
 
     await exec.handleResults(inlineWarnResults, dsl.git)
+    expect(platform.createComment).not.toBeCalled()
     expect(platform.updateOrCreateComment).not.toBeCalled()
   })
 
@@ -299,6 +343,27 @@ describe("setup", () => {
     expect(platform.deleteInlineComment).toHaveBeenCalledTimes(2)
   })
 
+  it("Deletes all old inline comments when 'removePreviousComments' option has been specified", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(
+      new FakeCI({}),
+      platform,
+      inlineRunner,
+      { ...defaultConfig, removePreviousComments: true },
+      new FakeProcces()
+    )
+    const dsl = await defaultDsl(platform)
+    const previousComments = mockPayloadForResults(inlineMultipleWarnResults)
+
+    platform.getInlineComments = jest.fn().mockResolvedValueOnce(previousComments).mockResolvedValueOnce([])
+    platform.updateInlineComment = jest.fn()
+    platform.createInlineComment = jest.fn()
+    platform.deleteInlineComment = jest.fn()
+
+    await exec.handleResults(warnResults, dsl.git)
+    expect(platform.deleteInlineComment).toHaveBeenCalledTimes(3)
+  })
+
   it("Deletes old inline comment when not applicable in new results", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
@@ -332,6 +397,7 @@ describe("setup", () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
+    platform.createComment = jest.fn()
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 
@@ -343,6 +409,7 @@ describe("setup", () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
+    platform.createComment = jest.fn()
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 
@@ -359,6 +426,7 @@ describe("setup", () => {
     const platform = new FakePlatform()
     const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
+    platform.createComment = jest.fn()
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 
@@ -378,6 +446,7 @@ describe("setup", () => {
 
     const exec = new Executor(ci, platform, inlineRunner, defaultConfig, new FakeProcces())
     const dsl = await defaultDsl(platform)
+    platform.createComment = jest.fn()
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 
@@ -397,6 +466,7 @@ describe("setup", () => {
 
     const exec = new Executor(ci, platform, inlineRunner, config, new FakeProcces())
     const dsl = await defaultDsl(platform)
+    platform.createComment = jest.fn()
     platform.updateOrCreateComment = jest.fn()
     platform.updateStatus = jest.fn()
 

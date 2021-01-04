@@ -60,6 +60,10 @@ export interface ExecutorOptions {
   noPublishCheck?: boolean
   /** Ignore inline-comments that are in lines which were not changed */
   ignoreOutOfDiffComments: boolean
+  /** Makes Danger post a new comment instead of editing its previous one */
+  newComment?: boolean
+  /** Removes all previous comment and create a new one in the end of the list */
+  removePreviousComments?: boolean
 }
 // This is still badly named, maybe it really should just be runner?
 
@@ -252,11 +256,16 @@ export class Executor {
 
     const dangerID = this.options.dangerID
     const failed = fails.length > 0
+    const hasMessages = failureCount + messageCount > 0
 
     let issueURL = undefined
 
-    if (failureCount + messageCount === 0) {
-      this.log(`Found no issues or messages from Danger. Removing any existing messages on ${this.platform.name}.`)
+    if (!hasMessages || this.options.removePreviousComments) {
+      if (!hasMessages) {
+        this.log(`Found no issues or messages from Danger. Removing any existing messages on ${this.platform.name}.`)
+      } else {
+        this.log(`'removePreviousComments' option specified. Removing any existing messages on ${this.platform.name}.`)
+      }
       await this.platform.deleteMainComment(dangerID)
       const previousComments = await this.platform.getInlineComments(dangerID)
       for (const comment of previousComments) {
@@ -264,7 +273,9 @@ export class Executor {
           await this.deleteInlineComment(comment)
         }
       }
-    } else {
+    }
+
+    if (hasMessages) {
       if (fails.length > 0) {
         const s = fails.length === 1 ? "" : "s"
         const are = fails.length === 1 ? "is" : "are"
@@ -303,7 +314,11 @@ export class Executor {
           comment = githubResultsTemplate(dangerID, mergedResults, commitID)
         }
 
-        issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
+        if (this.options.newComment) {
+          issueURL = await this.platform.createComment(dangerID, comment)
+        } else {
+          issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
+        }
         this.log(`Feedback: ${issueURL}`)
       }
     }
