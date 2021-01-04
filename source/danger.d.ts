@@ -973,8 +973,10 @@ interface GitDSL extends GitJSONDSL {
 
   /**
    * Offers the overall lines of code added/removed in the diff
+   *
+   * @param {string} pattern an option glob pattern to filer files that will considered for lines of code.
    */
-  linesOfCode(): Promise<number | null>
+  linesOfCode(pattern?: string): Promise<number | null>
 }
 // This is `danger.github` inside the JSON
 
