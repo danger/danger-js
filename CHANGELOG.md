@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Add support for a file path filter when calculation lines of code - [@melvinvermeer]
+
 <!-- Your comment above this -->
 
 # 10.5.4
