@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Bitbucket Cloud: Add markdown emoji instead of unicode [@JanStevens]
 - Add `DANGER_DISABLE_TSC` environment variable to disable transpiling with tsc, providing a way to force transpiling
   with Babel - [@ozzieorca]
 - Adds options `--newComment` and `--removePreviousComments` - [@davidhouweling]
