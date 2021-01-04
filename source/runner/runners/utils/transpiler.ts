@@ -9,6 +9,7 @@ const enum BabelPackagePrefix {
 }
 
 const disableTranspilation = process.env.DANGER_DISABLE_TRANSPILATION === "true"
+const disableTsc = process.env.DANGER_DISABLE_TSC === "true"
 
 let hasNativeTypeScript = false
 let hasBabel = false
@@ -30,7 +31,7 @@ export const checkForNodeModules = () => {
 
   try {
     require.resolve("typescript") // tslint:disable-line
-    hasNativeTypeScript = true
+    hasNativeTypeScript = true && !disableTsc
   } catch (e) {
     d("Does not have TypeScript set up")
   }

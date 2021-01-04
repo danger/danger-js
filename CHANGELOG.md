@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Add `DANGER_DISABLE_TSC` environment variable to disable transpiling with tsc, providing a way to force transpiling
+  with Babel - [@ozzieorca]
 - Adds options `--newComment` and `--removePreviousComments` - [@davidhouweling]
 - Add support for a file path filter when calculation lines of code - [@melvinvermeer]
 
