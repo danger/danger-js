@@ -188,6 +188,10 @@ import { readFileSync, existsSync } from "fs"
  *          env:
  *            DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  * ```
+ *
+ * Note that when using Danger in this way, you will not have the file-system set up for
+ * the PR, so you cannot use `fs` to read a file (use `danger.github.fileContents` instead)
+ * but the usual PR metadata and DSL will act the same.
  */
 
 export class GitHubActions implements CISource {
