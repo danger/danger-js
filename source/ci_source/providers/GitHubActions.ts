@@ -190,7 +190,7 @@ import { readFileSync, existsSync } from "fs"
  * ```
  *
  * Note that when using Danger in this way, you will not have the file-system set up for
- * the PR, so you cannot use `fs` to read a file (use `danger.github.fileContents` instead)
+ * the PR, so you cannot use `fs` to read a file (use `danger.github.utils.fileContents` instead)
  * but the usual PR metadata and DSL will act the same.
  */
 
