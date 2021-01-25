@@ -136,19 +136,58 @@ import { readFileSync, existsSync } from "fs"
  * You can use the `GITHUB_TOKEN` to authenticate in a workflow run.
  * Using this token will post the danger comment as the `github-actions` app user.
  *
+ * Note: `secrets.GITHUB_TOKEN` will not be available for PRs from forks. This is a GitHub
+ * security constraint, if you have an OSS app, we recommend using a personal token like below.
+ *
  * #### Using Personal Tokens
  *
  * If you need to post the danger comment as some particular user or for some other reason
- * you need to use a personal token for danger then you can provide it in env as DANGER_GITHUB_API_TOKEN,
- * but make sure that this is not the [automatically generated GITHUB_TOKEN in actions](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token)
- * otherwise comments will not be updated and new ones will be created everytime.
+ * you need to use a personal token for danger then you can provide it in env as DANGER_GITHUB_API_TOKEN.
  *
  * ```yml
  *   - name: Danger JS
  *     uses: danger/danger-js@9.1.6
- *     env: DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
+ *      env: DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
+ * ```
+ * #### OSS Tokens
+ *
+ * The security models for GitHub actions means that you cannot use `secrets.GITHUB_TOKEN`
+ * in PRs from forks. This cna be tricky with OSS contributions. In these cases, create a
+ * new GitHub account and set up your `.yml` like this:
+ *
+ * ```yml
+ *   - name: Set danger env
+ *      run: echo "DANGER_GITHUB_API_TOKEN=$(echo FIRST_HALF + SECOND_HALF)" >> $GITHUB_ENV
+ *
+ *   - name: Run Danger
+ *      run: yarn danger ci
+ *      env:
+ *        DANGER_GITHUB_API_TOKEN: ${{ env.DANGER_GITHUB_API_TOKEN }}
  * ```
  *
+ * #### Advanced
+ *
+ * If you understand the security ramifications, Danger JS can run on a `pull_request_target`
+ * workflow, instead of a `pull_request`. You should thoroughly read [the docs first](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request_target).
+ *
+ * ```yml
+ *  on:
+ *    pull_request_target:
+ *      types: [assigned, opened, synchronize, reopened]
+ *
+ *  jobs:
+ *    build:
+ *      runs-on: ubuntu-latest
+ *
+ *      steps:
+ *        - uses: actions/checkout@v1
+ *        - uses: actions/setup-node@v1
+ *        - run: yarn install
+ *
+ *        - run: yarn danger ci
+ *          env:
+ *            DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ * ```
  */
 
 export class GitHubActions implements CISource {
