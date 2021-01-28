@@ -130,7 +130,12 @@ export class GitHubAPI {
       return parseInt(perilID)
     }
 
-    const useGitHubActionsID = process.env["GITHUB_WORKFLOW"] && !process.env["DANGER_GITHUB_API_TOKEN"]
+    const info = await this.getUserInfo()
+    if (info.id) {
+      return info.id
+    }
+
+    const useGitHubActionsID = process.env["GITHUB_WORKFLOW"]
     if (useGitHubActionsID) {
       // This is the user.id of the github-actions app (https://github.com/apps/github-actions)
       // that is used to comment when using danger in a GitHub Action
@@ -138,8 +143,7 @@ export class GitHubAPI {
       return 41898282
     }
 
-    const info = await this.getUserInfo()
-    return info.id
+    return undefined
   }
 
   postPRComment = async (comment: string): Promise<any> => {
