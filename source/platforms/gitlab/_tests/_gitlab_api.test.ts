@@ -96,6 +96,14 @@ describe("GitLab API", () => {
     expect(result).toEqual(response)
   })
 
+  it("getMergeRequestApprovals", async () => {
+    const { nockDone } = await nockBack("getMergeRequestApprovals.json")
+    const result = await api.getMergeRequestApprovals()
+    nockDone()
+    const { response } = loadFixture("getMergeRequestApprovals")
+    expect(result).toEqual(response)
+  })
+
   it("getMergeRequestChanges", async () => {
     const { nockDone } = await nockBack("getMergeRequestChanges.json")
     const result = await api.getMergeRequestChanges()
