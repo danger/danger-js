@@ -10,6 +10,7 @@ import { Cirrus } from "./Cirrus"
 import { CodeBuild } from "./CodeBuild"
 import { Codefresh } from "./Codefresh"
 import { Codeship } from "./Codeship"
+import { Codemagic } from "./Codemagic"
 import { Concourse } from "./Concourse"
 import { DockerCloud } from "./DockerCloud"
 import { Drone } from "./Drone"
@@ -54,6 +55,7 @@ const providers = [
   BitbucketPipelines,
   Cirrus,
   Bamboo,
+  Codemagic,
 ]
 
 // Mainly used for Dangerfile linting
@@ -82,6 +84,7 @@ const realProviders = [
   AppCenter,
   Cirrus,
   Bamboo,
+  Codemagic,
 ]
 
 export { providers, realProviders }
