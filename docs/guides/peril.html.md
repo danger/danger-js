@@ -16,7 +16,7 @@ A lot of the information on Peril can be found on the
 [Artsy blog: here](http://artsy.github.io/blog/2017/09/04/Introducing-Peril/)
 
 Today Peril is self-hosted via heroku. There is a walkthrough on the
-[Peril repo: here](https://github.com/danger/peril/blob/master/docs/setup_for_org.md). It's still a pretty fast moving
+[Peril repo: here](https://github.com/danger/peril/blob/main/docs/setup_for_org.md). It's still a pretty fast moving
 project ever 6 months into deployment so expect to maybe fix your own problem occasionally.
 
 ## Dangerfile implications

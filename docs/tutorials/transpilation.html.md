@@ -69,7 +69,7 @@ it("does nothing when there's a PR body", () => {
 })
 ```
 
-[tsconfig]: https://github.com/artsy/emission/blob/master/tsconfig.json
+[tsconfig]: https://github.com/artsy/emission/blob/main/tsconfig.json
 
 ### Disabling Transpilation
 

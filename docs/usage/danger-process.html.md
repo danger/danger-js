@@ -199,7 +199,7 @@ Finally, let me ([@orta][]) know! I want to keep track of them all on the Danger
   Danger JS will re-send the JSON to your process.
 
 [danger-swift]: https://github.com/danger/danger-swift
-[swift-json]: https://github.com/danger/danger-swift/blob/master/fixtures/eidolon_609.json
+[swift-json]: https://github.com/danger/danger-swift/blob/main/fixtures/eidolon_609.json
 [swift-stdin]:
   https://github.com/danger/danger-swift/blob/1576e336e41698861456533463c8821675427258/Sources/Runner/main.swift#L9-L11
 [swift-eval]:
@@ -209,10 +209,10 @@ Finally, let me ([@orta][]) know! I want to keep track of them all on the Danger
 [swift-stdout]:
   https://github.com/danger/danger-swift/blob/1576e336e41698861456533463c8821675427258/Sources/Runner/main.swift#L48-L50
 [swift-first-pr]: https://github.com/danger/danger-swift/pull/12
-[dangerjsondsltype]: https://github.com/danger/danger-js/blob/master/source/dsl/DangerDSL.ts
+[dangerjsondsltype]: https://github.com/danger/danger-js/blob/main/source/dsl/DangerDSL.ts
 [into nvm]: https://github.com/creationix/nvm
 [@orta]: https://github.com/orta
-[dangerresults]: https://github.com/danger/danger-js/blob/master/source/dsl/DangerResults.ts
-[incoming]: https://github.com/danger/danger-js/blob/master/source/danger-incoming-process-schema.json
-[outgoing]: https://github.com/danger/danger-js/blob/master/source/danger-outgoing-process-schema.json
+[dangerresults]: https://github.com/danger/danger-js/blob/main/source/dsl/DangerResults.ts
+[incoming]: https://github.com/danger/danger-js/blob/main/source/danger-incoming-process-schema.json
+[outgoing]: https://github.com/danger/danger-js/blob/main/source/danger-outgoing-process-schema.json
 [danger-rust]: https://github.com/danger/rust

@@ -54,7 +54,7 @@ const showNonGitHubWarning = (ui: InitUI) => {
   ui.say("\nWe're definitely open to PRs improving this. You can find the code at:")
   const link = ui.link(
     "danger/danger-js#/source/commands/danger-init.ts",
-    "https://github.com/danger/danger-js/blob/master/source/commands/danger-init.ts"
+    "https://github.com/danger/danger-js/blob/main/source/commands/danger-init.ts"
   )
   ui.say("\n > " + link + "\n")
 }
