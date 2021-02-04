@@ -17,8 +17,8 @@ export interface InitState {
   hasSetUpAccountToken: boolean
 
   repoSlug: string | null
-  ciType: "travis" | "circle" | "unknown"
-  isGitHub: boolean
+  repoType: "github" | "azureDevops" | "bitbucket" | "unknown"
+  ciType: "travis" | "circle" | "azureDevops" | "unknown"
 }
 
 export interface InitUI {
