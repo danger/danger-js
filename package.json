@@ -71,7 +71,7 @@
     "docs:cp_defs": "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/@octokit/rest/index.d.ts docs/docs_generate/github.d.ts",
     "docs": "yarn run docs:cp_defs; yarn typedoc --ignoreCompilerErrors --mode modules --json docs/js_ref_dsl_docs.json --includeDeclarations source",
     "dts-lint": "yarn run declarations && yarn dtslint types",
-    "danger:prepush": "yarn build:fast; yarn test:fixtures; node distribution/commands/danger.js local --dangerfile dangerfile.lite.ts"
+    "danger:prepush": "yarn build:fast; yarn test:fixtures; node distribution/commands/danger.js local --base main --dangerfile dangerfile.lite.ts"
   },
   "repository": {
     "type": "git",

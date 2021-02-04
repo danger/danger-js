@@ -74,7 +74,7 @@ can DM [orta][].
 
 [77]: https://github.com/danger/danger-js/issues/77
 [529]: https://github.com/danger/danger-js/issues/529
-[vision.md]: https://github.com/danger/danger-js/blob/master/VISION.md
+[vision.md]: https://github.com/danger/danger-js/blob/main/VISION.md
 [open]: https://github.com/danger/danger-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22Open+for+Discussion%22
 [you-can-do-this]: https://github.com/danger/danger-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22You+Can+Do+This%22
 [orta]: https://twitter.com/orta/

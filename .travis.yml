@@ -61,8 +61,8 @@ matrix:
         - echo "Validating that danger pr works as expected"
         - DEBUG="*" danger pr https://github.com/danger/danger-js/pull/465 --dangerfile dangerfile.circle.js --verbose
 
-        - echo "Grabbing master so that danger-local can use it for comparison"
-        - git checkout -t origin/master || true
+        - echo "Grabbing main so that danger-local can use it for comparison"
+        - git checkout -t origin/main || true
         - '[ ! -z $TRAVIS_PULL_REQUEST ] && DEBUG="*" danger local --dangerfile
           source/platforms/git/_tests/local_dangerfile_example.ts || echo "Skipping Danger Local for non PR run"'
 

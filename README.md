@@ -25,8 +25,8 @@ Nevercode, buddybuild, Buddy.works, TeamCity, Visual Studio Team Services, Screw
 Codefresh, AppCenter, BitBucket Pipelines, Cirrus CI, or Codemagic.
 
 [![npm](https://img.shields.io/npm/v/danger.svg)](https://www.npmjs.com/package/danger)
-[![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=master)](https://travis-ci.org/danger/danger-js)
-[![Build Status](https://ci.appveyor.com/api/projects/status/ep5hgeox3lbc5c7f?svg=true)](https://ci.appveyor.com/project/orta/danger-js/branch/master)
+[![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=main)](https://travis-ci.org/danger/danger-js)
+[![Build Status](https://ci.appveyor.com/api/projects/status/ep5hgeox3lbc5c7f?svg=true)](https://ci.appveyor.com/project/orta/danger-js/branch/main)
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/danger)
 
 ## For example?
@@ -89,7 +89,7 @@ yarn build; node --inspect distribution/commands/danger-pr.js https://github.com
 
 ### How does Danger JS work?
 
-Check the [architecture doc](https://github.com/danger/danger-js/blob/master/docs/architecture.md).
+Check the [architecture doc](https://github.com/danger/danger-js/blob/main/docs/architecture.md).
 
 ### What is the TODO?
 
@@ -99,7 +99,7 @@ Check the issues, I try and keep my short term perspective there. Long term is i
 
 Following [this commit](https://github.com/danger/danger-js/commit/a26ac3b3bd4f002acd37f6a363c8e74c9d5039ab) as a model:
 
-- Checkout the `master` branch. Ensure your working tree is clean, and make sure you have the latest changes by running
+- Checkout the `main` branch. Ensure your working tree is clean, and make sure you have the latest changes by running
   `git pull`.
 - Publish - `npm run release -- [major/minor/patch] --ci`.
 
@@ -121,7 +121,7 @@ to stay on top of Danger without all the emails from GitHub.
 > the [Contributor Covenant](http://contributor-covenant.org) version 1.3.0.
 
 [emiss]: https://github.com/artsy/emission/blob/master/dangerfile.ts
-[danger-js]: https://github.com/danger/danger-js/blob/master/dangerfile.ts
+[danger-js]: https://github.com/danger/danger-js/blob/main/dangerfile.ts
 [meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
 [fbj]: https://github.com/facebook/jest/blob/master/dangerfile.js
 [sc]: https://github.com/styled-components/styled-components/blob/master/dangerfile.js

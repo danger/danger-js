@@ -1,6 +1,6 @@
 <!--
 
-// Please add your own contribution below inside the Master section, no need to
+// Please add your own contribution below inside the Main section, no need to
 // set a version number, that happens during a deploy. Thanks!
 //
 // These docs are aimed at users rather than danger developers, so please limit technical
@@ -11,7 +11,7 @@
 
 -->
 
-## Master
+## Main
 
 <!-- Your comment below this -->
 
@@ -590,7 +590,7 @@ Also, `danger pr` now accepts a `--process` arg.
         body: "Here is your new repo template files",
         owner: "orta",
         repo: "new-repo",
-        baseBranch: "master",
+        baseBranch: "main",
         newBranchName: "welcome",
         commitMessage: "Sets up the welcome package",
       },
