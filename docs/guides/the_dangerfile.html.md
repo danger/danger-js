@@ -125,15 +125,15 @@ Some TypeScript examples:
 - **Apps** - [Artsy/Emission][emiss]
 - **Libraries** [danger/danger-js][danger-js], [apollographql/apollo-client][apollo]
 
-[emiss]: https://github.com/artsy/emission/blob/main/dangerfile.ts
-[danger-js]: https://github.com/danger/danger-js/blob/main/dangerfile.ts
-[meta]: https://github.com/artsy/metaphysics/blob/main/dangerfile.js
-[rn]: https://github.com/facebook/react-native/blob/main/bots/dangerfile.js
-[r]: https://github.com/facebook/react/blob/main/dangerfile.js
-[rxjs]: https://github.com/ReactiveX/rxjs/blob/main/dangerfile.js
+[emiss]: https://github.com/artsy/emission/blob/master/dangerfile.ts
+[danger-js]: https://github.com/danger/danger-js/blob/master/dangerfile.ts
+[meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
+[rn]: https://github.com/facebook/react-native/blob/master/bots/dangerfile.js
+[r]: https://github.com/facebook/react/blob/master/dangerfile.js
+[rxjs]: https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js
 [setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
 [jest]: https://github.com/facebook/jest
-[transpilation_guide]: /js/tutorials/transpilation.html
+[transpilation_guide]: /docs/tutorials/transpilation.html.md
 [changelog]: http://danger.systems/js/changelog.html
-[apollo]: https://github.com/apollographql/apollo-client/blob/main/config/dangerfile.ts
-[bamlab]: https://github.com/bamlab/dev-standards/blob/main/dangerfile.js
+[apollo]: https://github.com/apollographql/apollo-client/blob/master/config/dangerfile.ts
+[bamlab]: https://github.com/bamlab/dev-standards/blob/master/dangerfile.js
