@@ -120,11 +120,11 @@ to stay on top of Danger without all the emails from GitHub.
 > Contributors subscribe to the [Contributor Code of Conduct](http://contributor-covenant.org/version/1/3/0/) based on
 > the [Contributor Covenant](http://contributor-covenant.org) version 1.3.0.
 
-[emiss]: https://github.com/artsy/emission/blob/main/dangerfile.ts
+[emiss]: https://github.com/artsy/emission/blob/master/dangerfile.ts
 [danger-js]: https://github.com/danger/danger-js/blob/main/dangerfile.ts
-[meta]: https://github.com/artsy/metaphysics/blob/main/dangerfile.js
-[fbj]: https://github.com/facebook/jest/blob/main/dangerfile.js
-[sc]: https://github.com/styled-components/styled-components/blob/main/dangerfile.js
-[rxjs]: https://github.com/ReactiveX/rxjs/blob/main/dangerfile.js
+[meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
+[fbj]: https://github.com/facebook/jest/blob/master/dangerfile.js
+[sc]: https://github.com/styled-components/styled-components/blob/master/dangerfile.js
+[rxjs]: https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js
 [setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
 [jest]: https://github.com/facebook/jest
