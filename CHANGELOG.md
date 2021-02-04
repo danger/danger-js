@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Add Codemagic.io as a supported CI - [@fbartho]
+
 <!-- Your comment above this -->
 
 # 10.6.1

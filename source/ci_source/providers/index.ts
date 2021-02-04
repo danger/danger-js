@@ -1,13 +1,16 @@
 import { AppCenter } from "./AppCenter"
 import { Bamboo } from "./Bamboo"
+import { BitbucketPipelines } from "./BitbucketPipelines"
 import { Bitrise } from "./Bitrise"
 import { BuddyBuild } from "./BuddyBuild"
 import { BuddyWorks } from "./BuddyWorks"
 import { Buildkite } from "./Buildkite"
 import { Circle } from "./Circle"
+import { Cirrus } from "./Cirrus"
 import { CodeBuild } from "./CodeBuild"
 import { Codefresh } from "./Codefresh"
 import { Codeship } from "./Codeship"
+import { Codemagic } from "./Codemagic"
 import { Concourse } from "./Concourse"
 import { DockerCloud } from "./DockerCloud"
 import { Drone } from "./Drone"
@@ -23,8 +26,6 @@ import { Surf } from "./Surf"
 import { TeamCity } from "./TeamCity"
 import { Travis } from "./Travis"
 import { VSTS } from "./VSTS"
-import { BitbucketPipelines } from "./BitbucketPipelines"
-import { Cirrus } from "./Cirrus"
 
 const providers = [
   FakeCI,
@@ -54,6 +55,7 @@ const providers = [
   BitbucketPipelines,
   Cirrus,
   Bamboo,
+  Codemagic,
 ]
 
 // Mainly used for Dangerfile linting
@@ -82,6 +84,7 @@ const realProviders = [
   AppCenter,
   Cirrus,
   Bamboo,
+  Codemagic,
 ]
 
 export { providers, realProviders }
