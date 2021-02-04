@@ -1445,6 +1445,8 @@ interface GitLabJSONDSL {
   mr: GitLabMR
   /** All of the individual commits in the merge request */
   commits: GitLabMRCommit[]
+  /** Merge Request-level MR approvals Configuration */
+  approvals: GitLabApproval
 }
 
 // danger.gitlab
@@ -1702,6 +1704,25 @@ interface GitLabRepositoryCompare {
   diffs: GitLabMRChange[]
   compare_timeout: boolean
   compare_same_ref: boolean
+}
+
+interface GitLabApproval {
+  id: number
+  iid: number
+  project_id: number
+  title: string
+  description: string
+  state: "closed" | "open" | "locked" | "merged"
+  created_at: string
+  updated_at: string
+  merge_status: "can_be_merged"
+  approvals_required: number
+  approvals_left: number
+  approved_by?:
+    | {
+        user: GitLabUser
+      }[]
+    | GitLabUser[]
 }
 /**
  * The result of user doing warn, message or fail, built this way for

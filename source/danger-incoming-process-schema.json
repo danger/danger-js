@@ -1575,9 +1575,81 @@
             },
             "type": "object"
         },
+        "GitLabApproval": {
+            "properties": {
+                "approvals_left": {
+                    "type": "number"
+                },
+                "approvals_required": {
+                    "type": "number"
+                },
+                "approved_by": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "properties": {
+                                    "user": {
+                                        "$ref": "#/definitions/GitLabUser"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "items": {
+                                "$ref": "#/definitions/GitLabUser"
+                            },
+                            "type": "array"
+                        }
+                    ]
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "number"
+                },
+                "iid": {
+                    "type": "number"
+                },
+                "merge_status": {
+                    "enum": [
+                        "can_be_merged"
+                    ],
+                    "type": "string"
+                },
+                "project_id": {
+                    "type": "number"
+                },
+                "state": {
+                    "enum": [
+                        "closed",
+                        "locked",
+                        "merged",
+                        "open"
+                    ],
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
         "GitLabDSL": {
             "description": "The GitLab metadata for your MR",
             "properties": {
+                "approvals": {
+                    "$ref": "#/definitions/GitLabApproval",
+                    "description": "Merge Request-level MR approvals Configuration"
+                },
                 "commits": {
                     "description": "All of the individual commits in the merge request",
                     "items": {
