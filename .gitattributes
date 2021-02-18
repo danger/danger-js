@@ -1,0 +1,4 @@
+# .gitattributes documentation: https://git-scm.com/docs/gitattributes
+
+# Resolve 3-way merge conflicts on the CHANGELOG.md file using the union strategy
+CHANGELOG.md merge=union
