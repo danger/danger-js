@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 - Simplified Bitrise repo slug lookup, fixing SSH URL parsing in BitBucketServer - [@rogerluan]
+- Log failure to update status also when not in verbose mode - [@rogerluan]
 <!-- Your comment above this -->
 
 # 10.6.2
