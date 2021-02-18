@@ -14,7 +14,7 @@
 ## Main
 
 <!-- Your comment below this -->
-
+- Log failure to update status also when not in verbose mode - [@rogerluan]
 <!-- Your comment above this -->
 
 # 10.6.2
