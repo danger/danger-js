@@ -14,7 +14,7 @@
 ## Main
 
 <!-- Your comment below this -->
-
+- Fixed Bitrise's `ciRunURL` underlying env var - [@rogerluan]
 <!-- Your comment above this -->
 
 # 10.6.2
