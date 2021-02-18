@@ -14,7 +14,7 @@
 ## Main
 
 <!-- Your comment below this -->
-
+- Simplified Bitrise repo slug lookup, fixing SSH URL parsing in BitBucketServer - [@rogerluan]
 <!-- Your comment above this -->
 
 # 10.6.2
