@@ -4,7 +4,8 @@ import { getCISourceForEnv } from "../../get_ci_source"
 const correctEnv = {
   BITRISE_IO: "true",
   BITRISE_PULL_REQUEST: "800",
-  GIT_REPOSITORY_URL: "https://github.com/artsy/eigen",
+  BITRISEIO_GIT_REPOSITORY_OWNER: "artsy",
+  BITRISEIO_GIT_REPOSITORY_SLUG: "eigen",
 }
 
 describe("being found when looking for CI", () => {
@@ -37,7 +38,7 @@ describe(".isPR", () => {
     expect(bitrise.isPR).toBeFalsy()
   })
 
-  const envs = ["BITRISE_PULL_REQUEST", "GIT_REPOSITORY_URL", "BITRISE_IO"]
+  const envs = ["BITRISE_PULL_REQUEST", "BITRISEIO_GIT_REPOSITORY_OWNER", "BITRISEIO_GIT_REPOSITORY_SLUG", "BITRISE_IO"]
   envs.forEach((key: string) => {
     let env = { ...correctEnv }
     env[key] = null
@@ -59,36 +60,9 @@ describe(".pullRequestID", () => {
 })
 
 describe(".repoSlug", () => {
-  it("derives it from the repo URL", () => {
+  it("derives it from the repo owner and slug", () => {
     const bitrise = new Bitrise(correctEnv)
     expect(bitrise.repoSlug).toEqual("artsy/eigen")
-  })
-
-  it("derives it from the repo URL in SSH format", () => {
-    const env = {
-      ...correctEnv,
-      GIT_REPOSITORY_URL: "git@github.com:artsy/eigen.git",
-    }
-    const bitrise = new Bitrise(env)
-    expect(bitrise.repoSlug).toEqual("artsy/eigen")
-  })
-
-  it("derives it from a long URL format", () => {
-    const env = {
-      ...correctEnv,
-      GIT_REPOSITORY_URL: "https://github.com/organization/project/subproject/repo.git",
-    }
-    const bitrise = new Bitrise(env)
-    expect(bitrise.repoSlug).toEqual("organization/project/subproject/repo")
-  })
-
-  it("derives it from a long SSH format", () => {
-    const env = {
-      ...correctEnv,
-      GIT_REPOSITORY_URL: "git@github.com:organization/project/subproject/repo.git",
-    }
-    const bitrise = new Bitrise(env)
-    expect(bitrise.repoSlug).toEqual("organization/project/subproject/repo")
   })
 })
 
