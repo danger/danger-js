@@ -24,7 +24,7 @@ const limit = pLimit(25)
 
 export class GitHubAPI {
   fetch: typeof fetch
-  additionalHeaders: any
+  additionalHeaders: debug
   private readonly d = debug("GitHubAPI")
 
   private pr: GitHubPRDSL | undefined
@@ -376,9 +376,10 @@ export class GitHubAPI {
     // this failure could be due to access rights.
     //
     // So only error when it's a real message.
+    const statusURL = `repos/${repo}/statuses/${ref}`
     try {
       const res = await this.post(
-        `repos/${repo}/statuses/${ref}`,
+        statusURL,
         {},
         {
           state: state,
@@ -390,9 +391,8 @@ export class GitHubAPI {
       )
       return res.ok
     } catch (error) {
-      if (prJSON.base.repo.private) {
-        console.log("Could not post a commit status.")
-      }
+      this.d(`Posting a status to: ${statusURL} failed, this is the response:`)
+      this.d(error.message)
     }
   }
 
