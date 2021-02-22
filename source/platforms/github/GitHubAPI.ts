@@ -24,7 +24,7 @@ const limit = pLimit(25)
 
 export class GitHubAPI {
   fetch: typeof fetch
-  additionalHeaders: debug
+  additionalHeaders: any
   private readonly d = debug("GitHubAPI")
 
   private pr: GitHubPRDSL | undefined
