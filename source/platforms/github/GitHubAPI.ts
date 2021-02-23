@@ -389,6 +389,10 @@ export class GitHubAPI {
         },
         true
       )
+      if (!res.ok) {
+        this.d(`Got a non-OK (${res.status} ${res.statusText}) response from ${statusURL}:`)
+        this.d(JSON.stringify(res, null, "  "))
+      }
       return res.ok
     } catch (error) {
       this.d(`Posting a status to: ${statusURL} failed, this is the response:`)

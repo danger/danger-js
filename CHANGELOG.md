@@ -16,6 +16,10 @@
 <!-- Your comment below this -->
 <!-- Your comment above this -->
 
+# 10.6.4
+
+- DEBUG="\*" will now log out the response for any HTTP request which isn't classed as "OK" - [@orta]
+
 # 10.6.3
 
 - Fixed Bitrise's `ciRunURL` underlying env var - [@rogerluan]
