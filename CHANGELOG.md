@@ -15,7 +15,8 @@
 
 <!-- Your comment below this -->
 
-<!-- Your comment above this -->
+- Fix for supporting Bitbucket Server personal repositories
+  <!-- Your comment above this -->
 
 # 10.6.5
 
