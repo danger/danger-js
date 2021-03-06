@@ -35,6 +35,7 @@ export const localGetCommits = (base: string, head: string) =>
       const realCommits = parsedCommits.map((c: any) => ({
         ...c,
         parents: c.parents.split(" "),
+        url: "fake.danger.systems/" + c.sha,
       }))
 
       commits.push(...realCommits)
