@@ -14,7 +14,9 @@
 ## Main
 
 <!-- Your comment below this -->
-<!-- Your comment above this -->
+
+- Bitbucket Cloud: Fix type of BitBucketCloudPRDSL.created_on and updated_on. - [@hellocore]
+  <!-- Your comment above this -->
 
 # 10.6.4
 
