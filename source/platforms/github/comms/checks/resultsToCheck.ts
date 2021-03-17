@@ -1,6 +1,6 @@
 import { DangerResults, regularResults, inlineResults, resultsIntoInlineResults } from "../../../../dsl/DangerResults"
 import { GitHubPRDSL } from "../../../../dsl/GitHubDSL"
-import { ExecutorOptions } from "../../../../runner/Executor"
+import { ExecutorOptions, messageForResults } from "../../../../runner/Executor"
 import { template as githubResultsTemplate } from "../../../../runner/templates/githubIssueTemplate"
 import { Octokit as GitHubNodeAPI } from "@octokit/rest"
 import { debug } from "../../../../debug"
@@ -11,6 +11,7 @@ export interface CheckImages {
   alt: string
   image_url: string
   caption: string
+  actions: any[]
 }
 
 export interface CheckAnnotation {
@@ -33,6 +34,7 @@ export interface CheckOptions {
   head_sha: string
 
   status: "queued" | "in_progress" | "completed"
+  started_at: string // ISO8601
   completed_at: string // ISO8601
   conclusion: "success" | "failure" | "neutral" | "cancelled" | "timed_out" | "action_required"
   /** "action_required" in a conclusion needs a details URL, but maybe this could be the CI build? */
@@ -92,12 +94,14 @@ export const resultsToCheck = async (
 
   d("Generating inline annotations")
   const annotations = await inlineResultsToAnnotations(annotationResults, options, getBlobUrlForPath)
-  const isEmpty =
-    !results.fails.length && !results.markdowns.length && !results.warnings.length && !results.messages.length
 
   return {
     name,
+    // fail if fails, neutral is warnings, else success
+    conclusion: hasFails ? "failure" : hasWarnings ? "neutral" : "success",
     status: "completed",
+
+    started_at: new Date().toISOString(),
     completed_at: new Date().toISOString(),
 
     // Repo Metadata
@@ -106,15 +110,20 @@ export const resultsToCheck = async (
     head_branch: pr.head.ref,
     head_sha: pr.head.sha,
 
-    // fail if fails, neutral is warnings, else success
-    conclusion: hasFails ? "failure" : hasWarnings ? "neutral" : "success",
-
     // The rest of the vars, need to see this in prod to really make a
     // nuanced take on what it should look like
     output: {
-      title: isEmpty ? "All good" : "",
+      title: messageForResults(results),
       summary: mainBody,
       annotations,
+      images: [
+        {
+          alt: "OK",
+          image_url: "https://danger.systems/images/home/js-logo@2x-34299fc3.png",
+          caption: "sure",
+          actions: [{ label: "1", description: "2", identifier: "123" }],
+        },
+      ],
     },
   }
 }
