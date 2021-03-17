@@ -8,7 +8,7 @@ import {
 } from "../platforms/bitbucket_server/BitBucketServerAPI"
 import { RepoMetaData } from "../dsl/BitBucketServerDSL"
 import { BitBucketCloudAPI, bitbucketCloudCredentialsFromEnv } from "../platforms/bitbucket_cloud/BitBucketCloudAPI"
-import { getGitHubToken } from "../platforms/github/getGitHubAPIToken"
+import { getGitHubAPIToken } from "../platforms/github/getGitHubAPIToken"
 
 /**
  * Validates that all ENV keys exist and have a length
@@ -55,7 +55,7 @@ export async function getPullRequestIDForBranch(metadata: RepoMetaData, env: Env
     return 0
   }
 
-  const token = await getGitHubToken()
+  const token = await getGitHubAPIToken()
   if (!token) {
     return 0
   }

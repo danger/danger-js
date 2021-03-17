@@ -99,14 +99,14 @@ import { DangerRunner } from "../runner/runners/runner"
 import { existsSync, readFileSync } from "fs"
 import cleanDangerfile from "../runner/runners/utils/cleanDangerfile"
 import transpiler from "../runner/runners/utils/transpiler"
-import { getGitHubToken } from "./github/getGitHubAPIToken"
+import { getGitHubAPIToken } from "./github/getGitHubAPIToken"
 
 const executeRuntimeEnvironment = async (
   start: DangerRunner["runDangerfileEnvironment"],
   dangerfilePath: string,
   environment: any
 ) => {
-  const token = await getGitHubToken()
+  const token = await getGitHubAPIToken()
   // Use custom module resolution to handle github urls instead of just fs access
   const restoreOriginalModuleLoader = overrideRequire(shouldUseGitHubOverride, customGitHubResolveRequest(token))
 

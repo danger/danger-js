@@ -3,7 +3,7 @@ import { Env } from "../../ci_source/ci_source"
 import { getAuthWhenUsingDangerJSApp, getCustomAppAuthFromEnv } from "./comms/githubAppSetup"
 
 /** Grabs the GitHub API token from the process, or falls back to using a GitHub App "Danger OSS" */
-export const getGitHubToken = async (diEnv?: Env) => {
+export const getGitHubAPIToken = async (diEnv?: Env) => {
   // "Normal" auth via a token
   const env = diEnv || process.env
 
@@ -30,7 +30,7 @@ PRs. In those cases you need to either:
 `)
   }
 
-  const custom = env.DANGER_JS_APP_INSTALL_ID ? getAuthWhenUsingDangerJSApp() : getCustomAppAuthFromEnv()
+  const custom = installID ? getAuthWhenUsingDangerJSApp() : getCustomAppAuthFromEnv()
   const appToken = await getAccessTokenForInstallation(custom.appID!, parseInt(custom.installID!), custom.key!)
   return appToken
 }

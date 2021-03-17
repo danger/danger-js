@@ -13,7 +13,7 @@ import { ExecutorOptions } from "../runner/Executor"
 import { DangerRunner } from "../runner/runners/runner"
 import chalk from "chalk"
 import { FakePlatform } from "./FakePlatform"
-import { getGitHubToken } from "./github/getGitHubAPIToken"
+import { getGitHubAPIToken } from "./github/getGitHubAPIToken"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any
@@ -144,7 +144,7 @@ export async function getPlatformForEnv(env: Env, source: CISource): Promise<Pla
   }
 
   // GitHub Platform
-  const ghToken = await getGitHubToken(env)
+  const ghToken = await getGitHubAPIToken(env)
 
   // They need to set the token up for GitHub actions to work
   if (env["GITHUB_EVENT_NAME"] && !ghToken) {
