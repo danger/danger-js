@@ -1,6 +1,6 @@
 import { getAccessTokenForInstallation } from "../github/comms/checks/githubAppSupport"
 import { Env } from "../../ci_source/ci_source"
-import { getAuthWhenUsingDangerJSApp, getCustomAppAuthFromEnv } from "./comms/githubAppSetup"
+import { getAuthWhenUsingDangerJSApp, getCustomAppAuthFromEnv, hasCustomApp } from "./comms/githubAppSetup"
 
 /** Grabs the GitHub API token from the process, or falls back to using a GitHub App "Danger OSS" */
 export const getGitHubAPIToken = async (diEnv?: Env) => {
@@ -13,24 +13,24 @@ export const getGitHubAPIToken = async (diEnv?: Env) => {
   }
 
   // If you're not on GitHub Actions
-  const isActions = diEnv["GITHUB_WORKFLOW"]
+  const isActions = env["GITHUB_WORKFLOW"]
   if (!isActions) {
     return undefined
   }
 
-  const installID = diEnv.DANGER_OSS_APP_INSTALL_ID || diEnv.DANGER_JS_APP_INSTALL_ID
-  if (!installID) {
-    throw new Error(`
-Danger could not set up an access token for this run. Outside of first setting up danger, this is 
-_nearly_ always a case where an OSS repos expects the access token from 'secrets' to show up on fork
-PRs. In those cases you need to either:
+  const installID = env.DANGER_OSS_APP_INSTALL_ID || env.DANGER_JS_APP_INSTALL_ID
 
-- Sign your repo up to Danger OSS: https://github.com/apps/danger-oss to get a \`DANGER_OSS_APP_INSTALL_ID\`
-- Pass in your own auth token via \`DANGER_GITHUB_API_TOKEN\`
-`)
+  if (installID) {
+    const app = getAuthWhenUsingDangerJSApp()
+    const appToken = await getAccessTokenForInstallation(app.appID, parseInt(installID), app.key)
+    return appToken
   }
 
-  const custom = installID ? getAuthWhenUsingDangerJSApp() : getCustomAppAuthFromEnv()
-  const appToken = await getAccessTokenForInstallation(custom.appID!, parseInt(custom.installID!), custom.key!)
-  return appToken
+  if (hasCustomApp()) {
+    const app = getCustomAppAuthFromEnv()
+    const appToken = await getAccessTokenForInstallation(app.appID!, parseInt(app.installID!), app.key!)
+    return appToken
+  }
+
+  return undefined
 }
