@@ -4,7 +4,7 @@ import { CliArgs } from "../dsl/cli-args"
 import { CISource } from "../ci_source/ci_source"
 import { emptyGitJSON } from "../platforms/github/GitHubGit"
 import { CommanderStatic } from "commander"
-import { getGitHubToken } from "../platforms/GitHub/getGitHubAPIToken"
+import { getGitHubToken } from "../platforms/github/getGitHubAPIToken"
 
 export const jsonDSLGenerator = async (
   platform: Platform,

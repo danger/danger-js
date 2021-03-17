@@ -1,4 +1,4 @@
-name: CI
+name: CI Integration Tests
 on: pull_request
 
 jobs:

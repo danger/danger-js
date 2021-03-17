@@ -1,8 +1,8 @@
-name: CI
+name: CI via OSS App
 on: pull_request
 
 jobs:
-  test:
+  test-oss-app:
     runs-on: ubuntu-latest
 
     steps:
