@@ -15,7 +15,7 @@ jobs:
       - run: yarn build
 
       # Run with OSS comments
-      - run: node distribution/commands/danger-ci.js
+      - run: node distribution/commands/danger-ci.js --use-github-checks
         env:
           DANGER_OSS_APP_INSTALL_ID: 177994
           DEBUG: "danger:*"
