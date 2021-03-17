@@ -20,7 +20,7 @@ export const runRunner = async (app: SharedCLI, config?: RunnerConfig) => {
 
   // The optimal path
   if (source && source.isPR) {
-    const platform = (config && config.platform) || getPlatformForEnv(process.env, source)
+    const platform = (config && config.platform) || (await getPlatformForEnv(process.env, source))
     if (!platform) {
       console.log(chalk.red(`Could not find a source code hosting platform for ${source.name}.`))
       console.log(

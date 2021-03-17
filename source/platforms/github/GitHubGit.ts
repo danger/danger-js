@@ -36,15 +36,13 @@ export default async function gitDSLForGitHub(api: GitHubAPI): Promise<GitJSONDS
   return diffToGitJSONDSL(diff, commits)
 }
 
-export const gitHubGitDSL = (github: GitHubDSL, json: GitJSONDSL, githubAPI?: GitHubAPI): GitDSL => {
+export const gitHubGitDSL = (github: GitHubDSL, json: GitJSONDSL, githubAPI?: GitHubAPI, ghToken?: string): GitDSL => {
   // TODO: Remove the GitHubAPI
   // This is blocked by https://github.com/octokit/node-github/issues/602
+
   const ghAPI =
     githubAPI ||
-    new GitHubAPI(
-      { repoSlug: github.pr.base.repo.full_name, pullRequestID: String(github.pr.number) },
-      process.env["DANGER_GITHUB_API_TOKEN"] || process.env["GITHUB_TOKEN"]
-    )
+    new GitHubAPI({ repoSlug: github.pr.base.repo.full_name, pullRequestID: String(github.pr.number) }, ghToken)
 
   if (!githubAPI) {
     d("Got no GH API, had to make it")

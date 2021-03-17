@@ -45,7 +45,7 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
   // The optimal path when on a PR
   if (source && source.isPR) {
     const configPlatform = config && config.platform
-    const platform = configPlatform || getPlatformForEnv(process.env, source)
+    const platform = configPlatform || (await getPlatformForEnv(process.env, source))
 
     // You could have accidentally set it up on GitLab for example
     if (!platform) {
