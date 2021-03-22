@@ -70,7 +70,7 @@ export interface ExecutorOptions {
 const isTests = typeof jest === "object"
 
 interface ExitCodeContainer {
-  exitCode: number
+  exitCode?: number
 }
 
 export class Executor {

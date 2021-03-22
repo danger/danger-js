@@ -1,10 +1,64 @@
-import { formatJSON } from "../localGetCommits"
+import gitlog from "gitlog"
+
+import { localGetCommits } from "../localGetCommits"
+
+const hash = "hash"
+const abbrevParentHashes = "abbrevParentHashes"
+const treeHash = "treeHash"
+const authorName = "authorName"
+const authorEmail = "authorEmail"
+const authorDate = "authorDate"
+const committerName = "committerName"
+const committerEmail = "committerEmail"
+const committerDate = "committerDate"
+const subject = "subject"
+
+const gitLogCommitMock = {
+  hash,
+  abbrevParentHashes,
+  treeHash,
+  authorName,
+  authorEmail,
+  authorDate,
+  committerName,
+  committerEmail,
+  committerDate,
+  subject,
+}
+
+jest.mock("gitlog", () => ({
+  __esModule: true,
+  default: jest.fn(() => [gitLogCommitMock]),
+}))
 
 it("generates a JSON-like commit message", () => {
-  expect(formatJSON).toEqual(
-    '{ "sha": "%H", "parents": "%p", "author": {"name": "%an", "email": "%ae", "date": "%ai" }, "committer": {"name": "%cn", "email": "%ce", "date": "%ci" }, "message": "%s"},'
-  )
+  const base = "base-branch"
+  const head = "head-branch"
 
-  const withoutComma = formatJSON.substring(0, formatJSON.length - 1)
-  expect(() => JSON.parse(withoutComma)).not.toThrow()
+  const result = localGetCommits(base, head)
+
+  expect(gitlog).toHaveBeenCalledWith({
+    repo: expect.any(String),
+    branch: `${base}...${head}`,
+    fields: expect.any(Array),
+  })
+
+  expect(result).toEqual([
+    {
+      sha: hash,
+      author: {
+        name: authorName,
+        email: authorEmail,
+        date: authorDate,
+      },
+      committer: {
+        name: committerName,
+        email: committerEmail,
+        date: committerDate,
+      },
+      message: subject,
+      tree: treeHash,
+      url: expect.stringContaining(hash),
+    },
+  ])
 })
