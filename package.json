@@ -144,7 +144,6 @@
     "fast-json-patch": "^3.0.0-1",
     "get-stdin": "^6.0.0",
     "gitlab": "^10.0.1",
-    "gitlog": "^4.0.4",
     "http-proxy-agent": "^2.1.0",
     "https-proxy-agent": "^2.2.1",
     "hyperlinker": "^1.0.0",

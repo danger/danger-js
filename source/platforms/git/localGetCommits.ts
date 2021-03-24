@@ -1,37 +1,25 @@
-import gitlog, { GitlogOptions } from "gitlog"
-
+import { logGitCommits } from "./localLogGitCommits"
 import { GitCommit } from "../../dsl/Commit"
 
 export const localGetCommits = (base: string, head: string) => {
-  const options: GitlogOptions<
-    | "hash"
-    | "abbrevParentHashes"
-    | "treeHash"
-    | "authorName"
-    | "authorEmail"
-    | "authorDate"
-    | "committerName"
-    | "committerEmail"
-    | "committerDate"
-    | "subject"
-  > = {
-    repo: process.cwd(),
+  const options = {
+    number: 100,
     branch: `${base}...${head}`,
     fields: [
-      "hash",
-      "abbrevParentHashes",
-      "treeHash",
-      "authorName",
-      "authorEmail",
-      "authorDate",
-      "committerName",
-      "committerEmail",
-      "committerDate",
-      "subject",
+      "hash" as "hash",
+      "abbrevParentHashes" as "abbrevParentHashes",
+      "treeHash" as "treeHash",
+      "authorName" as "authorName",
+      "authorEmail" as "authorEmail",
+      "authorDate" as "authorDate",
+      "committerName" as "committerName",
+      "committerEmail" as "committerEmail",
+      "committerDate" as "committerDate",
+      "subject" as "subject",
     ],
   }
 
-  const commits: GitCommit[] = gitlog(options).map(commit => ({
+  const commits: GitCommit[] = logGitCommits(options).map(commit => ({
     sha: commit.hash,
     author: {
       name: commit.authorName,

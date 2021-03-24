@@ -1,6 +1,5 @@
-import gitlog from "gitlog"
-
 import { localGetCommits } from "../localGetCommits"
+import { logGitCommits } from "../localLogGitCommits"
 
 const hash = "hash"
 const abbrevParentHashes = "abbrevParentHashes"
@@ -26,9 +25,9 @@ const gitLogCommitMock = {
   subject,
 }
 
-jest.mock("gitlog", () => ({
+jest.mock("../localLogGitCommits", () => ({
   __esModule: true,
-  default: jest.fn(() => [gitLogCommitMock]),
+  logGitCommits: jest.fn(() => [gitLogCommitMock]),
 }))
 
 it("generates a JSON-like commit message", () => {
@@ -37,8 +36,8 @@ it("generates a JSON-like commit message", () => {
 
   const result = localGetCommits(base, head)
 
-  expect(gitlog).toHaveBeenCalledWith({
-    repo: expect.any(String),
+  expect(logGitCommits).toHaveBeenCalledWith({
+    number: expect.any(Number),
     branch: `${base}...${head}`,
     fields: expect.any(Array),
   })
