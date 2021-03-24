@@ -15,8 +15,12 @@
 
 <!-- Your comment below this -->
 
+<!-- Your comment above this -->
+
+# 10.6.5
+
+- Improvements to the git parsing for `danger local` - [@denieler]
 - Bitbucket Cloud: Fix type of BitBucketCloudPRDSL.created_on and updated_on. - [@hellocore]
-  <!-- Your comment above this -->
 
 # 10.6.4
 
@@ -1893,3 +1897,4 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@jamiebuilds]: https://github.com/jamiebuilds
 [@hmschreiner]: https://github.com/hmschreiner
 [@g3offrey]: https://github.com/g3offrey
+[@denieler]: https://github.com/denieler
