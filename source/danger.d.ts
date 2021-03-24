@@ -39,10 +39,10 @@ interface BitBucketCloudPRDSL {
   description: string
   /** The pull request's current status. */
   state: "OPEN" | "MERGED" | "DECLINED" | "SUPERSEDED"
-  /** Date PR created as number of milliseconds since the unix epoch */
-  created_on: number
-  /** Date PR updated as number of milliseconds since the unix epoch */
-  updated_on: number
+  /** When the pr was created, in ISO 8601 format */
+  created_on: string
+  /** When the pr was updated, in ISO 8601 format */
+  updated_on: string
   /** The PR's source, The repo Danger is running on  */
   source: BitBucketCloudMergeRef
   /** The PR's destination */
