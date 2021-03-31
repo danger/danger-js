@@ -3,7 +3,7 @@ on: pull_request
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       # Check out, and set up the node/ruby infra
