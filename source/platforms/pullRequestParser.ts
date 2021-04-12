@@ -16,7 +16,7 @@ export function pullRequestParser(address: string): PullRequestParts | null {
 
   if (components && components.path) {
     // shape: http://localhost:7990/projects/PROJ/repos/repo/pull-requests/1/overview
-    const parts = components.path.match(/(projects\/\w+\/repos\/[\w-_.]+)\/pull-requests\/(\d+)/)
+    const parts = components.path.match(/(projects\/~?\w+\/repos\/[\w-_.]+)\/pull-requests\/(\d+)/)
     if (parts) {
       return {
         platform: BitBucketServer.name,
