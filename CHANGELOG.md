@@ -16,6 +16,8 @@
 <!-- Your comment below this -->
 
 - Fix for supporting Bitbucket Server personal repositories
+- GitLab: Added `GitLabApi` to `danger.gitlab.api`. - [@shyim]
+- GitLab: Added label helper functions to `danger.gitlab.api.addLabels` and `danger.gitlab.api.removeLabels`. - [@shyim]
   <!-- Your comment above this -->
 
 # 10.6.5
