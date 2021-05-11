@@ -292,3 +292,23 @@ export interface GitLabApproval {
       }[]
     | GitLabUser[]
 }
+
+export interface GitLabDiscussionAuthor {
+  id: number
+  name: string
+  username: string
+  state: boolean
+}
+
+export interface GitLabDiscussionNote {
+  id: number
+  type: string | null
+  body: string
+  author: GitLabDiscussionAuthor
+}
+
+export interface GitLabDiscussion {
+  id: number,
+  individual_note: boolean,
+  notes: GitLabDiscussionNote[]
+}

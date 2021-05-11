@@ -71,6 +71,7 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
         ignoreOutOfDiffComments: app.ignoreOutOfDiffComments,
         newComment: app.newComment || false,
         removePreviousComments: app.removePreviousComments || false,
+        useThread: app.useThread || false
       }
 
       const processName = (app.process && addSubprocessCallAguments(app.process.split(" "))) || undefined

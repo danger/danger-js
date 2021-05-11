@@ -71,6 +71,14 @@ export class LocalGit implements Platform {
     return true
   }
 
+  supportsThreads() {
+    return false;
+  }
+
+  updateOrCreateThread = async (): Promise<undefined> => {
+    return undefined;
+  }
+
   async updateOrCreateComment(_dangerID: string, _newComment: string): Promise<string | undefined> {
     return undefined
   }

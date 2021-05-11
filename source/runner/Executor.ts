@@ -64,6 +64,8 @@ export interface ExecutorOptions {
   newComment?: boolean
   /** Removes all previous comment and create a new one in the end of the list */
   removePreviousComments?: boolean
+  /** Uses threads instead of notes */
+  useThread?: boolean
 }
 // This is still badly named, maybe it really should just be runner?
 
@@ -314,7 +316,13 @@ export class Executor {
           comment = githubResultsTemplate(dangerID, mergedResults, commitID)
         }
 
-        if (this.options.newComment) {
+        if (this.options.useThread) {
+          if (!this.platform.supportsThreads) {
+            throw new Error(`Platform ${this.platform.name} does not support threads`);
+          }
+
+          issueURL = await this.platform.updateOrCreateThread(dangerID, comment);
+        } else if (this.options.newComment) {
           issueURL = await this.platform.createComment(dangerID, comment)
         } else {
           issueURL = await this.platform.updateOrCreateComment(dangerID, comment)

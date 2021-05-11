@@ -69,6 +69,8 @@ export interface PlatformCommunicator {
   supportsCommenting: () => boolean
   /** Does the platform support inline comments? */
   supportsInlineComments: () => boolean
+  /** Does the platform supports threads? */
+  supportsThreads: () => boolean
   /** Allows the platform to do whatever it wants, instead of using the default commenting system  */
   handlePostingResults?: (results: DangerResults, options: ExecutorOptions) => void
   /** Gets inline comments for current PR */
@@ -85,6 +87,8 @@ export interface PlatformCommunicator {
   deleteMainComment: (dangerID: string) => Promise<boolean>
   /** Replace the main Danger comment, returning the URL to the issue */
   updateOrCreateComment: (dangerID: string, newComment: string) => Promise<string | undefined>
+  /** Replaces the created thread */
+  updateOrCreateThread: (dangerID: string, newComment: string) => Promise<string | undefined>
   /** Sets the current PR's status */
   updateStatus: (
     passed: boolean | "pending",
@@ -148,7 +152,7 @@ export function getPlatformForEnv(env: Env, source: CISource): Platform {
   // They need to set the token up for GitHub actions to work
   if (env["GITHUB_EVENT_NAME"] && !ghToken) {
     console.error(`You need to add GITHUB_TOKEN to your Danger action in the workflow:
-  
+
     - name: Danger JS
       uses: danger/danger-js@X.Y.Z
       ${chalk.green(`env:
