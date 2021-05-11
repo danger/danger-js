@@ -67,6 +67,14 @@ export class BitBucketCloud implements Platform {
     return true
   }
 
+  supportsThreads() {
+    return false;
+  }
+
+  updateOrCreateThread = async (): Promise<undefined> => {
+    return undefined;
+  }
+
   /**
    * Returns the response for the new comment
    *

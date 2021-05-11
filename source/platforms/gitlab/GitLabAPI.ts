@@ -1,6 +1,8 @@
 import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 import { api as fetch } from "../../api/fetch"
 import {
+  GitLabApproval,
+  GitLabDiscussion,
   GitLabDiscussionTextPosition,
   GitLabInlineNote,
   GitLabMR,
@@ -8,10 +10,9 @@ import {
   GitLabMRChanges,
   GitLabMRCommit,
   GitLabNote,
-  GitLabUserProfile,
-  GitLabRepositoryFile,
   GitLabRepositoryCompare,
-  GitLabApproval,
+  GitLabRepositoryFile,
+  GitLabUserProfile,
 } from "../../dsl/GitLabDSL"
 
 import { Gitlab } from "gitlab"
@@ -136,7 +137,7 @@ class GitLabAPI {
     return inlineNotes
   }
 
-  createMergeRequestDiscussion = async (content: string, position: GitLabDiscussionTextPosition): Promise<string> => {
+  createMergeRequestDiscussion = async (content: string, position?: GitLabDiscussionTextPosition): Promise<GitLabDiscussion> => {
     this.d(
       "createMergeRequestDiscussion",
       this.repoMetadata.repoSlug,
@@ -146,17 +147,41 @@ class GitLabAPI {
     )
     const api = this.api.MergeRequestDiscussions
 
+    const options: any = {};
+
+    if (position) {
+      options.position = position;
+    }
+
     try {
       // @ts-ignore
-      const result: string = await api.create(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, content, {
-        position: position,
-      })
+      const result = await api.create(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, content, options) as GitLabDiscussion;
       this.d("createMergeRequestDiscussion", result)
       return result
     } catch (e) {
       this.d("createMergeRequestDiscussion", e)
       throw e
     }
+  }
+
+  updateMergeRequestDiscussion = async (discussionId: number, noteId: number, body: string): Promise<GitLabDiscussion> => {
+    this.d(
+      "updateMergeRequestDiscussion",
+      this.repoMetadata.repoSlug,
+      this.repoMetadata.pullRequestID,
+      discussionId,
+      noteId,
+      body,
+    )
+
+    return await this.api.MergeRequestDiscussions.editNote(
+      this.repoMetadata.repoSlug,
+      this.repoMetadata.pullRequestID,
+      discussionId,
+      noteId,
+      // @ts-ignore
+      body
+    ) as GitLabDiscussion;
   }
 
   createMergeRequestNote = async (body: string): Promise<GitLabNote> => {
@@ -238,6 +263,11 @@ class GitLabAPI {
     const projectId = this.repoMetadata.repoSlug
     const compare = (await api.compare(projectId, base, head)) as GitLabRepositoryCompare
     return compare.diffs
+  }
+  async getMergeRequestThreads(): Promise<GitLabDiscussion[]> {
+    this.d('getMergeRequestThreads');
+
+    return await this.api.MergeRequestDiscussions.all(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID) as GitLabDiscussion[];
   }
 }
 

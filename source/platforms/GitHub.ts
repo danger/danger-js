@@ -75,6 +75,14 @@ export function GitHub(api: GitHubAPI) {
 
     getFileContents: api.fileContents,
     executeRuntimeEnvironment,
+
+    supportsThreads() {
+      return false;
+    },
+
+    async updateOrCreateThread(): Promise<undefined> {
+      return undefined;
+    }
   } as GitHubType
 }
 

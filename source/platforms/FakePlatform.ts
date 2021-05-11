@@ -56,6 +56,14 @@ export class FakePlatform implements Platform {
     return true
   }
 
+  supportsThreads() {
+    return false;
+  }
+
+  updateOrCreateThread = async (): Promise<undefined> => {
+    return undefined;
+  }
+
   async updateOrCreateComment(_dangerID: string, _newComment: string): Promise<string> {
     return "https://github.com/orta/github-pages-with-jekyll/pull/5#issuecomment-383402256"
   }

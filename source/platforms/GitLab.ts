@@ -2,7 +2,7 @@ import GitLabAPI from "./gitlab/GitLabAPI"
 import { Platform, Comment } from "./platform"
 import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitCommit } from "../dsl/Commit"
-import { GitLabDSL, GitLabJSONDSL, GitLabNote } from "../dsl/GitLabDSL"
+import { GitLabDiscussion, GitLabDSL, GitLabJSONDSL, GitLabNote } from "../dsl/GitLabDSL"
 
 import { debug } from "../debug"
 import { dangerIDToString } from "../runner/templates/githubIssueTemplate"
@@ -92,6 +92,23 @@ class GitLab implements Platform {
     return true
   }
 
+  supportsThreads() {
+    return true;
+  }
+
+  updateOrCreateThread = async (dangerID: string, newComment: string): Promise<string> => {
+    const threads = await this.getDangerThreads(dangerID);
+
+    if (threads.length) {
+      await this.api.updateMergeRequestDiscussion(threads[0].id, threads[0].notes[0].id, newComment);
+      return `${this.api.mergeRequestURL}#note_${threads[0].notes[0].id}`;
+    } else {
+      const thread = await this.api.createMergeRequestDiscussion(newComment);
+
+      return `${this.api.mergeRequestURL}#note_${thread.notes[0].id}`;
+    }
+  }
+
   updateOrCreateComment = async (dangerID: string, newComment: string): Promise<string> => {
     d("updateOrCreateComment", { dangerID, newComment })
 
@@ -131,7 +148,7 @@ class GitLab implements Platform {
 
     const mr = await this.api.getMergeRequestInfo()
 
-    return this.api.createMergeRequestDiscussion(comment, {
+    const thread = await this.api.createMergeRequestDiscussion(comment, {
       position_type: "text",
       base_sha: mr.diff_refs.base_sha,
       start_sha: mr.diff_refs.start_sha,
@@ -141,6 +158,8 @@ class GitLab implements Platform {
       new_path: path,
       new_line: line,
     })
+
+    return `${this.api.mergeRequestURL}#note_${thread.notes[0].id}`;
   }
 
   updateInlineComment = async (comment: string, id: string): Promise<GitLabNote> => {
@@ -175,6 +194,17 @@ class GitLab implements Platform {
         type == null && // we only want "normal" comments on the main body of the MR;
         id === dangerUserId &&
         body!.includes(dangerIDToString(dangerID)) // danger-id-(dangerID) is included in a hidden comment in the githubIssueTemplate
+    )
+  }
+
+  getDangerThreads = async (dangerID: string) => {
+    const { id: dangerUserId } = await this.api.getUser()
+    const threads = await this.api.getMergeRequestThreads();
+
+    return threads.filter(
+      (discussion: GitLabDiscussion) => {
+        return discussion.notes[0].author.id === dangerUserId && discussion.notes[0].body.includes(dangerIDToString(dangerID));
+      }
     )
   }
 
