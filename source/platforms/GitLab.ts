@@ -193,4 +193,5 @@ export const gitlabJSONToGitLabDSL = (gl: GitLabDSL, api: GitLabAPI): GitLabDSL 
   utils: {
     fileContents: api.getFileContents,
   },
+  api,
 })
