@@ -96,7 +96,6 @@ class GitLab implements Platform {
     d("updateOrCreateComment", { dangerID, newComment })
 
     const notes: GitLabNote[] = await this.getDangerNotes(dangerID)
-    debugger
 
     let note: GitLabNote
 
