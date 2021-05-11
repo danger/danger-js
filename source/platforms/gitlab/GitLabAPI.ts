@@ -90,6 +90,14 @@ class GitLabAPI {
     return mr
   }
 
+  updateMergeRequestInfo = async (changes: object): Promise<object> => {
+    const mr = this.api.MergeRequests.edit(this.repoMetadata.repoSlug, Number(this.repoMetadata.pullRequestID), changes)
+
+    this.d("updateMergeRequestInfo", mr)
+
+    return mr
+  }
+
   getMergeRequestApprovals = async (): Promise<GitLabApproval> => {
     this.d(`getMergeRequestApprovals for repo: ${this.repoMetadata.repoSlug} pr: ${this.repoMetadata.pullRequestID}`)
     const approvals = (await this.api.MergeRequests.approvals(this.repoMetadata.repoSlug, {
@@ -238,6 +246,30 @@ class GitLabAPI {
     const projectId = this.repoMetadata.repoSlug
     const compare = (await api.compare(projectId, base, head)) as GitLabRepositoryCompare
     return compare.diffs
+  }
+
+  addLabels = async (...labels: string[]): Promise<boolean> => {
+    const mr = await this.getMergeRequestInfo()
+    mr.labels.push(...labels)
+
+    await this.updateMergeRequestInfo({ labels: mr.labels.join(",") })
+
+    return true
+  }
+
+  removeLabels = async (...labels: string[]): Promise<boolean> => {
+    const mr = await this.getMergeRequestInfo()
+
+    for (const label of labels) {
+      const index = mr.labels.indexOf(label)
+      if (index > -1) {
+        mr.labels.splice(index, 1)
+      }
+    }
+
+    await this.updateMergeRequestInfo({ labels: mr.labels.join(",") })
+
+    return true
   }
 }
 
