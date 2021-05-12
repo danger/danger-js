@@ -55,7 +55,7 @@ if (process.env["DANGER_VERBOSE"] || app.verbose) {
   global.verbose = true
 }
 
-getRuntimeCISource(app).then(source => {
+getRuntimeCISource(app).then(async source => {
   // This does not set a failing exit code
   if (source && !source.isPR) {
     console.log("Skipping Danger due to this run not executing on a PR.")
@@ -63,7 +63,7 @@ getRuntimeCISource(app).then(source => {
 
   // The optimal path
   if (source && source.isPR) {
-    const platform = getPlatformForEnv(process.env, source)
+    const platform = await getPlatformForEnv(process.env, source)
     if (!platform) {
       console.log(chalk.red(`Could not find a source code hosting platform for ${source.name}.`))
       console.log(

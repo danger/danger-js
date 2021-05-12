@@ -48,7 +48,7 @@ let runtimeEnv = {} as any
 
 const run = (config: SharedCLI) => async (jsonString: string) => {
   const source = (config && config.source) || (await getRuntimeCISource(config))
-  const platform = getPlatformForEnv(process.env, source)
+  const platform = await getPlatformForEnv(process.env, source)
 
   d("Got STDIN for Danger Run")
   foundDSL = true

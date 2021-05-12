@@ -1,0 +1,21 @@
+name: CI via OSS App
+on: pull_request
+
+jobs:
+  test-oss-app:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out, and set up the node/ruby infra
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+
+      # Get local dependencies
+      - run: yarn install
+      - run: yarn build
+
+      # Run with OSS comments
+      - run: node distribution/commands/danger-ci.js --use-github-checks
+        env:
+          DANGER_OSS_APP_INSTALL_ID: 177994
+          DEBUG: "danger:*"

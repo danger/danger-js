@@ -457,7 +457,7 @@ export class Executor {
   }
 }
 
-const messageForResults = (results: DangerResults) => {
+export const messageForResults = (results: DangerResults) => {
   if (!results.fails.length && !results.warnings.length) {
     return `All green. ${compliment()}`
   } else {

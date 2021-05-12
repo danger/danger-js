@@ -4,6 +4,7 @@ import { CliArgs } from "../dsl/cli-args"
 import { CISource } from "../ci_source/ci_source"
 import { emptyGitJSON } from "../platforms/github/GitHubGit"
 import { CommanderStatic } from "commander"
+import { getGitHubAPIToken } from "../platforms/github/getGitHubAPIToken"
 
 export const jsonDSLGenerator = async (
   platform: Platform,
@@ -27,7 +28,7 @@ export const jsonDSLGenerator = async (
     id: program.id,
     textOnly: program.textOnly,
     verbose: program.verbose,
-    staging: program.staging
+    staging: program.staging,
   }
 
   const dslPlatformName = jsonDSLPlatformName(platform)
@@ -37,7 +38,7 @@ export const jsonDSLGenerator = async (
     [dslPlatformName]: platformDSL,
     settings: {
       github: {
-        accessToken: process.env["DANGER_GITHUB_API_TOKEN"] || process.env["GITHUB_TOKEN"] || "NO_TOKEN",
+        accessToken: platform.name !== "GitHub" ? "NO_TOKEN" : await getGitHubAPIToken(),
         additionalHeaders: {},
         baseURL: process.env["DANGER_GITHUB_API_BASE_URL"] || process.env["GITHUB_URL"] || undefined,
       },

@@ -13,6 +13,7 @@ import { ExecutorOptions } from "../runner/Executor"
 import { DangerRunner } from "../runner/runners/runner"
 import chalk from "chalk"
 import { FakePlatform } from "./FakePlatform"
+import { getGitHubAPIToken } from "./github/getGitHubAPIToken"
 
 /** A type that represents the downloaded metadata about a code review session */
 export type Metadata = any
@@ -99,9 +100,9 @@ export interface PlatformCommunicator {
  * Pulls out a platform for Danger to communicate on based on the environment
  * @param {Env} env The environment.
  * @param {CISource} source The existing source, to ensure they can run against each other
- * @returns {Platform} returns a platform if it can be supported
+ * @returns {Promise<Platform>} returns a platform if it can be supported
  */
-export function getPlatformForEnv(env: Env, source: CISource): Platform {
+export async function getPlatformForEnv(env: Env, source: CISource): Promise<Platform> {
   // BitBucket Server
   if (env["DANGER_BITBUCKETSERVER_HOST"] || env["DANGER_PR_PLATFORM"] === BitBucketServer.name) {
     const api = new BitBucketServerAPI(
@@ -143,14 +144,14 @@ export function getPlatformForEnv(env: Env, source: CISource): Platform {
   }
 
   // GitHub Platform
-  const ghToken = env["DANGER_GITHUB_API_TOKEN"] || env["GITHUB_TOKEN"]
+  const ghToken = await getGitHubAPIToken(env)
 
   // They need to set the token up for GitHub actions to work
   if (env["GITHUB_EVENT_NAME"] && !ghToken) {
     console.error(`You need to add GITHUB_TOKEN to your Danger action in the workflow:
   
     - name: Danger JS
-      uses: danger/danger-js@X.Y.Z
+      run: yarn danger
       ${chalk.green(`env:
         GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}`)}
     `)
@@ -172,7 +173,7 @@ export function getPlatformForEnv(env: Env, source: CISource): Platform {
   }
 
   console.error(
-    "The DANGER_GITHUB_API_TOKEN/DANGER_BITBUCKETSERVER_HOST/DANGER_GITLAB_API_TOKEN environmental variable is missing"
+    "The DANGER_GITHUB_API_TOKEN/DANGER_OSS_APP_INSTALL_ID/DANGER_BITBUCKETSERVER_HOST/DANGER_GITLAB_API_TOKEN environmental variable is missing"
   )
   console.error("Without an api token, danger will be unable to comment on a PR")
   throw new Error("Cannot use authenticated API requests.")
