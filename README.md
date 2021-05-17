@@ -84,7 +84,7 @@ it compiles.
 You can run your dev copy of danger against a PR by running:
 
 ```sh
-yarn build; node --inspect distribution/commands/danger-pr.js https://github.com/danger/danger-js/pull/817
+yarn build; node --inspect source/commands/danger-pr.js https://github.com/danger/danger-js/pull/817
 ```
 
 ### How does Danger JS work?
