@@ -131,7 +131,11 @@ export function getPlatformForEnv(env: Env, source: CISource): Platform {
   }
 
   // GitLab
-  if (env["DANGER_GITLAB_API_TOKEN"] || env["DANGER_PR_PLATFORM"] === GitLab.name) {
+  if (
+    env["DANGER_GITLAB_API_TOKEN"] ||
+    env["DANGER_GITLAB_API_OAUTH_TOKEN"] ||
+    env["DANGER_PR_PLATFORM"] === GitLab.name
+  ) {
     const api = new GitLabAPI(
       {
         pullRequestID: source.pullRequestID,
