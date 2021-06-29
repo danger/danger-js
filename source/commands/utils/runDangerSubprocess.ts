@@ -19,6 +19,7 @@ const messageToSendDSL = "danger://send-dsl"
 // Sanitizes the DSL so for sending via STDOUT
 export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
   if (dangerDSL.github && dangerDSL.github.api) {
+    // @ts-ignore
     delete dangerDSL.github.api
   }
 
