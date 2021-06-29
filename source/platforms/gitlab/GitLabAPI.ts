@@ -19,10 +19,11 @@ import { Env } from "../../ci_source/ci_source"
 import { debug } from "../../debug"
 
 export type GitLabAPIToken = string
-
+export type GitLabOAuthToken = string
 export interface GitLabAPICredentials {
   host: string
-  token: GitLabAPIToken
+  token?: GitLabAPIToken
+  oauthToken?: GitLabOAuthToken
 }
 
 export function getGitLabAPICredentialsFromEnv(env: Env): GitLabAPICredentials {
@@ -50,6 +51,7 @@ export function getGitLabAPICredentialsFromEnv(env: Env): GitLabAPICredentials {
   return {
     host,
     token: env["DANGER_GITLAB_API_TOKEN"],
+    oauthToken: env["DANGER_GITLAB_API_OAUTH_TOKEN"],
   }
 }
 
