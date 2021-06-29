@@ -1455,6 +1455,7 @@ interface GitLabDSL extends GitLabJSONDSL {
   utils: {
     fileContents(path: string, repoSlug?: string, ref?: string): Promise<string>
   }
+  api: GitLabAPI
 }
 
 // ---
