@@ -54,6 +54,7 @@ describe(".isPR", () => {
 
     it("needs to have a PR number", () => {
       let env = Object.assign({}, correctEnv)
+      // @ts-ignore
       delete env["bamboo_repository_pr_key"]
       const pipelines = new Bamboo(env)
       expect(pipelines.isPR).toBeFalsy()
