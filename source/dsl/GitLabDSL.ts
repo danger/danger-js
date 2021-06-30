@@ -1,7 +1,7 @@
 // Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
 
 // TODO: extract out from BitBucket specifically, or create our own type
-import GitLabAPI from "../platforms/gitlab/GitLabAPI"
+import { Gitlab } from "gitlab"
 import { RepoMetaData } from "./BitBucketServerDSL"
 
 // getPlatformReviewDSLRepresentation
@@ -22,7 +22,7 @@ export interface GitLabDSL extends GitLabJSONDSL {
   utils: {
     fileContents(path: string, repoSlug?: string, ref?: string): Promise<string>
   }
-  api: GitLabAPI
+  api: InstanceType<typeof Gitlab>
 }
 
 // ---

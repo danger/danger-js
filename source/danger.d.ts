@@ -3,6 +3,7 @@
 //
 
 import { Octokit as GitHub } from "@octokit/rest"
+import { Gitlab } from "gitlab"
 
 type MarkdownString = string
 // TODO: extract out from BitBucket specifically, or create our own type
@@ -1455,7 +1456,7 @@ interface GitLabDSL extends GitLabJSONDSL {
   utils: {
     fileContents(path: string, repoSlug?: string, ref?: string): Promise<string>
   }
-  api: GitLabAPI
+  api: InstanceType<typeof Gitlab>
 }
 
 // ---

@@ -13,6 +13,7 @@ const createDTS = () => {
 //
 
 import { Octokit as GitHub } from "@octokit/rest"
+import { Gitlab } from "gitlab"
 
 `
   const footer = ``
