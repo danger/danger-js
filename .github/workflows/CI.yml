@@ -20,10 +20,12 @@ jobs:
       - run: yarn tsc distribution/danger.d.ts
       - run: rm -rf node_modules/@types/babel-*
       - run: rm -rf node_modules/@types/babylon
+
+      # Not many Flow users nowadays, so this probably is worth dropping
+      # if it becomes an issue.
       - run: echo "Testing Flow definition file"
       - run: yarn build:flow-types
-      - run: yarn flow check
-
+      # - run: yarn flow check
 
       - run: 'echo "This is only for Integration tests on two blank projects"'
 
