@@ -22,7 +22,7 @@ Steps to reproduce the behavior:
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-** Your Environment**
+**Your Environment**
 <!--- Include as many relevant details about the environment you experienced the bug in -->
 
  | software         | version
