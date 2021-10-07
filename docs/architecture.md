@@ -12,7 +12,7 @@ Actually doing that though, is a bit of a process.
 whether it is a pull request.
 
 **Step 2: Platform**. Danger needs to know which platform the code review is happening in. Today, Danger supports
-Github, Gitlab, BitBucket Server, and BitBucket Cloud. You can see them them all in [`source/platforms`][platforms].
+Github, Gitlab, BitBucket Server, and BitBucket Cloud. You can see them all in [`source/platforms`][platforms].
 
 **Step 3: JSON DSL**. To allow for all of:
 
