@@ -26,6 +26,7 @@ import { Surf } from "./Surf"
 import { TeamCity } from "./TeamCity"
 import { Travis } from "./Travis"
 import { VSTS } from "./VSTS"
+import { XcodeCloud } from "./XcodeCloud"
 
 const providers = [
   FakeCI,
@@ -56,6 +57,7 @@ const providers = [
   Cirrus,
   Bamboo,
   Codemagic,
+  XcodeCloud,
 ]
 
 // Mainly used for Dangerfile linting
@@ -85,6 +87,7 @@ const realProviders = [
   Cirrus,
   Bamboo,
   Codemagic,
+  XcodeCloud,
 ]
 
 export { providers, realProviders }
