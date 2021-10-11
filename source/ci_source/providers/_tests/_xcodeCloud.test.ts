@@ -68,17 +68,17 @@ describe(".repoSlug", () => {
 })
 
 describe("commit hash", () => {
-    it("returns correct commit hash when present", () => {
-      const env = {
-        ...correctEnv,
-        CI_COMMIT: "1234abc",
-      }
-      const xcodeCloud = new XcodeCloud(env)
-      expect(xcodeCloud.commitHash).toEqual("1234abc")
-    })
-
-    it("returns no commit hash when not present", () => {
-      const xcodeCloud = new XcodeCloud(correctEnv)
-      expect(xcodeCloud.commitHash).toBeUndefined()
-    })
+  it("returns correct commit hash when present", () => {
+    const env = {
+      ...correctEnv,
+      CI_COMMIT: "1234abc",
+    }
+    const xcodeCloud = new XcodeCloud(env)
+    expect(xcodeCloud.commitHash).toEqual("1234abc")
   })
+
+  it("returns no commit hash when not present", () => {
+    const xcodeCloud = new XcodeCloud(correctEnv)
+    expect(xcodeCloud.commitHash).toBeUndefined()
+  })
+})
