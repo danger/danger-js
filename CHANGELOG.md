@@ -17,6 +17,10 @@
 
 <!-- Your comment above this -->
 
+# 10.7.0
+
+- Adds support for XcodeCloud
+
 # 10.6.6
 
 - Fix for supporting Bitbucket Server personal repositories
