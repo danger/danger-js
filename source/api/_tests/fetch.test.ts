@@ -1,9 +1,6 @@
 import * as http from "http"
-import * as node_fetch from "node-fetch"
 
 import { api } from "../fetch"
-import HttpProxyAgent from "http-proxy-agent"
-import HttpsProxyAgent from "http-proxy-agent"
 
 interface ResponseMock {
   body?: any
@@ -117,53 +114,5 @@ describe("fetch", () => {
     expect(response.ok).toBe(false)
     expect(response.status).toBe(500)
     expect(await response.text()).toBe(body)
-  })
-
-  it("sets proxy agent when HTTPS_PROXY env variable is defined", async () => {
-    const proxyUrl = "http://localhost:30002/"
-
-    await proxy.start()
-    await server.start({})
-
-    let options: node_fetch.RequestInit = { agent: undefined }
-    await api(url, options, true, { HTTPS_PROXY: proxyUrl })
-    let agent = options.agent as HttpsProxyAgent
-    expect(agent.proxy.href).toBe(proxyUrl)
-  })
-
-  it("sets proxy agent when https_proxy env variable is defined", async () => {
-    const proxyUrl = "http://localhost:30002/"
-
-    await proxy.start()
-    await server.start({})
-
-    let options: node_fetch.RequestInit = { agent: undefined }
-    await api(url, options, true, { https_proxy: proxyUrl })
-    let agent = options.agent as HttpsProxyAgent
-    expect(agent.proxy.href).toBe(proxyUrl)
-  })
-
-  it("sets proxy agent when HTTP_PROXY env variable is defined", async () => {
-    const proxyUrl = "http://localhost:30002/"
-
-    await proxy.start()
-    await server.start({})
-
-    let options: node_fetch.RequestInit = { agent: undefined }
-    await api(url, options, true, { HTTP_PROXY: proxyUrl })
-    let agent = options.agent as HttpProxyAgent
-    expect(agent.proxy.href).toBe(proxyUrl)
-  })
-
-  it("sets proxy agent when http_proxy env variable is defined", async () => {
-    const proxyUrl = "http://localhost:30002/"
-
-    await proxy.start()
-    await server.start({})
-
-    let options: node_fetch.RequestInit = { agent: undefined }
-    await api(url, options, true, { http_proxy: proxyUrl })
-    let agent = options.agent as HttpProxyAgent
-    expect(agent.proxy.href).toBe(proxyUrl)
   })
 })

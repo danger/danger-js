@@ -1,7 +1,7 @@
 import { debug } from "../debug"
 import * as node_fetch from "node-fetch"
 
-import HttpProxyAgent from "http-proxy-agent"
+import { HttpProxyAgent } from "http-proxy-agent"
 import HttpsProxyAgent from "https-proxy-agent"
 
 import AsyncRetry from "async-retry"
