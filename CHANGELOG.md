@@ -17,6 +17,10 @@
 
 <!-- Your comment above this -->
 
+# 10.7.1
+
+- Updates micromatch dependencies for CVE-2021-23440
+
 # 10.7.0
 
 - Adds support for XcodeCloud
