@@ -1540,6 +1540,9 @@ interface GitLabMRBase {
   }
   /** Who was assigned as the person to review */
   assignee?: GitLabUser
+  assignees: GitLabUser[]
+  /** Users who were added as reviewers to the MR */
+  reviewers: GitLabUser[]
   source_project_id: number
   target_project_id: number
   labels: string[]
