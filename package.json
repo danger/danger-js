@@ -148,7 +148,7 @@
     "https-proxy-agent": "^2.2.1",
     "hyperlinker": "^1.0.0",
     "json5": "^2.1.0",
-    "jsonpointer": "^4.0.1",
+    "jsonpointer": "^5.0.0",
     "jsonwebtoken": "^8.4.0",
     "lodash.find": "^4.6.0",
     "lodash.includes": "^4.3.0",
