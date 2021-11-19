@@ -85,4 +85,9 @@ export class FakePlatform implements Platform {
   }
 
   getFileContents = (path: string) => new Promise<string>(res => res(readFileSync(path, "utf8")))
+
+  createInlineReview?: (
+    git: GitDSL,
+    comments: { comment: string; path: string; line: number }[]
+  ) => Promise<any> = undefined
 }
