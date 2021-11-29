@@ -33,6 +33,8 @@ export interface SharedCLI extends program.CommanderStatic {
   newComment?: boolean
   /** Removes all previous comment and create a new one in the end of the list */
   removePreviousComments?: boolean
+  /** Output JSON to STDOUT */
+  outputJSON: boolean
 }
 
 export default (command: any) =>

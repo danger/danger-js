@@ -62,7 +62,7 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
       const execConfig: ExecutorOptions = {
         stdoutOnly: !platform.supportsCommenting() || app.textOnly,
         verbose: app.verbose,
-        jsonOnly: false,
+        jsonOnly: app.outputJSON,
         dangerID: app.id || "Danger",
         passURLForDSL: app.passURLForDSL || false,
         disableGitHubChecksSupport: !app.useGithubChecks,
