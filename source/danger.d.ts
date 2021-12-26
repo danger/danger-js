@@ -1163,7 +1163,7 @@ interface GitHubPRDSL {
   /**
    * The markdown body message of the PR
    */
-  body: string
+  body: string | null
 
   /**
    * ISO6801 Date string for when PR was created
