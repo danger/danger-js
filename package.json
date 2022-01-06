@@ -165,7 +165,7 @@
     "parse-diff": "^0.7.0",
     "parse-git-config": "^2.0.3",
     "parse-github-url": "^1.0.2",
-    "parse-link-header": "^1.0.1",
+    "parse-link-header": "^2.0.0",
     "pinpoint": "^1.1.0",
     "prettyjson": "^1.2.1",
     "readline-sync": "^1.4.9",
