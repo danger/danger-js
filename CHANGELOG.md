@@ -17,6 +17,11 @@
 
 <!-- Your comment above this -->
 
+# 10.8.0
+
+- Feature: `danger local --outputJSON` for https://github.com/danger/danger-js/pull/1177] [@orta]
+- Fix: Updates `jsonpointer` for [#1174](https://github.com/danger/danger-js/pull/1174) [@unfernandito]
+
 # 10.7.1
 
 - Updates micromatch dependencies for CVE-2021-23440
