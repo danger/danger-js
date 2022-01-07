@@ -16,7 +16,7 @@ A lot of the information on Peril can be found on the
 [Artsy blog: here](http://artsy.github.io/blog/2017/09/04/Introducing-Peril/)
 
 Today Peril is self-hosted via heroku. There is a walkthrough on the
-[Peril repo: here](https://github.com/danger/peril/blob/master/docs/setup_for_org.md). It's still a pretty fast moving
+[Peril repo: here](https://github.com/danger/peril/blob/main/docs/setup_for_org.md). It's still a pretty fast moving
 project ever 6 months into deployment so expect to maybe fix your own problem occasionally.
 
 ## Dangerfile implications
@@ -55,4 +55,4 @@ continuing, so make sure to not cause it to lock.
 ## Plugin implications
 
 A plugin that runs on Peril will also have to handle the above if it uses async code. For some examples of this, see
-[danger-plugin-spellcheck](https://github.com/orta/danger-plugin-spellcheck#danger-plugin-spellcheck) or
+[danger-plugin-spellcheck](https://github.com/orta/danger-plugin-spellcheck#danger-plugin-spellcheck).

@@ -8,9 +8,9 @@ cache:
 matrix:
   include:
     # Normal CI test runs :D
-    - node_js: "10"
+    - node_js: "14"
 
-    - node_js: "10"
+    - node_js: "14"
       after_script:
         - echo "Validating TypeScript definition file"
         - yarn build
@@ -23,13 +23,13 @@ matrix:
         - yarn flow check
 
     # Checks every example dangerfile can run in `danger runner`.
-    - node_js: "10"
+    - node_js: "14"
       script:
         - yarn build
         - node scripts/run-fixtures.js
 
     # Runs both the CI and PR with a custom process to ensure apps like swift/rust work
-    - node_js: "10.13"
+    - node_js: "14"
       script:
         - yarn build
         - node distribution/commands/danger-ci.js --process "ruby scripts/danger_runner.rb"
@@ -61,35 +61,10 @@ matrix:
         - echo "Validating that danger pr works as expected"
         - DEBUG="*" danger pr https://github.com/danger/danger-js/pull/465 --dangerfile dangerfile.circle.js --verbose
 
-        - echo "Grabbing master so that danger-local can use it for comparison"
-        - git checkout -t origin/master || true
+        - echo "Grabbing main so that danger-local can use it for comparison"
+        - git checkout -t origin/main || true
         - '[ ! -z $TRAVIS_PULL_REQUEST ] && DEBUG="*" danger local --dangerfile
           source/platforms/git/_tests/local_dangerfile_example.ts || echo "Skipping Danger Local for non PR run"'
-
-    # Create some fake projects at runtime
-    - node_js: "10.16"
-      script:
-        - echo "This is only for Integration tests on two blank projects"
-        - yarn build
-        - mkdir danger_blank_test
-        - cd danger_blank_test
-        - yarn init --yes
-        - yarn add file:..
-        - echo "warn('I warned you')" > dangerfile.js
-        - echo "Testing a blank Dangerfile on an empty project"
-        - DEBUG="*" yarn danger run --text-only
-        - cd ..
-        - rm -rf danger_blank_test
-
-        - npm install -g create-react-app
-        - create-react-app danger_babel_test
-        - cd danger_babel_test
-        - yarn add file:..
-        - echo "warn('Expect 2 warnings'); const a = async () => {warn('the other');}; schedule(a)" > dangerfile.js
-        - echo "Testing a blank Dangerfile on a babel CRA project"
-        - DEBUG="*" yarn danger ci --text-only
-        - cd ..
-        - rm -rf danger_babel_test
 
 script:
   - yarn lint

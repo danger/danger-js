@@ -19,11 +19,16 @@ const messageToSendDSL = "danger://send-dsl"
 // Sanitizes the DSL so for sending via STDOUT
 export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
   if (dangerDSL.github && dangerDSL.github.api) {
+    // @ts-ignore
     delete dangerDSL.github.api
   }
 
   const dangerJSONOutput: DangerJSON = { danger: dangerDSL }
   return JSON.stringify(dangerJSONOutput, null, "  ") + "\n"
+}
+
+export const addSubprocessCallAguments = (call: string[], args: string[] = process.argv): string[] => {
+  return call.concat(["runner"], args.slice(1, args.length))
 }
 
 // Runs the Danger process
@@ -116,7 +121,7 @@ export const runDangerSubprocess = (
       d(`Handling fail from subprocess`)
       process.exitCode = code
 
-      const failResults = resultsWithFailure(`${processDisplayName}\` failed.`, "### Log\n\n" + markdownCode(allLogs))
+      const failResults = resultsWithFailure(`\`${processDisplayName}\` failed.`, "### Log\n\n" + markdownCode(allLogs))
       if (results) {
         results = mergeResults(results, failResults)
       } else {

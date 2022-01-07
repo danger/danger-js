@@ -1,4 +1,5 @@
 import { existsSync } from "fs"
+import { cwd } from "process"
 
 /**
  * Returns a the typical Dangerfile, depending on it's location
@@ -27,5 +28,5 @@ export function dangerfilePath(program: any): string {
     return "Dangerfile.js"
   }
 
-  throw new Error("Could not find a `dangerfile.js` or `dangerfile.ts` in the current working directory.")
+  throw new Error(`Could not find a 'dangerfile.js' or 'dangerfile.ts' in the current working directory (${cwd()}).`)
 }

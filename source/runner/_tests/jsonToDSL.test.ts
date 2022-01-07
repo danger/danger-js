@@ -42,7 +42,10 @@ describe("runner/jsonToDSL", () => {
 
   it("should call LocalGit with correct base", async () => {
     await jsonToDSL(dsl as DangerDSLJSONType, new FakeCI({}))
-    expect(localGetDiff).toHaveBeenLastCalledWith("develop", "HEAD")
+    expect(localGetDiff).toHaveBeenLastCalledWith("develop", "HEAD", undefined)
+    dsl.settings.cliArgs.staging = true
+    await jsonToDSL(dsl as DangerDSLJSONType, new FakeCI({}))
+    expect(localGetDiff).toHaveBeenLastCalledWith("develop", "HEAD", true)
   })
 
   it("should expose BitBucketServerAPI if `dsl.bitbucket_server` is passed in", async () => {

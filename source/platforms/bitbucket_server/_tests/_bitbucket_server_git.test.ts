@@ -104,6 +104,8 @@ describe("the dangerfile gitDSL - BitBucket Server", () => {
   })
 
   it("sets up commit data correctly", async () => {
+    expect(gitDSL.head).toBe("d6725486c38d46a33e76f622cf24b9a388c8d13d")
+    expect(gitDSL.base).toBe("8942a1f75e4c95df836f19ef681d20a87da2ee20")
     expect(gitDSL.commits[0]).toMatchSnapshot()
   })
 
@@ -129,12 +131,12 @@ describe("the dangerfile gitDSL - BitBucket Server", () => {
 
   it("checks promise rejection for line not in the diff for inline comment", async () => {
     const promise = bbs.findTypeOfLine(gitDSL, 2, "banana")
-    await expect(promise).rejects
+    await expect(promise).rejects.toBeUndefined()
   })
 
   it("checks promise rejection for `del` line for inline comment for deleted file", async () => {
     const promise = bbs.findTypeOfLine(gitDSL, 0, "jest.eslint.config.js")
-    await expect(promise).rejects
+    await expect(promise).rejects.toBeUndefined()
   })
 
   it("writes a JSON DSL fixture", async () => {

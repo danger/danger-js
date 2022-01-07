@@ -3,6 +3,7 @@
 //
 
 import { Octokit as GitHub } from "@octokit/rest"
+import { Gitlab } from "gitlab"
 
 type MarkdownString = string
 // TODO: extract out from BitBucket specifically, or create our own type
@@ -39,10 +40,10 @@ interface BitBucketCloudPRDSL {
   description: string
   /** The pull request's current status. */
   state: "OPEN" | "MERGED" | "DECLINED" | "SUPERSEDED"
-  /** Date PR created as number of milliseconds since the unix epoch */
-  created_on: number
-  /** Date PR updated as number of milliseconds since the unix epoch */
-  updated_on: number
+  /** When the pr was created, in ISO 8601 format */
+  created_on: string
+  /** When the pr was updated, in ISO 8601 format */
+  updated_on: string
   /** The PR's source, The repo Danger is running on  */
   source: BitBucketCloudMergeRef
   /** The PR's destination */
@@ -118,7 +119,7 @@ interface BitBucketCloudCommit {
     user: BitBucketCloudUser
   }
 
-  /** When the commit was commited to the project, in ISO 8601 format */
+  /** When the commit was committed to the project, in ISO 8601 format */
   date: string
   /** The commit's message */
   message: string
@@ -301,7 +302,7 @@ interface BitBucketServerCommit {
   }
   /** The UNIX timestamp for when the commit was authored */
   authorTimestamp: number
-  /** The author of the commit, assumed to be the person who commited/merged the code into a project. */
+  /** The author of the commit, assumed to be the person who committed/merged the code into a project. */
   committer: {
     /** The id of the commit committer */
     name: string
@@ -310,7 +311,7 @@ interface BitBucketServerCommit {
     /** The email of the commit committer */
     emailAddress: string
   }
-  /** When the commit was commited to the project */
+  /** When the commit was committed to the project */
   committerTimestamp: number
   /** The commit's message */
   message: string
@@ -324,9 +325,9 @@ interface BitBucketServerCommit {
 }
 
 interface BitBucketServerDiff {
-  /** The file refrence when moved */
+  /** The file reference when moved */
   destination?: BitBucketServerFile
-  /** The original file refrence */
+  /** The original file reference */
   source?: BitBucketServerFile
   /** A set of diff changes */
   hunks: BitBucketServerHunk[]
@@ -892,6 +893,16 @@ type GitMatchResult = {
 /** The git specific metadata for a PR */
 interface GitDSL extends GitJSONDSL {
   /**
+   * The git commit Danger is comparing from.
+   */
+  base: string
+
+  /**
+   * The git commit Danger is comparing to.
+   */
+  head: string
+
+  /**
    * A Chainsmoker object to help match paths as an elegant DSL. It
    * lets you write a globbed string and then get booleans on whether
    * there are matches within a certain part of the git DSL.
@@ -963,8 +974,10 @@ interface GitDSL extends GitJSONDSL {
 
   /**
    * Offers the overall lines of code added/removed in the diff
+   *
+   * @param {string} pattern an option glob pattern to filer files that will considered for lines of code.
    */
-  linesOfCode(): Promise<number | null>
+  linesOfCode(pattern?: string): Promise<number | null>
 }
 // This is `danger.github` inside the JSON
 
@@ -1427,16 +1440,23 @@ interface GitHubReviewers {
 
 // getPlatformReviewDSLRepresentation
 interface GitLabJSONDSL {
+  /** Info about the repo */
   metadata: RepoMetaData
+  /** Info about the merge request */
   mr: GitLabMR
+  /** All of the individual commits in the merge request */
   commits: GitLabMRCommit[]
+  /** Merge Request-level MR approvals Configuration */
+  approvals: GitLabApproval
 }
 
 // danger.gitlab
+/** The GitLab metadata for your MR */
 interface GitLabDSL extends GitLabJSONDSL {
   utils: {
     fileContents(path: string, repoSlug?: string, ref?: string): Promise<string>
   }
+  api: InstanceType<typeof Gitlab>
 }
 
 // ---
@@ -1477,40 +1497,52 @@ interface GitLabUserProfile extends GitLabUser {
 }
 
 interface GitLabMRBase {
-  /**  */
+  /** The MR's id */
   id: number
 
-  /**  */
+  /** The unique ID for this MR */
   iid: number
 
-  /**  */
+  /** The project ID for this MR */
   project_id: number
 
-  /**  */
+  /** The given name of the MR */
   title: string
 
-  /**  */
+  /** The body text describing the MR */
   description: string
 
-  /**  */
+  /** The MR's current availability */
   state: "closed" | "open" | "locked" | "merged"
 
-  /**  */
+  /** When was the MR made */
   created_at: string
 
-  /**  */
+  /** When was the MR updated */
   updated_at: string
 
+  /** What branch is this MR being merged into */
   target_branch: string
+  /** What branch is this MR come from */
   source_branch: string
+
+  /** How many folks have given it an upvote */
   upvotes: number
+  /** How many folks have given it an downvote */
   downvotes: number
 
+  /** Who made it */
   author: GitLabUser
+  /** Access rights for the user who created the MR */
   user: {
+    /** Does the author have access to merge? */
     can_merge: boolean
   }
-  assignee: GitLabUser
+  /** Who was assigned as the person to review */
+  assignee?: GitLabUser
+  assignees: GitLabUser[]
+  /** Users who were added as reviewers to the MR */
+  reviewers: GitLabUser[]
   source_project_id: number
   target_project_id: number
   labels: string[]
@@ -1548,6 +1580,7 @@ interface GitLabMRBase {
   }
 }
 
+/** TODO: These need more comments from someone who uses GitLab, see GitLabDSL.ts in the danger-js repo */
 interface GitLabMR extends GitLabMRBase {
   squash: boolean
   subscribed: boolean
@@ -1647,6 +1680,55 @@ interface GitLabMRCommit {
   committer_email: string
   committed_date: string
 }
+
+interface GitLabRepositoryFile {
+  file_name: string
+  file_path: string
+  size: number
+  encoding: "base64"
+  content: string
+  content_sha256: string
+  ref: string
+  blob_id: string
+  commit_id: string
+  last_commit_id: string
+}
+
+interface GitLabCommit {
+  id: string
+  short_id: string
+  title: string
+  author_name: string
+  author_email: string
+  created_at: string
+}
+
+interface GitLabRepositoryCompare {
+  commit: GitLabCommit
+  commits: GitLabCommit[]
+  diffs: GitLabMRChange[]
+  compare_timeout: boolean
+  compare_same_ref: boolean
+}
+
+interface GitLabApproval {
+  id: number
+  iid: number
+  project_id: number
+  title: string
+  description: string
+  state: "closed" | "open" | "locked" | "merged"
+  created_at: string
+  updated_at: string
+  merge_status: "can_be_merged"
+  approvals_required: number
+  approvals_left: number
+  approved_by?:
+    | {
+        user: GitLabUser
+      }[]
+    | GitLabUser[]
+}
 /**
  * The result of user doing warn, message or fail, built this way for
  * expansion later.
@@ -1681,6 +1763,8 @@ interface CliArgs {
   dangerfile: string
   /** So you can have many danger runs in one code review */
   id: string
+  /** Use staged changes */
+  staging?: boolean
 }
 
 // NOTE: if add something new here, you need to change dslGenerator.ts

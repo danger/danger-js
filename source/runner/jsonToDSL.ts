@@ -45,8 +45,8 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
     git = bitBucketServerGitDSL(bitbucket_server!, dsl.git, api as BitBucketServerAPI)
   } else if (process.env["DANGER_BITBUCKETCLOUD_OAUTH_KEY"] || process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
     git = bitBucketCloudGitDSL(bitbucket_cloud!, dsl.git, api as BitBucketCloudAPI)
-  } else if (process.env["DANGER_GITLAB_API_TOKEN"]) {
-    git = gitLabGitDSL(gitlab!, dsl.git)
+  } else if (process.env["DANGER_GITLAB_API_TOKEN"] || process.env["DANGER_GITLAB_API_OAUTH_TOKEN"]) {
+    git = gitLabGitDSL(gitlab!, dsl.git, api as GitLabAPI)
   } else {
     git = source && source.useEventDSL ? ({} as any) : githubJSONToGitDSL(github!, dsl.git)
   }
@@ -77,7 +77,10 @@ const apiForDSL = (dsl: DangerDSLJSONType): Octokit | BitBucketServerAPI | GitLa
   }
 
   const gitlab = dsl.gitlab
-  if (gitlab != null && process.env["DANGER_GITLAB_API_TOKEN"] != null) {
+  if (
+    gitlab != null &&
+    (process.env["DANGER_GITLAB_API_TOKEN"] != null || process.env["DANGER_GITLAB_API_OAUTH_TOKEN"] != null)
+  ) {
     // d({ gitlab })
     return new GitLabAPI(gitlab.metadata, getGitLabAPICredentialsFromEnv(process.env))
   }

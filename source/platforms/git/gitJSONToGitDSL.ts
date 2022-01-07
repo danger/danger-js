@@ -6,9 +6,11 @@ import isobject from "lodash.isobject"
 import keys from "lodash.keys"
 import memoize from "lodash.memoize"
 
-import * as jsonDiff from "rfc6902"
+import * as jsonDiff from "fast-json-patch"
 import jsonpointer from "jsonpointer"
 import JSON5 from "json5"
+
+import micromatch from "micromatch"
 
 import { GitDSL, JSONPatchOperation, GitJSONDSL, StructuredDiff } from "../../dsl/GitDSL"
 import chainsmoker from "../../commands/utils/chainsmoker"
@@ -88,7 +90,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     return {
       before: baseFile === "" ? null : baseJSON,
       after: headFile === "" ? null : headJSON,
-      diff: jsonDiff.createPatch(baseJSON, headJSON) as JSONPatchOperation[],
+      diff: jsonDiff.compare(baseJSON, headJSON) as JSONPatchOperation[],
     }
   }
 
@@ -155,11 +157,13 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     }, Object.create(null))
   }
 
-  const linesOfCode = async () => {
+  const linesOfCode = async (pattern?: string) => {
+    const isPatternMatch = (path: string) => pattern === undefined || micromatch.isMatch(path, pattern)
+
     const [createdFilesDiffs, modifiedFilesDiffs, deletedFilesDiffs] = await Promise.all([
-      Promise.all(gitJSONRep.created_files.map(path => diffForFile(path))),
-      Promise.all(gitJSONRep.modified_files.map(path => diffForFile(path))),
-      Promise.all(gitJSONRep.deleted_files.map(path => diffForFile(path))),
+      Promise.all(gitJSONRep.created_files.filter(isPatternMatch).map(path => diffForFile(path))),
+      Promise.all(gitJSONRep.modified_files.filter(isPatternMatch).map(path => diffForFile(path))),
+      Promise.all(gitJSONRep.deleted_files.filter(isPatternMatch).map(path => diffForFile(path))),
     ])
 
     let additions = createdFilesDiffs
@@ -239,6 +243,8 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
   }
 
   return {
+    base: config.baseSHA,
+    head: config.headSHA,
     fileMatch: chainsmoker({
       modified: gitJSONRep.modified_files,
       created: gitJSONRep.created_files,

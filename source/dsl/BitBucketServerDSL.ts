@@ -128,7 +128,7 @@ export interface BitBucketServerCommit {
   }
   /** The UNIX timestamp for when the commit was authored */
   authorTimestamp: number
-  /** The author of the commit, assumed to be the person who commited/merged the code into a project. */
+  /** The author of the commit, assumed to be the person who committed/merged the code into a project. */
   committer: {
     /** The id of the commit committer */
     name: string
@@ -137,7 +137,7 @@ export interface BitBucketServerCommit {
     /** The email of the commit committer */
     emailAddress: string
   }
-  /** When the commit was commited to the project */
+  /** When the commit was committed to the project */
   committerTimestamp: number
   /** The commit's message */
   message: string
@@ -151,9 +151,9 @@ export interface BitBucketServerCommit {
 }
 
 export interface BitBucketServerDiff {
-  /** The file refrence when moved */
+  /** The file reference when moved */
   destination?: BitBucketServerFile
-  /** The original file refrence */
+  /** The original file reference */
   source?: BitBucketServerFile
   /** A set of diff changes */
   hunks: BitBucketServerHunk[]

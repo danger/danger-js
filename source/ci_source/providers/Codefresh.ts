@@ -25,7 +25,7 @@ import { ensureEnvKeysExist, ensureEnvKeysAreInt } from "../ci_source_helpers"
  *            - success
  *  ```
  *
- *  The `failOnErrors` option is required in order to ensure that the step fails properly when Danger fails. If you don't wnat this behavior, you can remove this option.
+ *  The `failOnErrors` option is required in order to ensure that the step fails properly when Danger fails. If you don't want this behavior, you can remove this option.
  *
  *  Don't forget to add the `DANGER_GITHUB_API_TOKEN` variable to your pipeline settings so that Danger can properly post comments to your pull request.
  *

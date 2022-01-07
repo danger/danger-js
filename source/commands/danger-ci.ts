@@ -9,6 +9,7 @@ program
   .usage("[options]")
   .description("Runs a Dangerfile in JavaScript or TypeScript.")
   .option("--no-publish-check", "Don't add Danger check to PR", false)
+  .allowUnknownOption(true)
 
 setSharedArgs(program).parse(process.argv)
 

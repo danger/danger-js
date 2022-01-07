@@ -117,7 +117,7 @@ If you'd like to work with some reference material, here are some examples in th
 
 JavaScript:
 
-- **Libraries** - [facebook/react-native][rn], [facebook/react][r] and [ReactiveX/rxjs][rxjs].
+- **Libraries** - [facebook/react-native][rn], and [facebook/react][r].
 - **Docs** - [bamlab/dev-standards][bamlab]
 
 Some TypeScript examples:
@@ -130,10 +130,9 @@ Some TypeScript examples:
 [meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
 [rn]: https://github.com/facebook/react-native/blob/master/bots/dangerfile.js
 [r]: https://github.com/facebook/react/blob/master/dangerfile.js
-[rxjs]: https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js
 [setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
 [jest]: https://github.com/facebook/jest
-[transpilation_guide]: /js/tutorials/transpilation.html
+[transpilation_guide]: /docs/tutorials/transpilation.html.md
 [changelog]: http://danger.systems/js/changelog.html
 [apollo]: https://github.com/apollographql/apollo-client/blob/master/config/dangerfile.ts
 [bamlab]: https://github.com/bamlab/dev-standards/blob/master/dangerfile.js

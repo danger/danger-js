@@ -89,6 +89,20 @@ export const GitHubIssueCommenter = (api: GitHubAPI) => {
       })
     },
 
+    createInlineReview: (git: GitDSL, comments: { comment: string; path: string; line: number }[]) => {
+      let commitId = git.commits[git.commits.length - 1].sha
+      d("Finishing review. Commit: " + commitId)
+      return Promise.all(
+        comments.map(comment =>
+          findPositionForInlineComment(git, comment.line, comment.path).then(position => ({
+            comment: comment.comment,
+            path: comment.path,
+            position,
+          }))
+        )
+      ).then(comments => api.postInlinePRReview(commitId, comments))
+    },
+
     /**
      * Updates an inline comment if possible. If platform can't update an inline comment,
      * it returns a promise rejection. (e.g. platform doesn't support inline comments or line was out of diff).

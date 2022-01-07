@@ -12,7 +12,7 @@ This tutorial continues after "[Getting Started][started]" - so you should have 
 
 ## Keeping on top of your dependencies
 
-Building pretty-much anything in the node ecosystem involves using using external dependencies. In an ideal situation
+Building pretty-much anything in the node ecosystem involves using external dependencies. In an ideal situation
 you want to use as few dependencies as possible, and get the most use out of them. Remember that you are shipping your
 dependencies too, so you are responsible for them to your end-users.
 

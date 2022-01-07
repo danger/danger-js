@@ -1,6 +1,6 @@
 <!--
 
-// Please add your own contribution below inside the Master section, no need to
+// Please add your own contribution below inside the Main section, no need to
 // set a version number, that happens during a deploy. Thanks!
 //
 // These docs are aimed at users rather than danger developers, so please limit technical
@@ -8,14 +8,165 @@
 
 // Note: if this is your first PR, you'll need to add your URL to the footnotes
 //       see the bottom of this file. The list there is sorted, try to follow that.
-x
+
 -->
 
-## Master
+## Main
 
 <!-- Your comment below this -->
 
-  <!-- Your comment above this -->
+- Fix: [Github] Multiple Inline Comments on the same file/line should all be posted [#1176](https://github.com/danger/danger-js/pull/1176) [@Rouby]
+
+<!-- Your comment above this -->
+
+# 10.8.0
+
+- Feature: `danger local --outputJSON` for [#1177](https://github.com/danger/danger-js/pull/1177) [@orta]
+- Fix: Updates `jsonpointer` for [#1174](https://github.com/danger/danger-js/pull/1174) [@unfernandito]
+- Fix: Updates `parse-link-header` for CVE-2021-23490 [#1190](https://github.com/danger/danger-js/pull/1190) [@fbartho]
+
+# 10.7.1
+
+- Updates micromatch dependencies for CVE-2021-23440
+
+# 10.7.0
+
+- Adds support for XcodeCloud
+
+# 10.6.6
+
+- Fix for supporting Bitbucket Server personal repositories
+- GitLab: Added `GitLabApi` to `danger.gitlab.api`. - [@shyim]
+- GitLab: Added label helper functions to `danger.gitlab.api.addLabels` and `danger.gitlab.api.removeLabels`. - [@shyim]
+
+# 10.6.5
+
+- Improvements to the git parsing for `danger local` - [@denieler]
+- Bitbucket Cloud: Fix type of BitBucketCloudPRDSL.created_on and updated_on. - [@hellocore]
+
+# 10.6.4
+
+- DEBUG="\*" will now log out the response for any HTTP request which isn't classed as "OK" - [@orta]
+
+# 10.6.3
+
+- Fixed Bitrise's `ciRunURL` underlying env var - [@rogerluan]
+- Simplified Bitrise repo slug lookup, fixing SSH URL parsing in BitBucketServer - [@rogerluan]
+- Log failure to update status also when not in verbose mode - [@rogerluan]
+
+# 10.6.2
+
+- Added Codemagic.io as a supported CI - [@fbartho]
+- Switched Danger's default branch to be 'main' from 'master' - [@orta]
+- Added GitLab Approvals to the DSL: `gitlab.approvals` - kelvin-lemon
+
+# 10.6.1
+
+- Better detection of using the github actions bot for comment deletion - [@orta]
+
+# 10.6.0
+
+- Bitbucket Cloud: Add markdown emoji instead of unicode - [@JanStevens]
+- Add `DANGER_DISABLE_TSC` environment variable to disable transpiling with tsc, providing a way to force transpiling
+  with Babel - [@ozzieorca]
+- Adds options `--newComment` and `--removePreviousComments` - [@davidhouweling]
+- Add support for a file path filter when calculation lines of code - [@melvinvermeer]
+
+# 10.5.4
+
+- Fix for `danger local` not passing through `--staging` - [@g3offrey]
+
+# 10.5.3
+
+- Fix for `danger local` not showing commit messages - [@hmschreiner]
+
+# 10.5.2
+
+- Adds `danger.git.head` and `danger.git.base` - [@jamiebuilds]
+
+# 10.5.1
+
+- Bitbucket Cloud: Fix bug when Danger updating inline comment with summary comment. - [@hellocore]
+- Fall back to alternative methods for establishing the PR number from CodeBuild - [@alexandermendes]
+
+# 10.5.0
+
+- Handle deprecations for the APIs used with `--use-github-checks` #1073 [@wardpeet](https://github.com/wardpeet)
+
+# 10.4.1
+
+- Improved `tsconfig.json` file lookup strategy: it now looks for it starting from the location of the danger file.
+  #1068 [@igorbek](https://github.com/igorbek)
+- Upgrade node-fetch to 2.6.1 to fix GHSA-w7rc-rwvf-8q5r. #1071 [@hmcc](https://github.com/hmcc)
+
+# 10.4.0
+
+- Adds aliases to the FakeCI env vars. You could now have something like:
+  ```yml
+  - run: "npx danger-ts ci"
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      DANGER_MANUAL_CI: true
+      DANGER_MANUAL_GH_REPO: ${{ steps.pr_info.outputs.repo }}
+      DANGER_MANUAL_PR: ${{ steps.pr_info.outputs.number }}
+  ```
+  Which looks more intentional instead of: `DANGER_FAKE_CI` etc. [@orta](https://github.com/orta)
+
+# 10.3.1
+
+- Experimental support for internal routing when using `npx danger-ts` [@orta]
+
+# 10.3.0
+
+- Added a CLI option `--ignoreOutOfDiffComments` so that you can ignore inline-comments for lines that were not changed
+  in the checked PR. The comments would be ignored completely - they won't even show in the results comment. [@pinkasey]
+
+# 10.2.2
+
+- Add support for `danger local` on repos without a master branch - [@ahobson](https://github.com/ahobson)
+
+# 10.2.1
+
+- Wait for close event on spawned process in local git platform - [@gzaripov]
+- Fix Typo in README.md [@NotMoni]
+- Fix danger failure on getting diff for files with spaces in file path [@HonzaMac]
+- Document how to disable transpilation [@rzgry]
+- Fix get blob url for pr commit [@doniyor2109]
+
+# 10.2.0
+
+- Take commit hash from CircleCI environment variable [@valscion]
+- Fix project path with /- in GitLab MR URL [@pgoudreau]
+- When creating a new PR with `createOrUpdatePR`, add the description (as done when editing) - [@sogame]
+
+# 10.1.0
+
+- Adds support for Bamboo CI [@tim3trick]
+- Replace regex to a long url repos approach on Bitrise [@lucasmpaim]
+- Pass process arguments back to the original process [@f-meloni]
+- When fetching existing labels in `createOrAddLabel` use pagination to fetch them all - [@sogame]
+
+# 10.0.0
+
+- Changed JSON patch implementation for better memory performance. [@dkundel]
+
+  **Breaking:** `JSONPatchForFile` will return a different order of operations than previously. It will also return a
+  `path` with the index of the element inserted into an array for `add` operations.
+
+# 9.3.1
+
+- Don't fail when using `createOrAddLabel` if label fails to be created or added - [@sogame]
+
+# 9.3.0
+
+- Add the staged flag to `danger local` command - [@soyn]
+- Don't use hardcoded userId to update comments if using personal token in Github Actions - [@rohit-gohri]
+- Disable warning in Github Action if using DANGER_GITHUB_API_TOKEN - [@rohit-gohri]
+- Update `parse-diff` library - [@417-72KI]
+- Fix repository slug in Jenkins provider - [sandratatarevicova]
+- Add Gitlab diff support - [@rohit-gohri]
+- Fix Typos across danger-js Repo - [@yohix]
+- Fix `@octokit/rest` deprecation warning when using `.issues.addLabels()` - [@sogame]
 
 # 9.2.10
 
@@ -99,7 +250,7 @@ x
 - Fix Github Actions documentation - [@ravanscafi]
 - Improve Performance by Caching BitBucket Cloud Commits - [@hellocore]
 - Add compliment message to comment template on Bitbucket Cloud - [@hellocore]
-- Add option to set custom icon in messages - [@rohit-smpx]
+- Add option to set custom icon in messages - [@rohit-gohri]
 
 # 9.1.0
 
@@ -480,7 +631,7 @@ Also, `danger pr` now accepts a `--process` arg.
         body: "Here is your new repo template files",
         owner: "orta",
         repo: "new-repo",
-        baseBranch: "master",
+        baseBranch: "main",
         newBranchName: "welcome",
         commitMessage: "Sets up the welcome package",
       },
@@ -1714,10 +1865,12 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@danielrosenwasser]: https://github.com/DanielRosenwasser
 [@davidbrunow]: https://github.com/davidbrunow
 [@dfalling]: https://github.com/dfalling
+[@dkundel]: https://github.com/dkundel
 [@f-meloni]: https://github.com/f-meloni
 [@fbartho]: https://github.com/fbartho
 [@fwal]: https://github.com/fwal
 [@happylinks]: https://github.com/happylinks
+[@hmcc]: https://github.com/hmcc
 [@hongrich]: https://github.com/hongrich
 [@hellocore]: https://github.com/HelloCore
 [@imorente]: https://github.com/imorente
@@ -1731,17 +1884,19 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@ninjaprox]: https://github.com/ninjaprox
 [@nminhnguyen]: https://github.com/NMinhNguyen
 [@nornagon]: https://github.com/nornagon
+[@notmoni]: https://github.com/NotMoni
 [@orta]: https://github.com/orta
 [@osmestad]: https://github.com/osmestad
 [@patrickkempff]: https://github.com/patrickkempff
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@randak]: https://github.com/randak
 [@ravanscafi]: https://github.com/ravanscafi
-[@rohit-smpx]: https://github.com/rohit-smpx
+[@rohit-gohri]: https://github.com/rohit-gohri
 [@sajjadzamani]: https://github.com/sajjadzamani
 [@sebinsua]: https://github.com/sebinsua
 [@sgtcoolguy]: https://github.com/sgtcoolguy
 [@sharkysharks]: https://github.com/sharkysharks
+[@sogame]: https://github.com/sogame
 [@stevemoser]: https://github.com/stevemoser
 [@stevenp]: https://github.com/stevenp
 [@sunshinejr]: https://github.com/sunshinejr
@@ -1756,3 +1911,12 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@bigkraig]: https://github.com/bigkraig
 [@notjosh]: https://github.com/notjosh
 [@iljadaderko]: https://github.com/IljaDaderko
+[@417-72ki]: https://github.com/417-72KI
+[@soyn]: https://github.com/Soyn
+[@tim3trick]: https://github.com/tim3trick
+[@doniyor2109]: https://github.com/doniyor2109
+[@alexandermendes]: https://github.com/alexandermendes
+[@jamiebuilds]: https://github.com/jamiebuilds
+[@hmschreiner]: https://github.com/hmschreiner
+[@g3offrey]: https://github.com/g3offrey
+[@denieler]: https://github.com/denieler

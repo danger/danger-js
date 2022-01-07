@@ -1,3 +1,5 @@
+import { join } from "path"
+
 const usesProcessSeparationCommands = ["ci", "pr", "local"]
 
 const dangerRunToRunnerCLI = (argv: string[]) => {
@@ -16,6 +18,26 @@ const dangerRunToRunnerCLI = (argv: string[]) => {
       newJSFile = newJSFile.replace("danger-" + name, "danger-runner")
     })
 
+    // Support re-routing internally in npx for danger-ts
+    // If I recall, npm 7 is getting an npx re-write, so it might
+    // be worth recommending yarn, but that requires folks using yarn 2
+    // which I'm not sure will ever get the same level of a adoption of yarn v1
+    //
+    if (newJSFile.includes("npx") && newJSFile.endsWith("danger-ts")) {
+      newJSFile = join(
+        newJSFile,
+        "..",
+        "..",
+        "lib",
+        "node_modules",
+        "danger-ts",
+        "node_modules",
+        "danger",
+        "distribution",
+        "commands",
+        "danger-runner.js"
+      )
+    }
     newCommand.push(newJSFile)
     for (let index = 2; index < argv.length; index++) {
       newCommand.push(argv[index])
