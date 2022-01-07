@@ -8,7 +8,7 @@ jobs:
     steps:
       # Check out, and set up the node/ruby infra
       - uses: actions/checkout@v1
-      - actions/setup-node@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: '14'
 
