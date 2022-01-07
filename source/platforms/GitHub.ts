@@ -42,6 +42,7 @@ export function GitHub(api: GitHubAPI) {
       let pr: GitHubPRDSL
       try {
         pr = await api.getPullRequestInfo()
+        pr.body = pr.body || ""
       } catch {
         process.exitCode = 1
         throw `
