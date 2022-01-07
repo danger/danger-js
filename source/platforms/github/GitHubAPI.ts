@@ -181,6 +181,31 @@ export class GitHubAPI {
     }
   }
 
+  postInlinePRReview = async (commitId: string, comments: { comment: string; path: string; position: number }[]) => {
+    const repo = this.repoMetadata.repoSlug
+    const prID = this.repoMetadata.pullRequestID
+    const res = await this.post(
+      `repos/${repo}/pulls/${prID}/reviews`,
+      {},
+      {
+        body: "",
+        event: "COMMENT",
+        commit_id: commitId,
+        comments: comments.map(({ comment, path, position }) => ({
+          body: comment,
+          path,
+          position,
+        })),
+      },
+      false
+    )
+    if (res.ok) {
+      return res.json()
+    } else {
+      throw await res.json()
+    }
+  }
+
   updateInlinePRComment = async (comment: string, commentId: string) => {
     const repo = this.repoMetadata.repoSlug
     const res = await this.patch(

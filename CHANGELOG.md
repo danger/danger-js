@@ -15,6 +15,8 @@
 
 <!-- Your comment below this -->
 
+- Fix: [Github] Multiple Inline Comments on the same file/line should all be posted [#1176](https://github.com/danger/danger-js/pull/1176) [@Rouby]
+
 <!-- Your comment above this -->
 
 # 10.8.0

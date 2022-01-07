@@ -233,6 +233,20 @@ describe("setup", () => {
     expect(platform.createInlineComment).toBeCalled()
   })
 
+  it("Creates multiple inline comments as a review", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
+    const dsl = await defaultDsl(platform)
+    platform.createInlineReview = jest.fn()
+    platform.createInlineComment = jest.fn()
+    platform.createComment = jest.fn()
+    platform.updateOrCreateComment = jest.fn()
+
+    await exec.handleResults(inlineMultipleWarnResults, dsl.git)
+    expect(platform.createInlineReview).toBeCalled()
+    expect(platform.createInlineComment).not.toBeCalled()
+  })
+
   it("Invalid inline comment is ignored if ignoreOutOfDiffComments is true", async () => {
     const platform = new FakePlatform()
     const config = Object.assign({}, defaultConfig, { ignoreOutOfDiffComments: true })
@@ -355,7 +369,10 @@ describe("setup", () => {
     const dsl = await defaultDsl(platform)
     const previousComments = mockPayloadForResults(inlineMultipleWarnResults)
 
-    platform.getInlineComments = jest.fn().mockResolvedValueOnce(previousComments).mockResolvedValueOnce([])
+    platform.getInlineComments = jest
+      .fn()
+      .mockResolvedValueOnce(previousComments)
+      .mockResolvedValueOnce([])
     platform.updateInlineComment = jest.fn()
     platform.createInlineComment = jest.fn()
     platform.deleteInlineComment = jest.fn()

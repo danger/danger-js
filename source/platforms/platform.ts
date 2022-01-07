@@ -81,6 +81,8 @@ export interface PlatformCommunicator {
   updateInlineComment: (comment: string, commentId: string) => Promise<any>
   /** Delete an inline comment */
   deleteInlineComment: (commentId: string) => Promise<boolean>
+  /** Create a review with inline comments */
+  createInlineReview?: (git: GitDSL, comments: { comment: string; path: string; line: number }[]) => Promise<any>
   /** Delete the main Danger comment */
   deleteMainComment: (dangerID: string) => Promise<boolean>
   /** Replace the main Danger comment, returning the URL to the issue */

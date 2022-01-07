@@ -381,30 +381,56 @@ export class Executor {
     // Leftovers in deleteComments array should all be deleted afterwards
     let deleteComments = Array.isArray(previousComments) ? previousComments.filter(c => c.ownedByDanger) : []
     let commentPromises: Promise<any>[] = []
+    const inlineResultsForReview: DangerInlineResults[] = []
     for (let inlineResult of sortedInlineResults) {
       const index = deleteComments.findIndex(p =>
         p.body.includes(fileLineToString(inlineResult.file, inlineResult.line))
       )
-      let promise: Promise<any>
+      let promise: Promise<any> | undefined = undefined
       if (index != -1) {
         let previousComment = deleteComments[index]
         deleteComments.splice(index, 1)
         promise = this.updateInlineComment(inlineResult, previousComment)
       } else {
-        promise = this.sendInlineComment(git, inlineResult)
+        if (typeof this.platform.createInlineReview === "function") {
+          inlineResultsForReview.push(inlineResult)
+        } else {
+          promise = this.sendInlineComment(git, inlineResult)
+        }
       }
-      commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => inlineResultsIntoResults(inlineResult)))
+      if (promise) {
+        commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => inlineResultsIntoResults(inlineResult)))
+      }
     }
     deleteComments.forEach(comment => {
       let promise = this.deleteInlineComment(comment)
       commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => emptyDangerResults))
     })
 
-    return Promise.all(commentPromises).then(dangerResults => {
+    return Promise.all([
+      this.sendInlineReview(git, inlineResultsForReview).catch(_e =>
+        inlineResultsForReview.forEach(inlineResult => inlineResultsIntoResults(inlineResult))
+      ),
+      ...commentPromises,
+    ]).then(dangerResults => {
       return new Promise<DangerResults>(resolve => {
-        resolve(dangerResults.reduce((acc, r) => mergeResults(acc, r), emptyResult))
+        resolve(dangerResults.slice(1).reduce((acc, r) => mergeResults(acc, r), emptyResult))
       })
     })
+  }
+
+  async sendInlineReview(git: GitDSL, inlineResultsForReview: DangerInlineResults[]): Promise<any> {
+    if (inlineResultsForReview.length === 0 || typeof this.platform.createInlineReview !== "function") {
+      return emptyDangerResults
+    }
+    return await this.platform.createInlineReview(
+      git,
+      inlineResultsForReview.map(result => ({
+        comment: this.inlineCommentTemplate(result),
+        path: result.file,
+        line: result.line,
+      }))
+    )
   }
 
   async sendInlineComment(git: GitDSL, inlineResults: DangerInlineResults): Promise<any> {
