@@ -17,10 +17,6 @@
 
 <!-- Your comment above this -->
 
-# 10.7.2
-
-- Updates jsonpointer for CVE-2021-23807
-
 # 10.7.1
 
 - Updates micromatch dependencies for CVE-2021-23440
