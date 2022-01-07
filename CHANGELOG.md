@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- Enhancement(perf): [Github] Check if the filesystem can load files instead of always using Github API [#991](https://github.com/danger/danger-js/pull/991) [@orta]
 - Fix: [Github] Multiple Inline Comments on the same file/line should all be posted [#1176](https://github.com/danger/danger-js/pull/1176) [@Rouby]
 
 <!-- Your comment above this -->
@@ -834,7 +835,7 @@ Also, `danger pr` now accepts a `--process` arg.
 ## 3.5.0 - 3.5.1
 
 - Fixed a bug where Danger posts empty main comment when it have one or more inline comments to post [@codestergit]
-- fix bug when commiting .png files on BitBucket [@Mifi]
+- fix bug when committing .png files on BitBucket [@Mifi]
 - Adds support for inline comments for bitbucket server. [@codestergit]
 
 ## 3.4.7
