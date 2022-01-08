@@ -23,10 +23,12 @@ class GitLab implements Platform {
   getPlatformReviewDSLRepresentation = async (): Promise<GitLabJSONDSL> => {
     const mr = await this.getReviewInfo()
     const commits = await this.api.getMergeRequestCommits()
+    const approvals = await this.api.getMergeRequestApprovals()
     return {
       metadata: this.api.repoMetadata,
       mr,
       commits,
+      approvals,
     }
   }
 
@@ -94,7 +96,6 @@ class GitLab implements Platform {
     d("updateOrCreateComment", { dangerID, newComment })
 
     const notes: GitLabNote[] = await this.getDangerNotes(dangerID)
-    debugger
 
     let note: GitLabNote
 
@@ -192,4 +193,5 @@ export const gitlabJSONToGitLabDSL = (gl: GitLabDSL, api: GitLabAPI): GitLabDSL 
   utils: {
     fileContents: api.getFileContents,
   },
+  api: api.apiInstance,
 })

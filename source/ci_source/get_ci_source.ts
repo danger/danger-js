@@ -34,7 +34,7 @@ export async function getCISourceForExternal(env: Env, modulePath: string): Prom
         const moduleConstructor = externalModule.default || externalModule
         resolve(new moduleConstructor(env))
       }
-      resolve()
+      resolve(undefined)
     })
   })
 }

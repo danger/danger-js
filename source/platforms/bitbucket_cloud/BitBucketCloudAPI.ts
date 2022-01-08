@@ -214,11 +214,12 @@ export class BitBucketCloudAPI {
     return await res.text()
   }
 
-  getDangerComments = async (dangerID: string): Promise<BitBucketCloudPRComment[]> => {
+  getDangerMainComments = async (dangerID: string): Promise<BitBucketCloudPRComment[]> => {
     const comments = await this.getPullRequestComments()
     const dangerIDMessage = dangerIDToString(dangerID)
 
     return comments
+      .filter(comment => comment.inline == null)
       .filter(comment => comment.content.raw.includes(dangerIDMessage))
       .filter(comment => comment.user.uuid === this.uuid)
   }

@@ -9,7 +9,7 @@ const isTrivial = danger.github && (danger.github.pr.body + danger.github.pr.tit
 
 if (!hasChangelog && !isTrivial) {
   warn(
-    "Please add a changelog entry for your changes. You can find it in `CHANGELOG.md` \n\nPlease add your change and name to the master section."
+    "Please add a changelog entry for your changes. You can find it in `CHANGELOG.md` \n\nPlease add your change and name to the main section."
   )
 }
 

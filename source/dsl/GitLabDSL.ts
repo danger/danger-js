@@ -1,20 +1,28 @@
 // Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
 
 // TODO: extract out from BitBucket specifically, or create our own type
+import { Gitlab } from "gitlab"
 import { RepoMetaData } from "./BitBucketServerDSL"
 
 // getPlatformReviewDSLRepresentation
 export interface GitLabJSONDSL {
+  /** Info about the repo */
   metadata: RepoMetaData
+  /** Info about the merge request */
   mr: GitLabMR
+  /** All of the individual commits in the merge request */
   commits: GitLabMRCommit[]
+  /** Merge Request-level MR approvals Configuration */
+  approvals: GitLabApproval
 }
 
 // danger.gitlab
+/** The GitLab metadata for your MR */
 export interface GitLabDSL extends GitLabJSONDSL {
   utils: {
     fileContents(path: string, repoSlug?: string, ref?: string): Promise<string>
   }
+  api: InstanceType<typeof Gitlab>
 }
 
 // ---
@@ -55,40 +63,52 @@ export interface GitLabUserProfile extends GitLabUser {
 }
 
 export interface GitLabMRBase {
-  /**  */
+  /** The MR's id */
   id: number
 
-  /**  */
+  /** The unique ID for this MR */
   iid: number
 
-  /**  */
+  /** The project ID for this MR */
   project_id: number
 
-  /**  */
+  /** The given name of the MR */
   title: string
 
-  /**  */
+  /** The body text describing the MR */
   description: string
 
-  /**  */
+  /** The MR's current availability */
   state: "closed" | "open" | "locked" | "merged"
 
-  /**  */
+  /** When was the MR made */
   created_at: string
 
-  /**  */
+  /** When was the MR updated */
   updated_at: string
 
+  /** What branch is this MR being merged into */
   target_branch: string
+  /** What branch is this MR come from */
   source_branch: string
+
+  /** How many folks have given it an upvote */
   upvotes: number
+  /** How many folks have given it an downvote */
   downvotes: number
 
+  /** Who made it */
   author: GitLabUser
+  /** Access rights for the user who created the MR */
   user: {
+    /** Does the author have access to merge? */
     can_merge: boolean
   }
-  assignee: GitLabUser
+  /** Who was assigned as the person to review */
+  assignee?: GitLabUser
+  assignees: GitLabUser[]
+  /** Users who were added as reviewers to the MR */
+  reviewers: GitLabUser[]
   source_project_id: number
   target_project_id: number
   labels: string[]
@@ -126,6 +146,7 @@ export interface GitLabMRBase {
   }
 }
 
+/** TODO: These need more comments from someone who uses GitLab, see GitLabDSL.ts in the danger-js repo */
 export interface GitLabMR extends GitLabMRBase {
   squash: boolean
   subscribed: boolean
@@ -224,4 +245,53 @@ export interface GitLabMRCommit {
   committer_name: string
   committer_email: string
   committed_date: string
+}
+
+export interface GitLabRepositoryFile {
+  file_name: string
+  file_path: string
+  size: number
+  encoding: "base64"
+  content: string
+  content_sha256: string
+  ref: string
+  blob_id: string
+  commit_id: string
+  last_commit_id: string
+}
+
+export interface GitLabCommit {
+  id: string
+  short_id: string
+  title: string
+  author_name: string
+  author_email: string
+  created_at: string
+}
+
+export interface GitLabRepositoryCompare {
+  commit: GitLabCommit
+  commits: GitLabCommit[]
+  diffs: GitLabMRChange[]
+  compare_timeout: boolean
+  compare_same_ref: boolean
+}
+
+export interface GitLabApproval {
+  id: number
+  iid: number
+  project_id: number
+  title: string
+  description: string
+  state: "closed" | "open" | "locked" | "merged"
+  created_at: string
+  updated_at: string
+  merge_status: "can_be_merged"
+  approvals_required: number
+  approvals_left: number
+  approved_by?:
+    | {
+        user: GitLabUser
+      }[]
+    | GitLabUser[]
 }

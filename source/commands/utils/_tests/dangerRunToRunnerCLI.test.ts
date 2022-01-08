@@ -1,4 +1,5 @@
 import dangerRunToRunnerCLI from "../dangerRunToRunnerCLI"
+import { addSubprocessCallAguments } from "../runDangerSubprocess"
 
 describe("it can handle the command", () => {
   it("`danger ci`", () => {
@@ -47,6 +48,33 @@ it("`danger pr --dangerfile 'myDanger file.ts'`", () => {
     "--dangerfile",
     "myDanger file.ts",
   ])
+})
+
+it("Adds correct subprocess arguments", () => {
+  expect(
+    addSubprocessCallAguments(
+      ["danger-swift"],
+      ["danger", "danger-pr", "--process", "danger-swift", "--dangerfile", "File.swift"]
+    )
+  ).toEqual(["danger-swift", "runner", "danger-pr", "--process", "danger-swift", "--dangerfile", "File.swift"])
+})
+
+describe("npx danger-ts", () => {
+  it("switches to the danger in the node_mods", () => {
+    // the code uses join which gives different results on windows, and I'm too lazy to add a specific test for that
+    const isWindows = process.platform === "win32"
+    if (!isWindows) {
+      expect(
+        dangerRunToRunnerCLI([
+          "/Users/ortatherox/.nvm/versions/node/v14.5.0/bin/node",
+          "/Users/ortatherox/.npm/_npx/23085/bin/danger-ts",
+        ])
+      ).toEqual([
+        "/Users/ortatherox/.nvm/versions/node/v14.5.0/bin/node",
+        "/Users/ortatherox/.npm/_npx/23085/lib/node_modules/danger-ts/node_modules/danger/distribution/commands/danger-runner.js",
+      ])
+    }
+  })
 })
 
 describe("it can handle the command when running from pkg", () => {

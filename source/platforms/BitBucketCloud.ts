@@ -82,7 +82,7 @@ export class BitBucketCloud implements Platform {
    * @returns {Promise<boolean>} did it work?
    */
   deleteMainComment = async (dangerID: string): Promise<boolean> => {
-    const comments = await this.api.getDangerComments(dangerID)
+    const comments = await this.api.getDangerMainComments(dangerID)
     for (let comment of comments) {
       await this.api.deleteComment(comment.id.toString())
     }
@@ -98,7 +98,7 @@ export class BitBucketCloud implements Platform {
    * @returns {Promise<string>} the URL for the comment
    */
   async updateOrCreateComment(dangerID: string, newComment: string): Promise<string | undefined> {
-    const comments = await this.api.getDangerComments(dangerID)
+    const comments = await this.api.getDangerMainComments(dangerID)
     let issue = null
 
     if (comments.length) {

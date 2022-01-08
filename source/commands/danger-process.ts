@@ -42,6 +42,7 @@ program
     console.log("    -> Danger Process:")
     console.log("       http://danger.systems/js/usage/danger-process.html")
   })
+  .allowUnknownOption(true)
 
 setSharedArgs(program)
 program.action(process_name => (subprocessName = process_name)).parse(process.argv)
@@ -94,6 +95,7 @@ getRuntimeCISource(app).then(source => {
             passURLForDSL: app.passURLForDSL || false,
             disableGitHubChecksSupport: !app.useGithubChecks,
             failOnErrors: app.failOnErrors,
+            ignoreOutOfDiffComments: app.ignoreOutOfDiffComments,
           }
 
           d("Exec config: ", execConfig)

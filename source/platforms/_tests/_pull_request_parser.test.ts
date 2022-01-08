@@ -108,6 +108,60 @@ describe("parsing urls", () => {
         })
       })
     })
+
+    describe("with /-", () => {
+      describe(".com", () => {
+        it("handles PRs-", () => {
+          expect(pullRequestParser("https://gitlab.com/GROUP/PROJ/-/merge_requests/123")).toEqual({
+            pullRequestNumber: "123",
+            repo: "GROUP/PROJ",
+            platform: "GitLab",
+          })
+        })
+
+        it("handles PRs sub-pages-", () => {
+          expect(pullRequestParser("https://gitlab.com/GROUP/PROJ/-/merge_requests/123/commits")).toEqual({
+            pullRequestNumber: "123",
+            repo: "GROUP/PROJ",
+            platform: "GitLab",
+          })
+        })
+
+        it("handles sub-groups", () => {
+          expect(pullRequestParser("https://gitlab.com/GROUP/SUBGROUP/PROJ/-/merge_requests/123")).toEqual({
+            pullRequestNumber: "123",
+            repo: "GROUP/SUBGROUP/PROJ",
+            platform: "GitLab",
+          })
+        })
+      })
+
+      describe("CE/EE", () => {
+        it("handles PRs", () => {
+          expect(pullRequestParser("https://localdomain/GROUP/PROJ/-/merge_requests/123")).toEqual({
+            pullRequestNumber: "123",
+            repo: "GROUP/PROJ",
+            platform: "GitLab",
+          })
+        })
+
+        it("handles PRs sub-pages", () => {
+          expect(pullRequestParser("https://localdomain/GROUP/PROJ/-/merge_requests/123/commits")).toEqual({
+            pullRequestNumber: "123",
+            repo: "GROUP/PROJ",
+            platform: "GitLab",
+          })
+        })
+
+        it("handles sub-groups", () => {
+          expect(pullRequestParser("https://localdomain/GROUP/SUBGROUP/PROJ/-/merge_requests/123")).toEqual({
+            pullRequestNumber: "123",
+            repo: "GROUP/SUBGROUP/PROJ",
+            platform: "GitLab",
+          })
+        })
+      })
+    })
   })
 
   describe("Bitbucket Cloud", () => {

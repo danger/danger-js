@@ -156,6 +156,23 @@ describe("API testing", () => {
     await expect(api.postInlinePRComment("", "", "", 0)).rejects.toEqual(expectedJSON)
   })
 
+  it("postInlinePRReview success", async () => {
+    api.fetch = fetchJSON
+    const expectedJSON = {
+      api: "https://api.github.com/repos/artsy/emission/pulls/1/reviews",
+      headers: {
+        Authorization: "token ABCDE",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: '{"body":"","event":"COMMENT","commit_id":"","comments":[{"body":"","path":"","position":0}]}',
+    }
+    expect.assertions(1)
+    await expect(api.postInlinePRReview("", [{ comment: "", path: "", position: 0 }])).resolves.toMatchObject(
+      expectedJSON
+    )
+  })
+
   it("updateStatus('pending') success", async () => {
     api.fetch = jest.fn().mockReturnValue({ ok: true })
     api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")

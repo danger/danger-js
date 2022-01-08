@@ -6,8 +6,8 @@ export class FakeCI implements CISource {
 
   constructor(env: Env) {
     const defaults = {
-      repo: env.DANGER_TEST_REPO || "artsy/emission", // TODO: default to empty string ?
-      pr: env.DANGER_TEST_PR || "327", // TODO: default to empty string ?
+      repo: env.DANGER_TEST_REPO || env.DANGER_MANUAL_GH_REPO || "artsy/emission", // TODO: default to empty string ?
+      pr: env.DANGER_TEST_PR || env.DANGER_MANUAL_PR_NUM || "327", // TODO: default to empty string ?
     }
 
     this.env = { ...env, ...defaults }
@@ -17,7 +17,11 @@ export class FakeCI implements CISource {
   }
 
   get isCI(): boolean {
-    return ensureEnvKeysExist(this.env, ["DANGER_FAKE_CI"]) || ensureEnvKeysExist(this.env, ["DANGER_LOCAL_NO_CI"])
+    return (
+      ensureEnvKeysExist(this.env, ["DANGER_FAKE_CI"]) ||
+      ensureEnvKeysExist(this.env, ["DANGER_LOCAL_NO_CI"]) ||
+      ensureEnvKeysExist(this.env, ["DANGER_MANUAL_CI"])
+    )
   }
 
   get isPR(): boolean {

@@ -78,11 +78,11 @@ describe("API testing - BitBucket Server", () => {
 
   it("getStructuredDiffForFile", async () => {
     jsonResult = () => ({ diffs: ["diff"] })
-    const result = await api.getStructuredDiffForFile("BASE", "HEAD", "filename.txt")
+    const result = await api.getStructuredDiffForFile("BASE", "HEAD", "path with space/filename.txt")
 
     expect(api.fetch).toHaveBeenCalledWith(
       `${host}/rest/api/1.0/projects/FOO/repos/BAR/compare/diff/` +
-        `filename.txt` +
+        `path%20with%20space/filename.txt` +
         `?withComments=false&from=HEAD&to=BASE`,
       { method: "GET", body: null, headers: expectedJSONHeaders },
       undefined
@@ -272,10 +272,10 @@ describe("API testing - BitBucket Server", () => {
 
   it("getFileContents", async () => {
     textResult = "contents..."
-    const result = await api.getFileContents("path/to/foo.txt", "projects/FOO/repos/BAR", "master")
+    const result = await api.getFileContents("path/folder with space/foo.txt", "projects/FOO/repos/BAR", "master")
 
     expect(api.fetch).toHaveBeenCalledWith(
-      `${host}/projects/FOO/repos/BAR/raw/path/to/foo.txt?at=master`,
+      `${host}/rest/api/1.0/projects/FOO/repos/BAR/raw/path/folder%20with%20space/foo.txt?at=master`,
       { method: "GET", body: null, headers: expectedJSONHeaders },
       true
     )

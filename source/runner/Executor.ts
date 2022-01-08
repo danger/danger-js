@@ -58,13 +58,19 @@ export interface ExecutorOptions {
   failOnErrors?: boolean
   /** Dont add danger check to PR */
   noPublishCheck?: boolean
+  /** Ignore inline-comments that are in lines which were not changed */
+  ignoreOutOfDiffComments: boolean
+  /** Makes Danger post a new comment instead of editing its previous one */
+  newComment?: boolean
+  /** Removes all previous comment and create a new one in the end of the list */
+  removePreviousComments?: boolean
 }
 // This is still badly named, maybe it really should just be runner?
 
 const isTests = typeof jest === "object"
 
 interface ExitCodeContainer {
-  exitCode: number
+  exitCode?: number
 }
 
 export class Executor {
@@ -250,11 +256,16 @@ export class Executor {
 
     const dangerID = this.options.dangerID
     const failed = fails.length > 0
+    const hasMessages = failureCount + messageCount > 0
 
     let issueURL = undefined
 
-    if (failureCount + messageCount === 0) {
-      this.log(`Found no issues or messages from Danger. Removing any existing messages on ${this.platform.name}.`)
+    if (!hasMessages || this.options.removePreviousComments) {
+      if (!hasMessages) {
+        this.log(`Found no issues or messages from Danger. Removing any existing messages on ${this.platform.name}.`)
+      } else {
+        this.log(`'removePreviousComments' option specified. Removing any existing messages on ${this.platform.name}.`)
+      }
       await this.platform.deleteMainComment(dangerID)
       const previousComments = await this.platform.getInlineComments(dangerID)
       for (const comment of previousComments) {
@@ -262,7 +273,9 @@ export class Executor {
           await this.deleteInlineComment(comment)
         }
       }
-    } else {
+    }
+
+    if (hasMessages) {
       if (fails.length > 0) {
         const s = fails.length === 1 ? "" : "s"
         const are = fails.length === 1 ? "is" : "are"
@@ -277,7 +290,8 @@ export class Executor {
       if (git !== undefined) {
         const previousComments = await this.platform.getInlineComments(dangerID)
         const inline = inlineResults(results)
-        const inlineLeftovers = await this.sendInlineComments(inline, git, previousComments)
+        let inlineLeftovers = await this.sendInlineComments(inline, git, previousComments)
+        inlineLeftovers = this.options.ignoreOutOfDiffComments ? emptyDangerResults : inlineLeftovers
         mergedResults = sortResults(mergeResults(mergedResults, inlineLeftovers))
       }
 
@@ -300,7 +314,11 @@ export class Executor {
           comment = githubResultsTemplate(dangerID, mergedResults, commitID)
         }
 
-        issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
+        if (this.options.newComment) {
+          issueURL = await this.platform.createComment(dangerID, comment)
+        } else {
+          issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
+        }
         this.log(`Feedback: ${issueURL}`)
       }
     }
@@ -324,7 +342,7 @@ export class Executor {
     const urlForInfo = issueURL || this.ciSource.ciRunURL
     const successPosting = await this.platform.updateStatus(passed, messageForResults(results), urlForInfo, dangerID)
 
-    if (!successPosting && this.options.verbose) {
+    if (!successPosting) {
       this.log("Could not add a commit status, the GitHub token for Danger does not have access rights.")
       this.log("If the build fails, then danger will use a failing exit code.")
     }
@@ -363,30 +381,56 @@ export class Executor {
     // Leftovers in deleteComments array should all be deleted afterwards
     let deleteComments = Array.isArray(previousComments) ? previousComments.filter(c => c.ownedByDanger) : []
     let commentPromises: Promise<any>[] = []
+    const inlineResultsForReview: DangerInlineResults[] = []
     for (let inlineResult of sortedInlineResults) {
       const index = deleteComments.findIndex(p =>
         p.body.includes(fileLineToString(inlineResult.file, inlineResult.line))
       )
-      let promise: Promise<any>
+      let promise: Promise<any> | undefined = undefined
       if (index != -1) {
         let previousComment = deleteComments[index]
         deleteComments.splice(index, 1)
         promise = this.updateInlineComment(inlineResult, previousComment)
       } else {
-        promise = this.sendInlineComment(git, inlineResult)
+        if (typeof this.platform.createInlineReview === "function") {
+          inlineResultsForReview.push(inlineResult)
+        } else {
+          promise = this.sendInlineComment(git, inlineResult)
+        }
       }
-      commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => inlineResultsIntoResults(inlineResult)))
+      if (promise) {
+        commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => inlineResultsIntoResults(inlineResult)))
+      }
     }
     deleteComments.forEach(comment => {
       let promise = this.deleteInlineComment(comment)
       commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => emptyDangerResults))
     })
 
-    return Promise.all(commentPromises).then(dangerResults => {
+    return Promise.all([
+      this.sendInlineReview(git, inlineResultsForReview).catch(_e =>
+        inlineResultsForReview.forEach(inlineResult => inlineResultsIntoResults(inlineResult))
+      ),
+      ...commentPromises,
+    ]).then(dangerResults => {
       return new Promise<DangerResults>(resolve => {
-        resolve(dangerResults.reduce((acc, r) => mergeResults(acc, r), emptyResult))
+        resolve(dangerResults.slice(1).reduce((acc, r) => mergeResults(acc, r), emptyResult))
       })
     })
+  }
+
+  async sendInlineReview(git: GitDSL, inlineResultsForReview: DangerInlineResults[]): Promise<any> {
+    if (inlineResultsForReview.length === 0 || typeof this.platform.createInlineReview !== "function") {
+      return emptyDangerResults
+    }
+    return await this.platform.createInlineReview(
+      git,
+      inlineResultsForReview.map(result => ({
+        comment: this.inlineCommentTemplate(result),
+        path: result.file,
+        line: result.line,
+      }))
+    )
   }
 
   async sendInlineComment(git: GitDSL, inlineResults: DangerInlineResults): Promise<any> {

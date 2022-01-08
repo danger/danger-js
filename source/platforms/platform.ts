@@ -81,6 +81,8 @@ export interface PlatformCommunicator {
   updateInlineComment: (comment: string, commentId: string) => Promise<any>
   /** Delete an inline comment */
   deleteInlineComment: (commentId: string) => Promise<boolean>
+  /** Create a review with inline comments */
+  createInlineReview?: (git: GitDSL, comments: { comment: string; path: string; line: number }[]) => Promise<any>
   /** Delete the main Danger comment */
   deleteMainComment: (dangerID: string) => Promise<boolean>
   /** Replace the main Danger comment, returning the URL to the issue */
@@ -131,7 +133,11 @@ export function getPlatformForEnv(env: Env, source: CISource): Platform {
   }
 
   // GitLab
-  if (env["DANGER_GITLAB_API_TOKEN"] || env["DANGER_PR_PLATFORM"] === GitLab.name) {
+  if (
+    env["DANGER_GITLAB_API_TOKEN"] ||
+    env["DANGER_GITLAB_API_OAUTH_TOKEN"] ||
+    env["DANGER_PR_PLATFORM"] === GitLab.name
+  ) {
     const api = new GitLabAPI(
       {
         pullRequestID: source.pullRequestID,
@@ -142,8 +148,11 @@ export function getPlatformForEnv(env: Env, source: CISource): Platform {
     return new GitLab(api)
   }
 
+  // GitHub Platform
+  const ghToken = env["DANGER_GITHUB_API_TOKEN"] || env["GITHUB_TOKEN"]
+
   // They need to set the token up for GitHub actions to work
-  if (env["GITHUB_EVENT_NAME"] && !env["GITHUB_TOKEN"]) {
+  if (env["GITHUB_EVENT_NAME"] && !ghToken) {
     console.error(`You need to add GITHUB_TOKEN to your Danger action in the workflow:
   
     - name: Danger JS
@@ -153,8 +162,6 @@ export function getPlatformForEnv(env: Env, source: CISource): Platform {
     `)
   }
 
-  // GitHub Platform
-  const ghToken = env["DANGER_GITHUB_API_TOKEN"] || env["GITHUB_TOKEN"]
   if (ghToken || env["DANGER_PR_PLATFORM"] === GitHub.name) {
     if (!ghToken) {
       console.log("You don't have a DANGER_GITHUB_API_TOKEN set up, this is optional, but TBH, you want to do this")

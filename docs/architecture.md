@@ -12,7 +12,7 @@ Actually doing that though, is a bit of a process.
 whether it is a pull request.
 
 **Step 2: Platform**. Danger needs to know which platform the code review is happening in. Today, Danger supports
-Github, Gitlab, BitBucket Server, and BitBucket Cloud. You can see them them all in [`source/platforms`][platforms].
+Github, Gitlab, BitBucket Server, and BitBucket Cloud. You can see them all in [`source/platforms`][platforms].
 
 **Step 3: JSON DSL**. To allow for all of:
 
@@ -33,8 +33,8 @@ evaluating your code, and adds the DSL attributes into the global evaluation con
 **Step 6: Results**. Once the `danger runner` process is finished with evaluation, the results are passed back to the
 the platform. The platform then chooses whether to create/delete/edit any messages in core review.
 
-[provs]: https://github.com/danger/danger-js/tree/master/source/ci_source/providers
-[dangerdsl]: https://github.com/danger/danger-js/blob/master/source/dsl/DangerDSL.ts
-[runner]: https://github.com/danger/danger-js/blob/master/source/commands/danger-runner.ts
-[in_runner]: https://github.com/danger/danger-js/blob/master/source/runner/runners/inline.ts
-[platforms]: https://github.com/danger/danger-js/blob/master/source/platforms
+[provs]: https://github.com/danger/danger-js/tree/main/source/ci_source/providers
+[dangerdsl]: https://github.com/danger/danger-js/blob/main/source/dsl/DangerDSL.ts
+[runner]: https://github.com/danger/danger-js/blob/main/source/commands/danger-runner.ts
+[in_runner]: https://github.com/danger/danger-js/blob/main/source/runner/runners/inline.ts
+[platforms]: https://github.com/danger/danger-js/blob/main/source/platforms

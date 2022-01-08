@@ -33,6 +33,7 @@ program
   .description("Emulate running Danger against an existing GitHub Pull Request.")
   .option("-J, --json", "Output the raw JSON that would be passed into `danger process` for this PR.")
   .option("-j, --js", "A more human-readable version of the JSON.")
+  .allowUnknownOption(true)
 
   .on("--help", () => {
     log("\n")
@@ -42,11 +43,12 @@ program
       !process.env["DANGER_BITBUCKETSERVER_HOST"] &&
       !process.env["DANGER_BITBUCKETCLOUD_OAUTH_KEY"] &&
       !process.env["DANGER_BITBUCKETCLOUD_USERNAME"] &&
-      !gitLabApiCredentials.token
+      !gitLabApiCredentials.token &&
+      !gitLabApiCredentials.oauthToken
     ) {
       log("")
       log(
-        "     You don't have a DANGER_GITHUB_API_TOKEN/DANGER_GITLAB_API_TOKEN/DANGER_BITBUCKETCLOUD_OAUTH_KEY/DANGER_BITBUCKETCLOUD_USERNAME set up, this is optional, but TBH, you want to do this."
+        "     You don't have a DANGER_GITHUB_API_TOKEN/DANGER_GITLAB_API_TOKEN/DANGER_GITLAB_API_OAUTH_TOKEN/DANGER_BITBUCKETCLOUD_OAUTH_KEY/DANGER_BITBUCKETCLOUD_USERNAME set up, this is optional, but TBH, you want to do this."
       )
       log("     Check out: http://danger.systems/js/guides/the_dangerfile.html#working-on-your-dangerfile")
       log("")

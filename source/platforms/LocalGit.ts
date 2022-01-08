@@ -10,7 +10,7 @@ import { readFileSync } from "fs"
 
 export interface LocalGitOptions {
   base?: string
-  staged?: boolean
+  staging?: boolean
 }
 
 export class LocalGit implements Platform {
@@ -28,7 +28,7 @@ export class LocalGit implements Platform {
     const base = this.options.base || "master"
     const head = "HEAD"
 
-    this.gitDiff = await localGetDiff(base, head)
+    this.gitDiff = await localGetDiff(base, head, this.options.staging)
     return this.gitDiff
   }
 
