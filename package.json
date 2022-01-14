@@ -100,6 +100,7 @@
     "@types/http-proxy-agent": "^2.0.1",
     "@types/jest": "^24.0.11",
     "@types/json5": "^0.0.30",
+    "@types/jsonpointer": "^4.0.0",
     "@types/jsonwebtoken": "^7.2.8",
     "@types/lodash.includes": "^4.3.4",
     "@types/lodash.mapvalues": "^4.6.6",

@@ -65,6 +65,9 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
    * Takes a filename, and pulls from the PR the two versions of a file
    * where we then pass that off to the rfc6902 JSON patch generator.
    *
+   * If you provide the current filename:
+   *  - If a file was renamed then you'll see { before: null }
+   *
    * @param filename The path of the file
    */
   const JSONPatchForFile = async (filename: string) => {
@@ -110,16 +113,19 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     // Thanks to @wtgtybhertgeghgtwtg for getting this started in #175
     // The idea is to loop through all the JSON patches, then pull out the before and after from those changes.
 
-    const { diff, before, after } = patchObject
-    return diff.reduce((accumulator, { path }) => {
+    const { diff: outerDiff, before, after } = patchObject
+    return outerDiff.reduce((accumulator, { path }) => {
       // We don't want to show the last root object, as these tend to just go directly
       // to a single value in the patch. This is fine, but not useful when showing a before/after
       const pathSteps = path.split("/")
       const backAStepPath = pathSteps.length <= 2 ? path : pathSteps.slice(0, pathSteps.length - 1).join("/")
+      console.debug("MEEP", { path, pathSteps, backAStepPath, before, after, outerDiff })
 
       const diff: any = {
-        after: jsonpointer.get(after, backAStepPath) || null,
-        before: jsonpointer.get(before, backAStepPath) || null,
+        // If a file is moved/renamed, the file will be in "danger.git.modified_files"
+        // JSONPatchForFile will return null for the old file, so we need to check for that
+        before: (before && jsonpointer.get(before, backAStepPath)) || null,
+        after: (after && jsonpointer.get(after, backAStepPath)) || null,
       }
 
       const emptyValueOfCounterpart = (other: any) => {
