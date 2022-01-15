@@ -16,6 +16,7 @@
 <!-- Your comment below this -->
 
 - Fix: [Github] Multiple Inline Comments on the same file/line should all be posted [#1176](https://github.com/danger/danger-js/pull/1176) [@Rouby]
+- Fix: [git] JSONDiffForFile when passed the path of a JSON File that was moved, crashes [#1193](https://github.com/danger/danger-js/pull/1193) [@fbartho]
 
 <!-- Your comment above this -->
 
