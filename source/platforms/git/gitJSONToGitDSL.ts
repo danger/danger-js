@@ -119,7 +119,6 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
       // to a single value in the patch. This is fine, but not useful when showing a before/after
       const pathSteps = path.split("/")
       const backAStepPath = pathSteps.length <= 2 ? path : pathSteps.slice(0, pathSteps.length - 1).join("/")
-      console.debug("MEEP", { path, pathSteps, backAStepPath, before, after, outerDiff })
 
       const diff: any = {
         // If a file is moved/renamed, the file will be in "danger.git.modified_files"
