@@ -17,6 +17,7 @@
 
 - Fix: [Github] Multiple Inline Comments on the same file/line should all be posted [#1176](https://github.com/danger/danger-js/pull/1176) [@Rouby]
 - Fix: [git] JSONDiffForFile when passed the path of a JSON File that was moved, crashes [#1193](https://github.com/danger/danger-js/pull/1193) [@fbartho]
+- Resolve node-fetch dependency to 2.6.7 to resolve [GHSA-r683-j2x4-v87g](https://github.com/advisories/GHSA-r683-j2x4-v87g) [@jonny133]
 
 <!-- Your comment above this -->
 
@@ -1877,6 +1878,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@imorente]: https://github.com/imorente
 [@joarwilk]: https://github.com/joarwilk
 [@johansteffner]: https://github.com/johansteffner
+[@jonny133]: https://github.com/jonny133
 [@joshacheson]: https://github.com/joshacheson
 [@keplersj]: https://github.com/keplersj
 [@langovoi]: https://github.com/langovoi
