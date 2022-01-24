@@ -2,6 +2,7 @@
 
 import { GitCommit } from "./Commit"
 import { Chainsmoker } from "../commands/utils/chainsmoker"
+import { File } from "parse-diff"
 
 /** All Text diff values will be this shape */
 export interface TextDiff {
@@ -20,7 +21,7 @@ export interface TextDiff {
 /** Git diff sliced into chunks */
 export interface StructuredDiff {
   /** Git diff chunks */
-  chunks: any[]
+  chunks: File["chunks"]
 }
 
 /** The results of running a JSON patch */
