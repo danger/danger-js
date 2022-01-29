@@ -39,17 +39,9 @@ export interface GitJSONToGitDSLConfig {
   getStructuredDiffForFile?: (base: string, head: string, filename: string) => Promise<GitStructuredDiff>
 }
 
-export type GitStructuredDiff = {
-  from?: string
-  to?: string
-  chunks: Chunk[]
-}[]
+export type GitStructuredDiff = Pick<parseDiff.File, "chunks" | "from" | "to">[]
 
-export interface Chunk {
-  changes: Changes
-}
-
-export type Changes = { type: "add" | "del" | "normal"; content: string }[]
+export type Changes = parseDiff.Change[]
 
 export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLConfig): GitDSL => {
   const getFullDiff: ((base: string, head: string) => Promise<string>) | null = config.getStructuredDiffForFile

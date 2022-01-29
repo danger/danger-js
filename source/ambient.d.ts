@@ -1,4 +1,3 @@
-declare module "parse-diff"
 declare module "lodash.includes"
 declare module "lodash.find"
 declare module "lodash.isobject"
