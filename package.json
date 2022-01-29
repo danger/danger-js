@@ -160,6 +160,7 @@
     "memfs-or-file-map-to-github-branch": "^1.1.0",
     "micromatch": "^4.0.4",
     "node-cleanup": "^2.1.2",
+    "node-fetch": "^2.6.7",
     "override-require": "^1.1.1",
     "p-limit": "^2.1.0",
     "parse-diff": "^0.7.0",
