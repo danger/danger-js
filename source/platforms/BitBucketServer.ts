@@ -155,7 +155,9 @@ export class BitBucketServer implements Platform {
         let change
         for (let chunk of diff!.chunks) {
           // Search for a change (that is not a deletion) and with given line. We want to look only for destination lines of a change
-          change = chunk.changes.find((c: any) => c.type != "del" && c.destinationLine == line)
+          change = chunk.changes.find(
+            c => (c.type === "normal" && c.ln2 === line) || (c.type === "add" && c.ln === line)
+          )
           break
         }
         if (change === undefined) {

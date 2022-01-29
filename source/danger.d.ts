@@ -4,6 +4,7 @@
 
 import { Octokit as GitHub } from "@octokit/rest"
 import { Gitlab } from "gitlab"
+import { File } from "parse-diff"
 
 type MarkdownString = string
 // TODO: extract out from BitBucket specifically, or create our own type
@@ -809,7 +810,7 @@ interface TextDiff {
 /** Git diff sliced into chunks */
 interface StructuredDiff {
   /** Git diff chunks */
-  chunks: any[]
+  chunks: File["chunks"]
 }
 
 /** The results of running a JSON patch */

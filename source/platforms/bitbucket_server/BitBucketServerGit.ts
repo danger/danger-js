@@ -10,7 +10,7 @@ import { GitCommit } from "../../dsl/Commit"
 
 import { BitBucketServerAPI } from "./BitBucketServerAPI"
 
-import { GitJSONToGitDSLConfig, gitJSONToGitDSL, GitStructuredDiff } from "../git/gitJSONToGitDSL"
+import { GitJSONToGitDSLConfig, gitJSONToGitDSL, GitStructuredDiff, Changes } from "../git/gitJSONToGitDSL"
 
 import { debug } from "../../debug"
 const d = debug("BitBucketServerGit")
@@ -131,23 +131,56 @@ const bitBucketServerChangesToGitJSONDSL = (
 
 const bitBucketServerDiffToGitStructuredDiff = (diffs: BitBucketServerDiff[]): GitStructuredDiff => {
   // We need all changed lines with it's type. It will convert hunk segment lines to flatten changed lines.
-  const segmentValues = { ADDED: "add", CONTEXT: "normal", REMOVED: "del" }
+  const segmentValues = { ADDED: "add", CONTEXT: "normal", REMOVED: "del" } as const
   return diffs.map(diff => ({
     from: diff.source && diff.source.toString,
     to: diff.destination && diff.destination.toString,
     chunks:
       diff.hunks &&
       diff.hunks.map(hunk => ({
+        content: `@@ -${hunk.sourceLine},${hunk.sourceSpan} +${hunk.destinationLine},${hunk.destinationSpan} @@`,
+        oldStart: hunk.sourceLine,
+        oldLines: hunk.sourceSpan,
+        newStart: hunk.destinationLine,
+        newLines: hunk.destinationSpan,
         changes: hunk.segments
-          .map(segment =>
-            segment.lines.map(line => ({
-              type: segmentValues[segment.type] as "add" | "del" | "normal",
-              content: line.line,
-              sourceLine: line.source,
-              destinationLine: line.destination,
-            }))
-          )
-          .reduce((a, b) => a.concat(b), []),
+          .map(segment => {
+            const type = segmentValues[segment.type]
+            if (type === "add") {
+              return segment.lines.map(line => {
+                return {
+                  type,
+                  add: true as const,
+                  content: line.line,
+                  ln: line.destination,
+                }
+              })
+            }
+            if (type === "del") {
+              return segment.lines.map(line => {
+                return {
+                  type,
+                  del: true as const,
+                  content: line.line,
+                  ln: line.source,
+                }
+              })
+            }
+            if (type === "normal") {
+              return segment.lines.map(line => {
+                return {
+                  type,
+                  normal: true as const,
+                  content: line.line,
+                  ln1: line.source,
+                  ln2: line.destination,
+                }
+              })
+            }
+            // unknown type: ${type}
+            return []
+          })
+          .reduce((a, b) => a.concat(b), [] as Changes),
       })),
   }))
 }
