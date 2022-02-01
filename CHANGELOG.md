@@ -15,9 +15,14 @@
 
 <!-- Your comment below this -->
 
-- *Breaking:* Upgrade @octokit/rest from v16.43.1 to v18.12.0 - [#1204](https://github.com/danger/danger-js/pull/1204) [@fbartho]
 
 <!-- Your comment above this -->
+
+# 11.0.0
+
+- *Breaking:* Upgrade @octokit/rest from ^16.43.1 to ^18.12.0 - [#1204](https://github.com/danger/danger-js/pull/1204) [@fbartho]
+  
+  This is only likely to hit you if you use `danger.github.api` pretty extensively in your Dangerfiles, but better to keep an eye out.
 
 # 10.8.1
 
