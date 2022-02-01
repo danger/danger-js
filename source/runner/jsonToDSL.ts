@@ -85,7 +85,7 @@ const apiForDSL = (dsl: DangerDSLJSONType): Octokit | BitBucketServerAPI | GitLa
     return new GitLabAPI(gitlab.metadata, getGitLabAPICredentialsFromEnv(process.env))
   }
 
-  const options: Octokit.Options & { debug: boolean } = {
+  const options: ConstructorParameters<typeof Octokit>[0] & { debug: boolean } = {
     debug: !!process.env.LOG_FETCH_REQUESTS,
     baseUrl: dsl.settings.github.baseURL,
   }

@@ -4,11 +4,11 @@ import { readFileSync } from "fs"
 import { resolve } from "path"
 
 const fixtures = resolve(__dirname, "..", "..", "_tests", "fixtures")
-const fixuredData = (path: string) => JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString())
-const pr = fixuredData("github_pr.json")
+const fixturedData = (path: string) => JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString())
+const pr = fixturedData("github_pr.json")
 const apiFake = {
   repos: {
-    getContents: jest.fn(),
+    getContent: jest.fn(),
   },
 } as any
 
@@ -38,11 +38,11 @@ describe("fileLinks", () => {
   })
 })
 
-describe("getContents", () => {
-  it("should call the API's getContents", () => {
+describe("getContent", () => {
+  it("should call the API's getContent", () => {
     const sut = utils(pr, apiFake)
     sut.fileContents("/a/b/c.ts")
-    expect(apiFake.repos.getContents).toHaveBeenCalledWith({
+    expect(apiFake.repos.getContent).toHaveBeenCalledWith({
       owner: "orta",
       path: "/a/b/c.ts",
       ref: "genevc",

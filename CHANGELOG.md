@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- *Breaking:* Upgrade @octokit/rest from v16.43.1 to v18.12.0 - [#1204](https://github.com/danger/danger-js/pull/1204) [@fbartho]
 
 <!-- Your comment above this -->
 
