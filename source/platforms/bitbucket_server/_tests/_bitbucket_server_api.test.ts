@@ -9,7 +9,7 @@ describe("API testing - BitBucket Server", () => {
   const host = "http://localhost:7990"
   const expectedJSONHeaders = {
     "Content-Type": "application/json",
-    Authorization: `Basic ${new Buffer("username:password").toString("base64")}`,
+    Authorization: `Basic ${Buffer.from("username:password").toString("base64")}`,
   }
 
   function APIFactory({ password, token }: { password?: string; token?: string }) {

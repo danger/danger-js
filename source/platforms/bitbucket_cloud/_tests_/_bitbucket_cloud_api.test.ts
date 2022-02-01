@@ -22,7 +22,7 @@ describe("API testing - BitBucket Cloud", () => {
   let textResult: string
   const expectedJSONHeaders = {
     "Content-Type": "application/json",
-    Authorization: `Basic ${new Buffer("username:password").toString("base64")}`,
+    Authorization: `Basic ${Buffer.from("username:password").toString("base64")}`,
   }
 
   function APIFactory(username: string, password: string, uuid: string) {
@@ -354,7 +354,7 @@ describe("API testing - BitBucket Cloud", () => {
 
     const expectedAuthHeaders = {
       "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Basic ${new Buffer("superOAUTHKey:superSecretOAUTH").toString("base64")}`,
+      Authorization: `Basic ${Buffer.from("superOAUTHKey:superSecretOAUTH").toString("base64")}`,
     }
     const expectedOAUTHRequestHeaders = {
       "Content-Type": "application/json",
