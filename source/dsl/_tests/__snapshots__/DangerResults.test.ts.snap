@@ -265,7 +265,7 @@ Object {
 }
 `;
 
-exports[`DangerResults operations merges two results correcly 1`] = `
+exports[`DangerResults operations merges two results correctly 1`] = `
 Object {
   "fails": Array [
     Object {
