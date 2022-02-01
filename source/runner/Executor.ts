@@ -100,7 +100,7 @@ export class Executor {
     try {
       results = await this.runner.runDangerfileEnvironment([file], [undefined], runtime)
     } catch (error) {
-      results = this.resultsForError(error)
+      results = this.resultsForError(error as Error)
     }
 
     await this.handleResults(results, runtime.danger.git)

@@ -237,7 +237,7 @@ class GitLabAPI {
     } catch (e) {
       this.d("getFileContents", e)
       // GitHubAPI.fileContents returns "" when the file does not exist, keep it consistent across providers
-      if (e.response.status === 404) {
+      if ((e as any).response.status === 404) {
         return ""
       }
       throw e
