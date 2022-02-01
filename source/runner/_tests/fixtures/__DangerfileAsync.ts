@@ -1,5 +1,3 @@
-/* tslint-disable */
-
 const asyncAction = () =>
   new Promise(res => {
     setTimeout(() => {

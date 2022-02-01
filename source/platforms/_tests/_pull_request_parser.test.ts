@@ -46,7 +46,7 @@ describe("parsing urls", () => {
     })
   })
 
-  it("handles bitbucket server PRs (overview) with dashes in name", () => {
+  it("handles bitbucket server PRs (overview) with dashes and dot in name", () => {
     expect(
       pullRequestParser("http://localhost:7990/projects/PROJ/repos/super-strong.repo_name/pull-requests/1/overview")
     ).toEqual({
@@ -189,7 +189,7 @@ describe("parsing urls", () => {
       })
     })
 
-    it("handles PRs (overview) with dashes in name", () => {
+    it("handles PRs (overview) with dashes and dot in name", () => {
       expect(
         pullRequestParser("https://bitbucket.org/project/super-strong.repo_name/pull-requests/1/overview")
       ).toEqual({

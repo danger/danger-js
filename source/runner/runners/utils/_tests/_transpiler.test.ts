@@ -13,7 +13,7 @@ import * as fs from "fs"
 import * as path from "path"
 
 describe("typescriptify", () => {
-  it("removes the module option in a tsconfig ", () => {
+  it("removes the module option in a tsconfig", () => {
     const dangerfile = `import {a} from 'lodash'; a()`
     const fakeTSConfig = {
       compilerOptions: {

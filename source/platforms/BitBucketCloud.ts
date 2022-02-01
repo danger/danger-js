@@ -153,7 +153,7 @@ export class BitBucketCloud implements Platform {
 
     let state: "SUCCESSFUL" | "INPROGRESS" | "FAILED" = passed ? "SUCCESSFUL" : "FAILED"
     if (passed === "pending") {
-      state = "INPROGRESS" as "INPROGRESS"
+      state = "INPROGRESS" as const
     }
 
     let name = "Danger"

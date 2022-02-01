@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-export */
 import { bitBucketCloudRawAndDateToGitCommitAuthor } from "../BitBucketCloudGit"
 
 import { BitBucketCloud } from "../../BitBucketCloud"
@@ -162,11 +163,14 @@ describe("the dangerfile gitDSL - BitBucket Cloud", () => {
   })
 
   it("writes a JSON DSL fixture", async () => {
-    const fakeSource = new FakeCI({})
-    const dataSent = await jsonDSLGenerator(bbc, fakeSource, {} as any)
-    dataSent.settings.github.accessToken = "12345"
+    expect.assertions(1)
+    expect(async () => {
+      const fakeSource = new FakeCI({})
+      const dataSent = await jsonDSLGenerator(bbc, fakeSource, {} as any)
+      dataSent.settings.github.accessToken = "12345"
 
-    writeFileSync(pathJoin(fixtures, "bbc-dsl-input.json"), JSON.stringify(dataSent, null, "  "), "utf8")
+      writeFileSync(pathJoin(fixtures, "bbc-dsl-input.json"), JSON.stringify(dataSent, null, "  "), "utf8")
+    }).not.toThrow()
   })
 })
 

@@ -34,7 +34,7 @@
       "git add"
     ],
     "*.@(ts|tsx)": [
-      "tslint --fix",
+      "eslint --fix",
       "yarn prettier --write",
       "git add"
     ]
@@ -56,8 +56,8 @@
     "test:fixtures": "node ./scripts/run-fixtures.js",
     "test:update-fixtures": "yarn test:fixtures --update",
     "test:watch": "jest --watch",
-    "lint": "tslint \"source/**/*.ts\"",
-    "lint:fix": "tslint \"source/**/*.ts\" --fix",
+    "lint": "eslint \"source/*.ts\" \"source/**/*.ts\"",
+    "lint:fix": "yarn --silent lint --fix",
     "prepublishOnly": "yarn build && yarn jest && yarn declarations && yarn build:flow-types && yarn build:pretty-types",
     "build": "shx rm -rf ./distribution && tsc -p tsconfig.production.json && madge ./distribution --circular",
     "build:fast": "tsc -p tsconfig.production.json",
@@ -114,9 +114,15 @@
     "@types/prettier": "^1.16.1",
     "@types/readline-sync": "^1.4.3",
     "@types/voca": "^1.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
     "danger-plugin-jest": "^1.0.1",
     "danger-plugin-yarn": "^1.3.1",
     "date-fns": "^1.29.0",
+    "eslint": "^8.8.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jest": "^26.0.0",
+    "eslint-plugin-jsdoc": "^37.7.0",
     "flow-bin": "^0.77.0",
     "husky": "^1.0.1",
     "jest": "^24.0.0",
@@ -130,8 +136,6 @@
     "shx": "^0.3.2",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.0.2",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.15.0",
     "typedoc": "0.9.0",
     "typescript": "^4.5.5",
     "typescript-json-schema": "^0.32.0"

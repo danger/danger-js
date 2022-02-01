@@ -13,7 +13,7 @@ it("get git commits from the 'git log' command", () => {
   const options = {
     number: 10,
     branch: "test_branch",
-    fields: ["hash" as "hash", "subject" as "subject"],
+    fields: ["hash", "subject"] as const,
   }
 
   const result = logGitCommits(options)

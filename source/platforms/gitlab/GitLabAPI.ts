@@ -161,7 +161,6 @@ class GitLabAPI {
     const api = this.api.MergeRequestDiscussions
 
     try {
-      // @ts-ignore
       const result: string = await api.create(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, content, {
         position: position,
       })

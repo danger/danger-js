@@ -419,7 +419,7 @@ describe("setup", () => {
     platform.updateStatus = jest.fn()
 
     await exec.handleResults(emptyResults, dsl.git)
-    expect(platform.updateStatus).toBeCalledWith(true, jasmine.any(String), undefined, defaultConfig.dangerID)
+    expect(platform.updateStatus).toBeCalledWith(true, expect.any(String), undefined, defaultConfig.dangerID)
   })
 
   it("Updates the status with success for a passed results", async () => {

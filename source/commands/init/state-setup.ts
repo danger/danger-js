@@ -11,14 +11,14 @@ import { getRepoSlug } from "./get-repo-slug"
 import { InitState, InitUI } from "./interfaces"
 
 export const createUI = (state: InitState, app: any): InitUI => {
-  const say = (msg: String) => console.log(msg)
+  const say = (msg: string) => console.log(msg)
   const fancyLink = (name: string, href: string) => hyperLinker(name, href)
   const inlineLink = (_name: string, href: string) => chalk.underline(href)
   const linkToUse = state.supportsHLinks ? fancyLink : inlineLink
 
   return {
     say,
-    header: (msg: String) => say(chalk.bold("\n## " + msg + "\n")),
+    header: (msg: string) => say(chalk.bold("\n## " + msg + "\n")),
     command: (command: string) => say("> " + chalk.white.bold(command) + " \n"),
     link: (name: string, href: string) => linkToUse(name, href),
     pause: async (secs: number) => new Promise(done => setTimeout(done, secs * 1000)),

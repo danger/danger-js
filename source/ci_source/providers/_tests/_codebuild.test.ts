@@ -9,7 +9,7 @@ const correctEnv = {
   DANGER_GITHUB_API_TOKEN: "xxx",
 }
 
-const setupCodeBuildSource = async (env: Object) => {
+const setupCodeBuildSource = async (env: Record<string, unknown>) => {
   const source = new CodeBuild(env)
   await source.setup()
 

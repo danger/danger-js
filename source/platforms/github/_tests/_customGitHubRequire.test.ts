@@ -14,19 +14,19 @@ import {
 } from "../customGitHubRequire"
 
 describe("shouldUseGitHubOverride", () => {
-  it("ignores module imports ", () => {
+  it("ignores module imports", () => {
     const module = "peril"
     const parent: any = { filename: "index.js" }
     expect(shouldUseGitHubOverride(module, parent)).toBeFalsy()
   })
 
-  it("ignores relative imports in other modules ", () => {
+  it("ignores relative imports in other modules", () => {
     const module = "./peril"
     const parent: any = { filename: "node_modules/danger/index.js" }
     expect(shouldUseGitHubOverride(module, parent)).toBeFalsy()
   })
 
-  it("accepts relative imports in modules with a parent that has the right prefix ", () => {
+  it("accepts relative imports in modules with a parent that has the right prefix", () => {
     const module = "./peril"
     const parent: any = { filename: dangerPrefix + "./my-import" }
     expect(shouldUseGitHubOverride(module, parent)).toBeTruthy()

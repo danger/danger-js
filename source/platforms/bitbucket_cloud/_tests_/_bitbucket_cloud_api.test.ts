@@ -254,7 +254,7 @@ describe("API testing - BitBucket Cloud", () => {
 
   it("postBuildStatus", async () => {
     const payload = {
-      state: "SUCCESSFUL" as "SUCCESSFUL",
+      state: "SUCCESSFUL" as const,
       key: "key",
       name: "name",
       url: "url",

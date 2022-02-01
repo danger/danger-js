@@ -15,6 +15,7 @@
 
 <!-- Your comment below this -->
 
+- *Chore:* Switch from tslint to eslint (tslint is end-of-life) - [#1205](https://github.com/danger/danger-js/pull/1205) [@fbartho]
 
 <!-- Your comment above this -->
 

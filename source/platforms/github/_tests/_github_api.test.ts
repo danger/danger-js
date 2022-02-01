@@ -53,7 +53,7 @@ it("fileContents expects to grab PR JSON and pull out a file API call", async ()
   const info = await api.fileContents("my_path.md")
   expect(info).toEqual(
     "The All-Defector is a purported glitch in the Dilemma Prison that appears to prisoners as themselves. This gogol always defects, hence the name."
-  ) //tslint:disable-line:max-line-length
+  )
 })
 
 describe("API testing", () => {

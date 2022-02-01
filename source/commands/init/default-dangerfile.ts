@@ -39,7 +39,7 @@ export const generateDefaultDangerfile = (state: InitState) => {
 
 export const formatDangerfile = (dangerfile: string, dangerfileState: any) => {
   if (dangerfileState.hasPrettier) {
-    // tslint:disable-next-line:no-require-imports
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { format } = require("prettier")
     // Get package settings
     const localPrettier = fs.existsSync("package.json") && JSON.parse(fs.readFileSync("package.json", "utf8")).prettier

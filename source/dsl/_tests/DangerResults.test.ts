@@ -67,7 +67,7 @@ describe("DangerInlineResults into DangerResults", () => {
 })
 
 describe("DangerResults operations", () => {
-  it("merges two results correcly", () => {
+  it("merges two results correctly", () => {
     const results = mergeResults(singleViolationSingleFileResults, multipleViolationSingleFileResults)
 
     expect(results).toMatchSnapshot()
@@ -97,7 +97,7 @@ describe("DangerResults operations", () => {
     expect(result).toEqual(true)
   })
 
-  it("find empty results", () => {
+  it("find empty results - multiple violations in a single file", () => {
     const result = isEmptyResults(multipleViolationSingleFileResults)
 
     expect(result).toEqual(false)
