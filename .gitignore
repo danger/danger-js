@@ -58,3 +58,4 @@ tests.json
 .idea
 
 /*.sh
+.DS_Store

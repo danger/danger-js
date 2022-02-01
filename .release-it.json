@@ -5,7 +5,7 @@
   },
   "buildCommand": "yarn package",
   "hooks": {
-    "before:bump": "yarn declarations; yarn build:schemas",
+    "before:bump": "yarn declarations; yarn build:schemas; yarn package",
     "after:release": "VERSION=${version} scripts/create-homebrew-tap-pr.sh"
   }
 }
