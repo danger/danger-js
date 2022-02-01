@@ -46,7 +46,7 @@ export class GitHubAPI {
     const token = accessTokenForApp || this.token!
 
     const host = process.env["DANGER_GITHUB_API_BASE_URL"] || process.env["GITHUB_URL"] || undefined
-    const options: GitHubNodeAPI.Options & { debug: boolean } = {
+    const options: ConstructorParameters<typeof GitHubNodeAPI>[0] & { debug: boolean } = {
       debug: !!process.env.LOG_FETCH_REQUESTS,
       baseUrl: host,
       auth: `token ${token}`,
@@ -76,7 +76,7 @@ export class GitHubAPI {
     }
 
     const data = await this.getFileContents(path, repoSlug, ref)
-    const buffer = new Buffer(data.content, "base64")
+    const buffer = Buffer.from(data.content, "base64")
     return buffer.toString()
   }
 
@@ -421,7 +421,7 @@ export class GitHubAPI {
       return res.ok
     } catch (error) {
       this.d(`Posting a status to: ${statusURL} failed, this is the response:`)
-      this.d(error.message)
+      this.d((error && (error as Error).message) || error)
     }
   }
 

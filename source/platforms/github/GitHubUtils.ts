@@ -1,8 +1,20 @@
 import { basename } from "path"
+import { components as OctokitOpenApiTypes } from "@octokit/openapi-types"
+import { filepathContentsMapToUpdateGitHubBranch, BranchCreationConfig } from "memfs-or-file-map-to-github-branch"
+
 import { sentence, href } from "../../runner/DangerUtils"
 import { GitHubPRDSL, GitHubUtilsDSL } from "./../../dsl/GitHubDSL"
 import { debug } from "../../debug"
-import { filepathContentsMapToUpdateGitHubBranch, BranchCreationConfig } from "memfs-or-file-map-to-github-branch"
+
+export type GetContentResponseData =
+  | OctokitOpenApiTypes["schemas"]["content-file"]
+  | OctokitOpenApiTypes["schemas"]["content-symlink"]
+  | OctokitOpenApiTypes["schemas"]["content-submodule"]
+export function isFileContents(
+  response: GetContentResponseData
+): response is OctokitOpenApiTypes["schemas"]["content-file"] {
+  return response.type === "file"
+}
 
 const d = debug("GitHub::Utils")
 
@@ -66,14 +78,18 @@ export const fileContentsGenerator = (
     owner: repoSlug.split("/")[0],
   }
   try {
-    // response of getContents() can be one of 4 things. We are interested in file responses only
-    // https://developer.github.com/v3/repos/contents/#get-contents
-    const response = await api.repos.getContents(opts)
-    if (Array.isArray(response.data)) {
+    // response of getContent() can be one of 4 things. We are interested in file responses only
+    // https://docs.github.com/en/rest/reference/repos#get-repository-content
+    const response = await api.repos.getContent(opts)
+    if (!response || !response.data) {
       return ""
     }
-    if (response && response.data && response.data.content) {
-      const buffer = new Buffer(response.data.content, response.data.encoding)
+    if (Array.isArray(response.data)) {
+      // If we get an array, we have a directory
+      return ""
+    }
+    if (isFileContents(response.data) && response.data.content) {
+      const buffer = Buffer.from(response.data.content, response.data.encoding)
       return buffer.toString()
     } else {
       return ""
@@ -94,7 +110,7 @@ export const createUpdatedIssueWithIDGenerator = (api: GitHub) => async (
   //   by label
   const uniqueHeader = `Danger-Issue-ID-${id.replace(/ /g, "_")}`
   const q = `user:${settings.owner} repo:${settings.repo} ${uniqueHeader}`
-  const { data: searchResults } = await api.search.issues({ q })
+  const { data: searchResults } = await api.search.issuesAndPullRequests({ q })
   d(`Got ${searchResults.total_count} for ${uniqueHeader}`)
 
   const body = `${content}\n\n${uniqueHeader}`
@@ -104,7 +120,14 @@ export const createUpdatedIssueWithIDGenerator = (api: GitHub) => async (
   if (searchResults.total_count > 0 && searchResults.items[0]) {
     const issueToUpdate = searchResults.items[0]
     d(`Found: ${issueToUpdate}`)
-    const { data: issue } = await api.issues.update({ body, owner, repo, title, number: issueToUpdate.number, state })
+    const { data: issue } = await api.issues.update({
+      body,
+      owner,
+      repo,
+      title,
+      issue_number: issueToUpdate.number,
+      state,
+    })
     return issue.html_url
   } else {
     const { data: issue } = await api.issues.create({ body, owner, repo, title })
@@ -161,7 +184,7 @@ export const createOrUpdatePR = (pr: GitHubPRDSL | undefined, api: GitHub) => as
   if (existingPR) {
     d("Updating existing PR")
     return await api.pulls.update({
-      number: existingPR.number,
+      pull_number: existingPR.number,
       base: config.baseBranch,
       owner,
       repo,

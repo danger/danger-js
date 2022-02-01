@@ -339,7 +339,7 @@ export class BitBucketServerAPI implements BitBucketServerAPIDSL {
     if (this.repoCredentials.token) {
       headers["Authorization"] = `Bearer ${this.repoCredentials.token}`
     } else if (this.repoCredentials.password) {
-      headers["Authorization"] = `Basic ${new Buffer(
+      headers["Authorization"] = `Basic ${Buffer.from(
         this.repoCredentials.username + ":" + this.repoCredentials.password
       ).toString("base64")}`
     }

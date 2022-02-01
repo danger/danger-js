@@ -5,7 +5,7 @@
 
 // Toggle this on to update the JSON files for each run
 // or use `yarn test:update-fixtures`
-const writeResults = false || process.argv.includes('--update')
+const writeResults = false || process.argv.includes("--update")
 
 const fs = require("fs")
 const child_process = require("child_process")
@@ -32,7 +32,7 @@ const fixtures = fs
 
 let runCount = 0
 
-console.log("Running Fixures for Danger JS. This uses the built version of danger.\n")
+console.log("Running Fixtures for Danger JS. This uses the built version of danger.\n")
 
 // Runs the danger runner over a fixture, then compares it to the
 // fixtured JSON data
@@ -107,7 +107,7 @@ const next = () => {
   }
 }
 
-process.on("unhandledRejection", function (reason, _p) {
+process.on("unhandledRejection", function(reason, _p) {
   console.log(chalk.red("Error: "), reason)
   process.exitCode = 1
 })

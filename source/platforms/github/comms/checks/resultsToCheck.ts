@@ -70,7 +70,7 @@ export const resultsToCheck = async (
     try {
       // response of getContents() can be one of 4 things. We are interested in file responses only
       // https://developer.github.com/v3/repos/contents/#get-contents
-      const { data } = await api.repos.getContents({
+      const { data } = await api.repos.getContent({
         path,
         ref: pr.head.sha,
         repo: pr.head.repo.name,

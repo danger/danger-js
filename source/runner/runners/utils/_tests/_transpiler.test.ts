@@ -1,5 +1,6 @@
 jest.mock("fs", () => ({
   readFileSync: jest.fn(),
+  realpathSync: {},
   existsSync: jest.fn(),
 }))
 jest.mock("path", () => {

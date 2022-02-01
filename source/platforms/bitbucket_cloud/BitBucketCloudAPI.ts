@@ -310,7 +310,7 @@ export class BitBucketCloudAPI {
   // API implementation
   private api = async (url: string, headers: any = {}, body: any = {}, method: string, suppressErrors?: boolean) => {
     if (this.credentials.type === "PASSWORD") {
-      headers["Authorization"] = `Basic ${new Buffer(
+      headers["Authorization"] = `Basic ${Buffer.from(
         this.credentials.username + ":" + this.credentials.password
       ).toString("base64")}`
     } else {
@@ -324,9 +324,9 @@ export class BitBucketCloudAPI {
           this.oauthURL,
           {
             ...headers,
-            Authorization: `Basic ${new Buffer(this.credentials.oauthKey + ":" + this.credentials.oauthSecret).toString(
-              "base64"
-            )}`,
+            Authorization: `Basic ${Buffer.from(
+              this.credentials.oauthKey + ":" + this.credentials.oauthSecret
+            ).toString("base64")}`,
             "Content-Type": "application/x-www-form-urlencoded",
           },
           params,

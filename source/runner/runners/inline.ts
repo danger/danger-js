@@ -116,7 +116,7 @@ export const runDangerfileEnvironment = async (
       d("Got a parse error: ", error)
 
       // Call the internal functions to fail the build
-      const errorResults = resultsForCaughtError(filename, content, error)
+      const errorResults = resultsForCaughtError(filename, content, error as Error)
       environment.markdown(errorResults.markdowns[0].message)
       environment.fail(errorResults.fails[0].message)
     }
