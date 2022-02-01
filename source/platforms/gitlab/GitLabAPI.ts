@@ -161,11 +161,11 @@ class GitLabAPI {
     const api = this.api.MergeRequestDiscussions
 
     try {
-      const result: string = await api.create(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, content, {
+      const result = await api.create(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, content, {
         position: position,
       })
       this.d("createMergeRequestDiscussion", result)
-      return result
+      return result as unknown as string // not sure why?
     } catch (e) {
       this.d("createMergeRequestDiscussion", e)
       throw e

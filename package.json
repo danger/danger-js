@@ -34,7 +34,7 @@
       "git add"
     ],
     "*.@(ts|tsx)": [
-      "eslint --fix",
+      "yarn lint:fix",
       "yarn prettier --write",
       "git add"
     ]
@@ -131,7 +131,7 @@
     "madge": "^3.2.0",
     "nock": "^10.0.6",
     "pkg": "^4.4.2",
-    "prettier": "^1.14.2",
+    "prettier": "^2.5.1",
     "release-it": "^13.5.2",
     "shx": "^0.3.2",
     "ts-jest": "^24.0.2",

@@ -24,7 +24,7 @@ if (allDiagnostics.length) {
   console.log(
     "\nIf you've added something new to the DSL, and the errors are about something missing, you may need to add an interface in `source/dsl/*`."
   )
-  allDiagnostics.forEach(diagnostic => {
+  allDiagnostics.forEach((diagnostic) => {
     if (diagnostic.file) {
       let { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!)
       let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n")

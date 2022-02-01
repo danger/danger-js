@@ -1,11 +1,7 @@
 import * as fs from "fs"
 import * as prettier from "prettier"
 
-const mapLines = (s: string, func: (s: string) => string) =>
-  s
-    .split("\n")
-    .map(func)
-    .join("\n")
+const mapLines = (s: string, func: (s: string) => string) => s.split("\n").map(func).join("\n")
 
 const createDTS = () => {
   const header = `//
@@ -23,10 +19,10 @@ import { File } from "parse-diff"
 
   const dslFiles = fs
     .readdirSync("source/dsl")
-    .filter(f => !f.startsWith("_tests"))
-    .map(f => `source/dsl/${f}`)
+    .filter((f) => !f.startsWith("_tests"))
+    .map((f) => `source/dsl/${f}`)
 
-  dslFiles.forEach(file => {
+  dslFiles.forEach((file) => {
     // Sometimes they have more stuff, in those cases
     // offer a way to crop the file.
     const content = fs.readFileSync(file).toString()
@@ -72,7 +68,7 @@ import { File } from "parse-diff"
   const chainDefs = fs.readFileSync("distribution/commands/utils/chainsmoker.d.ts", "utf8")
   const chainDefsMinusDefaultExport = chainDefs
     .split("\n")
-    .filter(line => {
+    .filter((line) => {
       return !line.startsWith("export default function")
     })
     .join("\n")
@@ -82,10 +78,10 @@ import { File } from "parse-diff"
   // Remove all JS-y bits
   fileOutput = fileOutput
     .split("\n")
-    .filter(line => {
+    .filter((line) => {
       return !line.startsWith("import") && !line.includes("* @type ")
     })
-    .filter(line => {
+    .filter((line) => {
       return !line.includes("Please don't have")
     })
     .join("\n")
@@ -94,7 +90,7 @@ import { File } from "parse-diff"
   const noRedundantExports = trimmedWhitespaceLines
     .replace(/export interface/g, "interface")
     .replace(/export type/g, "type")
-  const indentedBody = mapLines(noRedundantExports, line => (line.length ? line : ""))
+  const indentedBody = mapLines(noRedundantExports, (line) => (line.length ? line : ""))
 
   const def = header + indentedBody + footer
 

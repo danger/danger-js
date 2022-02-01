@@ -17,7 +17,7 @@ const fieldMap = {
 export type GitLogOptions = {
   number: number
   branch: string
-  fields: Array<Partial<keyof typeof fieldMap>>
+  fields: ReadonlyArray<Partial<keyof typeof fieldMap>>
 }
 
 export type GitLogCommit = {
@@ -44,7 +44,7 @@ const createCommandArguments = (options: GitLogOptions) => {
 
   // Iterating through the fields and adding them to the custom format
   if (options.fields) {
-    options.fields.forEach(field => {
+    options.fields.forEach((field) => {
       prettyArgument += delimiter + fieldMap[field]
     })
   }
@@ -61,8 +61,8 @@ const createCommandArguments = (options: GitLogOptions) => {
   return command
 }
 
-const parseCommits = (commits: string[], fields: string[]) =>
-  commits.map(rawCommit => {
+const parseCommits = (commits: readonly string[], fields: readonly string[]) =>
+  commits.map((rawCommit) => {
     const parts = rawCommit.split("@end@")
     const commit = parts[0].split(delimiter)
 
