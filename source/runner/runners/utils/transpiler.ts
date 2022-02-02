@@ -30,14 +30,14 @@ export const checkForNodeModules = () => {
   }
 
   try {
-    require.resolve("typescript") // tslint:disable-line
+    require.resolve("typescript")
     hasNativeTypeScript = true && !disableTsc
   } catch (e) {
     d("Does not have TypeScript set up")
   }
 
   const checkForBabel = (prefix: BabelPackagePrefix) => {
-    require.resolve(`${prefix}core`) // tslint:disable-line
+    require.resolve(`${prefix}core`)
     babelPackagePrefix = prefix
     hasBabel = true
   }
@@ -56,16 +56,16 @@ export const checkForNodeModules = () => {
 
   if (hasBabel) {
     // @babel/polyfill is a direct dependency of Danger.
-    require("@babel/polyfill") // tslint:disable-line
+    require("@babel/polyfill")
     try {
-      require.resolve(`${babelPackagePrefix}plugin-transform-typescript`) // tslint:disable-line
+      require.resolve(`${babelPackagePrefix}plugin-transform-typescript`)
       hasBabelTypeScript = true
     } catch (e) {
       d("Does not have Babel 7 TypeScript set up")
     }
 
     try {
-      require.resolve(`${babelPackagePrefix}plugin-transform-flow-strip-types`) // tslint:disable-line
+      require.resolve(`${babelPackagePrefix}plugin-transform-flow-strip-types`)
       hasFlow = true
     } catch (e) {
       d("Does not have Flow set up")
@@ -120,7 +120,7 @@ export const lookupTSConfig = (dir: string): string | null => {
 }
 
 export const typescriptify = (content: string, dir: string): string => {
-  const ts = require("typescript") // tslint:disable-line
+  const ts = require("typescript")
 
   // Support custom TSC options, but also fallback to defaults
   let compilerOptions: any
@@ -157,7 +157,7 @@ const sanitizeTSConfig = (config: any) => {
 }
 
 export const babelify = (content: string, filename: string, extraPlugins: string[]): string => {
-  const babel = require(`${babelPackagePrefix}core`) // tslint:disable-line
+  const babel = require(`${babelPackagePrefix}core`)
   // Since Babel 7, it is recommended to use `transformSync`.
   // For older versions, we fallback to `transform`.
   // @see https://babeljs.io/docs/en/babel-core#transform

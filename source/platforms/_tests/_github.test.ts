@@ -4,10 +4,11 @@ import { readFileSync } from "fs"
 const fixtures = resolve(__dirname, "fixtures")
 
 /** Returns JSON from the fixtured dir */
+// eslint-disable-next-line jest/no-export
 export const requestWithFixturedJSON = async (path: string): Promise<() => Promise<any>> => () =>
   Promise.resolve(JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString()))
 
-class mockGitHubAPI /*tslint:disable-line*/ {
+class mockGitHubAPI {
   async getPullRequestInfo() {
     const fixtures = await requestWithFixturedJSON("github_pr.json")
     return await fixtures()

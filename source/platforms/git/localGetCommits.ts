@@ -6,17 +6,17 @@ export const localGetCommits = (base: string, head: string) => {
     number: 100,
     branch: `${base}...${head}`,
     fields: [
-      "hash" as "hash",
-      "abbrevParentHashes" as "abbrevParentHashes",
-      "treeHash" as "treeHash",
-      "authorName" as "authorName",
-      "authorEmail" as "authorEmail",
-      "authorDate" as "authorDate",
-      "committerName" as "committerName",
-      "committerEmail" as "committerEmail",
-      "committerDate" as "committerDate",
-      "subject" as "subject",
-    ],
+      "hash",
+      "abbrevParentHashes",
+      "treeHash",
+      "authorName",
+      "authorEmail",
+      "authorDate",
+      "committerName",
+      "committerEmail",
+      "committerDate",
+      "subject",
+    ] as const,
   }
 
   const commits: GitCommit[] = logGitCommits(options).map(commit => ({

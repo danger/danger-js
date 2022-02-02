@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import nock, { NockDefinition } from "nock"
 import { default as GitLabAPI, getGitLabAPICredentialsFromEnv } from "../GitLabAPI"
 import { resolve } from "path"

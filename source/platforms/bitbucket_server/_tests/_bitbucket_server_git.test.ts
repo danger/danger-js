@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-export */
 import { BitBucketServer } from "../../BitBucketServer"
 import { BitBucketServerAPI } from "../BitBucketServerAPI"
 
@@ -140,10 +141,13 @@ describe("the dangerfile gitDSL - BitBucket Server", () => {
   })
 
   it("writes a JSON DSL fixture", async () => {
-    const fakeSource = new FakeCI({})
-    const dataSent = await jsonDSLGenerator(bbs, fakeSource, {} as any)
-    dataSent.settings.github.accessToken = "12345"
+    expect.assertions(1)
+    expect(async () => {
+      const fakeSource = new FakeCI({})
+      const dataSent = await jsonDSLGenerator(bbs, fakeSource, {} as any)
+      dataSent.settings.github.accessToken = "12345"
 
-    writeFileSync(pathJoin(fixtures, "bbs-dsl-input.json"), JSON.stringify(dataSent, null, "  "), "utf8")
+      writeFileSync(pathJoin(fixtures, "bbs-dsl-input.json"), JSON.stringify(dataSent, null, "  "), "utf8")
+    }).not.toThrow()
   })
 })

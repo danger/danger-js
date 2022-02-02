@@ -52,6 +52,7 @@ describe(".isPR", () => {
 
   it("needs to have a PR number", () => {
     const env = Object.assign({}, correctEnv)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     delete env.BUDDY_EXECUTION_PULL_REQUEST_NO
     const buddyWorks = new BuddyWorks(env)

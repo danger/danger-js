@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-export */
 import { GitHub, githubJSONToGitHubDSL, GitHubType } from "../../GitHub"
 import { GitHubAPI } from "../GitHubAPI"
 
@@ -425,7 +426,7 @@ describe("the dangerfile gitDSL", () => {
             "babel-plugin-syntax-async-functions": "^6.13.0",
             "babel-plugin-transform-flow-strip-types": "^6.8.0",
             "babel-plugin-typescript": "^2.2.0",
-          }, //tslint:disable-line:max-line-length
+          },
           before: {
             "babel-cli": "^6.16.0",
             "babel-plugin-syntax-async-functions": "^6.13.0",

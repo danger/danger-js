@@ -1,3 +1,4 @@
+/* eslint-disable no-var */
 // This dangerfile is for running as an integration test on CI
 
 import { DangerDSLType } from "../../../dsl/DangerDSL"

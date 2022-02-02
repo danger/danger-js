@@ -1,5 +1,5 @@
 import dangerRunToRunnerCLI from "../dangerRunToRunnerCLI"
-import { addSubprocessCallAguments } from "../runDangerSubprocess"
+import { addSubprocessCallArguments } from "../runDangerSubprocess"
 
 describe("it can handle the command", () => {
   it("`danger ci`", () => {
@@ -52,7 +52,7 @@ it("`danger pr --dangerfile 'myDanger file.ts'`", () => {
 
 it("Adds correct subprocess arguments", () => {
   expect(
-    addSubprocessCallAguments(
+    addSubprocessCallArguments(
       ["danger-swift"],
       ["danger", "danger-pr", "--process", "danger-swift", "--dangerfile", "File.swift"]
     )
@@ -61,9 +61,11 @@ it("Adds correct subprocess arguments", () => {
 
 describe("npx danger-ts", () => {
   it("switches to the danger in the node_mods", () => {
+    expect.assertions(1)
     // the code uses join which gives different results on windows, and I'm too lazy to add a specific test for that
     const isWindows = process.platform === "win32"
     if (!isWindows) {
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(
         dangerRunToRunnerCLI([
           "/Users/ortatherox/.nvm/versions/node/v14.5.0/bin/node",
@@ -73,6 +75,10 @@ describe("npx danger-ts", () => {
         "/Users/ortatherox/.nvm/versions/node/v14.5.0/bin/node",
         "/Users/ortatherox/.npm/_npx/23085/lib/node_modules/danger-ts/node_modules/danger/distribution/commands/danger-runner.js",
       ])
+    } else {
+      console.warn("Unimplemented test on windows")
+      // eslint-disable-next-line jest/no-conditional-expect
+      expect(true).toBe(true)
     }
   })
 })

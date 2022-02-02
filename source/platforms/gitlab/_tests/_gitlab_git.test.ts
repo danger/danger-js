@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-export */
 import { readFileSync } from "fs"
 import { join as pathJoin } from "path"
 import _ from "lodash"

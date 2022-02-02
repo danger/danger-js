@@ -30,7 +30,8 @@ export async function getCISourceForExternal(env: Env, modulePath: string): Prom
         console.error(`could not load CI provider at ${modulePath} due to ${error}`)
       }
       if (stat && stat.isFile()) {
-        const externalModule = require(path) //tslint:disable-line:no-require-imports
+        // eslint-disable-next-line
+        const externalModule = require(path) //  @typescript-eslint/no-var-requires @typescript-eslint/no-require-imports
         const moduleConstructor = externalModule.default || externalModule
         resolve(new moduleConstructor(env))
       }

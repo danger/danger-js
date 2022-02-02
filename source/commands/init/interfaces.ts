@@ -22,10 +22,10 @@ export interface InitState {
 }
 
 export interface InitUI {
-  header: (msg: String) => void
+  header: (msg: string) => void
   command: (command: string) => void
-  say: (msg: String) => void
-  pause: (secs: number) => Promise<{}>
+  say: (msg: string) => void
+  pause: (secs: number) => Promise<unknown>
   waitForReturn: () => void
   link: (name: string, href: string) => string
   askWithAnswers: (message: string, answers: string[]) => string

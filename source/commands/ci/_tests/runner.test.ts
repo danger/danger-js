@@ -81,6 +81,7 @@ it("passes the strictm option from args into the executor config", async () => {
 })
 
 // TODO: This occasionally fails!
+// eslint-disable-next-line jest/no-disabled-tests
 it.skip("passes the dangerID from args into the executor config", async () => {
   const customArgs = {
     ...defaultAppArgs,

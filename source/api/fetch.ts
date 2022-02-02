@@ -63,12 +63,12 @@ export function api(
   url: string | node_fetch.Request,
   init: node_fetch.RequestInit,
   suppressErrorReporting?: boolean,
-  provessEnv: NodeJS.ProcessEnv = process.env
+  processEnv: NodeJS.ProcessEnv = process.env
 ): Promise<node_fetch.Response> {
   const isTests = typeof jest !== "undefined"
   if (isTests && !url.toString().includes("localhost")) {
     const message = `No API calls in tests please: ${url}`
-    debugger // tslint:disable-line
+    debugger
     throw new Error(message)
   }
 
@@ -79,8 +79,8 @@ export function api(
       output.push(`-X ${init.method}`)
     }
 
-    const showToken = provessEnv["DANGER_VERBOSE_SHOW_TOKEN"]
-    const token = provessEnv["DANGER_GITHUB_API_TOKEN"] || provessEnv["GITHUB_TOKEN"]
+    const showToken = processEnv["DANGER_VERBOSE_SHOW_TOKEN"]
+    const token = processEnv["DANGER_GITHUB_API_TOKEN"] || processEnv["GITHUB_TOKEN"]
 
     if (init.headers) {
       for (const prop in init.headers) {
@@ -109,7 +109,7 @@ export function api(
 
   let agent = init.agent
   const proxy =
-    provessEnv["HTTPS_PROXY"] || provessEnv["https_proxy"] || provessEnv["HTTP_PROXY"] || provessEnv["http_proxy"]
+    processEnv["HTTPS_PROXY"] || processEnv["https_proxy"] || processEnv["HTTP_PROXY"] || processEnv["http_proxy"]
 
   if (!agent && proxy) {
     let secure = url.toString().startsWith("https")

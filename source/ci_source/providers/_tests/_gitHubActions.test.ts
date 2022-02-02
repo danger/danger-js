@@ -51,7 +51,8 @@ describe("pullRequestID", () => {
   it("throws an error when event.json doesn't contain issue or pull_request data", () => {
     const ci = new GitHubActions({}, {})
     expect(() => {
-      // tslint:disable-next-line:no-unused-expression
+      // eslint-disable-next-line no-unused-expressions
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       ci.pullRequestID
     }).toThrow()
   })
@@ -71,7 +72,8 @@ describe("repoSlug", () => {
   it("throws an error when event.json doesn't contain issue or pull_request data", () => {
     const ci = new GitHubActions({}, {})
     expect(() => {
-      // tslint:disable-next-line:no-unused-expression
+      // eslint-disable-next-line no-unused-expressions
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       ci.repoSlug
     }).toThrow()
   })

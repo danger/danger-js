@@ -19,6 +19,7 @@ const messageToSendDSL = "danger://send-dsl"
 // Sanitizes the DSL so for sending via STDOUT
 export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
   if (dangerDSL.github && dangerDSL.github.api) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     delete dangerDSL.github.api
   }
@@ -27,9 +28,12 @@ export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
   return JSON.stringify(dangerJSONOutput, null, "  ") + "\n"
 }
 
-export const addSubprocessCallAguments = (call: string[], args: string[] = process.argv): string[] => {
+export const addSubprocessCallArguments = (call: string[], args: string[] = process.argv): string[] => {
   return call.concat(["runner"], args.slice(1, args.length))
 }
+
+// @deprecated
+export const addSubprocessCallAguments = addSubprocessCallArguments
 
 // Runs the Danger process
 export const runDangerSubprocess = (
