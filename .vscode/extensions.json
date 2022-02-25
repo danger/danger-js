@@ -1,9 +1,0 @@
-{
-  "recommendations": [
-    "Orta.vscode-jest",
-    "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint",
-    "christian-kohler.path-intellisense",
-    "wayou.vscode-todo-highlight"
-  ]
-}
