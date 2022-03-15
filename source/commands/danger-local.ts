@@ -18,13 +18,13 @@ program
   .usage("[options]")
   .description("Runs danger without PR metadata, useful for git hooks.")
   .option("-s, --staging", "Just use staged changes.")
-  .option("-b, --base [branch_name]", "Use a different base branch")
+  .option("-b, --base [branch_name]", "Use a different base branch", "master")
   .option("-j, --outputJSON", "Outputs the resulting JSON to STDOUT")
   .allowUnknownOption(true)
 setSharedArgs(program).parse(process.argv)
 
 const app = (program as any) as App
-const base = app.base || "master"
+const base = app.base
 
 const localPlatform = new LocalGit({ base, staging: app.staging })
 localPlatform.validateThereAreChanges().then(changes => {
