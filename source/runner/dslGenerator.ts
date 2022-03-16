@@ -3,12 +3,12 @@ import { DangerDSLJSONType } from "../dsl/DangerDSL"
 import { CliArgs } from "../dsl/cli-args"
 import { CISource } from "../ci_source/ci_source"
 import { emptyGitJSON } from "../platforms/github/GitHubGit"
-import { CommanderStatic } from "commander"
+import { Command } from "commander"
 
 export const jsonDSLGenerator = async (
   platform: Platform,
   source: CISource,
-  program: CommanderStatic
+  program: Command
 ): Promise<DangerDSLJSONType> => {
   const useSimpleDSL = platform.getPlatformReviewSimpleRepresentation && source.useEventDSL
 
@@ -27,7 +27,7 @@ export const jsonDSLGenerator = async (
     id: program.id,
     textOnly: program.textOnly,
     verbose: program.verbose,
-    staging: program.staging
+    staging: program.staging,
   }
 
   const dslPlatformName = jsonDSLPlatformName(platform)
