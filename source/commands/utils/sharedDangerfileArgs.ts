@@ -1,12 +1,12 @@
-import program from "commander"
+import { Command } from "commander"
 import chalk from "chalk"
 
-process.on("unhandledRejection", function(reason: string, _p: any) {
+process.on("unhandledRejection", function (reason: string, _p: any) {
   console.log(chalk.red("Error: "), reason)
   process.exitCode = 1
 })
 
-export interface SharedCLI extends program.CommanderStatic {
+export interface SharedCLI extends Command {
   /** Should we be posting as much info as possible? */
   verbose: boolean
   /** Output to STDOUT instead of leaving a comment */
