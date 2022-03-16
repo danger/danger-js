@@ -87,6 +87,9 @@
     "url": "https://github.com/danger/danger-js/issues"
   },
   "homepage": "https://github.com/danger/danger-js#readme",
+  "engines": {
+    "node": ">=10"
+  },
   "devDependencies": {
     "@babel/cli": "7.1.2",
     "@babel/core": "7.1.2",
