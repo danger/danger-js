@@ -105,13 +105,13 @@
 
 # 10.5.0
 
-- Handle deprecations for the APIs used with `--use-github-checks` #1073 [@wardpeet](https://github.com/wardpeet)
+- Handle deprecations for the APIs used with `--use-github-checks` #1073 [@wardpeet]
 
 # 10.4.1
 
 - Improved `tsconfig.json` file lookup strategy: it now looks for it starting from the location of the danger file.
-  #1068 [@igorbek](https://github.com/igorbek)
-- Upgrade node-fetch to 2.6.1 to fix GHSA-w7rc-rwvf-8q5r. #1071 [@hmcc](https://github.com/hmcc)
+  #1068 [@igorbek]
+- Upgrade node-fetch to 2.6.1 to fix GHSA-w7rc-rwvf-8q5r. #1071 [@hmcc]
 
 # 10.4.0
 
@@ -124,7 +124,7 @@
       DANGER_MANUAL_GH_REPO: ${{ steps.pr_info.outputs.repo }}
       DANGER_MANUAL_PR: ${{ steps.pr_info.outputs.number }}
   ```
-  Which looks more intentional instead of: `DANGER_FAKE_CI` etc. [@orta](https://github.com/orta)
+  Which looks more intentional instead of: `DANGER_FAKE_CI` etc. [@orta]
 
 # 10.3.1
 
@@ -137,7 +137,7 @@
 
 # 10.2.2
 
-- Add support for `danger local` on repos without a master branch - [@ahobson](https://github.com/ahobson)
+- Add support for `danger local` on repos without a master branch - [@ahobson]
 
 # 10.2.1
 
@@ -1869,6 +1869,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@adam-moss]: https://github.com/adam-moss
 [@adamnoakes]: https://github.com/adamnoakes
 [@aghassi]: https://github.com/aghassi
+[@ahobson]: https://github.com/ahobson
 [@alexandermendes]: https://github.com/alexandermendes
 [@ashfurrow]: https://github.com/ashfurrow
 [@azz]: https://github.com/azz
@@ -1894,6 +1895,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@hmcc]: https://github.com/hmcc
 [@hmschreiner]: https://github.com/hmschreiner
 [@hongrich]: https://github.com/hongrich
+[@igorbek]: https://github.com/igorbek
 [@iljadaderko]: https://github.com/IljaDaderko
 [@imorente]: https://github.com/imorente
 [@jamiebuilds]: https://github.com/jamiebuilds
@@ -1932,6 +1934,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@tim3trick]: https://github.com/tim3trick
 [@tychota]: https://github.com/tychota
 [@urkle]: https://github.com/urkle
+[@wardpeet]: https://github.com/wardpeet
 [@wizardishungry]: https://github.com/wizardishungry
 [danger-go]: https://github.com/bdotdub/danger-go
 [danger-swift]: https://github.com/danger/danger-swift#danger-swift
