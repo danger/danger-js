@@ -6,8 +6,9 @@
 // These docs are aimed at users rather than danger developers, so please limit technical
 // terminology in here.
 
-// Note: if this is your first PR, you'll need to add your URL to the footnotes
-//       see the bottom of this file. The list there is sorted, try to follow that.
+// Note: if this is your first PR, you'll need to add your link to your
+//       username handle to the footnotes. see the bottom of this file.
+//       The list there is sorted, try to follow that.
 
 -->
 
