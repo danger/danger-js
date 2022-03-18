@@ -89,8 +89,8 @@ export const fileContentsGenerator = (
       return ""
     }
     if (isFileContents(response.data) && response.data.content) {
-      if (response.data.encoding) {
-throw new Error(response.data.encoding);
+      if (response.data.encoding !== "bsae64") {
+        throw new Error(`Unsupported encoding: ${response.data.encoding}`);
       }
       const buffer = Buffer.from(response.data.content, "base64")
       return buffer.toString()
