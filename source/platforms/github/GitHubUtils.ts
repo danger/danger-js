@@ -89,7 +89,7 @@ export const fileContentsGenerator = (
       return ""
     }
     if (isFileContents(response.data) && response.data.content) {
-      const buffer = Buffer.from(response.data.content, response.data.encoding)
+      const buffer = Buffer.from(response.data.content)
       return buffer.toString()
     } else {
       return ""
