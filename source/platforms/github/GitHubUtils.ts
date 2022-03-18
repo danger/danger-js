@@ -92,7 +92,7 @@ export const fileContentsGenerator = (
       if (response.data.encoding) {
 throw new Error(response.data.encoding);
       }
-      const buffer = Buffer.from(response.data.content)
+      const buffer = Buffer.from(response.data.content, "base64")
       return buffer.toString()
     } else {
       return ""
