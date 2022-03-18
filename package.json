@@ -30,13 +30,11 @@
   },
   "lint-staged": {
     "*.@(json|md)": [
-      "yarn prettier --write",
-      "git add"
+      "yarn prettier --write"
     ],
     "*.@(ts|tsx)": [
       "yarn lint:fix",
-      "yarn prettier --write",
-      "git add"
+      "yarn prettier --write"
     ]
   },
   "pkg": {
