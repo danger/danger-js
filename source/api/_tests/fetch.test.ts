@@ -27,8 +27,8 @@ class TestServer {
 
   start = async (response: ResponseMock): Promise<void> => {
     this.response = response
-    return new Promise<void>((resolve, reject) => {
-      this.server.listen(this.port, this.hostname, (err: any) => (err ? reject(err) : resolve()))
+    return new Promise<void>(() => {
+      this.server.listen(this.port, this.hostname)
     })
   }
   stop = async (): Promise<void> => {
