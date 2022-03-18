@@ -50,9 +50,9 @@ class TestProxy {
   private server = http.createServer(this.router)
 
   start = async (): Promise<void> => {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>(() => {
       this.isRunning = true
-      this.server.listen(this.port, this.hostname, (err: any) => (err ? reject(err) : resolve()))
+      this.server.listen(this.port, this.hostname)
     })
   }
   stop = async (): Promise<void> => {
