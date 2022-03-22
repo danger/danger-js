@@ -6,8 +6,9 @@
 // These docs are aimed at users rather than danger developers, so please limit technical
 // terminology in here.
 
-// Note: if this is your first PR, you'll need to add your URL to the footnotes
-//       see the bottom of this file. The list there is sorted, try to follow that.
+// Note: if this is your first PR, you'll need to add your link to your
+//       username handle to the footnotes. see the bottom of this file.
+//       The list there is sorted, try to follow that.
 
 -->
 
@@ -104,13 +105,13 @@
 
 # 10.5.0
 
-- Handle deprecations for the APIs used with `--use-github-checks` #1073 [@wardpeet](https://github.com/wardpeet)
+- Handle deprecations for the APIs used with `--use-github-checks` #1073 [@wardpeet]
 
 # 10.4.1
 
 - Improved `tsconfig.json` file lookup strategy: it now looks for it starting from the location of the danger file.
-  #1068 [@igorbek](https://github.com/igorbek)
-- Upgrade node-fetch to 2.6.1 to fix GHSA-w7rc-rwvf-8q5r. #1071 [@hmcc](https://github.com/hmcc)
+  #1068 [@igorbek]
+- Upgrade node-fetch to 2.6.1 to fix GHSA-w7rc-rwvf-8q5r. #1071 [@hmcc]
 
 # 10.4.0
 
@@ -123,7 +124,7 @@
       DANGER_MANUAL_GH_REPO: ${{ steps.pr_info.outputs.repo }}
       DANGER_MANUAL_PR: ${{ steps.pr_info.outputs.number }}
   ```
-  Which looks more intentional instead of: `DANGER_FAKE_CI` etc. [@orta](https://github.com/orta)
+  Which looks more intentional instead of: `DANGER_FAKE_CI` etc. [@orta]
 
 # 10.3.1
 
@@ -136,7 +137,7 @@
 
 # 10.2.2
 
-- Add support for `danger local` on repos without a master branch - [@ahobson](https://github.com/ahobson)
+- Add support for `danger local` on repos without a master branch - [@ahobson]
 
 # 10.2.1
 
@@ -349,7 +350,7 @@
 
 # 7.0.19
 
-- Taken a stab at trying to make the commit status summary to feel better in both Danger & Peril [@orta][@dblandin]
+- Taken a stab at trying to make the commit status summary to feel better in both Danger & Peril [@orta], [@dblandin]
 
 # 7.0.18
 
@@ -1864,29 +1865,41 @@ That should do ya. I think. This doesn't support babel, and I haven't explored u
 
 Not usable for others, only stubs of classes etc. - [@orta]
 
-[danger-swift]: https://github.com/danger/danger-swift#danger-swift
-[danger-go]: https://github.com/bdotdub/danger-go
+[@417-72ki]: https://github.com/417-72KI
 [@adam-moss]: https://github.com/adam-moss
 [@adamnoakes]: https://github.com/adamnoakes
 [@aghassi]: https://github.com/aghassi
+[@ahobson]: https://github.com/ahobson
+[@alexandermendes]: https://github.com/alexandermendes
 [@ashfurrow]: https://github.com/ashfurrow
 [@azz]: https://github.com/azz
+[@bigkraig]: https://github.com/bigkraig
 [@caffodian]: https://github.com/caffodian
 [@codestergit]: https://github.com/codestergit
 [@cwright017]: https://github.com/Cwright017
 [@cysp]: https://github.com/cysp
 [@danielrosenwasser]: https://github.com/DanielRosenwasser
 [@davidbrunow]: https://github.com/davidbrunow
+[@dblandin]: https://github.com/dblandin
+[@denieler]: https://github.com/denieler
 [@dfalling]: https://github.com/dfalling
 [@dkundel]: https://github.com/dkundel
+[@doniyor2109]: https://github.com/doniyor2109
+[@ds300]: https://github.com/ds300
 [@f-meloni]: https://github.com/f-meloni
 [@fbartho]: https://github.com/fbartho
 [@fwal]: https://github.com/fwal
+[@g3offrey]: https://github.com/g3offrey
 [@happylinks]: https://github.com/happylinks
-[@hmcc]: https://github.com/hmcc
-[@hongrich]: https://github.com/hongrich
 [@hellocore]: https://github.com/HelloCore
+[@hmcc]: https://github.com/hmcc
+[@hmschreiner]: https://github.com/hmschreiner
+[@hongrich]: https://github.com/hongrich
+[@igorbek]: https://github.com/igorbek
+[@iljadaderko]: https://github.com/IljaDaderko
 [@imorente]: https://github.com/imorente
+[@jamiebuilds]: https://github.com/jamiebuilds
+[@jamime]: https://github.com/jamime
 [@joarwilk]: https://github.com/joarwilk
 [@johansteffner]: https://github.com/johansteffner
 [@jonny133]: https://github.com/jonny133
@@ -1894,14 +1907,17 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@keplersj]: https://github.com/keplersj
 [@langovoi]: https://github.com/langovoi
 [@mifi]: https://github.com/ionutmiftode
+[@mrndjo]: https://github.com/mrndjo
 [@mxstbr]: https://github.com/mxstbr
 [@ninjaprox]: https://github.com/ninjaprox
 [@nminhnguyen]: https://github.com/NMinhNguyen
 [@nornagon]: https://github.com/nornagon
+[@notjosh]: https://github.com/notjosh
 [@notmoni]: https://github.com/NotMoni
 [@orta]: https://github.com/orta
 [@osmestad]: https://github.com/osmestad
 [@patrickkempff]: https://github.com/patrickkempff
+[@paulmelnikow]: https://github.com/paulmelnikow
 [@peterjgrainger]: https://github.com/peterjgrainger
 [@randak]: https://github.com/randak
 [@ravanscafi]: https://github.com/ravanscafi
@@ -1911,26 +1927,14 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@sgtcoolguy]: https://github.com/sgtcoolguy
 [@sharkysharks]: https://github.com/sharkysharks
 [@sogame]: https://github.com/sogame
+[@soyn]: https://github.com/Soyn
 [@stevemoser]: https://github.com/stevemoser
 [@stevenp]: https://github.com/stevenp
 [@sunshinejr]: https://github.com/sunshinejr
+[@tim3trick]: https://github.com/tim3trick
 [@tychota]: https://github.com/tychota
 [@urkle]: https://github.com/urkle
+[@wardpeet]: https://github.com/wardpeet
 [@wizardishungry]: https://github.com/wizardishungry
-[@dblandin]: https://github.com/dblandin
-[@paulmelnikow]: https://github.com/paulmelnikow
-[@ds300]: https://github.com/ds300
-[@jamime]: https://github.com/jamime
-[@mrndjo]: https://github.com/mrndjo
-[@bigkraig]: https://github.com/bigkraig
-[@notjosh]: https://github.com/notjosh
-[@iljadaderko]: https://github.com/IljaDaderko
-[@417-72ki]: https://github.com/417-72KI
-[@soyn]: https://github.com/Soyn
-[@tim3trick]: https://github.com/tim3trick
-[@doniyor2109]: https://github.com/doniyor2109
-[@alexandermendes]: https://github.com/alexandermendes
-[@jamiebuilds]: https://github.com/jamiebuilds
-[@hmschreiner]: https://github.com/hmschreiner
-[@g3offrey]: https://github.com/g3offrey
-[@denieler]: https://github.com/denieler
+[danger-go]: https://github.com/bdotdub/danger-go
+[danger-swift]: https://github.com/danger/danger-swift#danger-swift
