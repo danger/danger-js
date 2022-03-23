@@ -20,28 +20,24 @@ check that a CHANGELOG entry is added on every PR:
 
 ```js
 import { danger, fail, warn } from "danger"
-import includes from "lodash.includes"
 
-const hasCHANGELOGChanges = includes(danger.git.modified_files, "CHANGELOG.md")
-if (!hasCHANGELOGChanges) {
+const changelogChanges = danger.git.fileMatch("CHANGELOG.md")
+if (!changelogChanges.modified) {
   warn("This pull request may need a CHANGELOG entry.")
 }
 ```
 
-We're using lodash's `_.include` function to check if `CHANGELOG.md` is in the list of modified files.
-
-We went with `warn` here because there are a lot of legitimate reasons to not need a CHANGELOG entry (updating typoes,
-CI and other infrastructure.) We can improve this though, let's _also_ check that there are changes to the source code
-for our library.
+We went with `warn` here because there are a lot of legitimate reasons to not need a CHANGELOG entry (updating typos, CI
+and other infrastructure.) We can improve this though, let's _also_ check that there are changes to the source code for
+our library.
 
 ```js
 import { danger, fail, warn } from "danger"
-import includes from "lodash.includes"
 import first from "lodash.first"
 
-const hasCHANGELOGChanges = includes(danger.git.modified_files, "CHANGELOG.md")
+const changelogChanges = danger.git.fileMatch("CHANGELOG.md")
 const hasLibraryChanges = first(danger.git.modified_files, path => path.startsWith("lib/"))
-if (hasLibraryChanges && !hasCHANGELOGChanges) {
+if (hasLibraryChanges && !changelogChanges.modified) {
   warn("This pull request may need a CHANGELOG entry.")
 }
 ```

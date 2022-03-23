@@ -23,21 +23,17 @@ Danger to give us more insight into changes related to our dependencies.
 
 The simplest rule, which we can evolve, is that any time your `package.json` changes you probably want a change to the
 [`yarn.lock`][lockfile] or [`shrinkwrap.json`][shrinkwrap] file. Yes, not every change to the `package.json` represents
-a dependency update but we're starting simple. You start off your `Dangerfile` like this:
+a dependency update, but we're starting simple. You start off your `Dangerfile` like this:
 
 ```js
-import { danger, fail, warn } from "danger"
-import includes from "lodash.includes"
+import { danger, warn } from "danger"
 
-const hasPackageChanges = includes(danger.git.modified_files, "package.json")
-const hasLockfileChanges = includes(danger.git.modified_files, "yarn.lock")
-if (hasPackageChanges && !hasLockfileChanges) {
+const packageJson = danger.git.fileMatch("package.json")
+const packageLock = danger.git.fileMatch("yarn.lock")
+if (packageJson.modified && !packageLock.modified) {
   warn("There are package.json changes with no corresponding lockfile changes")
 }
 ```
-
-This uses `lodash`'s `_.includes()` function to see if `danger.git.modified_files` includes the package, but not the
-lockfile.
 
 ### Vetting New Dependencies
 
