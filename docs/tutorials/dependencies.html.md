@@ -63,7 +63,7 @@ schedule(async () => {
 
   if (packageDiff.dependencies) {
       const newDependencies = packageDiff.dependencies.added
-      if (includes(newDependencies, blacklist)) {
+      if (newDependencies.includes(blacklist)) {
         fail(`Do not add ${blacklist} to our dependencies, see CVE #23")
       }
   }
@@ -107,12 +107,11 @@ dependency is one that comes in as a dependency of a dependency, one which isn't
 
 ```js
 import fs from "fs"
-import includes from "lodash.includes"
 
 const blacklist = "spaced-between"
 const lockfile = fs.readFileSync("yarn.lock").toString()
 
-if (includes(lockfile, blacklist)) {
+if (lockfile.includes(blacklist)) {
   const message = `${blacklist} was added to our dependencies, see CVE #23`
   const hint = `To find out what introduced it, use \`yarn why ${blacklist}\`.`
   fail(`${message}<br/>${hint}`)
