@@ -1895,6 +1895,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@ds300]: https://github.com/ds300
 [@f-meloni]: https://github.com/f-meloni
 [@fbartho]: https://github.com/fbartho
+[@flovilmart]: https://github.com/flovilmart
 [@friederbluemle]: https://github.com/friederbluemle
 [@fwal]: https://github.com/fwal
 [@g3offrey]: https://github.com/g3offrey
