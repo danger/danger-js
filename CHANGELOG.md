@@ -1900,6 +1900,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@gzaripov]: https://github.com/gzaripov
 [@happylinks]: https://github.com/happylinks
 [@hellocore]: https://github.com/HelloCore
+[@hiroppy]: https://github.com/hiroppy
 [@hmcc]: https://github.com/hmcc
 [@hmschreiner]: https://github.com/hmschreiner
 [@hongrich]: https://github.com/hongrich
