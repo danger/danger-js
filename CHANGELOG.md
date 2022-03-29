@@ -1952,6 +1952,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@urkle]: https://github.com/urkle
 [@valscion]: https://github.com/valscion
 [@wardpeet]: https://github.com/wardpeet
+[@watchinharrison]: https://github.com/watchinharrison
 [@wizardishungry]: https://github.com/wizardishungry
 [@yohix]: https://github.com/yohix
 [danger-go]: https://github.com/bdotdub/danger-go
