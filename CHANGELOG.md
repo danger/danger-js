@@ -1957,6 +1957,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@shyim]: https://github.com/shyim
 [@sogame]: https://github.com/sogame
 [@soyn]: https://github.com/Soyn
+[@stefanbuck]: https://github.com/stefanbuck
 [@steprescott]: https://github.com/steprescott
 [@stevemoser]: https://github.com/stevemoser
 [@stevenp]: https://github.com/stevenp
