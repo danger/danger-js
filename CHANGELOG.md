@@ -1911,6 +1911,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@johansteffner]: https://github.com/johansteffner
 [@jonny133]: https://github.com/jonny133
 [@joshacheson]: https://github.com/joshacheson
+[@jtreanor]: https://github.com/jtreanor
 [@keplersj]: https://github.com/keplersj
 [@kristof0425]: https://github.com/kristof0425
 [@langovoi]: https://github.com/langovoi
