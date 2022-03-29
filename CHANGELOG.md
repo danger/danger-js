@@ -1869,6 +1869,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@HonzaMac]: https://github.com/HonzaMac
 [@JanStevens]: https://github.com/JanStevens
 [@RDIL]: https://github.com/RDIL
+[@Teamop]: https://github.com/Teamop
 [@adam-bratin]: https://github.com/adam-bratin
 [@adam-moss]: https://github.com/adam-moss
 [@adamnoakes]: https://github.com/adamnoakes
