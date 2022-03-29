@@ -1898,6 +1898,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@fwal]: https://github.com/fwal
 [@g3offrey]: https://github.com/g3offrey
 [@gzaripov]: https://github.com/gzaripov
+[@hanneskaeufler]: https://github.com/hanneskaeufler
 [@happylinks]: https://github.com/happylinks
 [@hellocore]: https://github.com/HelloCore
 [@hiroppy]: https://github.com/hiroppy
