@@ -1866,6 +1866,7 @@ That should do ya. I think. This doesn't support babel, and I haven't explored u
 Not usable for others, only stubs of classes etc. - [@orta]
 
 [@417-72ki]: https://github.com/417-72KI
+[@HonzaMac]: https://github.com/HonzaMac
 [@JanStevens]: https://github.com/JanStevens
 [@adam-moss]: https://github.com/adam-moss
 [@adamnoakes]: https://github.com/adamnoakes
