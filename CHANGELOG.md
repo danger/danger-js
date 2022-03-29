@@ -1923,6 +1923,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@patrickkempff]: https://github.com/patrickkempff
 [@paulmelnikow]: https://github.com/paulmelnikow
 [@peterjgrainger]: https://github.com/peterjgrainger
+[@pinkasey]: https://github.com/pinkasey
 [@randak]: https://github.com/randak
 [@ravanscafi]: https://github.com/ravanscafi
 [@rogerluan]: https://github.com/rogerluan
