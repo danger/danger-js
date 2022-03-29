@@ -731,7 +731,7 @@ Also, `danger pr` now accepts a `--process` arg.
 
 # 3.7.17
 
-- Improvements to PR detection on Team City - @markelog
+- Improvements to PR detection on Team City - [@markelog]
 
 # 3.7.16
 
