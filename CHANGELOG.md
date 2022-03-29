@@ -1919,6 +1919,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@mmiszy]: https://github.com/mmiszy
 [@mrndjo]: https://github.com/mrndjo
 [@mxstbr]: https://github.com/mxstbr
+[@nguyenhuy]: https://github.com/nguyenhuy
 [@ninjaprox]: https://github.com/ninjaprox
 [@nminhnguyen]: https://github.com/NMinhNguyen
 [@nornagon]: https://github.com/nornagon
