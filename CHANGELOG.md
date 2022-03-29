@@ -1974,5 +1974,6 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@watchinharrison]: https://github.com/watchinharrison
 [@wizardishungry]: https://github.com/wizardishungry
 [@yohix]: https://github.com/yohix
+[@zdenektopic]: https://github.com/zdenektopic
 [danger-go]: https://github.com/bdotdub/danger-go
 [danger-swift]: https://github.com/danger/danger-swift#danger-swift
