@@ -1915,6 +1915,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@lucasmpaim]: https://github.com/lucasmpaim
 [@melvinvermeer]: https://github.com/melvinvermeer
 [@mifi]: https://github.com/ionutmiftode
+[@mmiszy]: https://github.com/mmiszy
 [@mrndjo]: https://github.com/mrndjo
 [@mxstbr]: https://github.com/mxstbr
 [@ninjaprox]: https://github.com/ninjaprox
