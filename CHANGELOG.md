@@ -1944,6 +1944,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@tim3trick]: https://github.com/tim3trick
 [@tychota]: https://github.com/tychota
 [@urkle]: https://github.com/urkle
+[@valscion]: https://github.com/valscion
 [@wardpeet]: https://github.com/wardpeet
 [@wizardishungry]: https://github.com/wizardishungry
 [danger-go]: https://github.com/bdotdub/danger-go
