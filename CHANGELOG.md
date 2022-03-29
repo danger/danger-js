@@ -1950,5 +1950,6 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@valscion]: https://github.com/valscion
 [@wardpeet]: https://github.com/wardpeet
 [@wizardishungry]: https://github.com/wizardishungry
+[@yohix]: https://github.com/yohix
 [danger-go]: https://github.com/bdotdub/danger-go
 [danger-swift]: https://github.com/danger/danger-swift#danger-swift
