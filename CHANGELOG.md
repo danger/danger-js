@@ -1880,6 +1880,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@ashfurrow]: https://github.com/ashfurrow
 [@awgeorge]: https://github.com/awgeorge
 [@azz]: https://github.com/azz
+[@bdotdub]: https://github.com/bdotdub
 [@bigkraig]: https://github.com/bigkraig
 [@caffodian]: https://github.com/caffodian
 [@codestergit]: https://github.com/codestergit
