@@ -1966,6 +1966,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@stevenp]: https://github.com/stevenp
 [@sunshinejr]: https://github.com/sunshinejr
 [@thii]: https://github.com/thii
+[@tibdex]: https://github.com/tibdex
 [@tim3trick]: https://github.com/tim3trick
 [@tychota]: https://github.com/tychota
 [@urkle]: https://github.com/urkle
