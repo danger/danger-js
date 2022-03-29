@@ -1876,6 +1876,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@ahobson]: https://github.com/ahobson
 [@alexandermendes]: https://github.com/alexandermendes
 [@ashfurrow]: https://github.com/ashfurrow
+[@awgeorge]: https://github.com/awgeorge
 [@azz]: https://github.com/azz
 [@bigkraig]: https://github.com/bigkraig
 [@caffodian]: https://github.com/caffodian
