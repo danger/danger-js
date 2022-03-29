@@ -177,7 +177,7 @@
 - Don't use hardcoded userId to update comments if using personal token in Github Actions - [@rohit-gohri]
 - Disable warning in Github Action if using DANGER_GITHUB_API_TOKEN - [@rohit-gohri]
 - Update `parse-diff` library - [@417-72KI]
-- Fix repository slug in Jenkins provider - [sandratatarevicova]
+- Fix repository slug in Jenkins provider - [@sandratatarevicova]
 - Add Gitlab diff support - [@rohit-gohri]
 - Fix Typos across danger-js Repo - [@yohix]
 - Fix `@octokit/rest` deprecation warning when using `.issues.addLabels()` - [@sogame]
@@ -1934,6 +1934,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@rohit-gohri]: https://github.com/rohit-gohri
 [@rzgry]: https://github.com/rzgry
 [@sajjadzamani]: https://github.com/sajjadzamani
+[@sandratatarevicova]: https://github.com/sandratatarevicova
 [@sebinsua]: https://github.com/sebinsua
 [@sgtcoolguy]: https://github.com/sgtcoolguy
 [@sharkysharks]: https://github.com/sharkysharks
