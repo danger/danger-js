@@ -177,7 +177,7 @@
 - Don't use hardcoded userId to update comments if using personal token in Github Actions - [@rohit-gohri]
 - Disable warning in Github Action if using DANGER_GITHUB_API_TOKEN - [@rohit-gohri]
 - Update `parse-diff` library - [@417-72KI]
-- Fix repository slug in Jenkins provider - [sandratatarevicova]
+- Fix repository slug in Jenkins provider - [@sandratatarevicova]
 - Add Gitlab diff support - [@rohit-gohri]
 - Fix Typos across danger-js Repo - [@yohix]
 - Fix `@octokit/rest` deprecation warning when using `.issues.addLabels()` - [@sogame]
@@ -731,7 +731,7 @@ Also, `danger pr` now accepts a `--process` arg.
 
 # 3.7.17
 
-- Improvements to PR detection on Team City - @markelog
+- Improvements to PR detection on Team City - [@markelog]
 
 # 3.7.16
 
@@ -1866,13 +1866,21 @@ That should do ya. I think. This doesn't support babel, and I haven't explored u
 Not usable for others, only stubs of classes etc. - [@orta]
 
 [@417-72ki]: https://github.com/417-72KI
+[@HonzaMac]: https://github.com/HonzaMac
+[@JanStevens]: https://github.com/JanStevens
+[@RDIL]: https://github.com/RDIL
+[@Teamop]: https://github.com/Teamop
+[@adam-bratin]: https://github.com/adam-bratin
 [@adam-moss]: https://github.com/adam-moss
 [@adamnoakes]: https://github.com/adamnoakes
 [@aghassi]: https://github.com/aghassi
 [@ahobson]: https://github.com/ahobson
 [@alexandermendes]: https://github.com/alexandermendes
+[@andykenward]: https://github.com/andykenward
 [@ashfurrow]: https://github.com/ashfurrow
+[@awgeorge]: https://github.com/awgeorge
 [@azz]: https://github.com/azz
+[@bdotdub]: https://github.com/bdotdub
 [@bigkraig]: https://github.com/bigkraig
 [@caffodian]: https://github.com/caffodian
 [@codestergit]: https://github.com/codestergit
@@ -1880,6 +1888,8 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@cysp]: https://github.com/cysp
 [@danielrosenwasser]: https://github.com/DanielRosenwasser
 [@davidbrunow]: https://github.com/davidbrunow
+[@davidhouweling]: https://github.com/davidhouweling
+[@dbgrandi]: https://github.com/dbgrandi
 [@dblandin]: https://github.com/dblandin
 [@denieler]: https://github.com/denieler
 [@dfalling]: https://github.com/dfalling
@@ -1888,10 +1898,16 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@ds300]: https://github.com/ds300
 [@f-meloni]: https://github.com/f-meloni
 [@fbartho]: https://github.com/fbartho
+[@flovilmart]: https://github.com/flovilmart
+[@friederbluemle]: https://github.com/friederbluemle
 [@fwal]: https://github.com/fwal
 [@g3offrey]: https://github.com/g3offrey
+[@gantman]: https://github.com/gantman
+[@gzaripov]: https://github.com/gzaripov
+[@hanneskaeufler]: https://github.com/hanneskaeufler
 [@happylinks]: https://github.com/happylinks
 [@hellocore]: https://github.com/HelloCore
+[@hiroppy]: https://github.com/hiroppy
 [@hmcc]: https://github.com/hmcc
 [@hmschreiner]: https://github.com/hmschreiner
 [@hongrich]: https://github.com/hongrich
@@ -1904,37 +1920,66 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@johansteffner]: https://github.com/johansteffner
 [@jonny133]: https://github.com/jonny133
 [@joshacheson]: https://github.com/joshacheson
+[@jtreanor]: https://github.com/jtreanor
 [@keplersj]: https://github.com/keplersj
+[@kesne]: https://github.com/kesne
+[@kristof0425]: https://github.com/kristof0425
+[@kwonoj]: https://github.com/kwonoj
 [@langovoi]: https://github.com/langovoi
+[@lucasmpaim]: https://github.com/lucasmpaim
+[@macklinu]: https://github.com/macklinu
+[@markelog]: https://github.com/markelog
+[@melvinvermeer]: https://github.com/melvinvermeer
 [@mifi]: https://github.com/ionutmiftode
+[@mlabrum]: https://github.com/mlabrum
+[@mmiszy]: https://github.com/mmiszy
 [@mrndjo]: https://github.com/mrndjo
+[@msteward]: https://github.com/msteward
 [@mxstbr]: https://github.com/mxstbr
+[@nguyenhuy]: https://github.com/nguyenhuy
 [@ninjaprox]: https://github.com/ninjaprox
 [@nminhnguyen]: https://github.com/NMinhNguyen
 [@nornagon]: https://github.com/nornagon
 [@notjosh]: https://github.com/notjosh
 [@notmoni]: https://github.com/NotMoni
+[@orieken]: https://github.com/orieken
 [@orta]: https://github.com/orta
 [@osmestad]: https://github.com/osmestad
+[@ozzieorca]: https://github.com/ozzieorca
 [@patrickkempff]: https://github.com/patrickkempff
 [@paulmelnikow]: https://github.com/paulmelnikow
 [@peterjgrainger]: https://github.com/peterjgrainger
+[@pgoudreau]: https://github.com/@pgoudreau
+[@pinkasey]: https://github.com/pinkasey
+[@pveyes]: https://github.com/pveyes
 [@randak]: https://github.com/randak
 [@ravanscafi]: https://github.com/ravanscafi
+[@rogerluan]: https://github.com/rogerluan
 [@rohit-gohri]: https://github.com/rohit-gohri
+[@rzgry]: https://github.com/rzgry
 [@sajjadzamani]: https://github.com/sajjadzamani
+[@sandratatarevicova]: https://github.com/sandratatarevicova
 [@sebinsua]: https://github.com/sebinsua
 [@sgtcoolguy]: https://github.com/sgtcoolguy
 [@sharkysharks]: https://github.com/sharkysharks
+[@shyim]: https://github.com/shyim
 [@sogame]: https://github.com/sogame
 [@soyn]: https://github.com/Soyn
+[@stefanbuck]: https://github.com/stefanbuck
+[@steprescott]: https://github.com/steprescott
 [@stevemoser]: https://github.com/stevemoser
 [@stevenp]: https://github.com/stevenp
 [@sunshinejr]: https://github.com/sunshinejr
+[@thii]: https://github.com/thii
+[@tibdex]: https://github.com/tibdex
 [@tim3trick]: https://github.com/tim3trick
 [@tychota]: https://github.com/tychota
 [@urkle]: https://github.com/urkle
+[@valscion]: https://github.com/valscion
 [@wardpeet]: https://github.com/wardpeet
+[@watchinharrison]: https://github.com/watchinharrison
 [@wizardishungry]: https://github.com/wizardishungry
+[@yohix]: https://github.com/yohix
+[@zdenektopic]: https://github.com/zdenektopic
 [danger-go]: https://github.com/bdotdub/danger-go
 [danger-swift]: https://github.com/danger/danger-swift#danger-swift
