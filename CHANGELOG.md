@@ -1920,6 +1920,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@joshacheson]: https://github.com/joshacheson
 [@jtreanor]: https://github.com/jtreanor
 [@keplersj]: https://github.com/keplersj
+[@kesne]: https://github.com/kesne
 [@kristof0425]: https://github.com/kristof0425
 [@langovoi]: https://github.com/langovoi
 [@lucasmpaim]: https://github.com/lucasmpaim
