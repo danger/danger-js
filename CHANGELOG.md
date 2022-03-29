@@ -1908,6 +1908,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@joshacheson]: https://github.com/joshacheson
 [@keplersj]: https://github.com/keplersj
 [@langovoi]: https://github.com/langovoi
+[@melvinvermeer]: https://github.com/melvinvermeer
 [@mifi]: https://github.com/ionutmiftode
 [@mrndjo]: https://github.com/mrndjo
 [@mxstbr]: https://github.com/mxstbr
