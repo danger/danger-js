@@ -1901,6 +1901,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@friederbluemle]: https://github.com/friederbluemle
 [@fwal]: https://github.com/fwal
 [@g3offrey]: https://github.com/g3offrey
+[@gantman]: https://github.com/gantman
 [@gzaripov]: https://github.com/gzaripov
 [@hanneskaeufler]: https://github.com/hanneskaeufler
 [@happylinks]: https://github.com/happylinks
