@@ -1926,6 +1926,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@sebinsua]: https://github.com/sebinsua
 [@sgtcoolguy]: https://github.com/sgtcoolguy
 [@sharkysharks]: https://github.com/sharkysharks
+[@shyim]: https://github.com/shyim
 [@sogame]: https://github.com/sogame
 [@soyn]: https://github.com/Soyn
 [@stevemoser]: https://github.com/stevemoser
