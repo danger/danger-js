@@ -1961,6 +1961,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@stevemoser]: https://github.com/stevemoser
 [@stevenp]: https://github.com/stevenp
 [@sunshinejr]: https://github.com/sunshinejr
+[@thii]: https://github.com/thii
 [@tim3trick]: https://github.com/tim3trick
 [@tychota]: https://github.com/tychota
 [@urkle]: https://github.com/urkle
