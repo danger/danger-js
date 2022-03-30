@@ -83,10 +83,10 @@ So for example with a diff of `package.json` where spaced-between is added:
 
 ```js
 {
-  dependencies {
+  dependencies: {
     added: ["chalk"],
     removed: [],
-    after: { commander: "^2.9.0", debug: "^2.6.0",  spaced-between: "^1.1.1",  typescript: "^2.2.1" },
+    after: { commander: "^2.9.0", debug: "^2.6.0", "spaced-between": "^1.1.1", typescript: "^2.2.1" },
     before: { commander: "^2.9.0", debug: "^2.6.0", typescript: "^2.2.1" },
   }
 }
