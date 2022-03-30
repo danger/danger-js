@@ -51,9 +51,9 @@ export interface JSONDiffValue {
   /** The value after the PR's applied changes */
   after: any
   /** If both before & after are arrays, then you optionally get what is added. Empty if no additional objects. */
-  added?: any[]
+  added?: any
   /** If both before & after are arrays, then you optionally get what is removed. Empty if no removed objects. */
-  removed?: any[]
+  removed?: any
 }
 
 /** A map of string keys to JSONDiffValue */
