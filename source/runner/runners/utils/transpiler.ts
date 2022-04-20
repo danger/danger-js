@@ -55,8 +55,8 @@ export const checkForNodeModules = () => {
   }
 
   if (hasBabel) {
-    // @babel/polyfill is a direct dependency of Danger.
-    require("@babel/polyfill")
+    require("core-js/stable") // tslint:disable-line
+    require("regenerator-runtime/runtime") // tslint:disable-line
     try {
       require.resolve(`${babelPackagePrefix}plugin-transform-typescript`)
       hasBabelTypeScript = true
