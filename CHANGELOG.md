@@ -18,7 +18,7 @@
 
 - *Chore:* Switch from tslint to eslint (tslint is end-of-life) - [#1205](https://github.com/danger/danger-js/pull/1205) [@fbartho]
 - Bump up @babel/* plugins for Core-JS support. [@parvez]
-- Replace deprecated @Babel/polyfill dependency with Core-JS + Regenerator-Runtime. [@parvez]
+- Replace deprecated @Babel/polyfill dependency with Core-JS + Regenerator-Runtime. [@gpetrioli]
 
 <!-- Your comment above this -->
 
