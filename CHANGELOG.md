@@ -16,9 +16,15 @@
 
 <!-- Your comment below this -->
 
-- *Chore:* Switch from tslint to eslint (tslint is end-of-life) - [#1205](https://github.com/danger/danger-js/pull/1205) [@fbartho]
 
 <!-- Your comment above this -->
+
+# 11.0.1
+
+
+- *Fix:* / *Improvement* Don't drop inline comments which fall outside of the diff in GitHub PRs - [#1272](https://github.com/danger/danger-js/pull/1272) [@rouby]
+
+- *Chore:* Switch from tslint to eslint (tslint is end-of-life) - [#1205](https://github.com/danger/danger-js/pull/1205) [@fbartho]
 
 # 11.0.0
 
@@ -1956,6 +1962,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@ravanscafi]: https://github.com/ravanscafi
 [@rogerluan]: https://github.com/rogerluan
 [@rohit-gohri]: https://github.com/rohit-gohri
+[@rouby]: https://github.com/rouby
 [@rzgry]: https://github.com/rzgry
 [@sajjadzamani]: https://github.com/sajjadzamani
 [@sandratatarevicova]: https://github.com/sandratatarevicova
