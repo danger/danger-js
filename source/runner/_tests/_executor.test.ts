@@ -37,7 +37,7 @@ class FakeProcces {
 const fakeCI = new FakeCI({})
 
 const defaultDsl = (platform: any): Promise<DangerDSLType> => {
-  return jsonDSLGenerator(platform, fakeCI, {} as any).then(jsonDSL => {
+  return jsonDSLGenerator(platform, fakeCI, {} as any).then((jsonDSL) => {
     jsonDSL.github = {
       pr: {
         number: 1,
@@ -50,7 +50,7 @@ const defaultDsl = (platform: any): Promise<DangerDSLType> => {
 }
 
 const mockPayloadForResults = (results: DangerResults): any => {
-  return resultsIntoInlineResults(results).map(inlineResult => {
+  return resultsIntoInlineResults(results).map((inlineResult) => {
     const comment = inlineTemplate(
       defaultConfig.dangerID,
       inlineResultsIntoResults(inlineResult),
@@ -245,6 +245,24 @@ describe("setup", () => {
     await exec.handleResults(inlineMultipleWarnResults, dsl.git)
     expect(platform.createInlineReview).toBeCalled()
     expect(platform.createInlineComment).not.toBeCalled()
+    expect(platform.updateOrCreateComment).not.toBeCalled()
+  })
+
+  it("Creates multiple inline comments if review fails", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
+    const dsl = await defaultDsl(platform)
+    platform.createInlineReview = jest.fn().mockImplementation(() => {
+      throw new Error("Should not be called")
+    })
+    platform.createInlineComment = jest.fn()
+    platform.createComment = jest.fn()
+    platform.updateOrCreateComment = jest.fn()
+
+    await exec.handleResults(inlineMultipleWarnResults, dsl.git)
+    expect(platform.createInlineReview).toBeCalled()
+    expect(platform.createInlineComment).not.toBeCalled()
+    expect(platform.updateOrCreateComment).toBeCalled()
   })
 
   it("Invalid inline comment is ignored if ignoreOutOfDiffComments is true", async () => {
@@ -270,7 +288,7 @@ describe("setup", () => {
     const inlineResults = resultsIntoInlineResults(previousResults)[0]
     const comment = inlineTemplate(defaultConfig.dangerID, previousResults, inlineResults.file, inlineResults.line)
     const previousComments = [{ id: 1234, body: comment, ownedByDanger: true }]
-    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise((r) => r(previousComments)))
     platform.updateInlineComment = jest.fn()
     platform.createInlineComment = jest.fn()
 
@@ -286,7 +304,7 @@ describe("setup", () => {
     const previousResults = inlineMultipleWarnResults
     const newResults = inlineMultipleWarnResults2
     const previousComments = mockPayloadForResults(previousResults)
-    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise((r) => r(previousComments)))
     platform.updateInlineComment = jest.fn()
     platform.createInlineComment = jest.fn()
     platform.deleteInlineComment = jest.fn()
@@ -306,7 +324,7 @@ describe("setup", () => {
     const inlineResults = resultsIntoInlineResults(previousResults)[0]
     const comment = inlineTemplate(defaultConfig.dangerID, previousResults, inlineResults.file, inlineResults.line)
     const previousComments = [{ id: 1234, body: comment, ownedByDanger: true }]
-    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise((r) => r(previousComments)))
     platform.updateInlineComment = jest.fn()
     platform.createInlineComment = jest.fn()
 
@@ -324,7 +342,7 @@ describe("setup", () => {
     const inlineResults = resultsIntoInlineResults(previousResults)[0]
     const comment = inlineTemplate(defaultConfig.dangerID, previousResults, inlineResults.file, inlineResults.line)
     const previousComments = [{ id: 1234, body: comment, ownedByDanger: true }]
-    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise((r) => r(previousComments)))
     platform.updateInlineComment = jest.fn()
     platform.createInlineComment = jest.fn()
 
@@ -339,14 +357,17 @@ describe("setup", () => {
     const dsl = await defaultDsl(platform)
     const previousResults = {
       fails: [],
-      warnings: [{ message: "1", file: "1.swift", line: 1 }, { message: "2", file: "2.swift", line: 2 }],
+      warnings: [
+        { message: "1", file: "1.swift", line: 1 },
+        { message: "2", file: "2.swift", line: 2 },
+      ],
       messages: [],
       markdowns: [],
     }
     const previousComments = mockPayloadForResults(previousResults)
     const newResults = emptyResults
 
-    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise((r) => r(previousComments)))
     platform.updateInlineComment = jest.fn()
     platform.createInlineComment = jest.fn()
     platform.deleteInlineComment = jest.fn()
@@ -369,10 +390,7 @@ describe("setup", () => {
     const dsl = await defaultDsl(platform)
     const previousComments = mockPayloadForResults(inlineMultipleWarnResults)
 
-    platform.getInlineComments = jest
-      .fn()
-      .mockResolvedValueOnce(previousComments)
-      .mockResolvedValueOnce([])
+    platform.getInlineComments = jest.fn().mockResolvedValueOnce(previousComments).mockResolvedValueOnce([])
     platform.updateInlineComment = jest.fn()
     platform.createInlineComment = jest.fn()
     platform.deleteInlineComment = jest.fn()
@@ -387,19 +405,25 @@ describe("setup", () => {
     const dsl = await defaultDsl(platform)
     const previousResults = {
       fails: [],
-      warnings: [{ message: "1", file: "1.swift", line: 1 }, { message: "2", file: "2.swift", line: 2 }],
+      warnings: [
+        { message: "1", file: "1.swift", line: 1 },
+        { message: "2", file: "2.swift", line: 2 },
+      ],
       messages: [],
       markdowns: [],
     }
     const newResults = {
       fails: [],
-      warnings: [{ message: "1", file: "1.swift", line: 2 }, { message: "2", file: "2.swift", line: 3 }],
+      warnings: [
+        { message: "1", file: "1.swift", line: 2 },
+        { message: "2", file: "2.swift", line: 3 },
+      ],
       messages: [],
       markdowns: [],
     }
     const previousComments = mockPayloadForResults(previousResults)
 
-    platform.getInlineComments = jest.fn().mockReturnValue(new Promise(r => r(previousComments)))
+    platform.getInlineComments = jest.fn().mockReturnValue(new Promise((r) => r(previousComments)))
     platform.updateInlineComment = jest.fn()
     platform.createInlineComment = jest.fn()
     platform.deleteInlineComment = jest.fn()

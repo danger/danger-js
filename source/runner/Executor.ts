@@ -194,7 +194,7 @@ export class Executor {
         output = `Danger: ${tick} passed review, received no feedback.`
       }
 
-      const allMessages = [...fails, ...warnings, ...messages, ...markdowns].map(m => m.message)
+      const allMessages = [...fails, ...warnings, ...messages, ...markdowns].map((m) => m.message)
       const oneMessage = allMessages.join("\n")
       const longMessage = oneMessage.split("\n").length > 30
 
@@ -205,16 +205,16 @@ export class Executor {
       }
 
       const table = [
-        fails.length && { name: "Failures", messages: fails.map(f => f.message) },
-        warnings.length && { name: "Warnings", messages: warnings.map(w => w.message) },
-        messages.length && { name: "Messages", messages: messages.map(m => m.message) },
-        markdowns.length && { name: "Markdowns", messages: markdowns.map(m => m.message) },
-      ].filter(r => r !== 0) as { name: string; messages: string[] }[]
+        fails.length && { name: "Failures", messages: fails.map((f) => f.message) },
+        warnings.length && { name: "Warnings", messages: warnings.map((w) => w.message) },
+        messages.length && { name: "Messages", messages: messages.map((m) => m.message) },
+        markdowns.length && { name: "Markdowns", messages: markdowns.map((m) => m.message) },
+      ].filter((r) => r !== 0) as { name: string; messages: string[] }[]
 
       // Consider looking at getting the terminal width, and making it 60%
       // if over a particular size
 
-      table.forEach(row => {
+      table.forEach((row) => {
         this.log(`## ${chalk.bold(row.name)}`)
         this.log(row.messages.join(chalk.bold("\n-\n")))
       })
@@ -361,7 +361,7 @@ export class Executor {
    */
   sendInlineComments(results: DangerResults, git: GitDSL, previousComments: Comment[] | null): Promise<DangerResults> {
     if (!this.platform.supportsInlineComments) {
-      return new Promise(resolve => resolve(results))
+      return new Promise((resolve) => resolve(results))
     }
 
     const inlineResults = resultsIntoInlineResults(results)
@@ -379,11 +379,11 @@ export class Executor {
     // if there is - update it and remove comment from deleteComments array (comments prepared for deletion)
     // if there isn't - create a new comment
     // Leftovers in deleteComments array should all be deleted afterwards
-    let deleteComments = Array.isArray(previousComments) ? previousComments.filter(c => c.ownedByDanger) : []
+    let deleteComments = Array.isArray(previousComments) ? previousComments.filter((c) => c.ownedByDanger) : []
     let commentPromises: Promise<any>[] = []
     const inlineResultsForReview: DangerInlineResults[] = []
     for (let inlineResult of sortedInlineResults) {
-      const index = deleteComments.findIndex(p =>
+      const index = deleteComments.findIndex((p) =>
         p.body.includes(fileLineToString(inlineResult.file, inlineResult.line))
       )
       let promise: Promise<any> | undefined = undefined
@@ -399,22 +399,28 @@ export class Executor {
         }
       }
       if (promise) {
-        commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => inlineResultsIntoResults(inlineResult)))
+        commentPromises.push(
+          promise.then((_r) => emptyDangerResults).catch((_e) => inlineResultsIntoResults(inlineResult))
+        )
       }
     }
-    deleteComments.forEach(comment => {
+    deleteComments.forEach((comment) => {
       let promise = this.deleteInlineComment(comment)
-      commentPromises.push(promise.then(_r => emptyDangerResults).catch(_e => emptyDangerResults))
+      commentPromises.push(promise.then((_r) => emptyDangerResults).catch((_e) => emptyDangerResults))
     })
 
     return Promise.all([
-      this.sendInlineReview(git, inlineResultsForReview).catch(_e =>
-        inlineResultsForReview.forEach(inlineResult => inlineResultsIntoResults(inlineResult))
-      ),
+      this.sendInlineReview(git, inlineResultsForReview)
+        .then((_r) => emptyDangerResults)
+        .catch((_e) =>
+          inlineResultsForReview
+            .map((inlineResult) => inlineResultsIntoResults(inlineResult))
+            .reduce(mergeResults, emptyResult)
+        ),
       ...commentPromises,
-    ]).then(dangerResults => {
-      return new Promise<DangerResults>(resolve => {
-        resolve(dangerResults.slice(1).reduce((acc, r) => mergeResults(acc, r), emptyResult))
+    ]).then((dangerResults) => {
+      return new Promise<DangerResults>((resolve) => {
+        resolve(dangerResults.reduce((acc, r) => mergeResults(acc, r), emptyResult))
       })
     })
   }
@@ -425,7 +431,7 @@ export class Executor {
     }
     return await this.platform.createInlineReview(
       git,
-      inlineResultsForReview.map(result => ({
+      inlineResultsForReview.map((result) => ({
         comment: this.inlineCommentTemplate(result),
         path: result.file,
         line: result.line,
