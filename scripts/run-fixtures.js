@@ -26,9 +26,9 @@ const dangerFileResultsFixtures = resolve(__dirname, "../source/runner/_tests/fi
 
 const fixtures = fs
   .readdirSync(dangerFileFixtures, "utf8")
-  .filter(f => f.includes("__"))
-  .filter(f => !f.includes("Throws"))
-  .filter(f => !f.includes("BadSyntax"))
+  .filter((f) => f.includes("__"))
+  .filter((f) => !f.includes("Throws"))
+  .filter((f) => !f.includes("BadSyntax"))
 
 let runCount = 0
 
@@ -36,7 +36,7 @@ console.log("Running Fixtures for Danger JS. This uses the built version of dang
 
 // Runs the danger runner over a fixture, then compares it to the
 // fixtured JSON data
-const runDangerfile = fixture => {
+const runDangerfile = (fixture) => {
   const dangerfile = `${dangerFileFixtures}/${fixture}`
   const dangerfileResults = `${dangerFileResultsFixtures}/${fixture}.json`
 
@@ -57,11 +57,11 @@ const runDangerfile = fixture => {
   child.stdin.write(dslJSON)
   child.stdin.end()
 
-  child.stderr.on("data", data => {
+  child.stderr.on("data", (data) => {
     console.log(`stderr: ${data}`)
   })
 
-  child.stdout.on("data", data => {
+  child.stdout.on("data", (data) => {
     data = data.toString()
     // console.log(`stdout: ${data}`)
 
@@ -85,7 +85,7 @@ const runDangerfile = fixture => {
 }
 
 /** Pulls out a URL that's from the STDOUT */
-const getJSONURLFromSTDOUT = stdout => {
+const getJSONURLFromSTDOUT = (stdout) => {
   const match = stdout.match(/danger-results:\/\/*.+json/)
   if (!match) {
     return undefined
@@ -94,7 +94,7 @@ const getJSONURLFromSTDOUT = stdout => {
 }
 
 // Keep an index and loop through the fixtures
-var index = 0
+let index = 0
 const next = () => {
   const nextFixture = fixtures[index++]
   if (nextFixture) {
@@ -107,7 +107,7 @@ const next = () => {
   }
 }
 
-process.on("unhandledRejection", function(reason, _p) {
+process.on("unhandledRejection", function (reason, _p) {
   console.log(chalk.red("Error: "), reason)
   process.exitCode = 1
 })
