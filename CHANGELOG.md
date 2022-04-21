@@ -19,14 +19,14 @@
 
 <!-- Your comment above this -->
 
-# 11.0.1
+# 11.0.3
 
 
 - *Fix:* / *Improvement* Don't drop inline comments which fall outside of the diff in GitHub PRs - [#1272](https://github.com/danger/danger-js/pull/1272) [@rouby]
 
 - *Chore:* Switch from tslint to eslint (tslint is end-of-life) - [#1205](https://github.com/danger/danger-js/pull/1205) [@fbartho]
 
-# 11.0.0
+# 11.0.0 -> 11.0.2
 
 - *Breaking:* Upgrade @octokit/rest from ^16.43.1 to ^18.12.0 - [#1204](https://github.com/danger/danger-js/pull/1204) [@fbartho]
   
