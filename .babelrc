@@ -1,4 +1,6 @@
 {
-  "presets": [["@babel/preset-env", { "targets": { "node": "6" }, "useBuiltIns": "usage" }]],
+  "presets": [
+    ["@babel/preset-env", { "useBuiltIns": "usage", "corejs": "3.8", "exclude": ["transform-typeof-symbol"] }]
+  ],
   "plugins": ["@babel/plugin-transform-flow-strip-types"]
 }

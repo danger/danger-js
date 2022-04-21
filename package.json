@@ -89,12 +89,12 @@
     "node": ">=14.13.1"
   },
   "devDependencies": {
-    "@babel/cli": "7.1.2",
-    "@babel/core": "7.1.2",
-    "@babel/plugin-transform-flow-strip-types": "7.0.0",
-    "@babel/plugin-transform-typescript": "7.1.0",
-    "@babel/preset-env": "7.1.0",
-    "@babel/traverse": "7.1.0",
+    "@babel/cli": "7.16.7",
+    "@babel/core": "7.16.7",
+    "@babel/plugin-transform-flow-strip-types": "7.16.7",
+    "@babel/plugin-transform-typescript": "7.16.7",
+    "@babel/preset-env": "7.16.7",
+    "@babel/traverse": "7.16.7",
     "@octokit/openapi-types": "^11.2.0",
     "@types/async-retry": "^1.4.1",
     "@types/debug": "0.0.30",
@@ -142,11 +142,11 @@
     "typescript-json-schema": "^0.53.0"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.2.5",
     "@octokit/rest": "^18.12.0",
     "async-retry": "1.2.3",
     "chalk": "^2.3.0",
     "commander": "^2.18.0",
+    "core-js": "^3.8.2",
     "debug": "^4.1.1",
     "fast-json-patch": "^3.0.0-1",
     "get-stdin": "^6.0.0",
@@ -176,6 +176,7 @@
     "pinpoint": "^1.1.0",
     "prettyjson": "^1.2.1",
     "readline-sync": "^1.4.9",
+    "regenerator-runtime": "^0.13.9",
     "require-from-string": "^2.0.2",
     "supports-hyperlinks": "^1.0.1"
   },
