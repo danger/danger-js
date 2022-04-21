@@ -112,7 +112,7 @@ an invite, ping [@Orta](https://twitter.com/orta/) a DM on Twitter with your ema
 to stay on top of Danger without all the emails from GitHub.
 
 > This project is open source under the MIT license, which means you have full access to the source code and can modify
-> it to fit your own needs.
+> it to fit your own needs but don't have access to deploy.
 >
 > This project subscribes to the [Moya Contributors Guidelines](https://github.com/Moya/contributors) which TLDR: means
 > we give out push access easily and often.
