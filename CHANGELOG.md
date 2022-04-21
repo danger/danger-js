@@ -16,6 +16,10 @@
 
 <!-- Your comment below this -->
 
+- *Chore:* Switch from tslint to eslint (tslint is end-of-life) - [#1205](https://github.com/danger/danger-js/pull/1205) [@fbartho]
+- Bump up @babel/* plugins for Core-JS support. [@parvez]
+- Replace deprecated @Babel/polyfill dependency with Core-JS + Regenerator-Runtime. [@gpetrioli]
+
 
 <!-- Your comment above this -->
 
@@ -1909,6 +1913,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@fwal]: https://github.com/fwal
 [@g3offrey]: https://github.com/g3offrey
 [@gantman]: https://github.com/gantman
+[@gpetrioli]: https:/github.com/gpetrioli
 [@gzaripov]: https://github.com/gzaripov
 [@hanneskaeufler]: https://github.com/hanneskaeufler
 [@happylinks]: https://github.com/happylinks
@@ -1952,6 +1957,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@orta]: https://github.com/orta
 [@osmestad]: https://github.com/osmestad
 [@ozzieorca]: https://github.com/ozzieorca
+[@parvez]: https:/github.com/parvez
 [@patrickkempff]: https://github.com/patrickkempff
 [@paulmelnikow]: https://github.com/paulmelnikow
 [@peterjgrainger]: https://github.com/peterjgrainger
