@@ -1,4 +1,4 @@
-FROM node:12-slim
+FROM node:14-slim
 
 LABEL maintainer="Orta Therox"
 LABEL "com.github.actions.name"="Danger JS Action"
