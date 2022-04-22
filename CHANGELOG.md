@@ -18,6 +18,10 @@
 
 <!-- Your comment above this -->
 
+# 11.0.4
+
+- Deploying from my Mac to see if that's what's causing the build issues for homebrew. [@orta]
+
 # 11.0.3
 
 - Bump up @babel/* plugins for Core-JS support. [@parvez]
