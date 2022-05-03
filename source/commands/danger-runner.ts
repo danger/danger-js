@@ -91,7 +91,7 @@ setTimeout(() => {
     process.exitCode = 1
     process.exit(1)
   }
-}, 1000)
+}, 10000)
 
 // Start waiting on STDIN for the DSL
 getSTDIN().then(run(program as any))
