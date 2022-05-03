@@ -122,10 +122,10 @@ JavaScript:
 
 Some TypeScript examples:
 
-- **Apps** - [Artsy/Emission][emiss]
+- **Apps** - [Artsy/Eigen][eigen]
 - **Libraries** [danger/danger-js][danger-js], [apollographql/apollo-client][apollo]
 
-[emiss]: https://github.com/artsy/emission/blob/master/dangerfile.ts
+[eigen]: https://github.com/artsy/eigen/blob/main/dangerfile.ts
 [danger-js]: https://github.com/danger/danger-js/blob/master/dangerfile.ts
 [meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
 [rn]: https://github.com/facebook/react-native/blob/master/bots/dangerfile.js
@@ -134,5 +134,5 @@ Some TypeScript examples:
 [jest]: https://github.com/facebook/jest
 [transpilation_guide]: /docs/tutorials/transpilation.html.md
 [changelog]: http://danger.systems/js/changelog.html
-[apollo]: https://github.com/apollographql/apollo-client/blob/master/config/dangerfile.ts
+[apollo]: https://github.com/apollographql/apollo-cache-persist/blob/master/dangerfile.ts
 [bamlab]: https://github.com/bamlab/dev-standards/blob/master/dangerfile.js
