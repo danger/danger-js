@@ -24,7 +24,7 @@ A few notes:
 You might have a `src` folder where your actual source code is kept, and adding a `dangerfile.ts` at the root which will
 break compilation. The answer to this is to add the dangerfile to the `"exclude"` section. Then to get inline errors
 working correct, add it to the `"include"`. It's a neat little trick. You can see it working in
-[artsy/emission#tsconfig.json][tsconfig]
+[artsy/eigen#tsconfig.json][tsconfig]
 
 ```json
 {
@@ -69,7 +69,7 @@ it("does nothing when there's a PR body", () => {
 })
 ```
 
-[tsconfig]: https://github.com/artsy/emission/blob/main/tsconfig.json
+[tsconfig]: https://github.com/artsy/eigen/blob/main/tsconfig.json
 
 ### Disabling Transpilation
 
