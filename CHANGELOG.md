@@ -18,6 +18,11 @@
 
 <!-- Your comment above this -->
 
+
+# 11.0.5
+
+- Set the timeout for getting results from the Danger runner to be 10 seconds
+
 # 11.0.4
 
 - Deploying from my Mac to see if that's what's causing the build issues for homebrew. [@orta]
