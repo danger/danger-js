@@ -16,6 +16,11 @@
 
 <!-- Your comment below this -->
 
+
+<!-- Your comment above this -->
+
+## 11.1.0
+
 - Adds support for the new [GitHub Job summaries](https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/) API via:
  - `danger.github.setSummaryMarkdown("[markdown]")` for the JavaScript DSL
  - The results DSL for sub-processes now accepts `{ github: { stepSummary: "[markdown]" } }` from projects the Swift and Kotlin implementations of Danger.
@@ -23,9 +28,6 @@
  This gives you the chance to leave feedback on the overview page for a PR, it won't ping people
  in the PR thread or trigger emails which is why it's a separate attribute in the DSL. Potentially open to having the main
  comment in the job summary if someone can make a good case for it in the Danger JS issues. [@orta]
-
-<!-- Your comment above this -->
-
 
 # 11.0.5
 
