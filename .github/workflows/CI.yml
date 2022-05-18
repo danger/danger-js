@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: "14"
 
       # Get local dependencies & test
       - run: yarn install
@@ -27,7 +27,11 @@ jobs:
       # if it becomes an issue.
       - run: echo "Testing Flow definition file"
       - run: yarn build:flow-types
-      # - run: yarn flow check
+
+      - run: echo "Running built Danger"
+      - run: node distribution/commands/danger-ci.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - run: 'echo "This is only for Integration tests on two blank projects"'
 
