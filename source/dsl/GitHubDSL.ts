@@ -32,6 +32,13 @@ export interface GitHubDSL extends GitHubJSONDSL {
   api: GitHub
   /** A scope for useful functions related to GitHub */
   utils: GitHubUtilsDSL
+  /**
+   * Sets a markdown summary which shows on the overview page for the
+   * results of all steps in your CI job.
+   *
+   * See: https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/
+   */
+  setSummaryMarkdown: (markdown: string) => void
 }
 
 /** Useful functions for GitHub related work */

@@ -27,6 +27,15 @@ export interface DangerResults {
    */
   markdowns: Violation[]
 
+  github?: {
+    /**
+     * Markdown text which gets added as a summary in the first
+     * page which you see when you click through to the PR results.
+     *
+     * https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/ */
+    stepSummary?: string
+  }
+
   /** Meta information about the runtime evaluation */
   meta?: {
     /** E.g. "dangerJS", or "Danger Swift" */
@@ -89,7 +98,7 @@ export function validateResults(results: DangerResults) {
   // consumers, let's take the time to ensure the data is how we think it is.
   const { fails, warnings, messages, markdowns } = results
   const props = { fails, warnings, messages, markdowns }
-  Object.keys(props).forEach(name => {
+  Object.keys(props).forEach((name) => {
     //
     // Must include the key 4 types
     if (!props[name]) {
@@ -97,7 +106,7 @@ export function validateResults(results: DangerResults) {
     }
 
     const violations: Violation[] = props[name]
-    violations.forEach(v => {
+    violations.forEach((v) => {
       // They should always have a message
       if (!v.message) {
         throw new Error(
@@ -106,7 +115,7 @@ export function validateResults(results: DangerResults) {
       }
       // Warn if anything other than the initial API is on a violation
       const officialAPI = ["message", "line", "file", "icon"]
-      const keys = Object.keys(v).filter(f => !officialAPI.includes(f))
+      const keys = Object.keys(v).filter((f) => !officialAPI.includes(f))
       if (keys.length) {
         console.warn(`Received unexpected key in Violation, expected only ${officialAPI} but got ${Object.keys(v)}`)
       }
@@ -117,21 +126,22 @@ export function validateResults(results: DangerResults) {
 /** Returns only the inline violations from Danger results */
 export function inlineResults(results: DangerResults): DangerResults {
   return {
-    fails: results.fails.filter(m => isInline(m)),
-    warnings: results.warnings.filter(m => isInline(m)),
-    messages: results.messages.filter(m => isInline(m)),
-    markdowns: results.markdowns.filter(m => isInline(m)),
+    fails: results.fails.filter((m) => isInline(m)),
+    warnings: results.warnings.filter((m) => isInline(m)),
+    messages: results.messages.filter((m) => isInline(m)),
+    markdowns: results.markdowns.filter((m) => isInline(m)),
   }
 }
 
 /** Returns only the main-comment comments violations from Danger results */
 export function regularResults(results: DangerResults): DangerResults {
   return {
-    fails: results.fails.filter(m => !isInline(m)),
-    warnings: results.warnings.filter(m => !isInline(m)),
-    messages: results.messages.filter(m => !isInline(m)),
-    markdowns: results.markdowns.filter(m => !isInline(m)),
+    fails: results.fails.filter((m) => !isInline(m)),
+    warnings: results.warnings.filter((m) => !isInline(m)),
+    messages: results.messages.filter((m) => !isInline(m)),
+    markdowns: results.markdowns.filter((m) => !isInline(m)),
     meta: results.meta,
+    github: results.github,
   }
 }
 
@@ -143,13 +153,14 @@ export function mergeResults(results1: DangerResults, results2: DangerResults): 
     messages: results1.messages.concat(results2.messages),
     markdowns: results1.markdowns.concat(results2.markdowns),
     meta: results1.meta || results2.meta,
+    github: results1.github || results2.github,
   }
 }
 
 /** Sorts all of the results according to their files and lines */
 export function sortInlineResults(inlineResults: DangerInlineResults[]): DangerInlineResults[] {
   // First sort messages in every inline result
-  const sortedInlineResults = inlineResults.map(i => {
+  const sortedInlineResults = inlineResults.map((i) => {
     return {
       file: i.file,
       line: i.line,
@@ -216,6 +227,7 @@ export function sortResults(results: DangerResults): DangerResults {
     messages: results.messages.sort(sortByFile),
     markdowns: results.markdowns.sort(sortByFile),
     meta: results.meta,
+    github: results.github,
   }
 }
 
@@ -237,7 +249,7 @@ export function resultsIntoInlineResults(results: DangerResults): DangerInlineRe
   const violationsIntoInlineResults = (kind: string) => {
     for (let violation of results[kind]) {
       if (violation.file && violation.line) {
-        const findInlineResult = dangerInlineResults.find(r => r.file == violation.file && r.line == violation.line)
+        const findInlineResult = dangerInlineResults.find((r) => r.file == violation.file && r.line == violation.line)
         if (findInlineResult) {
           findInlineResult[kind].push(violation.message)
         } else {

@@ -85,6 +85,13 @@ export const githubJSONToGitHubDSL = (gh: GitHubJSONDSL, api: NodeGitHub): GitHu
     ...gh,
     api,
     utils: GitHubUtils(gh.pr, api),
+    setSummaryMarkdown: (markdown: string) => {
+      const filePath = process.env.GITHUB_STEP_SUMMARY
+      if (!filePath) {
+        throw new Error("process.env.GITHUB_STEP_SUMMARY was not set, which is needed for setSummaryMarkdown")
+      }
+      writeFileSync(filePath, markdown, "utf8")
+    },
   }
 }
 
@@ -97,7 +104,7 @@ import {
   dangerRepresentationForPath,
 } from "./github/customGitHubRequire"
 import { DangerRunner } from "../runner/runners/runner"
-import { existsSync, readFileSync } from "fs"
+import { existsSync, readFileSync, writeFileSync } from "fs"
 import cleanDangerfile from "../runner/runners/utils/cleanDangerfile"
 import transpiler from "../runner/runners/utils/transpiler"
 
