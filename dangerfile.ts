@@ -6,10 +6,10 @@ import yarn from "danger-plugin-yarn"
 import jest from "danger-plugin-jest"
 
 import { DangerDSLType } from "./source/dsl/DangerDSL"
-declare var danger: DangerDSLType
+declare const danger: DangerDSLType
 // declare var results: any
 declare function warn(message: string, file?: string, line?: number): void
-// declare function fail(params: string): void
+declare function fail(params: string): void
 // declare function message(params: string): void
 // declare function markdown(params: string): void
 // declare function schedule(promise: Promise<any | void>): void
@@ -44,6 +44,8 @@ export default async () => {
   if (packageDiff.version && danger.github.pr.user.login !== "orta") {
     fail("Please don't make package version changes")
   }
+
+  danger.github.setSummaryMarkdown("Looking good")
 }
 
 // Re-run the git push hooks

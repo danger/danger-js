@@ -40,6 +40,7 @@ import { DangerRunner } from "./runners/runner"
 import { GitDSL } from "../dsl/GitDSL"
 import { DangerDSL } from "../dsl/DangerDSL"
 import { emptyGitJSON } from "../platforms/github/GitHubGit"
+import { writeFileSync } from "fs"
 
 export interface ExecutorOptions {
   /** Should we do a text-only run? E.g. skipping comments */
@@ -330,6 +331,15 @@ export class Executor {
     // More info, is more info.
     if (this.options.verbose) {
       await this.handleResultsPostingToSTDOUT(results)
+    }
+
+    // Write to the GitHub Env if a sub-process has included a reference to github's job summary
+    if (results.github?.stepSummary) {
+      const filePath = process.env.GITHUB_STEP_SUMMARY
+      if (!filePath) {
+        throw new Error("process.env.GITHUB_STEP_SUMMARY was not set, which is needed for setSummaryMarkdown")
+      }
+      writeFileSync(filePath, results.github.stepSummary, "utf8")
     }
   }
 
