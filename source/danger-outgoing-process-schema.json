@@ -33,6 +33,15 @@
             },
             "type": "array"
         },
+        "github": {
+            "properties": {
+                "stepSummary": {
+                    "description": "Markdown text which gets added as a summary in the first\npage which you see when you click through to the PR results.\n\nhttps://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
         "markdowns": {
             "description": "Markdown messages to attach at the bottom of the comment",
             "items": {

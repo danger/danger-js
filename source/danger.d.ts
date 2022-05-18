@@ -719,6 +719,15 @@ interface DangerResults {
    */
   markdowns: Violation[]
 
+  github?: {
+    /**
+     * Markdown text which gets added as a summary in the first
+     * page which you see when you click through to the PR results.
+     *
+     * https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/ */
+    stepSummary?: string
+  }
+
   /** Meta information about the runtime evaluation */
   meta?: {
     /** E.g. "dangerJS", or "Danger Swift" */
@@ -1009,6 +1018,13 @@ interface GitHubDSL extends GitHubJSONDSL {
   api: GitHub
   /** A scope for useful functions related to GitHub */
   utils: GitHubUtilsDSL
+  /**
+   * Sets a markdown summary which shows on the overview page for the
+   * results of all steps in your CI job.
+   *
+   * See: https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/
+   */
+  setSummaryMarkdown: (markdown: string) => void
 }
 
 /** Useful functions for GitHub related work */
