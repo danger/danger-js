@@ -241,6 +241,7 @@ Object {
       "message": "Fail message3",
     },
   ],
+  "github": undefined,
   "markdowns": Array [],
   "messages": Array [
     Object {
@@ -289,6 +290,7 @@ Object {
       "message": "Fail message3",
     },
   ],
+  "github": undefined,
   "markdowns": Array [
     Object {
       "file": "Test.swift",
