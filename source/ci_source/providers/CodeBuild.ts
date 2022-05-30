@@ -66,13 +66,13 @@ export class CodeBuild implements CISource {
 
   private async _getPrId(): Promise<string> {
     const sourceParts = (this.env.CODEBUILD_SOURCE_VERSION || "").split("/")
-    const triggerParts = (this.env.CODEBUILD_WEBHOOK_TRIGGER || "").split("/")
+    const triggerParts = this.env.CODEBUILD_WEBHOOK_TRIGGER || ""
 
-    const branchName = triggerParts[0] === "branch" ? triggerParts[1] : null
+    const branchName = triggerParts.startsWith("branch/") ? triggerParts.replace("branch/", "") : null
     let prId = sourceParts[0] === "pr" ? sourceParts[1] : null
 
     if (!prId) {
-      prId = triggerParts[0] === "pr" ? triggerParts[1] : null
+      prId = triggerParts.startsWith("pr/") ? triggerParts.replace("pr/", "") : null
     }
 
     if (!prId && branchName) {
