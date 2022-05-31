@@ -51,7 +51,7 @@ describe(".isPR", () => {
     expect(codebuild.isPR).toBeFalsy()
   })
 
-  it.each(["CODEBUILD_BUILD_ID", "CODEBUILD_SOURCE_REPO_URL"])(`does not validate when %s is missing`, async key => {
+  it.each(["CODEBUILD_BUILD_ID", "CODEBUILD_SOURCE_REPO_URL"])(`does not validate when %s is missing`, async (key) => {
     const copiedEnv = { ...correctEnv }
     delete copiedEnv[key]
     const codebuild = await setupCodeBuildSource(copiedEnv)
@@ -71,7 +71,7 @@ describe(".pullRequestID", () => {
     jest.resetAllMocks()
   })
 
-  it.each(["CODEBUILD_SOURCE_VERSION", "CODEBUILD_WEBHOOK_TRIGGER"])("splits it from %s", async key => {
+  it.each(["CODEBUILD_SOURCE_VERSION", "CODEBUILD_WEBHOOK_TRIGGER"])("splits it from %s", async (key) => {
     const codebuild = await setupCodeBuildSource({ [key]: "pr/2" })
     await codebuild.setup()
     expect(codebuild.pullRequestID).toEqual("2")
@@ -88,6 +88,18 @@ describe(".pullRequestID", () => {
     expect(codebuild.pullRequestID).toBe("1")
     expect(getPullRequestIDForBranch).toHaveBeenCalledTimes(1)
     expect(getPullRequestIDForBranch).toHaveBeenCalledWith(codebuild, env, "my-branch")
+  })
+
+  it('allows for branch names with "/" in them', async () => {
+    const env = {
+      CODEBUILD_SOURCE_REPO_URL: "https://github.com/sharkysharks/some-repo",
+      CODEBUILD_WEBHOOK_TRIGGER: "branch/my-branch/with/slashes",
+      DANGER_GITHUB_API_TOKEN: "xxx",
+    }
+    const codebuild = await setupCodeBuildSource(env)
+    expect(codebuild.pullRequestID).toBe("0")
+    expect(getPullRequestIDForBranch).toHaveBeenCalledTimes(1)
+    expect(getPullRequestIDForBranch).toHaveBeenCalledWith(codebuild, env, "my-branch/with/slashes")
   })
 
   it("does not call the API if no PR number or branch name available in the env vars", async () => {
