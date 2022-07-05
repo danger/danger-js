@@ -100,7 +100,7 @@ describe("API testing", () => {
 
   it("getDangerCommentIDs ignores comments not marked as generated", async () => {
     api.getAllOfResource = await requestWithFixturedJSON("github_inline_comments_with_danger.json")
-    api.getUserID = () => new Promise<number>(r => r(20229914))
+    api.getUserID = () => new Promise<number>((r) => r(20229914))
 
     const commentIDs = await api.getDangerCommentIDs("default")
 
@@ -109,9 +109,9 @@ describe("API testing", () => {
 
   it("getPullRequestInlineComment gets only comments for given DangerId", async () => {
     api.getAllOfResource = await requestWithFixturedJSON("github_inline_comments_with_danger.json")
-    api.getUserID = () => new Promise<number>(r => r(20229914))
+    api.getUserID = () => new Promise<number>((r) => r(20229914))
 
-    const comments = await api.getPullRequestInlineComments("danger-id-default")
+    const comments = await api.getPullRequestInlineComments("default")
 
     expect(comments.length).toEqual(1)
     expect(comments[0].ownedByDanger).toBeTruthy()
@@ -119,9 +119,9 @@ describe("API testing", () => {
 
   it("getPullRequestInlineComment doesn't get comments as the DangerId is different", async () => {
     api.getAllOfResource = await requestWithFixturedJSON("github_inline_comments_with_danger.json")
-    api.getUserID = () => new Promise<number>(r => r(123))
+    api.getUserID = () => new Promise<number>((r) => r(123))
 
-    const comments = await api.getPullRequestInlineComments("danger-id-default")
+    const comments = await api.getPullRequestInlineComments("default")
 
     expect(comments.length).toEqual(0)
   })
