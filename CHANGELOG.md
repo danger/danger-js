@@ -19,7 +19,11 @@
 
 <!-- Your comment above this -->
 
-## 11.1.0
+## 11.1.1
+
+- Bug fix for over-deleting inline comments #1287
+
+## 11.1.0 
 
 - Adds support for the new [GitHub Job summaries](https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/) API via:
  - `danger.github.setSummaryMarkdown("[markdown]")` for the JavaScript DSL
