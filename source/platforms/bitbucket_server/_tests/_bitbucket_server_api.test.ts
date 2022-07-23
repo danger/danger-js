@@ -241,6 +241,49 @@ describe("API testing - BitBucket Server", () => {
     ])
   })
 
+  it("getDangerCommentsCaseInsensitive", async () => {
+    const commitID = "e70f3d6468f61a4bef68c9e6eaba9166b096e23c"
+    jsonResult = () => ({
+      isLastPage: true,
+      values: [
+        {
+          comment: {
+            text: `FAIL! danger-id-1; ${dangerSignaturePostfix({} as DangerResults, commitID)}`,
+            author: {
+              name: "userNAME",
+            },
+          },
+        },
+        {
+          comment: null,
+        },
+        {
+          comment: {
+            text: "not a danger comment",
+            author: {
+              name: "azz",
+            },
+          },
+        },
+      ],
+    })
+    const result = await api.getDangerComments("1")
+
+    expect(api.fetch).toHaveBeenCalledWith(
+      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities?fromType=COMMENT&start=0`,
+      { method: "GET", body: null, headers: expectedJSONHeaders },
+      undefined
+    )
+    expect(result).toEqual([
+      {
+        text: `FAIL! danger-id-1; ${dangerSignaturePostfix({} as DangerResults, commitID)}`,
+        author: {
+          name: "userNAME",
+        },
+      },
+    ])
+  })
+
   it("getDangerInlineComments", async () => {
     jsonResult = () => ({
       isLastPage: true,
@@ -251,6 +294,35 @@ describe("API testing - BitBucket Server", () => {
               "\n[//]: # (danger-id-default;)\n[//]: # (  File: README.md;\n  Line: 5;)\n\n- :warning: Hello updates\n\n\n  ",
             author: {
               name: "username",
+            },
+          },
+          commentAnchor: {
+            line: 5,
+            lineType: "ADDED",
+          },
+        },
+      ],
+    })
+    const comments = await api.getDangerInlineComments("default")
+    expect(api.fetch).toHaveBeenCalledWith(
+      `${host}/rest/api/1.0/projects/FOO/repos/BAR/pull-requests/1/activities?fromType=COMMENT&start=0`,
+      { method: "GET", body: null, headers: expectedJSONHeaders },
+      undefined
+    )
+    expect(comments.length).toEqual(1)
+    expect(comments[0].ownedByDanger).toBeTruthy()
+  })
+
+  it("getDangerInlineCommentsCaseInsensitive", async () => {
+    jsonResult = () => ({
+      isLastPage: true,
+      values: [
+        {
+          comment: {
+            text:
+              "\n[//]: # (danger-id-default;)\n[//]: # (  File: README.md;\n  Line: 5;)\n\n- :warning: Hello updates\n\n\n  ",
+            author: {
+              name: "userNAME",
             },
           },
           commentAnchor: {
