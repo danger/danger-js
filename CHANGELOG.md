@@ -19,6 +19,10 @@
 
 <!-- Your comment above this -->
 
+## 11.1.2
+
+- Bug fix for bitbucket bot detection ignoring case #1291
+
 ## 11.1.1
 
 - Bug fix for over-deleting inline comments #1287
