@@ -50,6 +50,7 @@ export class LocalGit implements Platform {
 
     const config: GitJSONToGitDSLConfig = {
       repo: process.cwd(),
+      staging: this.options.staging,
       baseSHA: this.options.base || "master",
       headSHA: "HEAD",
       getFileContents: localGetFileAtSHA,

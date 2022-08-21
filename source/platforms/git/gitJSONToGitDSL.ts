@@ -25,7 +25,8 @@ export interface GitJSONToGitDSLConfig {
   /** This is used in getFileContents to figure out your repo  */
   repo?: string
 
-  // These two will be tricky when trying to do this for staged files
+  /** Whether to diff only files from the staging area */
+  staging: boolean = false
 
   /** The sha things are going into */
   baseSHA: string
@@ -48,7 +49,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     ? null
     : memoize(
         (base: string, head: string) => {
-          return config.getFullDiff!(base, head)
+          return config.getFullDiff!(base, head, config.staging)
         },
         (base: string, head: string) => `${base}...${head}`
       )
@@ -194,7 +195,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     if (config.getStructuredDiffForFile) {
       fileDiffs = await config.getStructuredDiffForFile(config.baseSHA, config.headSHA, filename)
     } else {
-      const diff = await getFullDiff!(config.baseSHA, config.headSHA)
+      const diff = await getFullDiff!(config.baseSHA, config.headSHA, config.staging)
       fileDiffs = parseDiff(diff)
     }
     const structuredDiff = fileDiffs.find(diff => diff.from === filename || diff.to === filename)
