@@ -3,7 +3,7 @@ import { spawn } from "child_process"
 
 const d = debug("localGetDiff")
 const useCommittedDiffArgs = (base: string, head: string) => ["diff", `${base}...${head}`]
-const useStagingChanges = (base: string) => ["diff", base]
+const useStagingChanges = (base: string) => ["diff", '--staged]
 export const localGetDiff = (base: string, head: string, staging: boolean = false) =>
   new Promise<string>(done => {
     const args = staging ? useStagingChanges(base) : useCommittedDiffArgs(base, head)
