@@ -36,7 +36,7 @@ export interface GitJSONToGitDSLConfig {
   /** A promise which will return the string content of a file at a sha */
   getFileContents: (path: string, repo: string | undefined, sha: string) => Promise<string>
   /** A promise which will return the diff string content for a file between shas */
-  getFullDiff?: (base: string, head: string, staging: boolean) => Promise<string>
+  getFullDiff?: (base: string, head: string, staging?: boolean) => Promise<string>
   getStructuredDiffForFile?: (base: string, head: string, filename: string) => Promise<GitStructuredDiff>
 }
 
