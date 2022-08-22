@@ -19,6 +19,11 @@
 
 <!-- Your comment above this -->
 
+## 11.1.2
+
+- Improvements to `--staging` in Danger local
+- Protection against custom git prompts in Danger local
+
 ## 11.1.1
 
 - Bug fix for over-deleting inline comments #1287
