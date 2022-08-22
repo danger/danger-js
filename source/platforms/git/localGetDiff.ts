@@ -2,8 +2,9 @@ import { debug } from "../../debug"
 import { spawn } from "child_process"
 
 const d = debug("localGetDiff")
-const useCommittedDiffArgs = (base: string, head: string) => ["diff", `${base}...${head}`]
-const useStagingChanges = () => ["diff", "--staged"]
+const useCommittedDiffArgs = (base: string, head: string) => ["diff", "--src-prefix='a/' --dst-prefix='b/'", `${base}...${head}`]
+const useStagingChanges = (base: string) => ["diff", "--src-prefix='a/' --dst-prefix='b/'", "--staged"]
+
 export const localGetDiff = (base: string, head: string, staging: boolean = false) =>
   new Promise<string>((done) => {
     const args = staging ? useStagingChanges() : useCommittedDiffArgs(base, head)
