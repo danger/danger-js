@@ -25,7 +25,8 @@ export interface GitJSONToGitDSLConfig {
   /** This is used in getFileContents to figure out your repo  */
   repo?: string
 
-  // These two will be tricky when trying to do this for staged files
+  /** Whether to diff only files from the staging area */
+  staging?: boolean
 
   /** The sha things are going into */
   baseSHA: string
@@ -35,7 +36,7 @@ export interface GitJSONToGitDSLConfig {
   /** A promise which will return the string content of a file at a sha */
   getFileContents: (path: string, repo: string | undefined, sha: string) => Promise<string>
   /** A promise which will return the diff string content for a file between shas */
-  getFullDiff?: (base: string, head: string) => Promise<string>
+  getFullDiff?: (base: string, head: string, staging?: boolean) => Promise<string>
   getStructuredDiffForFile?: (base: string, head: string, filename: string) => Promise<GitStructuredDiff>
 }
 
@@ -48,7 +49,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     ? null
     : memoize(
         (base: string, head: string) => {
-          return config.getFullDiff!(base, head)
+          return config.getFullDiff!(base, head, config.staging)
         },
         (base: string, head: string) => `${base}...${head}`
       )
@@ -139,14 +140,14 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
         const arrayBefore = beforeValue as any[]
         const arrayAfter = afterValue as any[]
 
-        diff.added = arrayAfter.filter(o => !includes(arrayBefore, o))
-        diff.removed = arrayBefore.filter(o => !includes(arrayAfter, o))
+        diff.added = arrayAfter.filter((o) => !includes(arrayBefore, o))
+        diff.removed = arrayBefore.filter((o) => !includes(arrayAfter, o))
         // Do the same, but for keys inside an object if they both are objects.
       } else if (isobject(afterValue) && isobject(beforeValue)) {
         const beforeKeys = keys(beforeValue) as string[]
         const afterKeys = keys(afterValue) as string[]
-        diff.added = afterKeys.filter(o => !includes(beforeKeys, o))
-        diff.removed = beforeKeys.filter(o => !includes(afterKeys, o))
+        diff.added = afterKeys.filter((o) => !includes(beforeKeys, o))
+        diff.removed = beforeKeys.filter((o) => !includes(afterKeys, o))
       }
 
       jsonpointer.set(accumulator, backAStepPath, diff)
@@ -158,18 +159,18 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     const isPatternMatch = (path: string) => pattern === undefined || micromatch.isMatch(path, pattern)
 
     const [createdFilesDiffs, modifiedFilesDiffs, deletedFilesDiffs] = await Promise.all([
-      Promise.all(gitJSONRep.created_files.filter(isPatternMatch).map(path => diffForFile(path))),
-      Promise.all(gitJSONRep.modified_files.filter(isPatternMatch).map(path => diffForFile(path))),
-      Promise.all(gitJSONRep.deleted_files.filter(isPatternMatch).map(path => diffForFile(path))),
+      Promise.all(gitJSONRep.created_files.filter(isPatternMatch).map((path) => diffForFile(path))),
+      Promise.all(gitJSONRep.modified_files.filter(isPatternMatch).map((path) => diffForFile(path))),
+      Promise.all(gitJSONRep.deleted_files.filter(isPatternMatch).map((path) => diffForFile(path))),
     ])
 
     let additions = createdFilesDiffs
-      .map(diff => (!diff ? 0 : diff.added === "" ? 0 : diff.added.split("\n").length))
+      .map((diff) => (!diff ? 0 : diff.added === "" ? 0 : diff.added.split("\n").length))
       .reduce((mem, value) => mem + value, 0)
     let deletions = deletedFilesDiffs
-      .map(diff => (!diff ? 0 : diff.removed === "" ? 0 : diff.removed.split("\n").length))
+      .map((diff) => (!diff ? 0 : diff.removed === "" ? 0 : diff.removed.split("\n").length))
       .reduce((mem, value) => mem + value, 0)
-    const modifiedLines = modifiedFilesDiffs.map(diff => [
+    const modifiedLines = modifiedFilesDiffs.map((diff) => [
       !diff ? 0 : diff.added === "" ? 0 : diff.added.split("\n").length,
       !diff ? 0 : diff.removed === "" ? 0 : diff.removed.split("\n").length,
     ])
@@ -180,7 +181,10 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     return additions + deletions
   }
 
-  const byType = (t: string) => ({ type }: { type: string }) => type === t
+  const byType =
+    (t: string) =>
+    ({ type }: { type: string }) =>
+      type === t
   const getContent = ({ content }: { content: string }) => content
 
   /**
@@ -197,7 +201,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
       const diff = await getFullDiff!(config.baseSHA, config.headSHA)
       fileDiffs = parseDiff(diff)
     }
-    const structuredDiff = fileDiffs.find(diff => diff.from === filename || diff.to === filename)
+    const structuredDiff = fileDiffs.find((diff) => diff.from === filename || diff.to === filename)
     if (structuredDiff !== undefined && structuredDiff.chunks !== undefined) {
       return { chunks: structuredDiff.chunks }
     } else {
@@ -227,15 +231,9 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
 
       diff: allLines.map(getContent).join(os.EOL),
 
-      added: allLines
-        .filter(byType("add"))
-        .map(getContent)
-        .join(os.EOL),
+      added: allLines.filter(byType("add")).map(getContent).join(os.EOL),
 
-      removed: allLines
-        .filter(byType("del"))
-        .map(getContent)
-        .join(os.EOL),
+      removed: allLines.filter(byType("del")).map(getContent).join(os.EOL),
     }
   }
 

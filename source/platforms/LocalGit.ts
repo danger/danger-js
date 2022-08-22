@@ -50,6 +50,7 @@ export class LocalGit implements Platform {
 
     const config: GitJSONToGitDSLConfig = {
       repo: process.cwd(),
+      staging: this.options.staging || false,
       baseSHA: this.options.base || "master",
       headSHA: "HEAD",
       getFileContents: localGetFileAtSHA,
@@ -103,7 +104,7 @@ export class LocalGit implements Platform {
     return true
   }
 
-  getFileContents = (path: string) => new Promise<string>(res => res(readFileSync(path, "utf8")))
+  getFileContents = (path: string) => new Promise<string>((res) => res(readFileSync(path, "utf8")))
 
   async getReviewInfo(): Promise<any> {
     return {}
