@@ -26,7 +26,7 @@ export interface GitJSONToGitDSLConfig {
   repo?: string
 
   /** Whether to diff only files from the staging area */
-  staging: boolean
+  staging?: boolean
 
   /** The sha things are going into */
   baseSHA: string
