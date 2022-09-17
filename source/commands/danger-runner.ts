@@ -18,6 +18,7 @@ import { getPlatformForEnv } from "../platforms/platform"
 import { tmpdir } from "os"
 import { writeFileSync } from "fs"
 import { join } from "path"
+import { randomBytes } from "crypto"
 
 const d = debug("runner")
 
@@ -72,12 +73,11 @@ nodeCleanup((exitCode: number, signal: string) => {
   const results: DangerResults = runtimeEnv.results
   d(`Process has finished with ${exitCode}, sending the results back to the host process ${signal || ""}`)
   d(
-    `Got md ${results.markdowns.length} w ${results.warnings.length} f ${results.fails.length} m ${
-      results.messages.length
-    }`
+    `Got md ${results.markdowns.length} w ${results.warnings.length} f ${results.fails.length} m ${results.messages.length}`
   )
   if (foundDSL) {
-    const resultsPath = join(tmpdir(), "danger-results.json")
+    const filename = `danger-results-${randomBytes(4).toString("hex")}.json`
+    const resultsPath = join(tmpdir(), filename)
     d(`Writing results into ${resultsPath}`)
     writeFileSync(resultsPath, JSON.stringify(results, null, 2), "utf8")
     process.stdout.write("danger-results:/" + resultsPath)
