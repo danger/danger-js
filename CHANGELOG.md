@@ -15,7 +15,7 @@
 ## Main
 
 <!-- Your comment below this -->
-
+- Append random string to danger-results.json and danger-dsl.json files to better support concurrent processes #1311
 
 <!-- Your comment above this -->
 
