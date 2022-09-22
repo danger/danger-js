@@ -1,6 +1,6 @@
 import * as fs from "fs"
 import * as path from "path"
-import JSON5 from "json5"
+import ts from "typescript";
 import { debug } from "../../../debug"
 
 const enum BabelPackagePrefix {
@@ -120,40 +120,41 @@ export const lookupTSConfig = (dir: string): string | null => {
 }
 
 export const typescriptify = (content: string, dir: string): string => {
-  const ts = require("typescript")
-
   // Support custom TSC options, but also fallback to defaults
-  let compilerOptions: any
+  let compilerOptions: ts.CompilerOptions;
   const tsConfigPath = lookupTSConfig(dir)
   if (tsConfigPath) {
-    compilerOptions = JSON5.parse(fs.readFileSync(tsConfigPath, "utf8"))
+    compilerOptions = ts.parseJsonConfigFileContent(
+      ts.readConfigFile(tsConfigPath, ts.sys.readFile).config,
+      {
+        fileExists: ts.sys.fileExists,
+        readFile: ts.sys.readFile,
+        readDirectory: ts.sys.readDirectory,
+        useCaseSensitiveFileNames: ts.sys.useCaseSensitiveFileNames,
+      },
+      dir,
+    ).options;
   } else {
     compilerOptions = ts.getDefaultCompilerOptions()
   }
 
-  let result = ts.transpileModule(content, sanitizeTSConfig(compilerOptions))
+  let result = ts.transpileModule(content, { compilerOptions: sanitizeTSConfig(compilerOptions)})
   return result.outputText
 }
 
-const sanitizeTSConfig = (config: any) => {
-  if (!config.compilerOptions) {
-    return config
+const sanitizeTSConfig = (config: ts.CompilerOptions) => {
+  if (config.module) {
+    // It can make sense to ship TS code with modules
+    // for `import`/`export` syntax, but as we're running
+    // the transpiled code on vanilla node - it'll need to
+    // be used with plain old commonjs
+    //
+    // @see https://github.com/apollographql/react-apollo/pull/1402#issuecomment-351810274
+    //
+    config.module = ts.ModuleKind.CommonJS;
   }
 
-  const safeConfig = config
-
-  // It can make sense to ship TS code with modules
-  // for `import`/`export` syntax, but as we're running
-  // the transpiled code on vanilla node - it'll need to
-  // be used with plain old commonjs
-  //
-  // @see https://github.com/apollographql/react-apollo/pull/1402#issuecomment-351810274
-  //
-  if (safeConfig.compilerOptions.module) {
-    safeConfig.compilerOptions.module = "commonjs"
-  }
-
-  return safeConfig
+  return config
 }
 
 export const babelify = (content: string, filename: string, extraPlugins: string[]): string => {
