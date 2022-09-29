@@ -89,8 +89,8 @@ if (danger.github.pr.assignee === null) {
 export const checkSeparateTestsFolder = (src: string, tests: string) => `
 // Request changes to ${src} also include changes to tests.
 const allFiles = danger.git.modified_files.concat(danger.git.created_files)
-const hasAppChanges = allFiles.some(p => includes(p, '${src}/'))
-const hasTestChanges = allFiles.some(p => includes(p, '${tests}/'))
+const hasAppChanges = allFiles.some(p => p.includes('${src}/'))
+const hasTestChanges = allFiles.some(p => p.includes('${tests}/'))
 
 if (hasAppChanges && !hasTestChanges) {
   warn('This PR does not include changes to tests, even though it affects app code.');
