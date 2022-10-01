@@ -1,9 +1,9 @@
 import * as http from "http"
 import * as node_fetch from "node-fetch"
 
+import type { HttpProxyAgent } from "http-proxy-agent"
+import type { HttpsProxyAgent } from "https-proxy-agent"
 import { api } from "../fetch"
-import HttpProxyAgent from "http-proxy-agent"
-import HttpsProxyAgent from "http-proxy-agent"
 
 interface ResponseMock {
   body?: any
@@ -128,7 +128,7 @@ describe("fetch", () => {
     let options: node_fetch.RequestInit = { agent: undefined }
     await api(url, options, true, { HTTPS_PROXY: proxyUrl })
     let agent = options.agent as HttpsProxyAgent
-    expect(agent.proxy.href).toBe(proxyUrl)
+    expect(agent["proxy"].href).toBe(proxyUrl)
   })
 
   it("sets proxy agent when https_proxy env variable is defined", async () => {
@@ -140,7 +140,7 @@ describe("fetch", () => {
     let options: node_fetch.RequestInit = { agent: undefined }
     await api(url, options, true, { https_proxy: proxyUrl })
     let agent = options.agent as HttpsProxyAgent
-    expect(agent.proxy.href).toBe(proxyUrl)
+    expect(agent["proxy"].href).toBe(proxyUrl)
   })
 
   it("sets proxy agent when HTTP_PROXY env variable is defined", async () => {
@@ -152,7 +152,7 @@ describe("fetch", () => {
     let options: node_fetch.RequestInit = { agent: undefined }
     await api(url, options, true, { HTTP_PROXY: proxyUrl })
     let agent = options.agent as HttpProxyAgent
-    expect(agent.proxy.href).toBe(proxyUrl)
+    expect(agent["proxy"].href).toBe(proxyUrl)
   })
 
   it("sets proxy agent when http_proxy env variable is defined", async () => {
@@ -164,6 +164,6 @@ describe("fetch", () => {
     let options: node_fetch.RequestInit = { agent: undefined }
     await api(url, options, true, { http_proxy: proxyUrl })
     let agent = options.agent as HttpProxyAgent
-    expect(agent.proxy.href).toBe(proxyUrl)
+    expect(agent["proxy"].href).toBe(proxyUrl)
   })
 })

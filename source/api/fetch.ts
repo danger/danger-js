@@ -113,7 +113,7 @@ export function api(
 
   if (!agent && proxy) {
     let secure = url.toString().startsWith("https")
-    init.agent = secure ? new HttpsProxyAgent(proxy) : new HttpProxyAgent(proxy)
+    init.agent = secure ? HttpsProxyAgent(proxy) : HttpProxyAgent(proxy)
   }
 
   return retryableFetch(url, init).then(async (response: node_fetch.Response) => {
