@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import nock, { NockDefinition } from "nock"
+import nock, { Definition } from "nock"
 import { default as GitLabAPI, getGitLabAPICredentialsFromEnv } from "../GitLabAPI"
 import { resolve } from "path"
 import { readFileSync } from "fs"
@@ -56,8 +56,8 @@ describe("GitLab API", () => {
     expect(api.mergeRequestURL).toBe("https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/27117")
   })
 
-  const sanitizeUserResponse = (nocks: NockDefinition[]): NockDefinition[] => {
-    return nocks.map((nock: NockDefinition) => {
+  const sanitizeUserResponse = (nocks: Definition[]): Definition[] => {
+    return nocks.map((nock: Definition) => {
       let { response, ...restNock } = nock
 
       // @ts-ignore
