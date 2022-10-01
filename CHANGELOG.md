@@ -1947,6 +1947,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@hmschreiner]: https://github.com/hmschreiner
 [@hongrich]: https://github.com/hongrich
 [@igorbek]: https://github.com/igorbek
+[@ivankatliarchuk]: https://github.com/ivankatliarchuk
 [@iljadaderko]: https://github.com/IljaDaderko
 [@imorente]: https://github.com/imorente
 [@jamiebuilds]: https://github.com/jamiebuilds
