@@ -107,7 +107,7 @@ class GitLabAPI {
   getMergeRequestApprovals = async (): Promise<GitLabApproval> => {
     this.d(`getMergeRequestApprovals for repo: ${this.repoMetadata.repoSlug} pr: ${this.repoMetadata.pullRequestID}`)
     const approvals = (await this.api.MergeRequests.approvals(this.repoMetadata.repoSlug, {
-      mergerequestIId: Number(this.repoMetadata.pullRequestID),
+      mergerequestIid: Number(this.repoMetadata.pullRequestID),
     })) as GitLabApproval
     this.d("getMergeRequestApprovals", approvals)
     return approvals
