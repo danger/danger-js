@@ -5,7 +5,6 @@ const correctEnv = {
   GITLAB_CI: "true",
   CI_MERGE_REQUEST_IID: "27117",
   CI_PROJECT_PATH: "gitlab-org/gitlab-foss",
-  // DANGER_GITLAB_API_TOKEN: "gitlab_dummy_a829-07bd7559eecb"
 }
 
 describe("being found when looking for CI", () => {
@@ -27,8 +26,6 @@ describe(".isCI", () => {
   })
 })
 
-// missed
-
 describe(".pullRequestID", () => {
   it("pulls it out of the env", () => {
     const result = new GitLabCI(correctEnv)
@@ -40,5 +37,11 @@ describe(".repoSlug", () => {
   it("derives it from the PR Url", () => {
     const result = new GitLabCI(correctEnv)
     expect(result.repoSlug).toEqual("gitlab-org/gitlab-foss")
+  })
+
+  it("derives it form forked PR Url", () => {
+    correctEnv["CI_MERGE_REQUEST_PROJECT_PATH"] = "gitlab-org/release-tools"
+    const result = new GitLabCI(correctEnv)
+    expect(result.repoSlug).toEqual("gitlab-org/release-tools")
   })
 })
