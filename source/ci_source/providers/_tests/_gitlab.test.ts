@@ -34,7 +34,7 @@ describe(".pullRequestID", () => {
 })
 
 describe(".repoSlug", () => {
-  it("derives it 'CI_PROJECT_PATH' env var", () => {
+  it("derives it from 'CI_PROJECT_PATH' env var", () => {
     const result = new GitLabCI(correctEnv)
     expect(result.repoSlug).toEqual("gitlab-org/gitlab-foss")
   })
