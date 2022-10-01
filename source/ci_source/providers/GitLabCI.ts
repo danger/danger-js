@@ -23,6 +23,7 @@ export class GitLabCI implements CISource {
   }
 
   get repoSlug(): string {
+    // return this.env.CI_MERGE_REQUEST_PROJECT_PATH || this.env.CI_PROJECT_PATH
     return this.env.CI_PROJECT_PATH
   }
 
