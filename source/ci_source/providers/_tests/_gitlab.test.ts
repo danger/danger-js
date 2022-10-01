@@ -34,12 +34,12 @@ describe(".pullRequestID", () => {
 })
 
 describe(".repoSlug", () => {
-  it("derives it from the PR Url", () => {
+  it("derives it 'CI_PROJECT_PATH' env var", () => {
     const result = new GitLabCI(correctEnv)
     expect(result.repoSlug).toEqual("gitlab-org/gitlab-foss")
   })
 
-  it("derives it form forked PR Url", () => {
+  it("derives it form 'CI_MERGE_REQUEST_PROJECT_PATH' env var if set", () => {
     correctEnv["CI_MERGE_REQUEST_PROJECT_PATH"] = "gitlab-org/release-tools"
     const result = new GitLabCI(correctEnv)
     expect(result.repoSlug).toEqual("gitlab-org/release-tools")
