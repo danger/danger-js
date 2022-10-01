@@ -16,7 +16,8 @@
 
 <!-- Your comment below this -->
 - Append random string to danger-results.json and danger-dsl.json files to better support concurrent processes #1311
-
+- GitLab: Improve support for MRs from forks [#1319](https://github.com/danger/danger-js/pull/1319) [@ivankatliarchuk]
+- GitLab: Added provider tests [#1319](https://github.com/danger/danger-js/pull/1319) [@ivankatliarchuk]
 <!-- Your comment above this -->
 
 ## 11.1.2
@@ -28,7 +29,7 @@
 
 - Bug fix for over-deleting inline comments #1287
 
-## 11.1.0 
+## 11.1.0
 
 - Adds support for the new [GitHub Job summaries](https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/) API via:
  - `danger.github.setSummaryMarkdown("[markdown]")` for the JavaScript DSL
@@ -57,7 +58,7 @@
 # 11.0.0 -> 11.0.2
 
 - *Breaking:* Upgrade @octokit/rest from ^16.43.1 to ^18.12.0 - [#1204](https://github.com/danger/danger-js/pull/1204) [@fbartho]
-  
+
   This is only likely to hit you if you use `danger.github.api` pretty extensively in your Dangerfiles, but better to keep an eye out.
 
 # 10.8.1
@@ -1947,6 +1948,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@hmschreiner]: https://github.com/hmschreiner
 [@hongrich]: https://github.com/hongrich
 [@igorbek]: https://github.com/igorbek
+[@ivankatliarchuk]: https://github.com/ivankatliarchuk
 [@iljadaderko]: https://github.com/IljaDaderko
 [@imorente]: https://github.com/imorente
 [@jamiebuilds]: https://github.com/jamiebuilds
