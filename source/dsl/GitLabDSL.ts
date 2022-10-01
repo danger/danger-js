@@ -1,7 +1,7 @@
 // Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
 
 // TODO: extract out from BitBucket specifically, or create our own type
-import { Gitlab } from "@gitbeaker/core"
+import { Gitlab } from "@gitbeaker/node"
 import { RepoMetaData } from "./BitBucketServerDSL"
 
 // getPlatformReviewDSLRepresentation
