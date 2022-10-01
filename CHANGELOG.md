@@ -16,7 +16,11 @@
 
 <!-- Your comment below this -->
 - Append random string to danger-results.json and danger-dsl.json files to better support concurrent processes #1311
+
 - Gitlab package moved to a new home "@gitbreaker/*" [#1301](https://github.com/danger/danger-js/issues/1301)  [@ivankatliarchuk]
+- GitLab: Improve support for MRs from forks [#1319](https://github.com/danger/danger-js/pull/1319) [@ivankatliarchuk]
+- GitLab: Added provider tests [#1319](https://github.com/danger/danger-js/pull/1319) [@ivankatliarchuk]
+
 <!-- Your comment above this -->
 
 ## 11.1.2
@@ -1947,6 +1951,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@hmschreiner]: https://github.com/hmschreiner
 [@hongrich]: https://github.com/hongrich
 [@igorbek]: https://github.com/igorbek
+[@ivankatliarchuk]: https://github.com/ivankatliarchuk
 [@iljadaderko]: https://github.com/IljaDaderko
 [@ivankatliarchuk]: https://github.com/ivankatliarchuk
 [@imorente]: https://github.com/imorente
