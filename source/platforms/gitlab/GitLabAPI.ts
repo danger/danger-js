@@ -14,7 +14,7 @@ import {
   GitLabApproval,
 } from "../../dsl/GitLabDSL"
 
-import { Gitlab } from "gitlab"
+import { Gitlab } from "@gitbeaker/node"
 import { Env } from "../../ci_source/ci_source"
 import { debug } from "../../debug"
 
@@ -107,7 +107,7 @@ class GitLabAPI {
   getMergeRequestApprovals = async (): Promise<GitLabApproval> => {
     this.d(`getMergeRequestApprovals for repo: ${this.repoMetadata.repoSlug} pr: ${this.repoMetadata.pullRequestID}`)
     const approvals = (await this.api.MergeRequests.approvals(this.repoMetadata.repoSlug, {
-      mergerequestIId: Number(this.repoMetadata.pullRequestID),
+      mergerequestIid: Number(this.repoMetadata.pullRequestID),
     })) as GitLabApproval
     this.d("getMergeRequestApprovals", approvals)
     return approvals
@@ -137,7 +137,8 @@ class GitLabAPI {
   getMergeRequestNotes = async (): Promise<GitLabNote[]> => {
     this.d("getMergeRequestNotes", this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)
     const api = this.api.MergeRequestNotes
-    const notes = (await api.all(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)) as GitLabNote[]
+    // TODO: add pagination
+    const notes = (await api.all(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, {})) as GitLabNote[]
     this.d("getMergeRequestNotes", notes)
     return notes
   }
