@@ -16,7 +16,7 @@
 
 <!-- Your comment below this -->
 - Append random string to danger-results.json and danger-dsl.json files to better support concurrent processes #1311
-- Gitlab package moved to a new home "@gitbreaker/*" [@ivankatliarchuk]
+- Gitlab package moved to a new home "@gitbreaker/*" [#1301](https://github.com/danger/danger-js/issues/1301)  [@ivankatliarchuk]
 <!-- Your comment above this -->
 
 ## 11.1.2
