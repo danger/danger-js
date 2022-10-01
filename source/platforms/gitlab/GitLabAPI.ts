@@ -137,7 +137,6 @@ class GitLabAPI {
   getMergeRequestNotes = async (): Promise<GitLabNote[]> => {
     this.d("getMergeRequestNotes", this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID)
     const api = this.api.MergeRequestNotes
-    // TODO: add pagination
     const notes = (await api.all(this.repoMetadata.repoSlug, this.repoMetadata.pullRequestID, {})) as GitLabNote[]
     this.d("getMergeRequestNotes", notes)
     return notes
