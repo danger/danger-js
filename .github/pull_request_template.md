@@ -14,8 +14,6 @@ Anything on lines wrapped in comments like these will not show up in the final t
 Put an `x` into the [ ] to show you have filled the information
 -->
 
-- [ ] Make sure you are opening from a **feature/feat/docs/fix/bug/hotfix/stable/chore** (right side) and not your
-      master branch!
 - [ ] Ensure that the pull request title represents the desired changelog entry
 
 ## 📒 Description
