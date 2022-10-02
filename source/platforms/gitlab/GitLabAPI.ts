@@ -9,12 +9,12 @@ import {
   GitLabMRCommit,
   GitLabNote,
   GitLabUserProfile,
-  GitLabRepositoryFile,
   GitLabRepositoryCompare,
   GitLabApproval,
 } from "../../dsl/GitLabDSL"
 
 import { Gitlab } from "@gitbeaker/node"
+import { RepositoryFileSchema } from "@gitbeaker/core/dist/types/services/RepositoryFiles"
 import { Env } from "../../ci_source/ci_source"
 import { debug } from "../../debug"
 
@@ -229,14 +229,14 @@ class GitLabAPI {
 
     try {
       this.d("getFileContents", projectId, path, ref)
-      const response = (await api.show(projectId, path, ref)) as GitLabRepositoryFile
-      const result: string = Buffer.from(response.content, "base64").toString()
+      const response = (await api.show(projectId, path, ref)) as RepositoryFileSchema
+      const result: string = Buffer.from(response.content, response.encoding).toString()
       this.d("getFileContents", result)
       return result
     } catch (e) {
       this.d("getFileContents", e)
       // GitHubAPI.fileContents returns "" when the file does not exist, keep it consistent across providers
-      if ((e as any).response.status === 404) {
+      if ((e as any).response.statusCode === 404) {
         return ""
       }
       throw e
