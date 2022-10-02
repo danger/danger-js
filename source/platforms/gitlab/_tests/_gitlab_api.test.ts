@@ -175,6 +175,11 @@ describe("GitLab API", () => {
         ref: "master",
         expected: "source 'https://rubygems.org'",
       },
+      {
+        filePath: "FileNotExist",
+        ref: "master",
+        expected: "",
+      },
     ]
     for (let el in parameters) {
       let result = await api.getFileContents(parameters[el].filePath, api.repoMetadata.repoSlug, parameters[el].ref)

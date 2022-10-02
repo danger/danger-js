@@ -18,5 +18,13 @@
       "execute_filemode": false,
       "content": "c291cmNlICdodHRwczovL3J1YnlnZW1zLm9yZycK"
     }
+  },
+  {
+    "scope": "https://gitlab.com",
+    "method": "GET",
+    "path": "/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/files/FileNotExist?ref=master",
+    "body": "",
+    "status": 404,
+    "response": {}
   }
 ]
