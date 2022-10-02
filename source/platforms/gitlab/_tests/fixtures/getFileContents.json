@@ -1,0 +1,22 @@
+[
+  {
+    "scope": "https://gitlab.com",
+    "method": "GET",
+    "path": "/api/v4/projects/gitlab-org%2Fgitlab-foss/repository/files/Gemfile?ref=master",
+    "body": "",
+    "status": 200,
+    "response": {
+      "file_name": "Gemfile",
+      "file_path": "Gemfile",
+      "size": 4989,
+      "encoding": "base64",
+      "content_sha256": "d1db2dff734c9a5f59b9e994b2f610317a0bdbdf938d4dc2797bb0bd384233f6",
+      "ref": "master",
+      "blob_id": "78b0a38bcaae68ca1bd5fc967c9901c854f3d9ab",
+      "commit_id": "86461e8c72db13d6d334fd107d38aa1b021d030e",
+      "last_commit_id": "a16398e10f87edd229a12be2f1fc87cd4a76f902",
+      "execute_filemode": false,
+      "content": "c291cmNlICdodHRwczovL3J1YnlnZW1zLm9yZycK"
+    }
+  }
+]
