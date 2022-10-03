@@ -243,6 +243,11 @@ export interface GitHubPRDSL {
   assignees: GitHubUser[]
 
   /**
+   * Is in draft state?
+   */
+  draft: boolean
+
+  /**
    * Has the PR been merged yet?
    */
   merged: boolean
