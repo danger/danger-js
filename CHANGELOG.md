@@ -21,6 +21,8 @@
 - GitLab: Improve support for MRs from forks [#1319](https://github.com/danger/danger-js/pull/1319) [@ivankatliarchuk]
 - GitLab: Added provider tests [#1319](https://github.com/danger/danger-js/pull/1319) [@ivankatliarchuk]
 
+- GitHub: Added `danger.github.pr.draft` field to DSL
+
 <!-- Your comment above this -->
 
 ## 11.1.2
