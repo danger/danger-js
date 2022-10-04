@@ -1,5 +1,4 @@
 // Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
-
 // TODO: extract out from BitBucket specifically, or create our own type
 import { Gitlab } from "@gitbeaker/node"
 import { RepoMetaData } from "./BitBucketServerDSL"
@@ -245,19 +244,6 @@ export interface GitLabMRCommit {
   committer_name: string
   committer_email: string
   committed_date: string
-}
-
-export interface GitLabRepositoryFile {
-  file_name: string
-  file_path: string
-  size: number
-  encoding: "base64"
-  content: string
-  content_sha256: string
-  ref: string
-  blob_id: string
-  commit_id: string
-  last_commit_id: string
 }
 
 export interface GitLabCommit {

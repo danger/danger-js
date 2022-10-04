@@ -149,7 +149,6 @@
     "fast-json-patch": "^3.0.0-1",
     "get-stdin": "^6.0.0",
     "@gitbeaker/node": "^21.3.0",
-    "gitlab": "^10.0.1",
     "http-proxy-agent": "^5.0.0",
     "https-proxy-agent": "^5.0.1",
     "hyperlinker": "^1.0.0",

@@ -166,4 +166,25 @@ describe("GitLab API", () => {
     const { response } = loadFixture("getCompareChanges")
     expect(result).toEqual(response.diffs)
   })
+
+  it("getFileContents", async () => {
+    const { nockDone } = await nockBack("getFileContents.json")
+    const parameters: { filePath: string; ref: string; expected: string }[] = [
+      {
+        filePath: "Gemfile",
+        ref: "master",
+        expected: "source 'https://rubygems.org'",
+      },
+      {
+        filePath: "FileNotExist",
+        ref: "master",
+        expected: "",
+      },
+    ]
+    for (let el in parameters) {
+      let result = await api.getFileContents(parameters[el].filePath, api.repoMetadata.repoSlug, parameters[el].ref)
+      expect(result).toContain(parameters[el].expected)
+    }
+    nockDone()
+  })
 })
