@@ -37,7 +37,7 @@ export function getGitLabAPICredentialsFromEnv(env: Env): GitLabAPICredentials {
     const protocolRegex = /^https?:\/\//i
     host = protocolRegex.test(envHost) ? envHost : `https://${envHost}`
   } else if (envCIAPI) {
-    // GitLab >= v11.7 supplies the API Endpoint in an environment variable and we can work out our host value from that.
+    // GitLab >= v11.7 supplies the API Endpoint in an environment variable, and we can work out our host value from that.
     // See https://docs.gitlab.com/ce/ci/variables/predefined_variables.html
     const hostRegex = /^(https?):\/\/([^\/]+)\//i
     if (hostRegex.test(envCIAPI)) {
@@ -220,8 +220,7 @@ class GitLabAPI {
     // Use the current state of PR if no ref is passed
     if (!ref) {
       const mr: GitLabMR = await this.getMergeRequestInfo()
-      // ref = mr.diff_refs.head_sha
-      ref = mr.merge_commit_sha as string
+      ref = mr.diff_refs.head_sha
     }
 
     try {
@@ -248,30 +247,26 @@ class GitLabAPI {
     const compare = (await this.api.Repositories.compare(projectId, base, head)) as GitLabRepositoryCompare
     return compare.diffs
   }
-  //
-  // addLabels = async (...labels: string[]): Promise<boolean> => {
-  //   const mr = await this.getMergeRequestInfo()
-  //   mr.labels.push(...labels)
-  //
-  //   await this.updateMergeRequestInfo({ labels: mr.labels.join(",") })
-  //
-  //   return true
-  // }
+  // TODO: test
+  addLabels = async (...labels: string[]): Promise<boolean> => {
+    const mr = await this.getMergeRequestInfo()
+    mr.labels?.push(...labels)
+    await this.updateMergeRequestInfo({ labels: mr.labels?.join(",") })
+    return true
+  }
 
-  //   removeLabels = async (...labels: string[]): Promise<boolean> => {
-  //     const mr = await this.getMergeRequestInfo()
-  //
-  //     for (const label of labels) {
-  //       const index = mr.labels.indexOf(label)
-  //       if (index > -1) {
-  //         mr.labels.splice(index, 1)
-  //       }
-  //     }
-  //
-  //     await this.updateMergeRequestInfo({ labels: mr.labels.join(",") })
-  //
-  //     return true
-  //   }
+  removeLabels = async (...labels: string[]): Promise<boolean> => {
+    const mr = await this.getMergeRequestInfo()
+
+    for (const label of labels) {
+      const index = mr.labels?.indexOf(label)
+      if ((index as number) > -1) {
+        mr.labels?.splice(index as number, 1)
+      }
+    }
+    await this.updateMergeRequestInfo({ labels: mr.labels?.join(",") })
+    return true
+  }
 }
 
 export default GitLabAPI
