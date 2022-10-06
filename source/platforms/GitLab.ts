@@ -36,21 +36,21 @@ class GitLab implements Platform {
     const changes = await this.api.getMergeRequestChanges()
     const commits = await this.api.getMergeRequestCommits()
 
-    const mappedCommits: GitCommit[] = commits.map(commit => {
+    const mappedCommits: GitCommit[] = commits.map((commit) => {
       return {
         sha: commit.id,
         author: {
           name: commit.author_name,
-          email: commit.author_email,
-          date: commit.authored_date,
+          email: commit.author_email as string,
+          date: (commit.authored_date as Date).toString(),
         },
         committer: {
-          name: commit.committer_name,
-          email: commit.committer_email,
-          date: commit.committed_date,
+          name: commit.committer_name as string,
+          email: commit.committer_email as string,
+          date: (commit.committed_date as Date).toString(),
         },
         message: commit.message,
-        parents: commit.parent_ids,
+        parents: commit.parent_ids as string[],
         url: `${this.api.projectURL}/commit/${commit.id}`,
         tree: null,
       }
@@ -58,10 +58,10 @@ class GitLab implements Platform {
 
     // XXX: does "renamed_file"/move count is "delete/create", or "modified"?
     const modified_files: string[] = changes
-      .filter(change => !change.new_file && !change.deleted_file)
-      .map(change => change.new_path)
-    const created_files: string[] = changes.filter(change => change.new_file).map(change => change.new_path)
-    const deleted_files: string[] = changes.filter(change => change.deleted_file).map(change => change.new_path)
+      .filter((change) => !change.new_file && !change.deleted_file)
+      .map((change) => change.new_path)
+    const created_files: string[] = changes.filter((change) => change.new_file).map((change) => change.new_path)
+    const deleted_files: string[] = changes.filter((change) => change.deleted_file).map((change) => change.new_path)
 
     return {
       modified_files,
@@ -74,7 +74,7 @@ class GitLab implements Platform {
   getInlineComments = async (dangerID: string): Promise<Comment[]> => {
     const dangerUserID = (await this.api.getUser()).id
 
-    return (await this.api.getMergeRequestInlineNotes()).map(note => {
+    return (await this.api.getMergeRequestInlineNotes()).map((note) => {
       return {
         id: `${note.id}`,
         body: note.body,
@@ -161,7 +161,6 @@ class GitLab implements Platform {
       d("deleteMainComment", { id: note.id })
       await this.api.deleteMergeRequestNote(note.id)
     }
-
     return notes.length > 0
   }
 

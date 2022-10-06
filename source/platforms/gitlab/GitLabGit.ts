@@ -14,7 +14,7 @@ export const gitLabGitDSL = (gitlab: GitLabDSL, json: GitJSONDSL, gitlabAPI: Git
     getFileContents: gitlab.utils.fileContents,
     getFullDiff: async (base: string, head: string) => {
       const changes = await gitlabAPI.getCompareChanges(base, head)
-      return gitlabChangesToDiff(changes)
+      return gitlabChangesToDiff(changes as GitLabMRChange[])
     },
   }
 
@@ -26,7 +26,7 @@ export const gitlabChangesToDiff = (changes: GitLabMRChange[]): string => {
   d("Converting GitLab Changes to Diff")
   // Gitlab doesn't return full raw git diff, relevant issue: https://gitlab.com/gitlab-org/gitlab/issues/24913
   return changes
-    .map(change => {
+    .map((change) => {
       const { diff } = change
       if (diff.startsWith("diff --git a/") || diff.startsWith("--- a/") || diff.startsWith("--- /dev/null")) {
         return diff

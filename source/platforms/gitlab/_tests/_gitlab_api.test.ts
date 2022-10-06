@@ -187,4 +187,38 @@ describe("GitLab API", () => {
     }
     nockDone()
   })
+
+  it("updateMergeRequestInfo", async () => {
+    const { nockDone } = await nockBack("updateMergeRequestInfo.json")
+    const titleToUpdate = "update merge request"
+    const result = await api.updateMergeRequestInfo({ title: titleToUpdate })
+    nockDone()
+    expect(result.title).toEqual(titleToUpdate)
+  })
+
+  describe("mergerequest (add|remove)labels", () => {
+    let nockDone: { nockDone: () => void }
+
+    afterAll(async () => {
+      nockDone.nockDone()
+    })
+
+    it("addLabels", async () => {
+      nockDone = await nockBack("updateMergeRequestInfo.json")
+      const result = await api.addLabels("first-label", "second-label")
+      expect(result).toBeTruthy()
+    })
+
+    it("removeLabels", async () => {
+      nockDone = await nockBack("updateMergeRequestInfo.json")
+      const result = await api.removeLabels("remove-me-label")
+      expect(result).toBeTruthy()
+    })
+
+    it("addLabels with no duplicates", async () => {
+      nockDone = await nockBack("updateMergeRequestInfo.json")
+      const result = await api.addLabels("danger-bot", "new-label")
+      expect(result).toBeTruthy()
+    })
+  })
 })
