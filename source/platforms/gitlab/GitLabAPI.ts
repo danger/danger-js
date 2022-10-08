@@ -1,5 +1,4 @@
 import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
-import { api as fetch } from "../../api/fetch"
 import {
   GitLabDiscussionTextPosition,
   GitLabInlineNote,
@@ -56,7 +55,6 @@ export function getGitLabAPICredentialsFromEnv(env: Env): GitLabAPICredentials {
 }
 
 class GitLabAPI {
-  fetch: typeof fetch
   private readonly api: InstanceType<typeof Gitlab>
   private readonly hostURL: string
   private readonly d = debug("GitLabAPI")
@@ -64,7 +62,6 @@ class GitLabAPI {
   private readonly prId: number
 
   constructor(public readonly repoMetadata: RepoMetaData, public readonly repoCredentials: GitLabAPICredentials) {
-    this.fetch = fetch
     this.api = new Gitlab(repoCredentials)
     this.hostURL = repoCredentials.host
     this.repoSlug = repoMetadata.repoSlug
