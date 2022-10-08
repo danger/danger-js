@@ -196,7 +196,7 @@ describe("GitLab API", () => {
     expect(JSON.stringify(result)).toContain(titleToUpdate)
   })
 
-  describe("mergerequest (add|remove)labels", () => {
+  describe("updateMergeRequestInfo (add|remove)labels", () => {
     let nockDone: { nockDone: () => void }
 
     afterAll(async () => {

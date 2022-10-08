@@ -92,7 +92,7 @@ class GitLabAPI {
 
   getMergeRequestInfo = async (): Promise<GitLabMR> => {
     this.d(`getMergeRequestInfo for repo: ${this.repoSlug} pr: ${this.prId}`)
-    const mr = (await this.api.MergeRequests.show(this.repoSlug, Number(this.prId))) as GitLabMR
+    const mr = (await this.api.MergeRequests.show(this.repoSlug, this.prId)) as GitLabMR
     this.d("getMergeRequestInfo", mr)
     return mr
   }
@@ -106,7 +106,7 @@ class GitLabAPI {
   getMergeRequestApprovals = async (): Promise<GitLabApproval> => {
     this.d(`getMergeRequestApprovals for repo: ${this.repoSlug} pr: ${this.prId}`)
     const approvals = (await this.api.MergeRequests.approvals(this.repoSlug, {
-      mergerequestIid: Number(this.prId),
+      mergerequestIid: this.prId,
     })) as GitLabApproval
     this.d("getMergeRequestApprovals", approvals)
     return approvals
