@@ -1,6 +1,7 @@
 import { debug } from "../../debug"
-import { GitLabDSL, GitLabMRChange } from "../../dsl/GitLabDSL"
+import { GitLabDSL } from "../../dsl/GitLabDSL"
 import { GitDSL, GitJSONDSL } from "../../dsl/GitDSL"
+import { Types } from "@gitbeaker/node"
 import { gitJSONToGitDSL, GitJSONToGitDSLConfig } from "../git/gitJSONToGitDSL"
 import GitLabAPI from "./GitLabAPI"
 
@@ -22,11 +23,11 @@ export const gitLabGitDSL = (gitlab: GitLabDSL, json: GitJSONDSL, gitlabAPI: Git
   return gitJSONToGitDSL(json, config)
 }
 
-export const gitlabChangesToDiff = (changes: GitLabMRChange[]): string => {
+export const gitlabChangesToDiff = (changes: Types.CommitDiffSchema[]): string => {
   d("Converting GitLab Changes to Diff")
   // Gitlab doesn't return full raw git diff, relevant issue: https://gitlab.com/gitlab-org/gitlab/issues/24913
   return changes
-    .map(change => {
+    .map((change) => {
       const { diff } = change
       if (diff.startsWith("diff --git a/") || diff.startsWith("--- a/") || diff.startsWith("--- /dev/null")) {
         return diff

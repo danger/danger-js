@@ -193,7 +193,7 @@ describe("GitLab API", () => {
     const titleToUpdate = "update merge request"
     const result = await api.updateMergeRequestInfo({ title: titleToUpdate })
     nockDone()
-    expect(JSON.stringify(result)).toContain(titleToUpdate)
+    expect(result.title).toContain(titleToUpdate)
   })
 
   describe("updateMergeRequestInfo (add|remove)labels", () => {
