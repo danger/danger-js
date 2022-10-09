@@ -3,7 +3,7 @@
 //
 
 import { Octokit as GitHub } from "@octokit/rest"
-import { Gitlab } from "@gitbeaker/node"
+import { Gitlab, Types } from "@gitbeaker/node"
 import { File } from "parse-diff"
 
 type MarkdownString = string
@@ -1476,10 +1476,10 @@ interface GitLabJSONDSL {
   metadata: RepoMetaData
   /** Info about the merge request */
   mr: GitLabMR
-  /** All of the individual commits in the merge request */
-  commits: GitLabMRCommit[]
+  /** All the individual commits in the merge request */
+  commits: Types.CommitSchema[]
   /** Merge Request-level MR approvals Configuration */
-  approvals: GitLabApproval
+  approvals: Types.MergeRequestLevelMergeRequestApprovalSchema
 }
 
 // danger.gitlab
@@ -1495,134 +1495,20 @@ interface GitLabDSL extends GitLabJSONDSL {
 
 // ---
 // JSON responses from API
+interface GitlabUpdateMr extends Types.UpdateMergeRequestOptions, Types.BaseRequestOptions {}
 
-interface GitLabUser {
-  id: number
-  name: string
-  username: string
-  state: "active" | "blocked"
-  avatar_url: string | null
-  web_url: string
+interface GitLabNote extends Types.MergeRequestNoteSchema {
+  type: "DiffNote" | "DiscussionNote" | null // XXX: other types? null means "normal comment"
 }
 
-interface GitLabUserProfile extends GitLabUser {
-  created_at: string
-  bio: string | null
-  location: string | null
-  public_email: string
-  skype: string
-  linkedin: string
-  twitter: string
-  website_url: string
-  organization: string
-  last_sign_in_at: string
-  confirmed_at: string
-  theme_id: number
-  last_activity_on: string
-  color_scheme_id: number
-  projects_limit: number
-  current_sign_in_at: string
-  identities: [{ provider: string; extern_uid: string }]
-  can_create_group: boolean
-  can_create_project: boolean
-  two_factor_enabled: boolean
-  external: boolean
-  private_profile: boolean
-}
-
-interface GitLabMRBase {
-  /** The MR's id */
-  id: number
-
-  /** The unique ID for this MR */
-  iid: number
-
-  /** The project ID for this MR */
-  project_id: number
-
-  /** The given name of the MR */
-  title: string
-
-  /** The body text describing the MR */
-  description: string
-
-  /** The MR's current availability */
-  state: "closed" | "open" | "locked" | "merged"
-
-  /** When was the MR made */
-  created_at: string
-
-  /** When was the MR updated */
-  updated_at: string
-
-  /** What branch is this MR being merged into */
-  target_branch: string
-  /** What branch is this MR come from */
-  source_branch: string
-
-  /** How many folks have given it an upvote */
-  upvotes: number
-  /** How many folks have given it an downvote */
-  downvotes: number
-
-  /** Who made it */
-  author: GitLabUser
-  /** Access rights for the user who created the MR */
-  user: {
-    /** Does the author have access to merge? */
-    can_merge: boolean
-  }
-  /** Who was assigned as the person to review */
-  assignee?: GitLabUser
-  assignees: GitLabUser[]
-  /** Users who were added as reviewers to the MR */
-  reviewers: GitLabUser[]
-  source_project_id: number
-  target_project_id: number
-  labels: string[]
-  work_in_progress: boolean
-  milestone: {
-    id: number
-    iid: number
-    project_id: number
-    title: string
-    description: string
-    state: "closed" | "active"
-    created_at: string
-    updated_at: string
-    due_date: string
-    start_date: string
-    web_url: string
-  }
-  merge_when_pipeline_succeeds: boolean
-  merge_status: "can_be_merged" // XXX: other statuses?
-  merge_error: null | null
-  sha: string
-  merge_commit_sha: string | null
-  user_notes_count: number
-  discussion_locked: null | null
-  should_remove_source_branch: boolean
-  force_remove_source_branch: boolean
-  allow_collaboration: boolean
-  allow_maintainer_to_push: boolean
-  web_url: string
-  time_stats: {
-    time_estimate: number
-    total_time_spent: number
-    human_time_estimate: number | null
-    human_total_time_spent: number | null
-  }
+interface GitLabInlineNote extends GitLabNote {
+  type: "DiffNote" | "DiscussionNote" | null // XXX: other types? null means "normal comment"
 }
 
 /** TODO: These need more comments from someone who uses GitLab, see GitLabDSL.ts in the danger-js repo */
-interface GitLabMR extends GitLabMRBase {
-  squash: boolean
+interface GitLabMR extends Types.MergeRequestSchema {
   subscribed: boolean
   changes_count: string
-  merged_by: GitLabUser
-  merged_at: string
-  closed_by: GitLabUser | null
-  closed_at: string | null
   latest_build_started_at: string
   latest_build_finished_at: string
   first_deployed_to_production_at: string | null
@@ -1640,37 +1526,16 @@ interface GitLabMR extends GitLabMRBase {
   }
   diverged_commits_count: number
   rebase_in_progress: boolean
-  approvals_before_merge: null | null
-}
-
-interface GitLabMRChange {
-  old_path: string
-  new_path: string
-  a_mode: string
-  b_mode: string
-  diff: string
-  new_file: boolean
-  renamed_file: boolean
-  deleted_file: boolean
-}
-
-interface GitLabMRChanges extends GitLabMRBase {
-  changes: GitLabMRChange[]
-}
-
-interface GitLabNote {
-  id: number
-  type: "DiffNote" | "DiscussionNote" | null // XXX: other types? null means "normal comment"
-  body: string
-  attachment: null // XXX: what can an attachment be?
-  author: GitLabUser
-  created_at: string
-  updated_at: string
-  system: boolean
-  noteable_id: number
-  noteable_type: "MergeRequest" // XXX: other types...?
-  resolvable: boolean
-  noteable_iid: number
+  approvals_before_merge: null
+  //
+  /** Access rights for the user who created the MR */
+  user: {
+    /** Does the author have access to merge? */
+    can_merge: boolean
+  }
+  merge_error: null
+  allow_collaboration: boolean
+  allow_maintainer_to_push: boolean
 }
 
 interface GitLabDiscussion {

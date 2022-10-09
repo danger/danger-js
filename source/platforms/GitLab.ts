@@ -37,7 +37,7 @@ class GitLab implements Platform {
       approvals,
     }
   }
-
+  // TODO: test
   getPlatformGitRepresentation = async (): Promise<GitJSONDSL> => {
     const changes = await this.api.getMergeRequestChanges()
     const commits = await this.api.getMergeRequestCommits()
@@ -47,16 +47,16 @@ class GitLab implements Platform {
         sha: commit.id,
         author: {
           name: commit.author_name,
-          email: commit.author_email,
-          date: commit.authored_date,
+          email: commit.author_email as string,
+          date: (commit.authored_date as Date).toString(),
         },
         committer: {
-          name: commit.committer_name,
-          email: commit.committer_email,
-          date: commit.committed_date,
+          name: commit.committer_name as string,
+          email: commit.committer_email as string,
+          date: (commit.committed_date as Date).toString(),
         },
         message: commit.message,
-        parents: commit.parent_ids,
+        parents: commit.parent_ids as string[],
         url: `${this.api.projectURL}/commit/${commit.id}`,
         tree: null,
       }

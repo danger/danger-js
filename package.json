@@ -150,7 +150,7 @@
     "debug": "^4.1.1",
     "fast-json-patch": "^3.0.0-1",
     "get-stdin": "^6.0.0",
-    "@gitbeaker/node": "^21.3.0",
+    "@gitbeaker/node": "^35.7.0",
     "http-proxy-agent": "^5.0.0",
     "https-proxy-agent": "^5.0.1",
     "hyperlinker": "^1.0.0",

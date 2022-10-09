@@ -5,15 +5,12 @@ import {
   GitLabDiscussionCreationOptions,
   GitLabInlineNote,
   GitLabMR,
-  GitLabMRChange,
-  GitLabMRChanges,
-  GitLabMRCommit,
   GitLabNote,
+  GitlabUpdateMr,
   GitLabRepositoryCompare,
   GitLabUserProfile,
 } from "../../dsl/GitLabDSL"
-import { Gitlab } from "@gitbeaker/node"
-import { RepositoryFileSchema } from "@gitbeaker/core/dist/types/services/RepositoryFiles"
+import { Gitlab, Types } from "@gitbeaker/node"
 import { Env } from "../../ci_source/ci_source"
 import { debug } from "../../debug"
 
@@ -37,7 +34,7 @@ export function getGitLabAPICredentialsFromEnv(env: Env): GitLabAPICredentials {
     const protocolRegex = /^https?:\/\//i
     host = protocolRegex.test(envHost) ? envHost : `https://${envHost}`
   } else if (envCIAPI) {
-    // GitLab >= v11.7 supplies the API Endpoint in an environment variable and we can work out our host value from
+    // GitLab >= v11.7 supplies the API Endpoint in an environment variable, and we can work out our host value from
     // that. See https://docs.gitlab.com/ce/ci/variables/predefined_variables.html
     const hostRegex = /^(https?):\/\/([^\/]+)\//i
     if (hostRegex.test(envCIAPI)) {
@@ -81,9 +78,10 @@ class GitLabAPI {
     return this.api
   }
 
-  getUser = async (): Promise<GitLabUserProfile> => {
+  getUser = async (): Promise<Types.UserExtendedSchema> => {
     this.d("getUser")
-    const user = (await this.api.Users.current()) as GitLabUserProfile
+    // https://github.com/jdalrymple/gitbeaker/issues/2084
+    const user = (await this.api.Users.current()) as Types.UserExtendedSchema
     this.d("getUser", user)
     return user
   }
@@ -95,31 +93,31 @@ class GitLabAPI {
     return mr
   }
 
-  updateMergeRequestInfo = async (changes: object): Promise<object> => {
+  updateMergeRequestInfo = async (changes: GitlabUpdateMr): Promise<Types.MergeRequestSchema> => {
     const mr = this.api.MergeRequests.edit(this.repoSlug, this.prId, changes)
     this.d("updateMergeRequestInfo", mr)
     return mr
   }
 
-  getMergeRequestApprovals = async (): Promise<GitLabApproval> => {
+  getMergeRequestApprovals = async (): Promise<Types.MergeRequestLevelMergeRequestApprovalSchema> => {
     this.d(`getMergeRequestApprovals for repo: ${this.repoSlug} pr: ${this.prId}`)
-    const approvals = (await this.api.MergeRequests.approvals(this.repoSlug, {
+    const approvals = await this.api.MergeRequestApprovals.configuration(this.repoSlug, {
       mergerequestIid: this.prId,
-    })) as GitLabApproval
+    })
     this.d("getMergeRequestApprovals", approvals)
     return approvals
   }
 
-  getMergeRequestChanges = async (): Promise<GitLabMRChange[]> => {
+  getMergeRequestChanges = async (): Promise<Types.CommitDiffSchema[]> => {
     this.d(`getMergeRequestChanges for repo: ${this.repoSlug} pr: ${this.prId}`)
-    const mr = (await this.api.MergeRequests.changes(this.repoSlug, this.prId)) as GitLabMRChanges
+    const mr = await this.api.MergeRequests.changes(this.repoSlug, this.prId)
     this.d("getMergeRequestChanges", mr.changes)
-    return mr.changes
+    return mr.changes as Types.CommitDiffSchema[]
   }
 
-  getMergeRequestCommits = async (): Promise<GitLabMRCommit[]> => {
+  getMergeRequestCommits = async (): Promise<Types.CommitSchema[]> => {
     this.d("getMergeRequestCommits", this.repoSlug, this.prId)
-    const commits = (await this.api.MergeRequests.commits(this.repoSlug, this.prId)) as GitLabMRCommit[]
+    const commits = await this.api.MergeRequests.commits(this.repoSlug, this.prId)
     this.d("getMergeRequestCommits", commits)
     return commits
   }
@@ -216,7 +214,7 @@ class GitLabAPI {
 
     try {
       this.d("getFileContents", projectId, path, ref)
-      const response = (await api.show(projectId, path, ref)) as RepositoryFileSchema
+      const response = await api.show(projectId, path, ref)
       const result: string = Buffer.from(response.content, response.encoding).toString()
       this.d("getFileContents", result)
       return result
@@ -230,14 +228,14 @@ class GitLabAPI {
     }
   }
 
-  getCompareChanges = async (base?: string, head?: string): Promise<GitLabMRChange[]> => {
+  getCompareChanges = async (base?: string, head?: string): Promise<Types.CommitDiffSchema[]> => {
     if (!base || !head) {
       return this.getMergeRequestChanges()
     }
     const api = this.api.Repositories
     const projectId = this.repoSlug
-    const compare = (await api.compare(projectId, base, head)) as GitLabRepositoryCompare
-    return compare.diffs
+    const compare = await api.compare(projectId, base, head)
+    return compare.diffs ? compare.diffs : []
   }
 
   addLabels = async (...labels: string[]): Promise<boolean> => {
@@ -249,16 +247,13 @@ class GitLabAPI {
 
   removeLabels = async (...labels: string[]): Promise<boolean> => {
     const mr = await this.getMergeRequestInfo()
-
     for (const label of labels) {
-      const index = mr.labels.indexOf(label)
-      if (index > -1) {
-        mr.labels.splice(index, 1)
+      const index = mr.labels?.indexOf(label)
+      if ((index as number) > -1) {
+        mr.labels?.splice(index as number, 1)
       }
     }
-
-    await this.updateMergeRequestInfo({ labels: mr.labels.join(",") })
-
+    await this.updateMergeRequestInfo({ labels: mr.labels?.join(",") })
     return true
   }
 }
