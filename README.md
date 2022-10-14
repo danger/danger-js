@@ -27,7 +27,6 @@ Codefresh, AppCenter, BitBucket Pipelines, Cirrus CI, Codemagic or Xcode Cloud.
 [![npm](https://img.shields.io/npm/v/danger.svg)](https://www.npmjs.com/package/danger)
 [![Build Status](https://travis-ci.org/danger/danger-js.svg?branch=main)](https://travis-ci.org/danger/danger-js)
 [![Build Status](https://ci.appveyor.com/api/projects/status/ep5hgeox3lbc5c7f?svg=true)](https://ci.appveyor.com/project/orta/danger-js/branch/main)
-[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/danger)
 
 ## For example?
 
