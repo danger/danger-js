@@ -1,17 +1,17 @@
 import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
 import {
-  GitLabDiscussionTextPosition,
+  GitLabApproval,
+  GitLabDiscussion,
+  GitLabDiscussionCreationOptions,
   GitLabInlineNote,
   GitLabMR,
   GitLabMRChange,
   GitLabMRChanges,
   GitLabMRCommit,
   GitLabNote,
-  GitLabUserProfile,
   GitLabRepositoryCompare,
-  GitLabApproval,
+  GitLabUserProfile,
 } from "../../dsl/GitLabDSL"
-
 import { Gitlab } from "@gitbeaker/node"
 import { RepositoryFileSchema } from "@gitbeaker/core/dist/types/services/RepositoryFiles"
 import { Env } from "../../ci_source/ci_source"
@@ -19,6 +19,7 @@ import { debug } from "../../debug"
 
 export type GitLabAPIToken = string
 export type GitLabOAuthToken = string
+
 export interface GitLabAPICredentials {
   host: string
   token?: GitLabAPIToken
@@ -36,8 +37,8 @@ export function getGitLabAPICredentialsFromEnv(env: Env): GitLabAPICredentials {
     const protocolRegex = /^https?:\/\//i
     host = protocolRegex.test(envHost) ? envHost : `https://${envHost}`
   } else if (envCIAPI) {
-    // GitLab >= v11.7 supplies the API Endpoint in an environment variable and we can work out our host value from that.
-    // See https://docs.gitlab.com/ce/ci/variables/predefined_variables.html
+    // GitLab >= v11.7 supplies the API Endpoint in an environment variable and we can work out our host value from
+    // that. See https://docs.gitlab.com/ce/ci/variables/predefined_variables.html
     const hostRegex = /^(https?):\/\/([^\/]+)\//i
     if (hostRegex.test(envCIAPI)) {
       const matches = hostRegex.exec(envCIAPI)!
@@ -123,6 +124,14 @@ class GitLabAPI {
     return commits
   }
 
+  getMergeRequestDiscussions = async (): Promise<GitLabDiscussion[]> => {
+    this.d("getMergeRequestDiscussions", this.repoSlug, this.prId)
+    const api = this.api.MergeRequestDiscussions
+    const discussions = (await api.all(this.repoSlug, this.prId, {})) as GitLabDiscussion[]
+    this.d("getMergeRequestDiscussions", discussions)
+    return discussions
+  }
+
   getMergeRequestNotes = async (): Promise<GitLabNote[]> => {
     this.d("getMergeRequestNotes", this.repoSlug, this.prId)
     const api = this.api.MergeRequestNotes
@@ -139,15 +148,16 @@ class GitLabAPI {
     return inlineNotes
   }
 
-  createMergeRequestDiscussion = async (content: string, position: GitLabDiscussionTextPosition): Promise<string> => {
-    this.d("createMergeRequestDiscussion", this.repoSlug, this.prId, content, position)
+  createMergeRequestDiscussion = async (
+    content: string,
+    options?: GitLabDiscussionCreationOptions,
+  ): Promise<GitLabDiscussion> => {
+    this.d("createMergeRequestDiscussion", this.repoSlug, this.prId, content, options)
     const api = this.api.MergeRequestDiscussions
     try {
-      const result = await api.create(this.repoSlug, this.prId, content, {
-        position: position,
-      })
+      const result = await api.create(this.repoSlug, this.prId, content, options) as GitLabDiscussion
       this.d("createMergeRequestDiscussion", result)
-      return result as unknown as string // not sure why?
+      return result
     } catch (e) {
       this.d("createMergeRequestDiscussion", e)
       throw e

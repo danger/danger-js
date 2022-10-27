@@ -22,7 +22,7 @@
 - GitLab: Added provider tests [#1319](https://github.com/danger/danger-js/pull/1319) [@ivankatliarchuk]
 
 - GitHub: Added `danger.github.pr.draft` field to DSL
-
+- GitLab: Add support for using threads instead of comments [#1331](https://github.com/danger/danger-js/pull/1331) [@uncaught]
 <!-- Your comment above this -->
 
 ## 11.1.2
