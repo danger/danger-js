@@ -263,7 +263,7 @@ export class Executor {
 
     if (!hasMessages || this.options.removePreviousComments) {
       if (process.env["DANGER_SKIP_WHEN_EMPTY"] === "true") {
-        this.d(`Skip posting to platform ${this.platform.name}.`)
+        this.log(`Skip posting to platform ${this.platform.name}.`)
       } else {
         if (!hasMessages) {
           this.log(`Found no issues or messages from Danger. Removing any existing messages on ${this.platform.name}.`)
