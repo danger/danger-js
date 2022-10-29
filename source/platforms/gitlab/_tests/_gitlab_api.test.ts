@@ -181,9 +181,9 @@ describe("GitLab API", () => {
         expected: "",
       },
     ]
-    for (let el in parameters) {
-      let result = await api.getFileContents(parameters[el].filePath, api.repoMetadata.repoSlug, parameters[el].ref)
-      expect(result).toContain(parameters[el].expected)
+    for (let el of parameters) {
+      let result = await api.getFileContents(el.filePath, api.repoMetadata.repoSlug, el.ref)
+      expect(result).toContain(el.expected)
     }
     nockDone()
   })
