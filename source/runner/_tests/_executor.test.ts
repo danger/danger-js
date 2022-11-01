@@ -112,6 +112,28 @@ describe("setup", () => {
     expect(platform.deleteMainComment).toBeCalled()
   })
 
+  it("Configure to Skip a post deletion when there are no messages", async () => {
+    const platform = new FakePlatform()
+    const exec = new Executor(new FakeCI({}), platform, inlineRunner, defaultConfig, new FakeProcces())
+    let parameters: { skip: boolean; times: number }[] = [
+      { skip: true, times: 0 },
+      { skip: false, times: 1 },
+    ]
+    for (let el of parameters) {
+      if (el.skip) {
+        process.env.DANGER_SKIP_WHEN_EMPTY = "true"
+      } else {
+        process.env.DANGER_SKIP_WHEN_EMPTY = "false"
+      }
+      const dsl = await defaultDsl(platform)
+      platform.deleteMainComment = jest.fn()
+      await exec.handleResults(emptyResults, dsl.git)
+
+      expect(process.env.DANGER_SKIP_WHEN_EMPTY).toBeDefined()
+      expect(platform.deleteMainComment).toBeCalledTimes(el.times)
+    }
+  })
+
   it("Deletes a post when 'removePreviousComments' option has been specified", async () => {
     const platform = new FakePlatform()
     const exec = new Executor(

@@ -49,7 +49,7 @@ program.action(process_name => (subprocessName = process_name)).parse(process.ar
 
 // The dynamic nature of the program means typecasting a lot
 // use this to work with dynamic properties
-const app = (program as any) as SharedCLI
+const app = program as any as SharedCLI
 
 if (process.env["DANGER_VERBOSE"] || app.verbose) {
   global.verbose = true
@@ -67,7 +67,7 @@ getRuntimeCISource(app).then(source => {
     if (!platform) {
       console.log(chalk.red(`Could not find a source code hosting platform for ${source.name}.`))
       console.log(
-        `Currently Danger JS only supports GitHub and BitBucket Server, if you want other platforms, consider the Ruby version or help out.`
+        `Platform '${source.name}' is not supported with Danger JS, if you want other platforms, consider the Ruby version or help out.`
       )
       process.exitCode = 1
     }

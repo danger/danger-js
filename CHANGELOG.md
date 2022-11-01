@@ -16,8 +16,8 @@
 
 <!-- Your comment below this -->
 - Append random string to danger-results.json and danger-dsl.json files to better support concurrent processes #1311
-
-- Gitlab package moved to a new home "@gitbreaker/*" [#1301](https://github.com/danger/danger-js/issues/1301)  [@ivankatliarchuk]
+- Gitlab: add support for skipping remove of messages when empty [#1330](https://github.com/danger/danger-js/issues/1330) [@ivankatliarchuk]
+- Gitlab: package moved to a new home "@gitbreaker/*" [#1301](https://github.com/danger/danger-js/issues/1301) [@ivankatliarchuk]
 - GitLab: Improve support for MRs from forks [#1319](https://github.com/danger/danger-js/pull/1319) [@ivankatliarchuk]
 - GitLab: Added provider tests [#1319](https://github.com/danger/danger-js/pull/1319) [@ivankatliarchuk]
 
