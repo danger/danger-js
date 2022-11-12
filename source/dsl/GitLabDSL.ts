@@ -204,6 +204,12 @@ export interface GitLabNote {
   noteable_iid: number
 }
 
+export interface GitLabDiscussion {
+  id: string; //40 character hex
+  individual_note: boolean;
+  notes: GitLabNote[];
+}
+
 export interface GitLabDiscussionTextPosition {
   position_type: "text"
   base_sha: string
@@ -213,6 +219,10 @@ export interface GitLabDiscussionTextPosition {
   new_line: number
   old_path: string
   old_line: number | null
+}
+
+export interface GitLabDiscussionCreationOptions {
+  position?: GitLabDiscussionTextPosition
 }
 
 export interface GitLabInlineNote extends GitLabNote {

@@ -41,3 +41,8 @@ danger.gitlab.
   /** The commits associated with the merge request */
   commits: GitLabMRCommit[]
 ```
+
+---
+
+If you want danger to open threads (discussions) instead of just commenting in merge requests, set an environment
+variable `DANGER_GITLAB_USE_THREADS` with value `1` or `true`.
