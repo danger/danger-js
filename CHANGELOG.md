@@ -16,6 +16,8 @@
 
 <!-- Your comment below this -->
 
+- Support arm64 binary generation for Apple silicon users [#1342](https://github.com/danger/danger-js/pull/1342) [@pepix]
+
 <!-- Your comment above this -->
 
 ## 11.2.0
