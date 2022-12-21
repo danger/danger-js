@@ -3,10 +3,10 @@
     "release": true,
     "assets": "brew-distribution/*.zip"
   },
-  "buildCommand": "yarn package",
+  "buildCommand": "yarn package:x64; yarn package:arm64",
   "hooks": {
     "before:bump": "yarn declarations; yarn build:schemas",
-    "after:bump": "yarn package",
+    "after:bump": "yarn package:x64; yarn package:arm64",
     "after:release": "VERSION=${version} scripts/create-homebrew-tap-pr.sh"
   }
 }
