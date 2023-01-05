@@ -353,7 +353,7 @@ export class BitBucketServerAPI implements BitBucketServerAPIDSL {
     let agent: Agent | undefined = undefined
     let proxy = process.env.http_proxy || process.env.https_proxy
     if (proxy) {
-      agent = new HttpsProxyAgent(proxy)
+      agent = HttpsProxyAgent(proxy)
     }
 
     return this.fetch(

@@ -6,7 +6,7 @@ If this is a support request, e.g:
 * Does Danger support ...?
 * Is there a plugin for ...?
 
-Please use https://spectrum.chat/danger
+Please use discussions: https://github.com/danger/danger-js/discussions
 
 If this issue feels like:
 

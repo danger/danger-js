@@ -16,6 +16,7 @@
 
 <!-- Your comment below this -->
 
+- Support arm64 binary generation for Apple silicon users [#1342](https://github.com/danger/danger-js/pull/1342) [@pepix]
 
 <!-- Your comment above this -->
 
@@ -23,11 +24,26 @@
 
 - Bug fix for bitbucket bot detection ignoring case #1291
 
+## 11.2.0
+
+- Append random string to danger-results.json and danger-dsl.json files to better support concurrent processes #1311
+- Gitlab: add support for skipping remove of messages when empty [#1330](https://github.com/danger/danger-js/issues/1330) [@ivankatliarchuk]
+- Gitlab: package moved to a new home "@gitbreaker/*" [#1301](https://github.com/danger/danger-js/issues/1301) [@ivankatliarchuk]
+- GitLab: Improve support for MRs from forks [#1319](https://github.com/danger/danger-js/pull/1319) [@ivankatliarchuk]
+- GitLab: Added provider tests [#1319](https://github.com/danger/danger-js/pull/1319) [@ivankatliarchuk]
+- GitHub: Added `danger.github.pr.draft` field to DSL
+- GitLab: Add support for using threads instead of comments [#1331](https://github.com/danger/danger-js/pull/1331) [@uncaught]
+
+## 11.1.2
+
+- Improvements to `--staging` in Danger local
+- Protection against custom git prompts in Danger local
+
 ## 11.1.1
 
 - Bug fix for over-deleting inline comments #1287
 
-## 11.1.0 
+## 11.1.0
 
 - Adds support for the new [GitHub Job summaries](https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/) API via:
  - `danger.github.setSummaryMarkdown("[markdown]")` for the JavaScript DSL
@@ -56,7 +72,7 @@
 # 11.0.0 -> 11.0.2
 
 - *Breaking:* Upgrade @octokit/rest from ^16.43.1 to ^18.12.0 - [#1204](https://github.com/danger/danger-js/pull/1204) [@fbartho]
-  
+
   This is only likely to hit you if you use `danger.github.api` pretty extensively in your Dangerfiles, but better to keep an eye out.
 
 # 10.8.1
@@ -1946,7 +1962,9 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@hmschreiner]: https://github.com/hmschreiner
 [@hongrich]: https://github.com/hongrich
 [@igorbek]: https://github.com/igorbek
+[@ivankatliarchuk]: https://github.com/ivankatliarchuk
 [@iljadaderko]: https://github.com/IljaDaderko
+[@ivankatliarchuk]: https://github.com/ivankatliarchuk
 [@imorente]: https://github.com/imorente
 [@jamiebuilds]: https://github.com/jamiebuilds
 [@jamime]: https://github.com/jamime

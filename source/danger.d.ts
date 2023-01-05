@@ -3,7 +3,7 @@
 //
 
 import { Octokit as GitHub } from "@octokit/rest"
-import { Gitlab } from "gitlab"
+import { Gitlab } from "@gitbeaker/node"
 import { File } from "parse-diff"
 
 type MarkdownString = string
@@ -1229,6 +1229,11 @@ interface GitHubPRDSL {
   assignees: GitHubUser[]
 
   /**
+   * Is in draft state?
+   */
+  draft: boolean
+
+  /**
    * Has the PR been merged yet?
    */
   merged: boolean
@@ -1453,6 +1458,7 @@ interface GitHubReviewers {
   /** Teams that have been requested */
   teams: any[]
 }
+
 // TODO: extract out from BitBucket specifically, or create our own type
 
 // getPlatformReviewDSLRepresentation
@@ -1656,6 +1662,12 @@ interface GitLabNote {
   noteable_iid: number
 }
 
+interface GitLabDiscussion {
+  id: string //40 character hex
+  individual_note: boolean
+  notes: GitLabNote[]
+}
+
 interface GitLabDiscussionTextPosition {
   position_type: "text"
   base_sha: string
@@ -1665,6 +1677,10 @@ interface GitLabDiscussionTextPosition {
   new_line: number
   old_path: string
   old_line: number | null
+}
+
+interface GitLabDiscussionCreationOptions {
+  position?: GitLabDiscussionTextPosition
 }
 
 interface GitLabInlineNote extends GitLabNote {
@@ -1696,19 +1712,6 @@ interface GitLabMRCommit {
   committer_name: string
   committer_email: string
   committed_date: string
-}
-
-interface GitLabRepositoryFile {
-  file_name: string
-  file_path: string
-  size: number
-  encoding: "base64"
-  content: string
-  content_sha256: string
-  ref: string
-  blob_id: string
-  commit_id: string
-  last_commit_id: string
 }
 
 interface GitLabCommit {

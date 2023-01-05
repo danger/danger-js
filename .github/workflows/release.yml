@@ -1,0 +1,56 @@
+name: Release executable files for macOS
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_digit:
+        description: 'Version digit (major | minor | patch)'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+        - major
+        - minor
+        - patch
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      HOMEBREW_TAP_DEPLOY_SECRET_KEY: ${{ secrets.HOMEBREW_TAP_DEPLOY_SECRET_KEY }}
+    permissions: write-all
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Install ldid
+        uses: MOZGIII/install-ldid-action@v1
+        with:
+          tag: v2.1.5-procursus6
+
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      
+      - name: Use node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "14"
+
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Build
+        run: npm run build
+
+      - name: Package
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          npm run release -- ${{ github.event.inputs.version_digit }} --ci
+
+      - name: Update homebrew/tap repo for new release
+        shell: bash
+        run: scripts/create-homebrew-tap-pr.sh
+        env:
+          VERSION: ${{ env.VERSION }}

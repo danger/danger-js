@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import nock, { NockDefinition } from "nock"
+import nock, { Definition } from "nock"
 import { default as GitLabAPI, getGitLabAPICredentialsFromEnv } from "../GitLabAPI"
 import { resolve } from "path"
 import { readFileSync } from "fs"
@@ -56,8 +56,8 @@ describe("GitLab API", () => {
     expect(api.mergeRequestURL).toBe("https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/27117")
   })
 
-  const sanitizeUserResponse = (nocks: NockDefinition[]): NockDefinition[] => {
-    return nocks.map((nock: NockDefinition) => {
+  const sanitizeUserResponse = (nocks: Definition[]): Definition[] => {
+    return nocks.map((nock: Definition) => {
       let { response, ...restNock } = nock
 
       // @ts-ignore
@@ -132,6 +132,14 @@ describe("GitLab API", () => {
     expect(result).toEqual(response)
   })
 
+  it("getMergeRequestDiscussions", async () => {
+    const { nockDone } = await nockBack("getMergeRequestDiscussions.json")
+    const result = await api.getMergeRequestDiscussions()
+    nockDone()
+    const { response } = loadFixture("getMergeRequestDiscussions")
+    expect(result).toEqual(response)
+  })
+
   it("getMergeRequestNotes", async () => {
     const { nockDone } = await nockBack("getMergeRequestNotes.json")
     const result = await api.getMergeRequestNotes()
@@ -165,5 +173,60 @@ describe("GitLab API", () => {
     nockDone()
     const { response } = loadFixture("getCompareChanges")
     expect(result).toEqual(response.diffs)
+  })
+
+  it("getFileContents", async () => {
+    const { nockDone } = await nockBack("getFileContents.json")
+    const parameters: { filePath: string; ref: string; expected: string }[] = [
+      {
+        filePath: "Gemfile",
+        ref: "master",
+        expected: "source 'https://rubygems.org'",
+      },
+      {
+        filePath: "FileNotExist",
+        ref: "master",
+        expected: "",
+      },
+    ]
+    for (let el of parameters) {
+      let result = await api.getFileContents(el.filePath, api.repoMetadata.repoSlug, el.ref)
+      expect(result).toContain(el.expected)
+    }
+    nockDone()
+  })
+
+  it("updateMergeRequestInfo", async () => {
+    const { nockDone } = await nockBack("updateMergeRequestInfo.json")
+    const titleToUpdate = "update merge request"
+    const result = await api.updateMergeRequestInfo({ title: titleToUpdate })
+    nockDone()
+    expect(JSON.stringify(result)).toContain(titleToUpdate)
+  })
+
+  describe("updateMergeRequestInfo (add|remove)labels", () => {
+    let nockDone: { nockDone: () => void }
+
+    afterAll(async () => {
+      nockDone.nockDone()
+    })
+
+    it("addLabels", async () => {
+      nockDone = await nockBack("updateMergeRequestInfo.json")
+      const result = await api.addLabels("first-label", "second-label")
+      expect(result).toBeTruthy()
+    })
+
+    it("removeLabels", async () => {
+      nockDone = await nockBack("updateMergeRequestInfo.json")
+      const result = await api.removeLabels("remove-me-label")
+      expect(result).toBeTruthy()
+    })
+
+    it("addLabels with no duplicates", async () => {
+      nockDone = await nockBack("updateMergeRequestInfo.json")
+      const result = await api.addLabels("danger-bot", "new-label")
+      expect(result).toBeTruthy()
+    })
   })
 })

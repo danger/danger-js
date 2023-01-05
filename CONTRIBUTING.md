@@ -40,8 +40,8 @@ Following [this commit](https://github.com/danger/danger-js/commit/a26ac3b3bd4f0
 - Modify `changelog.md`, adding a new `### 0.21.0` heading under the `### Main` heading at the top of the file.
 - Commit both changes with the commit message **Version bump**.
 - Tag this commit - `git tag 0.21.0`.
-- Push the commit and tag to master - `git push origin main --follow-tags`. Travis CI will build the tagged commit and
-  publish that tagged version to NPM.
+- Push the commit and tag to master - `git push origin main --follow-tags`. GitHub Actions will build the tagged commit
+  and publish that tagged version to NPM.
 
 :ship:
 

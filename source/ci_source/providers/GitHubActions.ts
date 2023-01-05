@@ -152,7 +152,7 @@ import { readFileSync, existsSync } from "fs"
  * #### OSS Tokens
  *
  * The security models for GitHub actions means that you cannot use `secrets.GITHUB_TOKEN`
- * in PRs from forks. This cna be tricky with OSS contributions. In these cases, create a
+ * in PRs from forks. This can be tricky with OSS contributions. In these cases, create a
  * new GitHub account and set up your `.yml` like this:
  *
  * ```yml

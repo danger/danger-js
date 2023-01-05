@@ -262,16 +262,22 @@ export class Executor {
     let issueURL = undefined
 
     if (!hasMessages || this.options.removePreviousComments) {
-      if (!hasMessages) {
-        this.log(`Found no issues or messages from Danger. Removing any existing messages on ${this.platform.name}.`)
+      if (process.env["DANGER_SKIP_WHEN_EMPTY"] === "true") {
+        this.log(`Skip posting to platform ${this.platform.name}.`)
       } else {
-        this.log(`'removePreviousComments' option specified. Removing any existing messages on ${this.platform.name}.`)
-      }
-      await this.platform.deleteMainComment(dangerID)
-      const previousComments = await this.platform.getInlineComments(dangerID)
-      for (const comment of previousComments) {
-        if (comment && comment.ownedByDanger) {
-          await this.deleteInlineComment(comment)
+        if (!hasMessages) {
+          this.log(`Found no issues or messages from Danger. Removing any existing messages on ${this.platform.name}.`)
+        } else {
+          this.log(
+            `'removePreviousComments' option specified. Removing any existing messages on ${this.platform.name}.`
+          )
+        }
+        await this.platform.deleteMainComment(dangerID)
+        const previousComments = await this.platform.getInlineComments(dangerID)
+        for (const comment of previousComments) {
+          if (comment && comment.ownedByDanger) {
+            await this.deleteInlineComment(comment)
+          }
         }
       }
     }

@@ -1,0 +1,92 @@
+[
+  {
+    "scope": "https://gitlab.com:443",
+    "method": "GET",
+    "path": "/api/v4/projects/gitlab-org%2Fgitlab-foss/merge_requests/27117/discussions",
+    "body": "",
+    "status": 200,
+    "response": [
+      {
+        "id": "6fe51a9c5758556dfef42725a66dee2729a6fb82",
+        "individual_note": false,
+        "notes": [
+          {
+            "id": 166211215,
+            "type": null,
+            "body": "mentioned in issue gitlab-org/release/tasks#778",
+            "attachment": null,
+            "author": {
+              "id": 1786152,
+              "name": "🤖 GitLab Bot 🤖",
+              "username": "gitlab-bot",
+              "state": "active",
+              "avatar_url": "https://gl-canary.freetls.fastly.net/uploads/-/system/user/avatar/1786152/avatar.png",
+              "web_url": "https://gitlab.com/gitlab-bot"
+            },
+            "created_at": "2019-05-02T14:34:54.054Z",
+            "updated_at": "2019-05-02T14:34:54.054Z",
+            "system": true,
+            "noteable_id": 27253868,
+            "noteable_type": "MergeRequest",
+            "resolvable": false,
+            "noteable_iid": 27117
+          }
+        ]
+      }
+    ],
+    "rawHeaders": [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 20 May 2019 11:19:03 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "9682",
+      "Connection",
+      "close",
+      "Cache-Control",
+      "max-age=0, private, must-revalidate",
+      "Etag",
+      "W/\"edab8aad8eea37dd376785c34c7c250f\"",
+      "Link",
+      "<https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/merge_requests/27117/notes?id=gitlab-org%2Fgitlab-foss&noteable_id=27117&order_by=created_at&page=1&per_page=20&sort=desc>; rel=\"first\", <https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-foss/merge_requests/27117/notes?id=gitlab-org%2Fgitlab-foss&noteable_id=27117&order_by=created_at&page=1&per_page=20&sort=desc>; rel=\"last\"",
+      "Vary",
+      "Origin",
+      "X-Content-Type-Options",
+      "nosniff",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Next-Page",
+      "",
+      "X-Page",
+      "1",
+      "X-Per-Page",
+      "20",
+      "X-Prev-Page",
+      "",
+      "X-Request-Id",
+      "yd9SuXYdPCa",
+      "X-Runtime",
+      "1.305536",
+      "X-Total",
+      "15",
+      "X-Total-Pages",
+      "1",
+      "Strict-Transport-Security",
+      "max-age=31536000",
+      "Referrer-Policy",
+      "strict-origin-when-cross-origin",
+      "RateLimit-Limit",
+      "600",
+      "RateLimit-Observed",
+      "1",
+      "RateLimit-Remaining",
+      "599",
+      "RateLimit-Reset",
+      "1558351203",
+      "RateLimit-ResetTime",
+      "Mon, 20 May 2019 11:20:03 GMT"
+    ]
+  }
+]

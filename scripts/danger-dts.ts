@@ -9,7 +9,7 @@ const createDTS = () => {
 //
 
 import { Octokit as GitHub } from "@octokit/rest"
-import { Gitlab } from "gitlab"
+import { Gitlab } from "@gitbeaker/node"
 import { File } from "parse-diff"
 
 `

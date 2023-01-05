@@ -9,6 +9,7 @@ import { markdownCode, resultsWithFailure, mergeResults } from "./reporting"
 import { readFileSync, existsSync, writeFileSync } from "fs"
 import { RunnerConfig } from "../ci/runner"
 import { tmpdir } from "os"
+import { randomBytes } from "crypto"
 
 const d = debug("runDangerSubprocess")
 
@@ -54,7 +55,8 @@ export const runDangerSubprocess = (
 
   const sendDSLToSubprocess = () => {
     if (exec.options.passURLForDSL) {
-      const resultsPath = join(tmpdir(), "danger-dsl.json")
+      const filename = `danger-dsl-${randomBytes(4).toString("hex")}.json`
+      const resultsPath = join(tmpdir(), filename)
       writeFileSync(resultsPath, dslJSONString, "utf8")
       const url = `danger://dsl/${resultsPath}`
       d(`Started passing in STDIN via the URL: ${url}`)
@@ -72,7 +74,7 @@ export const runDangerSubprocess = (
   sendDSLToSubprocess()
 
   let allLogs = ""
-  child.stdout.on("data", async data => {
+  child.stdout.on("data", async (data) => {
     const stdout: string = data.toString()
     allLogs += stdout
 
@@ -112,13 +114,13 @@ export const runDangerSubprocess = (
     }
   })
 
-  child.stderr.on("data", data => {
+  child.stderr.on("data", (data) => {
     if (data.toString().trim().length !== 0) {
       console.log(data.toString())
     }
   })
 
-  child.on("close", async code => {
+  child.on("close", async (code) => {
     d(`child process exited with code ${code}`)
     // Submit an error back to the PR
     if (code) {
@@ -149,7 +151,7 @@ const getJSONURLFromSTDOUT = (stdout: string): string | undefined => {
 /** Pulls the JSON directly out, this has proven to be less reliable  */
 const getJSONFromSTDOUT = (stdout: string): string | undefined => {
   const lines = stdout.split("\n")
-  return lines.find(line => {
+  return lines.find((line) => {
     const trimmed = line.trim()
     return (
       trimmed.startsWith("{") &&
