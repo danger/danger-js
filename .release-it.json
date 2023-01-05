@@ -1,12 +1,12 @@
 {
-  "github": {
-    "release": true,
-    "assets": "brew-distribution/*.zip"
-  },
+  "_": "CI will switch the release here to true",
+  "github": { "release": false, "assets": "brew-distribution/*.zip" },
   "buildCommand": "yarn package:x64; yarn package:arm64",
   "hooks": {
     "before:bump": "yarn declarations; yarn build:schemas",
-    "after:bump": "yarn package:x64; yarn package:arm64",
-    "after:release": "export VERSION=${version}; echo 'VERSION=${version}' >> $GITHUB_ENV"
+    "after:release": "gh workflow run .github/workflows/release.yml version=${version}",
+    "_": "CI will remove the _ from both of the below lines",
+    "_after:bump": "yarn package:x64; yarn package:arm64",
+    "_after:release": "export VERSION=${version}; echo 'VERSION=${version}' >> $GITHUB_ENV"
   }
 }

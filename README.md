@@ -99,8 +99,9 @@ Check the issues, I try and keep my short term perspective there. Long term is i
 Following [this commit](https://github.com/danger/danger-js/commit/a26ac3b3bd4f002acd37f6a363c8e74c9d5039ab) as a model:
 
 - Checkout the `main` branch. Ensure your working tree is clean, and make sure you have the latest changes by running
-  `git pull`.
+  `git pull; yarn`.
 - Publish - `npm run release -- patch --ci`.
+- This will trigger a CI run which updates homebrew for the native builds
 
 :ship:
 

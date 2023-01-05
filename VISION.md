@@ -26,7 +26,7 @@ JS has been accomplished:
 
 So, what now? Well. It's kinda done and now can mature. For the past few years Danger Ruby has solidified and become
 foundational infrastructure which you can trust won't change much, now Danger JS can be in the same place. This is a
-great place to be a developer tool.
+great place to be for a developer tool.
 
 # Why Danger JS? What about Danger Ruby?
 

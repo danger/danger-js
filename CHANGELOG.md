@@ -16,11 +16,16 @@
 
 <!-- Your comment below this -->
 
-- Support arm64 binary generation for Apple silicon users [#1342](https://github.com/danger/danger-js/pull/1342) [@pepix]
 
 <!-- Your comment above this -->
 
-## 11.1.2
+
+## 11.2.1
+
+- Updates jsonwebtoken due to security issues
+- Support arm64 binary generation for Apple silicon users [#1342](https://github.com/danger/danger-js/pull/1342) [@pepix]
+
+## 11.2.1
 
 - Bug fix for bitbucket bot detection ignoring case #1291
 

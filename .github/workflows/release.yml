@@ -3,15 +3,9 @@ name: Release executable files for macOS
 on:
   workflow_dispatch:
     inputs:
-      version_digit:
-        description: 'Version digit (major | minor | patch)'
+      version:
+        description: "Version to deploy assets for"
         required: true
-        default: 'patch'
-        type: choice
-        options:
-        - major
-        - minor
-        - patch
 
 jobs:
   release:
@@ -31,7 +25,7 @@ jobs:
 
       - name: Check out repository code
         uses: actions/checkout@v3
-      
+
       - name: Use node
         uses: actions/setup-node@v3
         with:
@@ -39,15 +33,21 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-      
+
       - name: Build
         run: npm run build
+
+      - name: Tell release-it to do the GitHub release here
+        run:
+          node -e 'const fs = require("fs"); const a = JSON.parse(fs.readFileSync("./.release-it.json", "utf8"));
+          a.github.release = true; a.hooks["after:bump"] = a.hooks["_after:bump"]; a.hooks["after:release"] =
+          a.hooks["_after:release"]; fs.writeFileSync("./.release-it.json", JSON.stringify(a))'
 
       - name: Package
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          npm run release -- ${{ github.event.inputs.version_digit }} --ci
+          npm run release -- ${{ github.event.inputs.version }} --no-npm --ci
 
       - name: Update homebrew/tap repo for new release
         shell: bash
