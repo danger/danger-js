@@ -41,13 +41,13 @@ jobs:
         run:
           node -e 'const fs = require("fs"); const a = JSON.parse(fs.readFileSync("./.release-it.json", "utf8"));
           a.github.release = true; a.hooks["after:bump"] = a.hooks["_after:bump"]; a.hooks["after:release"] =
-          a.hooks["_after:release"]; fs.writeFileSync("./.release-it.json", JSON.stringify(a))'
+          a.hooks["_after:release"]; a.git = { requireCleanWorkingDir: false }; fs.writeFileSync("./.release-it.json", JSON.stringify(a))'
 
       - name: Package
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          npm run release -- ${{ github.event.inputs.version }} --no-npm --ci --no-git --no-git.requireCleanWorkingDir
+          npm run release -- ${{ github.event.inputs.version }} --no-npm --ci --no-git
 
       - name: Update homebrew/tap repo for new release
         shell: bash
