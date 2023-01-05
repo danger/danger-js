@@ -1,6 +1,7 @@
 {
   "_": "CI will switch the release here to true",
   "github": { "release": false, "assets": "brew-distribution/*.zip" },
+  "git": { "requireCleanWorkingDir": false },
   "buildCommand": "yarn package:x64; yarn package:arm64",
   "hooks": {
     "before:bump": "yarn declarations; yarn build:schemas",

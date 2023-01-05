@@ -41,7 +41,7 @@ jobs:
         run:
           node -e 'const fs = require("fs"); const a = JSON.parse(fs.readFileSync("./.release-it.json", "utf8"));
           a.github.release = true; a.hooks["after:bump"] = a.hooks["_after:bump"]; a.hooks["after:release"] =
-          a.hooks["_after:release"]; a.git = { requireCleanWorkingDir: false }; fs.writeFileSync("./.release-it.json", JSON.stringify(a))'
+          a.hooks["_after:release"]; fs.writeFileSync("./.release-it.json", JSON.stringify(a))'
 
       - name: Package
         run: |
