@@ -4,7 +4,7 @@
   "buildCommand": "yarn package:x64; yarn package:arm64",
   "hooks": {
     "before:bump": "yarn declarations; yarn build:schemas",
-    "after:release": "gh workflow run .github/workflows/release.yml version=${version}",
+    "after:release": "gh workflow run release.yml -f version=${version}",
     "_": "CI will remove the _ from both of the below lines",
     "_after:bump": "yarn package:x64; yarn package:arm64",
     "_after:release": "export VERSION=${version}; echo 'VERSION=${version}' >> $GITHUB_ENV"

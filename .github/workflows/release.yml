@@ -47,7 +47,7 @@ jobs:
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          npm run release -- ${{ github.event.inputs.version }} --no-npm --ci
+          npm run release -- ${{ github.event.inputs.version }} --no-npm --ci --no-git.requireCleanWorkingDir
 
       - name: Update homebrew/tap repo for new release
         shell: bash
