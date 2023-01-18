@@ -19,6 +19,9 @@
 
 <!-- Your comment above this -->
 
+## 11.2.2
+
+Reverts a change for GitHub Actions which was likely causing duplicate comments #1337
 
 ## 11.2.1
 
