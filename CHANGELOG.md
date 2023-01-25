@@ -19,6 +19,10 @@
 
 <!-- Your comment above this -->
 
+## 11.2.3
+
+Turns on skipLibCheck so that an @types change doesn't break deploys to homebrew
+
 ## 11.2.2
 
 Reverts a change for GitHub Actions which was likely causing duplicate comments #1337

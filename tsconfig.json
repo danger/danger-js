@@ -18,7 +18,8 @@
     "target": "es5",
     "outDir": "distribution",
     "lib": ["dom", "es2017"],
-    "strict": true
+    "strict": true,
+    "skipLibCheck": true
   },
   "formatCodeOptions": {
     "indentSize": 2,
