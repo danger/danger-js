@@ -13,6 +13,7 @@ import {
   BitBucketCloudCommit,
   BitBucketCloudPRActivity,
   BitBucketCloudPRComment,
+  BitBucketCloudAPIDSL,
 } from "../../dsl/BitBucketCloudDSL"
 import { Comment } from "../platform"
 import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
@@ -66,7 +67,7 @@ export function bitbucketCloudCredentialsFromEnv(env: Env): BitBucketCloudCreden
   throw new Error(`Either DANGER_BITBUCKETCLOUD_OAUTH_KEY or DANGER_BITBUCKETCLOUD_USERNAME is not set`)
 }
 
-export class BitBucketCloudAPI {
+export class BitBucketCloudAPI implements BitBucketCloudAPIDSL {
   fetch: typeof fetch
   accessToken: string | undefined
   uuid: string | undefined
@@ -219,20 +220,22 @@ export class BitBucketCloudAPI {
     const dangerIDMessage = dangerIDToString(dangerID)
 
     return comments
-      .filter(comment => comment.inline == null)
-      .filter(comment => comment.content.raw.includes(dangerIDMessage))
-      .filter(comment => comment.user.uuid === this.uuid)
+      .filter((comment) => comment.inline == null)
+      .filter((comment) => comment.content.raw.includes(dangerIDMessage))
+      .filter((comment) => comment.user.uuid === this.uuid)
   }
 
   getDangerInlineComments = async (dangerID: string): Promise<Comment[]> => {
     const comments = await this.getPullRequestComments()
     const dangerIDMessage = dangerIDToString(dangerID)
 
-    return comments.filter(comment => comment.inline).map(comment => ({
-      id: comment.id.toString(),
-      ownedByDanger: comment.content.raw.includes(dangerIDMessage) && comment.user.uuid === this.uuid,
-      body: comment.content.raw,
-    }))
+    return comments
+      .filter((comment) => comment.inline)
+      .map((comment) => ({
+        id: comment.id.toString(),
+        ownedByDanger: comment.content.raw.includes(dangerIDMessage) && comment.user.uuid === this.uuid,
+        body: comment.content.raw,
+      }))
   }
 
   postBuildStatus = async (

@@ -8,7 +8,7 @@ import { readFileSync, writeFileSync } from "fs"
 import { resolve, join as pathJoin } from "path"
 import { bitBucketCloudGitDSL as gitJSONToGitDSL } from "../BitBucketCloudGit"
 
-import { BitBucketCloudDSL } from "../../../dsl/BitBucketCloudDSL"
+import { BitBucketCloudJSONDSL } from "../../../dsl/BitBucketCloudDSL"
 import { GitJSONDSL, GitDSL } from "../../../dsl/GitDSL"
 import { GitCommit } from "../../../dsl/Commit"
 import { jsonDSLGenerator } from "../../../runner/dslGenerator"
@@ -16,18 +16,19 @@ import { jsonDSLGenerator } from "../../../runner/dslGenerator"
 const fixtures = resolve(__dirname, "..", "..", "_tests", "fixtures")
 
 /** Returns a fixture. */
-const loadFixture = (path: string): string =>
-  readFileSync(pathJoin(fixtures, path), {})
-    .toString()
-    .replace(/\r/g, "")
+const loadFixture = (path: string): string => readFileSync(pathJoin(fixtures, path), {}).toString().replace(/\r/g, "")
 
 /** Returns JSON from the fixtured dir */
-export const requestWithFixturedJSON = async (path: string): Promise<() => Promise<any>> => () =>
-  Promise.resolve(JSON.parse(loadFixture(path)))
+export const requestWithFixturedJSON =
+  async (path: string): Promise<() => Promise<any>> =>
+  () =>
+    Promise.resolve(JSON.parse(loadFixture(path)))
 
 /** Returns arbitrary text value from a request */
-export const requestWithFixturedContent = async (path: string): Promise<() => Promise<string>> => () =>
-  Promise.resolve(loadFixture(path))
+export const requestWithFixturedContent =
+  async (path: string): Promise<() => Promise<string>> =>
+  () =>
+    Promise.resolve(loadFixture(path))
 
 /**
  * HACKish: Jest on Windows seems to include some additional
@@ -44,7 +45,7 @@ describe("the dangerfile gitDSL - BitBucket Cloud", () => {
   let bbc: BitBucketCloud = {} as any
   let gitJSONDSL: GitJSONDSL = {} as any
 
-  let bbcDSL: BitBucketCloudDSL = {} as any
+  let bbcDSL: BitBucketCloudJSONDSL = {} as any
   let gitDSL: GitDSL = {} as any
 
   beforeEach(async () => {

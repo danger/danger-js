@@ -1,7 +1,7 @@
 import { GitJSONDSL, GitDSL } from "../../dsl/GitDSL"
 import { BitBucketCloudAPI } from "./BitBucketCloudAPI"
 import { diffToGitJSONDSL } from "../git/diffToGitJSONDSL"
-import { BitBucketCloudCommit, BitBucketCloudDSL } from "../../dsl/BitBucketCloudDSL"
+import { BitBucketCloudCommit, BitBucketCloudJSONDSL } from "../../dsl/BitBucketCloudDSL"
 import { GitCommit, GitCommitAuthor } from "../../dsl/Commit"
 import { GitJSONToGitDSLConfig, gitJSONToGitDSL } from "../git/gitJSONToGitDSL"
 
@@ -36,7 +36,7 @@ function bitBucketCloudCommitToGitCommit(commit: BitBucketCloudCommit): GitCommi
     committer: user,
     message: commit.message,
     tree: null,
-    parents: commit.parents != null ? commit.parents.map(parent => parent.hash) : undefined,
+    parents: commit.parents != null ? commit.parents.map((parent) => parent.hash) : undefined,
     url: commit.links.html.href,
   }
 }
@@ -50,7 +50,7 @@ export default async function gitDSLForBitBucketCloud(api: BitBucketCloudAPI): P
 }
 
 export const bitBucketCloudGitDSL = (
-  bitBucketCloud: BitBucketCloudDSL,
+  bitBucketCloud: BitBucketCloudJSONDSL,
   json: GitJSONDSL,
   bitBucketCloudAPI: BitBucketCloudAPI
 ): GitDSL => {

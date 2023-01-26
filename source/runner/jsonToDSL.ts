@@ -20,6 +20,7 @@ import GitLabAPI, { getGitLabAPICredentialsFromEnv } from "../platforms/gitlab/G
 import { gitLabGitDSL } from "../platforms/gitlab/GitLabGit"
 import { bitBucketCloudGitDSL } from "../platforms/bitbucket_cloud/BitBucketCloudGit"
 import { bitbucketServerJSONToBitBucketServerDSL } from "../platforms/BitBucketServer"
+import { bitbucketCloudJSONToBitBucketCloudDSL } from "../platforms/BitBucketCloud"
 const d = debug("jsonToDSL")
 
 /**
@@ -30,11 +31,12 @@ export const jsonToDSL = async (dsl: DangerDSLJSONType, source: CISource): Promi
   d(`Creating ${source && source.useEventDSL ? "event" : "pr"} DSL from JSON`)
 
   const api = apiForDSL(dsl)
-  const platformExists = [dsl.github, dsl.bitbucket_server, dsl.gitlab, dsl.bitbucket_cloud].some(p => !!p)
+  const platformExists = [dsl.github, dsl.bitbucket_server, dsl.gitlab, dsl.bitbucket_cloud].some((p) => !!p)
   const github = dsl.github && githubJSONToGitHubDSL(dsl.github, api as Octokit)
   const bitbucket_server =
     dsl.bitbucket_server && bitbucketServerJSONToBitBucketServerDSL(dsl.bitbucket_server, api as BitBucketServerAPI)
-  const bitbucket_cloud = dsl.bitbucket_cloud
+  const bitbucket_cloud =
+    dsl.bitbucket_cloud && bitbucketCloudJSONToBitBucketCloudDSL(dsl.bitbucket_cloud, api as BitBucketCloudAPI)
   const gitlab = dsl.gitlab && gitlabJSONToGitLabDSL(dsl.gitlab, api as GitLabAPI)
 
   let git: GitDSL
