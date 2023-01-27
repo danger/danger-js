@@ -1,5 +1,5 @@
 import { GitJSONDSL, GitDSL } from "../dsl/GitDSL"
-import { BitBucketCloudPRDSL, BitBucketCloudJSONDSL } from "../dsl/BitBucketCloudDSL"
+import { BitBucketCloudPRDSL, BitBucketCloudJSONDSL, BitBucketCloudDSL } from "../dsl/BitBucketCloudDSL"
 import { BitBucketCloudAPI } from "./bitbucket_cloud/BitBucketCloudAPI"
 import gitDSLForBitBucketCloud from "./bitbucket_cloud/BitBucketCloudGit"
 
@@ -181,3 +181,11 @@ export class BitBucketCloud implements Platform {
 
   getFileContents = this.api.getFileContents
 }
+
+export const bitbucketCloudJSONToBitBucketCloudDSL = (
+  bitbucket: BitBucketCloudJSONDSL,
+  api: BitBucketCloudAPI
+): BitBucketCloudDSL => ({
+  ...bitbucket,
+  api,
+})

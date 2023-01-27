@@ -21,7 +21,7 @@ const warningEmoji = ":warning:"
 const messageEmoji = ":sparkles:"
 
 describe("generating messages for BitBucket cloud", () => {
-  let complimentMock: jest.Mock<string, []>
+  let complimentMock: jest.SpyInstance<string, []>
   beforeEach(() => {
     complimentMock = jest.spyOn(utils, "compliment").mockReturnValue("Well done.")
   })

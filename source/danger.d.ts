@@ -22,7 +22,29 @@ interface BitBucketCloudJSONDSL {
   activities: BitBucketCloudPRActivity[]
 }
 
-interface BitBucketCloudDSL extends BitBucketCloudJSONDSL {}
+interface BitBucketCloudAPIDSL {
+  /** Gets the contents of a file from a repo (defaults to yours) */
+  getFileContents(filePath: string, repoSlug?: string, refspec?: string): Promise<string>
+
+  /** Make a get call against the bitbucket server API */
+  get(path: string, headers: any, suppressErrors?: boolean): Promise<any>
+
+  /** Make a post call against the bitbucket server API */
+  post(path: string, headers: any, body: any, suppressErrors?: boolean): Promise<any>
+
+  /** Make a put call against the bitbucket server API */
+  put(path: string, headers: any, body: any): Promise<any>
+
+  /** Make a delete call against the bitbucket server API */
+  delete(path: string, headers: any, body: any): Promise<any>
+}
+
+interface BitBucketCloudDSL extends BitBucketCloudJSONDSL {
+  /**
+   * An authenticated API so you can extend danger's behavior.
+   */
+  api: BitBucketCloudAPIDSL
+}
 
 interface BitBucketCloudPagedResponse<T> {
   pagelen: number
