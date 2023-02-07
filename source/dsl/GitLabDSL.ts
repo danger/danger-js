@@ -20,6 +20,8 @@ export interface GitLabJSONDSL {
 export interface GitLabDSL extends GitLabJSONDSL {
   utils: {
     fileContents(path: string, repoSlug?: string, ref?: string): Promise<string>
+    addLabels(...labels: string[]): Promise<boolean>
+    removeLabels(...labels: string[]): Promise<boolean>
   }
   api: InstanceType<typeof Gitlab>
 }
