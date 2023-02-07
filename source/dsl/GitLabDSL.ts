@@ -1,5 +1,5 @@
 // Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
-import { Gitlab } from "@gitbeaker/node"
+import GitLabAPI from "../platforms/gitlab/GitLabAPI"
 import { RepoMetaData } from "./RepoMetaData"
 
 // getPlatformReviewDSLRepresentation
@@ -20,7 +20,7 @@ export interface GitLabDSL extends GitLabJSONDSL {
   utils: {
     fileContents(path: string, repoSlug?: string, ref?: string): Promise<string>
   }
-  api: InstanceType<typeof Gitlab>
+  api: GitLabAPI
 }
 
 // ---
