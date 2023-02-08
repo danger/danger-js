@@ -163,7 +163,7 @@ export interface GitLabMR extends GitLabMRBase {
     id: number
     sha: string
     ref: string
-    status: "canceled" | "failed" | "pending" | "running" | "skipped" | "success"
+    status: GitLabPipelineStatus
     web_url: string
   } | null
   diff_refs: {
