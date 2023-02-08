@@ -166,6 +166,7 @@ export interface GitLabMRBase {
   target_project_id: number
   labels: string[]
   draft: boolean
+  /** @deprecated, same as draft */
   work_in_progress: boolean
   milestone: {
     id: number
