@@ -129,11 +129,11 @@ export interface GitLabMRBase {
   } | null
   merge_when_pipeline_succeeds: boolean
   merge_status: "can_be_merged" // XXX: other statuses?
-  merge_error: null | null
+  merge_error: null
   sha: string
   merge_commit_sha: string | null
   user_notes_count: number
-  discussion_locked: null | null
+  discussion_locked: null
   should_remove_source_branch: boolean
   force_remove_source_branch: boolean
   allow_collaboration: boolean
@@ -173,7 +173,7 @@ export interface GitLabMR extends GitLabMRBase {
   }
   diverged_commits_count: number
   rebase_in_progress: boolean
-  approvals_before_merge: null | null
+  approvals_before_merge: null
 }
 
 export interface GitLabMRChange {
