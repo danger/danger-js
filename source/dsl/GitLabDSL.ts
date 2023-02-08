@@ -9,7 +9,7 @@ export interface GitLabJSONDSL {
   metadata: RepoMetaData
   /** Info about the merge request */
   mr: GitLabMR
-  /** All of the individual commits in the merge request */
+  /** All the individual commits in the merge request */
   commits: GitLabMRCommit[]
   /** Merge Request-level MR approvals Configuration */
   approvals: GitLabApproval
@@ -205,9 +205,9 @@ export interface GitLabNote {
 }
 
 export interface GitLabDiscussion {
-  id: string; //40 character hex
-  individual_note: boolean;
-  notes: GitLabNote[];
+  id: string //40 character hex
+  individual_note: boolean
+  notes: GitLabNote[]
 }
 
 export interface GitLabDiscussionTextPosition {
