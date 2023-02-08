@@ -10,11 +10,11 @@ import {
   JIRAIssue,
   BitBucketServerPRActivity,
   BitBucketServerDiff,
-  RepoMetaData,
   BitBucketServerChangesValue,
   BitBucketServerPagedResponse,
   BitBucketServerAPIDSL,
 } from "../../dsl/BitBucketServerDSL"
+import { RepoMetaData } from "../../dsl/RepoMetaData"
 import { Comment } from "../platform"
 
 import { Env } from "../../ci_source/ci_source"

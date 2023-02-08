@@ -55,7 +55,7 @@ jest.mock("../github/GitHubAPI", () => {
 import { GitHub, GitHubType } from "../GitHub"
 import { GitHubAPI } from "../github/GitHubAPI"
 
-import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
+import { RepoMetaData } from "../../dsl/RepoMetaData"
 
 describe("getPlatformReviewDSLRepresentation", () => {
   let github: GitHubType

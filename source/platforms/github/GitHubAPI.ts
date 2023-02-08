@@ -8,7 +8,7 @@ import { GitHubPRDSL, GitHubIssueComment, GitHubUser } from "../../dsl/GitHubDSL
 
 import { dangerIDToString } from "../../runner/templates/githubIssueTemplate"
 import { api as fetch } from "../../api/fetch"
-import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
+import { RepoMetaData } from "../../dsl/RepoMetaData"
 import { CheckOptions } from "./comms/checks/resultsToCheck"
 
 // The Handle the API specific parts of the github

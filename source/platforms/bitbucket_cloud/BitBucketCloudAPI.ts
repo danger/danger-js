@@ -16,7 +16,7 @@ import {
   BitBucketCloudAPIDSL,
 } from "../../dsl/BitBucketCloudDSL"
 import { Comment } from "../platform"
-import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
+import { RepoMetaData } from "../../dsl/RepoMetaData"
 
 export type BitBucketCloudCredentials = {
   /** Unique ID for this user, must be wrapped with brackets */

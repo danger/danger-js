@@ -43,7 +43,7 @@ jest.mock("../bitbucket_server/BitBucketServerAPI", () => {
 import { BitBucketServer } from "../BitBucketServer"
 import { BitBucketServerAPI } from "../bitbucket_server/BitBucketServerAPI"
 
-import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
+import { RepoMetaData } from "../../dsl/RepoMetaData"
 
 describe("getPlatformReviewDSLRepresentation", () => {
   let bbs: BitBucketServer
