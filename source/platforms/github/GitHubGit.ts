@@ -19,7 +19,7 @@ const d = debug("GitHubGit")
 function githubCommitToGitCommit(ghCommit: GitHubCommit): GitCommit {
   return {
     sha: ghCommit.sha,
-    parents: ghCommit.parents.map(p => p.sha),
+    parents: ghCommit.parents.map((p) => p.sha),
     author: ghCommit.commit.author,
     committer: ghCommit.commit.committer,
     message: ghCommit.commit.message,

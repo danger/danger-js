@@ -21,7 +21,7 @@ function table(name: string, defaultEmoji: string, violations: Violation[]): str
       <th width="100%" data-danger-table="true">${name}</th>
     </tr>
   </thead>
-  <tbody>${violations.map(violation => htmlForValidation(defaultEmoji, violation)).join("\n")}</tbody>
+  <tbody>${violations.map((violation) => htmlForValidation(defaultEmoji, violation)).join("\n")}</tbody>
 </table>
 `
 }
@@ -35,7 +35,7 @@ function htmlForValidation(defaultEmoji: string, violation: Violation) {
     message = `\n\n  ${message}\n  `
   }
 
-  const emojiString = `:${defaultEmoji}:`;
+  const emojiString = `:${defaultEmoji}:`
 
   return `<tr>
       <td>${violation.icon || emojiString}</td>
@@ -49,7 +49,7 @@ function containsMarkdown(message: string): boolean {
 }
 
 function noViolationsOrAllOfThemEmpty(violations: Violation[]) {
-  return violations.length === 0 || violations.every(violation => !violation.message)
+  return violations.length === 0 || violations.every((violation) => !violation.message)
 }
 
 const truncate = (msg: string, count: number) => {
@@ -65,7 +65,7 @@ const truncate = (msg: string, count: number) => {
 
 function getSummary(label: string, violations: Violation[]): string {
   return violations
-    .map(x => truncate(x.message, 20))
+    .map((x) => truncate(x.message, 20))
     .reduce(
       (acc, value, idx) => `${acc} ${value}${idx === violations.length - 1 ? "" : ","}`,
       `${violations.length} ${label}: `
@@ -123,7 +123,7 @@ ${buildSummaryMessage(dangerID, results)}
 ${table("Fails", "no_entry_sign", results.fails)}
 ${table("Warnings", "warning", results.warnings)}
 ${table("Messages", "book", results.messages)}
-${results.markdowns.map(v => v.message).join("\n\n")}
+${results.markdowns.map((v) => v.message).join("\n\n")}
 <p align="right">
   ${dangerSignaturePostfix(results, commitID)}
 </p>
@@ -132,7 +132,7 @@ ${results.markdowns.map(v => v.message).join("\n\n")}
 
 export function inlineTemplate(dangerID: string, results: DangerResults, file: string, line: number): string {
   const printViolation = (defaultEmoji: string) => (violation: Violation) => {
-    const emojiString = `:${defaultEmoji}:`;
+    const emojiString = `:${defaultEmoji}:`
     return `- ${violation.icon || emojiString} ${violation.message}`
   }
 
@@ -144,6 +144,6 @@ ${fileLineToString(file, line)}
 ${results.fails.map(printViolation("no_entry_sign")).join("\n")}
 ${results.warnings.map(printViolation("warning")).join("\n")}
 ${results.messages.map(printViolation("book")).join("\n")}
-${results.markdowns.map(v => v.message).join("\n\n")}
+${results.markdowns.map((v) => v.message).join("\n\n")}
   `
 }

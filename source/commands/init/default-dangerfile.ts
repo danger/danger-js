@@ -24,7 +24,7 @@ export const generateDefaultDangerfile = (state: InitState) => {
 
   if (dangerfileState.hasSeparateTestFolder || dangerfileState.hasJest) {
     const tests = dangerfileState.hasJest ? "__tests__" : "tests"
-    const source = ["src", "source", "lib"].filter(path => fs.existsSync(path))
+    const source = ["src", "source", "lib"].filter((path) => fs.existsSync(path))
     if (source[0]) {
       rules.push(checkSeparateTestsFolder(source[0], tests))
     }

@@ -150,12 +150,12 @@ class GitLabAPI {
 
   createMergeRequestDiscussion = async (
     content: string,
-    options?: GitLabDiscussionCreationOptions,
+    options?: GitLabDiscussionCreationOptions
   ): Promise<GitLabDiscussion> => {
     this.d("createMergeRequestDiscussion", this.repoSlug, this.prId, content, options)
     const api = this.api.MergeRequestDiscussions
     try {
-      const result = await api.create(this.repoSlug, this.prId, content, options) as GitLabDiscussion
+      const result = (await api.create(this.repoSlug, this.prId, content, options)) as GitLabDiscussion
       this.d("createMergeRequestDiscussion", result)
       return result
     } catch (e) {

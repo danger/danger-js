@@ -29,7 +29,7 @@ function bitBucketServerCommitToGitCommit(
   const url = `${host}/${repoMetadata.repoSlug}/commits/${bbsCommit.id}`
   return {
     sha: bbsCommit.id,
-    parents: bbsCommit.parents.map(p => p.id),
+    parents: bbsCommit.parents.map((p) => p.id),
     author: {
       email: bbsCommit.author.emailAddress,
       name: bbsCommit.author.name,
@@ -56,7 +56,7 @@ export default async function gitDSLForBitBucketServer(api: BitBucketServerAPI):
   // We'll need all this info to be able to generate a working GitDSL object
   const changes = await api.getPullRequestChanges()
   const gitCommits = await api.getPullRequestCommits()
-  const commits = gitCommits.map(commit =>
+  const commits = gitCommits.map((commit) =>
     bitBucketServerCommitToGitCommit(commit, api.repoMetadata, api.repoCredentials.host)
   )
   return bitBucketServerChangesToGitJSONDSL(changes, commits)
@@ -132,22 +132,22 @@ const bitBucketServerChangesToGitJSONDSL = (
 const bitBucketServerDiffToGitStructuredDiff = (diffs: BitBucketServerDiff[]): GitStructuredDiff => {
   // We need all changed lines with it's type. It will convert hunk segment lines to flatten changed lines.
   const segmentValues = { ADDED: "add", CONTEXT: "normal", REMOVED: "del" } as const
-  return diffs.map(diff => ({
+  return diffs.map((diff) => ({
     from: diff.source && diff.source.toString,
     to: diff.destination && diff.destination.toString,
     chunks:
       diff.hunks &&
-      diff.hunks.map(hunk => ({
+      diff.hunks.map((hunk) => ({
         content: `@@ -${hunk.sourceLine},${hunk.sourceSpan} +${hunk.destinationLine},${hunk.destinationSpan} @@`,
         oldStart: hunk.sourceLine,
         oldLines: hunk.sourceSpan,
         newStart: hunk.destinationLine,
         newLines: hunk.destinationSpan,
         changes: hunk.segments
-          .map(segment => {
+          .map((segment) => {
             const type = segmentValues[segment.type]
             if (type === "add") {
-              return segment.lines.map(line => {
+              return segment.lines.map((line) => {
                 return {
                   type,
                   add: true as const,
@@ -157,7 +157,7 @@ const bitBucketServerDiffToGitStructuredDiff = (diffs: BitBucketServerDiff[]): G
               })
             }
             if (type === "del") {
-              return segment.lines.map(line => {
+              return segment.lines.map((line) => {
                 return {
                   type,
                   del: true as const,
@@ -167,7 +167,7 @@ const bitBucketServerDiffToGitStructuredDiff = (diffs: BitBucketServerDiff[]): G
               })
             }
             if (type === "normal") {
-              return segment.lines.map(line => {
+              return segment.lines.map((line) => {
                 return {
                   type,
                   normal: true as const,

@@ -158,7 +158,6 @@ describe("generating inline messages", () => {
     expect(issues).not.toContain("- :warning:")
   })
 
-
   it("Shows message with custom icon", () => {
     const issues = githubResultsInlineTemplate("blankID", customIconMessagesResults, "File.swift", 10)
     expect(issues).toContain("- 📝 Message with custom icon")

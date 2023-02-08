@@ -14,7 +14,7 @@ const dangerRunToRunnerCLI = (argv: string[]) => {
   } else if (argv[0].includes("node") || process.pkg != null) {
     // convert
     let newJSFile = argv[1]
-    usesProcessSeparationCommands.forEach(name => {
+    usesProcessSeparationCommands.forEach((name) => {
       newJSFile = newJSFile.replace("danger-" + name, "danger-runner")
     })
 

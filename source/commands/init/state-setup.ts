@@ -21,7 +21,7 @@ export const createUI = (state: InitState, app: any): InitUI => {
     header: (msg: string) => say(chalk.bold("\n## " + msg + "\n")),
     command: (command: string) => say("> " + chalk.white.bold(command) + " \n"),
     link: (name: string, href: string) => linkToUse(name, href),
-    pause: async (secs: number) => new Promise(done => setTimeout(done, secs * 1000)),
+    pause: async (secs: number) => new Promise((done) => setTimeout(done, secs * 1000)),
     waitForReturn: () => (app.impatient ? Promise.resolve() : readlineSync.question("\n↵ ")),
     askWithAnswers: (_message: string, answers: string[]) => {
       const a = readlineSync.keyInSelect(answers, "", { defaultInput: answers[0] })

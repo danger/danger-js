@@ -205,9 +205,9 @@ export interface GitLabNote {
 }
 
 export interface GitLabDiscussion {
-  id: string; //40 character hex
-  individual_note: boolean;
-  notes: GitLabNote[];
+  id: string //40 character hex
+  individual_note: boolean
+  notes: GitLabNote[]
 }
 
 export interface GitLabDiscussionTextPosition {

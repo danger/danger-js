@@ -4,7 +4,7 @@ import program from "commander"
 import chalk from "chalk"
 import { version } from "../../package.json"
 
-process.on("unhandledRejection", function(reason: string, _p: any) {
+process.on("unhandledRejection", function (reason: string, _p: any) {
   console.log(chalk.red("Error: "), reason)
   process.exitCode = 1
 })

@@ -66,7 +66,7 @@ program
 
 setSharedArgs(program).parse(process.argv)
 
-const app = (program as any) as App
+const app = program as any as App
 const customProcess = !!app.process
 
 if (program.args.length === 0) {
@@ -77,7 +77,7 @@ if (program.args.length === 0) {
     process.env["DANGER_GITHUB_HOST"] || process.env["DANGER_BITBUCKETSERVER_HOST"] || gitLabApiCredentials.host // this defaults to https://gitlab.com
 
   // Allow an ambiguous amount of args to find the PR reference
-  const findPR = program.args.find(a => a.includes(customHost) || a.includes("github") || a.includes("bitbucket.org"))
+  const findPR = program.args.find((a) => a.includes(customHost) || a.includes("github") || a.includes("bitbucket.org"))
 
   if (!findPR) {
     console.error(`Could not find an arg which mentioned GitHub, BitBucket Server, BitBucket Cloud, or GitLab.`)

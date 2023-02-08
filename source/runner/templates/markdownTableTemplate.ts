@@ -1,5 +1,5 @@
 const buildHeader = (headers: string[]): string =>
-  `| ${headers.join(" | ")} |\n` + `| ${headers.map(_ => "---").join(" | ")} |`
+  `| ${headers.join(" | ")} |\n` + `| ${headers.map((_) => "---").join(" | ")} |`
 
 const buildRow = (row: string[]): string => `| ${row.join(" | ")} |`
 

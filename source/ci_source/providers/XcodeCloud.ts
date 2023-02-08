@@ -13,7 +13,7 @@ import { ensureEnvKeysExist } from "../ci_source_helpers"
  * See the Xcode Cloud documentation [here](https://developer.apple.com/documentation/xcode/xcode-cloud-workflow-reference#Custom-Environment-Variables)
  */
 export class XcodeCloud implements CISource {
-  constructor(private readonly env: Env) { }
+  constructor(private readonly env: Env) {}
 
   get name(): string {
     return "Xcode Cloud"
@@ -21,10 +21,7 @@ export class XcodeCloud implements CISource {
 
   get isCI(): boolean {
     const mustHave = ["CI", "CI_XCODEBUILD_ACTION"]
-    return (
-      ensureEnvKeysExist(this.env, mustHave) &&
-      this.env.CI == "TRUE"
-    )
+    return ensureEnvKeysExist(this.env, mustHave) && this.env.CI == "TRUE"
   }
 
   get isPR(): boolean {

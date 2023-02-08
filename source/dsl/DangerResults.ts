@@ -191,7 +191,7 @@ export function sortInlineResults(inlineResults: DangerInlineResults[]): DangerI
 export function sortResults(results: DangerResults): DangerResults {
   const sortByFile = (a: Violation, b: Violation): number => {
     if (a.file === undefined && b.file === undefined) {
-      return 0;
+      return 0
     }
     if (a.file === undefined) {
       return -1
@@ -202,7 +202,7 @@ export function sortResults(results: DangerResults): DangerResults {
 
     if (a.file == b.file) {
       if (a.line === undefined && b.line === undefined) {
-        return 0;
+        return 0
       }
       if (a.line === undefined) {
         return -1
