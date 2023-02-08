@@ -27,6 +27,8 @@ export interface GitLabDSL extends GitLabJSONDSL {
 // ---
 // JSON responses from API
 
+type GitLabPipelineStatus = "canceled" | "failed" | "pending" | "running" | "skipped" | "success"
+
 export interface GitLabUser {
   id: number
   name: string
