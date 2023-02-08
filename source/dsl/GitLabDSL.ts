@@ -126,7 +126,7 @@ export interface GitLabMRBase {
     due_date: string
     start_date: string
     web_url: string
-  }
+  } | null
   merge_when_pipeline_succeeds: boolean
   merge_status: "can_be_merged" // XXX: other statuses?
   merge_error: null | null
@@ -156,8 +156,8 @@ export interface GitLabMR extends GitLabMRBase {
   merged_at: string
   closed_by: GitLabUser | null
   closed_at: string | null
-  latest_build_started_at: string
-  latest_build_finished_at: string
+  latest_build_started_at: string | null
+  latest_build_finished_at: string | null
   first_deployed_to_production_at: string | null
   pipeline: {
     id: number
@@ -165,7 +165,7 @@ export interface GitLabMR extends GitLabMRBase {
     ref: string
     status: "canceled" | "failed" | "pending" | "running" | "skipped" | "success"
     web_url: string
-  }
+  } | null
   diff_refs: {
     base_sha: string
     head_sha: string
