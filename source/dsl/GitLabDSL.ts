@@ -88,6 +88,58 @@ export interface GitLabMRBase {
   /** When was the MR updated */
   updated_at: string
 
+  merge_user: null
+  squash_commit_sha: string | null
+  reference: string
+  references: {
+    short: string
+    relative: string
+    full: string
+  }
+  squash: boolean
+  task_completion_status: {
+    count: number
+    completed_count: number
+  }
+  has_conflicts: boolean
+  blocking_discussions_resolved: boolean
+  approvals_before_merge: null
+  subscribed: boolean
+  head_pipeline: {
+    id: number
+    iid: number
+    project_id: number
+    sha: string
+    ref: string
+    status: GitLabPipelineStatus
+    source: "push"
+    created_at: string
+    updated_at: string
+    web_url: string
+    before_sha: string
+    tag: boolean
+    yaml_errors: null
+    user: GitLabUser
+    started_at: string
+    finished_at: string
+    committed_at: null
+    duration: number
+    queued_duration: number
+    coverage: null
+    detailed_status: {
+      icon: "status_running"
+      text: "running"
+      label: "running"
+      group: "running"
+      tooltip: "running"
+      has_details: true
+      details_path: string
+      illustration: null
+      favicon: string
+    }
+  }
+  first_contribution: boolean
+
   /** What branch is this MR being merged into */
   target_branch: string
   /** What branch is this MR come from */
@@ -113,6 +165,7 @@ export interface GitLabMRBase {
   source_project_id: number
   target_project_id: number
   labels: string[]
+  draft: boolean
   work_in_progress: boolean
   milestone: {
     id: number
