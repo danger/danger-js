@@ -7,21 +7,19 @@ LABEL "com.github.actions.icon"="zap"
 LABEL "com.github.actions.color"="blue"
 
 WORKDIR /usr/src/danger
-RUN yarn global add yarn-audit-fix
 COPY package.json yarn.lock ./
-RUN yarn install && \
-    yarn-audit-fix
+RUN yarn install
 COPY . .
 RUN yarn run build:fast
-RUN rm -rf node_modules
 RUN yarn install --production --frozen-lockfile
+RUN chmod +x distribution/commands/danger.js
+
 
 FROM node:14-slim
 WORKDIR /usr/src/danger
 COPY package.json ./
 COPY --from=build /usr/src/danger/distribution ./dist
 COPY --from=build /usr/src/danger/node_modules ./node_modules
-RUN chmod +x /usr/src/danger/dist/commands/danger.js && \
-    ln -s /usr/src/danger/dist/commands/danger.js /usr/bin/danger
+RUN ln -s /usr/src/danger/dist/commands/danger.js /usr/bin/danger
 
 ENTRYPOINT ["danger", "ci"]
