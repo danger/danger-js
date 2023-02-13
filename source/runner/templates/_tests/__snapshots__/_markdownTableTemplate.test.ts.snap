@@ -1,10 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`generating markdown tables build a markdown table with the content given 1`] = `
-"
-|  | Warnings |
+"|  | Warnings |
 | --- | --- |
 | ⚠️ | This is a very unimportant warning. |
-| ⚠️ | But, this warning is pretty important. |
-  "
+| ⚠️ | But, this warning is pretty important. |"
 `;
