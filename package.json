@@ -101,6 +101,7 @@
     "@types/async-retry": "^1.4.1",
     "@types/debug": "0.0.30",
     "@types/get-stdin": "^5.0.1",
+    "@types/http-proxy-agent": "^4.0.1",
     "@types/jest": "^24.0.11",
     "@types/json5": "^0.0.30",
     "@types/jsonpointer": "^4.0.0",
@@ -142,6 +143,7 @@
     "typescript-json-schema": "^0.53.0"
   },
   "dependencies": {
+    "@gitbeaker/node": "^21.3.0",
     "@octokit/rest": "^18.12.0",
     "async-retry": "1.2.3",
     "chalk": "^2.3.0",
@@ -150,7 +152,6 @@
     "debug": "^4.1.1",
     "fast-json-patch": "^3.0.0-1",
     "get-stdin": "^6.0.0",
-    "@gitbeaker/node": "^21.3.0",
     "http-proxy-agent": "^5.0.0",
     "https-proxy-agent": "^5.0.1",
     "hyperlinker": "^1.0.0",

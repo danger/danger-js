@@ -1,16 +1,12 @@
-jest.mock("fs", () => ({
-  readFileSync: jest.fn(),
-  realpathSync: {},
-  existsSync: jest.fn(),
-}))
 jest.mock("path", () => {
   const path = jest.requireActual("path")
   return { ...path, resolve: jest.fn(path.resolve) }
 })
 
 import { typescriptify, lookupTSConfig, dirContains } from "../transpiler"
-import * as fs from "fs"
+import fs from "fs"
 import * as path from "path"
+import ts from "typescript"
 
 describe("typescriptify", () => {
   it("removes the module option in a tsconfig", () => {
@@ -21,10 +17,24 @@ describe("typescriptify", () => {
         module: "es2015",
       },
     }
-    const fsMock = fs.readFileSync as jest.Mock
-    fsMock.mockImplementationOnce(() => JSON.stringify(fakeTSConfig))
-
+    jest.spyOn(ts.sys, "readFile").mockImplementationOnce(() => JSON.stringify(fakeTSConfig))
     expect(typescriptify(dangerfile, "/a/b")).not.toContain("import")
+  })
+
+  it("resolves extended tsconfigs", () => {
+    const actualPath = jest.requireActual("path") as typeof path
+    const resolve = path.resolve as jest.Mock
+    resolve.mockImplementation((p: string = "") => actualPath.resolve(__dirname, p))
+
+    const dangerfile = `import { a } from 'lodash'; (() => a())()`
+
+    const transpiledCode = typescriptify(dangerfile, actualPath.resolve(__dirname, "./_fixtures"))
+    console.log(transpiledCode)
+    expect(transpiledCode).not.toContain("import")
+
+    // Arrow functions (=>) are not compiled to functions when the target is ES6.
+    // The ES6 target is defined in the base tsconfig so it must be inheriting from it.
+    expect(transpiledCode).toContain("=>")
   })
 })
 
@@ -45,9 +55,9 @@ describe("lookupTSConfig", () => {
     const resolve = path.resolve as jest.Mock
     resolve.mockImplementation((p: string = "") => actualPath.resolve(cwd, p))
 
-    const existsSync = fs.existsSync as jest.Mock
+    const existsSync = jest.spyOn(fs, "existsSync")
     const tsconfigPath = path.resolve(path.join(configDir, "tsconfig.json"))
-    existsSync.mockImplementation((f: string) => path.resolve(f) === tsconfigPath)
+    existsSync.mockImplementation((f: fs.PathLike) => path.resolve(f as string) === tsconfigPath)
   }
 
   it("can find in the same folder as dangerfile", () => {
