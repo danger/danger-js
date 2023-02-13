@@ -16,6 +16,8 @@ jobs:
       - run: yarn install
       - run: yarn build
       - run: yarn test -u
+        env:
+          FORCE_COLOR: true
 
       # Validate related tooling
       - run: yarn declarations
