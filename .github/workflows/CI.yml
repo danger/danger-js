@@ -15,7 +15,7 @@ jobs:
       # Get local dependencies & test
       - run: yarn install
       - run: yarn build
-      - run: yarn test -u
+      - run: yarn test
         env:
           FORCE_COLOR: true
 
