@@ -15,7 +15,7 @@ jobs:
       # Get local dependencies & test
       - run: yarn install
       - run: yarn build
-      - run: yarn test
+      - run: yarn test -u
 
       # Validate related tooling
       - run: yarn declarations
