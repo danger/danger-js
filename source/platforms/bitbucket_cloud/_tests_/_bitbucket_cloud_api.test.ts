@@ -136,8 +136,7 @@ describe("API testing - BitBucket Cloud", () => {
       values: [
         {
           content: {
-            raw:
-              "\n[//]: # (danger-id-1;)\n[//]: # (  File: dangerfile.ts;\n  Line: 5;)\n\n- :warning: Hello updates\n\n\n  ",
+            raw: "\n[//]: # (danger-id-1;)\n[//]: # (  File: dangerfile.ts;\n  Line: 5;)\n\n- :warning: Hello updates\n\n\n  ",
           },
           id: 1234,
           inline: {
@@ -207,8 +206,7 @@ describe("API testing - BitBucket Cloud", () => {
         },
         {
           content: {
-            raw:
-              "\n[//]: # (danger-id-1;)\n[//]: # (  File: dangerfile.ts;\n  Line: 5;)\n\n- :warning: Hello updates\n\n\n  ",
+            raw: "\n[//]: # (danger-id-1;)\n[//]: # (  File: dangerfile.ts;\n  Line: 5;)\n\n- :warning: Hello updates\n\n\n  ",
           },
           id: 1234,
           inline: {

@@ -1,5 +1,5 @@
 const asyncAction = () =>
-  new Promise(res => {
+  new Promise((res) => {
     setTimeout(() => {
       warn("Async Function")
       res()

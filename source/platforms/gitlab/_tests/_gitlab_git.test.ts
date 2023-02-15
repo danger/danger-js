@@ -13,24 +13,25 @@ import { gitLabGitDSL as gitJSONToGitDSL, gitlabChangesToDiff } from "../GitLabG
 const fixtures = pathJoin(__dirname, "fixtures")
 
 /** Returns a fixture. */
-const loadFixture = (path: string): string =>
-  readFileSync(pathJoin(fixtures, path), {})
-    .toString()
-    .replace(/\r/g, "")
+const loadFixture = (path: string): string => readFileSync(pathJoin(fixtures, path), {}).toString().replace(/\r/g, "")
 
 /** Returns JSON from the fixtured dir */
-export const requestWithFixturedJSON = (path: string, field = ""): (() => Promise<any>) => () => {
-  let data = JSON.parse(loadFixture(path))
-  if (field) {
-    data = _.get(data, field)
+export const requestWithFixturedJSON =
+  (path: string, field = ""): (() => Promise<any>) =>
+  () => {
+    let data = JSON.parse(loadFixture(path))
+    if (field) {
+      data = _.get(data, field)
+    }
+
+    return Promise.resolve(data)
   }
 
-  return Promise.resolve(data)
-}
-
 /** Returns arbitrary text value from a request */
-export const requestWithFixturedContent = (path: string): (() => Promise<string>) => () =>
-  Promise.resolve(loadFixture(path))
+export const requestWithFixturedContent =
+  (path: string): (() => Promise<string>) =>
+  () =>
+    Promise.resolve(loadFixture(path))
 
 /**
  * HACKish: Jest on Windows seems to include some additional

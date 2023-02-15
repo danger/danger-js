@@ -15,7 +15,7 @@ const messageEmoji = "\u2728"
  * @returns {string} Markdown
  */
 function resultsSection(name: string, emoji: string, violations: Violation[]): string {
-  if (violations.length === 0 || violations.every(violation => !violation.message)) {
+  if (violations.length === 0 || violations.every((violation) => !violation.message)) {
     return ""
   }
   return (
@@ -24,7 +24,7 @@ function resultsSection(name: string, emoji: string, violations: Violation[]): s
     `| --- | --- |\n` +
     `\n` +
     violations
-      .map(v => {
+      .map((v) => {
         return (
           "> " +
           v.message
@@ -80,7 +80,7 @@ ${resultsSection("Fails", noEntryEmoji, results.fails)}
 ${resultsSection("Warnings", warningEmoji, results.warnings)}
 ${resultsSection("Messages", messageEmoji, results.messages)}
 
-${results.markdowns.map(v => v.message).join("\n\n")}
+${results.markdowns.map((v) => v.message).join("\n\n")}
 
 ${dangerSignaturePostfix(results, commitID)}
 
@@ -99,6 +99,6 @@ export function inlineTemplate(dangerID: string, results: DangerResults, file: s
 ${results.fails.map(printViolation(noEntryEmoji)).join("\n")}
 ${results.warnings.map(printViolation(warningEmoji)).join("\n")}
 ${results.messages.map(printViolation(messageEmoji)).join("\n")}
-${results.markdowns.map(v => v.message).join("\n\n")}
+${results.markdowns.map((v) => v.message).join("\n\n")}
   `
 }

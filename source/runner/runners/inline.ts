@@ -34,7 +34,7 @@ const runAllScheduledTasks = async (results: DangerRuntimeContainer) => {
         }
         if (fnOrPromise.length === 1) {
           // callback-based function
-          return new Promise(res => fnOrPromise(res))
+          return new Promise((res) => fnOrPromise(res))
         }
         return fnOrPromise()
       })

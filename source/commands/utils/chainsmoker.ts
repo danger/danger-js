@@ -23,8 +23,8 @@ const isExclude = (p: Pattern) => p.startsWith("!")
 export default function chainsmoker<T>(keyedPaths: KeyedPaths<T>): Chainsmoker<T> {
   function matchPatterns(patterns: Pattern[]): KeyedPaths<T> {
     return mapValues(keyedPaths, (paths: Path[]) => {
-      const excludePatterns = patterns.filter(p => isExclude(p))
-      const includePatterns = patterns.filter(p => !isExclude(p))
+      const excludePatterns = patterns.filter((p) => isExclude(p))
+      const includePatterns = patterns.filter((p) => !isExclude(p))
 
       const included = includePatterns.reduce(
         (accum, pattern) => accum.concat(micromatch.match(paths, pattern)),

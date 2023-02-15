@@ -14,18 +14,19 @@ import { DangerDSLType } from "../../../dsl/DangerDSL"
 const fixtures = resolve(__dirname, "..", "..", "_tests", "fixtures")
 
 /** Returns a fixture. */
-const loadFixture = (path: string): string =>
-  readFileSync(pathJoin(fixtures, path), {})
-    .toString()
-    .replace(/\r/g, "")
+const loadFixture = (path: string): string => readFileSync(pathJoin(fixtures, path), {}).toString().replace(/\r/g, "")
 
 /** Returns JSON from the fixtured dir */
-export const requestWithFixturedJSON = async (path: string): Promise<() => Promise<any>> => () =>
-  Promise.resolve(JSON.parse(loadFixture(path)))
+export const requestWithFixturedJSON =
+  async (path: string): Promise<() => Promise<any>> =>
+  () =>
+    Promise.resolve(JSON.parse(loadFixture(path)))
 
 /** Returns arbitrary text value from a request */
-export const requestWithFixturedContent = async (path: string): Promise<() => Promise<string>> => () =>
-  Promise.resolve(loadFixture(path))
+export const requestWithFixturedContent =
+  async (path: string): Promise<() => Promise<string>> =>
+  () =>
+    Promise.resolve(loadFixture(path))
 
 const pullRequestInfoFilename = "github_pr.json"
 // const masterSHA = JSON.parse(readFileSync(pathJoin(fixtures, pullRequestInfoFilename), {}).toString()).base.sha

@@ -19,8 +19,8 @@ const sentence = danger.utils.sentence
 
 import { realProviders } from "./source/ci_source/providers"
 const readme = fs.readFileSync("README.md").toString()
-const names = realProviders.map(p => new p({}).name)
-const missing = names.filter(n => !readme.includes(n))
+const names = realProviders.map((p) => new p({}).name)
+const missing = names.filter((n) => !readme.includes(n))
 if (missing.length) {
   warn(`These providers are missing from the README: ${sentence(missing)}`)
 }

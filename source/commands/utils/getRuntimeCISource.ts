@@ -9,7 +9,7 @@ const getRuntimeCISource = async (app: SharedCLI): Promise<CISource | undefined>
 
   if (!source) {
     console.log("Could not find a CI source for this run. Does Danger support this CI service?")
-    console.log(`Danger supports: ${sentence(providers.map(p => p.name))}.`)
+    console.log(`Danger supports: ${sentence(providers.map((p) => p.name))}.`)
 
     if (!process.env["CI"]) {
       console.log("You may want to consider using `danger pr` to run Danger locally.")

@@ -13,5 +13,5 @@ program
 
 setSharedArgs(program).parse(process.argv)
 
-const app = (program as any) as SharedCLI
+const app = program as any as SharedCLI
 runRunner(app)

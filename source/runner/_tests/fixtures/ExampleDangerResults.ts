@@ -124,7 +124,7 @@ export const multipleMessagesResults: DangerResults = {
   messages: [
     { message: "Message with custom icon", icon: "📝" },
     { message: "Message with custom icon2", icon: "🔔" },
-    { message: "Test message" }
+    { message: "Test message" },
   ],
   markdowns: [],
 }

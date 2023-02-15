@@ -58,14 +58,14 @@ export interface DangerContext {
    * Adds a message to the Danger table, the only difference between this
    * and warn is the default emoji which shows in the table.
    * You can also specifiy a custom emoji to show in the table for each message
-   * 
+   *
    * @param {MarkdownString} message the String to output
    * @param {{file?: string, line?: string, icon?: MarkdownString}} [opts]
    * @param opts.file a file which this message should be attached to
    * @param opts.line the line which this message should be attached to
    * @param opts.icon icon string or image to show in table, take care not to break table formatting
    */
-  message(message: MarkdownString, opts?: { file?: string, line?: number, icon?: MarkdownString }): void
+  message(message: MarkdownString, opts?: { file?: string; line?: number; icon?: MarkdownString }): void
 
   /**
    * Adds raw markdown into the Danger comment, under the table
@@ -116,17 +116,20 @@ export function contextForDanger(dsl: DangerDSLType): DangerContext {
   const fail = (message: MarkdownString, file?: string, line?: number) => results.fails.push({ message, file, line })
   const warn = (message: MarkdownString, file?: string, line?: number) => results.warnings.push({ message, file, line })
 
-  const message = (message: MarkdownString, opts?: string | { file?: string, line?: number, icon?: MarkdownString }, lineArg?: number) => {
+  const message = (
+    message: MarkdownString,
+    opts?: string | { file?: string; line?: number; icon?: MarkdownString },
+    lineArg?: number
+  ) => {
     let file: string | undefined
     let line: number | undefined
     let icon: MarkdownString | undefined
 
-    if (typeof opts === 'string') {
+    if (typeof opts === "string") {
       file = opts
       line = lineArg
-    }
-    else if (typeof opts === 'object') {
-      ({ file, line, icon } = opts)
+    } else if (typeof opts === "object") {
+      ;({ file, line, icon } = opts)
     }
 
     results.messages.push({ message, file, line, icon })

@@ -54,8 +54,7 @@ export class Jenkins implements CISource {
     const isGitHubPR =
       ensureEnvKeysExist(this.env, ["ghprbPullId", "ghprbGhRepository"]) &&
       ensureEnvKeysAreInt(this.env, ["ghprbPullId"])
-    const isGitLabMR =
-      ensureEnvKeysExist(this.env, ["gitlabMergeRequestIid", "gitlabMergeRequestId"])
+    const isGitLabMR = ensureEnvKeysExist(this.env, ["gitlabMergeRequestIid", "gitlabMergeRequestId"])
     const isMultiBranchPR =
       ensureEnvKeysExist(this.env, ["CHANGE_ID", "CHANGE_URL"]) && ensureEnvKeysAreInt(this.env, ["CHANGE_ID"])
 

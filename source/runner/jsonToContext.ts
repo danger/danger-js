@@ -17,7 +17,7 @@ export async function jsonToContext(
   program: CommanderStatic,
   source: CISource
 ): Promise<DangerContext> {
-  const dslJSON = { danger: new DangerDSLJSON(JSONString, (program as any) as CliArgs) }
+  const dslJSON = { danger: new DangerDSLJSON(JSONString, program as any as CliArgs) }
   const dsl = await jsonToDSL(dslJSON.danger, source)
   return contextForDanger(dsl)
 }

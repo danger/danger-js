@@ -6,7 +6,7 @@ const resultsForCaughtError = (file: string, contents: string, error: Error): Da
   const match = /(\d+:\d+)/g.exec(error.stack!)
   let code
   if (match) {
-    const [line, column] = match[0].split(":").map(value => parseInt(value, 10) - 1)
+    const [line, column] = match[0].split(":").map((value) => parseInt(value, 10) - 1)
     code = pinpoint(contents, { line, column })
   } else {
     code = contents

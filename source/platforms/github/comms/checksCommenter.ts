@@ -131,7 +131,7 @@ const messageFromResults = (results: DangerResults): string => {
     arr.length ? `${arr.length} ${name.substring(0, name.length - 1)}${appendS(arr)}` : null
 
   const newMessageComponents = Object.keys(results)
-    .map(key => makeString(key, results[key]))
+    .map((key) => makeString(key, results[key]))
     .filter(Boolean) as any[]
 
   return sentence(newMessageComponents)
