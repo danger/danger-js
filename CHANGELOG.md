@@ -1974,10 +1974,9 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@hmschreiner]: https://github.com/hmschreiner
 [@hongrich]: https://github.com/hongrich
 [@igorbek]: https://github.com/igorbek
-[@ivankatliarchuk]: https://github.com/ivankatliarchuk
 [@iljadaderko]: https://github.com/IljaDaderko
-[@ivankatliarchuk]: https://github.com/ivankatliarchuk
 [@imorente]: https://github.com/imorente
+[@ivankatliarchuk]: https://github.com/ivankatliarchuk
 [@jamiebuilds]: https://github.com/jamiebuilds
 [@jamime]: https://github.com/jamime
 [@joarwilk]: https://github.com/joarwilk
