@@ -1,12 +1,6 @@
 // Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
 
-/** Key details about a repo */
-export interface RepoMetaData {
-  /** A path like "artsy/eigen" */
-  repoSlug: string
-  /** The ID for the pull/merge request "11" */
-  pullRequestID: string
-}
+import { RepoMetaData } from "./RepoMetaData"
 
 // This is `danger.bitbucket_server` inside the JSON
 

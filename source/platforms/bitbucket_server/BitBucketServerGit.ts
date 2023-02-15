@@ -3,9 +3,9 @@ import {
   BitBucketServerCommit,
   BitBucketServerDiff,
   BitBucketServerJSONDSL,
-  RepoMetaData,
   BitBucketServerChangesValue,
 } from "../../dsl/BitBucketServerDSL"
+import { RepoMetaData } from "../../dsl/RepoMetaData"
 import { GitCommit } from "../../dsl/Commit"
 
 import { BitBucketServerAPI } from "./BitBucketServerAPI"

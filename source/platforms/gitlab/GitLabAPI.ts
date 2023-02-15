@@ -1,4 +1,4 @@
-import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
+import { RepoMetaData } from "../../dsl/RepoMetaData"
 import {
   GitLabApproval,
   GitLabDiscussion,

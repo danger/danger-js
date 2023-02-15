@@ -1,7 +1,6 @@
 // Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
 
-// TODO: extract out from BitBucket specifically, or create our own type
-import { RepoMetaData } from "../dsl/BitBucketServerDSL"
+import { RepoMetaData } from "./RepoMetaData"
 
 export interface BitBucketCloudJSONDSL {
   /** The pull request and repository metadata */

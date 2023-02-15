@@ -6,7 +6,7 @@ import {
   BitBucketServerAPI,
   bitbucketServerRepoCredentialsFromEnv,
 } from "../platforms/bitbucket_server/BitBucketServerAPI"
-import { RepoMetaData } from "../dsl/BitBucketServerDSL"
+import { RepoMetaData } from "../dsl/RepoMetaData"
 import { BitBucketCloudAPI, bitbucketCloudCredentialsFromEnv } from "../platforms/bitbucket_cloud/BitBucketCloudAPI"
 
 /**
