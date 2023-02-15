@@ -16,6 +16,7 @@
 
 <!-- Your comment below this -->
 
+- Feature: Expose addLabels, removeLabels via gitlab.utils, @glensc #1353
 
 <!-- Your comment above this -->
 
@@ -1964,6 +1965,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@fwal]: https://github.com/fwal
 [@g3offrey]: https://github.com/g3offrey
 [@gantman]: https://github.com/gantman
+[@glensc]: https://github.com/glensc
 [@gpetrioli]: https:/github.com/gpetrioli
 [@gzaripov]: https://github.com/gzaripov
 [@hanneskaeufler]: https://github.com/hanneskaeufler
