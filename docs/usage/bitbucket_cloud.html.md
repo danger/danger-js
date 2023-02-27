@@ -9,7 +9,7 @@ blurb: An overview of using Danger with BitBucket Cloud, and some examples
 To use Danger JS with BitBucket Cloud: you'll need to create a new account for Danger to use, then set the following
 environment variables on your CI:
 
-You could use either username with password or OAuth key with OAuth secret.
+You could use either username with password, OAuth key with OAuth secret or repository access token.
 
 For username and password, you need to set.
 
@@ -29,6 +29,13 @@ For OAuth key and OAuth secret, you can get them from.
 - `DANGER_BITBUCKETCLOUD_OAUTH_KEY` = The consumer key for the account used to comment, as show as `Key` on the website.
 - `DANGER_BITBUCKETCLOUD_OAUTH_SECRET` = The consumer secret for the account used to comment, as show as `Secret` on the
   website.
+
+For [repository access token](https://support.atlassian.com/bitbucket-cloud/docs/repository-access-tokens/), what you
+need to create one is:
+
+- Open your repository URL
+- Navigate to Settings > Security > Access Tokens > Create Repository Access Token
+- Give it a name and set Pull requests write scope
 
 Then in your Dangerfiles you will have a fully fleshed out `danger.bitbucket_cloud` object to work with. For example:
 

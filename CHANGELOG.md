@@ -16,6 +16,7 @@
 
 <!-- Your comment below this -->
 
+- Add support for BitBucket Cloud Repository Access Token - [@thawankeane]
 
 <!-- Your comment above this -->
 
