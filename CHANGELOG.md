@@ -2039,6 +2039,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@thii]: https://github.com/thii
 [@tibdex]: https://github.com/tibdex
 [@tim3trick]: https://github.com/tim3trick
+[@thawankeane]: https://github.com/thawankeane
 [@tychota]: https://github.com/tychota
 [@urkle]: https://github.com/urkle
 [@valscion]: https://github.com/valscion
