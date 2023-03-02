@@ -22,7 +22,7 @@ const envs = {
 const types = Object.keys(envs)
 
 describe("being found when looking for CI", () => {
-  it.each(types)("%s - finds Jenkins with the right ENV", type => {
+  it.each(types)("%s - finds Jenkins with the right ENV", (type) => {
     const env = envs[type]
     const ci = getCISourceForEnv(env)
     expect(ci).toBeInstanceOf(Jenkins)
@@ -30,7 +30,7 @@ describe("being found when looking for CI", () => {
 })
 
 describe(".isCI", () => {
-  it.each(types)("%s - validates when JENKINS_URL is present in environment", type => {
+  it.each(types)("%s - validates when JENKINS_URL is present in environment", (type) => {
     const jenkins = new Jenkins(envs[type])
     expect(jenkins.isCI).toBeTruthy()
   })
@@ -42,7 +42,7 @@ describe(".isCI", () => {
 })
 
 describe(".isPR", () => {
-  it.each(types)("%s - validates when all Jenkins environment variables are set", type => {
+  it.each(types)("%s - validates when all Jenkins environment variables are set", (type) => {
     const jenkins = new Jenkins(envs[type])
     expect(jenkins.isPR).toBeTruthy()
   })
@@ -52,7 +52,7 @@ describe(".isPR", () => {
     expect(jenkins.isPR).toBeFalsy()
   })
 
-  describe.each(types)("%s", type => {
+  describe.each(types)("%s", (type) => {
     const envVars = Object.keys(envs[type])
     envVars.forEach((key: string) => {
       const env = {
@@ -87,7 +87,7 @@ describe(".isPR", () => {
 })
 
 describe(".pullRequestID", () => {
-  it.each(types)("%s - pulls it out of environment", type => {
+  it.each(types)("%s - pulls it out of environment", (type) => {
     const jenkins = new Jenkins(envs[type])
     expect(jenkins.pullRequestID).toEqual("50")
   })

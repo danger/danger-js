@@ -8,5 +8,5 @@ import { runRunner } from "./ci/resetStatus"
 program.usage("[options]").description("Reset the status of a GitHub PR to pending.")
 setSharedArgs(program).parse(process.argv)
 
-const app = (program as any) as SharedCLI
+const app = program as any as SharedCLI
 runRunner(app)

@@ -1,7 +1,6 @@
 // Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
-// TODO: extract out from BitBucket specifically, or create our own type
 import { Gitlab } from "@gitbeaker/node"
-import { RepoMetaData } from "./BitBucketServerDSL"
+import { RepoMetaData } from "./RepoMetaData"
 
 // getPlatformReviewDSLRepresentation
 export interface GitLabJSONDSL {
@@ -207,9 +206,9 @@ export interface GitLabNote {
 }
 
 export interface GitLabDiscussion {
-  id: string; //40 character hex
-  individual_note: boolean;
-  notes: GitLabNote[];
+  id: string //40 character hex
+  individual_note: boolean
+  notes: GitLabNote[]
 }
 
 export interface GitLabDiscussionTextPosition {

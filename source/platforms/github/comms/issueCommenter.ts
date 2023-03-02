@@ -13,7 +13,7 @@ const d = debug("GitHub::Issue")
  */
 export const findPositionForInlineComment = (git: GitDSL, line: number, path: string): Promise<number> => {
   d("Finding position for inline comment." + path + "#" + line)
-  return git.structuredDiffForFile(path).then(diff => {
+  return git.structuredDiffForFile(path).then((diff) => {
     return new Promise<number>((resolve, reject) => {
       if (diff === undefined) {
         d("Diff not found for inline comment." + path + "#" + line + ". Diff: " + JSON.stringify(diff))
@@ -84,7 +84,7 @@ export const GitHubIssueCommenter = (api: GitHubAPI) => {
     createInlineComment: (git: GitDSL, comment: string, path: string, line: number): Promise<any> => {
       let commitId = git.commits[git.commits.length - 1].sha
       d("Creating inline comment. Commit: " + commitId)
-      return findPositionForInlineComment(git, line, path).then(position => {
+      return findPositionForInlineComment(git, line, path).then((position) => {
         return api.postInlinePRComment(comment, commitId, path, position)
       })
     },
@@ -93,14 +93,14 @@ export const GitHubIssueCommenter = (api: GitHubAPI) => {
       let commitId = git.commits[git.commits.length - 1].sha
       d("Finishing review. Commit: " + commitId)
       return Promise.all(
-        comments.map(comment =>
-          findPositionForInlineComment(git, comment.line, comment.path).then(position => ({
+        comments.map((comment) =>
+          findPositionForInlineComment(git, comment.line, comment.path).then((position) => ({
             comment: comment.comment,
             path: comment.path,
             position,
           }))
         )
-      ).then(comments => api.postInlinePRReview(commitId, comments))
+      ).then((comments) => api.postInlinePRReview(commitId, comments))
     },
 
     /**

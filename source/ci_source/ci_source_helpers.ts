@@ -6,7 +6,7 @@ import {
   BitBucketServerAPI,
   bitbucketServerRepoCredentialsFromEnv,
 } from "../platforms/bitbucket_server/BitBucketServerAPI"
-import { RepoMetaData } from "../dsl/BitBucketServerDSL"
+import { RepoMetaData } from "../dsl/RepoMetaData"
 import { BitBucketCloudAPI, bitbucketCloudCredentialsFromEnv } from "../platforms/bitbucket_cloud/BitBucketCloudAPI"
 
 /**
@@ -45,7 +45,11 @@ export async function getPullRequestIDForBranch(metadata: RepoMetaData, env: Env
     }
     return 0
   }
-  if (process.env["DANGER_BITBUCKETCLOUD_OAUTH_KEY"] || process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
+  if (
+    process.env["DANGER_BITBUCKETCLOUD_OAUTH_KEY"] ||
+    process.env["DANGER_BITBUCKETCLOUD_USERNAME"] ||
+    process.env["DANGER_BITBUCKETCLOUD_REPO_ACCESSTOKEN"]
+  ) {
     const api = new BitBucketCloudAPI(metadata, bitbucketCloudCredentialsFromEnv(env))
     const prs = await api.getPullRequestsFromBranch(branch)
     if (prs.length) {

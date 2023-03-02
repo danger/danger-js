@@ -10,7 +10,7 @@ import { Env, CISource } from "./ci_source"
  * @returns {?CISource} a CI source if it's OK, otherwise Danger can't run.
  */
 export function getCISourceForEnv(env: Env): CISource | undefined {
-  const availableProviders = [...(providers as any)].map(Provider => new Provider(env)).filter(x => x.isCI)
+  const availableProviders = [...(providers as any)].map((Provider) => new Provider(env)).filter((x) => x.isCI)
   return availableProviders && availableProviders.length > 0 ? availableProviders[0] : undefined
 }
 
@@ -24,7 +24,7 @@ export function getCISourceForEnv(env: Env): CISource | undefined {
  */
 export async function getCISourceForExternal(env: Env, modulePath: string): Promise<CISource | undefined> {
   const path = resolve(process.cwd(), modulePath)
-  return new Promise<CISource | undefined>(resolve => {
+  return new Promise<CISource | undefined>((resolve) => {
     fs.stat(path, (error, stat) => {
       if (error) {
         console.error(`could not load CI provider at ${modulePath} due to ${error}`)

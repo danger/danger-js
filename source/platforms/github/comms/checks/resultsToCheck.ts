@@ -139,7 +139,7 @@ const inlineResultsToAnnotations = async (
       end_line: perFileResults.line || 0,
     }
 
-    perFileResults.fails.forEach(message => {
+    perFileResults.fails.forEach((message) => {
       annotations.push({
         ...fileAnnotation,
         annotation_level: "failure",
@@ -147,7 +147,7 @@ const inlineResultsToAnnotations = async (
       })
     })
 
-    perFileResults.warnings.forEach(message => {
+    perFileResults.warnings.forEach((message) => {
       annotations.push({
         ...fileAnnotation,
         annotation_level: "warning",
@@ -155,7 +155,7 @@ const inlineResultsToAnnotations = async (
       })
     })
 
-    perFileResults.messages.forEach(message => {
+    perFileResults.messages.forEach((message) => {
       annotations.push({
         ...fileAnnotation,
         annotation_level: "notice",
@@ -163,7 +163,7 @@ const inlineResultsToAnnotations = async (
       })
     })
 
-    perFileResults.markdowns.forEach(message => {
+    perFileResults.markdowns.forEach((message) => {
       annotations.push({
         ...fileAnnotation,
         annotation_level: "notice",

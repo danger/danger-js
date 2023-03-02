@@ -135,7 +135,7 @@ export class BitBucketServer implements Platform {
     if (!this.supportsInlineComments) {
       return new Promise((_resolve, reject) => reject())
     }
-    return this.findTypeOfLine(git, line, path).then(type => {
+    return this.findTypeOfLine(git, line, path).then((type) => {
       return this.api.postInlinePRComment(comment, line, type, path)
     })
   }
@@ -146,7 +146,7 @@ export class BitBucketServer implements Platform {
    * @returns {Promise<string>} A string with type of line
    */
   findTypeOfLine = (git: GitDSL, line: number, path: string): Promise<string> => {
-    return git.structuredDiffForFile(path).then(diff => {
+    return git.structuredDiffForFile(path).then((diff) => {
       return new Promise<string>((resolve, reject) => {
         if (diff === undefined) {
           this.d("Diff not found for inline comment." + path + "#" + line + ". Diff: " + JSON.stringify(diff))
@@ -156,7 +156,7 @@ export class BitBucketServer implements Platform {
         for (let chunk of diff!.chunks) {
           // Search for a change (that is not a deletion) and with given line. We want to look only for destination lines of a change
           change = chunk.changes.find(
-            c => (c.type === "normal" && c.ln2 === line) || (c.type === "add" && c.ln === line)
+            (c) => (c.type === "normal" && c.ln2 === line) || (c.type === "add" && c.ln === line)
           )
           break
         }
@@ -182,10 +182,10 @@ export class BitBucketServer implements Platform {
     }
     const activities = await this.api.getPullRequestComments()
     const updateComment = activities
-      .filter(activity => activity.commentAnchor)
-      .map(activity => activity.comment)
+      .filter((activity) => activity.commentAnchor)
+      .map((activity) => activity.comment)
       .filter(Boolean)
-      .find(comment => comment!.id.toString() == commentId)
+      .find((comment) => comment!.id.toString() == commentId)
 
     return this.api.updateComment(updateComment!, comment)
   }
@@ -202,10 +202,10 @@ export class BitBucketServer implements Platform {
     }
     const activities = await this.api.getPullRequestComments()
     const deleteComment = activities
-      .filter(activity => activity.commentAnchor)
-      .map(activity => activity.comment)
+      .filter((activity) => activity.commentAnchor)
+      .map((activity) => activity.comment)
       .filter(Boolean)
-      .find(comment => comment!.id.toString() == id)
+      .find((comment) => comment!.id.toString() == id)
 
     return this.api.deleteComment(deleteComment!)
   }

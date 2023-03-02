@@ -8,8 +8,8 @@ import { dangerIDToString } from "../runner/templates/githubIssueTemplate"
 
 const d = debug("GitLab")
 
-const useThreads = () => process.env.DANGER_GITLAB_USE_THREADS === "1" ||
-  process.env.DANGER_GITLAB_USE_THREADS === "true"
+const useThreads = () =>
+  process.env.DANGER_GITLAB_USE_THREADS === "1" || process.env.DANGER_GITLAB_USE_THREADS === "true"
 
 class GitLab implements Platform {
   public readonly name: string
@@ -39,7 +39,7 @@ class GitLab implements Platform {
     const changes = await this.api.getMergeRequestChanges()
     const commits = await this.api.getMergeRequestCommits()
 
-    const mappedCommits: GitCommit[] = commits.map(commit => {
+    const mappedCommits: GitCommit[] = commits.map((commit) => {
       return {
         sha: commit.id,
         author: {
@@ -61,10 +61,10 @@ class GitLab implements Platform {
 
     // XXX: does "renamed_file"/move count is "delete/create", or "modified"?
     const modified_files: string[] = changes
-      .filter(change => !change.new_file && !change.deleted_file)
-      .map(change => change.new_path)
-    const created_files: string[] = changes.filter(change => change.new_file).map(change => change.new_path)
-    const deleted_files: string[] = changes.filter(change => change.deleted_file).map(change => change.new_path)
+      .filter((change) => !change.new_file && !change.deleted_file)
+      .map((change) => change.new_path)
+    const created_files: string[] = changes.filter((change) => change.new_file).map((change) => change.new_path)
+    const deleted_files: string[] = changes.filter((change) => change.deleted_file).map((change) => change.new_path)
 
     return {
       modified_files,
@@ -77,7 +77,7 @@ class GitLab implements Platform {
   getInlineComments = async (dangerID: string): Promise<Comment[]> => {
     const dangerUserID = (await this.api.getUser()).id
 
-    return (await this.api.getMergeRequestInlineNotes()).map(note => {
+    return (await this.api.getMergeRequestInlineNotes()).map((note) => {
       return {
         id: `${note.id}`,
         body: note.body,
@@ -198,18 +198,18 @@ class GitLab implements Platform {
     return notes.filter(noteFilter)
   }
 
-  getDangerNoteFilter = async (
-    dangerID: string,
-  ): Promise<(note: GitLabNote) => boolean> => {
+  getDangerNoteFilter = async (dangerID: string): Promise<(note: GitLabNote) => boolean> => {
     const { id: dangerUserId } = await this.api.getUser()
     return ({ author: { id }, body, system }: GitLabNote): boolean => {
-      return !system && // system notes are generated when the user interacts with the UI e.g. changing a PR title
+      return (
+        !system && // system notes are generated when the user interacts with the UI e.g. changing a PR title
         id === dangerUserId &&
         //we do not check the `type` - it's `null` most of the time,
         // only in discussions/threads this is `DiscussionNote` for all notes. But even if danger only creates a
         // normal `null`-comment, any user replying to that comment will turn it into a `DiscussionNote`-typed one.
         // So we cannot assume anything here about danger's note type.
         body.includes(dangerIDToString(dangerID))
+      )
     }
   }
 

@@ -16,12 +16,12 @@ import {
   BitBucketCloudAPIDSL,
 } from "../../dsl/BitBucketCloudDSL"
 import { Comment } from "../platform"
-import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
+import { RepoMetaData } from "../../dsl/RepoMetaData"
 
 export type BitBucketCloudCredentials = {
   /** Unique ID for this user, must be wrapped with brackets */
   uuid?: string
-} & (BitBucketCloudCredentialsOAuth | BitBucketCloudCredentialsPassword)
+} & (BitBucketCloudCredentialsOAuth | BitBucketCloudCredentialsPassword | BitBucketCloudCredentialsRepoAccessToken)
 
 interface BitBucketCloudCredentialsOAuth {
   type: "OAUTH"
@@ -33,6 +33,11 @@ interface BitBucketCloudCredentialsPassword {
   type: "PASSWORD"
   username: string
   password: string
+}
+
+interface BitBucketCloudCredentialsRepoAccessToken {
+  type: "REPO_ACCESS_TOKEN"
+  accessToken: string
 }
 
 export function bitbucketCloudCredentialsFromEnv(env: Env): BitBucketCloudCredentials {
@@ -64,7 +69,17 @@ export function bitbucketCloudCredentialsFromEnv(env: Env): BitBucketCloudCreden
       uuid,
     }
   }
-  throw new Error(`Either DANGER_BITBUCKETCLOUD_OAUTH_KEY or DANGER_BITBUCKETCLOUD_USERNAME is not set`)
+
+  if (env["DANGER_BITBUCKETCLOUD_REPOSITORY_ACCESSTOKEN"]) {
+    return {
+      type: "REPO_ACCESS_TOKEN",
+      accessToken: env["DANGER_BITBUCKETCLOUD_REPOSITORY_ACCESSTOKEN"],
+    }
+  }
+
+  throw new Error(
+    `Either DANGER_BITBUCKETCLOUD_OAUTH_KEY, DANGER_BITBUCKETCLOUD_USERNAME or DANGER_BITBUCKETCLOUD_REPOSITORY_ACCESSTOKEN is not set`
+  )
 }
 
 export class BitBucketCloudAPI implements BitBucketCloudAPIDSL {
@@ -316,6 +331,8 @@ export class BitBucketCloudAPI implements BitBucketCloudAPIDSL {
       headers["Authorization"] = `Basic ${Buffer.from(
         this.credentials.username + ":" + this.credentials.password
       ).toString("base64")}`
+    } else if (this.credentials.type === "REPO_ACCESS_TOKEN") {
+      headers["Authorization"] = `Bearer ${this.credentials.accessToken}`
     } else {
       if (this.accessToken == null) {
         this.d(`accessToken not found, trying to get from ${this.oauthURL}.`)

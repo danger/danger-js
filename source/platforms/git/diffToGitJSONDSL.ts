@@ -17,9 +17,9 @@ export const diffToGitJSONDSL = (diff: string, commits: GitCommit[]): GitJSONDSL
 
   return {
     //                                             Work around for danger/danger-js#807
-    modified_files: modifiedDiffs.map(d => d.to || (d.from && d.from.split(" b/")[0])),
-    created_files: addedDiffs.map(d => d.to),
-    deleted_files: removedDiffs.map(d => d.from),
+    modified_files: modifiedDiffs.map((d) => d.to || (d.from && d.from.split(" b/")[0])),
+    created_files: addedDiffs.map((d) => d.to),
+    deleted_files: removedDiffs.map((d) => d.from),
     commits: commits,
   }
 }

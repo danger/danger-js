@@ -290,8 +290,7 @@ describe("API testing - BitBucket Server", () => {
       values: [
         {
           comment: {
-            text:
-              "\n[//]: # (danger-id-default;)\n[//]: # (  File: README.md;\n  Line: 5;)\n\n- :warning: Hello updates\n\n\n  ",
+            text: "\n[//]: # (danger-id-default;)\n[//]: # (  File: README.md;\n  Line: 5;)\n\n- :warning: Hello updates\n\n\n  ",
             author: {
               name: "username",
             },
@@ -319,8 +318,7 @@ describe("API testing - BitBucket Server", () => {
       values: [
         {
           comment: {
-            text:
-              "\n[//]: # (danger-id-default;)\n[//]: # (  File: README.md;\n  Line: 5;)\n\n- :warning: Hello updates\n\n\n  ",
+            text: "\n[//]: # (danger-id-default;)\n[//]: # (  File: README.md;\n  Line: 5;)\n\n- :warning: Hello updates\n\n\n  ",
             author: {
               name: "userNAME",
             },

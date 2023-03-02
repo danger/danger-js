@@ -19,7 +19,7 @@ export const localGetCommits = (base: string, head: string) => {
     ] as const,
   }
 
-  const commits: GitCommit[] = logGitCommits(options).map(commit => ({
+  const commits: GitCommit[] = logGitCommits(options).map((commit) => ({
     sha: commit.hash,
     author: {
       name: commit.authorName,

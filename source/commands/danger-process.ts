@@ -45,7 +45,7 @@ program
   .allowUnknownOption(true)
 
 setSharedArgs(program)
-program.action(process_name => (subprocessName = process_name)).parse(process.argv)
+program.action((process_name) => (subprocessName = process_name)).parse(process.argv)
 
 // The dynamic nature of the program means typecasting a lot
 // use this to work with dynamic properties
@@ -55,7 +55,7 @@ if (process.env["DANGER_VERBOSE"] || app.verbose) {
   global.verbose = true
 }
 
-getRuntimeCISource(app).then(source => {
+getRuntimeCISource(app).then((source) => {
   // This does not set a failing exit code
   if (source && !source.isPR) {
     console.log("Skipping Danger due to this run not executing on a PR.")
@@ -73,7 +73,7 @@ getRuntimeCISource(app).then(source => {
     }
 
     if (platform) {
-      jsonDSLGenerator(platform, source, app).then(dangerJSONDSL => {
+      jsonDSLGenerator(platform, source, app).then((dangerJSONDSL) => {
         if (!subprocessName) {
           //  Just pipe it out to the CLI
           const processInput = prepareDangerDSL(dangerJSONDSL)

@@ -43,9 +43,9 @@ function mockApi(withExisting = false): GitLabAPI {
     createMergeRequestDiscussion: jest.fn(() => Promise.resolve(newDiscussion)),
     createMergeRequestNote: jest.fn(() => Promise.resolve(newNote)),
     deleteMergeRequestNote: jest.fn(() => Promise.resolve(true)),
-    getMergeRequestDiscussions: jest.fn(() => Promise.resolve(withExisting
-      ? [discussion1, discussion2, discussion3]
-      : [])),
+    getMergeRequestDiscussions: jest.fn(() =>
+      Promise.resolve(withExisting ? [discussion1, discussion2, discussion3] : [])
+    ),
     mergeRequestURL: baseUri,
     updateMergeRequestNote: jest.fn(() => Promise.resolve(newNote)),
   }
@@ -59,7 +59,7 @@ describe("updateOrCreateComment", () => {
     delete process.env.DANGER_GITLAB_USE_THREADS
 
     const api = mockApi()
-    const url = await (new GitLab(api as GitLabAPI)).updateOrCreateComment(dangerID, comment)
+    const url = await new GitLab(api as GitLabAPI).updateOrCreateComment(dangerID, comment)
     expect(url).toEqual(`${baseUri}#note_4711`)
 
     expect(api.getMergeRequestDiscussions).toHaveBeenCalledTimes(1)
@@ -74,7 +74,7 @@ describe("updateOrCreateComment", () => {
     process.env.DANGER_GITLAB_USE_THREADS = "true"
 
     const api = mockApi()
-    const url = await (new GitLab(api as GitLabAPI)).updateOrCreateComment(dangerID, comment)
+    const url = await new GitLab(api as GitLabAPI).updateOrCreateComment(dangerID, comment)
     expect(url).toEqual(`${baseUri}#note_4711`)
 
     expect(api.getMergeRequestDiscussions).toHaveBeenCalledTimes(1)
@@ -87,7 +87,7 @@ describe("updateOrCreateComment", () => {
 
   it("update an existing thread", async () => {
     const api = mockApi(true)
-    const url = await (new GitLab(api as GitLabAPI)).updateOrCreateComment(dangerID, comment)
+    const url = await new GitLab(api as GitLabAPI).updateOrCreateComment(dangerID, comment)
     expect(url).toEqual(`${baseUri}#note_4711`)
 
     expect(api.getMergeRequestDiscussions).toHaveBeenCalledTimes(1)
@@ -104,7 +104,7 @@ describe("updateOrCreateComment", () => {
 describe("deleteMainComment", () => {
   it("delete nothing", async () => {
     const api = mockApi()
-    const result = await (new GitLab(api as GitLabAPI)).deleteMainComment(dangerID)
+    const result = await new GitLab(api as GitLabAPI).deleteMainComment(dangerID)
     expect(result).toEqual(false)
 
     expect(api.getMergeRequestDiscussions).toHaveBeenCalledTimes(1)
@@ -116,7 +116,7 @@ describe("deleteMainComment", () => {
 
   it("delete all danger attached notes", async () => {
     const api = mockApi(true)
-    const result = await (new GitLab(api as GitLabAPI)).deleteMainComment(dangerID)
+    const result = await new GitLab(api as GitLabAPI).deleteMainComment(dangerID)
     expect(result).toEqual(true)
 
     expect(api.getMergeRequestDiscussions).toHaveBeenCalledTimes(1)

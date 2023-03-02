@@ -17,6 +17,8 @@
 <!-- Your comment below this -->
 
 - Feature: Expose addLabels, removeLabels via gitlab.utils, @glensc #1353
+- Fix remote dangerfiles always parsing as JavaScript. TypeScript files should now work properly. - [@snowe2010]
+- Add support for BitBucket Cloud Repository Access Token - [@thawankeane]
 
 <!-- Your comment above this -->
 
@@ -1976,10 +1978,9 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@hmschreiner]: https://github.com/hmschreiner
 [@hongrich]: https://github.com/hongrich
 [@igorbek]: https://github.com/igorbek
-[@ivankatliarchuk]: https://github.com/ivankatliarchuk
 [@iljadaderko]: https://github.com/IljaDaderko
-[@ivankatliarchuk]: https://github.com/ivankatliarchuk
 [@imorente]: https://github.com/imorente
+[@ivankatliarchuk]: https://github.com/ivankatliarchuk
 [@jamiebuilds]: https://github.com/jamiebuilds
 [@jamime]: https://github.com/jamime
 [@joarwilk]: https://github.com/joarwilk
@@ -2031,6 +2032,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@sgtcoolguy]: https://github.com/sgtcoolguy
 [@sharkysharks]: https://github.com/sharkysharks
 [@shyim]: https://github.com/shyim
+[@snowe2010]: https://github.com/snowe2010
 [@sogame]: https://github.com/sogame
 [@soyn]: https://github.com/Soyn
 [@stefanbuck]: https://github.com/stefanbuck
@@ -2041,6 +2043,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@thii]: https://github.com/thii
 [@tibdex]: https://github.com/tibdex
 [@tim3trick]: https://github.com/tim3trick
+[@thawankeane]: https://github.com/thawankeane
 [@tychota]: https://github.com/tychota
 [@urkle]: https://github.com/urkle
 [@valscion]: https://github.com/valscion

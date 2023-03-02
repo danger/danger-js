@@ -23,11 +23,11 @@ program
   .allowUnknownOption(true)
 setSharedArgs(program).parse(process.argv)
 
-const app = (program as any) as App
+const app = program as any as App
 const base = app.base
 
 const localPlatform = new LocalGit({ base, staging: app.staging })
-localPlatform.validateThereAreChanges().then(changes => {
+localPlatform.validateThereAreChanges().then((changes) => {
   if (changes) {
     const fakeSource = new FakeCI(process.env)
     // By setting the custom env var we can be sure that the runner doesn't

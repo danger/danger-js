@@ -5,8 +5,10 @@ const fixtures = resolve(__dirname, "fixtures")
 
 /** Returns JSON from the fixtured dir */
 // eslint-disable-next-line jest/no-export
-export const requestWithFixturedJSON = async (path: string): Promise<() => Promise<any>> => () =>
-  Promise.resolve(JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString()))
+export const requestWithFixturedJSON =
+  async (path: string): Promise<() => Promise<any>> =>
+  () =>
+    Promise.resolve(JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString()))
 
 class mockBitBucketServerAPI {
   async getPullRequestInfo() {
@@ -43,7 +45,7 @@ jest.mock("../bitbucket_server/BitBucketServerAPI", () => {
 import { BitBucketServer } from "../BitBucketServer"
 import { BitBucketServerAPI } from "../bitbucket_server/BitBucketServerAPI"
 
-import { RepoMetaData } from "../../dsl/BitBucketServerDSL"
+import { RepoMetaData } from "../../dsl/RepoMetaData"
 
 describe("getPlatformReviewDSLRepresentation", () => {
   let bbs: BitBucketServer

@@ -7,7 +7,6 @@ import prettyjson from "prettyjson"
 import { FakeCI } from "../ci_source/providers/Fake"
 import { pullRequestParser } from "../platforms/pullRequestParser"
 import { dangerfilePath } from "./utils/fileUtils"
-import validateDangerfileExists from "./utils/validateDangerfileExists"
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import { jsonDSLGenerator } from "../runner/dslGenerator"
 import { prepareDangerDSL } from "./utils/runDangerSubprocess"
@@ -43,12 +42,13 @@ program
       !process.env["DANGER_BITBUCKETSERVER_HOST"] &&
       !process.env["DANGER_BITBUCKETCLOUD_OAUTH_KEY"] &&
       !process.env["DANGER_BITBUCKETCLOUD_USERNAME"] &&
+      !process.env["DANGER_BITBUCKETCLOUD_REPO_ACCESSTOKEN"] &&
       !gitLabApiCredentials.token &&
       !gitLabApiCredentials.oauthToken
     ) {
       log("")
       log(
-        "     You don't have a DANGER_GITHUB_API_TOKEN/DANGER_GITLAB_API_TOKEN/DANGER_GITLAB_API_OAUTH_TOKEN/DANGER_BITBUCKETCLOUD_OAUTH_KEY/DANGER_BITBUCKETCLOUD_USERNAME set up, this is optional, but TBH, you want to do this."
+        "     You don't have a DANGER_GITHUB_API_TOKEN/DANGER_GITLAB_API_TOKEN/DANGER_GITLAB_API_OAUTH_TOKEN/DANGER_BITBUCKETCLOUD_OAUTH_KEY/DANGER_BITBUCKETCLOUD_USERNAME/DANGER_BITBUCKETCLOUD_REPO_ACCESSTOKEN set up, this is optional, but TBH, you want to do this."
       )
       log("     Check out: http://danger.systems/js/guides/the_dangerfile.html#working-on-your-dangerfile")
       log("")
@@ -66,7 +66,7 @@ program
 
 setSharedArgs(program).parse(process.argv)
 
-const app = (program as any) as App
+const app = program as any as App
 const customProcess = !!app.process
 
 if (program.args.length === 0) {
@@ -77,7 +77,7 @@ if (program.args.length === 0) {
     process.env["DANGER_GITHUB_HOST"] || process.env["DANGER_BITBUCKETSERVER_HOST"] || gitLabApiCredentials.host // this defaults to https://gitlab.com
 
   // Allow an ambiguous amount of args to find the PR reference
-  const findPR = program.args.find(a => a.includes(customHost) || a.includes("github") || a.includes("bitbucket.org"))
+  const findPR = program.args.find((a) => a.includes(customHost) || a.includes("github") || a.includes("bitbucket.org"))
 
   if (!findPR) {
     console.error(`Could not find an arg which mentioned GitHub, BitBucket Server, BitBucket Cloud, or GitLab.`)
@@ -94,8 +94,7 @@ if (program.args.length === 0) {
       const isJSON = app.js || app.json
       const note = isJSON ? console.error : console.log
       note(`Starting Danger PR on ${pr.repo}#${pr.pullRequestNumber}`)
-
-      if (customProcess || isJSON || validateDangerfileExists(dangerfilePath(program))) {
+      if (customProcess || isJSON || dangerfilePath(program)) {
         if (!customProcess) {
           d(`executing dangerfile at ${dangerfilePath(program)}`)
         }
