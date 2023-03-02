@@ -62,7 +62,7 @@ const run = (config: SharedCLI) => async (jsonString: string) => {
   if (platform.executeRuntimeEnvironment) {
     await platform.executeRuntimeEnvironment(inline.runDangerfileEnvironment, dangerFile, runtimeEnv)
   } else {
-    await inline.runDangerfileEnvironment([dangerFile], [undefined], runtimeEnv)
+    await inline.runDangerfileEnvironment([[dangerFile, false]], [undefined], runtimeEnv)
   }
 }
 

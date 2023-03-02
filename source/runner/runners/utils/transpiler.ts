@@ -183,12 +183,19 @@ export const babelify = (content: string, filename: string, extraPlugins: string
   return result.code
 }
 
-export default (code: string, filename: string) => {
+export default (code: string, filename: string, remoteFile: boolean = false) => {
   if (!hasChecked) {
     checkForNodeModules()
   }
 
-  const filetype = path.extname(filename)
+  let filetype: string
+  if (remoteFile) {
+    d(`Parsing the file from the remote reference ${filename}`)
+    let [file, _] = filename.split("@")
+    filetype = path.extname(file)
+  } else {
+    filetype = path.extname(filename)
+  }
   const isModule = filename.includes("node_modules")
   if (isModule) {
     return code
@@ -196,10 +203,13 @@ export default (code: string, filename: string) => {
 
   let result = code
   if (hasNativeTypeScript && filetype.startsWith(".ts")) {
+    d("compiling with typescript")
     result = typescriptify(code, path.dirname(filename))
   } else if (hasBabel && hasBabelTypeScript && filetype.startsWith(".ts")) {
+    d("compiling as typescript with babel")
     result = babelify(code, filename, [`${babelPackagePrefix}plugin-transform-typescript`])
   } else if (hasBabel && filetype.startsWith(".js")) {
+    d("babelifying as javascript")
     result = babelify(code, filename, hasFlow ? [`${babelPackagePrefix}plugin-transform-flow-strip-types`] : [])
   }
 

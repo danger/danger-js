@@ -121,6 +121,7 @@ const executeRuntimeEnvironment = async (
   // dangerfile comes from the web, and do all the prefixing etc
   let path: string
   let content: string
+  let remote: boolean = false
   if (existsSync(dangerfilePath)) {
     path = dangerfilePath
     content = readFileSync(dangerfilePath, "utf8")
@@ -142,8 +143,9 @@ const executeRuntimeEnvironment = async (
     // Chop off the danger import
     const newDangerfile = cleanDangerfile(dangerfileContent)
 
+    remote = true
     // Cool, transpile it into something we can run
-    content = transpiler(newDangerfile, dangerfilePath)
+    content = transpiler(newDangerfile, dangerfilePath, remote)
   }
 
   // If there's an event.json - we should always pass it inside the default export
@@ -155,7 +157,7 @@ const executeRuntimeEnvironment = async (
   }
 
   // Actually start up[ the runtime evaluation
-  await start([path], [content], environment, defaultExport)
+  await start([[path, remote]], [content], environment, defaultExport)
 
   // Undo the runtime
   restoreOriginalModuleLoader()

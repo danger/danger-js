@@ -7,7 +7,6 @@ import prettyjson from "prettyjson"
 import { FakeCI } from "../ci_source/providers/Fake"
 import { pullRequestParser } from "../platforms/pullRequestParser"
 import { dangerfilePath } from "./utils/fileUtils"
-import validateDangerfileExists from "./utils/validateDangerfileExists"
 import setSharedArgs, { SharedCLI } from "./utils/sharedDangerfileArgs"
 import { jsonDSLGenerator } from "../runner/dslGenerator"
 import { prepareDangerDSL } from "./utils/runDangerSubprocess"
@@ -94,8 +93,7 @@ if (program.args.length === 0) {
       const isJSON = app.js || app.json
       const note = isJSON ? console.error : console.log
       note(`Starting Danger PR on ${pr.repo}#${pr.pullRequestNumber}`)
-
-      if (customProcess || isJSON || validateDangerfileExists(dangerfilePath(program))) {
+      if (customProcess || isJSON || dangerfilePath(program)) {
         if (!customProcess) {
           d(`executing dangerfile at ${dangerfilePath(program)}`)
         }

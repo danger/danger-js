@@ -55,7 +55,7 @@ const runAllScheduledTasks = async (results: DangerRuntimeContainer) => {
  * @returns {DangerResults} the results of the run
  */
 export const runDangerfileEnvironment = async (
-  filenames: string[],
+  filenames: [string, boolean][],
   originalContents: (string | undefined)[] | undefined,
   environment: DangerContext,
   injectedObjectToExport?: any,
@@ -84,11 +84,16 @@ export const runDangerfileEnvironment = async (
   // Loop through all files and their potential contents, they edit
   // results inside the env, so no need to keep track ourselves
 
-  for (const filename of filenames) {
-    const index = filenames.indexOf(filename)
-    const originalContent = (originalContents && originalContents[index]) || fs.readFileSync(filename, "utf8")
+  for (let index = 0; index < filenames.length; index++) {
+    const [filename, remote] = filenames[index]
+    let fn: string = filename
+    if (remote) {
+      d(`File ${filename} is a remote dangerfile`)
+      fn = filename.split("@")[0]
+    }
+    const originalContent = (originalContents && originalContents[index]) || fs.readFileSync(fn, "utf8")
     let content = cleanDangerfile(originalContent)
-    let compiled = compile(content, filename)
+    let compiled = compile(content, filename, remote)
 
     try {
       // Move all the DSL attributes into the global scope
