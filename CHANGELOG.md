@@ -16,11 +16,13 @@
 
 <!-- Your comment below this -->
 
-- Feature: Expose addLabels, removeLabels via gitlab.utils, @glensc #1353
-- Fix remote dangerfiles always parsing as JavaScript. TypeScript files should now work properly. - [@snowe2010]
-- Add support for BitBucket Cloud Repository Access Token - [@thawankeane]
-
 <!-- Your comment above this -->
+
+## 11.2.4
+
+- Feature: Expose addLabels, removeLabels via gitlab.utils, [@glensc] [#1353](https://github.com/danger/danger-js/pull/1353)
+- Fix remote dangerfiles always parsing as JavaScript. TypeScript files should now work properly - [@snowe2010]
+- Add support for BitBucket Cloud Repository Access Token - [@thawankeane]
 
 ## 11.2.3
 
