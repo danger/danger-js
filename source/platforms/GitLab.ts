@@ -227,6 +227,8 @@ export const gitlabJSONToGitLabDSL = (gl: GitLabDSL, api: GitLabAPI): GitLabDSL 
   ...gl,
   utils: {
     fileContents: api.getFileContents,
+    addLabels: api.addLabels,
+    removeLabels: api.removeLabels,
   },
   api: api.apiInstance,
 })
