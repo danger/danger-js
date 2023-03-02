@@ -7,8 +7,6 @@ import { Gitlab } from "@gitbeaker/node"
 import { File } from "parse-diff"
 
 type MarkdownString = string
-// TODO: extract out from BitBucket specifically, or create our own type
-
 interface BitBucketCloudJSONDSL {
   /** The pull request and repository metadata */
   metadata: RepoMetaData
@@ -197,14 +195,6 @@ interface BitBucketCloudPRActivity {
     title: string
   }
 }
-/** Key details about a repo */
-interface RepoMetaData {
-  /** A path like "artsy/eigen" */
-  repoSlug: string
-  /** The ID for the pull/merge request "11" */
-  pullRequestID: string
-}
-
 // This is `danger.bitbucket_server` inside the JSON
 
 interface BitBucketServerJSONDSL {
@@ -1480,9 +1470,6 @@ interface GitHubReviewers {
   /** Teams that have been requested */
   teams: any[]
 }
-
-// TODO: extract out from BitBucket specifically, or create our own type
-
 // getPlatformReviewDSLRepresentation
 interface GitLabJSONDSL {
   /** Info about the repo */
@@ -1500,6 +1487,8 @@ interface GitLabJSONDSL {
 interface GitLabDSL extends GitLabJSONDSL {
   utils: {
     fileContents(path: string, repoSlug?: string, ref?: string): Promise<string>
+    addLabels(...labels: string[]): Promise<boolean>
+    removeLabels(...labels: string[]): Promise<boolean>
   }
   api: InstanceType<typeof Gitlab>
 }
@@ -1770,6 +1759,14 @@ interface GitLabApproval {
         user: GitLabUser
       }[]
     | GitLabUser[]
+}
+
+/** Key details about a repo */
+interface RepoMetaData {
+  /** A path like "artsy/eigen" */
+  repoSlug: string
+  /** The ID for the pull/merge request "11" */
+  pullRequestID: string
 }
 /**
  * The result of user doing warn, message or fail, built this way for
