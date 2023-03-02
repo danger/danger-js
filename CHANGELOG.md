@@ -15,7 +15,8 @@
 ## Main
 
 <!-- Your comment below this -->
-Fix remote dangerfile always parsing as javascript. TS files should now work properly.
+
+Fix remote dangerfiles always parsing as JavaScript. TypeScript files should now work properly. [@snowe2010]
 
 <!-- Your comment above this -->
 
