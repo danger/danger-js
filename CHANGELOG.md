@@ -15,7 +15,7 @@
 ## Main
 
 <!-- Your comment below this -->
-
+Fix remote dangerfile always parsing as javascript. TS files should now work properly.
 
 <!-- Your comment above this -->
 
@@ -2028,6 +2028,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@sgtcoolguy]: https://github.com/sgtcoolguy
 [@sharkysharks]: https://github.com/sharkysharks
 [@shyim]: https://github.com/shyim
+[@snowe2010]: https://github.com/snowe2010
 [@sogame]: https://github.com/sogame
 [@soyn]: https://github.com/Soyn
 [@stefanbuck]: https://github.com/stefanbuck
