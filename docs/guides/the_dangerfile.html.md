@@ -39,6 +39,10 @@ export DANGER_BITBUCKETCLOUD_PASSWORD='yyyy'
 # You can get OAuth key from Settings > OAuth > Add consumer, put `https://bitbucket.org/site/oauth2/authorize` for `Callback URL`, and enable Read Pull requests, and Read Account Permissions.
 export DANGER_BITBUCKETCLOUD_OAUTH_KEY='xxxx'
 export DANGER_BITBUCKETCLOUD_OAUTH_SECRET='yyyy'
+
+# or for BitBucket Cloud by Repository Access Token
+# You can get a Repository Access Token from Repo Settings > Security > Acesss Tokens and set Pull requests write scope.
+export DANGER_BITBUCKETCLOUD_REPO_ACCESSTOKEN='xxxx'
 ```
 
 Then the danger CLI will use authenticated API calls, which don't get this by API limits.

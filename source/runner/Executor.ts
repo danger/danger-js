@@ -315,7 +315,11 @@ export class Executor {
         let comment
         if (process.env["DANGER_BITBUCKETSERVER_HOST"]) {
           comment = bitbucketServerTemplate(dangerID, mergedResults, commitID)
-        } else if (process.env["DANGER_BITBUCKETCLOUD_OAUTH_KEY"] || process.env["DANGER_BITBUCKETCLOUD_USERNAME"]) {
+        } else if (
+          process.env["DANGER_BITBUCKETCLOUD_OAUTH_KEY"] ||
+          process.env["DANGER_BITBUCKETCLOUD_USERNAME"] ||
+          process.env["DANGER_BITBUCKETCLOUD_REPO_ACCESSTOKEN"]
+        ) {
           comment = bitbucketCloudTemplate(dangerID, mergedResults, commitID)
         } else {
           comment = githubResultsTemplate(dangerID, mergedResults, commitID)
