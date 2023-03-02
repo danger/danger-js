@@ -99,7 +99,7 @@ export class Executor {
     // If an eval of the Dangerfile fails, we should generate a
     // message that can go back to the CI
     try {
-      results = await this.runner.runDangerfileEnvironment([file], [undefined], runtime)
+      results = await this.runner.runDangerfileEnvironment([[file, false]], [undefined], runtime)
     } catch (error) {
       results = this.resultsForError(error as Error)
     }
