@@ -18,6 +18,10 @@
 
 <!-- Your comment above this -->
 
+## 11.2.5
+
+- Fix for running in projects which contain the path `danger-pr` e.g. `~/danger-projects` #1375
+
 ## 11.2.4
 
 - Feature: Expose addLabels, removeLabels via gitlab.utils, [@glensc] [#1353](https://github.com/danger/danger-js/pull/1353)
