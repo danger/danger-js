@@ -15,7 +15,8 @@ const dangerRunToRunnerCLI = (argv: string[]) => {
     // convert
     let newJSFile = argv[1]
     usesProcessSeparationCommands.forEach((name) => {
-      newJSFile = newJSFile.replace("danger-" + name, "danger-runner")
+      const re = new RegExp(`danger-${name}\.js$`)
+      newJSFile = newJSFile.replace(re, "danger-runner.js")
     })
 
     // Support re-routing internally in npx for danger-ts
