@@ -116,3 +116,17 @@ describe("it can handle the command when running from pkg", () => {
     )
   })
 })
+
+it("should properly replace `danger-runner` in a path that contains an additional `danger-pr` in it", () => {
+  expect(
+    dangerRunToRunnerCLI([
+      "/Users/Mike.DiDomizio/.nvm/versions/node/v16.13.2/bin/node",
+      "/Users/Mike.DiDomizio/projects/test/danger-project-setup/node_modules/danger/distribution/commands/danger-pr.js",
+      "https://github.com/facebook/react/pull/11865"
+    ])
+  ).toEqual([
+    "/Users/Mike.DiDomizio/.nvm/versions/node/v16.13.2/bin/node",
+    "/Users/Mike.DiDomizio/projects/test/danger-project-setup/node_modules/danger/distribution/commands/danger-runner.js",
+    "https://github.com/facebook/react/pull/11865",
+  ])
+})
