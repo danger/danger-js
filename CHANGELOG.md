@@ -18,6 +18,10 @@
 
 <!-- Your comment above this -->
 
+## 11.2.6
+
+- A fix for the fix in 11.2.5
+
 ## 11.2.5
 
 - Fix for running in projects which contain the path `danger-pr` e.g. `~/danger-projects` #1375
