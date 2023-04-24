@@ -74,7 +74,7 @@ export interface PlatformCommunicator {
   /** Gets inline comments for current PR */
   getInlineComments: (dangerID: string) => Promise<Comment[]>
   /** Creates a comment on the PR */
-  createComment: (dangerID: string, body: string) => Promise<any>
+  createComment: (body: string) => Promise<any>
   /** Creates an inline comment on the PR if possible */
   createInlineComment: (git: GitDSL, comment: string, path: string, line: number) => Promise<any>
   /** Updates an inline comment */

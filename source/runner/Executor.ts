@@ -326,7 +326,7 @@ export class Executor {
         }
 
         if (this.options.newComment) {
-          issueURL = await this.platform.createComment(dangerID, comment)
+          issueURL = await this.platform.createComment(comment)
         } else {
           issueURL = await this.platform.updateOrCreateComment(dangerID, comment)
         }
