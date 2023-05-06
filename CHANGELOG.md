@@ -15,7 +15,7 @@
 ## Main
 
 <!-- Your comment below this -->
-
+- Fix issue where GitLab inline comments would not show on merge requests #1351 - [@davidbrunow]
 <!-- Your comment above this -->
 
 ## 11.2.6
