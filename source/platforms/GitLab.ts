@@ -8,6 +8,9 @@ import { dangerIDToString } from "../runner/templates/githubIssueTemplate"
 
 const d = debug("GitLab")
 
+/**
+ * Determines whether Danger should use threads for the "main" Danger comment.
+ */
 const useThreads = () =>
   process.env.DANGER_GITLAB_USE_THREADS === "1" || process.env.DANGER_GITLAB_USE_THREADS === "true"
 
@@ -81,8 +84,6 @@ class GitLab implements Platform {
       return {
         id: `${note.id}`,
         body: note.body,
-        // XXX: we should re-use the logic in getDangerNotes, need to check what inline comment template we're using if
-        // any
         ownedByDanger: note.author.id === dangerUserID && note.body.includes(dangerID),
       }
     })
@@ -99,28 +100,49 @@ class GitLab implements Platform {
   updateOrCreateComment = async (dangerID: string, newComment: string): Promise<string> => {
     d("updateOrCreateComment", { dangerID, newComment })
 
-    //Even when we don't set danger to create threads, we still need to delete them if someone answered to a single
-    // comment created by danger, resulting in a discussion/thread. Otherwise we are left with dangling comments
-    // that will most likely have no meaning out of context.
-    const discussions = await this.getDangerDiscussions(dangerID)
-    const firstDiscussion = discussions.shift()
-    const existingNote = firstDiscussion?.notes[0]
-    // Delete all notes from all other danger discussions (discussions cannot be deleted as a whole):
-    await this.deleteNotes(this.reduceNotesFromDiscussions(discussions)) //delete the rest
+    if (useThreads()) {
+      const discussions = await this.getDangerDiscussions(dangerID)
+      const firstDiscussion = discussions.shift()
+      const existingNote = firstDiscussion?.notes[0]
+      // Delete all notes from all other danger discussions (discussions cannot be deleted as a whole):
+      await this.deleteNotes(this.reduceNotesFromDiscussions(discussions)) //delete the rest
 
-    let newOrUpdatedNote: GitLabNote
+      let newOrUpdatedNote: GitLabNote
 
-    if (existingNote) {
-      // update the existing comment
-      newOrUpdatedNote = await this.api.updateMergeRequestNote(existingNote.id, newComment)
+      if (existingNote) {
+        // update the existing comment
+        newOrUpdatedNote = await this.api.updateMergeRequestNote(existingNote.id, newComment)
+      } else {
+        // create a new comment
+        newOrUpdatedNote = await this.createComment(newComment)
+      }
+
+      // create URL from note
+      // "https://gitlab.com/group/project/merge_requests/154#note_132143425"
+      return `${this.api.mergeRequestURL}#note_${newOrUpdatedNote.id}`
     } else {
-      // create a new comment
-      newOrUpdatedNote = await this.createComment(newComment)
-    }
+      const notes: GitLabNote[] = await this.getMainDangerNotes(dangerID)
 
-    // create URL from note
-    // "https://gitlab.com/group/project/merge_requests/154#note_132143425"
-    return `${this.api.mergeRequestURL}#note_${newOrUpdatedNote.id}`
+      let note: GitLabNote
+
+      if (notes.length) {
+        // update the first
+        note = await this.api.updateMergeRequestNote(notes[0].id, newComment)
+        // delete the rest
+        for (let deleteme of notes) {
+          if (deleteme === notes[0]) {
+            continue
+          }
+          await this.api.deleteMergeRequestNote(deleteme.id)
+        }
+      } else {
+        // create a new note
+        note = await this.api.createMergeRequestNote(newComment)
+      }
+      // create URL from note
+      // "https://gitlab.com/group/project/merge_requests/154#note_132143425"
+      return `${this.api.mergeRequestURL}#note_${note.id}`
+    }
   }
 
   createComment = async (comment: string): Promise<GitLabNote> => {
@@ -162,12 +184,24 @@ class GitLab implements Platform {
     return await this.api.deleteMergeRequestNote(nid)
   }
 
+  /**
+   * Attempts to delete the "main" Danger comment. If the "main" Danger
+   * comment has any comments on it then that comment will not be deleted.
+   */
   deleteMainComment = async (dangerID: string): Promise<boolean> => {
-    //We fetch the discussions even if we are not set to use threads because users could still have replied to a
-    // comment by danger and thus created a discussion/thread. To not leave dangling notes, we delete the entire thread.
-    //There is no API to delete entire discussion. They can only be deleted fully by deleting every note:
-    const discussions = await this.getDangerDiscussions(dangerID)
-    return await this.deleteNotes(this.reduceNotesFromDiscussions(discussions))
+    if (useThreads()) {
+      // There is no API to delete entire discussion. They can only be deleted fully by deleting every note:
+      const discussions = await this.getDangerDiscussions(dangerID)
+      return await this.deleteNotes(this.reduceNotesFromDiscussions(discussions))
+    } else {
+      const notes = await this.getMainDangerNotes(dangerID)
+      for (let note of notes) {
+        d("deleteMainComment", { id: note.id })
+        await this.api.deleteMergeRequestNote(note.id)
+      }
+
+      return notes.length > 0
+    }
   }
 
   deleteNotes = async (notes: GitLabNote[]): Promise<boolean> => {
@@ -183,7 +217,7 @@ class GitLab implements Platform {
    * Only fetches the discussions where danger owns the top note
    */
   getDangerDiscussions = async (dangerID: string): Promise<GitLabDiscussion[]> => {
-    const noteFilter = await this.getDangerNoteFilter(dangerID)
+    const noteFilter = await this.getDangerDiscussionNoteFilter(dangerID)
     const discussions: GitLabDiscussion[] = await this.api.getMergeRequestDiscussions()
     return discussions.filter(({ notes }) => notes.length && noteFilter(notes[0]))
   }
@@ -192,22 +226,49 @@ class GitLab implements Platform {
     return discussions.reduce<GitLabNote[]>((acc, { notes }) => [...acc, ...notes], [])
   }
 
-  getDangerNotes = async (dangerID: string): Promise<GitLabNote[]> => {
-    const noteFilter = await this.getDangerNoteFilter(dangerID)
+  /**
+   * Attempts to find the "main" Danger note and should return at most
+   * one item. If the "main" Danger note has any comments on it then that
+   * note will not be returned.
+   */
+  getMainDangerNotes = async (dangerID: string): Promise<GitLabNote[]> => {
+    const noteFilter = await this.getDangerMainNoteFilter(dangerID)
     const notes: GitLabNote[] = await this.api.getMergeRequestNotes()
     return notes.filter(noteFilter)
   }
 
-  getDangerNoteFilter = async (dangerID: string): Promise<(note: GitLabNote) => boolean> => {
+  /**
+   * Filters a note to determine if it was created by Danger.
+   */
+  getDangerDiscussionNoteFilter = async (dangerID: string): Promise<(note: GitLabNote) => boolean> => {
     const { id: dangerUserId } = await this.api.getUser()
     return ({ author: { id }, body, system }: GitLabNote): boolean => {
       return (
         !system && // system notes are generated when the user interacts with the UI e.g. changing a PR title
         id === dangerUserId &&
-        //we do not check the `type` - it's `null` most of the time,
-        // only in discussions/threads this is `DiscussionNote` for all notes. But even if danger only creates a
-        // normal `null`-comment, any user replying to that comment will turn it into a `DiscussionNote`-typed one.
-        // So we cannot assume anything here about danger's note type.
+        body.includes(dangerIDToString(dangerID))
+      )
+    }
+  }
+
+  /**
+   * Filters a note to the "main" Danger note. If that note has any
+   * comments on it then it will not be found.
+   */
+  getDangerMainNoteFilter = async (dangerID: string): Promise<(note: GitLabNote) => boolean> => {
+    const { id: dangerUserId } = await this.api.getUser()
+    return ({ author: { id }, body, system, type }: GitLabNote): boolean => {
+      return (
+        !system && // system notes are generated when the user interacts with the UI e.g. changing a PR title
+        id === dangerUserId &&
+        // This check for the type being `null` seems to be the best option
+        // we have to determine whether this note is the "main" Danger note.
+        // This assumption does not hold if there are any comments on the
+        // "main" Danger note and in that case a new "main" Danger note will
+        // be created instead of updating the existing note. This behavior is better
+        // than the current alternative which is the bug described here:
+        // https://github.com/danger/danger-js/issues/1351
+        type == null &&
         body.includes(dangerIDToString(dangerID))
       )
     }
