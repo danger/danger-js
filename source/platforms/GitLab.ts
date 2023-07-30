@@ -114,7 +114,7 @@ class GitLab implements Platform {
         newOrUpdatedNote = await this.api.updateMergeRequestNote(existingNote.id, newComment)
       } else {
         // create a new comment
-        newOrUpdatedNote = await this.createComment(newComment)
+        newOrUpdatedNote = await this.createComment(dangerID, newComment)
       }
 
       // create URL from note
@@ -145,7 +145,7 @@ class GitLab implements Platform {
     }
   }
 
-  createComment = async (comment: string): Promise<GitLabNote> => {
+  createComment = async (_dangerID: string, comment: string): Promise<GitLabNote> => {
     d("createComment", { comment })
     if (useThreads()) {
       return (await this.api.createMergeRequestDiscussion(comment)).notes[0]
