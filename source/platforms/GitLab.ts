@@ -290,6 +290,7 @@ export const gitlabJSONToGitLabDSL = (gl: GitLabDSL, api: GitLabAPI): GitLabDSL 
     fileContents: api.getFileContents,
     addLabels: api.addLabels,
     removeLabels: api.removeLabels,
+    updateMergeRequestInfo: api.updateMergeRequestInfo,
   },
   api: api.apiInstance,
 })
