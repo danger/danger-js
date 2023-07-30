@@ -15,6 +15,7 @@
 ## Main
 
 <!-- Your comment below this -->
+- Feature: Expose updateMergeRequestInfo for gitlab api #1391 - [@glensc]
 <!-- Your comment above this -->
 
 ## 11.2.7
