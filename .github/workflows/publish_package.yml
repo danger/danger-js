@@ -3,7 +3,7 @@ name: Release Danger-JS package
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
     tags:
       - '*'
 
