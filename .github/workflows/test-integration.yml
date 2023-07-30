@@ -37,8 +37,7 @@ jobs:
       - run: |
           yarn install
           yarn build
-          npm install -g create-react-app
-          create-react-app danger_babel_test
+          yarn create react-app danger_babel_test
           cd danger_babel_test
           yarn add file:..
           echo "warn('Expect 2 warnings'); const a = async () => {warn('the other');}; schedule(a)" > dangerfile.js
