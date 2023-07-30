@@ -15,6 +15,7 @@
 ## Main
 
 <!-- Your comment below this -->
+- Add dangerID to gitlab createComment api #1395 [@glensc]
 <!-- Your comment above this -->
 
 ## 11.2.7
