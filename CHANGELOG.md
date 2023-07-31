@@ -15,8 +15,11 @@
 ## Main
 
 <!-- Your comment below this -->
-- Add dangerID to gitlab createComment api #1395 [@glensc]
 <!-- Your comment above this -->
+
+## 11.2.8
+
+- Another fix for Gitlab inline comments #1395 [@glensc]
 
 ## 11.2.7
 
