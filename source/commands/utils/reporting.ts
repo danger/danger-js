@@ -1,7 +1,7 @@
 import { DangerResults } from "../../dsl/DangerResults"
 
 export const markdownCode = (string: string): string => `
-\`\`\`sh
+\`\`\`
 ${string}
 \`\`\`
 `
