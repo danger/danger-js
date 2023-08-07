@@ -74,6 +74,7 @@ export function bitbucketCloudCredentialsFromEnv(env: Env): BitBucketCloudCreden
     return {
       type: "REPO_ACCESS_TOKEN",
       accessToken: env["DANGER_BITBUCKETCLOUD_REPO_ACCESSTOKEN"],
+      uuid,
     }
   }
 
