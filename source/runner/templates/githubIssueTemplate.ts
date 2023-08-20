@@ -59,7 +59,7 @@ const truncate = (msg: string, count: number) => {
   if (msg.length < count) {
     return msg
   } else {
-    return msg.substr(0, count - 3) + "..."
+    return msg.substring(0, count - 3) + "..."
   }
 }
 
