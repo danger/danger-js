@@ -1,6 +1,6 @@
 import * as fs from "fs"
 import * as path from "path"
-import JSON5 from "json5"
+import { parseTsconfig } from "get-tsconfig"
 import { debug } from "../../../debug"
 
 const enum BabelPackagePrefix {
@@ -126,7 +126,7 @@ export const typescriptify = (content: string, dir: string): string => {
   let compilerOptions: any
   const tsConfigPath = lookupTSConfig(dir)
   if (tsConfigPath) {
-    compilerOptions = JSON5.parse(fs.readFileSync(tsConfigPath, "utf8"))
+    compilerOptions = parseTsconfig(tsConfigPath)
   } else {
     compilerOptions = ts.getDefaultCompilerOptions()
   }
