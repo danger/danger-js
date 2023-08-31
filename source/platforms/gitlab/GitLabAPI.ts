@@ -77,10 +77,6 @@ class GitLabAPI {
     return `${this.projectURL}/merge_requests/${this.prId}`
   }
 
-  get apiInstance() {
-    return this.api
-  }
-
   getUser = async (): Promise<GitLabUserProfile> => {
     this.d("getUser")
     const user = (await this.api.Users.current()) as GitLabUserProfile
