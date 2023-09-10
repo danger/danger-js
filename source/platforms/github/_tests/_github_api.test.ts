@@ -317,7 +317,7 @@ describe("Bots", () => {
     delete process.env.PERIL_BOT_USER_ID
     delete process.env.DANGER_GITHUB_API_TOKEN
     delete process.env.GITHUB_WORKFLOW
-    delete process.env.GHE_ACTIONS_BOT_USER_ID
+    delete process.env.DANGER_GHE_ACTIONS_BOT_USER_ID
   })
 
   it("Allows setting additional headers", async () => {
@@ -379,9 +379,9 @@ describe("Bots", () => {
     expect(userID).toBe(2)
   })
 
-  it("Makes getUserId return GHE_ACTIONS_BOT_USER_ID when set", async () => {
+  it("Makes getUserId return DANGER_GHE_ACTIONS_BOT_USER_ID when set", async () => {
     process.env.GITHUB_WORKFLOW = "foobar"
-    process.env.GHE_ACTIONS_BOT_USER_ID = "3"
+    process.env.DANGER_GHE_ACTIONS_BOT_USER_ID = "3"
 
     const userID = await api.getUserID()
     expect(userID).toBe(3)

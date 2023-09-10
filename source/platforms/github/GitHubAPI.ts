@@ -140,7 +140,7 @@ export class GitHubAPI {
     const useGitHubActionsID = process.env["GITHUB_WORKFLOW"]
     if (useGitHubActionsID) {
       // Allow to customise the GitHub actions app ID for Github Enterprise
-      const gheActionsID = process.env["GHE_ACTIONS_BOT_USER_ID"]
+      const gheActionsID = process.env["DANGER_GHE_ACTIONS_BOT_USER_ID"]
       if (gheActionsID) {
         return parseInt(gheActionsID)
       }
