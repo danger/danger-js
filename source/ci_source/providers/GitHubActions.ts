@@ -59,7 +59,7 @@ import { readFileSync, existsSync } from "fs"
  * Note it's likely the version number should change, but you get the point. This will run Danger
  * self-encapsulated inside a GitHub action.
  *
- * If you are using DangerJS on GitHub Enteprise, you will need to set the Danger used ID to
+ * If you are using DangerJS on GitHub Enteprise, you will need to set the Danger user ID to
  * the GitHub Actions bot. This will enable Danger to correctly comment and update on PRs.
  *
  * * ```yml

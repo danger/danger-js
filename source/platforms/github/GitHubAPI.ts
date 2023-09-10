@@ -150,7 +150,7 @@ export class GitHubAPI {
       return 41898282
     }
 
-    this.d("Danger used ID is undefined.")
+    this.d("Danger user ID is undefined.")
     return undefined
   }
 

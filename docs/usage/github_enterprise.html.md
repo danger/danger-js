@@ -6,7 +6,7 @@ order: 4
 blurb: An overview of using Danger with GitHub Enterprise, and some examples
 ---
 
-If you are using DangerJS on GitHub Enteprise, you will need to set the Danger used ID to the GitHub Actions bot. This
+If you are using DangerJS on GitHub Enteprise, you will need to set the Danger user ID to the GitHub Actions bot. This
 will enable Danger to correctly comment and update on PRs.
 
 If you include Danger as a dev-dependency, then you can call danger directly as another build-step after your tests:
