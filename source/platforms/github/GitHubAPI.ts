@@ -130,6 +130,13 @@ export class GitHubAPI {
       return parseInt(perilID)
     }
 
+    if (process.env["DANGER_GITHUB_API_TOKEN"]) {
+      const info = await this.getUserInfo()
+      if (info.id) {
+        return info.id
+      }
+    }
+
     const useGitHubActionsID = process.env["GITHUB_WORKFLOW"]
     if (useGitHubActionsID) {
       // Allow to customise the GitHub actions app ID for Github Enterprise
@@ -143,11 +150,7 @@ export class GitHubAPI {
       return 41898282
     }
 
-    const info = await this.getUserInfo()
-    if (info.id) {
-      return info.id
-    }
-
+    this.d("Danger used ID is undefined.")
     return undefined
   }
 

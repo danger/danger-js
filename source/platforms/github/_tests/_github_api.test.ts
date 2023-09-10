@@ -1,6 +1,7 @@
 import { FakeCI } from "../../../ci_source/providers/Fake"
 import { GitHubAPI } from "../GitHubAPI"
 import { requestWithFixturedJSON } from "../../_tests/_github.test"
+import { GitHubUser } from "../../../dsl/GitHubDSL"
 
 const fetchJSON = (api: any, params: any): Promise<any> => {
   return Promise.resolve({
@@ -305,7 +306,7 @@ describe("API testing", () => {
   })
 })
 
-describe("Peril", () => {
+describe("Bots", () => {
   let api: GitHubAPI
 
   beforeEach(() => {
@@ -313,6 +314,10 @@ describe("Peril", () => {
     api = new GitHubAPI(mockSource, "ABCDE")
     api.fetch = jest.fn()
     api.additionalHeaders = { CUSTOM: "HEADER" }
+    delete process.env.PERIL_BOT_USER_ID
+    delete process.env.DANGER_GITHUB_API_TOKEN
+    delete process.env.GITHUB_WORKFLOW
+    delete process.env.GHE_ACTIONS_BOT_USER_ID
   })
 
   it("Allows setting additional headers", async () => {
@@ -354,35 +359,38 @@ describe("Peril", () => {
     )
   })
 
-  describe("Allows setting PERIL_BOT_USER_ID env variable", () => {
-    beforeEach(() => {
-      process.env.PERIL_BOT_USER_ID = "1"
-    })
-
-    afterEach(() => {
-      delete process.env.PERIL_BOT_USER_ID
-    })
-
-    it("Makes getUserId return PERIL_BOT_USER_ID", async () => {
-      const userID = await api.getUserID()
-      expect(userID).toBe(1)
-    })
+  it("getUserId return undefined if no auth is defined", async () => {
+    const userID = await api.getUserID()
+    expect(userID).toBe(undefined)
   })
 
-  describe("Allows setting GHE_ACTIONS_BOT_USER_ID env variable", () => {
-    beforeEach(() => {
-      process.env.GITHUB_WORKFLOW = "foobar"
-      process.env.GHE_ACTIONS_BOT_USER_ID = "1234"
-    })
+  it("getUserId return PERIL_BOT_USER_ID when set", async () => {
+    process.env.PERIL_BOT_USER_ID = "1"
 
-    afterEach(() => {
-      delete process.env.GITHUB_WORKFLOW
-      delete process.env.GHE_ACTIONS_BOT_USER_ID
-    })
+    const userID = await api.getUserID()
+    expect(userID).toBe(1)
+  })
 
-    it("Makes getUserId return GHE_ACTIONS_BOT_USER_ID", async () => {
-      const userID = await api.getUserID()
-      expect(userID).toBe(1234)
-    })
+  it("getUserID return DANGER_GITHUV_API_TOKEN user's ID when set", async () => {
+    process.env.DANGER_GITHUB_API_TOKEN = "fake_token"
+    api.getUserInfo = () => Promise.resolve<GitHubUser>(JSON.parse('{"id": 2}'))
+
+    const userID = await api.getUserID()
+    expect(userID).toBe(2)
+  })
+
+  it("Makes getUserId return GHE_ACTIONS_BOT_USER_ID when set", async () => {
+    process.env.GITHUB_WORKFLOW = "foobar"
+    process.env.GHE_ACTIONS_BOT_USER_ID = "3"
+
+    const userID = await api.getUserID()
+    expect(userID).toBe(3)
+  })
+
+  it("getUserID return default GitHub Actions bot ID if not overwritten", async () => {
+    process.env.GITHUB_WORKFLOW = "foobar"
+
+    const userID = await api.getUserID()
+    expect(userID).toBe(41898282)
   })
 })
