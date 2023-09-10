@@ -363,9 +363,26 @@ describe("Peril", () => {
       delete process.env.PERIL_BOT_USER_ID
     })
 
-    it("Makes getUserId return undefined", async () => {
+    it("Makes getUserId return PERIL_BOT_USER_ID", async () => {
       const userID = await api.getUserID()
       expect(userID).toBe(1)
+    })
+  })
+
+  describe("Allows setting GHE_ACTIONS_BOT_USER_ID env variable", () => {
+    beforeEach(() => {
+      process.env.GITHUB_WORKFLOW = "foobar"
+      process.env.GHE_ACTIONS_BOT_USER_ID = "1234"
+    })
+
+    afterEach(() => {
+      delete process.env.GITHUB_WORKFLOW
+      delete process.env.GHE_ACTIONS_BOT_USER_ID
+    })
+
+    it("Makes getUserId return GHE_ACTIONS_BOT_USER_ID", async () => {
+      const userID = await api.getUserID()
+      expect(userID).toBe(1234)
     })
   })
 })
