@@ -360,26 +360,45 @@ describe("Bots", () => {
   })
 
   it("getUserId return undefined if no auth is defined", async () => {
+    api.getUserInfo = () => Promise.resolve<GitHubUser>(JSON.parse('{"status": 403}'))
     const userID = await api.getUserID()
     expect(userID).toBe(undefined)
   })
 
   it("getUserId return PERIL_BOT_USER_ID when set", async () => {
+    api.getUserInfo = () => Promise.resolve<GitHubUser>(JSON.parse('{"status": 403}'))
     process.env.PERIL_BOT_USER_ID = "1"
 
     const userID = await api.getUserID()
     expect(userID).toBe(1)
   })
 
-  it("getUserID return DANGER_GITHUV_API_TOKEN user's ID when set", async () => {
-    process.env.DANGER_GITHUB_API_TOKEN = "fake_token"
-    api.getUserInfo = () => Promise.resolve<GitHubUser>(JSON.parse('{"id": 2}'))
-
+  // It should use the configured token to retrive the user ID
+  it("getUserID return default user's ID when set", async () => {
+    api.fetch = jest.fn().mockReturnValue({
+      json: jest.fn().mockImplementation(() => Promise.resolve<GitHubUser>(JSON.parse('{"id": 2}'))),
+    })
     const userID = await api.getUserID()
+
+    // Ensure we call the user endpoint with the configured token
+    expect(api.fetch).toHaveBeenCalledWith(
+      "https://api.github.com/user",
+      {
+        body: null,
+        headers: {
+          Authorization: "token ABCDE",
+          CUSTOM: "HEADER",
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      },
+      undefined
+    )
     expect(userID).toBe(2)
   })
 
   it("Makes getUserId return DANGER_GHE_ACTIONS_BOT_USER_ID when set", async () => {
+    api.getUserInfo = () => Promise.resolve<GitHubUser>(JSON.parse('{"status": 403}'))
     process.env.GITHUB_WORKFLOW = "foobar"
     process.env.DANGER_GHE_ACTIONS_BOT_USER_ID = "3"
 
@@ -388,6 +407,7 @@ describe("Bots", () => {
   })
 
   it("getUserID return default GitHub Actions bot ID if not overwritten", async () => {
+    api.getUserInfo = () => Promise.resolve<GitHubUser>(JSON.parse('{"status": 403}'))
     process.env.GITHUB_WORKFLOW = "foobar"
 
     const userID = await api.getUserID()
