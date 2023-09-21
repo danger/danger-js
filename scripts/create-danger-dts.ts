@@ -15,7 +15,7 @@ fs.writeFileSync("types/index.d.ts", "// TypeScript Version: 2.2\n" + output)
 
 import * as ts from "typescript"
 
-const program = ts.createProgram(["source/danger.d.ts"], { noEmit: true })
+const program = ts.createProgram(["source/danger.d.ts"], { noEmit: true, esModuleInterop: true })
 const emitResult = program.emit()
 const allDiagnostics = ts.getPreEmitDiagnostics(program).concat(emitResult.diagnostics)
 if (allDiagnostics.length) {

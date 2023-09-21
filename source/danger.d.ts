@@ -529,6 +529,29 @@ interface BitBucketServerChangesValueMove {
 // prettier-ignore
 type BitBucketServerChangesValue = BitBucketServerChangesValueAddCopyModifyDelete | BitBucketServerChangesValueMove
 
+/**
+ * Describes the possible arguments that
+ * could be used when calling the CLI
+ */
+interface CliArgs {
+  /** The base reference used by danger PR (e.g. not master) */
+  base: string
+  /** For debugging  */
+  verbose: string
+  /** Used by danger-js o allow having a custom CI */
+  externalCiProvider: string
+  /** Use SDTOUT instead of posting to the code review side */
+  textOnly: string
+  /** A custom path for the dangerfile (can also be a remote reference) */
+  dangerfile: string
+  /** So you can have many danger runs in one code review */
+  id: string
+  /** Use staged changes */
+  staging?: boolean
+}
+
+// NOTE: if add something new here, you need to change dslGenerator.ts
+
 /** A platform agnostic reference to a Git commit */
 interface GitCommit {
   /** The SHA for the commit */
@@ -1501,10 +1524,6 @@ interface GitLabNote extends Types.MergeRequestNoteSchema {
   type: "DiffNote" | "DiscussionNote" | null // XXX: other types? null means "normal comment"
 }
 
-interface GitLabInlineNote extends GitLabNote {
-  type: "DiffNote" | "DiscussionNote" | null // XXX: other types? null means "normal comment"
-}
-
 /** TODO: These need more comments from someone who uses GitLab, see GitLabDSL.ts in the danger-js repo */
 interface GitLabMR extends Types.MergeRequestSchema {
   subscribed: boolean
@@ -1538,43 +1557,6 @@ interface GitLabMR extends Types.MergeRequestSchema {
   allow_maintainer_to_push: boolean
 }
 
-interface GitLabDiscussion {
-  id: string //40 character hex
-  individual_note: boolean
-  notes: GitLabNote[]
-}
-
-interface GitLabDiscussionTextPosition {
-  position_type: "text"
-  base_sha: string
-  start_sha: string
-  head_sha: string
-  new_path: string
-  new_line: number
-  old_path: string
-  old_line: number | null
-}
-
-interface GitLabDiscussionCreationOptions {
-  position?: GitLabDiscussionTextPosition
-}
-
-interface GitLabInlineNote extends GitLabNote {
-  position: {
-    base_sha: string
-    start_sha: string
-    head_sha: string
-    old_path: string
-    new_path: string
-    position_type: "text" // XXX: other types?
-    old_line: number | null
-    new_line: number
-  }
-  resolvable: boolean
-  resolved: boolean
-  resolved_by: GitLabUser | null
-}
-
 interface GitLabMRCommit {
   id: string
   short_id: string
@@ -1588,23 +1570,6 @@ interface GitLabMRCommit {
   committer_name: string
   committer_email: string
   committed_date: string
-}
-
-interface GitLabCommit {
-  id: string
-  short_id: string
-  title: string
-  author_name: string
-  author_email: string
-  created_at: string
-}
-
-interface GitLabRepositoryCompare {
-  commit: GitLabCommit
-  commits: GitLabCommit[]
-  diffs: GitLabMRChange[]
-  compare_timeout: boolean
-  compare_same_ref: boolean
 }
 
 interface GitLabApproval {
@@ -1621,9 +1586,9 @@ interface GitLabApproval {
   approvals_left: number
   approved_by?:
     | {
-        user: GitLabUser
+        user: Types.UserSchema
       }[]
-    | GitLabUser[]
+    | Types.UserSchema[]
 }
 
 /** Key details about a repo */
@@ -1650,28 +1615,6 @@ interface Violation {
   /** Optional icon for table (Only valid for messages) */
   icon?: string
 }
-/**
- * Describes the possible arguments that
- * could be used when calling the CLI
- */
-interface CliArgs {
-  /** The base reference used by danger PR (e.g. not master) */
-  base: string
-  /** For debugging  */
-  verbose: string
-  /** Used by danger-js o allow having a custom CI */
-  externalCiProvider: string
-  /** Use SDTOUT instead of posting to the code review side */
-  textOnly: string
-  /** A custom path for the dangerfile (can also be a remote reference) */
-  dangerfile: string
-  /** So you can have many danger runs in one code review */
-  id: string
-  /** Use staged changes */
-  staging?: boolean
-}
-
-// NOTE: if add something new here, you need to change dslGenerator.ts
 /** A function with a callback function, which Danger wraps in a Promise */
 type CallbackableFn = (callback: (done: any) => void) => void
 
