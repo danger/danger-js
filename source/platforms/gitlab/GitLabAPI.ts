@@ -1,15 +1,5 @@
 import { RepoMetaData } from "../../dsl/RepoMetaData"
-import {
-  GitLabApproval,
-  GitLabDiscussion,
-  GitLabDiscussionCreationOptions,
-  GitLabInlineNote,
-  GitLabMR,
-  GitLabNote,
-  GitlabUpdateMr,
-  GitLabRepositoryCompare,
-  GitLabUserProfile,
-} from "../../dsl/GitLabDSL"
+import { GitLabMR, GitlabUpdateMr } from "../../dsl/GitLabDSL"
 import { Gitlab, Types } from "@gitbeaker/node"
 import { Env } from "../../ci_source/ci_source"
 import { debug } from "../../debug"
@@ -122,38 +112,40 @@ class GitLabAPI {
     return commits
   }
 
-  getMergeRequestDiscussions = async (): Promise<GitLabDiscussion[]> => {
+  getMergeRequestDiscussions = async (): Promise<Types.DiscussionSchema[]> => {
     this.d("getMergeRequestDiscussions", this.repoSlug, this.prId)
     const api = this.api.MergeRequestDiscussions
-    const discussions = (await api.all(this.repoSlug, this.prId, {})) as GitLabDiscussion[]
+    const discussions = await api.all(this.repoSlug, this.prId, {})
     this.d("getMergeRequestDiscussions", discussions)
     return discussions
   }
 
-  getMergeRequestNotes = async (): Promise<GitLabNote[]> => {
+  getMergeRequestNotes = async (): Promise<Types.MergeRequestNoteSchema[]> => {
     this.d("getMergeRequestNotes", this.repoSlug, this.prId)
     const api = this.api.MergeRequestNotes
-    const notes = (await api.all(this.repoSlug, this.prId, {})) as GitLabNote[]
+    const notes = await api.all(this.repoSlug, this.prId, {})
     this.d("getMergeRequestNotes", notes)
     return notes
   }
 
-  getMergeRequestInlineNotes = async (): Promise<GitLabInlineNote[]> => {
+  getMergeRequestInlineNotes = async (): Promise<Types.MergeRequestNoteSchema[]> => {
     this.d("getMergeRequestInlineNotes")
-    const notes: GitLabNote[] = await this.getMergeRequestNotes()
-    const inlineNotes = notes.filter((note: GitLabNote) => note.type == "DiffNote") as GitLabInlineNote[]
+    const notes = await this.getMergeRequestNotes()
+    const inlineNotes = notes.filter((note) => note.type == "DiffNote")
     this.d("getMergeRequestInlineNotes", inlineNotes)
     return inlineNotes
   }
 
   createMergeRequestDiscussion = async (
     content: string,
-    options?: GitLabDiscussionCreationOptions
-  ): Promise<GitLabDiscussion> => {
+    options?: {
+      position?: Partial<Types.DiscussionNotePosition>
+    } & Types.BaseRequestOptions
+  ): Promise<Types.DiscussionSchema> => {
     this.d("createMergeRequestDiscussion", this.repoSlug, this.prId, content, options)
     const api = this.api.MergeRequestDiscussions
     try {
-      const result = (await api.create(this.repoSlug, this.prId, content, options)) as GitLabDiscussion
+      const result = await api.create(this.repoSlug, this.prId, content, options)
       this.d("createMergeRequestDiscussion", result)
       return result
     } catch (e) {
@@ -162,11 +154,11 @@ class GitLabAPI {
     }
   }
 
-  createMergeRequestNote = async (body: string): Promise<GitLabNote> => {
+  createMergeRequestNote = async (body: string): Promise<Types.DiscussionNote> => {
     this.d("createMergeRequestNote", this.repoSlug, this.prId, body)
     try {
       this.d("createMergeRequestNote")
-      const note = (await this.api.MergeRequestNotes.create(this.repoSlug, this.prId, body)) as GitLabNote
+      const note = await this.api.MergeRequestNotes.create(this.repoSlug, this.prId, body)
       this.d("createMergeRequestNote", note)
       return note
     } catch (e) {
@@ -176,10 +168,10 @@ class GitLabAPI {
     return Promise.reject()
   }
 
-  updateMergeRequestNote = async (id: number, body: string): Promise<GitLabNote> => {
+  updateMergeRequestNote = async (id: number, body: string): Promise<Types.DiscussionNote> => {
     this.d("updateMergeRequestNote", this.repoSlug, this.prId, id, body)
     try {
-      const note = (await this.api.MergeRequestNotes.edit(this.repoSlug, this.prId, id, body)) as GitLabNote
+      const note = await this.api.MergeRequestNotes.edit(this.repoSlug, this.prId, id, body)
       this.d("updateMergeRequestNote", note)
       return note
     } catch (e) {

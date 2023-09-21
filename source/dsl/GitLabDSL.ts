@@ -33,10 +33,6 @@ export interface GitLabNote extends Types.MergeRequestNoteSchema {
   type: "DiffNote" | "DiscussionNote" | null // XXX: other types? null means "normal comment"
 }
 
-export interface GitLabInlineNote extends GitLabNote {
-  type: "DiffNote" | "DiscussionNote" | null // XXX: other types? null means "normal comment"
-}
-
 /** TODO: These need more comments from someone who uses GitLab, see GitLabDSL.ts in the danger-js repo */
 export interface GitLabMR extends Types.MergeRequestSchema {
   subscribed: boolean
@@ -70,43 +66,6 @@ export interface GitLabMR extends Types.MergeRequestSchema {
   allow_maintainer_to_push: boolean
 }
 
-export interface GitLabDiscussion {
-  id: string //40 character hex
-  individual_note: boolean
-  notes: GitLabNote[]
-}
-
-export interface GitLabDiscussionTextPosition {
-  position_type: "text"
-  base_sha: string
-  start_sha: string
-  head_sha: string
-  new_path: string
-  new_line: number
-  old_path: string
-  old_line: number | null
-}
-
-export interface GitLabDiscussionCreationOptions {
-  position?: GitLabDiscussionTextPosition
-}
-
-export interface GitLabInlineNote extends GitLabNote {
-  position: {
-    base_sha: string
-    start_sha: string
-    head_sha: string
-    old_path: string
-    new_path: string
-    position_type: "text" // XXX: other types?
-    old_line: number | null
-    new_line: number
-  }
-  resolvable: boolean
-  resolved: boolean
-  resolved_by: GitLabUser | null
-}
-
 export interface GitLabMRCommit {
   id: string
   short_id: string
@@ -120,23 +79,6 @@ export interface GitLabMRCommit {
   committer_name: string
   committer_email: string
   committed_date: string
-}
-
-export interface GitLabCommit {
-  id: string
-  short_id: string
-  title: string
-  author_name: string
-  author_email: string
-  created_at: string
-}
-
-export interface GitLabRepositoryCompare {
-  commit: GitLabCommit
-  commits: GitLabCommit[]
-  diffs: GitLabMRChange[]
-  compare_timeout: boolean
-  compare_same_ref: boolean
 }
 
 export interface GitLabApproval {
@@ -153,7 +95,7 @@ export interface GitLabApproval {
   approvals_left: number
   approved_by?:
     | {
-        user: GitLabUser
+        user: Types.UserSchema
       }[]
-    | GitLabUser[]
+    | Types.UserSchema[]
 }
