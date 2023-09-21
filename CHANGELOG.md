@@ -15,6 +15,7 @@
 ## Main
 
 <!-- Your comment below this -->
+- GitLab: Upgrade `@gitbeaker/node` from `^21.3.0` to `^35.8.1` [@buffcode]
 <!-- Your comment above this -->
 
 ## 11.2.8
@@ -61,9 +62,6 @@ Reverts a change for GitHub Actions which was likely causing duplicate comments 
 - Append random string to danger-results.json and danger-dsl.json files to better support concurrent processes #1311
 - Gitlab: add support for skipping remove of messages when empty [#1330](https://github.com/danger/danger-js/issues/1330) [@ivankatliarchuk]
 - Gitlab: package moved to a new home "@gitbreaker/*" [#1301](https://github.com/danger/danger-js/issues/1301) [@ivankatliarchuk]
-- Append random string to danger-results.json and danger-dsl.json files to better support concurrent processes #1311
-- GitLab: Upgrade `@gitbreaker/node` from `^21.3.0` to `^^35.7.0` [#1319](https://github.com/danger/danger-js/pull/1319) [@ivankatliarchuk]
-- Gitlab package moved to a new home "@gitbreaker/*" [#1301](https://github.com/danger/danger-js/issues/1301)  [@ivankatliarchuk]
 - GitLab: Improve support for MRs from forks [#1319](https://github.com/danger/danger-js/pull/1319) [@ivankatliarchuk]
 - GitLab: Added provider tests [#1319](https://github.com/danger/danger-js/pull/1319) [@ivankatliarchuk]
 - GitHub: Added `danger.github.pr.draft` field to DSL
@@ -1966,6 +1964,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@azz]: https://github.com/azz
 [@bdotdub]: https://github.com/bdotdub
 [@bigkraig]: https://github.com/bigkraig
+[@buffcode]: https://github.com/buffcode
 [@caffodian]: https://github.com/caffodian
 [@codestergit]: https://github.com/codestergit
 [@cwright017]: https://github.com/Cwright017
