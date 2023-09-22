@@ -19,7 +19,7 @@ jobs:
 
       # Validate related tooling
       - run: yarn declarations
-      - run: yarn tsc distribution/danger.d.ts
+      - run: yarn tsc --esModuleInterop distribution/danger.d.ts
       - run: rm -rf node_modules/@types/babel-*
       - run: rm -rf node_modules/@types/babylon
 

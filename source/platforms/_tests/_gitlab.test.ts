@@ -1,14 +1,14 @@
 import GitLabAPI from "../gitlab/GitLabAPI"
 import GitLab from "../GitLab"
-import { GitLabDiscussion, GitLabNote, GitLabUser, GitLabUserProfile } from "../../dsl/GitLabDSL"
+import { Types } from "@gitbeaker/node"
 
 const baseUri = "https://my-gitlab.org/my-project"
 
 const dangerUserId = 8797215
 
-const getUser = async (): Promise<GitLabUserProfile> => {
-  const user: Partial<GitLabUserProfile> = { id: dangerUserId }
-  return user as GitLabUserProfile
+const getUser = async (): Promise<Types.UserExtendedSchema> => {
+  const user: Partial<Types.UserExtendedSchema> = { id: dangerUserId }
+  return user as Types.UserExtendedSchema
 }
 
 const dangerID = "dddanger1234"
@@ -19,21 +19,26 @@ function mockNote(
   authorId: number,
   body = "",
   type: "DiffNote" | "DiscussionNote" | null = "DiffNote"
-): GitLabNote {
-  const author: Partial<GitLabUser> = { id: authorId }
-  const note: Partial<GitLabNote> = { author: author as GitLabUser, body, id, type: type }
-  return note as GitLabNote
+): Types.MergeRequestNoteSchema {
+  const author: Partial<Types.UserSchema> = { id: authorId }
+  const note: Partial<Types.MergeRequestNoteSchema> = { author: author as Types.UserSchema, body, id, type: type }
+  return note as Types.MergeRequestNoteSchema
 }
 
-function mockDiscussion(id: string, notes: GitLabNote[]): GitLabDiscussion {
-  const discussion: Partial<GitLabDiscussion> = { id, notes }
-  return discussion as GitLabDiscussion
+function mockDiscussion(id: string, notes: Types.DiscussionNote[]): Types.DiscussionSchema {
+  const discussion: Partial<Types.DiscussionSchema> = { id, notes }
+  return discussion as Types.DiscussionSchema
 }
 
 function mockApi(withExisting = false): GitLabAPI {
   const note1 = mockNote(1001, dangerUserId, `some body ${dangerIdString} asdf`)
   const note2 = mockNote(1002, 125235)
-  const note3 = mockNote(1003, dangerUserId, `Main Danger comment ${dangerIdString} More text to ensure the Danger ID string can be found in the middle of a comment`, null)
+  const note3 = mockNote(
+    1003,
+    dangerUserId,
+    `Main Danger comment ${dangerIdString} More text to ensure the Danger ID string can be found in the middle of a comment`,
+    null
+  )
   const note4 = mockNote(1004, 745774)
   const note5 = mockNote(1005, 745774)
   const discussion1 = mockDiscussion("aaaaffff1111", [note1, note2])
@@ -51,9 +56,7 @@ function mockApi(withExisting = false): GitLabAPI {
     getMergeRequestDiscussions: jest.fn(() =>
       Promise.resolve(withExisting ? [discussion1, discussion2, discussion3] : [])
     ),
-    getMergeRequestNotes: jest.fn(() =>
-      Promise.resolve(withExisting ? [note1, note2, note3, note4, note5] : [])
-    ),
+    getMergeRequestNotes: jest.fn(() => Promise.resolve(withExisting ? [note1, note2, note3, note4, note5] : [])),
     mergeRequestURL: baseUri,
     updateMergeRequestNote: jest.fn(() => Promise.resolve(newNote)),
   }

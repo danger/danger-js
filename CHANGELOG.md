@@ -15,6 +15,7 @@
 ## Main
 
 <!-- Your comment below this -->
+- GitLab: Upgrade `@gitbeaker/node` from `^21.3.0` to `^35.8.1` [@buffcode]
 <!-- Your comment above this -->
 
 ## 11.2.8
@@ -1963,6 +1964,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@azz]: https://github.com/azz
 [@bdotdub]: https://github.com/bdotdub
 [@bigkraig]: https://github.com/bigkraig
+[@buffcode]: https://github.com/buffcode
 [@caffodian]: https://github.com/caffodian
 [@codestergit]: https://github.com/codestergit
 [@cwright017]: https://github.com/Cwright017
