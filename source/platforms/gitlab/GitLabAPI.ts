@@ -1,6 +1,6 @@
 import { RepoMetaData } from "../../dsl/RepoMetaData"
-import { GitLabMR, GitlabUpdateMr } from "../../dsl/GitLabDSL"
 import { Gitlab, Types } from "@gitbeaker/node"
+import { Types as CoreTypes } from "@gitbeaker/core/dist"
 import { Env } from "../../ci_source/ci_source"
 import { debug } from "../../debug"
 
@@ -76,14 +76,16 @@ class GitLabAPI {
     return user
   }
 
-  getMergeRequestInfo = async (): Promise<GitLabMR> => {
+  getMergeRequestInfo = async (): Promise<CoreTypes.ExpandedMergeRequestSchema> => {
     this.d(`getMergeRequestInfo for repo: ${this.repoSlug} pr: ${this.prId}`)
-    const mr = (await this.api.MergeRequests.show(this.repoSlug, this.prId)) as GitLabMR
+    const mr = await this.api.MergeRequests.show(this.repoSlug, this.prId)
     this.d("getMergeRequestInfo", mr)
-    return mr
+    return mr as CoreTypes.ExpandedMergeRequestSchema
   }
 
-  updateMergeRequestInfo = async (changes: GitlabUpdateMr): Promise<Types.MergeRequestSchema> => {
+  updateMergeRequestInfo = async (
+    changes: Types.UpdateMergeRequestOptions & Types.BaseRequestOptions
+  ): Promise<Types.MergeRequestSchema> => {
     const mr = this.api.MergeRequests.edit(this.repoSlug, this.prId, changes)
     this.d("updateMergeRequestInfo", mr)
     return mr
@@ -200,7 +202,7 @@ class GitLabAPI {
     const projectId = slug || this.repoSlug
     // Use the current state of PR if no ref is passed
     if (!ref) {
-      const mr: GitLabMR = await this.getMergeRequestInfo()
+      const mr = await this.getMergeRequestInfo()
       ref = mr.diff_refs.head_sha
     }
 

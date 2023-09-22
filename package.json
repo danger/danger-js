@@ -150,6 +150,7 @@
     "debug": "^4.1.1",
     "fast-json-patch": "^3.0.0-1",
     "get-stdin": "^6.0.0",
+    "@gitbeaker/core": "^35.8.1",
     "@gitbeaker/node": "^35.8.1",
     "http-proxy-agent": "^5.0.0",
     "https-proxy-agent": "^5.0.1",
