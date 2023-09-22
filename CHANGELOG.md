@@ -15,8 +15,11 @@
 ## Main
 
 <!-- Your comment below this -->
-- GitLab: Upgrade `@gitbeaker/node` from `^21.3.0` to `^35.8.1` [@buffcode]
 <!-- Your comment above this -->
+
+## 11.3.0
+
+- GitLab: Upgrade `@gitbeaker/node` from `^21.3.0` to `^35.8.1` [@buffcode]
 
 ## 11.2.8
 
