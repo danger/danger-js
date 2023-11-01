@@ -27,7 +27,7 @@ export interface DangerContext {
   schedule(asyncFunction: Scheduleable): void
 
   /**
-   * Fails a build, outputting a specific reason for failing into a HTML table.
+   * Highlights critical issues. Message is shown inside a HTML table.
    *
    * @param {MarkdownString} message the String to output
    * @param {string | undefined} file a file which this message should be attached to
@@ -36,8 +36,7 @@ export interface DangerContext {
   fail(message: MarkdownString, file?: string, line?: number): void
 
   /**
-   * Highlights low-priority issues, but does not fail the build. Message
-   * is shown inside a HTML table.
+   * Highlights low-priority issues. Message is shown inside a HTML table.
    *
    * @param {MarkdownString} message the String to output
    * @param {string | undefined} file a file which this message should be attached to
