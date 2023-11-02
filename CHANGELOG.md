@@ -15,6 +15,7 @@
 ## Main
 
 <!-- Your comment below this -->
+- Clear missing DSL timeout when DSL is found so danger runner can exit faster when done [@normano64]
 <!-- Your comment above this -->
 
 ## 11.3.0
