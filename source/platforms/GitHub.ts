@@ -20,6 +20,7 @@ export function GitHub(api: GitHubAPI) {
   const APIMetadataForPR = (pr: GitHubPRDSL): GitHubAPIPR => {
     return {
       number: pr.number,
+      pull_number: pr.number,
       repo: pr.base.repo.name,
       owner: pr.base.repo.owner.login,
     }

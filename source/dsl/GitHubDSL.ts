@@ -289,13 +289,13 @@ export interface GitHubPRDSL {
 
   /** How does the PR author relate to this repo/org? */
   author_association:
-    | "COLLABORATOR"
-    | "CONTRIBUTOR"
-    | "FIRST_TIMER"
-    | "FIRST_TIME_CONTRIBUTOR"
-    | "MEMBER"
-    | "NONE"
-    | "OWNER"
+  | "COLLABORATOR"
+  | "CONTRIBUTOR"
+  | "FIRST_TIMER"
+  | "FIRST_TIME_CONTRIBUTOR"
+  | "MEMBER"
+  | "NONE"
+  | "OWNER"
 }
 
 // These are the individual subtypes of objects inside the larger DSL objects above.
@@ -462,8 +462,13 @@ export interface GitHubAPIPR {
   owner: string
   /** The repo name */
   repo: string
-  /** The PR number */
+  /** 
+   * The PR number 
+   * @deprecated use `pull_number` instead
+   */
   number: number
+  /** The PR number */
+  pull_number: number
 }
 
 export interface GitHubReviewers {
