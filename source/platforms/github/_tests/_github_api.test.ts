@@ -1,6 +1,7 @@
 import { FakeCI } from "../../../ci_source/providers/Fake"
 import { GitHubAPI } from "../GitHubAPI"
 import { requestWithFixturedJSON } from "../../_tests/_github.test"
+import { GitHubUser } from "../../../dsl/GitHubDSL"
 
 const fetchJSON = (api: any, params: any): Promise<any> => {
   return Promise.resolve({
@@ -305,7 +306,7 @@ describe("API testing", () => {
   })
 })
 
-describe("Peril", () => {
+describe("Bots", () => {
   let api: GitHubAPI
 
   beforeEach(() => {
@@ -313,6 +314,10 @@ describe("Peril", () => {
     api = new GitHubAPI(mockSource, "ABCDE")
     api.fetch = jest.fn()
     api.additionalHeaders = { CUSTOM: "HEADER" }
+    delete process.env.PERIL_BOT_USER_ID
+    delete process.env.DANGER_GITHUB_API_TOKEN
+    delete process.env.GITHUB_WORKFLOW
+    delete process.env.DANGER_GHE_ACTIONS_BOT_USER_ID
   })
 
   it("Allows setting additional headers", async () => {
@@ -354,18 +359,58 @@ describe("Peril", () => {
     )
   })
 
-  describe("Allows setting PERIL_BOT_USER_ID env variable", () => {
-    beforeEach(() => {
-      process.env.PERIL_BOT_USER_ID = "1"
-    })
+  it("getUserId return undefined if no auth is defined", async () => {
+    api.getUserInfo = () => Promise.resolve<GitHubUser>(JSON.parse('{"status": 403}'))
+    const userID = await api.getUserID()
+    expect(userID).toBe(undefined)
+  })
 
-    afterEach(() => {
-      delete process.env.PERIL_BOT_USER_ID
-    })
+  it("getUserId return PERIL_BOT_USER_ID when set", async () => {
+    api.getUserInfo = () => Promise.resolve<GitHubUser>(JSON.parse('{"status": 403}'))
+    process.env.PERIL_BOT_USER_ID = "1"
 
-    it("Makes getUserId return undefined", async () => {
-      const userID = await api.getUserID()
-      expect(userID).toBe(1)
+    const userID = await api.getUserID()
+    expect(userID).toBe(1)
+  })
+
+  // It should use the configured token to retrive the user ID
+  it("getUserID return default user's ID when set", async () => {
+    api.fetch = jest.fn().mockReturnValue({
+      json: jest.fn().mockImplementation(() => Promise.resolve<GitHubUser>(JSON.parse('{"id": 2}'))),
     })
+    const userID = await api.getUserID()
+
+    // Ensure we call the user endpoint with the configured token
+    expect(api.fetch).toHaveBeenCalledWith(
+      "https://api.github.com/user",
+      {
+        body: null,
+        headers: {
+          Authorization: "token ABCDE",
+          CUSTOM: "HEADER",
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      },
+      undefined
+    )
+    expect(userID).toBe(2)
+  })
+
+  it("Makes getUserId return DANGER_GHE_ACTIONS_BOT_USER_ID when set", async () => {
+    api.getUserInfo = () => Promise.resolve<GitHubUser>(JSON.parse('{"status": 403}'))
+    process.env.GITHUB_WORKFLOW = "foobar"
+    process.env.DANGER_GHE_ACTIONS_BOT_USER_ID = "3"
+
+    const userID = await api.getUserID()
+    expect(userID).toBe(3)
+  })
+
+  it("getUserID return default GitHub Actions bot ID if not overwritten", async () => {
+    api.getUserInfo = () => Promise.resolve<GitHubUser>(JSON.parse('{"status": 403}'))
+    process.env.GITHUB_WORKFLOW = "foobar"
+
+    const userID = await api.getUserID()
+    expect(userID).toBe(41898282)
   })
 })

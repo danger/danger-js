@@ -137,12 +137,18 @@ export class GitHubAPI {
 
     const useGitHubActionsID = process.env["GITHUB_WORKFLOW"]
     if (useGitHubActionsID) {
+      // Allow to customise the GitHub actions app ID for Github Enterprise
+      const gheActionsID = process.env["DANGER_GHE_ACTIONS_BOT_USER_ID"]
+      if (gheActionsID) {
+        return parseInt(gheActionsID)
+      }
       // This is the user.id of the github-actions app (https://github.com/apps/github-actions)
       // that is used to comment when using danger in a GitHub Action
       // with GITHUB_TOKEN (https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token)
       return 41898282
     }
 
+    this.d("Danger user ID is undefined.")
     return undefined
   }
 
