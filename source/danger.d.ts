@@ -530,29 +530,6 @@ interface BitBucketServerChangesValueMove {
 // prettier-ignore
 type BitBucketServerChangesValue = BitBucketServerChangesValueAddCopyModifyDelete | BitBucketServerChangesValueMove
 
-/**
- * Describes the possible arguments that
- * could be used when calling the CLI
- */
-interface CliArgs {
-  /** The base reference used by danger PR (e.g. not master) */
-  base: string
-  /** For debugging  */
-  verbose: string
-  /** Used by danger-js o allow having a custom CI */
-  externalCiProvider: string
-  /** Use SDTOUT instead of posting to the code review side */
-  textOnly: string
-  /** A custom path for the dangerfile (can also be a remote reference) */
-  dangerfile: string
-  /** So you can have many danger runs in one code review */
-  id: string
-  /** Use staged changes */
-  staging?: boolean
-}
-
-// NOTE: if add something new here, you need to change dslGenerator.ts
-
 /** A platform agnostic reference to a Git commit */
 interface GitCommit {
   /** The SHA for the commit */
@@ -1484,8 +1461,13 @@ interface GitHubAPIPR {
   owner: string
   /** The repo name */
   repo: string
-  /** The PR number */
+  /**
+   * The PR number
+   * @deprecated use `pull_number` instead
+   */
   number: number
+  /** The PR number */
+  pull_number: number
 }
 
 interface GitHubReviewers {
@@ -1541,6 +1523,28 @@ interface Violation {
   /** Optional icon for table (Only valid for messages) */
   icon?: string
 }
+/**
+ * Describes the possible arguments that
+ * could be used when calling the CLI
+ */
+interface CliArgs {
+  /** The base reference used by danger PR (e.g. not master) */
+  base: string
+  /** For debugging  */
+  verbose: string
+  /** Used by danger-js o allow having a custom CI */
+  externalCiProvider: string
+  /** Use SDTOUT instead of posting to the code review side */
+  textOnly: string
+  /** A custom path for the dangerfile (can also be a remote reference) */
+  dangerfile: string
+  /** So you can have many danger runs in one code review */
+  id: string
+  /** Use staged changes */
+  staging?: boolean
+}
+
+// NOTE: if add something new here, you need to change dslGenerator.ts
 /** A function with a callback function, which Danger wraps in a Promise */
 type CallbackableFn = (callback: (done: any) => void) => void
 
@@ -1562,7 +1566,7 @@ type Scheduleable = Promise<any> | Promise<void> | CallbackableFn
 declare function schedule(asyncFunction: Scheduleable): void
 
 /**
- * Fails a build, outputting a specific reason for failing into a HTML table.
+ * Highlights critical issues. Message is shown inside a HTML table.
  *
  * @param {MarkdownString} message the String to output
  * @param {string | undefined} file a file which this message should be attached to
@@ -1571,8 +1575,7 @@ declare function schedule(asyncFunction: Scheduleable): void
 declare function fail(message: MarkdownString, file?: string, line?: number): void
 
 /**
- * Highlights low-priority issues, but does not fail the build. Message
- * is shown inside a HTML table.
+ * Highlights low-priority issues. Message is shown inside a HTML table.
  *
  * @param {MarkdownString} message the String to output
  * @param {string | undefined} file a file which this message should be attached to
