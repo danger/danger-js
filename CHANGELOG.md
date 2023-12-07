@@ -17,6 +17,10 @@
 <!-- Your comment below this -->
 <!-- Your comment above this -->
 
+## 11.3.1
+
+-  Customise GHE actions bot user ID via `DANGER_GHE_ACTIONS_BOT_USER_ID` #1404  [@dimitar-hristov]
+
 ## 11.3.0
 
 - GitLab: Upgrade `@gitbeaker/node` from `^21.3.0` to `^35.8.1` [@buffcode]
@@ -1978,6 +1982,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@dbgrandi]: https://github.com/dbgrandi
 [@dblandin]: https://github.com/dblandin
 [@denieler]: https://github.com/denieler
+[@dimitar-hristov]: https://github.com/dimitar-hristov
 [@dfalling]: https://github.com/dfalling
 [@dkundel]: https://github.com/dkundel
 [@doniyor2109]: https://github.com/doniyor2109
