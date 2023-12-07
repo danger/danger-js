@@ -15,12 +15,13 @@
 ## Main
 
 <!-- Your comment below this -->
-- Clear missing DSL timeout when DSL is found so danger runner can exit faster when done [@normano64]
 <!-- Your comment above this -->
 
 ## 11.3.1
 
--  Customise GHE actions bot user ID via `DANGER_GHE_ACTIONS_BOT_USER_ID` #1404  [@dimitar-hristov]
+- Adds `pull_number` into `thisPR` in the GitHub SDL  [@radimsv]
+- Clear missing DSL timeout when DSL is found so danger runner can exit faster when done [@normano64]
+- Customise GHE actions bot user ID via `DANGER_GHE_ACTIONS_BOT_USER_ID` #1404  [@dimitar-hristov]
 
 ## 11.3.0
 
@@ -2052,6 +2053,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@ravanscafi]: https://github.com/ravanscafi
 [@rogerluan]: https://github.com/rogerluan
 [@rohit-gohri]: https://github.com/rohit-gohri
+[@radimsv]: https://github.com/radimsv
 [@rouby]: https://github.com/rouby
 [@rzgry]: https://github.com/rzgry
 [@sajjadzamani]: https://github.com/sajjadzamani
