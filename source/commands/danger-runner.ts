@@ -51,6 +51,7 @@ const run = (config: SharedCLI) => async (jsonString: string) => {
 
   d("Got STDIN for Danger Run")
   foundDSL = true
+  clearTimeout(missingDSLTimeout)
   const dangerFile = dangerfilePath(program)
 
   // Set up the runtime env
@@ -85,9 +86,9 @@ nodeCleanup((exitCode: number, signal: string) => {
 })
 
 // Add a timeout so that CI doesn't run forever if something has broken.
-setTimeout(() => {
+const missingDSLTimeout = setTimeout(() => {
   if (!foundDSL) {
-    console.error(chalk.red("Timeout: Failed to get the Danger DSL after 1 second"))
+    console.error(chalk.red("Timeout: Failed to get the Danger DSL after 10 second"))
     process.exitCode = 1
     process.exit(1)
   }
