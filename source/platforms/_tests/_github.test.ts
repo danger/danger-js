@@ -7,8 +7,8 @@ const fixtures = resolve(__dirname, "fixtures")
 // eslint-disable-next-line jest/no-export
 export const requestWithFixturedJSON =
   async (path: string): Promise<() => Promise<any>> =>
-  () =>
-    Promise.resolve(JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString()))
+    () =>
+      Promise.resolve(JSON.parse(readFileSync(`${fixtures}/${path}`, {}).toString()))
 
 class mockGitHubAPI {
   async getPullRequestInfo() {
@@ -103,6 +103,7 @@ describe("getPlatformReviewDSLRepresentation", () => {
     const dsl = await github.getPlatformReviewDSLRepresentation()
 
     expect(dsl.thisPR).toEqual({
+      pull_number: 327,
       number: 327,
       owner: "artsy",
       repo: "emission",
