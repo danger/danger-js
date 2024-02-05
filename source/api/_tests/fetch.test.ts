@@ -28,7 +28,10 @@ class TestServer {
   start = async (response: ResponseMock): Promise<void> => {
     this.response = response
     return new Promise<void>((resolve, reject) => {
-      this.server.listen(this.port, this.hostname, (err: any) => (err ? reject(err) : resolve()))
+      this.server.on("error", (e) => {
+        reject(e)
+      })
+      this.server.listen(this.port, this.hostname, undefined, () => resolve())
     })
   }
   stop = async (): Promise<void> => {
@@ -52,7 +55,10 @@ class TestProxy {
   start = async (): Promise<void> => {
     return new Promise<void>((resolve, reject) => {
       this.isRunning = true
-      this.server.listen(this.port, this.hostname, (err: any) => (err ? reject(err) : resolve()))
+      this.server.on("error", (e) => {
+        reject(e)
+      })
+      this.server.listen(this.port, this.hostname, undefined, () => resolve())
     })
   }
   stop = async (): Promise<void> => {
