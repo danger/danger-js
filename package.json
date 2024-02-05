@@ -129,7 +129,7 @@
     "jest": "^24.0.0",
     "jest-json-reporter": "^1.2.2",
     "lint-staged": "^12.3.7",
-    "madge": "^5.0.1",
+    "madge": "^6.0.1",
     "nock": "^13.2.0",
     "pkg": "^5.4.0",
     "prettier": "^2.5.1",
