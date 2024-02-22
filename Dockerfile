@@ -1,4 +1,4 @@
-FROM node:14-slim as build
+FROM node:18-slim as build
 
 LABEL maintainer="Orta Therox"
 LABEL "com.github.actions.name"="Danger JS Action"
@@ -16,7 +16,7 @@ RUN yarn install --production --frozen-lockfile
 RUN chmod +x distribution/commands/danger.js
 
 
-FROM node:14-slim
+FROM node:18-slim
 WORKDIR /usr/src/danger
 ENV PATH="/usr/src/danger/node_modules/.bin:$PATH"
 COPY package.json ./
