@@ -84,6 +84,12 @@ class GitLab implements Platform {
     const dangerUserID = (await this.api.getUser()).id
 
     let dangerDiscussions = await this.getDangerDiscussions(dangerID)
+    // Remove system resolved danger discussions to not end up deleting danger inline comments
+    // on old versions of the diff. This is preferred as otherwise the discussion ends up in a state where
+    // the auto resolve system note can become the first note on the discussion resulting in poor change history on the MR.
+    dangerDiscussions = dangerDiscussions.filter((discussion) => !this.isDangerDiscussionSystemResolved(discussion))
+    d("getInlineComments found danger discussions", dangerDiscussions)
+
     const diffNotes = this.getDiffNotesFromDiscussions(dangerDiscussions)
     return diffNotes.map((note) => {
       return {
@@ -257,6 +263,23 @@ class GitLab implements Platform {
     const noteFilter = await this.getDangerDiscussionNoteFilter(dangerID)
     const discussions = await this.api.getMergeRequestDiscussions()
     return discussions.filter(({ notes }) => notes && notes.length && noteFilter(notes[0]))
+  }
+
+  isDangerDiscussionSystemResolved = (discussion: Types.DiscussionSchema): boolean => {
+    const notes = discussion.notes
+    if (!notes) {
+      return false
+    }
+
+    const dangerNote = notes[0]
+    if (!dangerNote || !dangerNote.resolved) {
+      return false
+    }
+
+    // Check for a system note that resolved it
+    return notes.some((note) => {
+      return note.system === true
+    })
   }
 
   getDiffNotesFromDiscussions = (discussions: Types.DiscussionSchema[]): Types.DiscussionNoteSchema[] => {
