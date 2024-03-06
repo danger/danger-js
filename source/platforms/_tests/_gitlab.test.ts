@@ -1,14 +1,14 @@
 import GitLabAPI from "../gitlab/GitLabAPI"
 import GitLab from "../GitLab"
-import { Types } from "@gitbeaker/node"
+import type * as Types from "@gitbeaker/rest"
 
 const baseUri = "https://my-gitlab.org/my-project"
 
 const dangerUserId = 8797215
 
-const getUser = async (): Promise<Types.UserExtendedSchema> => {
-  const user: Partial<Types.UserExtendedSchema> = { id: dangerUserId }
-  return user as Types.UserExtendedSchema
+const getUser = async (): Promise<Types.ExpandedUserSchema> => {
+  const user: Partial<Types.ExpandedUserSchema> = { id: dangerUserId }
+  return user as Types.ExpandedUserSchema
 }
 
 const dangerID = "dddanger1234"
@@ -25,7 +25,7 @@ function mockNote(
   return note as Types.MergeRequestNoteSchema
 }
 
-function mockDiscussion(id: string, notes: Types.DiscussionNote[]): Types.DiscussionSchema {
+function mockDiscussion(id: string, notes: Types.DiscussionNoteSchema[]): Types.DiscussionSchema {
   const discussion: Partial<Types.DiscussionSchema> = { id, notes }
   return discussion as Types.DiscussionSchema
 }

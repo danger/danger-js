@@ -5,7 +5,7 @@ import { GitCommit } from "../dsl/Commit"
 import { GitLabDSL, GitLabJSONDSL } from "../dsl/GitLabDSL"
 import { debug } from "../debug"
 import { dangerIDToString } from "../runner/templates/githubIssueTemplate"
-import { Types } from "@gitbeaker/node"
+import type * as Types from "@gitbeaker/rest"
 
 const d = debug("GitLab")
 
@@ -40,7 +40,7 @@ class GitLab implements Platform {
   }
   // TODO: test
   getPlatformGitRepresentation = async (): Promise<GitJSONDSL> => {
-    const changes = await this.api.getMergeRequestChanges()
+    const diffs = await this.api.getMergeRequestDiffs()
     const commits = await this.api.getMergeRequestCommits()
 
     const mappedCommits: GitCommit[] = commits.map((commit) => {
@@ -49,12 +49,12 @@ class GitLab implements Platform {
         author: {
           name: commit.author_name,
           email: commit.author_email as string,
-          date: (commit.authored_date as Date).toString(),
+          date: commit.authored_date as string,
         },
         committer: {
           name: commit.committer_name as string,
           email: commit.committer_email as string,
-          date: (commit.committed_date as Date).toString(),
+          date: commit.committed_date as string,
         },
         message: commit.message,
         parents: commit.parent_ids as string[],
@@ -64,11 +64,11 @@ class GitLab implements Platform {
     })
 
     // XXX: does "renamed_file"/move count is "delete/create", or "modified"?
-    const modified_files: string[] = changes
-      .filter((change) => !change.new_file && !change.deleted_file)
-      .map((change) => change.new_path)
-    const created_files: string[] = changes.filter((change) => change.new_file).map((change) => change.new_path)
-    const deleted_files: string[] = changes.filter((change) => change.deleted_file).map((change) => change.new_path)
+    const modified_files: string[] = diffs
+      .filter((diff) => !diff.new_file && !diff.deleted_file)
+      .map((diff) => diff.new_path)
+    const created_files: string[] = diffs.filter((diff) => diff.new_file).map((diff) => diff.new_path)
+    const deleted_files: string[] = diffs.filter((diff) => diff.deleted_file).map((diff) => diff.new_path)
 
     return {
       modified_files,
@@ -79,9 +79,12 @@ class GitLab implements Platform {
   }
 
   getInlineComments = async (dangerID: string): Promise<Comment[]> => {
+    d("getInlineComments", { dangerID })
     const dangerUserID = (await this.api.getUser()).id
 
-    return (await this.api.getMergeRequestInlineNotes()).map((note) => {
+    let dangerDiscussions = await this.getDangerDiscussions(dangerID)
+    const diffNotes = this.getDiffNotesFromDiscussions(dangerDiscussions)
+    return diffNotes.map((note) => {
       return {
         id: `${note.id}`,
         body: note.body,
@@ -103,19 +106,19 @@ class GitLab implements Platform {
 
     if (useThreads()) {
       const discussions = await this.getDangerDiscussions(dangerID)
+      d("updateOrCreateComment using threads, discussions", discussions)
       const firstDiscussion = discussions.shift()
       const existingNote = firstDiscussion?.notes?.[0]
-      // Delete all notes from all other danger discussions (discussions cannot be deleted as a whole):
-      await this.deleteNotes(this.reduceNotesFromDiscussions(discussions)) //delete the rest
+      await this.deleteDiscussions(discussions)
 
-      let newOrUpdatedNote: Types.DiscussionNote | undefined
+      let newOrUpdatedNote: Types.DiscussionNoteSchema | undefined
 
       if (existingNote) {
         // update the existing comment
         newOrUpdatedNote = await this.api.updateMergeRequestNote(existingNote.id, newComment)
       } else {
         // create a new comment
-        newOrUpdatedNote = await this.createComment(dangerID, newComment)
+        newOrUpdatedNote = (await this.api.createMergeRequestDiscussion(newComment))?.notes?.[0]
       }
 
       if (!newOrUpdatedNote) {
@@ -127,8 +130,9 @@ class GitLab implements Platform {
       return `${this.api.mergeRequestURL}#note_${newOrUpdatedNote.id}`
     } else {
       const notes = await this.getMainDangerNotes(dangerID)
+      d("updateOrCreateComment not using threads, main danger notes", notes)
 
-      let note: Types.DiscussionNote
+      let note: Types.MergeRequestNoteSchema
 
       if (notes.length) {
         // update the first
@@ -150,7 +154,10 @@ class GitLab implements Platform {
     }
   }
 
-  createComment = async (_dangerID: string, comment: string): Promise<Types.DiscussionNote | undefined> => {
+  createComment = async (
+    _dangerID: string,
+    comment: string
+  ): Promise<Types.DiscussionNoteSchema | Types.MergeRequestNoteSchema | undefined> => {
     d("createComment", { comment })
     if (useThreads()) {
       return (await this.api.createMergeRequestDiscussion(comment))?.notes?.[0]
@@ -167,22 +174,23 @@ class GitLab implements Platform {
     d("createInlineComment", { git, comment, path, line })
 
     const mr = await this.api.getMergeRequestInfo()
+    const position = {
+      positionType: "text",
+      baseSha: mr.diff_refs.base_sha,
+      startSha: mr.diff_refs.start_sha,
+      headSha: mr.diff_refs.head_sha,
+      old_path: path,
+      old_line: undefined,
+      new_path: path,
+      new_line: line,
+    } as Types.Camelize<Types.DiscussionNotePositionTextSchema>
 
     return this.api.createMergeRequestDiscussion(comment, {
-      position: {
-        position_type: "text",
-        base_sha: mr.diff_refs.base_sha,
-        start_sha: mr.diff_refs.start_sha,
-        head_sha: mr.diff_refs.head_sha,
-        old_path: path,
-        old_line: undefined,
-        new_path: path,
-        new_line: line,
-      },
+      position: position,
     })
   }
 
-  updateInlineComment = async (comment: string, id: string): Promise<Types.DiscussionNote> => {
+  updateInlineComment = async (comment: string, id: string): Promise<Types.MergeRequestNoteSchema> => {
     d("updateInlineComment", { comment, id })
     const nid = parseInt(id) // fingers crossed
     return await this.api.updateMergeRequestNote(nid, comment)
@@ -200,9 +208,8 @@ class GitLab implements Platform {
    */
   deleteMainComment = async (dangerID: string): Promise<boolean> => {
     if (useThreads()) {
-      // There is no API to delete entire discussion. They can only be deleted fully by deleting every note:
       const discussions = await this.getDangerDiscussions(dangerID)
-      return await this.deleteNotes(this.reduceNotesFromDiscussions(discussions))
+      return await this.deleteDiscussions(discussions)
     } else {
       const notes = await this.getMainDangerNotes(dangerID)
       for (let note of notes) {
@@ -214,13 +221,24 @@ class GitLab implements Platform {
     }
   }
 
-  deleteNotes = async (notes: Types.DiscussionNote[]): Promise<boolean> => {
-    for (const note of notes) {
-      d("deleteNotes", { id: note.id })
-      await this.api.deleteMergeRequestNote(note.id)
+  deleteDiscussions = async (discussions: Types.DiscussionSchema[]): Promise<boolean> => {
+    d("deleteDiscussions", { length: discussions.length })
+    for (const discussion of discussions) {
+      await this.deleteDiscussion(discussion)
     }
 
-    return notes.length > 0
+    return discussions.length > 0
+  }
+
+  deleteDiscussion = async (discussion: Types.DiscussionSchema): Promise<boolean> => {
+    d("deleteDiscussion", { discussionId: discussion.id })
+    // There is no API to delete entire discussion. They can only be deleted fully by deleting every note
+    const discussionNotes = discussion.notes ?? []
+    for (const discussionNote of discussionNotes) {
+      await this.api.deleteMergeRequestNote(discussionNote.id)
+    }
+
+    return discussionNotes.length > 0
   }
 
   /**
@@ -232,11 +250,15 @@ class GitLab implements Platform {
     return discussions.filter(({ notes }) => notes && notes.length && noteFilter(notes[0]))
   }
 
-  reduceNotesFromDiscussions = (discussions: Types.DiscussionSchema[]): Types.DiscussionNote[] => {
-    return discussions.reduce<Types.DiscussionNote[]>((acc, { notes }) => {
-      notes = notes || []
-      return [...acc, ...notes]
-    }, [])
+  getDiffNotesFromDiscussions = (discussions: Types.DiscussionSchema[]): Types.DiscussionNoteSchema[] => {
+    const diffNotes = discussions.map((discussion) => {
+      const note = discussion.notes?.[0]
+      if (!note || note.type != "DiffNote") {
+        return undefined
+      }
+      return note
+    })
+    return diffNotes.filter(Boolean) as Types.DiscussionNoteSchema[]
   }
 
   /**
@@ -253,9 +275,9 @@ class GitLab implements Platform {
   /**
    * Filters a note to determine if it was created by Danger.
    */
-  getDangerDiscussionNoteFilter = async (dangerID: string): Promise<(note: Types.DiscussionNote) => boolean> => {
+  getDangerDiscussionNoteFilter = async (dangerID: string): Promise<(note: Types.DiscussionNoteSchema) => boolean> => {
     const { id: dangerUserId } = await this.api.getUser()
-    return ({ author: { id }, body, system }: Types.DiscussionNote): boolean => {
+    return ({ author: { id }, body, system }: Types.DiscussionNoteSchema): boolean => {
       return (
         !system && // system notes are generated when the user interacts with the UI e.g. changing a PR title
         id === dangerUserId &&

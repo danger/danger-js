@@ -1,7 +1,7 @@
 import { debug } from "../../debug"
 import { GitLabDSL } from "../../dsl/GitLabDSL"
 import { GitDSL, GitJSONDSL } from "../../dsl/GitDSL"
-import { Types } from "@gitbeaker/node"
+import type * as Types from "@gitbeaker/rest"
 import { gitJSONToGitDSL, GitJSONToGitDSLConfig } from "../git/gitJSONToGitDSL"
 import GitLabAPI from "./GitLabAPI"
 

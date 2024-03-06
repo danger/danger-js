@@ -17,6 +17,8 @@
 <!-- Your comment below this -->
 - Upgrade `node` engine from `>=14.13.1` to `>=18` [@heltoft]
 - Upgrade `@types/node` from `^10.11.3` to `18.19.18` [@heltoft]
+- GitLab: [#1386] Move from `@gitbeaker/node` to `@gitbeaker/rest` [@heltoft]
+- GitLab: [#1412] Danger fails to create inline comments on Gitlab [@heltoft]
 <!-- Your comment above this -->
 
 ## 11.3.1

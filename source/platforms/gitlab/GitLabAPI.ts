@@ -1,20 +1,30 @@
-import { RepoMetaData } from "../../dsl/RepoMetaData"
-import { Gitlab, Types } from "@gitbeaker/node"
-import { Types as CoreTypes } from "@gitbeaker/core/dist"
+import type * as Types from "@gitbeaker/rest"
+import { Gitlab } from "@gitbeaker/rest"
 import { Env } from "../../ci_source/ci_source"
 import { debug } from "../../debug"
+import { RepoMetaData } from "../../dsl/RepoMetaData"
 import { encodingParser } from "../encodingParser"
 
 export type GitLabAPIToken = string
 export type GitLabOAuthToken = string
 
-export interface GitLabAPICredentials {
+export interface RootGitLabAPICredentials {
   host: string
-  token?: GitLabAPIToken
-  oauthToken?: GitLabOAuthToken
 }
 
-export function getGitLabAPICredentialsFromEnv(env: Env): GitLabAPICredentials {
+export interface GitLabAPICredentialsOptionsWithAccessToken extends RootGitLabAPICredentials {
+  token: GitLabAPIToken
+}
+
+export interface GitLabAPICredentialsOptionsWithOAuthToken extends RootGitLabAPICredentials {
+  oauthToken: GitLabOAuthToken
+}
+
+export type GitLabAPICredentials =
+  | GitLabAPICredentialsOptionsWithAccessToken
+  | GitLabAPICredentialsOptionsWithOAuthToken
+
+export function getGitLabHostFromEnv(env: Env): string {
   let host = "https://gitlab.com"
   const envHost = env["DANGER_GITLAB_HOST"]
   const envCIAPI = env["CI_API_V4_URL"]
@@ -36,22 +46,40 @@ export function getGitLabAPICredentialsFromEnv(env: Env): GitLabAPICredentials {
     }
   }
 
-  return {
-    host,
-    token: env["DANGER_GITLAB_API_TOKEN"],
-    oauthToken: env["DANGER_GITLAB_API_OAUTH_TOKEN"],
+  return host
+}
+
+export function getGitLabAPICredentialsFromEnv(env: Env): GitLabAPICredentials {
+  const host = getGitLabHostFromEnv(env)
+  const envToken = env["DANGER_GITLAB_API_TOKEN"]
+  const envOAuthToken = env["DANGER_GITLAB_API_OAUTH_TOKEN"]
+
+  if (envToken) {
+    return {
+      host,
+      token: envToken,
+    }
+  } else if (envOAuthToken) {
+    return {
+      host,
+      oauthToken: envOAuthToken,
+    }
+  } else {
+    throw new ReferenceError(
+      "DANGER_GITLAB_API_TOKEN or DANGER_GITLAB_API_OAUTH_TOKEN must be available in the environment"
+    )
   }
 }
 
 class GitLabAPI {
-  private readonly api: InstanceType<typeof Gitlab>
+  private readonly api: InstanceType<typeof Types.Gitlab>
   private readonly hostURL: string
   private readonly d = debug("GitLabAPI")
   private readonly repoSlug: string
   private readonly prId: number
 
   constructor(public readonly repoMetadata: RepoMetaData, public readonly repoCredentials: GitLabAPICredentials) {
-    this.api = new Gitlab(repoCredentials)
+    this.api = new Gitlab({ ...repoCredentials })
     this.hostURL = repoCredentials.host
     this.repoSlug = repoMetadata.repoSlug
     this.prId = Number(repoMetadata.pullRequestID)
@@ -69,50 +97,49 @@ class GitLabAPI {
     return this.api
   }
 
-  getUser = async (): Promise<Types.UserExtendedSchema> => {
+  getUser = async (): Promise<Types.ExpandedUserSchema> => {
     this.d("getUser")
-    // https://github.com/jdalrymple/gitbeaker/issues/2084
-    const user = (await this.api.Users.current()) as Types.UserExtendedSchema
+    const user = (await this.api.Users.showCurrentUser()) as Types.ExpandedUserSchema
     this.d("getUser", user)
     return user
   }
 
-  getMergeRequestInfo = async (): Promise<CoreTypes.ExpandedMergeRequestSchema> => {
+  getMergeRequestInfo = async (): Promise<Types.ExpandedMergeRequestSchema> => {
     this.d(`getMergeRequestInfo for repo: ${this.repoSlug} pr: ${this.prId}`)
     const mr = await this.api.MergeRequests.show(this.repoSlug, this.prId)
     this.d("getMergeRequestInfo", mr)
-    return mr as CoreTypes.ExpandedMergeRequestSchema
+    return mr as Types.ExpandedMergeRequestSchema
   }
 
   updateMergeRequestInfo = async (
-    changes: Types.UpdateMergeRequestOptions & Types.BaseRequestOptions
-  ): Promise<Types.MergeRequestSchema> => {
-    const mr = this.api.MergeRequests.edit(this.repoSlug, this.prId, changes)
+    changes: Types.EditMergeRequestOptions
+  ): Promise<Types.ExpandedMergeRequestSchema> => {
+    const mr = await this.api.MergeRequests.edit(this.repoSlug, this.prId, changes)
     this.d("updateMergeRequestInfo", mr)
-    return mr
+    return mr as Types.ExpandedMergeRequestSchema
   }
 
   getMergeRequestApprovals = async (): Promise<Types.MergeRequestLevelMergeRequestApprovalSchema> => {
     this.d(`getMergeRequestApprovals for repo: ${this.repoSlug} pr: ${this.prId}`)
-    const approvals = await this.api.MergeRequestApprovals.configuration(this.repoSlug, {
-      mergerequestIid: this.prId,
+    const approvals = await this.api.MergeRequestApprovals.showConfiguration(this.repoSlug, {
+      mergerequestIId: this.prId,
     })
     this.d("getMergeRequestApprovals", approvals)
-    return approvals
+    return approvals as Types.MergeRequestLevelMergeRequestApprovalSchema
   }
 
-  getMergeRequestChanges = async (): Promise<Types.CommitDiffSchema[]> => {
+  getMergeRequestDiffs = async (): Promise<Types.MergeRequestDiffSchema[]> => {
     this.d(`getMergeRequestChanges for repo: ${this.repoSlug} pr: ${this.prId}`)
-    const mr = await this.api.MergeRequests.changes(this.repoSlug, this.prId)
-    this.d("getMergeRequestChanges", mr.changes)
-    return mr.changes as Types.CommitDiffSchema[]
+    const allDiffs = await this.api.MergeRequests.allDiffs(this.repoSlug, this.prId)
+    this.d("getMergeRequestChanges", allDiffs)
+    return allDiffs as Types.MergeRequestDiffSchema[]
   }
 
   getMergeRequestCommits = async (): Promise<Types.CommitSchema[]> => {
     this.d("getMergeRequestCommits", this.repoSlug, this.prId)
-    const commits = await this.api.MergeRequests.commits(this.repoSlug, this.prId)
+    const commits = await this.api.MergeRequests.allCommits(this.repoSlug, this.prId)
     this.d("getMergeRequestCommits", commits)
-    return commits
+    return commits as Types.CommitSchema[]
   }
 
   getMergeRequestDiscussions = async (): Promise<Types.DiscussionSchema[]> => {
@@ -120,7 +147,7 @@ class GitLabAPI {
     const api = this.api.MergeRequestDiscussions
     const discussions = await api.all(this.repoSlug, this.prId, {})
     this.d("getMergeRequestDiscussions", discussions)
-    return discussions
+    return discussions as Types.DiscussionSchema[]
   }
 
   getMergeRequestNotes = async (): Promise<Types.MergeRequestNoteSchema[]> => {
@@ -128,42 +155,33 @@ class GitLabAPI {
     const api = this.api.MergeRequestNotes
     const notes = await api.all(this.repoSlug, this.prId, {})
     this.d("getMergeRequestNotes", notes)
-    return notes
-  }
-
-  getMergeRequestInlineNotes = async (): Promise<Types.MergeRequestNoteSchema[]> => {
-    this.d("getMergeRequestInlineNotes")
-    const notes = await this.getMergeRequestNotes()
-    const inlineNotes = notes.filter((note) => note.type == "DiffNote")
-    this.d("getMergeRequestInlineNotes", inlineNotes)
-    return inlineNotes
+    return notes as Types.MergeRequestNoteSchema[]
   }
 
   createMergeRequestDiscussion = async (
     content: string,
     options?: {
-      position?: Partial<Types.DiscussionNotePosition>
-    } & Types.BaseRequestOptions
+      position?: Types.DiscussionNotePositionOptions
+    }
   ): Promise<Types.DiscussionSchema> => {
     this.d("createMergeRequestDiscussion", this.repoSlug, this.prId, content, options)
     const api = this.api.MergeRequestDiscussions
     try {
       const result = await api.create(this.repoSlug, this.prId, content, options)
       this.d("createMergeRequestDiscussion", result)
-      return result
+      return result as Types.DiscussionSchema
     } catch (e) {
       this.d("createMergeRequestDiscussion", e)
       throw e
     }
   }
 
-  createMergeRequestNote = async (body: string): Promise<Types.DiscussionNote> => {
+  createMergeRequestNote = async (body: string): Promise<Types.MergeRequestNoteSchema> => {
     this.d("createMergeRequestNote", this.repoSlug, this.prId, body)
     try {
-      this.d("createMergeRequestNote")
       const note = await this.api.MergeRequestNotes.create(this.repoSlug, this.prId, body)
       this.d("createMergeRequestNote", note)
-      return note
+      return note as Types.MergeRequestNoteSchema
     } catch (e) {
       this.d("createMergeRequestNote", e)
     }
@@ -171,12 +189,35 @@ class GitLabAPI {
     return Promise.reject()
   }
 
-  updateMergeRequestNote = async (id: number, body: string): Promise<Types.DiscussionNote> => {
+  updateMergeRequestDiscussionNote = async (
+    discussionId: string,
+    noteId: number,
+    body: string
+  ): Promise<Types.MergeRequestDiscussionNoteSchema> => {
+    this.d("updateMergeRequestDiscussionNote", this.repoSlug, this.prId, discussionId, noteId, body)
+    try {
+      const discussionNote = await this.api.MergeRequestDiscussions.editNote(
+        this.repoSlug,
+        this.prId,
+        discussionId,
+        noteId,
+        { body: body }
+      )
+      this.d("updateMergeRequestDiscussionNote", discussionNote)
+      return discussionNote as Types.MergeRequestDiscussionNoteSchema
+    } catch (e) {
+      this.d("updateMergeRequestDiscussionNote", e)
+    }
+
+    return Promise.reject()
+  }
+
+  updateMergeRequestNote = async (id: number, body: string): Promise<Types.MergeRequestNoteSchema> => {
     this.d("updateMergeRequestNote", this.repoSlug, this.prId, id, body)
     try {
-      const note = await this.api.MergeRequestNotes.edit(this.repoSlug, this.prId, id, body)
+      const note = await this.api.MergeRequestNotes.edit(this.repoSlug, this.prId, id, { body: body })
       this.d("updateMergeRequestNote", note)
-      return note
+      return note as Types.MergeRequestNoteSchema
     } catch (e) {
       this.d("updateMergeRequestNote", e)
     }
@@ -184,7 +225,19 @@ class GitLabAPI {
     return Promise.reject()
   }
 
-  // note: deleting the _only_ note in a discussion also deletes the discussion \o/
+  // note: deleting the _only_ discussion note in a discussion also deletes the discussion \o/
+  deleteMergeRequestDiscussionNote = async (discussionId: string, noteId: number): Promise<boolean> => {
+    this.d("deleteMergeRequestDiscussionNote", this.repoSlug, this.prId, discussionId, noteId)
+    try {
+      await this.api.MergeRequestDiscussions.removeNote(this.repoSlug, this.prId, discussionId, noteId)
+      this.d("deleteMergeRequestDiscussionNote", true)
+      return true
+    } catch (e) {
+      this.d("deleteMergeRequestDiscussionNote", e)
+      return false
+    }
+  }
+
   deleteMergeRequestNote = async (id: number): Promise<boolean> => {
     this.d("deleteMergeRequestNote", this.repoSlug, this.prId, id)
     try {
@@ -217,7 +270,7 @@ class GitLabAPI {
     } catch (e) {
       this.d("getFileContents", e)
       // GitHubAPI.fileContents returns "" when the file does not exist, keep it consistent across providers
-      if ((e as any).response.statusCode === 404) {
+      if ((e as any).cause?.response.status === 404) {
         return ""
       }
       throw e
@@ -226,12 +279,13 @@ class GitLabAPI {
 
   getCompareChanges = async (base?: string, head?: string): Promise<Types.CommitDiffSchema[]> => {
     if (!base || !head) {
-      return this.getMergeRequestChanges()
+      return this.getMergeRequestDiffs()
     }
     const api = this.api.Repositories
     const projectId = this.repoSlug
     const compare = await api.compare(projectId, base, head)
-    return compare.diffs ? compare.diffs : []
+    const diffs = compare.diffs ?? []
+    return diffs as Types.CommitDiffSchema[]
   }
 
   addLabels = async (...labels: string[]): Promise<boolean> => {
@@ -243,13 +297,14 @@ class GitLabAPI {
 
   removeLabels = async (...labels: string[]): Promise<boolean> => {
     const mr = await this.getMergeRequestInfo()
+    const mrLabels = mr.labels as string[]
     for (const label of labels) {
-      const index = mr.labels?.indexOf(label)
+      const index = mrLabels.indexOf(label)
       if ((index as number) > -1) {
-        mr.labels?.splice(index as number, 1)
+        mrLabels.splice(index as number, 1)
       }
     }
-    await this.updateMergeRequestInfo({ labels: mr.labels?.join(",") })
+    await this.updateMergeRequestInfo({ labels: mrLabels.join(",") })
     return true
   }
 }
