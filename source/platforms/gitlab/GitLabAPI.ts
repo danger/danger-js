@@ -3,6 +3,7 @@ import { Gitlab, Types } from "@gitbeaker/node"
 import { Types as CoreTypes } from "@gitbeaker/core/dist"
 import { Env } from "../../ci_source/ci_source"
 import { debug } from "../../debug"
+import { encodingParser } from "../encodingParser"
 
 export type GitLabAPIToken = string
 export type GitLabOAuthToken = string
@@ -209,7 +210,8 @@ class GitLabAPI {
     try {
       this.d("getFileContents", projectId, path, ref)
       const response = await api.show(projectId, path, ref)
-      const result: string = Buffer.from(response.content, response.encoding).toString()
+      const encoding = encodingParser(response.encoding)
+      const result: string = Buffer.from(response.content, encoding).toString()
       this.d("getFileContents", result)
       return result
     } catch (e) {
