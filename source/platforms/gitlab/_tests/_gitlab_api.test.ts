@@ -3,6 +3,7 @@ import nock, { Definition } from "nock"
 import { default as GitLabAPI, getGitLabAPICredentialsFromEnv } from "../GitLabAPI"
 import { resolve } from "path"
 import { readFileSync } from "fs"
+import "./_fetch_polyfill"
 
 const nockBack = nock.back
 nockBack.fixtures = __dirname + "/fixtures"
@@ -105,9 +106,9 @@ describe("GitLab API", () => {
     expect(result).toEqual(response)
   })
 
-  it("getMergeRequestChanges", async () => {
-    const { nockDone } = await nockBack("getMergeRequestChanges.json")
-    const result = await api.getMergeRequestChanges()
+  it("getMergeRequestDiffs", async () => {
+    const { nockDone } = await nockBack("getMergeRequestDiffs.json")
+    const result = await api.getMergeRequestDiffs()
     nockDone()
     expect(result).toEqual(
       expect.arrayContaining([
@@ -148,14 +149,6 @@ describe("GitLab API", () => {
     expect(result).toEqual(response)
   })
 
-  it("getMergeRequestInlineNotes", async () => {
-    const { nockDone } = await nockBack("getMergeRequestInlineNotes.json")
-    const result = await api.getMergeRequestInlineNotes()
-    nockDone()
-    // TODO: There are no inline notes on this MR, we should look for a public one that has inline notes to improve this test
-    expect(result).toEqual([])
-  })
-
   it("getCompareChanges", async () => {
     const { nockDone } = await nockBack("getCompareChanges.json")
     const result = await api.getCompareChanges(
@@ -168,11 +161,11 @@ describe("GitLab API", () => {
   })
 
   it("getCompareChanges without base/head", async () => {
-    const { nockDone } = await nockBack("getMergeRequestChanges.json")
+    const { nockDone } = await nockBack("getMergeRequestDiffs.json")
     const result = await api.getCompareChanges()
     nockDone()
     const { response } = loadFixture("getCompareChanges")
-    expect(result).toEqual(response.diffs)
+    expect(result).toMatchObject(response.diffs)
   })
 
   it("getFileContents", async () => {

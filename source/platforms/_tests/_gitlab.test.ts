@@ -1,14 +1,14 @@
 import GitLabAPI from "../gitlab/GitLabAPI"
 import GitLab from "../GitLab"
-import { Types } from "@gitbeaker/node"
+import type * as Types from "@gitbeaker/rest"
 
 const baseUri = "https://my-gitlab.org/my-project"
 
 const dangerUserId = 8797215
 
-const getUser = async (): Promise<Types.UserExtendedSchema> => {
-  const user: Partial<Types.UserExtendedSchema> = { id: dangerUserId }
-  return user as Types.UserExtendedSchema
+const getUser = async (): Promise<Types.ExpandedUserSchema> => {
+  const user: Partial<Types.ExpandedUserSchema> = { id: dangerUserId }
+  return user as Types.ExpandedUserSchema
 }
 
 const dangerID = "dddanger1234"
@@ -18,25 +18,47 @@ function mockNote(
   id: number,
   authorId: number,
   body = "",
+  resolved = false,
   type: "DiffNote" | "DiscussionNote" | null = "DiffNote"
 ): Types.MergeRequestNoteSchema {
   const author: Partial<Types.UserSchema> = { id: authorId }
-  const note: Partial<Types.MergeRequestNoteSchema> = { author: author as Types.UserSchema, body, id, type: type }
+  const note: Partial<Types.MergeRequestNoteSchema> = {
+    author: author as Types.UserSchema,
+    body,
+    id,
+    type: type,
+    resolved: resolved,
+  }
   return note as Types.MergeRequestNoteSchema
 }
 
-function mockDiscussion(id: string, notes: Types.DiscussionNote[]): Types.DiscussionSchema {
+function mockSystemAutoresolveNote(id: number, authorId: number): Types.MergeRequestNoteSchema {
+  let autoresolvedSystemNote = mockNote(
+    id,
+    authorId,
+    "changed this line in [version 2 of the diff](/some/url/merge_requests/2322/diffs?diff_id=12345&start_sha=31c4ab)"
+  )
+  autoresolvedSystemNote.system = true
+  return autoresolvedSystemNote
+}
+
+function mockDangerNote(id: number, resolved = false): Types.MergeRequestNoteSchema {
+  return mockNote(id, dangerUserId, `some body ${dangerIdString} asdf`, resolved)
+}
+
+function mockDiscussion(id: string, notes: Types.DiscussionNoteSchema[]): Types.DiscussionSchema {
   const discussion: Partial<Types.DiscussionSchema> = { id, notes }
   return discussion as Types.DiscussionSchema
 }
 
 function mockApi(withExisting = false): GitLabAPI {
-  const note1 = mockNote(1001, dangerUserId, `some body ${dangerIdString} asdf`)
+  const note1 = mockDangerNote(1001)
   const note2 = mockNote(1002, 125235)
   const note3 = mockNote(
     1003,
     dangerUserId,
     `Main Danger comment ${dangerIdString} More text to ensure the Danger ID string can be found in the middle of a comment`,
+    false,
     null
   )
   const note4 = mockNote(1004, 745774)
@@ -188,5 +210,35 @@ describe("deleteMainComment", () => {
     expect(api.createMergeRequestDiscussion).toHaveBeenCalledTimes(0)
     expect(api.createMergeRequestNote).toHaveBeenCalledTimes(0)
     expect(api.updateMergeRequestNote).toHaveBeenCalledTimes(0)
+  })
+})
+
+describe("getInlineComments", () => {
+  it("getInlineComments returns not autoresolved danger discussions", async () => {
+    const autoresolvedDangerNote = mockDangerNote(2000, true)
+    const autoresolveSystemNote1 = mockSystemAutoresolveNote(2001, 12345)
+    const autoresolvedDiscussion = mockDiscussion("autoresolvedDiscussion", [
+      autoresolvedDangerNote,
+      autoresolveSystemNote1,
+    ])
+
+    const notAutoresolvedDangerNote = mockDangerNote(2001)
+    const autoresolveSystemNote2 = mockSystemAutoresolveNote(2002, 12345)
+    const notAutoresolvedDiscussion = mockDiscussion("notAutoresolvedDiscussion", [
+      notAutoresolvedDangerNote,
+      autoresolveSystemNote2,
+    ])
+
+    const notDangerNote = mockNote(2002, 12345)
+    const notDangerDiscussionNote = mockNote(2003, 23456, "", false, "DiscussionNote")
+    const notDangerDiscussion = mockDiscussion("notDangerDiscussion", [notDangerNote, notDangerDiscussionNote])
+
+    const api = mockApi()
+    api.getMergeRequestDiscussions = jest.fn(() =>
+      Promise.resolve([autoresolvedDiscussion, notAutoresolvedDiscussion, notDangerDiscussion])
+    )
+    const result = await new GitLab(api as GitLabAPI).getInlineComments(dangerID)
+    expect(result).toMatchObject([{ id: "2001" }])
+    expect(api.getMergeRequestDiscussions).toHaveBeenCalledTimes(1)
   })
 })

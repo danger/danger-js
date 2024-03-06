@@ -70,7 +70,7 @@ describe("GitLabGit DSL", () => {
     api.getMergeRequestInfo = requestWithFixturedJSON(MRInfoFixture, defaultField)
     api.getMergeRequestApprovals = requestWithFixturedJSON("getMergeRequestApprovals.json", defaultField)
     api.getMergeRequestCommits = requestWithFixturedJSON("getMergeRequestCommits.json", defaultField)
-    api.getMergeRequestChanges = requestWithFixturedJSON("getMergeRequestChanges.json", `${defaultField}.changes`)
+    api.getMergeRequestDiffs = requestWithFixturedJSON("getMergeRequestDiffs.json", defaultField)
     api.getCompareChanges = requestWithFixturedJSON("getCompareChanges.json", `${defaultField}.diffs`)
 
     gitJSONDSL = await gitlab.getPlatformGitRepresentation()

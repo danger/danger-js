@@ -15,6 +15,12 @@
 ## Main
 
 <!-- Your comment below this -->
+- Upgrade `node` engine from `>=14.13.1` to `>=18` [@heltoft]
+- Upgrade `@types/node` from `^10.11.3` to `18.19.18` [@heltoft]
+- GitLab: [#1386] Move from `@gitbeaker/node` to `@gitbeaker/rest` [@heltoft]
+- GitLab: [#1412] Danger fails to create inline comments on Gitlab [@heltoft]
+- GitLab: [#1405] Can't post multiple inline comments [@heltoft]
+- GitLab: Do not delete system resolved danger inline comments [@heltoft]
 <!-- Your comment above this -->
 
 ## 11.3.1
@@ -2002,6 +2008,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@hanneskaeufler]: https://github.com/hanneskaeufler
 [@happylinks]: https://github.com/happylinks
 [@hellocore]: https://github.com/HelloCore
+[@heltoft]: https://github.com/heltoft
 [@hiroppy]: https://github.com/hiroppy
 [@hmcc]: https://github.com/hmcc
 [@hmschreiner]: https://github.com/hmschreiner

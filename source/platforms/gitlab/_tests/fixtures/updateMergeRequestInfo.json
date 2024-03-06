@@ -6,11 +6,8 @@
     "body": "{\"title\":\"update merge request\"}",
     "status": 201,
     "reqheaders": {
-      "user-agent": "gitbeaker",
       "private-token": "FAKE_DANGER_GITLAB_API_TOKEN",
-      "content-type": "application/json",
-      "content-length": "32",
-      "accept-encoding": "gzip, deflate, br"
+      "content-type": "application/json"
     },
     "response": {
       "id": 27253868,

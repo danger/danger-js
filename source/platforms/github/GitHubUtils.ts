@@ -5,6 +5,7 @@ import { filepathContentsMapToUpdateGitHubBranch, BranchCreationConfig } from "m
 import { sentence, href } from "../../runner/DangerUtils"
 import { GitHubPRDSL, GitHubUtilsDSL } from "./../../dsl/GitHubDSL"
 import { debug } from "../../debug"
+import { encodingParser } from "../encodingParser"
 
 export type GetContentResponseData =
   | OctokitOpenApiTypes["schemas"]["content-file"]
@@ -87,7 +88,8 @@ export const fileContentsGenerator =
         return ""
       }
       if (isFileContents(response.data) && response.data.content) {
-        const buffer = Buffer.from(response.data.content, response.data.encoding)
+        const encoding = encodingParser(response.data.encoding)
+        const buffer = Buffer.from(response.data.content, encoding)
         return buffer.toString()
       } else {
         return ""
