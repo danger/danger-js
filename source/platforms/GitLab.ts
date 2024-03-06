@@ -1,4 +1,5 @@
 import GitLabAPI from "./gitlab/GitLabAPI"
+import { inlinePositionParser } from "./gitlab/inlinePositionParser"
 import { Comment, Platform } from "./platform"
 import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
 import { GitCommit } from "../dsl/Commit"
@@ -173,16 +174,24 @@ class GitLab implements Platform {
   ): Promise<Types.DiscussionSchema> => {
     d("createInlineComment", { git, comment, path, line })
 
+    const structuredDiffForFile = await git.structuredDiffForFile(path)
+    if (!structuredDiffForFile) {
+      return Promise.reject(`Unable to find diff for file ${path}`)
+    }
+
+    const inlinePosition = inlinePositionParser(structuredDiffForFile, path, line)
+    d("createInlineComment inlinePosition", inlinePosition)
+
     const mr = await this.api.getMergeRequestInfo()
     const position = {
       positionType: "text",
       baseSha: mr.diff_refs.base_sha,
       startSha: mr.diff_refs.start_sha,
       headSha: mr.diff_refs.head_sha,
-      old_path: path,
-      old_line: undefined,
-      new_path: path,
-      new_line: line,
+      oldPath: inlinePosition.pathDiff.oldPath,
+      newPath: inlinePosition.pathDiff.newPath,
+      oldLine: inlinePosition.lineDiff.oldLine?.toString(),
+      newLine: inlinePosition.lineDiff.newLine?.toString(),
     } as Types.Camelize<Types.DiscussionNotePositionTextSchema>
 
     return this.api.createMergeRequestDiscussion(comment, {

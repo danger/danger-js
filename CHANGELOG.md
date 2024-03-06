@@ -19,6 +19,7 @@
 - Upgrade `@types/node` from `^10.11.3` to `18.19.18` [@heltoft]
 - GitLab: [#1386] Move from `@gitbeaker/node` to `@gitbeaker/rest` [@heltoft]
 - GitLab: [#1412] Danger fails to create inline comments on Gitlab [@heltoft]
+- GitLab: [#1405] Can't post multiple inline comments [@heltoft]
 <!-- Your comment above this -->
 
 ## 11.3.1

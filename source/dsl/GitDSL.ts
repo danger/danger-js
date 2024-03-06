@@ -22,6 +22,8 @@ export interface TextDiff {
 export interface StructuredDiff {
   /** Git diff chunks */
   chunks: File["chunks"]
+  /** The file path pre-change */
+  fromPath: string | undefined
 }
 
 /** The results of running a JSON patch */
