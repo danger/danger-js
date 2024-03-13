@@ -31,6 +31,12 @@ describe("shouldUseGitHubOverride", () => {
     const parent: any = { filename: dangerPrefix + "./my-import" }
     expect(shouldUseGitHubOverride(module, parent)).toBeTruthy()
   })
+
+  it("ignores modules without a parent", () => {
+    const module = "./peril"
+    const parent: any = undefined
+    expect(shouldUseGitHubOverride(module, parent)).toBeFalsy()
+  })
 })
 
 describe("customGitHubResolveRequest", () => {
