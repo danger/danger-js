@@ -4,6 +4,7 @@ import chalk from "chalk"
 export const githubActions = async (ui: InitUI, state: InitState) => {
   if (!state.isAnOSSRepo) {
     ui.say("For your closed-source project, we can use the default GitHub Auth token for posting.")
+    ui.say("So, you don't need to create a bot account.")
     ui.pause(0.5)
 
     ui.say("You will want to add a new step in an existing workflow yaml file.")

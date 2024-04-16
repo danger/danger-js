@@ -43,11 +43,12 @@ const go = async (app: App) => {
 
   await setupDangerfile(ui, state)
 
-  if (!state.isAnOSSRepo) {
+  if (state.isAnOSSRepo) {
     await setupGitHubAccount(ui, state)
     await setupGHAccessToken(ui, state)
     await addToCI(ui, state)
   } else {
+    // We can use the private github workflow for private repos
     await githubActions(ui, state)
   }
   await wrapItUp(ui, state)
