@@ -203,7 +203,11 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
     }
     const structuredDiff = fileDiffs.find((diff) => diff.from === filename || diff.to === filename)
     if (structuredDiff !== undefined && structuredDiff.chunks !== undefined) {
-      return { chunks: structuredDiff.chunks }
+      return {
+        chunks: structuredDiff.chunks,
+        // '/dev/null' will be in the 'from' path if the file is new.
+        fromPath: structuredDiff.from === "/dev/null" ? undefined : structuredDiff.from,
+      }
     } else {
       return null
     }

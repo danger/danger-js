@@ -13,7 +13,7 @@ import { prepareDangerDSL } from "./utils/runDangerSubprocess"
 import { runRunner } from "./ci/runner"
 import { Platform, getPlatformForEnv } from "../platforms/platform"
 import { CISource } from "../ci_source/ci_source"
-import { getGitLabAPICredentialsFromEnv } from "../platforms/gitlab/GitLabAPI"
+import { getGitLabHostFromEnv } from "../platforms/gitlab/GitLabAPI"
 
 const d = debug("pr")
 const log = console.log
@@ -24,8 +24,6 @@ interface App extends SharedCLI {
   /** Should we show a more human readable for of the PR JSON? */
   js?: boolean
 }
-
-const gitLabApiCredentials = getGitLabAPICredentialsFromEnv(process.env)
 
 program
   .usage("[options] <pr_url>")
@@ -43,8 +41,8 @@ program
       !process.env["DANGER_BITBUCKETCLOUD_OAUTH_KEY"] &&
       !process.env["DANGER_BITBUCKETCLOUD_USERNAME"] &&
       !process.env["DANGER_BITBUCKETCLOUD_REPO_ACCESSTOKEN"] &&
-      !gitLabApiCredentials.token &&
-      !gitLabApiCredentials.oauthToken
+      !process.env["DANGER_GITLAB_API_TOKEN"] &&
+      !process.env["DANGER_GITLAB_API_OAUTH_TOKEN"]
     ) {
       log("")
       log(
@@ -74,7 +72,7 @@ if (program.args.length === 0) {
   process.exitCode = 1
 } else {
   const customHost =
-    process.env["DANGER_GITHUB_HOST"] || process.env["DANGER_BITBUCKETSERVER_HOST"] || gitLabApiCredentials.host // this defaults to https://gitlab.com
+    process.env["DANGER_GITHUB_HOST"] || process.env["DANGER_BITBUCKETSERVER_HOST"] || getGitLabHostFromEnv(process.env) // This defaults to https://www.gitlab.com
 
   // Allow an ambiguous amount of args to find the PR reference
   const findPR = program.args.find((a) => a.includes(customHost) || a.includes("github") || a.includes("bitbucket.org"))

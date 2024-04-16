@@ -12,7 +12,7 @@ const child_process = require("child_process")
 const { resolve } = require("path")
 const { basename } = require("path")
 const chalk = require("chalk")
-const expect = require("expect")
+const expect = require("expect").expect
 
 const runnerFileJS = "distribution/commands/danger-runner.js"
 
@@ -75,7 +75,6 @@ const runDangerfile = (fixture) => {
     const fixturedResults = JSON.parse(fs.readFileSync(dangerfileResults, "utf8"))
     // Fails include traces etc
     expect(runtimeResults).toEqual(fixturedResults)
-
     const tick = chalk.bold.greenBright("✓")
     process.stdout.write(" " + tick)
 

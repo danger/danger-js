@@ -3,8 +3,7 @@
 //
 
 import { Octokit as GitHub } from "@octokit/rest"
-import { Gitlab, Types } from "@gitbeaker/node"
-import { Types as CoreTypes } from "@gitbeaker/core/dist"
+import type * as Types from "@gitbeaker/rest"
 import { File } from "parse-diff"
 
 type MarkdownString = string
@@ -833,6 +832,8 @@ interface TextDiff {
 interface StructuredDiff {
   /** Git diff chunks */
   chunks: File["chunks"]
+  /** The file path pre-change */
+  fromPath: string | undefined
 }
 
 /** The results of running a JSON patch */
@@ -1481,7 +1482,7 @@ interface GitLabJSONDSL {
   /** Info about the repo */
   metadata: RepoMetaData
   /** Info about the merge request */
-  mr: CoreTypes.ExpandedMergeRequestSchema
+  mr: Types.ExpandedMergeRequestSchema
   /** All the individual commits in the merge request */
   commits: Types.CommitSchema[]
   /** Merge Request-level MR approvals Configuration */
@@ -1496,7 +1497,7 @@ interface GitLabDSL extends GitLabJSONDSL {
     addLabels(...labels: string[]): Promise<boolean>
     removeLabels(...labels: string[]): Promise<boolean>
   }
-  api: InstanceType<typeof Gitlab>
+  api: InstanceType<typeof Types.Gitlab>
 }
 
 /** Key details about a repo */

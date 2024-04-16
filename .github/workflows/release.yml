@@ -24,12 +24,12 @@ jobs:
           tag: v2.1.5-procursus6
 
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "14"
+          node-version: "18"
 
       - name: Install dependencies
         run: npm install
