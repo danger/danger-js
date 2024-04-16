@@ -30,7 +30,7 @@ now and Node 18 gives us a full year. - [@orta]
 - GitLab: [#1412] Danger fails to create inline comments on Gitlab [@heltoft]
 - GitLab: [#1405] Can't post multiple inline comments [@heltoft]
 - GitLab: Do not delete system resolved danger inline comments [@heltoft]
-
+- Fix for ESM imports in Dangerfiles [@mgol]
 
 ## 11.3.1
 
