@@ -34,17 +34,21 @@ export const generateDefaultDangerfile = (state: InitState) => {
 
   ${rules.join("\n")}
   `
-  return formatDangerfile(dangerfile, dangerfileState)
+  return formatDangerfile(dangerfile, state, dangerfileState)
 }
 
-export const formatDangerfile = (dangerfile: string, dangerfileState: any) => {
+export const formatDangerfile = (
+  dangerfile: string,
+  initState: InitState,
+  dangerfileState: ReturnType<typeof generateDangerfileState>
+) => {
   if (dangerfileState.hasPrettier) {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { format } = require("prettier")
     // Get package settings
     const localPrettier = fs.existsSync("package.json") && JSON.parse(fs.readFileSync("package.json", "utf8")).prettier
     // Always include this
-    const always = { editorconfig: true }
+    const always = { editorconfig: true, parser: "typescript", filepath: process.cwd() + " /" + initState.filename }
     const settings = localPrettier ? { ...always, ...localPrettier } : always
 
     return format(dangerfile, settings)

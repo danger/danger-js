@@ -17,6 +17,12 @@
 <!-- Your comment below this -->
 <!-- Your comment above this -->
 
+
+## 12.1.0
+
+It's been 7 years since I looked at `danger init` and err, the world of CI has changed quite a bit since then. So, Danger JS's
+`init` command now knows that GitHub Actions exists and will correctly offer some advice on how to set up a Dangerfile for it. - [@orta]
+
 ## 12.0.0
 
 Bumping to 12.x because we've raised the minimum to node version from 14 to 18. This is due to some of our dependencies

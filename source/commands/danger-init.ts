@@ -6,7 +6,7 @@ import program from "commander"
 import * as fs from "fs"
 
 import { generateDefaultDangerfile } from "./init/default-dangerfile"
-import { travis, circle, unsure } from "./init/add-to-ci"
+import { travis, circle, unsure, githubActions } from "./init/add-to-ci"
 import { generateInitialState, createUI } from "./init/state-setup"
 import { InitUI, InitState, highlight } from "./init/interfaces"
 
@@ -42,9 +42,14 @@ const go = async (app: App) => {
   state.isAnOSSRepo = isOSS
 
   await setupDangerfile(ui, state)
-  await setupGitHubAccount(ui, state)
-  await setupGHAccessToken(ui, state)
-  await addToCI(ui, state)
+
+  if (!state.isAnOSSRepo) {
+    await setupGitHubAccount(ui, state)
+    await setupGHAccessToken(ui, state)
+    await addToCI(ui, state)
+  } else {
+    await githubActions(ui, state)
+  }
   await wrapItUp(ui, state)
   await thanks(ui, state)
 }
@@ -65,9 +70,9 @@ const showTodoState = async (ui: InitUI) => {
   await ui.pause(0.6)
   ui.say(` - [ ] Create a Dangerfile and add a few simple rules.`)
   await ui.pause(0.6)
-  ui.say(` - [ ] Create a GitHub account for Danger to use, for messaging.`)
+  ui.say(` - [ ] Potentially create a GitHub account for Danger to use, for messaging.`)
   await ui.pause(0.6)
-  ui.say(` - [ ] Set up an access token for Danger.`)
+  ui.say(` - [ ] Set up an access token for Danger to comment with.`)
   await ui.pause(0.6)
   ui.say(" - [ ] Set up Danger to run on your CI.\n")
 
@@ -225,7 +230,9 @@ const addToCI = async (ui: InitUI, state: InitState) => {
   ui.header("Add to CI")
 
   await ui.pause(0.6)
-  if (state.ciType === "travis") {
+  if (state.ciType === "gh-actions") {
+    await githubActions(ui, state)
+  } else if (state.ciType === "travis") {
     await travis(ui, state)
   } else if (state.ciType === "circle") {
     await circle(ui, state)

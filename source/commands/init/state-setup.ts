@@ -38,7 +38,9 @@ export const generateInitialState = (osProcess: NodeJS.Process): InitState => {
   const isBabel = checkForBabel()
   const hasTravis = fs.existsSync(".travis.yml")
   const hasCircle = fs.existsSync("circle.yml")
-  const ciType = hasTravis ? "travis" : hasCircle ? "circle" : "unknown"
+  const hasGitHubActions = fs.existsSync(".github/") && fs.existsSync(".github/workflows")
+
+  const ciType = hasGitHubActions ? "gh-actions" : hasTravis ? "travis" : hasCircle ? "circle" : "unknown"
   const repoSlug = getRepoSlug()
   const isGitHub = !!repoSlug
 
