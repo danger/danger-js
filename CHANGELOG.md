@@ -228,7 +228,7 @@ Reverts a change for GitHub Actions which was likely causing duplicate comments 
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       DANGER_MANUAL_CI: true
       DANGER_MANUAL_GH_REPO: ${{ steps.pr_info.outputs.repo }}
-      DANGER_MANUAL_PR: ${{ steps.pr_info.outputs.number }}
+      DANGER_MANUAL_PR_NUM: ${{ steps.pr_info.outputs.number }}
   ```
   Which looks more intentional instead of: `DANGER_FAKE_CI` etc. [@orta]
 
