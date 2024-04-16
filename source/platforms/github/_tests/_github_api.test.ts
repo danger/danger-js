@@ -108,9 +108,8 @@ describe("API testing", () => {
     expect(commentIDs.length).toEqual(0)
   })
 
-  it("getPullRequestInlineComment gets only comments for given DangerId", async () => {
+  it("getPullRequestInlineComment gets only comments for given dangerID", async () => {
     api.getAllOfResource = await requestWithFixturedJSON("github_inline_comments_with_danger.json")
-    api.getUserID = () => new Promise<number>((r) => r(20229914))
 
     const comments = await api.getPullRequestInlineComments("default")
 
@@ -118,11 +117,10 @@ describe("API testing", () => {
     expect(comments[0].ownedByDanger).toBeTruthy()
   })
 
-  it("getPullRequestInlineComment doesn't get comments as the DangerId is different", async () => {
+  it("getPullRequestInlineComment doesn't get comments as the dangerID is different", async () => {
     api.getAllOfResource = await requestWithFixturedJSON("github_inline_comments_with_danger.json")
-    api.getUserID = () => new Promise<number>((r) => r(123))
 
-    const comments = await api.getPullRequestInlineComments("default")
+    const comments = await api.getPullRequestInlineComments("other-danger-id")
 
     expect(comments.length).toEqual(0)
   })

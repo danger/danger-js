@@ -23,6 +23,7 @@ Bumping to 12.x because we've raised the minimum to node version from 14 to 18. 
 requiring a newer version of node. This is a breaking change for some folk! Also, 14 has been out of support for quite a while
 now and Node 18 gives us a full year. - [@orta]
 
+- Remove the user checks in GitHub comment/inline comment lookups, to allow using app tokens [#1433] - [@orta]
 - Upgrade `node` engine from `>=14.13.1` to `>=18` [@heltoft]
 - Upgrade `@types/node` from `^10.11.3` to `18.19.18` [@heltoft]
 - GitLab: [#1386] Move from `@gitbeaker/node` to `@gitbeaker/rest` [@heltoft]
