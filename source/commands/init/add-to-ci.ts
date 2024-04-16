@@ -1,4 +1,64 @@
 import { InitUI, InitState, highlight } from "./interfaces"
+import chalk from "chalk"
+
+export const githubActions = async (ui: InitUI, state: InitState) => {
+  if (!state.isAnOSSRepo) {
+    ui.say("For your closed-source project, we can use the default GitHub Auth token for posting.")
+    ui.say("So, you don't need to create a bot account.")
+    ui.pause(0.5)
+
+    ui.say("You will want to add a new step in an existing workflow yaml file.")
+    ui.pause(0.2)
+
+    ui.say("The step should look like this:")
+    ui.say("")
+    ui.say("```yaml")
+    ui.say(chalk.bold("    - name: Run Danger"))
+    ui.say(chalk.bold("      run: yarn danger ci"))
+    ui.say(chalk.bold("      env:"))
+    ui.say(chalk.bold("        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}`"))
+    ui.say("```")
+    ui.say("")
+    ui.pause(1)
+
+    ui.say("This will run Danger on every PR, press return when you have added this to one of your workflows.")
+    ui.waitForReturn()
+    return
+  }
+
+  const link = ui.link("issue #918.", "https://github.com/danger/danger-js/issues/918")
+  ui.say(
+    `For your OSS project, there are a few options you can find in ${link}. We will continue with using the new GitHub user account here.`
+  )
+  ui.pause(0.5)
+
+  ui.say("For your OSS project, you need to add a new secret to your workflow in a way that is slightly obfuscated.")
+  ui.say("This is because GitHub Actions doesn't allow you to use the default GITHUB_TOKEN to update its own comments.")
+  ui.pause(0.5)
+  ui.say("This would make Danger very spammy on a Pull Request.")
+
+  ui.pause(0.1)
+  ui.say("To get started, add a new step in an existing workflow file.")
+  ui.say("The step should look like this:")
+  ui.say("")
+  ui.say("```yaml")
+  ui.say(
+    chalk.bold(`)
+    - name: Run Danger
+      run: |
+      # Exposing this token is safe because the user of it has no other public repositories
+      # and has no permission to modify this repository.
+      TOKEN='ghp_On3bHOkcV2AmVY6'
+      TOKEN+='56186c3b09b4f86b1c65136769'
+      DANGER_GITHUB_API_TOKEN=$TOKEN yarn danger ci`)
+  )
+  ui.say("```")
+  ui.say("")
+  ui.pause(1)
+
+  ui.say("This will run Danger on every PR, press return when you have added this to one of your workflows.")
+  ui.waitForReturn()
+}
 
 export const travis = async (ui: InitUI, state: InitState) => {
   // https://travis-ci.org/artsy/eigen/settings

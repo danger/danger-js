@@ -6,7 +6,7 @@ import program from "commander"
 import * as fs from "fs"
 
 import { generateDefaultDangerfile } from "./init/default-dangerfile"
-import { travis, circle, unsure } from "./init/add-to-ci"
+import { travis, circle, unsure, githubActions } from "./init/add-to-ci"
 import { generateInitialState, createUI } from "./init/state-setup"
 import { InitUI, InitState, highlight } from "./init/interfaces"
 
@@ -42,9 +42,15 @@ const go = async (app: App) => {
   state.isAnOSSRepo = isOSS
 
   await setupDangerfile(ui, state)
-  await setupGitHubAccount(ui, state)
-  await setupGHAccessToken(ui, state)
-  await addToCI(ui, state)
+
+  if (state.isAnOSSRepo) {
+    await setupGitHubAccount(ui, state)
+    await setupGHAccessToken(ui, state)
+    await addToCI(ui, state)
+  } else {
+    // We can use the private github workflow for private repos
+    await githubActions(ui, state)
+  }
   await wrapItUp(ui, state)
   await thanks(ui, state)
 }
@@ -65,9 +71,9 @@ const showTodoState = async (ui: InitUI) => {
   await ui.pause(0.6)
   ui.say(` - [ ] Create a Dangerfile and add a few simple rules.`)
   await ui.pause(0.6)
-  ui.say(` - [ ] Create a GitHub account for Danger to use, for messaging.`)
+  ui.say(` - [ ] Potentially create a GitHub account for Danger to use, for messaging.`)
   await ui.pause(0.6)
-  ui.say(` - [ ] Set up an access token for Danger.`)
+  ui.say(` - [ ] Set up an access token for Danger to comment with.`)
   await ui.pause(0.6)
   ui.say(" - [ ] Set up Danger to run on your CI.\n")
 
@@ -202,21 +208,20 @@ const wrapItUp = async (ui: InitUI, _state: InitState) => {
   await ui.pause(0.6)
 
   const link = (name: string, url: string) => ui.say("  * " + ui.link(name, url))
-  link("artsy/Emission#dangerfile.ts", "https://github.com/artsy/emission/blob/master/dangerfile.ts")
+  link("artsy/eigen#dangerfile.ts", "https://github.com/artsy/eigen/blob/master/dangerfile.ts")
   link(
-    "facebook/react-native#danger/dangerfile.js",
-    "https://github.com/facebook/react-native/blob/master/bots/dangerfile.js"
+    "facebook/react-native#main/packages/react-native-bots/dangerfile.js",
+    "https://github.com/facebook/react-native/blob/main/packages/react-native-bots/dangerfile.js"
+  )
+  link("mui/material-ui#dangerfile.ts", "https://github.com/mui/material-ui/blob/main/dangerfile.ts#L4")
+  link(
+    "styleguidist/react-styleguidist#dangerfile.ts",
+    "https://github.com/styleguidist/react-styleguidist/blob/master/dangerfile.ts"
   )
   link(
-    "apollographql/apollo-client#dangerfile.ts",
-    "https://github.com/apollographql/apollo-client/blob/master/config/dangerfile.ts"
+    "storybooks/storybook#.ci/danger/dangerfile.ts",
+    "https://github.com/storybookjs/storybook/blob/master/.ci/danger/dangerfile.ts"
   )
-  link(
-    "styleguidist/react-styleguidist#dangerfile.js",
-    "https://github.com/styleguidist/react-styleguidist/blob/master/dangerfile.js"
-  )
-  link("storybooks/storybook#dangerfle.js", "https://github.com/storybooks/storybook/blob/master/dangerfile.js")
-  link("ReactiveX/rxjs#dangerfle.js", "https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js")
 
   await ui.pause(1)
 }
@@ -225,7 +230,9 @@ const addToCI = async (ui: InitUI, state: InitState) => {
   ui.header("Add to CI")
 
   await ui.pause(0.6)
-  if (state.ciType === "travis") {
+  if (state.ciType === "gh-actions") {
+    await githubActions(ui, state)
+  } else if (state.ciType === "travis") {
     await travis(ui, state)
   } else if (state.ciType === "circle") {
     await circle(ui, state)
@@ -242,10 +249,8 @@ const thanks = async (ui: InitUI, _state: InitState) => {
   ui.say("and every who has sent PRs.\n")
   ui.say(
     "If you like Danger, let others know. If you want to know more, follow " +
-      highlight("@orta") +
-      " and " +
-      highlight("@DangerSystems") +
-      " on Twitter."
+      highlight("@orta@webtoo.ls") +
+      " on Mastodon!"
   )
   ui.say("If you don't like something about Danger, help us improve the project - it's all done on volunteer time! xxx")
   ui.say("Remember: it's nice to be nice.\n")
