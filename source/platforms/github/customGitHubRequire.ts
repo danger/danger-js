@@ -86,9 +86,9 @@ export async function getGitHubFileContents(
 
 // Setup a callback used to determine whether a specific `require` invocation
 // needs to be overridden.
-export const shouldUseGitHubOverride = (request: string, parent: NodeModule): boolean => {
+export const shouldUseGitHubOverride = (request: string, parent?: NodeModule): boolean => {
   // Is it a from a file we're handling, and is it relative?
-  if (parent.filename.startsWith(dangerPrefix) && request.startsWith(".")) {
+  if (parent?.filename.startsWith(dangerPrefix) && request.startsWith(".")) {
     return true
   }
   // Basically any import that's not a relative import from a Dangerfile
