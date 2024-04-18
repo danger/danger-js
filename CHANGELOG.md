@@ -15,6 +15,9 @@
 ## Main
 
 <!-- Your comment below this -->
+
+- Adds a log when you run on GitHub Actions without being a pull_request - [@orta]
+
 <!-- Your comment above this -->
 
 
