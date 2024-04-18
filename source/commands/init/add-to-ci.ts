@@ -7,7 +7,7 @@ export const githubActions = async (ui: InitUI, state: InitState) => {
     ui.say("So, you don't need to create a bot account.")
     ui.pause(0.5)
 
-    ui.say("You will want to add a new step in an existing workflow yaml file.")
+    ui.say("You will want to add a new step in an existing workflow yaml file which uses `on: pull_request`.")
     ui.pause(0.2)
 
     ui.say("The step should look like this:")
@@ -38,7 +38,7 @@ export const githubActions = async (ui: InitUI, state: InitState) => {
   ui.say("This would make Danger very spammy on a Pull Request.")
 
   ui.pause(0.1)
-  ui.say("To get started, add a new step in an existing workflow file.")
+  ui.say("To get started, add a new step in an existing workflow file which uses `on: pull_request`.")
   ui.say("The step should look like this:")
   ui.say("")
   ui.say("```yaml")

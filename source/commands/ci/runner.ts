@@ -13,6 +13,7 @@ import dangerRunToRunnerCLI from "../utils/dangerRunToRunnerCLI"
 import { CISource } from "../../ci_source/ci_source"
 import { readFileSync } from "fs"
 import { join } from "path"
+import { githubActionsWorkflowWarningCheck } from "../../ci_source/providers/GitHubActions"
 
 const d = debug("process_runner")
 
@@ -33,6 +34,7 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
 
   const configSource = config && config.source
   const source = configSource || (await getRuntimeCISource(app))
+  d(`Got a CI: ${source?.name}`)
 
   // This does not set a failing exit code, because it's also likely
   // danger is running on a CI run on the merge of a PR, and not just
@@ -40,6 +42,11 @@ export const runRunner = async (app: SharedCLI, config?: Partial<RunnerConfig>) 
   // danger's responsibility to run
   if (source && !source.isPR) {
     console.log("Skipping Danger due to this run not executing on a PR.")
+  }
+
+  // Extra logging for GitHub Actions
+  if (source && source.isPR && source.name === "GitHub Actions") {
+    githubActionsWorkflowWarningCheck()
   }
 
   // The optimal path when on a PR
