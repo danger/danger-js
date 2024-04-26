@@ -17,6 +17,12 @@ export type APIToken = string
 
 const limit = pLimit(25)
 
+// Structure of files returned by the 'List pull request files' API
+export interface GitHubFile {
+  filename: string
+  patch: string
+}
+
 // Note that there are parts of this class which don't seem to be
 // used by Danger, they are exposed for Peril support.
 
@@ -329,13 +335,60 @@ export class GitHubAPI {
     })
   }
 
-  getPullRequestDiff = async () => {
+  getPullRequestFiles = async (page: number = 1): Promise<GitHubFile[]> => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
-    const res = await this.get(`repos/${repo}/pulls/${prID}`, {
-      Accept: "application/vnd.github.v3.diff",
-    })
-    return res.ok ? res.text() : ""
+    const perPage = 100
+    const url = `repos/${repo}/pulls/${prID}/files?page=${page}&per_page=${perPage}`
+
+    try {
+      const response = await this.get(url, {
+        Accept: "application/vnd.github.v3.diff",
+      })
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(`GitHub 'List pull request files' API returned an error: ${data.message}`)
+      }
+
+      // Check for pagination using the Link header
+      const linkHeader = response.headers.get("Link")
+      const hasNextPage = linkHeader && linkHeader.includes('rel="next"')
+
+      // If there's a next page, recursively fetch it and concatenate the results
+      if (hasNextPage) {
+        const nextPageNumber = page + 1
+        const nextPageFiles = await this.getPullRequestFiles(nextPageNumber)
+        return [...data, ...nextPageFiles]
+      }
+
+      return data as GitHubFile[]
+    } catch (error) {
+      console.error("Failed to fetch GitHub pull request files:", error)
+      throw error
+    }
+  }
+
+  getPullRequestDiff = async (): Promise<string> => {
+    // This is a hack to get the file patch into a format that parse-diff accepts
+    // as the GitHub API for listing pull request files is missing file names in the patch.
+    function prefixedPatch(file: GitHubFile): string {
+      return `
+diff --git a/${file.filename} b/${file.filename}
+--- a/${file.filename}
++++ b/${file.filename}
+${file.patch}
+`
+    }
+
+    try {
+      const files = await this.getPullRequestFiles()
+      const diff = files.map(prefixedPatch).join("\n")
+      return diff
+    } catch (error) {
+      console.error("Failed to fetch pull request diff:", error)
+      return ""
+    }
   }
 
   getFileContents = async (path: string, repoSlug: string, ref: string): Promise<any> => {
