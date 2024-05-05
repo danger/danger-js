@@ -54,6 +54,7 @@
     "test:fixtures": "node ./scripts/run-fixtures.js",
     "test:update-fixtures": "yarn test:fixtures --update",
     "test:watch": "jest --watch",
+    "type-check": "tsc --noEmit",
     "lint": "eslint \"source/*.ts\" \"source/**/*.ts\"",
     "lint:fix": "yarn --silent lint --fix",
     "prepublishOnly": "yarn build && yarn jest && yarn declarations && yarn build:flow-types && yarn build:pretty-types",

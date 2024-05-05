@@ -16,11 +16,13 @@
 
 <!-- Your comment below this -->
 
-- Adds a log when you run on GitHub Actions without being a pull_request - [@orta]
-- GitHub: Move to 'List pull request files' API with pagination support [@fabianehlert]
 
 <!-- Your comment above this -->
 
+## 12.2.0
+
+- Adds a log when you run on GitHub Actions without being a pull_request - [@orta]
+- GitHub: Move to 'List pull request files' API with pagination support [@fabianehlert]
 
 ## 12.1.0
 
