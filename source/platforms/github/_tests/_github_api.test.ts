@@ -2,6 +2,7 @@ import { FakeCI } from "../../../ci_source/providers/Fake"
 import { GitHubAPI } from "../GitHubAPI"
 import { requestWithFixturedJSON } from "../../_tests/_github.test"
 import { GitHubUser } from "../../../dsl/GitHubDSL"
+import { GitHubFile } from "../GitHubAPI"
 
 const fetchJSON = (api: any, params: any): Promise<any> => {
   return Promise.resolve({
@@ -22,19 +23,6 @@ const fetchErrorJSON = (api: any, params: any): Promise<any> => {
         api,
         ...params,
       }),
-  })
-}
-
-const fetchText = (api: any, params: any): Promise<any> => {
-  return Promise.resolve({
-    ok: true,
-    text: () =>
-      Promise.resolve(
-        JSON.stringify({
-          api,
-          ...params,
-        })
-      ),
   })
 }
 
@@ -86,17 +74,40 @@ describe("API testing", () => {
   })
 
   it("getPullRequestDiff", async () => {
-    api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
-    api.fetch = fetchText
-    let text = await api.getPullRequestDiff()
-    expect(JSON.parse(text)).toMatchObject({
-      api: "https://api.github.com/repos/artsy/emission/pulls/1",
-      headers: {
-        Authorization: "token ABCDE",
-        Accept: "application/vnd.github.v3.diff",
-        "Content-Type": "application/json",
-      },
+    api.fetch = jest.fn().mockReturnValue({
+      ok: true,
+      headers: new Headers({}),
+      json: jest
+        .fn()
+        .mockImplementation(() =>
+          Promise.resolve<GitHubFile[]>(JSON.parse('[{"filename": "file.txt", "patch": "+ hello"}]'))
+        ),
     })
+
+    let diff = await api.getPullRequestDiff()
+
+    let expected = `
+diff --git a/file.txt b/file.txt
+--- a/file.txt
++++ b/file.txt
++ hello
+`
+
+    expect(diff).toEqual(expected)
+
+    expect(api.fetch).toHaveBeenCalledWith(
+      "https://api.github.com/repos/artsy/emission/pulls/1/files?page=1&per_page=100",
+      {
+        body: null,
+        headers: {
+          Accept: "application/vnd.github.v3.diff",
+          Authorization: "token ABCDE",
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      },
+      undefined
+    )
   })
 
   it("getDangerCommentIDs ignores comments not marked as generated", async () => {
