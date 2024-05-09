@@ -1,4 +1,5 @@
-FROM node:18-slim as build
+FROM node:18-slim as base
+FROM base as build
 
 LABEL maintainer="Orta Therox"
 LABEL "com.github.actions.name"="Danger JS Action"
@@ -15,8 +16,7 @@ RUN yarn remove 'typescript' --dev && yarn add 'typescript'
 RUN yarn install --production --frozen-lockfile
 RUN chmod +x distribution/commands/danger.js
 
-
-FROM node:18-slim
+FROM base
 WORKDIR /usr/src/danger
 ENV PATH="/usr/src/danger/node_modules/.bin:$PATH"
 COPY package.json ./
