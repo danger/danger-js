@@ -1,5 +1,4 @@
 FROM node:18-slim as base
-FROM base as build
 
 LABEL maintainer="Orta Therox"
 LABEL "com.github.actions.name"="Danger JS Action"
@@ -8,6 +7,8 @@ LABEL "com.github.actions.icon"="zap"
 LABEL "com.github.actions.color"="blue"
 
 WORKDIR /usr/src/danger
+
+FROM base as build
 COPY package.json yarn.lock ./
 RUN yarn install
 COPY . .
@@ -17,7 +18,6 @@ RUN yarn install --production --frozen-lockfile
 RUN chmod +x distribution/commands/danger.js
 
 FROM base
-WORKDIR /usr/src/danger
 ENV PATH="/usr/src/danger/node_modules/.bin:$PATH"
 COPY package.json ./
 COPY --from=build /usr/src/danger/distribution ./dist
