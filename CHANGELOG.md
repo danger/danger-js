@@ -20,6 +20,7 @@
 
 ## 12.3.0
 
+- Dockerfile changes - [@glensc]
 - Use node 18 for pre-built versions of danger (used by Danger Swift / Kotlin et al) - [@heltoft]
 
 ## 12.2.0
