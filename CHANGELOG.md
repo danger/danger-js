@@ -15,7 +15,7 @@
 ## Main
 
 <!-- Your comment below this -->
-
+- Use node 18 for yarn pkg targets - [@heltoft]
 
 <!-- Your comment above this -->
 
