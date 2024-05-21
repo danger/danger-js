@@ -15,9 +15,12 @@
 ## Main
 
 <!-- Your comment below this -->
-- Use node 18 for yarn pkg targets - [@heltoft]
 
 <!-- Your comment above this -->
+
+## 12.3.0
+
+- Use node 18 for pre-built versions of danger (used by Danger Swift / Kotlin et al) - [@heltoft]
 
 ## 12.2.0
 
