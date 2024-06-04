@@ -277,7 +277,7 @@ export class GitHubActions implements CISource {
 
 export const githubActionsWorkflowWarningCheck = () => {
   const eventName = process.env.GITHUB_EVENT_NAME
-  const isPR = eventName === "pull_request"
+  const isPR = eventName === "pull_request" || eventName === "pull_request_target"
   if (!isPR) {
     console.log(
       "Note: Running Danger on with generalised GitHub Actions support, this does not include `danger.github.pr`."
