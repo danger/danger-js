@@ -34,7 +34,8 @@ import { readFileSync, existsSync } from "fs"
  *         yarn test
  *     - name: Danger
  *       run: yarn danger ci
- *       env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ *       env:
+ *         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  *  ```
  *
  * If you are not running in a JavaScript ecosystem, or don't want to include the dependency then
@@ -102,7 +103,8 @@ import { readFileSync, existsSync } from "fs"
  *
  *     - name: Danger
  *       run: danger-swift ci
- *       env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ *       env:
+ *         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  *  ```
  *
  * If don't want to include the dependency then you can use Danger Swift via an action.
@@ -149,7 +151,8 @@ import { readFileSync, existsSync } from "fs"
  * ```yml
  *   - name: Danger JS
  *     uses: danger/danger-js@9.1.6
- *     env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ *     env:
+ *       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  * ```
  *
  * [GitHub automatically creates a `GITHUB_TOKEN` secret to use in your workflow](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token).
