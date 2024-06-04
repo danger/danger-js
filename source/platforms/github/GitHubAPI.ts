@@ -21,6 +21,7 @@ const limit = pLimit(25)
 export interface GitHubFile {
   filename: string
   patch: string
+  status: string
 }
 
 // Note that there are parts of this class which don't seem to be
@@ -373,8 +374,17 @@ export class GitHubAPI {
     // This is a hack to get the file patch into a format that parse-diff accepts
     // as the GitHub API for listing pull request files is missing file names in the patch.
     function prefixedPatch(file: GitHubFile): string {
+      let fileMode = ""
+      if (file.status == "added") {
+        fileMode = "new file mode"
+      } else if (file.status == "removed") {
+        fileMode = "deleted file mode"
+      } else if (file.status == "modified") {
+        fileMode = "modified file mode"
+      }
       return `
 diff --git a/${file.filename} b/${file.filename}
+${fileMode} 0
 --- a/${file.filename}
 +++ b/${file.filename}
 ${file.patch}

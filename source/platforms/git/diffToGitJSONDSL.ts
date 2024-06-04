@@ -9,11 +9,13 @@ import { GitJSONDSL } from "../../dsl/GitDSL"
  */
 
 export const diffToGitJSONDSL = (diff: string, commits: GitCommit[]): GitJSONDSL => {
-  const fileDiffs: any[] = parseDiff(diff)
+  const fileDiffs: parseDiff.File[] = parseDiff(diff)
 
-  const addedDiffs = fileDiffs.filter((diff: any) => diff["new"])
-  const removedDiffs = fileDiffs.filter((diff: any) => diff["deleted"])
-  const modifiedDiffs = fileDiffs.filter((diff: any) => !includes(addedDiffs, diff) && !includes(removedDiffs, diff))
+  const addedDiffs = fileDiffs.filter((diff: parseDiff.File) => diff.new == true) as any[]
+  const removedDiffs = fileDiffs.filter((diff: parseDiff.File) => diff.deleted == true) as any[]
+  const modifiedDiffs = fileDiffs.filter(
+    (diff: any) => !includes(addedDiffs, diff) && !includes(removedDiffs, diff)
+  ) as any[]
 
   return {
     //                                             Work around for danger/danger-js#807

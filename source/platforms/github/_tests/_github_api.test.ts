@@ -80,7 +80,7 @@ describe("API testing", () => {
       json: jest
         .fn()
         .mockImplementation(() =>
-          Promise.resolve<GitHubFile[]>(JSON.parse('[{"filename": "file.txt", "patch": "+ hello"}]'))
+          Promise.resolve<GitHubFile[]>(JSON.parse('[{"filename": "file.txt", "status": "added", "patch": "+ hello"}]'))
         ),
     })
 
@@ -88,6 +88,7 @@ describe("API testing", () => {
 
     let expected = `
 diff --git a/file.txt b/file.txt
+new file mode 0
 --- a/file.txt
 +++ b/file.txt
 + hello
