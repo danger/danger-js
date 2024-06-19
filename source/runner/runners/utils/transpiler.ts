@@ -149,10 +149,14 @@ const sanitizeTSConfig = (config: any, esm: boolean = false) => {
   //
   // @see https://github.com/apollographql/react-apollo/pull/1402#issuecomment-351810274
   //
-  if (!esm && safeConfig.compilerOptions.module) {
-    safeConfig.compilerOptions.module = "commonjs"
-  } else {
-    safeConfig.compilerOptions.module = "es6"
+  if (safeConfig.compilerOptions.module) {
+    if (!esm) {
+      // .ts files should fall back to commonjs
+      safeConfig.compilerOptions.module = "commonjs"
+    } else {
+      // .mts files must use `import`/`export` syntax
+      safeConfig.compilerOptions.module = "es6"
+    }
   }
 
   return safeConfig
