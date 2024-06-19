@@ -24,7 +24,7 @@
 
 ## 12.3.1
 
-- Fixes for created, modified ,deleted files in GitHub - [@szweier]
+- Fixes for created, modified and deleted files in GitHub - [@szweier]
 - Dont log about github.pr not being available in pull_request_target - [@sayali10]
 
 ## 12.3.0
