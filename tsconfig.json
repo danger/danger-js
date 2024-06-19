@@ -13,7 +13,7 @@
     "noUnusedParameters": true,
     "esModuleInterop": true,
     "module": "commonjs",
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "pretty": true,
     "target": "es5",
     "outDir": "distribution",

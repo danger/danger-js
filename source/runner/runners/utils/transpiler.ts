@@ -119,7 +119,7 @@ export const lookupTSConfig = (dir: string): string | null => {
   return null
 }
 
-export const typescriptify = (content: string, dir: string): string => {
+export const typescriptify = (content: string, dir: string, esm: boolean = false): string => {
   const ts = require("typescript")
 
   // Support custom TSC options, but also fallback to defaults
@@ -131,11 +131,11 @@ export const typescriptify = (content: string, dir: string): string => {
     compilerOptions = ts.getDefaultCompilerOptions()
   }
 
-  let result = ts.transpileModule(content, sanitizeTSConfig(compilerOptions))
+  let result = ts.transpileModule(content, sanitizeTSConfig(compilerOptions, esm))
   return result.outputText
 }
 
-const sanitizeTSConfig = (config: any) => {
+const sanitizeTSConfig = (config: any, esm: boolean = false) => {
   if (!config.compilerOptions) {
     return config
   }
@@ -149,8 +149,10 @@ const sanitizeTSConfig = (config: any) => {
   //
   // @see https://github.com/apollographql/react-apollo/pull/1402#issuecomment-351810274
   //
-  if (safeConfig.compilerOptions.module) {
+  if (!esm && safeConfig.compilerOptions.module) {
     safeConfig.compilerOptions.module = "commonjs"
+  } else {
+    safeConfig.compilerOptions.module = "es6"
   }
 
   return safeConfig
@@ -202,9 +204,9 @@ export default (code: string, filename: string, remoteFile: boolean = false) => 
   }
 
   let result = code
-  if (hasNativeTypeScript && filetype.startsWith(".ts")) {
+  if (hasNativeTypeScript && (filetype.startsWith(".ts") || filetype.startsWith(".mts"))) {
     d("compiling with typescript")
-    result = typescriptify(code, path.dirname(filename))
+    result = typescriptify(code, path.dirname(filename), filename.endsWith(".mts"))
   } else if (hasBabel && hasBabelTypeScript && filetype.startsWith(".ts")) {
     d("compiling as typescript with babel")
     result = babelify(code, filename, [`${babelPackagePrefix}plugin-transform-typescript`])

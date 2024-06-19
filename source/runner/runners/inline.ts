@@ -1,5 +1,5 @@
 import * as fs from "fs"
-
+import * as path from "path"
 import { debug } from "../../debug"
 import _require from "require-from-string"
 
@@ -75,7 +75,7 @@ export const runDangerfileEnvironment = async (
 
   const customRequire = moduleHandler || customModuleHandler
 
-  // Tell all these filetypes to ge the custom compilation
+  // Tell all these filetypes to get the custom compilation
   require.extensions[".ts"] = customRequire
   require.extensions[".tsx"] = customRequire
   require.extensions[".js"] = customRequire
@@ -105,7 +105,18 @@ export const runDangerfileEnvironment = async (
       }
 
       d("Started parsing Dangerfile: ", filename)
-      const optionalExport = _require(compiled, filename, {})
+      let optionalExport
+      if (filename.endsWith(".mts")) {
+        const tmpFileName = path.join(process.cwd(), `._dangerfile.mjs`)
+        fs.writeFileSync(tmpFileName, compiled)
+        // tried but data urls have trouble with imports and I don't know how to fix
+        // optionalExport = (await import(`data:text/javascript;base64,${btoa(compiled)}`));
+        optionalExport = await import(tmpFileName)
+      } else if (filename.endsWith(".mjs")) {
+        optionalExport = await import(path.join(process.cwd(), filename))
+      } else {
+        optionalExport = _require(compiled, filename, {})
+      }
 
       if (typeof optionalExport.default === "function") {
         d("Running default export from Dangerfile", filename)

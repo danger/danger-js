@@ -140,7 +140,7 @@
     "ts-jest": "^28.0.0",
     "ts-node": "^10.9.2",
     "typedoc": "0.9.0",
-    "typescript": "^4.5.5",
+    "typescript": "^4.9.5",
     "typescript-json-schema": "^0.53.0"
   },
   "dependencies": {

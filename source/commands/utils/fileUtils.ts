@@ -12,12 +12,29 @@ export function dangerfilePath(program: any): string {
     return program.dangerfile
   }
 
+
+  if (existsSync("dangerfile.mts")) {
+    return "dangerfile.mts"
+  }
+
+  if (existsSync("dangerfile.mjs")) {
+    return "dangerfile.mjs"
+  }
+
   if (existsSync("dangerfile.ts")) {
     return "dangerfile.ts"
   }
 
   if (existsSync("dangerfile.js")) {
     return "dangerfile.js"
+  }
+
+  if (existsSync("Dangerfile.mts")) {
+    return "Dangerfile.mts"
+  }
+
+  if (existsSync("Dangerfile.mjs")) {
+    return "Dangerfile.mjs"
   }
 
   if (existsSync("Dangerfile.ts")) {
