@@ -15,8 +15,12 @@
 ## Main
 
 <!-- Your comment below this -->
-- [#1180] Fix for MTS danger files [@matthewh]
+
 <!-- Your comment above this -->
+
+## 12.3.2
+
+- [#1180] Adds support for ESM Dangerfiles (by using `dangerfile.mts`/`dangerfile.mjs`) [@matthewh]
 
 ## 12.3.1
 
@@ -49,7 +53,7 @@ now and Node 18 gives us a full year. - [@orta]
 - Upgrade `@types/node` from `^10.11.3` to `18.19.18` [@heltoft]
 - GitLab: [#1386] Move from `@gitbeaker/node` to `@gitbeaker/rest` [@heltoft]
 - GitLab: [#1412] Danger fails to create inline comments on Gitlab [@heltoft]
-- GitLab: [#1405] Can't post multiple inline comments [@heltoft]
+- GitLab: [#1405] Can't post multiple inline comments [@heltyarnoft]
 - GitLab: Do not delete system resolved danger inline comments [@heltoft]
 - Fix for ESM imports in Dangerfiles [@mgol]
 
