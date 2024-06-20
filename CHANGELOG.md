@@ -15,8 +15,11 @@
 ## Main
 
 <!-- Your comment below this -->
-- [#1180] Set module properly when tsconfig does not contain compilerOptions.module [@matthewh]
 <!-- Your comment above this -->
+
+## 12.3.3
+
+- [#1180] Set module properly when tsconfig does not contain compilerOptions.module [@matthewh]
 
 ## 12.3.2
 
