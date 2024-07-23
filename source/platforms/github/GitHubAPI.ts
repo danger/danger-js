@@ -52,7 +52,7 @@ export class GitHubAPI {
     // A token should have been set by this point
     const token = accessTokenForApp || this.token!
 
-    const host = process.env["DANGER_GITHUB_API_BASE_URL"] || process.env["GITHUB_URL"] || undefined
+    const host = process.env["DANGER_GITHUB_API_BASE_URL"] || "https://api.github.com"
     const options: ConstructorParameters<typeof GitHubNodeAPI>[0] & { debug: boolean } = {
       debug: !!process.env.LOG_FETCH_REQUESTS,
       baseUrl: host,
@@ -515,7 +515,7 @@ ${file.patch}
     }
 
     const containsBase = path.startsWith("http")
-    const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || process.env["GITHUB_URL"] || "https://api.github.com"
+    const baseUrl = process.env["DANGER_GITHUB_API_BASE_URL"] || "https://api.github.com"
     const url = containsBase ? path : `${baseUrl}/${path}`
 
     let customAccept = {}
