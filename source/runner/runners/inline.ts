@@ -14,6 +14,8 @@ import resultsForCaughtError from "./utils/resultsForCaughtError"
 
 const d = debug("inline_runner")
 
+const disableTranspilation = process.env.DANGER_DISABLE_TRANSPILATION === "true"
+
 /**
  * Executes a Dangerfile at a specific path, with a context.
  * The values inside a Danger context are applied as globals to the Dangerfiles runtime.
@@ -73,13 +75,15 @@ export const runDangerfileEnvironment = async (
     module._compile(compiled, filename)
   }
 
-  const customRequire = moduleHandler || customModuleHandler
+  if (!disableTranspilation) {
+    const customRequire = moduleHandler || customModuleHandler
 
-  // Tell all these filetypes to get the custom compilation
-  require.extensions[".ts"] = customRequire
-  require.extensions[".tsx"] = customRequire
-  require.extensions[".js"] = customRequire
-  require.extensions[".jsx"] = customRequire
+    // Tell all these filetypes to get the custom compilation
+    require.extensions[".ts"] = customRequire
+    require.extensions[".tsx"] = customRequire
+    require.extensions[".js"] = customRequire
+    require.extensions[".jsx"] = customRequire
+  }
 
   // Loop through all files and their potential contents, they edit
   // results inside the env, so no need to keep track ourselves
