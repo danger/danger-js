@@ -39,7 +39,7 @@ export const jsonDSLGenerator = async (
       github: {
         accessToken: process.env["DANGER_GITHUB_API_TOKEN"] || process.env["GITHUB_TOKEN"] || "NO_TOKEN",
         additionalHeaders: {},
-        baseURL: process.env["DANGER_GITHUB_API_BASE_URL"] || process.env["GITHUB_URL"] || undefined,
+        baseURL: process.env["DANGER_GITHUB_API_BASE_URL"] || "https://api.github.com",
       },
       cliArgs,
     },
