@@ -184,9 +184,8 @@ class GitLabAPI {
       return note as Types.MergeRequestNoteSchema
     } catch (e) {
       this.d("createMergeRequestNote", e)
+      throw e
     }
-
-    return Promise.reject()
   }
 
   updateMergeRequestDiscussionNote = async (
@@ -207,9 +206,8 @@ class GitLabAPI {
       return discussionNote as Types.MergeRequestDiscussionNoteSchema
     } catch (e) {
       this.d("updateMergeRequestDiscussionNote", e)
+      throw e
     }
-
-    return Promise.reject()
   }
 
   updateMergeRequestNote = async (id: number, body: string): Promise<Types.MergeRequestNoteSchema> => {
@@ -220,9 +218,8 @@ class GitLabAPI {
       return note as Types.MergeRequestNoteSchema
     } catch (e) {
       this.d("updateMergeRequestNote", e)
+      throw e
     }
-
-    return Promise.reject()
   }
 
   // note: deleting the _only_ discussion note in a discussion also deletes the discussion \o/
