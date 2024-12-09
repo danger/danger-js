@@ -122,6 +122,7 @@ new file mode 0
 
   it("getPullRequestComment gets only comments for given Pull Request", async () => {
     api.getAllOfResource = await requestWithFixturedJSON("github_pr_comments_with_danger.json")
+    api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
 
     const comments = await api.getPullRequestComments()
 
