@@ -113,7 +113,8 @@ new file mode 0
 
   it("getDangerCommentIDs ignores comments not marked as generated", async () => {
     api.getAllOfResource = await requestWithFixturedJSON("github_inline_comments_with_danger.json")
-    api.getUserID = () => new Promise<number>((r) => r(20229914))
+    api.fetch = jest.fn().mockReturnValue({ ok: true })
+    api.getPullRequestInfo = await requestWithFixturedJSON("github_pr.json")
 
     const commentIDs = await api.getDangerCommentIDs("default")
 
