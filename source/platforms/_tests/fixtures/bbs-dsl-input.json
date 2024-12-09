@@ -1087,7 +1087,8 @@
   "settings": {
     "github": {
       "accessToken": "12345",
-      "additionalHeaders": {}
+      "additionalHeaders": {},
+      "baseURL": "https://api.github.com"
     },
     "cliArgs": {}
   }
