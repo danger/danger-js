@@ -318,18 +318,19 @@ export class GitHubAPI {
    *
    * This function retrieves all the comments associated with a given pull request.
    * It makes a request to the GitHub API endpoint that returns all comments for the
-   * specified pull request and repository.
+   * specified pull request.
    *
-   * https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#list-issue-comments-for-a-repository
+   * https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#list-issue-comments
    *
    * @returns {Promise<GitHubIssueComment[]>} A promise that resolves to an array of GitHub issue comments.
    *
    */
   getPullRequestComments = async (): Promise<GitHubIssueComment[]> => {
     const pr = await this.getPullRequestInfo()
+    const prNumber = pr.number
     const repo = this.repoMetadata.repoSlug
     const owner = pr.base.repo.owner.login
-    return await this.getAllOfResource(`repos/${owner}/${repo}/issues/comments`)
+    return await this.getAllOfResource(`repos/${owner}/${repo}/issues/${prNumber}/comments`)
   }
 
   getPullRequestInlineComments = async (
