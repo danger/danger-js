@@ -329,9 +329,8 @@ export class GitHubAPI {
   getPullRequestComments = memoize(async (): Promise<GitHubIssueComment[]> => {
     const pr = await this.getPullRequestInfo()
     const prNumber = pr.number
-    const repo = this.repoMetadata.repoSlug
-    const owner = pr.base.repo.owner.login
-    return await this.getAllOfResource(`repos/${owner}/${repo}/issues/${prNumber}/comments`)
+    const repoSlug = this.repoMetadata.repoSlug
+    return await this.getAllOfResource(`repos/${repoSlug}/issues/${prNumber}/comments`)
   })
 
   getPullRequestInlineComments = async (
