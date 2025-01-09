@@ -132,7 +132,7 @@ Some TypeScript examples:
 [eigen]: https://github.com/artsy/eigen/blob/main/dangerfile.ts
 [danger-js]: https://github.com/danger/danger-js/blob/master/dangerfile.ts
 [meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
-[rn]: https://github.com/facebook/react-native/blob/master/bots/dangerfile.js
+[rn]: https://github.com/facebook/react-native/blob/main/packages/react-native-bots/dangerfile.js
 [r]: https://github.com/facebook/react/blob/master/dangerfile.js
 [setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
 [jest]: https://github.com/facebook/jest
