@@ -10,6 +10,7 @@ import { dangerIDToString } from "../../runner/templates/githubIssueTemplate"
 import { api as fetch } from "../../api/fetch"
 import { RepoMetaData } from "../../dsl/RepoMetaData"
 import { CheckOptions } from "./comms/checks/resultsToCheck"
+import memoize from "lodash.memoize"
 
 // The Handle the API specific parts of the github
 
@@ -313,11 +314,23 @@ export class GitHubAPI {
     return response.json()
   }
 
-  getPullRequestComments = async (): Promise<GitHubIssueComment[]> => {
+  /**
+   * Fetches all comments from a Pull Request on GitHub.
+   *
+   * This function retrieves all the comments associated with a given pull request.
+   * It makes a request to the GitHub API endpoint that returns all comments for the
+   * specified pull request.
+   *
+   * https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#list-issue-comments
+   *
+   * @returns {Promise<GitHubIssueComment[]>} A promise that resolves to an array of GitHub issue comments.
+   *
+   */
+  getPullRequestComments = memoize(async (): Promise<GitHubIssueComment[]> => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
     return await this.getAllOfResource(`repos/${repo}/issues/${prID}/comments`)
-  }
+  })
 
   getPullRequestInlineComments = async (
     dangerID: string
