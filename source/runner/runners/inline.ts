@@ -107,13 +107,13 @@ export const runDangerfileEnvironment = async (
       d("Started parsing Dangerfile: ", filename)
       let optionalExport
       if (filename.endsWith(".mts")) {
-        const tmpFileName = path.join(process.cwd(), `._dangerfile.mjs`)
+        const tmpFileName = path.resolve(process.cwd(), `._dangerfile.mjs`)
         fs.writeFileSync(tmpFileName, compiled)
         // tried but data urls have trouble with imports and I don't know how to fix
         // optionalExport = (await import(`data:text/javascript;base64,${btoa(compiled)}`));
         optionalExport = await import(tmpFileName)
       } else if (filename.endsWith(".mjs")) {
-        optionalExport = await import(path.join(process.cwd(), filename))
+        optionalExport = await import(path.resolve(process.cwd(), filename))
       } else {
         optionalExport = _require(compiled, filename, {})
       }
