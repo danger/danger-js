@@ -2,13 +2,15 @@ jest.mock("fs", () => ({
   readFileSync: jest.fn(),
   realpathSync: {},
   existsSync: jest.fn(),
+  statSync: jest.fn(),
+  stat: jest.fn(),
 }))
 jest.mock("path", () => {
   const path = jest.requireActual("path")
   return { ...path, resolve: jest.fn(path.resolve) }
 })
 
-import { typescriptify, lookupTSConfig, dirContains } from "../transpiler"
+import { typescriptify, lookupTSConfig, dirContains, babelify } from "../transpiler"
 import * as fs from "fs"
 import * as path from "path"
 
@@ -86,4 +88,25 @@ describe("dirContains", () => {
       expect(dirContains(`c:\\a`, `d:\\a`)).toBe(false)
     })
   }
+})
+
+describe("babelify", () => {
+  it("does not throw when a filepath is ignored due to babel options, and should return the content unchanged", () => {
+    const dangerfile = "import {a} from 'lodash'; a()"
+
+    const existsSyncMock = fs.existsSync as jest.Mock
+    const actualFs = jest.requireActual("fs") as typeof fs
+    existsSyncMock.mockImplementation((path) => path === "/a/b/babel.config.js" || actualFs.existsSync(path))
+    jest.mock(
+      "/a/b/babel.config.js",
+      () => {
+        return { ignore: ["/a/b"] }
+      },
+      { virtual: true }
+    )
+    const act = () => babelify(dangerfile, "a/b/", [])
+
+    expect(act).not.toThrow()
+    expect(act()).toEqual(dangerfile)
+  })
 })

@@ -172,7 +172,7 @@ export const babelify = (content: string, filename: string, extraPlugins: string
     return content
   }
 
-  const options = babel.loadOptions ? babel.loadOptions({ filename }) : { plugins: [] }
+  const options = babel.loadOptions?.({ filename: filename }) ?? { plugins: [] }
 
   const fileOpts = {
     filename,
@@ -186,7 +186,7 @@ export const babelify = (content: string, filename: string, extraPlugins: string
   const result = transformSync(content, fileOpts)
   d("Result from Babel:")
   d(result)
-  return result.code
+  return result?.code ?? content
 }
 
 export default (code: string, filename: string, remoteFile: boolean = false) => {
