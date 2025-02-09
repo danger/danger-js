@@ -92,7 +92,8 @@ describe("dirContains", () => {
 
 describe("babelify", () => {
   it("does not throw when a filepath is ignored due to babel options, and should return the content unchanged", () => {
-    const dangerfile = "import {a} from 'lodash'; a()"
+    const dangerfile = `import { a } from 'lodash';
+a();`
 
     const existsSyncMock = fs.existsSync as jest.Mock
     const actualFs = jest.requireActual("fs") as typeof fs
