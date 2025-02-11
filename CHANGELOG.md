@@ -15,9 +15,13 @@
 ## Main
 
 <!-- Your comment below this -->
-Ensure that [babel ignores](https://babeljs.io/docs/options#ignore) do not cause the transpiler to fall over, by supporting the 
-`null` return from `loadOptions` which occurs when a file is ignored.
 <!-- Your comment above this -->
+
+## 12.3.4
+
+- Ensure that [babel ignores](https://babeljs.io/docs/options#ignore) do not cause the transpiler to fall over, by supporting the 
+`null` return from `loadOptions` which occurs when a file is ignored.
+- Allow absolute paths for a Dangerfile
 
 ## 12.3.3
 
