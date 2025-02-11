@@ -15,6 +15,8 @@
 ## Main
 
 <!-- Your comment below this -->
+Ensure that [babel ignores](https://babeljs.io/docs/options#ignore) do not cause the transpiler to fall over, by supporting the 
+`null` return from `loadOptions` which occurs when a file is ignored.
 <!-- Your comment above this -->
 
 ## 12.3.3
@@ -2118,6 +2120,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@tibdex]: https://github.com/tibdex
 [@tim3trick]: https://github.com/tim3trick
 [@thawankeane]: https://github.com/thawankeane
+[@tomstrepsil: https://github.com/TomStrepsil]
 [@tychota]: https://github.com/tychota
 [@urkle]: https://github.com/urkle
 [@valscion]: https://github.com/valscion
