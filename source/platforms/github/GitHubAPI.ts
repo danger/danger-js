@@ -3,6 +3,7 @@ import { debug } from "../../debug"
 import * as node_fetch from "node-fetch"
 import parse from "parse-link-header"
 import pLimit from "p-limit"
+import { existsSync, readFileSync } from "fs"
 
 import { GitHubPRDSL, GitHubIssueComment, GitHubUser } from "../../dsl/GitHubDSL"
 
@@ -10,6 +11,7 @@ import { dangerIDToString } from "../../runner/templates/githubIssueTemplate"
 import { api as fetch } from "../../api/fetch"
 import { RepoMetaData } from "../../dsl/RepoMetaData"
 import { CheckOptions } from "./comms/checks/resultsToCheck"
+import { localGetHeadSHA } from "../git/localGetHeadSHA"
 
 // The Handle the API specific parts of the github
 
@@ -35,6 +37,7 @@ export class GitHubAPI {
   private readonly d = debug("GitHubAPI")
 
   private pr: GitHubPRDSL | undefined
+  private gitSha: string | undefined
 
   constructor(public readonly repoMetadata: RepoMetaData, public readonly token?: APIToken) {
     // This allows Peril to DI in a new Fetch function
@@ -80,6 +83,19 @@ export class GitHubAPI {
       const prJSON = await this.getPullRequestInfo()
       repoSlug = prJSON.head.repo.full_name
       ref = prJSON.head.ref
+    }
+
+    // Only make the check the first time file contents are requested
+    if (!this.gitSha) {
+      this.gitSha = await localGetHeadSHA()
+    }
+
+    // See if we can short-cut the API request with a FS lookup
+    // when we're sure it's on the same setup
+    if (ref === this.gitSha) {
+      if (existsSync(path)) {
+        return readFileSync(path, "utf8")
+      }
     }
 
     const data = await this.getFileContents(path, repoSlug, ref)
