@@ -145,7 +145,7 @@
   },
   "dependencies": {
     "@gitbeaker/rest": "^38.0.0",
-    "@octokit/rest": "^18.12.0",
+    "@octokit/rest": "^21.1.1",
     "async-retry": "1.2.3",
     "chalk": "^2.3.0",
     "commander": "^2.18.0",
