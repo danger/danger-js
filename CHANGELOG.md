@@ -16,7 +16,7 @@
 
 <!-- Your comment below this -->
 
-- Update `@octokit/rest` to prevent transitive CVEs - Fixes [#1479](https://github.com/danger/danger-js/issues/1479)
+- Update `@octokit/rest` to prevent transitive CVEs - Fixes [#1479](https://github.com/danger/danger-js/issues/1479) [@fbartho]
 
 <!-- Your comment above this -->
 
