@@ -95,9 +95,14 @@ describe("babelify", () => {
     const dangerfile = `import { a } from 'lodash';
 a();`
 
-    const existsSyncMock = fs.existsSync as jest.Mock
     const actualFs = jest.requireActual("fs") as typeof fs
+    const existsSyncMock = fs.existsSync as jest.Mock
+    const statSyncMock = fs.statSync as jest.Mock
     existsSyncMock.mockImplementation((path) => path === "/a/b/babel.config.js" || actualFs.existsSync(path))
+    statSyncMock.mockImplementation((path) =>
+      // browserslist gets called by babelify, and browserslist checks for all imported things to see if they're directories
+      path === "/a/b/babel.config.js" ? { isDirectory: () => false } : actualFs.statSync(path)
+    )
     jest.mock(
       "/a/b/babel.config.js",
       () => {
