@@ -171,7 +171,9 @@ export const createOrUpdatePR =
     }
 
     d("Creating a branch")
-    await filepathContentsMapToUpdateGitHubBranch(api, fileMap, branchSettings)
+    // temporary hack because typescript thinks we're using two different definitions of Octokit?
+    const tmpHackApi = api as any as Parameters<typeof filepathContentsMapToUpdateGitHubBranch>[0]
+    await filepathContentsMapToUpdateGitHubBranch(tmpHackApi, fileMap, branchSettings)
 
     d("Getting open PRs")
     const prs = await api.pulls.list({ repo, owner, state: "open" })
