@@ -15,6 +15,9 @@
 ## Main
 
 <!-- Your comment below this -->
+
+- Clean up dead discussion link - Fixes [#1467](https://github.com/danger/danger-js/issues/1467) [@fbartho]
+
 <!-- Your comment above this -->
 
 ## 12.3.4
