@@ -45,7 +45,7 @@ export async function retryableFetch(
     {
       retries: retries,
       onRetry: (error, attempt) => {
-        warn(error.message)
+        warn((error as any)?.message)
         warn(`Retry ${attempt} of ${retries}.`)
       },
     }
