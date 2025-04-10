@@ -1,0 +1,13 @@
+- id: danger
+  name: danger
+  description: formalize your team etiquette
+  language: node
+  stages:
+    - pre-commit
+  entry: danger local
+  args:
+    - --base=main
+    - --dangerfile=dangerfile.local.js
+    - --staging
+  pass_filenames: false
+  always_run: true
