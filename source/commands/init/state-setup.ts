@@ -30,7 +30,7 @@ export const createUI = (state: InitState, app: any): InitUI => {
   }
 }
 
-export const generateInitialState = (osProcess: NodeJS.Process): InitState => {
+export const generateInitialState = async (osProcess: NodeJS.Process): Promise<InitState> => {
   const isMac = osProcess.platform === "darwin"
   const isWindows = osProcess.platform === "win32"
   const folderName = capitalizeFirstLetter(camelCase(basename(osProcess.cwd())))
@@ -41,7 +41,7 @@ export const generateInitialState = (osProcess: NodeJS.Process): InitState => {
   const hasGitHubActions = fs.existsSync(".github/") && fs.existsSync(".github/workflows")
 
   const ciType = hasGitHubActions ? "gh-actions" : hasTravis ? "travis" : hasCircle ? "circle" : "unknown"
-  const repoSlug = getRepoSlug()
+  const repoSlug = await getRepoSlug()
   const isGitHub = !!repoSlug
 
   return {

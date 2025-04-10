@@ -31,7 +31,7 @@ interface App {
 const app: App = program as any
 
 const go = async (app: App) => {
-  const state = generateInitialState(process)
+  const state = await generateInitialState(process)
   const ui: InitUI = createUI(state, app)
 
   if (!state.isGitHub) {
