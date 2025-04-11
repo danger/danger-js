@@ -172,7 +172,6 @@
     "override-require": "^1.1.1",
     "p-limit": "^2.1.0",
     "parse-diff": "^0.7.0",
-    "parse-git-config": "^2.0.3",
     "parse-github-url": "^1.0.2",
     "parse-link-header": "^2.0.0",
     "pinpoint": "^1.1.0",
@@ -180,6 +179,7 @@
     "readline-sync": "^1.4.9",
     "regenerator-runtime": "^0.13.9",
     "require-from-string": "^2.0.2",
+    "simple-git": "^3.27.0",
     "supports-hyperlinks": "^1.0.1"
   },
   "husky": {

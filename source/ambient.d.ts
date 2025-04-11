@@ -39,7 +39,6 @@ declare module "supports-hyperlinks"
 //   export default function(code: string, filename?: string, opts?: Partial<RequireOptions>): any
 // }
 
-declare module "parse-git-config"
 declare module "parse-github-url"
 // Basically does one thing
 declare module "override-require"
