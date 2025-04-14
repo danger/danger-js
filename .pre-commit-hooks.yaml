@@ -7,7 +7,7 @@
   entry: danger local
   args:
     - --base=main
-    - --dangerfile=dangerfile.local.js
+    - --dangerfile=dangerfile.lite.ts
     - --staging
   pass_filenames: false
   always_run: true

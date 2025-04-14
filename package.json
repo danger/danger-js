@@ -186,7 +186,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn build; yarn danger:prepush"
+      "pre-push": "yarn build && yarn danger:prepush"
     }
   }
 }

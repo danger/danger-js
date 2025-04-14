@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run lint-staged first
+npx lint-staged
+
+# Then run danger local checks
+npx danger local --base=main --dangerfile=dangerfile.lite.ts --staging 
