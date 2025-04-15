@@ -16,10 +16,15 @@
 
 <!-- Your comment below this -->
 
-- Update `@octokit/rest` to prevent transitive CVEs - Fixes [#1479](https://github.com/danger/danger-js/issues/1479) [@fbartho]
-- Clean up dead discussion link - Fixes [#1467](https://github.com/danger/danger-js/issues/1467) [@fbartho]
-
 <!-- Your comment above this -->
+
+## 13.0.0
+
+- **Breaking** Update `@octokit/rest` from 18 to 20 to prevent transitive CVEs - Fixes [#1479](https://github.com/danger/danger-js/issues/1479) [@fbartho]
+- Clean up dead discussion link - Fixes [#1467](https://github.com/danger/danger-js/issues/1467) [@fbartho]
+- Adds infra for pythons pre-commit hooks
+- Replace parse-git-config with ini + fs as it has a CVE out - [#1486](https://github.com/danger/danger-js/pull/1486)
+- Disabled Windows CI as it was failing for successful builds
 
 ## 12.3.4
 
