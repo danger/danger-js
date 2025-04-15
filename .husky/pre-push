@@ -1,5 +1,0 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-# Run build and danger:prepush
-yarn build && yarn danger:prepush 
