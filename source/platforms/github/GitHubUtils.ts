@@ -1,21 +1,10 @@
 import { basename } from "path"
-import { components as OctokitOpenApiTypes } from "@octokit/openapi-types"
 import { filepathContentsMapToUpdateGitHubBranch, BranchCreationConfig } from "memfs-or-file-map-to-github-branch"
 
 import { sentence, href } from "../../runner/DangerUtils"
 import { GitHubPRDSL, GitHubUtilsDSL } from "./../../dsl/GitHubDSL"
 import { debug } from "../../debug"
 import { encodingParser } from "../encodingParser"
-
-export type GetContentResponseData =
-  | OctokitOpenApiTypes["schemas"]["content-file"]
-  | OctokitOpenApiTypes["schemas"]["content-symlink"]
-  | OctokitOpenApiTypes["schemas"]["content-submodule"]
-export function isFileContents(
-  response: GetContentResponseData
-): response is OctokitOpenApiTypes["schemas"]["content-file"] {
-  return response.type === "file"
-}
 
 const d = debug("GitHub::Utils")
 
@@ -87,7 +76,7 @@ export const fileContentsGenerator =
         // If we get an array, we have a directory
         return ""
       }
-      if (isFileContents(response.data) && response.data.content) {
+      if (response.data.type === "file" && response.data.content) {
         const encoding = encodingParser(response.data.encoding)
         const buffer = Buffer.from(response.data.content, encoding)
         return buffer.toString()
