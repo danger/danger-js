@@ -72,7 +72,7 @@
     "docs:cp_defs": "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/@octokit/rest/index.d.ts docs/docs_generate/github.d.ts",
     "docs": "yarn run docs:cp_defs; yarn typedoc --ignoreCompilerErrors --mode modules --json docs/js_ref_dsl_docs.json --includeDeclarations source",
     "dts-lint": "yarn run declarations && yarn dtslint types",
-    "danger:prepush": "yarn build:fast; yarn test:fixtures; node distribution/commands/danger.js local --base main --dangerfile dangerfile.lite.ts"
+    "danger:prepush": "yarn build:fast && yarn test:fixtures && node distribution/commands/danger.js local --base main --dangerfile dangerfile.lite.ts"
   },
   "repository": {
     "type": "git",
@@ -103,6 +103,7 @@
     "@types/async-retry": "^1.4.1",
     "@types/debug": "0.0.30",
     "@types/get-stdin": "^5.0.1",
+    "@types/ini": "^4.1.1",
     "@types/jest": "^28.0.0",
     "@types/json5": "^2.2.0",
     "@types/jsonpointer": "^4.0.0",
@@ -114,6 +115,7 @@
     "@types/node": "18.19.18",
     "@types/node-fetch": "^2.5.12",
     "@types/p-limit": "^2.0.0",
+    "@types/parse-github-url": "^1.0.3",
     "@types/prettier": "^1.16.1",
     "@types/readline-sync": "^1.4.3",
     "@types/voca": "^1.4.0",
@@ -156,6 +158,7 @@
     "http-proxy-agent": "^5.0.0",
     "https-proxy-agent": "^5.0.1",
     "hyperlinker": "^1.0.0",
+    "ini": "^5.0.0",
     "json5": "^2.2.3",
     "jsonpointer": "^5.0.0",
     "jsonwebtoken": "^9.0.0",
@@ -172,7 +175,6 @@
     "override-require": "^1.1.1",
     "p-limit": "^2.1.0",
     "parse-diff": "^0.7.0",
-    "parse-git-config": "^2.0.3",
     "parse-github-url": "^1.0.2",
     "parse-link-header": "^2.0.0",
     "pinpoint": "^1.1.0",
@@ -185,7 +187,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn build; yarn danger:prepush"
+      "pre-push": "yarn build && yarn danger:prepush"
     }
   }
 }
