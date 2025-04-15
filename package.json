@@ -115,6 +115,7 @@
     "@types/node": "18.19.18",
     "@types/node-fetch": "^2.5.12",
     "@types/p-limit": "^2.0.0",
+    "@types/parse-github-url": "^1.0.3",
     "@types/prettier": "^1.16.1",
     "@types/readline-sync": "^1.4.3",
     "@types/voca": "^1.4.0",

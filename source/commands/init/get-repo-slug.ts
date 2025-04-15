@@ -12,24 +12,24 @@ export const getRepoSlug = () => {
     }
 
     const configContent = fs.readFileSync(gitConfigPath, "utf8")
-
     const parsedConfig = ini.parse(configContent)
+    const remotes: Record<string, any> = {}
 
-    const config: Record<string, any> = {}
-
-    if (parsedConfig.remote) {
-      for (const remoteName in parsedConfig.remote) {
-        config[`remote "${remoteName}"`] = parsedConfig.remote[remoteName]
+    for (const key in parsedConfig) {
+      if (key.startsWith('remote "')) {
+        const remoteName = key.substring(8, key.length - 1)
+        remotes[remoteName] = parsedConfig[key]
       }
     }
 
-    const possibleRemotes = [config['remote "upstream"'], config['remote "origin"']].filter((f) => f)
+    const possibleRemoteNames = ["upstream", "origin"]
+    const possibleRemotes = possibleRemoteNames.map((name) => remotes[name]).filter((remote) => remote && remote.url)
+
     if (possibleRemotes.length === 0) {
       return null
     }
-
     const ghData = possibleRemotes.map((r) => parseGithubURL(r.url))
-    return ghData.length ? ghData[0].repo : undefined
+    return ghData.length && ghData[0] ? ghData[0].repo : undefined
   } catch (error) {
     console.error("Error reading git config:", error)
     return null
