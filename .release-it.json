@@ -1,6 +1,10 @@
 {
   "_": "CI will switch the release here to true",
-  "github": { "release": false, "assets": "brew-distribution/*.zip" },
+  "github": {
+    "release": false,
+    "assets": "brew-distribution/*.zip",
+    "releaseNotes": "npx auto-changelog --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/main/templates/changelog-compact.hbs"
+  },
   "git": {
     "requireCleanWorkingDir": false,
     "changelog": "npx auto-changelog --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/main/templates/changelog-compact.hbs"
