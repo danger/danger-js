@@ -5,7 +5,7 @@ import nodeCleanup from "node-cleanup"
 
 import program from "commander"
 import { debug } from "../debug"
-import getSTDIN from "get-stdin"
+import streamConsumers from "node:stream/consumers"
 import chalk from "chalk"
 
 import inline from "../runner/runners/inline"
@@ -95,4 +95,4 @@ const missingDSLTimeout = setTimeout(() => {
 }, 10000)
 
 // Start waiting on STDIN for the DSL
-getSTDIN().then(run(program as any))
+streamConsumers.text(process.stdin).then(run(program as any))
