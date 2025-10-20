@@ -1,5 +1,4 @@
 declare module "lodash.includes"
-declare module "lodash.find"
 declare module "lodash.isobject"
 declare module "lodash.keys"
 declare module "jest-runtime"

@@ -1,7 +1,6 @@
 import { Env } from "./ci_source"
 import { GitHubAPI } from "../platforms/github/GitHubAPI"
 import { GitHubPRDSL } from "../dsl/GitHubDSL"
-import find from "lodash.find"
 import {
   BitBucketServerAPI,
   bitbucketServerRepoCredentialsFromEnv,
@@ -64,7 +63,7 @@ export async function getPullRequestIDForBranch(metadata: RepoMetaData, env: Env
   }
   const api = new GitHubAPI(metadata, token)
   const prs = (await api.getPullRequests()) as any[]
-  const prForBranch: GitHubPRDSL = find(prs, (pr: GitHubPRDSL) => pr.head.ref === branch)
+  const prForBranch = prs.find((pr: GitHubPRDSL) => pr.head.ref === branch)
   if (prForBranch) {
     return prForBranch.number
   }
