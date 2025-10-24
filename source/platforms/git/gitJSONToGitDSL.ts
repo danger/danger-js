@@ -3,7 +3,6 @@ import parseDiff from "parse-diff"
 
 import includes from "lodash.includes"
 import isobject from "lodash.isobject"
-import keys from "lodash.keys"
 import memoize from "lodash.memoize"
 
 import * as jsonDiff from "fast-json-patch"
@@ -144,8 +143,8 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
         diff.removed = arrayBefore.filter((o) => !includes(arrayAfter, o))
         // Do the same, but for keys inside an object if they both are objects.
       } else if (isobject(afterValue) && isobject(beforeValue)) {
-        const beforeKeys = keys(beforeValue) as string[]
-        const afterKeys = keys(afterValue) as string[]
+        const beforeKeys = Object.keys(beforeValue) as string[]
+        const afterKeys = Object.keys(afterValue) as string[]
         diff.added = afterKeys.filter((o) => !includes(beforeKeys, o))
         diff.removed = beforeKeys.filter((o) => !includes(afterKeys, o))
       }
