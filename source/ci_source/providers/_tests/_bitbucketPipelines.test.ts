@@ -34,12 +34,12 @@ describe(".isCI", () => {
 })
 
 describe(".isPR", () => {
-  it("validates when all BuddyBuild environment vars are set", () => {
+  it("validates when all BitbucketPipelines environment vars are set", () => {
     const pipelines = new BitbucketPipelines(correctEnv)
     expect(pipelines.isPR).toBeTruthy()
   })
 
-  it("does not validate outside of BuddyBuild", () => {
+  it("does not validate outside of BitbucketPipelines", () => {
     const pipelines = new BitbucketPipelines({})
     expect(pipelines.isPR).toBeFalsy()
   })
