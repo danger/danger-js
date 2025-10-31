@@ -19,6 +19,11 @@
 
 <!-- Your comment above this -->
 
+## 13.0.4
+
+- Removed some dependencies! [@yoshi-taka]
+- Fixed dockerfile syntax [@SimenB]
+
 ## 13.0.3
 
 - Lots of deploy faff, as we are forced to update node in all the build processing [@orta]
