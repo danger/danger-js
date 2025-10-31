@@ -1,4 +1,4 @@
-FROM node:20-slim as base
+FROM node:20-slim AS base
 
 LABEL maintainer="Orta Therox"
 LABEL "com.github.actions.name"="Danger JS Action"
@@ -8,7 +8,7 @@ LABEL "com.github.actions.color"="blue"
 
 WORKDIR /usr/src/danger
 
-FROM base as build
+FROM base AS build
 COPY package.json yarn.lock ./
 RUN yarn install
 COPY . .
