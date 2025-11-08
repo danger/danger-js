@@ -147,7 +147,7 @@
     "@gitbeaker/rest": "^38.0.0",
     "@octokit/rest": "^20.1.2",
     "async-retry": "1.2.3",
-    "chalk": "^2.3.0",
+    "chalk": "^4.1.2",
     "commander": "^2.18.0",
     "core-js": "^3.8.2",
     "debug": "^4.1.1",
@@ -177,7 +177,7 @@
     "readline-sync": "^1.4.9",
     "regenerator-runtime": "^0.13.9",
     "require-from-string": "^2.0.2",
-    "supports-hyperlinks": "^1.0.1"
+    "supports-hyperlinks": "^4.3.0"
   },
   "resolutions": {
     "before-after-hook": "2.2.0",
