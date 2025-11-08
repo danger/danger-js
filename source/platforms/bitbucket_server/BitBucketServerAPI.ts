@@ -1,7 +1,7 @@
 import { debug } from "../../debug"
 import * as node_fetch from "node-fetch"
 import { Agent } from "http"
-import HttpsProxyAgent from "https-proxy-agent"
+import { HttpsProxyAgent } from "https-proxy-agent"
 
 import {
   BitBucketServerPRDSL,
@@ -354,7 +354,7 @@ export class BitBucketServerAPI implements BitBucketServerAPIDSL {
     let agent: Agent | undefined = undefined
     let proxy = process.env.http_proxy || process.env.https_proxy
     if (proxy) {
-      agent = HttpsProxyAgent(proxy)
+      agent = new HttpsProxyAgent(proxy)
     }
 
     return this.fetch(

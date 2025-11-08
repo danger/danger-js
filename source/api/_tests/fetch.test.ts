@@ -133,7 +133,7 @@ describe("fetch", () => {
 
     let options: node_fetch.RequestInit = { agent: undefined }
     await api(url, options, true, { HTTPS_PROXY: proxyUrl })
-    let agent = options.agent as HttpsProxyAgent
+    let agent = options.agent as HttpsProxyAgent<string>
     expect(agent["proxy"].href).toBe(proxyUrl)
   })
 
@@ -145,7 +145,7 @@ describe("fetch", () => {
 
     let options: node_fetch.RequestInit = { agent: undefined }
     await api(url, options, true, { https_proxy: proxyUrl })
-    let agent = options.agent as HttpsProxyAgent
+    let agent = options.agent as HttpsProxyAgent<string>
     expect(agent["proxy"].href).toBe(proxyUrl)
   })
 
@@ -157,7 +157,7 @@ describe("fetch", () => {
 
     let options: node_fetch.RequestInit = { agent: undefined }
     await api(url, options, true, { HTTP_PROXY: proxyUrl })
-    let agent = options.agent as HttpProxyAgent
+    let agent = options.agent as HttpProxyAgent<string>
     expect(agent["proxy"].href).toBe(proxyUrl)
   })
 
@@ -169,7 +169,7 @@ describe("fetch", () => {
 
     let options: node_fetch.RequestInit = { agent: undefined }
     await api(url, options, true, { http_proxy: proxyUrl })
-    let agent = options.agent as HttpProxyAgent
+    let agent = options.agent as HttpProxyAgent<string>
     expect(agent["proxy"].href).toBe(proxyUrl)
   })
 })
