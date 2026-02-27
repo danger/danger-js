@@ -31,7 +31,7 @@ function pLimit(concurrency: number) {
   return <T>(fn: () => Promise<T>): Promise<T> =>
     new Promise<T>((resolve, reject) => {
       const run = () => {
-        fn().then(
+        Promise.resolve(fn()).then(
           (val) => {
             resolve(val)
             active--
