@@ -6,4 +6,4 @@ We only support the current SemVer major
 
 ## Reporting a Vulnerability
 
-Feel free to reach out to orta on Twitter (@orta) or via `[yourname]@orta.io`.
+Feel free to reach out to orta on Bleusky (@orta.io) or via `[yourname]@orta.io`.

@@ -19,6 +19,13 @@
 
 <!-- Your comment above this -->
 
+## 13.0.5
+
+- Dropped p-limit as a dep
+- Force no-color in git for the local command - cyberowl
+- Use stdout/err in local command - cyberowl
+
+
 ## 13.0.4
 
 - Removed some dependencies! [@yoshi-taka]
