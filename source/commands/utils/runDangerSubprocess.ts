@@ -97,7 +97,7 @@ export const runDangerSubprocess = (
       .replace(messageToSendDSL + "\n", "")
       .replace(messageToSendDSL, "")
 
-    console.log(withoutURLs)
+    process.stdout.write(withoutURLs)
 
     // Pass it back to the user
     if (!results && maybeJSONURL) {
@@ -115,8 +115,9 @@ export const runDangerSubprocess = (
   })
 
   child.stderr.on("data", (data) => {
-    if (data.toString().trim().length !== 0) {
-      console.log(data.toString())
+    const stderr = data.toString()
+    if (stderr.trim().length !== 0) {
+      process.stderr.write(stderr)
     }
   })
 
