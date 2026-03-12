@@ -2,8 +2,6 @@ import { Octokit as GitHubNodeAPI } from "@octokit/rest"
 import { debug } from "../../debug"
 import * as node_fetch from "node-fetch"
 import parse from "parse-link-header"
-import pLimit from "p-limit"
-
 import { GitHubPRDSL, GitHubIssueComment, GitHubUser } from "../../dsl/GitHubDSL"
 
 import { dangerIDToString } from "../../runner/templates/githubIssueTemplate"
@@ -14,6 +12,46 @@ import { CheckOptions } from "./comms/checks/resultsToCheck"
 // The Handle the API specific parts of the github
 
 export type APIToken = string
+
+/**
+ * Inline concurrency limiter — replaces the `p-limit` package.
+ * Restricts the number of promises running at once to `concurrency`.
+ */
+function pLimit(concurrency: number) {
+  const queue: Array<() => void> = []
+  let active = 0
+
+  const next = () => {
+    if (queue.length > 0 && active < concurrency) {
+      active++
+      queue.shift()!()
+    }
+  }
+
+  return <T>(fn: () => Promise<T>): Promise<T> =>
+    new Promise<T>((resolve, reject) => {
+      const run = () => {
+        Promise.resolve(fn()).then(
+          (val) => {
+            resolve(val)
+            active--
+            next()
+          },
+          (err) => {
+            reject(err)
+            active--
+            next()
+          }
+        )
+      }
+      if (active < concurrency) {
+        active++
+        run()
+      } else {
+        queue.push(run)
+      }
+    })
+}
 
 const limit = pLimit(25)
 

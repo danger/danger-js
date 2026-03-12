@@ -4,10 +4,11 @@ import { spawn } from "child_process"
 const d = debug("localGetDiff")
 const useCommittedDiffArgs = (base: string, head: string) => [
   "diff",
+  "--no-color",
   "--src-prefix='a/' --dst-prefix='b/'",
   `${base}...${head}`,
 ]
-const useStagingChanges = () => ["diff", "--src-prefix='a/' --dst-prefix='b/'", "--staged"]
+const useStagingChanges = () => ["diff", "--no-color", "--src-prefix='a/' --dst-prefix='b/'", "--staged"]
 
 export const localGetDiff = (base: string, head: string, staging: boolean = false) =>
   new Promise<string>((done) => {
