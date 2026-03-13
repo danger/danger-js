@@ -100,7 +100,7 @@ Following [this commit](https://github.com/danger/danger-js/commit/a26ac3b3bd4f0
 
 - Checkout the `main` branch. Ensure your working tree is clean, and make sure you have the latest changes by running
   `git pull; yarn`.
-- Publish - `npm run release -- patch --ci`.
+- Publish - `npm run release -- patch --ci --npm.otp=<code>`.
 - This will trigger a CI run which updates homebrew for the native builds
 
 :ship:
