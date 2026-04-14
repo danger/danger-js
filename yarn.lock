@@ -1054,30 +1054,32 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.1.tgz#de633db3ec2ef6a3c89e2f19038063e8a122e2c2"
   integrity sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==
 
-"@gitbeaker/core@^38.12.1":
-  version "38.12.1"
-  resolved "https://registry.yarnpkg.com/@gitbeaker/core/-/core-38.12.1.tgz#d75d9f829aed9957a75c798d454324285366d0de"
-  integrity sha512-8XMVcBIdVAAoxn7JtqmZ2Ee8f+AZLcCPmqEmPFOXY2jPS84y/DERISg/+sbhhb18iRy+ZsZhpWgQ/r3CkYNJOQ==
+"@gitbeaker/core@^43.8.0":
+  version "43.8.0"
+  resolved "https://registry.yarnpkg.com/@gitbeaker/core/-/core-43.8.0.tgz#b9ff02c9c91296f5aaaa0b9c16c4396453610fca"
+  integrity sha512-H+LfKuf4dExBinb79c+CXViRBvTVQNf5BYLNSizm2SiqdED5JruhKX88payefleY0szp7G/mySlFSXPyGRH1dQ==
   dependencies:
-    "@gitbeaker/requester-utils" "^38.12.1"
-    qs "^6.11.1"
+    "@gitbeaker/requester-utils" "^43.8.0"
+    qs "^6.14.0"
     xcase "^2.0.1"
 
-"@gitbeaker/requester-utils@^38.12.1":
-  version "38.12.1"
-  resolved "https://registry.yarnpkg.com/@gitbeaker/requester-utils/-/requester-utils-38.12.1.tgz#8917647521e518ba74425c78a6dd91cf5787b4dc"
-  integrity sha512-Rc/DgngS0YPN+AY1s9UnexKSy4Lh0bkQVAq9p7PRbRpXb33SlTeCg8eg/8+A/mrMcHgYmP0XhH8lkizyA5tBUQ==
+"@gitbeaker/requester-utils@^43.8.0":
+  version "43.8.0"
+  resolved "https://registry.yarnpkg.com/@gitbeaker/requester-utils/-/requester-utils-43.8.0.tgz#6b9fb0cf93ce20c7a9b453161749c61a704c2849"
+  integrity sha512-d/SiJdxijc+aH5ZBQOw83XLxNSXqsBZNm5k3nPu1EHxGxK0fajXmxdMl0/vNXbKRggnIquFCxURkrQSEzfjqxQ==
   dependencies:
-    qs "^6.11.1"
+    picomatch-browser "^2.2.6"
+    qs "^6.14.0"
+    rate-limiter-flexible "^8.0.1"
     xcase "^2.0.1"
 
-"@gitbeaker/rest@^38.0.0":
-  version "38.12.1"
-  resolved "https://registry.yarnpkg.com/@gitbeaker/rest/-/rest-38.12.1.tgz#93c57104234ba9f4bd61959dca1e11a569089619"
-  integrity sha512-9KMSDtJ/sIov+5pcH+CAfiJXSiuYgN0KLKQFg0HHWR2DwcjGYkcbmhoZcWsaOWOqq4kihN1l7wX91UoRxxKKTQ==
+"@gitbeaker/rest@^43.8.0":
+  version "43.8.0"
+  resolved "https://registry.yarnpkg.com/@gitbeaker/rest/-/rest-43.8.0.tgz#e7ed39a2ae0a358f9c91c02aa0f3f946cd7ced5c"
+  integrity sha512-xxqsNsUXaFang9b2e/NTIgqUeuUlifA2Opy1mOVqTDuJZZNIOTgUNyziwBJoleBhMC0XuvY3JNVMWthufcVjRw==
   dependencies:
-    "@gitbeaker/core" "^38.12.1"
-    "@gitbeaker/requester-utils" "^38.12.1"
+    "@gitbeaker/core" "^43.8.0"
+    "@gitbeaker/requester-utils" "^43.8.0"
 
 "@humanwhocodes/config-array@^0.13.0":
   version "0.13.0"
@@ -5693,6 +5695,11 @@ picocolors@^1.0.0, picocolors@^1.1.1:
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.1.1.tgz#3d321af3eab939b083c8f929a1d12cda81c26b6b"
   integrity sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==
 
+picomatch-browser@^2.2.6:
+  version "2.2.6"
+  resolved "https://registry.yarnpkg.com/picomatch-browser/-/picomatch-browser-2.2.6.tgz#e0626204575eb49f019f2f2feac24fc3b53e7a8a"
+  integrity sha512-0ypsOQt9D4e3hziV8O4elD9uN0z/jtUEfxVRtNaAAtXIyUx9m/SzlO020i8YNL2aL/E6blOvvHQcin6HZlFy/w==
+
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3, picomatch@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
@@ -5965,10 +5972,10 @@ pupa@^3.1.0:
   dependencies:
     escape-goat "^4.0.0"
 
-qs@^6.11.1:
-  version "6.14.1"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.14.1.tgz#a41d85b9d3902f31d27861790506294881871159"
-  integrity sha512-4EK3+xJl8Ts67nLYNwqw/dsFVnCf+qR7RgXSK9jEEm9unao3njwMDdmsdvoKBKHzxd7tCYz5e5M+SnMjdtXGQQ==
+qs@^6.14.0:
+  version "6.15.1"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.15.1.tgz#bdb55aed06bfac257a90c44a446a73fba5575c8f"
+  integrity sha512-6YHEFRL9mfgcAvql/XhwTvf5jKcOiiupt2FiJxHkiX1z4j7WL8J/jRHYLluORvc1XxB5rV20KoeK00gVJamspg==
   dependencies:
     side-channel "^1.1.0"
 
@@ -5981,6 +5988,11 @@ quote-unquote@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/quote-unquote/-/quote-unquote-1.0.0.tgz#67a9a77148effeaf81a4d428404a710baaac8a0b"
   integrity sha512-twwRO/ilhlG/FIgYeKGFqyHhoEhqgnKVkcmqMKi2r524gz3ZbDTcyFt38E9xjJI2vT+KbRNHVbnJ/e0I25Azwg==
+
+rate-limiter-flexible@^8.0.1:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/rate-limiter-flexible/-/rate-limiter-flexible-8.3.0.tgz#3dd39ff8e4fb0fbee653bbea440039796a7caebf"
+  integrity sha512-mzwlfipDLlRinPgELqVDJetke6Snq26nL565m8nLWXIcWgosYSeNRgqwh7ZrZ4MfYs8CNfmLvR5SBVz3rISQsQ==
 
 rc@1.2.8, rc@^1.2.7:
   version "1.2.8"
