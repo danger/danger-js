@@ -16,6 +16,7 @@
 
 <!-- Your comment below this -->
 
+- Fix spurious `Premature close` (`ERR_STREAM_PREMATURE_CLOSE`) failures when running on Node 24.17.0+ by no longer requesting gzip-compressed GitHub API responses - [@sakkadak]
 
 <!-- Your comment above this -->
 
@@ -2137,6 +2138,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@rouby]: https://github.com/rouby
 [@rzgry]: https://github.com/rzgry
 [@sajjadzamani]: https://github.com/sajjadzamani
+[@sakkadak]: https://github.com/sakkadak
 [@sandratatarevicova]: https://github.com/sandratatarevicova
 [@sebinsua]: https://github.com/sebinsua
 [@sgtcoolguy]: https://github.com/sgtcoolguy

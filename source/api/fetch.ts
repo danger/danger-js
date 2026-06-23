@@ -116,6 +116,19 @@ export function api(
     init.agent = secure ? new HttpsProxyAgent(proxy) : new HttpProxyAgent(proxy)
   }
 
+  // Node >= 24.17.0 attaches a 'data' listener to idle keep-alive sockets in the http.Agent
+  // free pool (the CVE-2026-48931 "response queue poisoning" hardening). node-fetch@2's
+  // chunked-bad-ending detector (fixResponseChunkedTransferBadEnding) reads
+  // `socket.listenerCount('data')` and misreads that listener as an unclean connection close,
+  // throwing a bogus `ERR_STREAM_PREMATURE_CLOSE` ("Premature close") for responses sent as
+  // `Transfer-Encoding: chunked` with no `Content-Length` — i.e. gzip-encoded GitHub API
+  // responses. Declining gzip makes the server return an identity-encoded body with a
+  // `Content-Length`, so the detector never arms. Guarded with `=== undefined` so callers can
+  // still opt back into compression. See nodejs/node#63989 (report) and nodejs/node#64004 (fix).
+  if (init.compress === undefined) {
+    init.compress = false
+  }
+
   return retryableFetch(url, init).then(async (response: node_fetch.Response) => {
     // Handle failing errors
     if (!suppressErrorReporting && !response.ok) {

@@ -172,4 +172,20 @@ describe("fetch", () => {
     let agent = options.agent as HttpProxyAgent<string>
     expect(agent["proxy"].href).toBe(proxyUrl)
   })
+
+  it("disables compression by default to avoid the Node 24.17+ node-fetch premature-close", async () => {
+    await server.start({})
+
+    let options: node_fetch.RequestInit = {}
+    await api(url, options, true)
+    expect(options.compress).toBe(false)
+  })
+
+  it("does not override an explicitly provided compress option", async () => {
+    await server.start({})
+
+    let options: node_fetch.RequestInit = { compress: true }
+    await api(url, options, true)
+    expect(options.compress).toBe(true)
+  })
 })
