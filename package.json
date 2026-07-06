@@ -173,10 +173,11 @@
     "regenerator-runtime": "^0.13.9",
     "require-from-string": "^2.0.2",
     "supports-hyperlinks": "^4.3.0",
-    "undici": "6.21.1"
+    "undici": "^6.27.0"
   },
   "resolutions": {
+    "@octokit/rest": "^20.1.2",
     "before-after-hook": "2.2.0",
-    "@octokit/rest": "^20.1.2"
+    "undici": "^6.27.0"
   }
 }
