@@ -16,6 +16,8 @@
 
 <!-- Your comment below this -->
 
+- Upgrade to undici 6.27.0 to resolve transitive CVEs - fixes [#1517](https://github.com/danger/danger-js/issues/1517) [@rjatkins]
+
 <!-- Your comment above this -->
 
 ## 13.0.9
