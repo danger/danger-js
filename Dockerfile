@@ -13,7 +13,7 @@ COPY package.json yarn.lock ./
 RUN yarn install
 COPY . .
 RUN yarn run build:fast
-RUN yarn remove 'typescript' --dev && yarn add 'typescript'
+RUN yarn remove 'typescript' --dev && yarn add 'typescript@6.0.3'
 RUN yarn install --production --frozen-lockfile
 RUN chmod +x distribution/commands/danger.js
 
