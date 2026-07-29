@@ -1888,13 +1888,7 @@
                     "type": "number"
                 },
                 "state": {
-                    "description": "The state of the review\nAPPROVED, REQUEST_CHANGES, COMMENT or PENDING",
-                    "enum": [
-                        "APPROVED",
-                        "COMMENT",
-                        "PENDING",
-                        "REQUEST_CHANGES"
-                    ],
+                    "description": "The state of the review, e.g. APPROVED, CHANGES_REQUESTED, COMMENTED,\nDISMISSED or PENDING. GitHub does not document a closed set of values for\nthis field, so it is typed as a union with `string` rather than an exact\none: the literals give you autocomplete, and `string` keeps the type honest\nabout values GitHub may add.",
                     "type": "string"
                 },
                 "user": {

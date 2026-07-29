@@ -1450,10 +1450,13 @@ interface GitHubReview {
   commit_id?: string
 
   /**
-   * The state of the review
-   * APPROVED, REQUEST_CHANGES, COMMENT or PENDING
+   * The state of the review, e.g. APPROVED, CHANGES_REQUESTED, COMMENTED,
+   * DISMISSED or PENDING. GitHub does not document a closed set of values for
+   * this field, so it is typed as a union with `string` rather than an exact
+   * one: the literals give you autocomplete, and `string` keeps the type honest
+   * about values GitHub may add.
    */
-  state?: "APPROVED" | "REQUEST_CHANGES" | "COMMENT" | "PENDING"
+  state?: "APPROVED" | "CHANGES_REQUESTED" | "COMMENTED" | "DISMISSED" | "PENDING" | string
 }
 
 /** Provides the current PR in an easily used way for params in `github.api` calls  */
