@@ -16,6 +16,7 @@
 
 <!-- Your comment below this -->
 
+- `github.reviews` now reports the review states GitHub actually sends, so checking for a review that requested changes works - fixes [#1443](https://github.com/danger/danger-js/issues/1443) [@Socialpranker]
 - GitHub: Fetch all pages of pull request reviews [#1383](https://github.com/danger/danger-js/issues/1383) [@LeonMAG]
 - Upgrade to undici 6.27.0 to resolve transitive CVEs - fixes [#1517](https://github.com/danger/danger-js/issues/1517) [@rjatkins]
 
@@ -2148,6 +2149,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@sharkysharks]: https://github.com/sharkysharks
 [@shyim]: https://github.com/shyim
 [@snowe2010]: https://github.com/snowe2010
+[@socialpranker]: https://github.com/Socialpranker
 [@sogame]: https://github.com/sogame
 [@soyn]: https://github.com/Soyn
 [@stefanbuck]: https://github.com/stefanbuck
