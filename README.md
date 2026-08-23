@@ -55,7 +55,7 @@ Some quick links to get you started:
 - [Guides Index](http://danger.systems/js/guides.html)
 - [DSL Reference](http://danger.systems/js/reference.html)
 
-## This thing is broken, I should help improve it!
+## This thing is broken, I should help improve it
 
 Awesommmmee. Everything you need is down below. You can also refer to [CONTRIBUTING](CONTRIBUTING.md) file where you'll
 find the same information listed below.
@@ -100,7 +100,7 @@ Following [this commit](https://github.com/danger/danger-js/commit/a26ac3b3bd4f0
 
 - Checkout the `main` branch. Ensure your working tree is clean, and make sure you have the latest changes by running
   `git pull; yarn`.
-- Publish - `npm run release -- patch --ci --npm.otp=<code>`.
+- Publish - `npm run release -- patch --npm.otp=<code>`.
 - This will trigger a CI run which updates homebrew for the native builds
 
 :ship:
@@ -119,12 +119,3 @@ to stay on top of Danger without all the emails from GitHub.
 >
 > Contributors subscribe to the [Contributor Code of Conduct](http://contributor-covenant.org/version/1/3/0/) based on
 > the [Contributor Covenant](http://contributor-covenant.org) version 1.3.0.
-
-[emiss]: https://github.com/artsy/emission/blob/master/dangerfile.ts
-[danger-js]: https://github.com/danger/danger-js/blob/main/dangerfile.ts
-[meta]: https://github.com/artsy/metaphysics/blob/master/dangerfile.js
-[fbj]: https://github.com/facebook/jest/blob/master/dangerfile.js
-[sc]: https://github.com/styled-components/styled-components/blob/master/dangerfile.js
-[rxjs]: https://github.com/ReactiveX/rxjs/blob/master/dangerfile.js
-[setup]: http://danger.systems/guides/getting_started.html#creating-a-bot-account-for-danger-to-use
-[jest]: https://github.com/facebook/jest

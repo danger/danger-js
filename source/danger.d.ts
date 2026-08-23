@@ -1474,6 +1474,9 @@ interface GitHubAPIPR {
   pull_number: number
 }
 
+/**
+ * The users and teams that have been requested to review a GitHub PR.
+ */
 interface GitHubReviewers {
   /** Users that have been requested */
   users: GitHubUser[]

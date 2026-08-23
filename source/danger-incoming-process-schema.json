@@ -1899,6 +1899,7 @@
             "type": "object"
         },
         "GitHubReviewers": {
+            "description": "The users and teams that have been requested to review a GitHub PR.",
             "properties": {
                 "teams": {
                     "description": "Teams that have been requested",
