@@ -96,12 +96,16 @@ Check the issues, I try and keep my short term perspective there. Long term is i
 
 ### Releasing a new version of Danger
 
-Following [this commit](https://github.com/danger/danger-js/commit/a26ac3b3bd4f002acd37f6a363c8e74c9d5039ab) as a model:
+Releases are triggered by pushing a version tag. Tag creation on this repo is restricted by the "Release tags"
+repository ruleset, so the set of people who can ship a release is that ruleset's bypass list.
 
 - Checkout the `main` branch. Ensure your working tree is clean, and make sure you have the latest changes by running
   `git pull; yarn`.
-- Publish - `npm run release -- patch --npm.otp=<code>`.
-- This will trigger a CI run which updates homebrew for the native builds
+- Bump and tag - `npm run release -- patch`. This bumps `package.json`, commits, tags and pushes. It no longer publishes
+  to npm from your machine, so there's no OTP to enter.
+- Pushing the tag runs [`npm_publish.yml`](.github/workflows/npm_publish.yml), which publishes to npm using npm's
+  trusted publishing (there is no `NPM_TOKEN` secret) and then kicks off `release.yml` for the macOS native builds and
+  the homebrew tap.
 
 :ship:
 

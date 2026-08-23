@@ -1,0 +1,48 @@
+name: Publish danger to npm
+
+# Pushing a version tag is the deploy trigger. Who can create tags is
+# restricted by the "Release tags" repository ruleset, so that ruleset's
+# bypass list is the list of people who can ship a release.
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+      - "[0-9]+.[0-9]+.[0-9]+-*"
+
+permissions:
+  contents: read
+  id-token: write # npm trusted publishing
+  actions: write # to kick off release.yml below
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      # Trusted publishing needs a newer npm than node ships with
+      - run: npm install -g npm@latest
+
+      - run: yarn install
+
+      - name: Check the tag matches the version in package.json
+        run: |
+          PKG=$(node -p "require('./package.json').version")
+          if [ "$GITHUB_REF_NAME" != "$PKG" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json version $PKG"
+            exit 1
+          fi
+
+      # There's no NPM_TOKEN here: npm trusts this repo + workflow via OIDC.
+      # prepublishOnly does the build, the tests and the type definitions.
+      - run: npm publish --provenance
+
+      - name: Build the macOS executables and update the homebrew tap
+        run: gh workflow run release.yml -f version="$GITHUB_REF_NAME"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
