@@ -38,6 +38,9 @@ rather than a workaround.
 - undici is now an optional peer dependency (`^6.28.0 || ^7`), so you can move it forward yourself to pick up security
   fixes without waiting for a Danger release [@orta]
 - Removed the `undici` entry from Danger's own `resolutions`, which had no effect on people installing Danger [@orta]
+- Danger now runs on node 24 and newer. Signing in as a GitHub App relied on a dependency that used a part of node
+  removed in 24, which crashed Danger on startup before it could do any work. That signing is now done with node's
+  own crypto, so the dependency (and the eleven packages it brought with it) is gone [@orta]
 
 ## 13.0.9
 

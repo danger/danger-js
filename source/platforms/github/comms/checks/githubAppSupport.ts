@@ -1,20 +1,27 @@
-import * as jwt from "jsonwebtoken"
+import { createSign } from "crypto"
 import { fetch } from "undici"
 
 // Step 1
+
+const base64url = (input: string | Buffer) => Buffer.from(input).toString("base64url")
 
 /** App ID + Signing Key = initial JWT to start auth process */
 const jwtForGitHubAuth = (appID: string, key: string) => {
   const now = Math.round(new Date().getTime() / 1000)
   const expires: number = now + 300
-  const keyContent = key
+  const header: object = {
+    alg: "RS256",
+    typ: "JWT",
+  }
   const payload: object = {
     exp: expires,
     iat: now,
     iss: appID,
   }
 
-  return jwt.sign(payload, keyContent, { algorithm: "RS256" })
+  const signingInput = `${base64url(JSON.stringify(header))}.${base64url(JSON.stringify(payload))}`
+  const signature = createSign("RSA-SHA256").update(signingInput).sign(key)
+  return `${signingInput}.${base64url(signature)}`
 }
 
 // Step 2 - Use App signed JWT to grab a per-installation
