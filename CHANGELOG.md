@@ -16,9 +16,24 @@
 
 <!-- Your comment below this -->
 
+Danger now installs undici 7 by default. undici is what Danger uses to talk to GitHub, GitLab and Bitbucket, and version
+7 requires node 20.18.1 or newer — so for most people that is Danger's new effective minimum. Node 18 has not been
+dropped: you can pin undici back to the 6.x line yourself and everything keeps working. - [@orta]
+
+The reason for the switch is that it puts you in control of your own undici version. Previously Danger pinned undici to
+the 6.x line, so if a security advisory landed you had to wait for a Danger release to pick up the fix. undici is now an
+optional peer dependency accepting `^6.28.0 || ^7`, which means moving it in either direction is a supported thing to do
+rather than a workaround.
+
 - `github.reviews` now reports the review states GitHub actually sends, so checking for a review that requested changes works - fixes [#1443](https://github.com/danger/danger-js/issues/1443) [@Socialpranker]
 - GitHub: Fetch all pages of pull request reviews [#1383](https://github.com/danger/danger-js/issues/1383) [@LeonMAG]
 - Upgrade to undici 6.27.0 to resolve transitive CVEs - fixes [#1517](https://github.com/danger/danger-js/issues/1517) [@rjatkins]
+- **Breaking** Default to undici 7, which raises the effective node requirement to 20.18.1. If you are on node 18, add
+  `"resolutions": { "undici": "^6.28.0" }` (yarn), `"overrides": { "undici": "^6.28.0" }` (npm), or the same `overrides`
+  block nested under `"pnpm"` (pnpm) to your `package.json`. [@orta]
+- undici is now an optional peer dependency (`^6.28.0 || ^7`), so you can move it forward yourself to pick up security
+  fixes without waiting for a Danger release [@orta]
+- Removed the `undici` entry from Danger's own `resolutions`, which had no effect on people installing Danger [@orta]
 
 <!-- Your comment above this -->
 

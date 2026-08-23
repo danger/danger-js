@@ -91,7 +91,7 @@
   },
   "homepage": "https://github.com/danger/danger-js#readme",
   "engines": {
-    "node": ">=18"
+    "node": ">=18.17"
   },
   "devDependencies": {
     "@babel/cli": "7.16.7",
@@ -173,11 +173,18 @@
     "regenerator-runtime": "^0.13.9",
     "require-from-string": "^2.0.2",
     "supports-hyperlinks": "^4.3.0",
-    "undici": "^6.27.0"
+    "undici": "^7.16.0"
+  },
+  "peerDependencies": {
+    "undici": "^6.28.0 || ^7"
+  },
+  "peerDependenciesMeta": {
+    "undici": {
+      "optional": true
+    }
   },
   "resolutions": {
     "@octokit/rest": "^20.1.2",
-    "before-after-hook": "2.2.0",
-    "undici": "^6.27.0"
+    "before-after-hook": "2.2.0"
   }
 }
