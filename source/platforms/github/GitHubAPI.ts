@@ -294,13 +294,8 @@ export class GitHubAPI {
     return await this.getAllOfResource(`repos/${repo}/pulls/${prID}/commits`)
   }
 
-  /**
-   * Get list of commits in pull requests. This'll try to iterate all available pages
-   * Until it reaches hard limit of api itself (250 commits).
-   * https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request
-   *
-   */
-  getAllOfResource = async (path: string): Promise<any> => {
+  /** Get every available page from a GitHub list endpoint. */
+  getAllOfResource = async (path: string, headers: any = {}): Promise<any> => {
     const ret: Array<any> = []
 
     /**
@@ -328,16 +323,16 @@ export class GitHubAPI {
     let page = 0
     while (page >= 0) {
       const requestUrl = `${path}${page > 0 ? `?page=${page}` : ""}`
-      this.d(`getPullRequestCommits:: Sending pull request commit request for ${page === 0 ? "first" : `${page}`} page`)
-      this.d(`getPullRequestCommits:: Request url generated "${requestUrl}"`)
+      this.d(`getAllOfResource:: Sending request for ${page === 0 ? "first" : `${page}`} page`)
+      this.d(`getAllOfResource:: Request url generated "${requestUrl}"`)
 
-      const response = await this.get(requestUrl)
+      const response = await this.get(requestUrl, headers)
       if (response.ok) {
         ret.push(...(await response.json()))
         page = getNextPageFromLinkHeader(response)
       } else {
         this.d(
-          `getPullRequestCommits:: Failed to get response while traverse page ${page} with ${response.status}, bailing rest of pages if exists`
+          `getAllOfResource:: Failed to get response while traverse page ${page} with ${response.status}, bailing rest of pages if exists`
         )
         page = -1
       }
@@ -464,11 +459,9 @@ ${file.patch}
   getReviews = async (): Promise<any> => {
     const repo = this.repoMetadata.repoSlug
     const prID = this.repoMetadata.pullRequestID
-    const res = await this.get(`repos/${repo}/pulls/${prID}/reviews`, {
+    return await this.getAllOfResource(`repos/${repo}/pulls/${prID}/reviews`, {
       Accept: "application/vnd.github.v3+json",
     })
-
-    return res.ok ? res.json() : []
   }
 
   getIssue = async (): Promise<any> => {

@@ -111,6 +111,69 @@ new file mode 0
     )
   })
 
+  it("getReviews follows every page returned by GitHub", async () => {
+    const firstPage = Array.from({ length: 30 }, (_, index) => ({ id: index + 1 }))
+    const secondPage = [{ id: 31 }]
+    api.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        headers: new Headers({
+          link: '<https://api.github.com/repos/artsy/emission/pulls/1/reviews?page=2>; rel="next"',
+        }),
+        json: jest.fn().mockResolvedValue(firstPage),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        headers: new Headers(),
+        json: jest.fn().mockResolvedValue(secondPage),
+      })
+
+    const reviews = await api.getReviews()
+
+    expect(reviews).toHaveLength(31)
+    expect(api.fetch).toHaveBeenNthCalledWith(
+      1,
+      "https://api.github.com/repos/artsy/emission/pulls/1/reviews",
+      {
+        body: null,
+        headers: {
+          Accept: "application/vnd.github.v3+json",
+          Authorization: "token ABCDE",
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      },
+      undefined
+    )
+    expect(api.fetch).toHaveBeenNthCalledWith(
+      2,
+      "https://api.github.com/repos/artsy/emission/pulls/1/reviews?page=2",
+      {
+        body: null,
+        headers: {
+          Accept: "application/vnd.github.v3+json",
+          Authorization: "token ABCDE",
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      },
+      undefined
+    )
+  })
+
+  it("getReviews makes one request when GitHub has no next page", async () => {
+    const firstPage = [{ id: 1 }]
+    api.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      headers: new Headers(),
+      json: jest.fn().mockResolvedValue(firstPage),
+    })
+
+    await expect(api.getReviews()).resolves.toEqual(firstPage)
+    expect(api.fetch).toHaveBeenCalledTimes(1)
+  })
+
   it("getDangerCommentIDs ignores comments not marked as generated", async () => {
     api.getAllOfResource = await requestWithFixturedJSON("github_inline_comments_with_danger.json")
     api.getUserID = () => new Promise<number>((r) => r(20229914))
