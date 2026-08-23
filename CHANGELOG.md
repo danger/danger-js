@@ -16,6 +16,10 @@
 
 <!-- Your comment below this -->
 
+<!-- Your comment above this -->
+
+## 14.0.0
+
 Danger now installs undici 7 by default. undici is what Danger uses to talk to GitHub, GitLab and Bitbucket, and version
 7 requires node 20.18.1 or newer — so for most people that is Danger's new effective minimum. Node 18 has not been
 dropped: you can pin undici back to the 6.x line yourself and everything keeps working. - [@orta]
@@ -34,8 +38,6 @@ rather than a workaround.
 - undici is now an optional peer dependency (`^6.28.0 || ^7`), so you can move it forward yourself to pick up security
   fixes without waiting for a Danger release [@orta]
 - Removed the `undici` entry from Danger's own `resolutions`, which had no effect on people installing Danger [@orta]
-
-<!-- Your comment above this -->
 
 ## 13.0.9
 
