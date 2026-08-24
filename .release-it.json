@@ -5,14 +5,18 @@
     "assets": "brew-distribution/*.zip",
     "releaseNotes": "npx auto-changelog --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/main/templates/changelog-compact.hbs"
   },
+  "npm": {
+    "_": "Publishing happens in .github/workflows/npm_publish.yml, triggered by the tag this pushes",
+    "publish": false
+  },
   "git": {
     "requireCleanWorkingDir": false,
+    "tagName": "${version}",
     "changelog": "npx auto-changelog --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/main/templates/changelog-compact.hbs"
   },
   "buildCommand": "yarn package:x64; yarn package:arm64",
   "hooks": {
     "before:bump": "yarn declarations; yarn build:schemas",
-    "after:release": "gh workflow run release.yml -f version=${version}",
     "_": "CI will remove the _ from both of the below lines",
     "_after:bump": "yarn package:x64; yarn package:arm64",
     "_after:release": "export VERSION=${version}; echo 'VERSION=${version}' >> $GITHUB_ENV"
