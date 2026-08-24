@@ -101,11 +101,15 @@ repository ruleset, so the set of people who can ship a release is that ruleset'
 
 - Checkout the `main` branch. Ensure your working tree is clean, and make sure you have the latest changes by running
   `git pull; yarn`.
-- Bump and tag - `npm run release -- patch`. This bumps `package.json`, commits, tags and pushes. It no longer publishes
+- Bump and tag - `npm run release -- patch --ci`. This bumps `package.json`, commits, tags and pushes. It no longer publishes
   to npm from your machine, so there's no OTP to enter.
 - Pushing the tag runs [`npm_publish.yml`](.github/workflows/npm_publish.yml), which publishes to npm using npm's
   trusted publishing (there is no `NPM_TOKEN` secret) and then kicks off `release.yml` for the macOS native builds and
   the homebrew tap.
+
+The publish job runs in the `npm-release` environment, which only tags can deploy to. Combined with the tag ruleset,
+that means a branch can never obtain npm's OIDC credentials. Changes to anything under `.github/workflows/` need a
+review from an admin, via [CODEOWNERS](.github/CODEOWNERS).
 
 :ship:
 
