@@ -17,6 +17,10 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Only tags can deploy to this environment, and only admins can create tags
+    # (the "Release tags" ruleset). Without it, anyone with write access could
+    # push a branch with an edited copy of this file and get npm's OIDC creds.
+    environment: npm-release
 
     steps:
       - uses: actions/checkout@v4

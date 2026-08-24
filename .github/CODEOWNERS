@@ -1,0 +1,8 @@
+# Changes to the release automation need sign-off from a repository admin.
+# Anyone with write access can open the PR; someone on this list has to approve it.
+#
+# This list is also what npm's trusted publishing trusts, so treat a change to
+# these files as a change to who can ship the `danger` package.
+/.github/workflows/ @orta @dbgrandi @KrauseFx @macklinu @f-meloni
+/.github/CODEOWNERS @orta @dbgrandi @KrauseFx @macklinu @f-meloni
+/.release-it.json @orta @dbgrandi @KrauseFx @macklinu @f-meloni
