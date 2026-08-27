@@ -16,6 +16,9 @@
 
 <!-- Your comment below this -->
 
+The Docker image behind the Danger GitHub Action now runs on node 22 instead of node 20. The image had stopped building
+entirely after the recent binary changes, so this gets the action publishing again. - [@orta]
+
 <!-- Your comment above this -->
 
 ## 14.0.6
