@@ -16,11 +16,13 @@
 
 <!-- Your comment below this -->
 
+<!-- Your comment above this -->
+
+## 14.0.6
+
 The prebuilt macOS binaries (what `brew install danger/tap/danger-js` gives you) now embed node 24 instead of node 18.
 Those binaries ship their own copy of node, and the old one was too old for the networking library Danger uses, so every
 call to GitHub failed with `TypeError: terminated`. They work again. - [@orta]
-
-<!-- Your comment above this -->
 
 ## 14.0.0-5
 
