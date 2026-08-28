@@ -18,6 +18,11 @@
 
 <!-- Your comment above this -->
 
+## 14.0.7
+
+The Docker image behind the Danger GitHub Action now runs on node 22 instead of node 20. The image had stopped building
+entirely after the recent binary changes, so this gets the action publishing again. - [@orta]
+
 ## 14.0.6
 
 The prebuilt macOS binaries (what `brew install danger/tap/danger-js` gives you) now embed node 24 instead of node 18.
