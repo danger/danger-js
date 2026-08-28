@@ -11,11 +11,16 @@
   },
   "git": {
     "requireCleanWorkingDir": false,
+    "requireBranch": "main",
     "tagName": "${version}",
+    "_": "--atomic so a rejected branch update can't leave the tag pushed on its own; the tag is the deploy trigger",
+    "pushArgs": ["--follow-tags", "--atomic"],
     "changelog": "npx auto-changelog --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/main/templates/changelog-compact.hbs"
   },
   "buildCommand": "yarn package:x64; yarn package:arm64",
   "hooks": {
+    "_before-init": "release-it never fetches; a stale main makes the push non-fast-forward. Skipped in CI, which does its own checkout.",
+    "before:init": "[ -n \"$CI\" ] || git pull --rebase --autostash origin main",
     "before:bump": "yarn declarations; yarn build:schemas",
     "_": "CI will remove the _ from both of the below lines",
     "_after:bump": "yarn package:x64; yarn package:arm64",
