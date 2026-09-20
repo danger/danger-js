@@ -22,6 +22,6 @@ export function href(href?: string, text?: string): string | null {
 }
 
 export const compliment = () => {
-  const compliments = ["Well done.", "Congrats.", "Woo!", "Yay.", "Jolly good show.", "Good on 'ya.", "Nice work."]
+  const compliments = ["Well done.", "Congrats.", "Woo!", "Yay.", "Jolly good show.", "Good on ya.", "Nice work."]
   return compliments[Math.floor(Math.random() * compliments.length)]
 }
