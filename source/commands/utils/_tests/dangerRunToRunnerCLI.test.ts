@@ -175,14 +175,14 @@ describe("it can handle the command when running under Bun", () => {
   it("`bunx --bun danger local --base main`", () => {
     expect(
       dangerRunToRunnerCLI([
-        "/Users/orta/.bun/bin/bun",
-        "/Users/orta/project/node_modules/danger/distribution/commands/danger-local.js",
+        "/Users/ortatherox/.bun/bin/bun",
+        "/Users/ortatherox/project/node_modules/danger/distribution/commands/danger-local.js",
         "--base",
         "main",
       ])
     ).toEqual([
-      "/Users/orta/.bun/bin/bun",
-      "/Users/orta/project/node_modules/danger/distribution/commands/danger-runner.js",
+      "/Users/ortatherox/.bun/bin/bun",
+      "/Users/ortatherox/project/node_modules/danger/distribution/commands/danger-runner.js",
       "--base",
       "main",
     ])
@@ -191,14 +191,14 @@ describe("it can handle the command when running under Bun", () => {
   it("`bunx --bun danger ci --dangerfile 'myDanger file.ts'`", () => {
     expect(
       dangerRunToRunnerCLI([
-        "/Users/orta/.bun/bin/bun",
-        "/Users/orta/project/node_modules/danger/distribution/commands/danger-ci.js",
+        "/Users/ortatherox/.bun/bin/bun",
+        "/Users/ortatherox/project/node_modules/danger/distribution/commands/danger-ci.js",
         "--dangerfile",
         "myDanger file.ts",
       ])
     ).toEqual([
-      "/Users/orta/.bun/bin/bun",
-      "/Users/orta/project/node_modules/danger/distribution/commands/danger-runner.js",
+      "/Users/ortatherox/.bun/bin/bun",
+      "/Users/ortatherox/project/node_modules/danger/distribution/commands/danger-runner.js",
       "--dangerfile",
       "myDanger file.ts",
     ])
@@ -207,13 +207,13 @@ describe("it can handle the command when running under Bun", () => {
   it("`bunx --bun danger pr https://github.com/facebook/react/pull/11865`", () => {
     expect(
       dangerRunToRunnerCLI([
-        "/Users/orta/.bun/bin/bun",
-        "/Users/orta/project/node_modules/danger/distribution/commands/danger-pr.js",
+        "/Users/ortatherox/.bun/bin/bun",
+        "/Users/ortatherox/project/node_modules/danger/distribution/commands/danger-pr.js",
         "https://github.com/facebook/react/pull/11865",
       ])
     ).toEqual([
-      "/Users/orta/.bun/bin/bun",
-      "/Users/orta/project/node_modules/danger/distribution/commands/danger-runner.js",
+      "/Users/ortatherox/.bun/bin/bun",
+      "/Users/ortatherox/project/node_modules/danger/distribution/commands/danger-runner.js",
       "https://github.com/facebook/react/pull/11865",
     ])
   })
@@ -221,25 +221,25 @@ describe("it can handle the command when running under Bun", () => {
   it("`bun danger-ci` without the .js extension", () => {
     expect(
       dangerRunToRunnerCLI([
-        "/Users/orta/.bun/bin/bun",
-        "/Users/orta/.bun/install/global/node_modules/danger/distribution/commands/danger-ci",
+        "/Users/ortatherox/.bun/bin/bun",
+        "/Users/ortatherox/.bun/install/global/node_modules/danger/distribution/commands/danger-ci",
       ])
     ).toEqual([
-      "/Users/orta/.bun/bin/bun",
-      "/Users/orta/.bun/install/global/node_modules/danger/distribution/commands/danger-runner",
+      "/Users/ortatherox/.bun/bin/bun",
+      "/Users/ortatherox/.bun/install/global/node_modules/danger/distribution/commands/danger-runner",
     ])
   })
 
   it("`bun.exe` with Windows paths", () => {
     expect(
       dangerRunToRunnerCLI([
-        "C:\\Users\\orta\\.bun\\bin\\bun.exe",
+        "C:\\Users\\ortatherox\\.bun\\bin\\bun.exe",
         "C:\\project\\node_modules\\danger\\distribution\\commands\\danger-local.js",
         "--dangerfile",
         "dangerfile.ts",
       ])
     ).toEqual([
-      "C:\\Users\\orta\\.bun\\bin\\bun.exe",
+      "C:\\Users\\ortatherox\\.bun\\bin\\bun.exe",
       "C:\\project\\node_modules\\danger\\distribution\\commands\\danger-runner.js",
       "--dangerfile",
       "dangerfile.ts",
