@@ -115,8 +115,8 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
       const diff: any = {
         // If a file is moved/renamed, the file will be in "danger.git.modified_files"
         // JSONPatchForFile will return null for the old file, so we need to check for that
-        before: (before && jsonpointer.get(before, backAStepPath)) || null,
-        after: (after && jsonpointer.get(after, backAStepPath)) || null,
+        before: before !== null ? jsonpointer.get(before, backAStepPath) : null,
+        after: after !== null ? jsonpointer.get(after, backAStepPath) : null,
       }
 
       const emptyValueOfCounterpart = (other: any) => {
