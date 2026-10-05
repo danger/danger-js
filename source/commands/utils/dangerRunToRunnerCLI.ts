@@ -11,7 +11,8 @@ const dangerRunToRunnerCLI = (argv: string[]) => {
 
   if (argv.length === 1) {
     return ["danger", "runner"]
-  } else if (argv[0].includes("node") || process.pkg != null) {
+  } else if (argv[0].includes("node") || process.pkg != null || process.versions.bun != null) {
+    // Under Bun, argv[0] is the bun binary and argv[1] the script, as under node
     // convert
     let newJSFile = argv[1]
     usesProcessSeparationCommands.forEach((name) => {

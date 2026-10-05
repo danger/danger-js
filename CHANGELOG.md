@@ -19,6 +19,9 @@
 The Docker image behind the Danger GitHub Action now runs on node 22 instead of node 20. The image had stopped building
 entirely after the recent binary changes, so this gets the action publishing again. - [@orta]
 
+Fix `danger ci`, `danger pr`, and `danger local` failing with `Script not found "runner"` when run natively under Bun
+(`bunx --bun danger`). - [@fbartho]
+
 <!-- Your comment above this -->
 
 ## 14.0.7
