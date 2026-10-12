@@ -19,6 +19,9 @@
 The Docker image behind the Danger GitHub Action now runs on node 22 instead of node 20. The image had stopped building
 entirely after the recent binary changes, so this gets the action publishing again. - [@orta]
 
+- undici 8 is now accepted as a peer dependency, so you can move to it yourself if you are on node 22.19 or newer. Danger
+  still installs undici 7 by default. - [@pataar]
+
 <!-- Your comment above this -->
 
 ## 14.0.7
@@ -2166,6 +2169,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@osmestad]: https://github.com/osmestad
 [@ozzieorca]: https://github.com/ozzieorca
 [@parvez]: https:/github.com/parvez
+[@pataar]: https://github.com/pataar
 [@patrickkempff]: https://github.com/patrickkempff
 [@paulmelnikow]: https://github.com/paulmelnikow
 [@peterjgrainger]: https://github.com/peterjgrainger
