@@ -174,7 +174,7 @@
     "undici": "^7.16.0"
   },
   "peerDependencies": {
-    "undici": "^6.28.0 || ^7"
+    "undici": "^6.28.0 || ^7 || ^8"
   },
   "peerDependenciesMeta": {
     "undici": {
