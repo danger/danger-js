@@ -66,14 +66,20 @@ jobs:
   undici:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        undici: ["6", "8"]
+        include:
+          - undici: "6"
+            node: "22"
+          # Node 22 only polyfills Symbol.dispose outside vm contexts, so undici 8 breaks under jest there
+          - undici: "8"
+            node: "24"
 
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: ${{ matrix.node }}
 
       # 7 is the installed default and covered by the test job; check the rest of the peer range
       - run: yarn install
