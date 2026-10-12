@@ -62,3 +62,21 @@ jobs:
         name: "Make a small babel app"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  undici:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        undici: ["6", "8"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # 7 is the installed default and covered by the test job; check the rest of the peer range
+      - run: yarn install
+      - run: yarn add undici@^${{ matrix.undici }} --ignore-engines
+      - run: yarn type-check
+      - run: yarn test
