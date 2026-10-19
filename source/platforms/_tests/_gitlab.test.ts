@@ -242,3 +242,32 @@ describe("getInlineComments", () => {
     expect(api.getMergeRequestDiscussions).toHaveBeenCalledTimes(1)
   })
 })
+
+
+describe("getPlatformReviewDSLRepresentation", () => {
+  it("normalizes a missing merge request description to an empty string", async () => {
+    const api: Partial<GitLabAPI> = {
+      repoMetadata: {} as GitLabAPI["repoMetadata"],
+      getMergeRequestInfo: jest.fn(() => Promise.resolve({ description: null } as any)),
+      getMergeRequestCommits: jest.fn(() => Promise.resolve([])),
+      getMergeRequestApprovals: jest.fn(() => Promise.resolve({} as any)),
+    };
+
+    const result = await new GitLab(api as GitLabAPI).getPlatformReviewDSLRepresentation();
+
+    expect(result.mr.description).toBe("");
+  });
+
+  it("preserves an existing merge request description", async () => {
+    const api: Partial<GitLabAPI> = {
+      repoMetadata: {} as GitLabAPI["repoMetadata"],
+      getMergeRequestInfo: jest.fn(() => Promise.resolve({ description: "Review this change" } as any)),
+      getMergeRequestCommits: jest.fn(() => Promise.resolve([])),
+      getMergeRequestApprovals: jest.fn(() => Promise.resolve({} as any)),
+    };
+
+    const result = await new GitLab(api as GitLabAPI).getPlatformReviewDSLRepresentation();
+
+    expect(result.mr.description).toBe("Review this change");
+  });
+});
