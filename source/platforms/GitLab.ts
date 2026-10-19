@@ -34,7 +34,8 @@ class GitLab implements Platform {
     const approvals = await this.api.getMergeRequestApprovals()
     return {
       metadata: this.api.repoMetadata,
-      mr,
+      // GitLab can return null when a merge request was created without a description.
+      mr: { ...mr, description: mr.description ?? "" },
       commits,
       approvals,
     }
