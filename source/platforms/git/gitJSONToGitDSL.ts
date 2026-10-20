@@ -1,9 +1,9 @@
 import * as os from "os"
 import parseDiff from "parse-diff"
-
 import includes from "lodash.includes"
 import isobject from "lodash.isobject"
 import memoize from "lodash.memoize"
+import { parseGitDiff } from "./parseGitDiff"
 
 import * as jsonDiff from "fast-json-patch"
 import jsonpointer from "jsonpointer"
@@ -198,7 +198,7 @@ export const gitJSONToGitDSL = (gitJSONRep: GitJSONDSL, config: GitJSONToGitDSLC
       fileDiffs = await config.getStructuredDiffForFile(config.baseSHA, config.headSHA, filename)
     } else {
       const diff = await getFullDiff!(config.baseSHA, config.headSHA)
-      fileDiffs = parseDiff(diff)
+      fileDiffs = parseGitDiff(diff)
     }
     const structuredDiff = fileDiffs.find((diff) => diff.from === filename || diff.to === filename)
     if (structuredDiff !== undefined && structuredDiff.chunks !== undefined) {
