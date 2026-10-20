@@ -2,6 +2,7 @@ import parseDiff from "parse-diff"
 import includes from "lodash.includes"
 import { GitCommit } from "../../dsl/Commit"
 import { GitJSONDSL } from "../../dsl/GitDSL"
+import { parseGitDiff } from "./parseGitDiff"
 
 /**
  * This function is essentially a "go from a diff to some simple structured data"
@@ -9,7 +10,7 @@ import { GitJSONDSL } from "../../dsl/GitDSL"
  */
 
 export const diffToGitJSONDSL = (diff: string, commits: GitCommit[]): GitJSONDSL => {
-  const fileDiffs: parseDiff.File[] = parseDiff(diff)
+  const fileDiffs: parseDiff.File[] = parseGitDiff(diff)
 
   const addedDiffs = fileDiffs.filter((diff: parseDiff.File) => diff.new == true) as any[]
   const removedDiffs = fileDiffs.filter((diff: parseDiff.File) => diff.deleted == true) as any[]
