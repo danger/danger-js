@@ -16,6 +16,9 @@
 
 <!-- Your comment below this -->
 
+Danger now works in projects that use Babel 8. Before, it stopped with "Starting from Babel 8.0.0, the 'loadOptions'
+function expects a callback" before running your Dangerfile. - [@npateras]
+
 The Docker image behind the Danger GitHub Action now runs on node 22 instead of node 20. The image had stopped building
 entirely after the recent binary changes, so this gets the action publishing again. - [@orta]
 
@@ -2161,6 +2164,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@nornagon]: https://github.com/nornagon
 [@notjosh]: https://github.com/notjosh
 [@notmoni]: https://github.com/NotMoni
+[@npateras]: https://github.com/npateras
 [@orieken]: https://github.com/orieken
 [@orta]: https://github.com/orta
 [@osmestad]: https://github.com/osmestad

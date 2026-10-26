@@ -115,4 +115,25 @@ a();`
     expect(act).not.toThrow()
     expect(act()).toEqual(dangerfile)
   })
+
+  it("loads the Babel config synchronously on Babel 8, where loadOptions needs a callback", () => {
+    const transformSync = jest.fn(() => ({ code: "transpiled" }))
+    jest.isolateModules(() => {
+      jest.doMock("@babel/core", () => ({
+        transformSync,
+        loadOptions: () => {
+          throw new Error("Starting from Babel 8.0.0, the 'loadOptions' function expects a callback.")
+        },
+        loadOptionsSync: () => ({ plugins: ["from-config"] }),
+      }))
+      const { babelify: babel8ify } = require("../transpiler")
+      expect(babel8ify("const a = 1", "dangerfile.ts", ["extra"])).toEqual("transpiled")
+    })
+    jest.dontMock("@babel/core")
+
+    expect(transformSync).toHaveBeenCalledWith(
+      "const a = 1",
+      expect.objectContaining({ plugins: ["extra", "from-config"] })
+    )
+  })
 })

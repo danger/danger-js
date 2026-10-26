@@ -172,7 +172,9 @@ export const babelify = (content: string, filename: string, extraPlugins: string
     return content
   }
 
-  const options = babel.loadOptions?.({ filename }) ?? { plugins: [] }
+  // Babel 8 made `loadOptions` callback-only; its synchronous form, `loadOptionsSync`, exists since 7.8.0.
+  const loadOptions = babel.loadOptionsSync ?? babel.loadOptions
+  const options = loadOptions?.({ filename }) ?? { plugins: [] }
 
   const fileOpts = {
     filename,
