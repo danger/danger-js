@@ -61,6 +61,7 @@ describe("the dangerfile gitDSL", () => {
     // Actually used
     api.getPullRequestInfo = await requestWithFixturedJSON(pullRequestInfoFilename)
     api.getPullRequestDiff = await requestWithFixturedContent("github_diff.diff")
+    api.getPullRequestFiles = async () => []
     api.getPullRequestCommits = await requestWithFixturedJSON("github_commits.json")
     api.getFileContents = async (_path, _repoSlug, ref) => (await requestWithFixturedJSON(`static_file.${ref}.json`))()
 
@@ -107,6 +108,21 @@ describe("the dangerfile gitDSL", () => {
   it("counts the lines of code", async () => {
     const loc = await gitDSL.linesOfCode()
     expect(loc).toBe(1151)
+  })
+
+  it("counts line totals for files whose GitHub API patch is omitted", async () => {
+    github.api.getPullRequestFiles = async () =>
+      [
+        {
+          filename: "large-deleted-file.txt",
+          status: "removed",
+          additions: 0,
+          deletions: 10000,
+        },
+      ] as any
+
+    const loc = await gitDSL.linesOfCode()
+    expect(loc).toBe(11151)
   })
 
   it("allows the lines of code to be filtered by file path", async () => {
