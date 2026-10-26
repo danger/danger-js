@@ -16,13 +16,17 @@
 
 <!-- Your comment below this -->
 
+
+<!-- Your comment above this -->
+
+## 14.1.0
+
 Danger now works in projects that use Babel 8. Before, it stopped with "Starting from Babel 8.0.0, the 'loadOptions'
 function expects a callback" before running your Dangerfile. - [@npateras]
 
 The Docker image behind the Danger GitHub Action now runs on node 22 instead of node 20. The image had stopped building
 entirely after the recent binary changes, so this gets the action publishing again. - [@orta]
 
-<!-- Your comment above this -->
 
 ## 14.0.7
 
