@@ -8,6 +8,7 @@ import { diffToGitJSONDSL } from "../git/diffToGitJSONDSL"
 import { GitJSONToGitDSLConfig, gitJSONToGitDSL } from "../git/gitJSONToGitDSL"
 
 import { debug } from "../../debug"
+import micromatch from "micromatch"
 const d = debug("GitHubGit")
 
 /**
@@ -59,7 +60,25 @@ export const gitHubGitDSL = (github: GitHubDSL, json: GitJSONDSL, githubAPI?: Gi
   }
 
   d("Setting up git DSL with: ", config)
-  return gitJSONToGitDSL(json, config)
+  const gitDSL = gitJSONToGitDSL(json, config)
+  const linesOfCodeFromDiff = gitDSL.linesOfCode
+
+  // GitHub omits patches for large files. Use the per-file counts returned by the
+  // pull-request-files API for those files, while retaining diff parsing elsewhere.
+  gitDSL.linesOfCode = async (pattern?: string) => {
+    const parsedLineCount = await linesOfCodeFromDiff(pattern)
+    const filesWithoutPatches = (await ghAPI.getPullRequestFiles()).filter(
+      (file) => !file.patch && (pattern === undefined || micromatch.isMatch(file.filename, pattern))
+    )
+    const omittedLineCount = filesWithoutPatches.reduce(
+      (total, file) => total + (file.additions ?? 0) + (file.deletions ?? 0),
+      0
+    )
+
+    return (parsedLineCount ?? 0) + omittedLineCount
+  }
+
+  return gitDSL
 }
 
 export const emptyGitJSON = (): GitJSONDSL => ({

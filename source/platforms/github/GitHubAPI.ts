@@ -58,8 +58,10 @@ const limit = pLimit(25)
 // Structure of files returned by the 'List pull request files' API
 export interface GitHubFile {
   filename: string
-  patch: string
+  patch?: string
   status: string
+  additions?: number
+  deletions?: number
 }
 
 // Note that there are parts of this class which don't seem to be
