@@ -122,7 +122,10 @@ class GitLab implements Platform {
 
       if (existingNote) {
         // update the existing comment
-        newOrUpdatedNote = await this.api.updateMergeRequestNote(existingNote.id, newComment)
+        newOrUpdatedNote = {
+          ...(await this.api.updateMergeRequestNote(existingNote.id, newComment)),
+          type: existingNote.type,
+        }
       } else {
         // create a new comment
         newOrUpdatedNote = (await this.api.createMergeRequestDiscussion(newComment))?.notes?.[0]

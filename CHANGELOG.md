@@ -16,6 +16,7 @@
 
 <!-- Your comment below this -->
 
+- GitLab: Upgrade `@gitbeaker/rest` from `^38.0.0` to `^43.8.0` [#1510](https://github.com/danger/danger-js/pull/1510) [@glensc]
 
 <!-- Your comment above this -->
 

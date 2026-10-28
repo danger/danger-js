@@ -46,6 +46,13 @@ function mockDangerNote(id: number, resolved = false): Types.MergeRequestNoteSch
   return mockNote(id, dangerUserId, `some body ${dangerIdString} asdf`, resolved)
 }
 
+function asDiscussionNote(note: Types.MergeRequestNoteSchema): Types.DiscussionNoteSchema {
+  return {
+    ...note,
+    type: (note.type ?? "DiffNote") as Types.DiscussionNoteSchema["type"],
+  }
+}
+
 function mockDiscussion(id: string, notes: Types.DiscussionNoteSchema[]): Types.DiscussionSchema {
   const discussion: Partial<Types.DiscussionSchema> = { id, notes }
   return discussion as Types.DiscussionSchema
@@ -63,12 +70,12 @@ function mockApi(withExisting = false): GitLabAPI {
   )
   const note4 = mockNote(1004, 745774)
   const note5 = mockNote(1005, 745774)
-  const discussion1 = mockDiscussion("aaaaffff1111", [note1, note2])
-  const discussion2 = mockDiscussion("aaaaffff2222", [note3, note4])
-  const discussion3 = mockDiscussion("aaaaffff3333", [note5])
+  const discussion1 = mockDiscussion("aaaaffff1111", [asDiscussionNote(note1), asDiscussionNote(note2)])
+  const discussion2 = mockDiscussion("aaaaffff2222", [asDiscussionNote(note3), asDiscussionNote(note4)])
+  const discussion3 = mockDiscussion("aaaaffff3333", [asDiscussionNote(note5)])
 
   const newNote = mockNote(4711, dangerUserId)
-  const newDiscussion = mockDiscussion("aaaaffff0000", [newNote])
+  const newDiscussion = mockDiscussion("aaaaffff0000", [asDiscussionNote(newNote)])
 
   const api: Partial<GitLabAPI> = {
     getUser,
@@ -218,20 +225,23 @@ describe("getInlineComments", () => {
     const autoresolvedDangerNote = mockDangerNote(2000, true)
     const autoresolveSystemNote1 = mockSystemAutoresolveNote(2001, 12345)
     const autoresolvedDiscussion = mockDiscussion("autoresolvedDiscussion", [
-      autoresolvedDangerNote,
-      autoresolveSystemNote1,
+      asDiscussionNote(autoresolvedDangerNote),
+      asDiscussionNote(autoresolveSystemNote1),
     ])
 
     const notAutoresolvedDangerNote = mockDangerNote(2001)
     const autoresolveSystemNote2 = mockSystemAutoresolveNote(2002, 12345)
     const notAutoresolvedDiscussion = mockDiscussion("notAutoresolvedDiscussion", [
-      notAutoresolvedDangerNote,
-      autoresolveSystemNote2,
+      asDiscussionNote(notAutoresolvedDangerNote),
+      asDiscussionNote(autoresolveSystemNote2),
     ])
 
     const notDangerNote = mockNote(2002, 12345)
     const notDangerDiscussionNote = mockNote(2003, 23456, "", false, "DiscussionNote")
-    const notDangerDiscussion = mockDiscussion("notDangerDiscussion", [notDangerNote, notDangerDiscussionNote])
+    const notDangerDiscussion = mockDiscussion("notDangerDiscussion", [
+      asDiscussionNote(notDangerNote),
+      asDiscussionNote(notDangerDiscussionNote),
+    ])
 
     const api = mockApi()
     api.getMergeRequestDiscussions = jest.fn(() =>
