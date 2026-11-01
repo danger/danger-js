@@ -118,7 +118,7 @@ class GitLab implements Platform {
       const existingNote = firstDiscussion?.notes?.[0]
       await this.deleteDiscussions(discussions)
 
-      let newOrUpdatedNote: Types.DiscussionNoteSchema | undefined
+      let newOrUpdatedNote: Types.DiscussionNoteSchema | Types.MergeRequestNoteSchema | undefined
 
       if (existingNote) {
         // update the existing comment

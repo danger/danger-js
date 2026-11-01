@@ -16,6 +16,8 @@
 
 <!-- Your comment below this -->
 
+Large GitLab discussion comments can now be created and updated without failing with "414 Request-URI Too Large".
+Gitbeaker has been upgraded to 43.8.0, and the declared minimum Node version is now 18.20.0. - [@SF97]
 
 <!-- Your comment above this -->
 
@@ -2191,6 +2193,7 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@sajjadzamani]: https://github.com/sajjadzamani
 [@sandratatarevicova]: https://github.com/sandratatarevicova
 [@sebinsua]: https://github.com/sebinsua
+[@SF97]: https://github.com/SF97
 [@sgtcoolguy]: https://github.com/sgtcoolguy
 [@sharkysharks]: https://github.com/sharkysharks
 [@shyim]: https://github.com/shyim

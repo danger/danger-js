@@ -20,19 +20,22 @@ function mockNote(
   body = "",
   resolved = false,
   type: "DiffNote" | "DiscussionNote" | null = "DiffNote"
-): Types.MergeRequestNoteSchema {
+): Types.MergeRequestNoteSchema & Types.DiscussionNoteSchema {
   const author: Partial<Types.UserSchema> = { id: authorId }
-  const note: Partial<Types.MergeRequestNoteSchema> = {
+  const note: Partial<Types.MergeRequestNoteSchema & Types.DiscussionNoteSchema> = {
     author: author as Types.UserSchema,
     body,
     id,
     type: type,
     resolved: resolved,
   }
-  return note as Types.MergeRequestNoteSchema
+  return note as Types.MergeRequestNoteSchema & Types.DiscussionNoteSchema
 }
 
-function mockSystemAutoresolveNote(id: number, authorId: number): Types.MergeRequestNoteSchema {
+function mockSystemAutoresolveNote(
+  id: number,
+  authorId: number
+): Types.MergeRequestNoteSchema & Types.DiscussionNoteSchema {
   let autoresolvedSystemNote = mockNote(
     id,
     authorId,
@@ -42,7 +45,7 @@ function mockSystemAutoresolveNote(id: number, authorId: number): Types.MergeReq
   return autoresolvedSystemNote
 }
 
-function mockDangerNote(id: number, resolved = false): Types.MergeRequestNoteSchema {
+function mockDangerNote(id: number, resolved = false): Types.MergeRequestNoteSchema & Types.DiscussionNoteSchema {
   return mockNote(id, dangerUserId, `some body ${dangerIdString} asdf`, resolved)
 }
 
