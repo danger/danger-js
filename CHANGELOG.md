@@ -16,6 +16,8 @@
 
 <!-- Your comment below this -->
 
+Danger now runs on [Woodpecker CI](https://woodpecker-ci.org). Run `danger ci` in a pull request pipeline and it
+finds the repo, the pull request, the commit and a link back to the pipeline on its own. - [@6543]
 
 <!-- Your comment above this -->
 
@@ -2088,6 +2090,7 @@ That should do ya. I think. This doesn't support babel, and I haven't explored u
 Not usable for others, only stubs of classes etc. - [@orta]
 
 [@417-72ki]: https://github.com/417-72KI
+[@6543]: https://github.com/6543
 [@adam-bratin]: https://github.com/adam-bratin
 [@adam-moss]: https://github.com/adam-moss
 [@adamnoakes]: https://github.com/adamnoakes
