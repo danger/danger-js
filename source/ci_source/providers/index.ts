@@ -23,6 +23,7 @@ import { Surf } from "./Surf"
 import { TeamCity } from "./TeamCity"
 import { Travis } from "./Travis"
 import { VSTS } from "./VSTS"
+import { Woodpecker } from "./Woodpecker"
 import { XcodeCloud } from "./XcodeCloud"
 
 const providers = [
@@ -52,6 +53,7 @@ const providers = [
   Bamboo,
   Codemagic,
   XcodeCloud,
+  Woodpecker,
 ]
 
 // Mainly used for Dangerfile linting
@@ -79,6 +81,7 @@ const realProviders = [
   Bamboo,
   Codemagic,
   XcodeCloud,
+  Woodpecker,
 ]
 
 export { providers, realProviders }
